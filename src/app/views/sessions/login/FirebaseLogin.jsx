@@ -122,7 +122,7 @@ const FirebaseLogin = () => {
     const handleFormSubmit = async (event) => {
         setLoading(true)
         try {
-            await signInWithEmailAndPassword(userInfo.email, userInfo.password)
+            // await signInWithEmailAndPassword(userInfo.email, userInfo.password)
             navigate('/')
         } catch (e) {
             console.log(e)
@@ -132,7 +132,7 @@ const FirebaseLogin = () => {
     }
     const handleGoogleLogin = async (event) => {
         try {
-            await signInWithGoogle()
+            // await signInWithGoogle()
             navigate('/')
         } catch (e) {
             setMessage(e.message)

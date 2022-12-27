@@ -3,7 +3,7 @@ import Loadable from 'app/components/Loadable/Loadable'
 import { authRoles } from 'app/auth/authRoles'
 
 const Analytics = Loadable(lazy(() => import('./Analytics')))
-const Analytics2 = Loadable(lazy(() => import('./Analytics2')))
+const Analytics2 = Loadable(lazy(() => import('./sup-admin-dshboard')))
 const Analytics3 = Loadable(lazy(() => import('./Analytics3')))
 const InventoryManagement = Loadable(
     lazy(() => import('./InventoryManagement'))

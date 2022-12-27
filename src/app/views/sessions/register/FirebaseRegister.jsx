@@ -2,8 +2,6 @@ import {
     Card,
     Grid,
     Button,
-    Checkbox,
-    FormControlLabel,
     CircularProgress,
 } from '@mui/material'
 import { Box, styled, useTheme } from '@mui/system'
@@ -84,7 +82,7 @@ const FirebaseRegister = () => {
     }
     const handleGoogleRegister = async (event) => {
         try {
-            await signInWithGoogle()
+            // await signInWithGoogle()
             navigate('/')
         } catch (e) {
             setMessage(e.message)
@@ -96,15 +94,15 @@ const FirebaseRegister = () => {
     const handleFormSubmit = async () => {
         try {
             setLoading(true)
-            await createUserWithEmailAndPassword(state.email, state.password)
-            navigate('/')
+            // await createUserWithEmailAndPassword(state.email, state.password)
+            navigate('/dashboard/default')
         } catch (e) {
             setLoading(false)
             console.log(e)
             setMessage(e.message)
         }
     }
-    let { email, password, agreement } = state
+    let { username, password } = state
     const { palette } = useTheme()
     const textError = palette.error.main
 
@@ -121,7 +119,7 @@ const FirebaseRegister = () => {
                         </ContentBox>
                     </Grid>
                     <Grid item lg={7} md={7} sm={7} xs={12}>
-                        <Box px={4} pt={4}>
+                        {/* <Box px={4} pt={4}>
                             <StyledButton
                                 onClick={handleGoogleRegister}
                                 variant="contained"
@@ -134,29 +132,29 @@ const FirebaseRegister = () => {
                                 Sign Up With Google
                             </StyledButton>
                         </Box>
-                        <Paragraph sx={{ textAlign: 'center' }}>Or</Paragraph>
+                        <Paragraph sx={{ textAlign: 'center' }}>Or</Paragraph> */}
                         <Box p={4} height="100%">
                             <ValidatorForm onSubmit={handleFormSubmit}>
                                 <TextValidator
                                     sx={{ mb: 3, width: '100%' }}
                                     variant="outlined"
-                                    size="small"
-                                    label="Email"
+                                    size="large"
+                                    label="Username"
                                     onChange={handleChange}
-                                    type="email"
-                                    name="email"
-                                    value={email || ''}
-                                    validators={['required', 'isEmail']}
+                                    type="text"
+                                    name="username"
+                                    value={username || ''}
+                                    validators={['required']}
                                     errorMessages={[
                                         'this field is required',
-                                        'email is not valid',
+                                        
                                     ]}
                                 />
                                 <TextValidator
                                     sx={{ mb: '16px', width: '100%' }}
                                     label="Password"
                                     variant="outlined"
-                                    size="small"
+                                    size="large"
                                     onChange={handleChange}
                                     name="password"
                                     type="password"
@@ -164,7 +162,7 @@ const FirebaseRegister = () => {
                                     validators={['required']}
                                     errorMessages={['this field is required']}
                                 />
-                                <FormControlLabel
+                                {/* <FormControlLabel
                                     sx={{ mb: '16px' }}
                                     name="agreement"
                                     onChange={(e) =>
@@ -189,7 +187,7 @@ const FirebaseRegister = () => {
                                             </a>
                                         </>
                                     }
-                                />
+                                /> */}
                                 {message && (
                                     <Paragraph sx={{ color: textError }}>
                                         {message}
@@ -212,13 +210,13 @@ const FirebaseRegister = () => {
                                             />
                                         )}
                                     </Box>
-                                    <Span sx={{ mr: 1, ml: '20px' }}>or</Span>
+                                    {/* <Span sx={{ mr: 1, ml: '20px' }}>or</Span>
                                     <Button
                                         sx={{ textTransform: 'capitalize' }}
                                         onClick={() => navigate("/session/signin")}
                                     >
                                         Sign In
-                                    </Button>
+                                    </Button> */}
                                 </FlexBox>
                             </ValidatorForm>
                         </Box>

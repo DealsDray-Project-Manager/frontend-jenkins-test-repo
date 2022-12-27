@@ -1,0 +1,131 @@
+import React, { lazy } from 'react'
+import Loadable from 'app/components/Loadable/Loadable'
+
+const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
+const Orders = Loadable(lazy(() => import('./Order/order')))
+const BulkImportOrder = Loadable(lazy(() => import('./Order/bulk-import-order')))
+const BadOrders = Loadable(lazy(() => import('./Order/view-bad-order')))
+const Delivery = Loadable(lazy(() => import('./Delivery/delivery')))
+const BulkImportDelivery = Loadable(lazy(() => import('./Delivery/bulk-import-delivery')))
+const BadDelivery = Loadable(lazy(() => import('./Delivery/badDelivery')))
+const ReconDeliveredOrders = Loadable(
+    lazy(() => import('./Recon-sheet/delivered-orders'))
+)
+const ReconNotDeliveredOrders = Loadable(
+    lazy(() => import('./Recon-sheet/not-delivered-orders'))
+)
+const AssignToBot = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-bot/view-wht-tray'))
+)
+const AssignToBqc = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-bqc/view-wht-tray'))
+)
+const AssignToAudit = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-audit/view-wht-tray'))
+)
+const AssignToCharging = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
+)
+
+const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
+const UicDownloaded = Loadable(
+    lazy(() => import('./Uic-manage/uic-downloaded'))
+)
+const UicGenerated = Loadable(lazy(() => import('./Uic-manage/uic-generated')))
+const UicNotGenerated = Loadable(
+    lazy(() => import('./Uic-manage/uic-not-generated'))
+)
+const SortingBotTowht = Loadable(
+    lazy(() => import('./Sorting/Bot-to-wht/bot-tray'))
+)
+const MergeMmt = Loadable(
+    lazy(() => import('./Merge/Mmt-merge/mmt-tray'))
+)
+const MergeWht = Loadable(
+    lazy(() => import('./Merge/Wht-merge/wht-tray'))
+)
+
+const dataTableRoutes = [
+    {
+        path: '/mis/dashboard',
+        element: <Dashboard />,
+    },
+    {
+        path: '/mis/orders',
+        element: <Orders />,
+    },
+    {
+        path: '/mis/uic-manage/all',
+        element: <UicAll />,
+    },
+    {
+        path: '/mis/bad-orders',
+        element: <BadOrders />,
+    },
+    {
+        path: '/mis/delivery',
+        element: <Delivery />,
+    },
+    {
+        path: '/mis/bad-delivery',
+        element: <BadDelivery />,
+    },
+    {
+        path: '/mis/recon-sheet/delivered-orders',
+        element: <ReconDeliveredOrders />,
+    },
+    {
+        path: '/mis/recon-sheet/not-delivered-orders',
+        element: <ReconNotDeliveredOrders />,
+    },
+    {
+        path: '/mis/uic-manage/uic-downloaded',
+        element: <UicDownloaded />,
+    },
+    {
+        path: '/mis/uic-manage/uic-generated',
+        element: <UicGenerated />,
+    },
+    {
+        path: '/mis/uic-manage/uic-not-generated',
+        element: <UicNotGenerated />,
+    },
+    {
+        path: '/mis/assign-to-agent/bot',
+        element: <AssignToBot />,
+    },
+    {
+        path: '/mis/assign-to-agent/bqc',
+        element: <AssignToBqc />,
+    },
+    {
+        path: '/mis/assign-to-agent/charging',
+        element: <AssignToCharging />,
+    },
+    {
+        path: '/mis/assign-to-agent/audit',
+        element: <AssignToAudit />,
+    },
+    {
+        path: '/mis/sorting/bot-to-wht',
+        element: <SortingBotTowht />,
+    },
+    {
+        path: '/mis/merge/mmt',
+        element: <MergeMmt />,
+    },
+    {
+        path: '/mis/merge/wht',
+        element: <MergeWht />,
+    },
+    {
+        path: '/mis/orders/bulk-import',
+        element: <BulkImportOrder />,
+    },
+    {
+        path: '/mis/delivery/bulk-import',
+        element: <BulkImportDelivery />,
+    },
+]
+
+export default dataTableRoutes

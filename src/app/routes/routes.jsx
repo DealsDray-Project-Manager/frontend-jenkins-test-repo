@@ -22,6 +22,15 @@ import { dashboardRoutes } from 'app/views/dashboard/DashboardRoutes'
 import sessionRoutes from 'app/views/sessions/SessionRoutes'
 import MatxLayout from '../components/MatxLayout/MatxLayout'
 import { Navigate } from 'react-router-dom'
+/**************************************************** */
+import SuperAdminRoutes from '../components/sup-admin-components/sup-admin-routers'
+import MisRoutes from '../components/Mis-components/Mis-routers'
+import WarehouseRoutes from '../components/Warehouse-components/WarehouseRouter'
+import BotRoutes from '../components/Bot-components/BotRoutes'
+import SortingRoutes from "../components/Sorting-agent-components/SortingRoutes"
+import ChargingRoutes from "../components/Charging-components/ChargingRoutes"
+import BqcRoutes from "../components/Bqc-components/BqcRoutes"
+import Login from "../Login/loginRouter"
 
 export const AllPages = () => {
     const all_routes = [
@@ -51,12 +60,20 @@ export const AllPages = () => {
                 ...pricingRoutes,
                 ...scrumBoardRoutes,
                 ...todoRoutes,
+                ...SuperAdminRoutes,
+                ...MisRoutes,
+                ...WarehouseRoutes,
+                ...BotRoutes,
+                ...SortingRoutes,
+                ...ChargingRoutes,
+                ...BqcRoutes,
+                
             ],
         },
-        ...sessionRoutes,
+        ...Login,
         {
             path: '/',
-            element: <Navigate to="dashboard/default" />,
+            element: <Navigate to="/login" />,
         },
         {
             path: '*',

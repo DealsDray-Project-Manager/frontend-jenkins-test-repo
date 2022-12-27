@@ -1,7 +1,7 @@
 import React from 'react'
-import { Span, Paragraph } from '../Typography'
+import { Span } from '../Typography'
 import useSettings from 'app/hooks/useSettings'
-import { Button, Toolbar, AppBar, ThemeProvider } from '@mui/material'
+import {  Toolbar, AppBar, ThemeProvider } from '@mui/material'
 import { styled, useTheme } from '@mui/system'
 import { topBarHeight } from 'app/utils/constant'
 
@@ -40,23 +40,15 @@ const Footer = () => {
 
     return (
         <ThemeProvider theme={footerTheme}>
-            <AppBar
-                color="primary"
-                position="static"
-                sx={{ zIndex: 96 }}
-            >
+            <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
                 <AppFooter>
                     <FooterContent>
-                        <a href="https://ui-lib.com/downloads/matx-pro-react-admin/">
+                        {/* <a href="https://ui-lib.com/downloads/matx-pro-react-admin/">
                             <Button variant="contained" color="secondary">
                                 Get MatX Pro
                             </Button>
-                        </a>
-                        <Span sx={{ m: "auto" }}></Span>
-                        <Paragraph sx={{ m: 0 }}>
-                            Design and Developed by{' '}
-                            <a href="http://ui-lib.com">UI Lib</a>
-                        </Paragraph>
+                        </a> */}
+                        <Span sx={{ m: 'auto' }}> 2022 © Prexo. </Span>
                     </FooterContent>
                 </AppFooter>
             </AppBar>

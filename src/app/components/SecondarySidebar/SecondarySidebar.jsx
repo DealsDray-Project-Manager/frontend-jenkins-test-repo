@@ -16,7 +16,7 @@ const SecondarySidebar = () => {
             {settings.secondarySidebar.open && (
                 <SecondarySidebarContent chatTheme={theme} />
             )}
-            <SecondarySidebarToggle />
+            {/* <SecondarySidebarToggle /> */}
         </SecondarySidenavTheme>
     )
 }

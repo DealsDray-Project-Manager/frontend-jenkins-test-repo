@@ -6,25 +6,15 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 const StatCard3 = () => {
     const statList = [
         {
-            icon: 'people',
-            amount: 10495,
+            icon: 'sort',
+            amount: 0,
             title: 'New Members',
         },
         {
-            icon: 'location_on_outlined',
-            amount: 30942,
-            title: 'Places added',
-        },
-        {
-            icon: 'keyboard_voice',
-            amount: 45269,
-            title: 'Support Members',
-        },
-        {
-            icon: 'card_giftcard',
-            amount: 20965,
-            title: 'Tags Used',
-        },
+            icon: 'merge_type',
+            amount: 2,
+            title: 'Tray Merge',
+        }
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

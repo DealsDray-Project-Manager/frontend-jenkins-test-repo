@@ -6,24 +6,64 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 const StatCard3 = () => {
     const statList = [
         {
-            icon: 'people',
-            amount: 10495,
-            title: 'Order',
+            icon: 'reorder',
+            amount: 1000,
+            title: 'Orders',
         },
         {
-            icon: 'location_on_outlined',
-            amount: 30942,
-            title: 'Places added',
+            icon: 'shopping_cart',
+            amount: 300,
+            title: 'Deliverys',
         },
         {
-            icon: 'keyboard_voice',
-            amount: 45269,
-            title: 'Support Members',
+            icon: 'reorder',
+            amount: 700,
+            title: 'Not Delivered Orders',
         },
         {
-            icon: 'card_giftcard',
-            amount: 20965,
-            title: 'Tags Used',
+            icon: 'format_indent_decrease',
+            amount: 12,
+            title: 'UIC Generated',
+        },
+        {
+            icon: 'format_indent_decrease',
+            amount: 11,
+            title: 'UIC Not Generated',
+        },
+        {
+            icon: 'assignment',
+            amount: 15,
+            title: 'Assign To Bot',
+        },
+        {
+            icon: 'assignment',
+            amount: 12,
+            title: 'Assign To Charging',
+        },
+        {
+            icon: 'assignment',
+            amount: 10,
+            title: 'Assign To Bqc',
+        },
+        {
+            icon: 'assignment',
+            amount: 15,
+            title: 'Assign To Audit',
+        },
+        {
+            icon: 'sort',
+            amount: 20,
+            title: 'BOT To WHT',
+        },
+        {
+            icon: 'merge_type',
+            amount: 10,
+            title: 'WHT Merge',
+        },
+        {
+            icon: 'merge_type',
+            amount: 15,
+            title: 'MMT Merge',
         },
     ]
     const { palette } = useTheme()

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 // import { getUserById, updateUser, addNewUser } from './TableService'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import { Dialog, Button, Grid, FormControlLabel, Switch } from '@mui/material'
+import { Dialog, Button, Grid } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import Avatar from '@mui/material/Avatar'
 
 const TextField = styled(TextValidator)(() => ({
     width: '100%',
@@ -69,10 +70,32 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     return (
         <Dialog onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
-                <ValidatorForm >
+                <H4 sx={{ mb: '20px' }}>ADD Member</H4>
+
+                <Avatar
+                    src=""
+                    style={{
+                        borderRadius: '50%',
+                        margin: 'auto',
+                        marginBottom: '15px',
+                        height: '57px',
+                        width: '57px',
+                    }}
+                />
+
+                <ValidatorForm>
                     <Grid sx={{ mb: '16px' }} container spacing={4}>
                         <Grid item sm={6} xs={12}>
+                            <TextField
+                                label="Profile"
+                                type="file"
+                                InputLabelProps={{ shrink: true }}
+                                name="name"
+                                value={state?.name}
+                                onChange={handleChange}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                            />
                             <TextField
                                 label="Name"
                                 type="text"
@@ -83,9 +106,9 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
                                 errorMessages={['this field is required']}
                             />
                             <TextField
-                                label="Email"
+                                label="User Name"
                                 type="text"
-                                name="email"
+                                name="user_name"
                                 value={state?.email}
                                 onChange={handleChange}
                                 validators={['required']}
@@ -93,9 +116,9 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
                             />
 
                             <TextField
-                                label="Phone"
+                                label="User Type"
                                 type="text"
-                                name="phone"
+                                name="user_type"
                                 value={state?.phone}
                                 onChange={handleChange}
                                 validators={['required']}
@@ -103,37 +126,16 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
                             />
 
                             <TextField
-                                label="Balance"
+                                label="Device Name"
                                 onChange={handleChange}
-                                type="number"
-                                name="balance"
+                                type="text"
+                                name="device_name"
                                 value={state?.balance}
                                 validators={['required']}
                                 errorMessages={['this field is required']}
                             />
-                        </Grid>
-
-                        <Grid item sm={6} xs={12}>
                             <TextField
-                                label="Age"
-                                onChange={handleChange}
-                                type="number"
-                                name="age"
-                                value={state?.age}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Company"
-                                onChange={handleChange}
-                                type="text"
-                                name="company"
-                                value={state?.company}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Address"
+                                label="Confirm Password"
                                 onChange={handleChange}
                                 type="text"
                                 name="address"
@@ -141,18 +143,53 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
                                 validators={['required']}
                                 errorMessages={['this field is required']}
                             />
+                        </Grid>
 
-                            <FormControlLabel
-                                sx={{ my: '20px' }}
-                                control={
-                                    <Switch
-                                        checked={state?.isActive}
-                                        onChange={(event) =>
-                                            handleChange(event, 'switch')
-                                        }
-                                    />
-                                }
-                                label="Active Customer"
+                        <Grid item sm={6} xs={12}>
+                            <TextField
+                                label="Email"
+                                onChange={handleChange}
+                                type="email"
+                                name="email"
+                                value={state?.age}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                            />
+                            <TextField
+                                label="Mobile No"
+                                onChange={handleChange}
+                                type="number"
+                                name="contact"
+                                value={state?.company}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                            />
+                            <TextField
+                                label="CPC"
+                                onChange={handleChange}
+                                type="text"
+                                name="cpc"
+                                value={state?.address}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                            />
+                            <TextField
+                                label="Device Id"
+                                onChange={handleChange}
+                                type="text"
+                                name="address"
+                                value={state?.address}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                            />
+                            <TextField
+                                label="Password"
+                                onChange={handleChange}
+                                type="text"
+                                name="address"
+                                value={state?.address}
+                                validators={['required']}
+                                errorMessages={['this field is required']}
                             />
                         </Grid>
                     </Grid>

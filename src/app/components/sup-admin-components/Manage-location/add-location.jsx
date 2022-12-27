@@ -69,8 +69,8 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     return (
         <Dialog onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
-                <ValidatorForm >
+                <H4 sx={{ mb: '20px' }}>Add Location</H4>
+                <ValidatorForm>
                     <Grid sx={{ mb: '16px' }} container spacing={4}>
                         <Grid item sm={6} xs={12}>
                             <TextField

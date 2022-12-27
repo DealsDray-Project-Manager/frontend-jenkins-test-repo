@@ -28,7 +28,6 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
         address: '',
         isActive: false,
     })
-
     const handleChange = (event, source) => {
         event.persist()
         if (source === 'switch') {
@@ -38,7 +37,6 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
             })
             return
         }
-
         setState({
             ...state,
             [event.target.name]: event.target.value,

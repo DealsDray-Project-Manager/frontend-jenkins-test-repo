@@ -1,10 +1,11 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-location'
 import React, { useState, useEffect } from 'react'
+import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
 import { Button } from '@mui/material'
+import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,30 +22,30 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [locationList, setLocatiolList] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        const fetchLocation = async () => {
+            try {
+                const res = await axiosSuperAdminPrexo.post('/getLocation')
+                if (res.status === 200) {
+                    setLocatiolList(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchLocation()
         return () => setIsAlive(false)
     }, [isAlive])
     const handleDialogClose = () => {
         setShouldOpenEditorDialog(false)
-        updatePageData()
     }
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
-    }
-
-    useEffect(() => {
-        updatePageData()
-    }, [])
-
     return (
         <Container>
             <div className="breadcrumb">
@@ -62,7 +63,7 @@ const SimpleMuiTable = () => {
             </Button>
             <MUIDataTable
                 title={'All Location'}
-                data={userList}
+                data={locationList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -90,6 +91,15 @@ const SimpleMuiTable = () => {
 
 const columns = [
     {
+        name: 'index',
+        label: 'Record No',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
+        },
+    },
+    {
         name: 'name', // field name in the row object
         label: 'Name', // column title that will be shown in table
         options: {
@@ -97,24 +107,64 @@ const columns = [
         },
     },
     {
-        name: 'email',
-        label: 'Email',
+        name: 'code',
+        label: 'Code',
         options: {
             filter: true,
         },
     },
     {
-        name: 'company',
-        label: 'Company',
+        name: 'address',
+        label: 'Address',
         options: {
             filter: true,
         },
     },
     {
-        name: 'balance',
-        label: 'Balance',
+        name: 'city',
+        label: 'City',
         options: {
             filter: true,
+        },
+    },
+    {
+        name: 'state',
+        label: 'State',
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'country',
+        label: 'Country',
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'pincode',
+        label: 'Pincode',
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'Actions',
+        label: 'Actions',
+        options: {
+            filter: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return (
+                    <>
+                        <Button onClick={() => console.log(value, tableMeta)}>
+                            Edit
+                        </Button>
+                        <Button onClick={() => console.log(value, tableMeta)}>
+                            Delete
+                        </Button>
+                    </>
+                )
+            },
         },
     },
 ]

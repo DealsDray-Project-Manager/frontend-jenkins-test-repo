@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-// import { getUserById, updateUser, addNewUser } from './TableService'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import { Dialog, Button, Grid, FormControlLabel, Switch } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import { axiosSuperAdminPrexo } from '../../../../axios'
+import Swal from 'sweetalert2'
 
-const TextField = styled(TextValidator)(() => ({
+const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
@@ -16,164 +19,451 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const MemberEditorDialog = ({ uid, open, handleClose }) => {
-    const [state, setState] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        balance: '',
-        age: '',
-        company: '',
-        address: '',
-        isActive: false,
-    })
+const MemberEditorDialog = ({
+    open,
+    handleClose,
+    setIsAlive,
+    editFetchData,
+    setEditFetchData,
+}) => {
+    const [trayCount, setTrayCount] = useState(0)
+    const [warehouse, setWarehouse] = useState([])
+    const [allBrand, setAllBrand] = useState([])
+    const [cpc, setCpc] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [allModel, setAllModel] = useState([])
 
-    const handleChange = (event, source) => {
-        event.persist()
-        if (source === 'switch') {
-            setState({
-                ...state,
-                isActive: event.target.checked,
-            })
-            return
+    useEffect(() => {
+        try {
+            const fetchCpc = async () => {
+                let res = await axiosSuperAdminPrexo.post('/getBrands')
+                if (res.status == 200) {
+                    setAllBrand(res.data.data)
+                }
+                let response = await axiosSuperAdminPrexo.get('/getCpc')
+                if (response.status == 200) {
+                    setCpc(response.data.data.data)
+                }
+            }
+            fetchCpc()
+            if (Object.keys(editFetchData).length !== 0) {
+                reset({ ...editFetchData })
+                open()
+            }
+        } catch (error) {
+            alert(error)
         }
+    }, [])
 
-        setState({
-            ...state,
-            [event.target.name]: event.target.value,
-        })
+    const fetchTypeWiseId = async (e, type) => {
+        e.preventDefault()
+        try {
+            let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
+            if (res.status == 200) {
+                setTrayCount(type + res.data.data)
+                if (type == 'BOT' && res.data.data > '2251') {
+                    alert('BOT Tray Maximum ID NO 2251')
+                    handleClose()
+                } else if (type == 'MMT' && res.data.data > '8051') {
+                    alert('MMT Tray Maximum ID NO 8051')
+                    handleClose()
+                } else if (type == 'WHT' && res.data.data > '1501') {
+                    alert('WHT Tray Maximum ID NO  1501')
+                    handleClose()
+                } else if (type == 'PMT' && res.data.data > '8151') {
+                    alert('PMT Tray Maximum ID NO  8151')
+                    handleClose()
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
-    // const handleFormSubmit = () => {
-    //     let { id } = state
-    //     if (id) {
-    //         updateUser({
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     } else {
-    //         addNewUser({
-    //             id: generateRandomId(),
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     }
-    // }
+    // Get Cpc data from server
+    async function getCpcData(data) {
+        try {
+            let obj = {
+                name: data,
+            }
+            let response = await axiosSuperAdminPrexo.post(
+                '/getWarehouseByLocation',
+                obj
+            )
+            if (response.status == 200) {
+                setWarehouse(response.data.data.warehouse)
+            }
+        } catch (error) {}
+    }
+    const schema = Yup.object().shape({
+        name: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(100)
+            .nullable(),
+        type_taxanomy: Yup.string().required('Required*').nullable(),
+        warehouse: Yup.string().required('Required*').nullable(),
+        limit: Yup.number('Must be number')
+            .required('Required*')
+            .positive()
+            .integer()
+            .min(1, 'Minimum is 1')
+            .nullable(),
+        brand: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid brand')
+            .max(100)
+            .nullable(),
+        model: Yup.string().required('Required*').max(100).nullable(),
+        display: Yup.string()
+            .required('Required*')
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,
+                'Please enter valid display name'
+            )
+            .max(100)
+            .nullable(),
+    })
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
 
-    // useEffect(() => {
-    //     getUserById(uid).then((data) => setState({ ...data.data }))
-    // }, [uid])
+    /* Fetch model */
+    const fetchModel = async (brandName) => {
+        try {
+            let res = await axiosSuperAdminPrexo.post(
+                '/get-product-model/' + brandName
+            )
+            if (res.status == 200) {
+                setAllModel(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const onSubmit = async (data) => {
+        setLoading(true)
+        data.prefix = 'tray-master'
+        data.sort_id = 'Open'
+        data.created_at = Date.now()
+        data.code = trayCount
+        try {
+            let response = await axiosSuperAdminPrexo.post(
+                '/createMasters',
+                data
+            )
+            if (response.status == 200) {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Successfully Created',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Tray Already Exists',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    const handelEdit = async (data) => {
+        try {
+            let response = await axiosSuperAdminPrexo.post('/editMaster', data)
+            if (response.status == 200) {
+                handleClose()
+                setEditFetchData({})
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Successfully Updated',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                handleClose()
+                setEditFetchData({})
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'failed',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                })
+            }
+        } catch (error) {
+            handleClose()
+            setEditFetchData({})
+            alert(error)
+        }
+    }
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
-                <ValidatorForm >
-                    <Grid sx={{ mb: '16px' }} container spacing={4}>
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Name"
-                                type="text"
-                                name="name"
-                                value={state?.name}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Email"
-                                type="text"
-                                name="email"
-                                value={state?.email}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <H4 sx={{ mb: '20px' }}>Tray</H4>
 
-                            <TextField
-                                label="Phone"
-                                type="text"
-                                name="phone"
-                                value={state?.phone}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <Grid sx={{ mb: '16px' }} container spacing={4}>
+                    <Grid item sm={6} xs={12}>
+                        <TextFieldCustOm
+                            label="Tray Id"
+                            type="text"
+                            InputLabelProps={{ shrink: true }}
+                            name="email"
+                            value={
+                                getValues('code') == null
+                                    ? trayCount === 0
+                                        ? null
+                                        : trayCount
+                                    : getValues('code')
+                            }
+                        />
 
-                            <TextField
-                                label="Balance"
-                                onChange={handleChange}
-                                type="number"
-                                name="balance"
-                                value={state?.balance}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                        </Grid>
+                        <TextFieldCustOm
+                            label="Tray Display Name"
+                            type="text"
+                            name="name"
+                            {...register('name')}
+                            disabled={
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
+                            error={errors.name ? true : false}
+                            helperText={errors.name ? errors.name.message : ''}
+                        />
 
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Age"
-                                onChange={handleChange}
-                                type="number"
-                                name="age"
-                                value={state?.age}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Company"
-                                onChange={handleChange}
-                                type="text"
-                                name="company"
-                                value={state?.company}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Address"
-                                onChange={handleChange}
-                                type="text"
-                                name="address"
-                                value={state?.address}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-
-                            <FormControlLabel
-                                sx={{ my: '20px' }}
-                                control={
-                                    <Switch
-                                        checked={state?.isActive}
-                                        onChange={(event) =>
-                                            handleChange(event, 'switch')
-                                        }
-                                    />
+                        <TextFieldCustOm
+                            label="Tray Limit"
+                            type="number"
+                            name="phone"
+                            inputProps={{ maxLength: 2 }}
+                            onPaste={(e) => {
+                                e.preventDefault()
+                                return false
+                            }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
                                 }
-                                label="Active Customer"
-                            />
-                        </Grid>
+                            }}
+                            {...register('limit')}
+                            error={errors.limit ? true : false}
+                            helperText={
+                                errors.limit ? errors.limit.message : ''
+                            }
+                        />
+
+                        <TextFieldCustOm
+                            label="Tray Display"
+                            type="text"
+                            name="display"
+                            {...register('display')}
+                            error={errors.display ? true : false}
+                            helperText={
+                                errors.display ? errors.display.message : ''
+                            }
+                        />
                     </Grid>
 
-                    <FormHandlerBox>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
+                    <Grid item sm={6} xs={12}>
+                        <TextFieldCustOm
+                            label="CPC"
+                            select
+                            type="text"
+                            name="cpc"
+                            {...register('cpc')}
+                            disabled={
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
+                            error={errors.cpc ? true : false}
+                            helperText={errors.cpc?.message}
                         >
-                            Save
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleClose()}
+                            {cpc.map((data) => (
+                                <MenuItem
+                                    value={data.code}
+                                    onClick={() =>
+                                        getCpcData(data.name, data.code)
+                                    }
+                                >
+                                    {data.code}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+
+                        <TextFieldCustOm
+                            label="Warehouse"
+                            select
+                            type="text"
+                            name="cpc"
+                            {...register('warehouse')}
+                            disabled={
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
+                            error={errors.warehouse ? true : false}
+                            helperText={errors.warehouse?.message}
                         >
-                            Cancel
-                        </Button>
-                    </FormHandlerBox>
-                </ValidatorForm>
+                            {warehouse.map((data) => (
+                                <MenuItem value={data.name}>
+                                    {data.name}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Tray Category"
+                            select
+                            type="text"
+                            name="cpc"
+                            {...register('type_taxanomy')}
+                            disabled={
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
+                            error={errors.type_taxanomy ? true : false}
+                            helperText={errors.type_taxanomy?.message}
+                        >
+                            <MenuItem
+                                value="BOT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'BOT')
+                                }}
+                            >
+                                BOT
+                            </MenuItem>
+                            <MenuItem
+                                value="PMT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'PMT')
+                                }}
+                            >
+                                PMT
+                            </MenuItem>
+                            <MenuItem
+                                value="MMT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'MMT')
+                                }}
+                            >
+                                MMT
+                            </MenuItem>
+                            <MenuItem
+                                value="WHT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'WHT')
+                                }}
+                            >
+                                WHT
+                            </MenuItem>
+                        </TextFieldCustOm>
+                        {getValues('type_taxanomy') == 'WHT' ? (
+                            <>
+                                <TextFieldCustOm
+                                    label="Brand"
+                                    select
+                                    type="text"
+                                    {...register('brand')}
+                                    error={errors.brand ? true : false}
+                                    helperText={
+                                        errors.brand ? errors.brand.message : ''
+                                    }
+                                >
+                                    {allBrand.map((brandData) => (
+                                        <MenuItem
+                                            value={brandData.brand_name}
+                                            onClick={(e) => {
+                                                fetchModel(brandData.brand_name)
+                                            }}
+                                        >
+                                            {brandData.brand_name}
+                                        </MenuItem>
+                                    ))}
+                                </TextFieldCustOm>
+                                <TextFieldCustOm
+                                    label="Model"
+                                    select
+                                    type="text"
+                                    name="model"
+                                    {...register('model')}
+                                    error={errors.model ? true : false}
+                                >
+                                    {allModel.map((modelData) => (
+                                        <MenuItem value={modelData.model_name}>
+                                            {modelData.model_name}
+                                        </MenuItem>
+                                    ))}
+                                </TextFieldCustOm>
+                            </>
+                        ) : (
+                            <>
+                                <TextFieldCustOm
+                                    label="Brand"
+                                    type="text"
+                                    name="brand"
+                                    {...register('brand')}
+                                    error={errors.brand ? true : false}
+                                    helperText={
+                                        errors.brand ? errors.brand.message : ''
+                                    }
+                                />
+                                <TextFieldCustOm
+                                    label="Model"
+                                    type="text"
+                                    name="model"
+                                    {...register('model')}
+                                    error={errors.model ? true : false}
+                                    helperText={
+                                        errors.model ? errors.model.message : ''
+                                    }
+                                />
+                            </>
+                        )}
+                    </Grid>
+                </Grid>
+
+                <FormHandlerBox>
+                    <Button
+                        variant="contained"
+                        disabled={loading}
+                        onClick={
+                            Object.keys(editFetchData).length !== 0
+                                ? handleSubmit(handelEdit)
+                                : handleSubmit(onSubmit)
+                        }
+                        color="primary"
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleClose()}
+                    >
+                        Cancel
+                    </Button>
+                </FormHandlerBox>
             </Box>
         </Dialog>
     )

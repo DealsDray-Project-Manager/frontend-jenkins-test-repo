@@ -68,7 +68,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     }, [uid])
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog  open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Update Member</H4>
                 <ValidatorForm onSubmit={handleFormSubmit}>

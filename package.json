@@ -6,6 +6,7 @@
         "@auth0/auth0-spa-js": "^1.19.2",
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
+        "@hookform/resolvers": "^2.9.10",
         "@mui/icons-material": "^5.1.1",
         "@mui/lab": "^5.0.0-alpha.55",
         "@mui/material": "^5.0.6",
@@ -20,6 +21,7 @@
         "date-fns": "^2.26.0",
         "echarts": "^5.2.2",
         "echarts-for-react": "^3.0.2",
+        "file-saver": "^2.0.5",
         "firebase": "^9.6.8",
         "formik": "^2.2.9",
         "html-react-parser": "^1.4.0",
@@ -39,6 +41,7 @@
         "react-dom": "^17.0.2",
         "react-dropzone": "^11.4.2",
         "react-highlight": "^0.14.0",
+        "react-hook-form": "^7.41.1",
         "react-material-ui-form-validator": "^3.0.0",
         "react-perfect-scrollbar": "^1.5.8",
         "react-redux": "^7.2.6",
@@ -49,6 +52,7 @@
         "redux-thunk": "^2.4.0",
         "shortid": "^2.2.16",
         "sweetalert2": "^11.6.16",
+        "xlsx": "^0.18.5",
         "yup": "^0.32.11"
     },
     "scripts": {

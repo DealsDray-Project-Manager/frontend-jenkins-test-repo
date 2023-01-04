@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from '../../../../../axios'
+import jwt_decode from 'jwt-decode'
+import { Button } from '@mui/material'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -18,26 +21,135 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [userList, setRequests] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        let admin = localStorage.getItem('prexo-authentication')
+        if (admin) {
+            const fetchData = async () => {
+                try {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/getRequests/' + location
+                    )
+                    if (res.status == 200) {
+                        setRequests(res.data.data)
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+            fetchData()
+        } else {
+            navigate('/')
+        }
         return () => setIsAlive(false)
     }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+
+    const handelDetailPage = (e, bagId) => {
+      
+        navigate('/wareshouse/bag/bag-issue-request/approve/' + bagId)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'name', // field name in the row object
+            label: 'Name', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Bag Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Agent Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'warehouse',
+            label: 'Warehouse',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Max',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Valid',
+            options: {
+                filter: true,
 
+                customBodyRender: (value, dataIndex) =>
+                    value.filter(function (item) {
+                        return item.status == 'Valid'
+                    }).length,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Total',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.length,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            disabled={value == 'In Progress'}
+                            variant="contained"
+                            onClick={(e) => {
+                                handelDetailPage(e, value)
+                            }}
+                            style={{ backgroundColor: 'green' }}
+                        >
+                            Approve
+                        </Button>
+                    )
+                },
+            },
+        },
+    ]
     return (
         <Container>
             <div className="breadcrumb">
@@ -70,36 +182,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

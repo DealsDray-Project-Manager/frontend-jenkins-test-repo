@@ -154,11 +154,11 @@ export const navigations = [
         name: 'Recon Sheet',
         icon: 'filter_tilt_shift',
         children: [
-            {
-                name: 'All Orders',
-                path: '/mis/orders',
-                iconText: 'PL',
-            },
+            // {
+            //     name: 'All Orders',
+            //     path: '/mis/orders',
+            //     iconText: 'PL',
+            // },
             {
                 name: 'Delivered Orders',
                 path: '/mis/recon-sheet/delivered-orders',
@@ -256,6 +256,18 @@ export const navigations = [
         auth: authRoles.Mis,
     },
     {
+        name: 'Track',
+        icon: 'art_track',
+        children: [
+            {
+                name: 'Item Track',
+                path: '/mis/track/item',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+    },
+    {
         name: 'Bag',
         icon: 'class',
         children: [
@@ -321,11 +333,6 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'In-Sorting WHT',
-                path: '/wareshouse/wht/in-sorting',
-                iconText: 'VP',
-            },
-            {
                 name: 'Charging Request',
                 path: '/wareshouse/wht/charging-request',
                 iconText: 'VP',
@@ -364,6 +371,11 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
+                name: 'In-Sorting WHT',
+                path: '/wareshouse/wht/in-sorting',
+                iconText: 'VP',
+            },
+            {
                 name: 'Return From Sorting',
                 path: '/wareshouse/sorting/return-from-sorting',
                 iconText: 'VP',
@@ -399,7 +411,7 @@ export const navigations = [
             },
             {
                 name: 'MMT Report',
-                path: '/wareshouse/report/bot',
+                path: '/wareshouse/report/mmt',
                 iconText: 'VP',
             },
             {
@@ -824,7 +836,6 @@ export const navigations = [
     // },
 ]
 export const getfilteredNavigations = (navList = [], role) => {
-  
     return navList.reduce((array, nav) => {
         if (nav.auth) {
             if (nav.auth.includes(role)) {

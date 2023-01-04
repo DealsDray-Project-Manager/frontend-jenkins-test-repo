@@ -1,39 +1,117 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
+import { axiosWarehouseIn } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
 
 const StatCard3 = () => {
+    const [count, setCount] = useState({})
+    useEffect(() => {
+        const fetchData = async () => {
+            let user = localStorage.getItem('prexo-authentication')
+            if (user) {
+                let { location } = jwt_decode(user)
+                try {
+                    let res = await axiosWarehouseIn.post(
+                        '/dashboard/' + location
+                    )
+                    if (res.status === 200) {
+                        setCount(res.data.data)
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+        }
+        fetchData()
+    }, [])
     const statList = [
         {
             icon: 'class',
-            amount: 2,
+            amount: count.bagIssueRequest,
             title: 'Bag Issue Request',
         },
         {
             icon: 'class',
-            amount: 1,
+            amount: count.issuedPmtAndMMt,
+            title: 'Issued PMT and MMT',
+        },
+        {
+            icon: 'class',
+            amount: count.bagCloseRequest,
             title: 'Bag Close Request',
         },
         {
             icon: 'move_to_inbox',
-            amount: 2,
+            amount: count.trayCloseRequest,
             title: 'Tray Close Request',
         },
-        {
-            icon: 'move_to_inbox',
-            amount: 0,
-            title: 'Issued PMT And MMT',
-        },
+
         {
             icon: 'new_releases',
-            amount: 0,
+            amount: count.botToRelease,
             title: 'BOT To Release',
         },
         {
             icon: 'new_releases',
-            amount: 0,
-            title: 'BOT To Release',
+            amount: count.whtTray,
+            title: 'WHT tray',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.inusetWht,
+            title: 'In Use WHT tray',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.chargingRequest,
+            title: 'Charging Request',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.inChargingWht,
+            title: 'In-charging WHT',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.returnFromCharging,
+            title: 'Return From Charging',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.bqcRequest,
+            title: 'BQC Request',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.returnFromBqc,
+            title: 'Return From BQC',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.sortingRequest,
+            title: 'Sorting Request',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.inSortingWht,
+            title: 'In Sorting WHT',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.returnFromSorting,
+            title: 'Return From Sorting',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.mergeRequest,
+            title: 'Merge Request',
+        },
+        {
+            icon: 'new_releases',
+            amount: count.returnFromMerge,
+            title: 'Return From Merge',
         },
     ]
     const { palette } = useTheme()
@@ -60,7 +138,7 @@ const StatCard3 = () => {
                             </div>
                             <Box ml={2}>
                                 <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
-                                    {item.amount.toLocaleString()}
+                                    {item.amount}
                                 </H3>
                                 <Paragraph sx={{ m: 0, color: textMuted }}>
                                     {item.title}

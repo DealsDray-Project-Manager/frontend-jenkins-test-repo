@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-location'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button } from '@mui/material'
+import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -23,6 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [locationList, setLocatiolList] = useState([])
+    const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -43,9 +44,157 @@ const SimpleMuiTable = () => {
         fetchLocation()
         return () => setIsAlive(false)
     }, [isAlive])
+
     const handleDialogClose = () => {
         setShouldOpenEditorDialog(false)
     }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const editLocation = async (empId) => {
+        try {
+            let response = await axiosSuperAdminPrexo.get('/getInfra/' + empId)
+            if (response.status == 200) {
+                setEditFetchData(response.data.data)
+                handleDialogOpen()
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    const handelDelete = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to Delete Location!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete it!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/deleteInfra/' + id
+                    )
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Location has been Deleted',
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    } else {
+                        alert(response.data.message)
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+        })
+    }
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'name', // field name in the row object
+            label: 'Name', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Code',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'address',
+            label: 'Address',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'city',
+            label: 'City',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'state',
+            label: 'State',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'country',
+            label: 'Country',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'pincode',
+            label: 'Pincode',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Actions',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return (
+                        <>
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        editLocation(value)
+                                    }}
+                                    color="primary"
+                                >
+                                    edit
+                                </Icon>
+                            </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        handelDelete(value)
+                                    }}
+                                    color="error"
+                                >
+                                    delete
+                                </Icon>
+                            </IconButton>
+                        </>
+                    )
+                },
+            },
+        },
+    ]
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -82,91 +231,14 @@ const SimpleMuiTable = () => {
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
-                    open={shouldOpenEditorDialog}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    editFetchData={editFetchData}
+                    setEditFetchData={setEditFetchData}
                 />
             )}
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'index',
-        label: 'Record No',
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
-        },
-    },
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'code',
-        label: 'Code',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'address',
-        label: 'Address',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'city',
-        label: 'City',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'state',
-        label: 'State',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'country',
-        label: 'Country',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'pincode',
-        label: 'Pincode',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'Actions',
-        label: 'Actions',
-        options: {
-            filter: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return (
-                    <>
-                        <Button onClick={() => console.log(value, tableMeta)}>
-                            Edit
-                        </Button>
-                        <Button onClick={() => console.log(value, tableMeta)}>
-                            Delete
-                        </Button>
-                    </>
-                )
-            },
-        },
-    },
-]
 
 export default SimpleMuiTable

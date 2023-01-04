@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-// import { getUserById, updateUser, addNewUser } from './TableService'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import { Dialog, Button, Grid, FormControlLabel, Switch } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Dialog, Button, Grid, TextField } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Swal from 'sweetalert2'
+import { useForm } from 'react-hook-form'
+import { axiosSuperAdminPrexo } from '../../../../axios'
 
-const TextField = styled(TextValidator)(() => ({
+const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
@@ -16,167 +19,155 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const MemberEditorDialog = ({ uid, open, handleClose }) => {
-    const [state, setState] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        balance: '',
-        age: '',
-        company: '',
-        address: '',
-        isActive: false,
+const AddBrandAndEditDialog = ({
+    open,
+    handleClose,
+    setIsAlive,
+    editFetchData,
+    setEditFetchData,
+    brandCount,
+}) => {
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (Object.keys(editFetchData).length !== 0) {
+            reset({ ...editFetchData })
+            open()
+        }
+    }, [])
+
+    const schema = Yup.object().shape({
+        brand_name: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
+    })
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        getValues,
+    } = useForm({
+        resolver: yupResolver(schema),
     })
 
-    const handleChange = (event, source) => {
-        event.persist()
-        if (source === 'switch') {
-            setState({
-                ...state,
-                isActive: event.target.checked,
-            })
-            return
+    const onSubmit = async (data) => {
+        try {
+            setLoading(true)
+            let response = await axiosSuperAdminPrexo.post(
+                '/createBrands',
+                data
+            )
+            if (response.status == 200) {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Successfully Created',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                })
+            }
+        } catch (error) {
+            setLoading(false)
+            alert(error)
         }
-
-        setState({
-            ...state,
-            [event.target.name]: event.target.value,
-        })
     }
 
-    // const handleFormSubmit = () => {
-    //     let { id } = state
-    //     if (id) {
-    //         updateUser({
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     } else {
-    //         addNewUser({
-    //             id: generateRandomId(),
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getUserById(uid).then((data) => setState({ ...data.data }))
-    // }, [uid])
+    const handelEdit = async (data) => {
+        try {
+            let response = await axiosSuperAdminPrexo.post('/editBrand', data)
+            if (response.status == 200) {
+                setEditFetchData({})
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Successfully Updated',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'failed',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog  open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
-                <ValidatorForm >
-                    <Grid sx={{ mb: '16px' }} container spacing={4}>
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Name"
-                                type="text"
-                                name="name"
-                                value={state?.name}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Email"
-                                type="text"
-                                name="email"
-                                value={state?.email}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <H4 sx={{ mb: '20px' }}>Add Location</H4>
 
-                            <TextField
-                                label="Phone"
-                                type="text"
-                                name="phone"
-                                value={state?.phone}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <TextFieldCustOm
+                    label="Brand Id"
+                    type="text"
+                    name="brand_id"
+                    value={
+                        getValues('brand_id') == null
+                            ? 'brand-0' + brandCount
+                            : getValues('brand_id')
+                    }
+                    {...register('brand_id')}
+                />
+                <TextFieldCustOm
+                    label="Name"
+                    type="text"
+                    name="brand_name"
+                    {...register('brand_name')}
+                    error={errors.name ? true : false}
+                    helperText={errors.name ? errors.name?.message : ''}
+                />
 
-                            <TextField
-                                label="Balance"
-                                onChange={handleChange}
-                                type="number"
-                                name="balance"
-                                value={state?.balance}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                        </Grid>
-
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Age"
-                                onChange={handleChange}
-                                type="number"
-                                name="age"
-                                value={state?.age}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Company"
-                                onChange={handleChange}
-                                type="text"
-                                name="company"
-                                value={state?.company}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Address"
-                                onChange={handleChange}
-                                type="text"
-                                name="address"
-                                value={state?.address}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-
-                            <FormControlLabel
-                                sx={{ my: '20px' }}
-                                control={
-                                    <Switch
-                                        checked={state?.isActive}
-                                        onChange={(event) =>
-                                            handleChange(event, 'switch')
-                                        }
-                                    />
-                                }
-                                label="Active Customer"
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <FormHandlerBox>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleClose()}
-                        >
-                            Cancel
-                        </Button>
-                    </FormHandlerBox>
-                </ValidatorForm>
+                <FormHandlerBox>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={loading}
+                        onClick={
+                            Object.keys(editFetchData).length !== 0
+                                ? handleSubmit(handelEdit)
+                                : handleSubmit(onSubmit)
+                        }
+                        type="submit"
+                    >
+                        Submit
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleClose()}
+                    >
+                        Cancel
+                    </Button>
+                </FormHandlerBox>
             </Box>
         </Dialog>
     )
 }
 
-export default MemberEditorDialog
+export default AddBrandAndEditDialog

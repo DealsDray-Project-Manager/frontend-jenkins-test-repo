@@ -4,9 +4,10 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,10 +22,12 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
+    const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -48,6 +51,255 @@ const SimpleMuiTable = () => {
     const handleDialogClose = () => {
         setShouldOpenEditorDialog(false)
     }
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+    const editUser = async (empId) => {
+        try {
+            let response = await axiosSuperAdminPrexo.get(
+                '/getEditData/' + empId
+            )
+            if (response.status == 200) {
+                setEditFetchData(response.data.data)
+                handleDialogOpen()
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handelHistory = (e, username) => {
+        e.preventDefault()
+        navigate('/sup-admin/user-history/' + username)
+    }
+
+    const handelDeactive = (userId) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be Deactive this user!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Deactivate it!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/userDeactivate/' + userId
+                    )
+                    if (response.status == 200) {
+                        setIsAlive((isAlive) => !isAlive)
+                        Swal.fire(
+                            'Deactivated!',
+                            'Your user has been Deactivated.',
+                            'success'
+                        )
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+        })
+    }
+
+    const handelActive = (userId) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be Active this user!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Activate it!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/userActivate/' + userId
+                    )
+                    if (response.status == 200) {
+                        setIsAlive((isAlive) => !isAlive)
+                        Swal.fire(
+                            'Activated!',
+                            'Your user has been Activated.',
+                            'success'
+                        )
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+        })
+    }
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'image',
+            label: 'Profile',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: () => {
+                    return <Avatar variant="rounded" src="profile"></Avatar>
+                },
+            },
+        },
+        {
+            name: 'creation_date',
+            label: 'Creation Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'name', // field name in the row object
+            label: 'Name', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'email',
+            label: 'Email',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'contact',
+            label: 'Mobile No',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'user_name',
+            label: 'User name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'user_type',
+            label: 'User Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'cpc',
+            label: 'CPC',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'device_name',
+            label: 'Device Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'device_id',
+            label: 'Device Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status',
+            label: 'Status',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    if (value == 'Active') {
+                        return (
+                            <div style={{ color: 'green', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <div style={{ color: 'red', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    }
+                },
+            },
+        },
+        {
+            name: 'status',
+            label: 'Actions',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            {value == 'Active' ? (
+                                <Radio
+                                    onClick={(e) => {
+                                        handelDeactive(tableMeta.rowData[6])
+                                    }}
+                                    checked
+                                    style={{ color: 'green' }}
+                                />
+                            ) : (
+                                <Radio
+                                    onClick={(e) => {
+                                        handelActive(tableMeta.rowData[6])
+                                    }}
+                                    checked
+                                    style={{ color: 'red' }}
+                                />
+                            )}
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        editUser(tableMeta.rowData[6])
+                                    }}
+                                    color="primary"
+                                >
+                                    edit
+                                </Icon>
+                            </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        handelHistory(e, tableMeta.rowData[6])
+                                    }}
+                                    color="secondary"
+                                >
+                                    history
+                                </Icon>
+                            </IconButton>
+                        </Box>
+                    )
+                },
+            },
+        },
+    ]
     return (
         <Container>
             <div className="breadcrumb">
@@ -59,7 +311,7 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
+                onClick={() => handleDialogOpen()}
             >
                 Add New Member
             </Button>
@@ -84,134 +336,14 @@ const SimpleMuiTable = () => {
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
-                    open={shouldOpenEditorDialog}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    editFetchData={editFetchData}
+                    setEditFetchData={setEditFetchData}
                 />
             )}
         </Container>
     )
 }
 
-const columns = [
-    {
-        name: 'index',
-        label: 'Record No',
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
-        },
-    },
-    {
-        name: 'image',
-        label: 'Profile',
-        options: {
-            filter: false,
-            sort: false,
-            customBodyRender: () => {
-                return <Avatar variant="rounded" src="profile"></Avatar>
-            },
-        },
-    },
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'contact',
-        label: 'Mobile No',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'user_name',
-        label: 'User name',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'user_type',
-        label: 'User Type',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'cpc',
-        label: 'CPC',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'device_name',
-        label: 'Device Name',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'device_id',
-        label: 'Device Id',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'status',
-        label: 'Status',
-        options: {
-            filter: true,
-            customBodyRender: (value) => {
-                if (value == 'Active') {
-                    return (
-                        <div style={{ color: 'green', fontWeight: 'bold' }}>
-                            {value}
-                        </div>
-                    )
-                } else {
-                    return (
-                        <div style={{ color: 'red', fontWeight: 'bold' }}>
-                            {value}
-                        </div>
-                    )
-                }
-            },
-        },
-    },
-    {
-        name: 'Actions',
-        label: 'Actions',
-        options: {
-            filter: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return (
-                    <>
-                        <Button onClick={() => console.log(value, tableMeta)}>
-                            Edit
-                        </Button>
-                        <Button onClick={() => console.log(value, tableMeta)}>
-                            History
-                        </Button>
-                        <Button onClick={() => console.log(value, tableMeta)}>
-                            Active
-                        </Button>
-                    </>
-                )
-            },
-        },
-    },
-]
-
-export default SimpleMuiTable
+export default UserTable

@@ -3,10 +3,14 @@ import Loadable from 'app/components/Loadable/Loadable'
 
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const Orders = Loadable(lazy(() => import('./Order/order')))
-const BulkImportOrder = Loadable(lazy(() => import('./Order/bulk-import-order')))
+const BulkImportOrder = Loadable(
+    lazy(() => import('./Order/bulk-import-order'))
+)
 const BadOrders = Loadable(lazy(() => import('./Order/view-bad-order')))
 const Delivery = Loadable(lazy(() => import('./Delivery/delivery')))
-const BulkImportDelivery = Loadable(lazy(() => import('./Delivery/bulk-import-delivery')))
+const BulkImportDelivery = Loadable(
+    lazy(() => import('./Delivery/bulk-import-delivery'))
+)
 const BadDelivery = Loadable(lazy(() => import('./Delivery/badDelivery')))
 const ReconDeliveredOrders = Loadable(
     lazy(() => import('./Recon-sheet/delivered-orders'))
@@ -15,7 +19,10 @@ const ReconNotDeliveredOrders = Loadable(
     lazy(() => import('./Recon-sheet/not-delivered-orders'))
 )
 const AssignToBot = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-bot/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-bot/view-bot-tray'))
+)
+const AssignToBotUicGen = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-bot/uic-gen'))
 )
 const AssignToBqc = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-bqc/view-wht-tray'))
@@ -26,7 +33,6 @@ const AssignToAudit = Loadable(
 const AssignToCharging = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
 )
-
 const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
 const UicDownloaded = Loadable(
     lazy(() => import('./Uic-manage/uic-downloaded'))
@@ -38,12 +44,20 @@ const UicNotGenerated = Loadable(
 const SortingBotTowht = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/bot-tray'))
 )
-const MergeMmt = Loadable(
-    lazy(() => import('./Merge/Mmt-merge/mmt-tray'))
+const SortingBotTowhtViewItem = Loadable(
+    lazy(() => import('./Sorting/Bot-to-wht/view-clubed-item'))
 )
-const MergeWht = Loadable(
-    lazy(() => import('./Merge/Wht-merge/wht-tray'))
+const SortingBotTowhtAssignSectionToAgent = Loadable(
+    lazy(() => import('./Sorting/Bot-to-wht/assign-for-sorting'))
 )
+const SortingBotTowhtAssign = Loadable(
+    lazy(() => import('./Sorting/Bot-to-wht/wht-assignment'))
+)
+const MergeMmt = Loadable(lazy(() => import('./Merge/Mmt-merge/mmt-tray')))
+const MergeMmtViewItem = Loadable(lazy(() => import('./Merge/Mmt-merge/view-item')))
+const MergeWht = Loadable(lazy(() => import('./Merge/Wht-merge/wht-tray')))
+const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
+
 
 const dataTableRoutes = [
     {
@@ -95,6 +109,10 @@ const dataTableRoutes = [
         element: <AssignToBot />,
     },
     {
+        path: '/mis/assign-to-agent/bot/uic-genaration/:bagId',
+        element: <AssignToBotUicGen />,
+    },
+    {
         path: '/mis/assign-to-agent/bqc',
         element: <AssignToBqc />,
     },
@@ -111,8 +129,24 @@ const dataTableRoutes = [
         element: <SortingBotTowht />,
     },
     {
+        path: '/mis/sorting/bot-to-wht/assign-for-sorting',
+        element: <SortingBotTowhtAssignSectionToAgent />,
+    },
+    {
+        path: '/mis/sorting/bot-to-wht/assign-for-sorting/view-item',
+        element: <SortingBotTowhtViewItem />,
+    },
+    {
+        path: '/mis/sorting/bot-to-wht/wht-assignment',
+        element: <SortingBotTowhtAssign />,
+    },
+    {
         path: '/mis/merge/mmt',
         element: <MergeMmt />,
+    },
+    {
+        path: '/mis/merge/mmt/view-item/:trayId',
+        element: <MergeMmtViewItem />,
     },
     {
         path: '/mis/merge/wht',
@@ -125,6 +159,10 @@ const dataTableRoutes = [
     {
         path: '/mis/delivery/bulk-import',
         element: <BulkImportDelivery />,
+    },
+    {
+        path: '/mis/track/item',
+        element: <TrackItem />,
     },
 ]
 

@@ -1,10 +1,12 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'
 import useSettings from 'app/hooks/useSettings'
 import { styled, useTheme, Box } from '@mui/system'
 import { Span } from '../../../components/Typography'
 import { themeShadows } from 'app/components/MatxTheme/themeColors'
+import jwt_decode from 'jwt-decode'
+
 import {
     Icon,
     IconButton,
@@ -26,6 +28,12 @@ const TopbarRoot = styled('div')(({ theme }) => ({
     boxShadow: themeShadows[8],
     height: topBarHeight,
 }))
+
+
+
+
+
+
 
 const TopbarContainer = styled(Box)(({ theme }) => ({
     padding: '8px',
@@ -73,12 +81,19 @@ const StyledItem = styled(MenuItem)(({ theme }) => ({
     },
 }))
 
-
 const Layout1Topbar = () => {
     const theme = useTheme()
     const { settings, updateSettings } = useSettings()
     const { logout, user } = useAuth()
     const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
+    const [userData,setUser]=useState("")
+    useEffect(()=>{
+        let admin = localStorage.getItem('prexo-authentication')
+    if (admin) {
+        let { user_type } = jwt_decode(admin)
+       setUser(user_type)
+    }
+    },[])
 
     const updateSidebarMode = (sidebarSettings) => {
         updateSettings({
@@ -156,12 +171,14 @@ const Layout1Topbar = () => {
                                 <Span> Home </Span>
                             </Link>
                         </StyledItem>
-                        <StyledItem>
-                            <Link to="/page-layouts/user-profile">
-                                <Icon> person </Icon>
-                                <Span> Profile </Span>
-                            </Link>
-                        </StyledItem>
+                        {userData !== 'super-admin' ? (
+                            <StyledItem>
+                                <Link to="/change-password">
+                                    <Icon> person </Icon>
+                                    <Span> Change Password </Span>
+                                </Link>
+                            </StyledItem>
+                        ) : null}
                         {/* <StyledItem>
                             <Icon> settings </Icon>
                             <Span> Settings </Span>

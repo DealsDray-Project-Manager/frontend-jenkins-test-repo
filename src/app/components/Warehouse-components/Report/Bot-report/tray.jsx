@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
+import { Button } from '@mui/material'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -17,26 +20,149 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [botTray, setBotTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
-        return () => setIsAlive(false)
-    }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/getBotTrayReportScreen/' + location
+                    )
+                    if (res.status === 200) {
+                        setBotTray(res.data.data)
+                    }
+                }
+            }
+            fetchData()
+        } catch (error) {
+            alert(error)
+        }
+    }, [])
+
+    const handelViewTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/tray/item/' + id)
+    }
+    const handelSkuSummery = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/report/bot/sku-summery/' + id)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'max',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.length + '/' + tableMeta.rowData[2],
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Agent Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'temp_array',
+            label: 'SKU Count',
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.length,
+            },
+        },
+        {
+            name: 'actual_items',
+            label: 'SKU Summery',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <ol>
+                            {value.map((reptile) => (
+                                <li>{reptile}</li>
+                            ))}
+                        </ol>
+                    )
+                },
+            },
+        },
+        {
+            name: 'code',
+            label: 'SKU Count',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                style={{ backgroundColor: '#206CE2' }}
+                                onClick={(e) => {
+                                    handelViewTray(e, value)
+                                }}
+                            >
+                                View Item
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                style={{ backgroundColor: 'green' }}
+                                onClick={(e) => {
+                                    handelSkuSummery(e, value)
+                                }}
+                            >
+                                View Sku
+                            </Button>
+                        </>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -51,7 +177,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Report'}
-                data={userList}
+                data={botTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -70,36 +196,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

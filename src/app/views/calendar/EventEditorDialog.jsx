@@ -64,7 +64,7 @@ const EventEditorDialog = ({ event = {}, open, handleClose }) => {
 
     return (
         <Dialog
-            onClose={handleClose}
+          
             open={open}
             maxWidth="xs"
             fullWidth={true}

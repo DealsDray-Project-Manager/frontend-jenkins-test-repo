@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-// import { getUserById, updateUser, addNewUser } from './TableService'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import { Dialog, Button, Grid, FormControlLabel, Switch } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Swal from 'sweetalert2'
+import { useForm } from 'react-hook-form'
+import { axiosSuperAdminPrexo } from '../../../../axios'
 
-const TextField = styled(TextValidator)(() => ({
+const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
@@ -16,164 +19,278 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const MemberEditorDialog = ({ uid, open, handleClose }) => {
-    const [state, setState] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        balance: '',
-        age: '',
-        company: '',
-        address: '',
-        isActive: false,
+const MemberEditorDialog = ({
+    open,
+    handleClose,
+    setIsAlive,
+    editFetchData,
+    setEditFetchData,
+}) => {
+    const [loading, setLoading] = useState(false)
+    const [locationDrop, setLocationDrop] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post('/getLocation')
+                if (res.status == 200) {
+                    setLocationDrop(res.data.data)
+                }
+            } catch (error) {
+                alert(error)
+            }
+            if (Object.keys(editFetchData).length !== 0) {
+                reset({ ...editFetchData })
+                open()
+            }
+        }
+        fetchData()
+    }, [])
+
+    const schema = Yup.object().shape({
+        name: Yup.string()
+            .max(40, 'Please Enter Below 40')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        code: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid code')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        address: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        city: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid city')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        state: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid state')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        country: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        pincode: Yup.string()
+            .min(6, 'Please Enter valid Pincode')
+            .required('Required*')
+            .nullable(),
+        parent_id: Yup.string().required('Required*').nullable(),
+        warehouse_type: Yup.string().required('Required*').nullable(),
     })
 
-    const handleChange = (event, source) => {
-        event.persist()
-        if (source === 'switch') {
-            setState({
-                ...state,
-                isActive: event.target.checked,
-            })
-            return
-        }
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
 
-        setState({
-            ...state,
-            [event.target.name]: event.target.value,
-        })
+    const onSubmit = async (data) => {
+        data.type_taxanomy = 'Warehouse'
+        try {
+            setLoading(true)
+            let response = await axiosSuperAdminPrexo.post('/addLocation', data)
+            if (response.status == 200) {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Successfully Added',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                })
+            }
+        } catch (error) {
+            setLoading(false)
+            alert(error)
+        }
     }
 
-    // const handleFormSubmit = () => {
-    //     let { id } = state
-    //     if (id) {
-    //         updateUser({
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     } else {
-    //         addNewUser({
-    //             id: generateRandomId(),
-    //             ...state,
-    //         }).then(() => {
-    //             handleClose()
-    //         })
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getUserById(uid).then((data) => setState({ ...data.data }))
-    // }, [uid])
-
+    const handelEdit = async (data) => {
+        try {
+            let response = await axiosSuperAdminPrexo.post('/editInfra', data)
+            if (response.status == 200) {
+                setEditFetchData({})
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Update Successfully',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else {
+                setEditFetchData({})
+                handleClose()
+                alert(response.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog  open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
-                <ValidatorForm >
-                    <Grid sx={{ mb: '16px' }} container spacing={4}>
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Name"
-                                type="text"
-                                name="name"
-                                value={state?.name}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Email"
-                                type="text"
-                                name="email"
-                                value={state?.email}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <H4 sx={{ mb: '20px' }}>Add Warehouse</H4>
 
-                            <TextField
-                                label="Phone"
-                                type="text"
-                                name="phone"
-                                value={state?.phone}
-                                onChange={handleChange}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                <Grid sx={{ mb: '16px' }} container spacing={4}>
+                    <Grid item sm={6} xs={12}>
+                        <TextFieldCustOm
+                            label="Name"
+                            type="text"
+                            name="name"
+                            {...register('name')}
+                            error={errors.name ? true : false}
+                            helperText={errors.name ? errors.name?.message : ''}
+                        />
+                        <TextFieldCustOm
+                            label="Location"
+                            select
+                            name="parent_id"
+                            {...register('parent_id')}
+                            error={errors.parent_id ? true : false}
+                            helperText={errors.parent_id?.message}
+                        >
+                            {locationDrop.map((data) => (
+                                <MenuItem value={data.name}>
+                                    {data.name}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
 
-                            <TextField
-                                label="Balance"
-                                onChange={handleChange}
-                                type="number"
-                                name="balance"
-                                value={state?.balance}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                        </Grid>
+                        <TextFieldCustOm
+                            label="Address"
+                            type="text"
+                            name="address"
+                            {...register('address')}
+                            error={errors.address ? true : false}
+                            helperText={
+                                errors.address ? errors.address?.message : ''
+                            }
+                        />
 
-                        <Grid item sm={6} xs={12}>
-                            <TextField
-                                label="Age"
-                                onChange={handleChange}
-                                type="number"
-                                name="age"
-                                value={state?.age}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Company"
-                                onChange={handleChange}
-                                type="text"
-                                name="company"
-                                value={state?.company}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
-                            <TextField
-                                label="Address"
-                                onChange={handleChange}
-                                type="text"
-                                name="address"
-                                value={state?.address}
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                            />
+                        <TextFieldCustOm
+                            label="State"
+                            type="text"
+                            name="state"
+                            {...register('state')}
+                            error={errors.state ? true : false}
+                            helperText={
+                                errors.state ? errors.state?.message : ''
+                            }
+                        />
 
-                            <FormControlLabel
-                                sx={{ my: '20px' }}
-                                control={
-                                    <Switch
-                                        checked={state?.isActive}
-                                        onChange={(event) =>
-                                            handleChange(event, 'switch')
-                                        }
-                                    />
+                        <TextFieldCustOm
+                            label="Pincode"
+                            type="number"
+                            name="pincode"
+                            inputProps={{ maxLength: 6 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
                                 }
-                                label="Active Customer"
-                            />
-                        </Grid>
+                            }}
+                            {...register('pincode')}
+                            error={errors.pincode ? true : false}
+                            helperText={
+                                errors.pincode ? errors.pincode?.message : ''
+                            }
+                        />
                     </Grid>
 
-                    <FormHandlerBox>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
+                    <Grid item sm={6} xs={12}>
+                        <TextFieldCustOm
+                            label="Code"
+                            type="text"
+                            name="code"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('code')}
+                            error={errors.code ? true : false}
+                            helperText={errors.code ? errors.code?.message : ''}
+                        />
+                        <TextFieldCustOm
+                            label="Warehouse Type"
+                            select
+                            name="warehouse_type"
+                            {...register('warehouse_type')}
+                            error={errors.warehouse_type ? true : false}
+                            helperText={errors.warehouse_type?.message}
                         >
-                            Save
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleClose()}
-                        >
-                            Cancel
-                        </Button>
-                    </FormHandlerBox>
-                </ValidatorForm>
+                            <MenuItem value="STW">STW</MenuItem>
+                            <MenuItem value="PRC">PRC</MenuItem>
+                            <MenuItem value="Sales">Sales</MenuItem>
+                        </TextFieldCustOm>
+
+                        <TextFieldCustOm
+                            label="Country"
+                            type="text"
+                            name="country"
+                            {...register('country')}
+                            error={errors.country ? true : false}
+                            helperText={
+                                errors.country ? errors.country?.message : ''
+                            }
+                        />
+                        <TextFieldCustOm
+                            label="City"
+                            type="text"
+                            name="city"
+                            {...register('city')}
+                            error={errors.city ? true : false}
+                            helperText={errors.city ? errors.city?.message : ''}
+                        />
+                    </Grid>
+                </Grid>
+
+                <FormHandlerBox>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={loading}
+                        onClick={
+                            Object.keys(editFetchData).length !== 0
+                                ? handleSubmit(handelEdit)
+                                : handleSubmit(onSubmit)
+                        }
+                        type="submit"
+                    >
+                        Submit
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleClose()}
+                    >
+                        Cancel
+                    </Button>
+                </FormHandlerBox>
             </Box>
         </Dialog>
     )

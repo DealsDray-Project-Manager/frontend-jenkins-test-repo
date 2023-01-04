@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button } from '@mui/material'
+import { Button, Checkbox } from '@mui/material'
+import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
+import jwt_decode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
+import AssignDialogBox from './user-dailog'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,45 +23,246 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [whtTray, setWhtTray] = useState([])
+    const [isCheck, setIsCheck] = useState([])
+    const navigate = useNavigate()
+    const [chargingUsers, setChargingUsers] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/wht-tray/' + 'Ready to BQC/' + location
+                    )
+                    if (response.status === 200) {
+                        setWhtTray(response.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
         return () => setIsAlive(false)
     }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+
+    const handleClick = (e) => {
+        const { id, checked } = e.target
+        setIsCheck([...isCheck, id])
+        if (!checked) {
+            setIsCheck(isCheck.filter((item) => item !== id))
+        }
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setChargingUsers([])
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const handelGetBqcUser = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/get-charging-users/' + 'BQC/' + location
+                    )
+                    if (res.status == 200) {
+                        setChargingUsers(res.data.data)
+                        handleDialogOpen()
+                    }
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    }
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/wht/tray/item/' + id)
+    }
+    const columns = [
+        {
+            name: 'code',
+            label: 'Select',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value}
+                            key={value}
+                            checked={isCheck.includes(value)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+
+        {
+            name: 'name', // field name in the row object
+            label: 'Name', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'warehouse',
+            label: 'Warehouse',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Category',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: 'Tray Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[9],
+            },
+        },
+        {
+            name: 'display',
+            label: 'Tray Display',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={() => handelViewItem(value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            View
+                        </Button>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Assign-to-agent', path: '/pages' },
-                    { name: 'BQC' }
-                ]}
+                    routeSegments={[
+                        { name: 'Assign-to-agent', path: '/pages' },
+                        { name: 'BQC' },
+                    ]}
                 />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                // onClick={() => setShouldOpenEditorDialog(true)}
+                disabled={isCheck.length == 0}
+                onClick={() => handelGetBqcUser(true)}
             >
-                Assign
+                Assign For BQC
             </Button>
             <MUIDataTable
-                title={'Wht Tray'}
-                data={userList}
+                title={'WHT'}
+                data={whtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -74,39 +278,17 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    chargingUsers={chargingUsers}
+                    isCheck={isCheck}
+                />
+            )}
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
-
 export default SimpleMuiTable

@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+import { Button } from '@mui/material'
+import { axiosWarehouseIn } from '../../../../../axios'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -18,25 +21,156 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [botTray, setBotTray] = useState([])
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
-        return () => setIsAlive(false)
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/release-bot-tray/' +
+                            location +
+                            '/' +
+                            'Closed By Sorting Agent'
+                    )
+                    if (response.status === 200) {
+                        setBotTray(response.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
     }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+
+    const handelRelease = async (e, trayId) => {
+        try {
+            setLoading(true)
+            let res = await axiosWarehouseIn.post(
+                '/approve-release-bot-tray/' + trayId
+            )
+            if (res.status === 200) {
+                setLoading(false)
+                alert(res.data.message)
+                setIsAlive((isAlive) => !isAlive)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const handelViewTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/bot/release/view-item/' + id)
+    }
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Sorting Agent',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Category',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Max',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.length + '/' + tableMeta.rowData[4],
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                style={{ backgroundColor: '#206CE2' }}
+                                onClick={(e) => {
+                                    handelViewTray(e, value)
+                                }}
+                            >
+                                View
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                disabled={loading}
+                                onClick={(e) => {
+                                    if (
+                                        window.confirm('You Want to Release?')
+                                    ) {
+                                        handelRelease(e, value)
+                                    }
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                Release Tray
+                            </Button>
+                        </>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -51,7 +185,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Tray'}
-                data={userList}
+                data={botTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -70,36 +204,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

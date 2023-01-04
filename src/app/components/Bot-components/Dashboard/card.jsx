@@ -1,18 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
+import { axiosBot } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+
 
 const StatCard3 = () => {
+    const [count, setCount] = useState({})
+    useEffect(() => {
+        const fetchData = async () => {
+            let user = localStorage.getItem('prexo-authentication')
+            if (user) {
+                let { user_name } = jwt_decode(user)
+                try {
+                    let res = await axiosBot.post(
+                        '/dashboard/' + user_name
+                    )
+                    if (res.status === 200) {
+                        setCount(res.data.data)
+                    }
+                } catch (error) {
+                    alert(error)
+                }
+            }
+        }
+        fetchData()
+    }, [])
+
     const statList = [
         {
             icon: 'class',
-            amount: 1,
+            amount: count.bag,
             title: 'Bag',
         },
         {
             icon: 'shopping_cart',
-            amount: 3,
+            amount: count.tray,
             title: 'Tray',
         },
     ]
@@ -40,7 +64,7 @@ const StatCard3 = () => {
                             </div>
                             <Box ml={2}>
                                 <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
-                                    {item.amount.toLocaleString()}
+                                    {item.amount}
                                 </H3>
                                 <Paragraph sx={{ m: 0, color: textMuted }}>
                                     {item.title}

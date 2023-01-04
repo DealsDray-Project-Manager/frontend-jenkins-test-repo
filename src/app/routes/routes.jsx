@@ -31,6 +31,7 @@ import SortingRoutes from "../components/Sorting-agent-components/SortingRoutes"
 import ChargingRoutes from "../components/Charging-components/ChargingRoutes"
 import BqcRoutes from "../components/Bqc-components/BqcRoutes"
 import Login from "../Login/loginRouter"
+import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
 
 export const AllPages = () => {
     const all_routes = [
@@ -71,6 +72,7 @@ export const AllPages = () => {
             ],
         },
         ...Login,
+        ...ChangePasswordRouter,
         {
             path: '/',
             element: <Navigate to="/login" />,

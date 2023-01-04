@@ -1,54 +1,80 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
+import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const StatCard3 = () => {
+    const [count,setCount]=useState({})
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post(
+                    '/superAdminDashboard'
+                )
+                if(res.status == 200){
+                    console.log(res.data.data);
+                    setCount(res.data.data)
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    }, [])
+
+
     const statList = [
         {
             icon: 'people',
-            amount: 69,
+            amount: count.usersCount,
             title: 'Users',
         },
         {
             icon: 'location_on_outlined',
-            amount: 2,
+            amount: count.location,
             title: 'Locations',
         },
         {
             icon: 'home',
-            amount: 2,
+            amount:  count.warehouse,
             title: 'Warehouses',
         },
         {
             icon: 'branding_watermark',
-            amount: 29,
+            amount: count.brand,
             title: 'Brands',
         },
         {
             icon: 'shopping_cart',
-            amount: 10,
+            amount: count.products,
             title: 'Products',
         },
         {
             icon: 'add_shopping_cart',
-            amount: 8,
+            amount: count.bag,
             title: 'Bags',
         },
         {
             icon: 'add_shopping_cart',
-            amount: 17,
+            amount: count.tray,
             title: 'Trays',
         },
         {
             icon: 'battery_charging_full',
-            amount: 15,
+            amount: count.readyForCharging,
             title: 'Ready For Charging',
         },
         {
             icon: 'leak_remove',
-            amount: 10,
+            amount: count.removeInvalidItem,
             title: 'Remove invalid item',
+        },
+        {
+            icon: 'art_track',
+            amount: count.trackItem,
+            title: 'Track Item',
         },
     ]
     const { palette } = useTheme()
@@ -75,7 +101,7 @@ const StatCard3 = () => {
                             </div>
                             <Box ml={2}>
                                 <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
-                                    {item.amount.toLocaleString()}
+                                    {item.amount}
                                 </H3>
                                 <Paragraph sx={{ m: 0, color: textMuted }}>
                                     {item.title}

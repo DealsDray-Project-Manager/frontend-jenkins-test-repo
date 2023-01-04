@@ -1,69 +1,115 @@
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
+import { axiosMisUser } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+
 
 const StatCard3 = () => {
+    const [count,setCount]=useState({})
+   useEffect(()=>{
+     const fetchData= async()=>{
+        let user=localStorage.getItem("prexo-authentication")
+        if(user){
+            let { location } = jwt_decode(user)
+            try {
+                let res=await axiosMisUser.post("/dashboardData/" + location)
+                if(res.status  === 200){
+                    setCount(res.data.data)
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+     }
+     fetchData()
+   },[])
     const statList = [
         {
             icon: 'reorder',
-            amount: 1000,
+            amount: count.orders,
             title: 'Orders',
         },
         {
             icon: 'shopping_cart',
-            amount: 300,
-            title: 'Deliverys',
+            amount: count.badOrders,
+            title: 'Bad Orders',
+        },
+        {
+            icon: 'format_indent_decrease',
+            amount: count.delivered,
+            title: 'Delivered Orders',
         },
         {
             icon: 'reorder',
-            amount: 700,
+            amount: count.notDelivered,
             title: 'Not Delivered Orders',
         },
         {
             icon: 'format_indent_decrease',
-            amount: 12,
+            amount: count.delivery,
+            title: 'Delivery',
+        },
+        {
+            icon: 'assignment',
+            amount: count.badDelivery,
+            title: 'Bad Delivery',
+        },
+        {
+            icon: 'assignment',
+            amount: count.uicGented,
             title: 'UIC Generated',
         },
         {
-            icon: 'format_indent_decrease',
-            amount: 11,
+            icon: 'assignment',
+            amount: count.uicNotGenrated,
             title: 'UIC Not Generated',
         },
         {
             icon: 'assignment',
-            amount: 15,
-            title: 'Assign To Bot',
-        },
-        {
-            icon: 'assignment',
-            amount: 12,
-            title: 'Assign To Charging',
-        },
-        {
-            icon: 'assignment',
-            amount: 10,
-            title: 'Assign To Bqc',
-        },
-        {
-            icon: 'assignment',
-            amount: 15,
-            title: 'Assign To Audit',
+            amount: count.uicDownloaded,
+            title: 'UIC Downloaded',
         },
         {
             icon: 'sort',
-            amount: 20,
+            amount: count.assigBot,
+            title: 'Assign To Bot',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.assigCharging,
+            title: 'Assign To Charging',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.bqc,
+            title: 'Assign To BQC',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.audit,
+            title: 'Assign To Audit',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.botToWht,
             title: 'BOT To WHT',
         },
         {
             icon: 'merge_type',
-            amount: 10,
+            amount: count.whtMerge,
             title: 'WHT Merge',
         },
         {
             icon: 'merge_type',
-            amount: 15,
+            amount: count.mmtMerge,
             title: 'MMT Merge',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.trackItem,
+            title: 'Track Item',
         },
     ]
     const { palette } = useTheme()
@@ -90,7 +136,7 @@ const StatCard3 = () => {
                             </div>
                             <Box ml={2}>
                                 <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
-                                    {item.amount.toLocaleString()}
+                                    {item.amount}
                                 </H3>
                                 <Paragraph sx={{ m: 0, color: textMuted }}>
                                     {item.title}

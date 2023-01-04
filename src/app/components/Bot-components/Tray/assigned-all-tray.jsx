@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosBot } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+import { Button } from '@mui/material'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -18,35 +21,131 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [trayData, setTrayData] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        const fetchData = async () => {
+            try {
+                let token = localStorage.getItem('prexo-authentication')
+                if (token) {
+                    const { user_name } = jwt_decode(token)
+                    let res = await axiosBot.post('/assignedTray/' + user_name)
+                    if (res.status == 200) {
+                        setTrayData(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
         return () => setIsAlive(false)
     }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+
+    const handelViewTray = (e, id) => {
+        e.preventDefault()
+        navigate('/bot/tray/item/' + id)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.length + '/' + tableMeta?.rowData[2],
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status_change_time',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={(e) => {
+                                handelViewTray(e, value)
+                            }}
+                            style={{ backgroundColor: 'primery' }}
+                        >
+                            View
+                        </Button>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/pages' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Tray', path: '/pages' }]}
+                />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={userList}
+                data={trayData}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -65,36 +164,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

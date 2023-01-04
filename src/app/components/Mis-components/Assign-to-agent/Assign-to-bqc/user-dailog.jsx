@@ -1,0 +1,98 @@
+import React, { useState } from 'react'
+import { Dialog, Button, TextField, MenuItem } from '@mui/material'
+import { Box, styled } from '@mui/system'
+import { H4 } from 'app/components/Typography'
+import { axiosMisUser } from '../../../../../axios'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
+
+const FormHandlerBox = styled('div')(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+}))
+
+const MemberEditorDialog = ({
+    handleClose,
+    open,
+    setIsAlive,
+    chargingUsers,
+    isCheck,
+}) => {
+    const [bqcuserName, setBqcUserName] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const handelSendRequestConfirm = async () => {
+        try {
+            setLoading(true)
+            let obj = {
+                tray: isCheck,
+                user_name: bqcuserName,
+                sort_id: 'Send for BQC',
+            }
+            let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
+            if (res.status == 200) {
+                setLoading(false)
+                alert(res.data.message)
+                setBqcUserName('')
+                setIsAlive((isAlive) => !isAlive)
+                handleClose()
+            } else {
+                setLoading(false)
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    return (
+        <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
+            <Box p={3}>
+                <H4 sx={{ mb: '20px' }}>Select Charging User</H4>
+                <TextFieldCustOm
+                    label="Username"
+                    fullWidth
+                    select
+                    name="username"
+                >
+                    {chargingUsers.map((data) => (
+                        <MenuItem
+                            key={data.user_name}
+                            value={data.user_name}
+                            onClick={(e) => {
+                                setBqcUserName(data.user_name)
+                            }}
+                        >
+                            {data.user_name}
+                        </MenuItem>
+                    ))}
+                </TextFieldCustOm>
+                <FormHandlerBox>
+                    <Button
+                        variant="contained"
+                        disabled={loading || bqcuserName == ''}
+                        onClick={(e) => {
+                            handelSendRequestConfirm()
+                        }}
+                        color="primary"
+                        type="submit"
+                    >
+                        Assign
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleClose()}
+                    >
+                        Cancel
+                    </Button>
+                </FormHandlerBox>
+            </Box>
+        </Dialog>
+    )
+}
+
+export default MemberEditorDialog

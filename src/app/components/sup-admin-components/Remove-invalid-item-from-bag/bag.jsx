@@ -1,8 +1,11 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import Swal from 'sweetalert2'
+import { Button } from '@mui/material'
+import { axiosSuperAdminPrexo } from '../../../../axios'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,25 +22,137 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [bagList, setBagList] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        const fetchBrand = async () => {
+            try {
+                const res = await axiosSuperAdminPrexo.post('/getInvalidItemPresentBag')
+                if (res.status === 200) {
+                    setBagList(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchBrand()
         return () => setIsAlive(false)
     }, [isAlive])
 
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+    const handelViewItem = (bagId) => {
+        navigate('/sup-admin/remove-invalid-item/' + bagId)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'code', // field name in the row object
+            label: 'Bag Id', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'cpc',
+            label: 'Location',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'warehouse',
+            label: 'Warehouse',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: 'Tray Display Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[4],
+            },
+        },
+        {
+            name: 'display',
+            label: 'Tray Display',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'code',
+            label: 'Actions',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={() => handelViewItem(value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            View
+                        </Button>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -51,7 +166,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Bag'}
-                data={userList}
+                data={bagList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -70,36 +185,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

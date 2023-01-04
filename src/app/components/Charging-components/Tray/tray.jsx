@@ -1,9 +1,12 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+import { Button } from '@mui/material'
+import { axiosCharging } from '../../../../axios'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -17,26 +20,145 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [tray, setTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
-        return () => setIsAlive(false)
-    }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
-    }
-
-    useEffect(() => {
-        updatePageData()
+        try {
+            let token = localStorage.getItem('prexo-authentication')
+            if (token) {
+                const { user_name } = jwt_decode(token)
+                const fetchData = async () => {
+                    let res = await axiosCharging.post(
+                        '/assigned-tray/' + user_name
+                    )
+                    if (res.status == 200) {
+                        setTray(res.data.data)
+                    }
+                }
+                fetchData()
+            } else {
+                navigate('/')
+            }
+        } catch (error) {
+            alert(error)
+        }
     }, [])
+
+    const handelViewTray = (e, id) => {
+        e.preventDefault();
+        navigate("/charging/tray/charging-in/" + id);
+      };
+      const handelChargingDone = (e, id) => {
+        e.preventDefault();
+        navigate("/charging/tray/charging-out/" + id);
+      };
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[4],
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'status',
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
+            name: 'assigned_date',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                new Date(value).toLocaleString('en-GB', {
+                    hour12: true,
+                }),
+                
+            },
+        },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value,tableMeta) => {
+                    return tableMeta.rowData[6] == 'Issued to Charging' ? (
+                        <Button
+                            sx={{ m: 1 }}
+                            type="submit"
+                            variant="contained"
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) => {
+                                handelViewTray(e, value)
+                            }}
+                        >
+                            Charging IN
+                        </Button>
+                    ) : (
+                        <Button
+                            sx={{ m: 1 }}
+                            type="submit"
+                            variant="contained"
+                            style={{ backgroundColor: 'green' }}
+                            onClick={(e) => {
+                                handelChargingDone(e, value)
+                            }}
+                        >
+                            Charging Done
+                        </Button>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -50,7 +172,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Tray'}
-                data={userList}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -69,36 +191,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

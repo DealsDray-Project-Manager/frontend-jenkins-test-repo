@@ -1,9 +1,22 @@
-import Axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from '../../../../../axios'
+import jwt_decode from 'jwt-decode'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import {
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Button,
+} from '@mui/material'
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -16,30 +29,305 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [bot, setBot] = useState([])
+    const [trayId, setTrayId] = useState('')
+    const [counts, setCounts] = useState('')
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = React.useState(false)
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let botTray = await axiosWarehouseIn.post(
+                        '/closeBotTray/' + location
+                    )
+                    if (botTray.status == 200) {
+                        setBot(botTray.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
         return () => setIsAlive(false)
     }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+
+    const handelViewTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/tray/item/' + id)
+    }
+    const handelViewDetailTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/bot-done/tray-close/' + id)
+    }
+    const handelViewSummery = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/bag/bag-close-requests/summery/' + id)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const handelTrayReceived = async () => {
+        setLoading(true)
+        try {
+            let obj = {
+                trayId: trayId,
+                count: counts,
+            }
+            let res = await axiosWarehouseIn.post('/receivedTray', obj)
+            if (res.status == 200) {
+                setLoading(false)
+                alert(res.data.message)
+                setOpen(false)
+                setIsAlive((isAlive) => !isAlive)
+            } else {
+                setLoading(false)
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Bag Id',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value[0]?.bag_id,
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status_change_time',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'closed_time_bot',
+            label: 'Closed Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Agent Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                disabled={value === 'Closed By Bot'}
+                                style={{ backgroundColor: '#21b6ae' }}
+                                onClick={(e) => {
+                                    handelViewSummery(
+                                        e,
+                                        tableMeta.rowData[2]?.[0]?.bag_id
+                                    )
+                                }}
+                            >
+                                Summery
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                disabled={value === 'Closed By Bot'}
+                                style={{ backgroundColor: '#206CE2' }}
+                                onClick={(e) => {
+                                    handelViewTray(e, tableMeta.rowData[1])
+                                }}
+                            >
+                                View
+                            </Button>
+
+                            {value !== 'Received From BOT' ? (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    disabled={loading}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        setTrayId(tableMeta.rowData[1])
+                                    }}
+                                >
+                                    RECEIVED
+                                </Button>
+                            ) : (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'red' }}
+                                    onClick={(e) => {
+                                        handelViewDetailTray(
+                                            e,
+                                            tableMeta.rowData[1]
+                                        )
+                                    }}
+                                >
+                                    Close
+                                </Button>
+                            )}
+                        </>
+                    )
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
+            <BootstrapDialog
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth
+                maxWidth="xs"
+            >
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                >
+                    Please verify the count of - {trayId}
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        variant="contained"
+                        disabled={counts === '' ? true : false}
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            handelTrayReceived(e)
+                        }}
+                    >
+                        RECEIVED
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
@@ -51,7 +339,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Requests'}
-                data={userList}
+                data={bot}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -70,36 +358,5 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

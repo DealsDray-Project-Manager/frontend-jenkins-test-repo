@@ -1,9 +1,25 @@
-import Axios from 'axios'
-import MUIDataTable from 'mui-datatables'
+import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { Button } from '@mui/material'
+import {
+    Button,
+    TableCell,
+    TableHead,
+    Table,
+    TableRow,
+    TableBody,
+    Card,
+    TablePagination,
+    TableFooter,
+    MenuItem,
+    Box,
+    TextField
+} from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { axiosMisUser } from '../../../../axios'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,95 +35,289 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
+    const [page, setPage] = React.useState(0)
+    const [item, setItem] = useState([])
+    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [data, setData] = useState([])
+    const navigate = useNavigate()
+    const [refresh, setRefresh] = useState(false);
+    const [search, setSearch] = useState({
+      type: "",
+      searchData: "",
+      location: "",
+    });
 
     useEffect(() => {
-        Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data)
-            if (isAlive) setUserList(data)
-        })
-        return () => setIsAlive(false)
-    }, [isAlive])
-    const updatePageData = () => {
-        // getAllUser().then(({ data }) => {
-        //     setUserList(data)
-        // })
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                const fetchData = async () => {
+                    let res = await axiosMisUser.post(
+                        '/getBadDelivery/' + location
+                    )
+                    if (res.status == 200) {
+                        setItem(res.data.data)
+                    }
+                }
+                fetchData()
+            } else {
+                navigate('/')
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }, [refresh])
+
+    useEffect(() => {
+        setData((_) =>
+            item
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((d, index) => {
+                    d.id = page * rowsPerPage + index + 1
+                    return d
+                })
+        )
+    }, [page, item, rowsPerPage])
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage)
     }
 
-    useEffect(() => {
-        updatePageData()
-    }, [])
+    const ProductTable = styled(Table)(() => ({
+        minWidth: 750,
+        width: 3050,
+        whiteSpace: 'pre',
+        '& thead': {
+            '& th:first-of-type': {
+                paddingLeft: 16,
+            },
+        },
+        '& td': {
+            borderBottom: 'none',
+        },
+        '& td:first-of-type': {
+            paddingLeft: '16px !important',
+        },
+    }))
+
+    const download = (e) => {
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(item)
+        ws['!cols'] = []
+        ws['!cols'][0] = { hidden: true }
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'bad-orders' + fileExtension)
+    }
+
+    const searchDelivery = async (e) => {
+        e.preventDefault();
+    
+        try {
+          let admin = localStorage.getItem("prexo-authentication");
+          if (admin) {
+            let { location } = jwt_decode(admin);
+            if (e.target.value == "") {
+              setRefresh((refresh) => !refresh);
+            } else if (search.type == "") {
+              alert("Please add input");
+            } else {
+              let obj = {
+                location: location,
+                type: search.type,
+                searchData: e.target.value,
+              };
+              let res = await axiosMisUser.post("/searchBadDelivery", obj);
+              if (res.status == 200) {
+                setRowsPerPage(10);
+                setPage(0);
+                setItem(res.data.data);
+              }
+            }
+          }
+        } catch (error) {
+          alert(error);
+        }
+      };
 
     return (
         <Container>
             <div className="breadcrumb">
-            <Breadcrumb
+                <Breadcrumb
                     routeSegments={[
                         { name: 'Delivery', path: '/pages' },
                         { name: 'Bad-Delivery' },
                     ]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                // onClick={() => setShouldOpenEditorDialog(true)}
-            >
-                Download
-            </Button>
-            <MUIDataTable
-                title={'All Bad Delivery'}
-                data={userList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
                 }}
-            />
+            >
+                <Box>
+                    <TextField
+                        select
+                        label="Select"
+                        variant="outlined"
+                        sx={{ mb: 1, width: '140px' }}
+                        onChange={(e) => {
+                            setSearch((p) => ({ ...p, type: e.target.value }))
+                        }}
+                    >
+                        <MenuItem value="order_id">Order Id</MenuItem>
+                        <MenuItem value="imei">IMEI</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="item_id">Item ID</MenuItem>
+                    </TextField>
+                    <TextField
+                        onChange={(e) => {
+                            searchDelivery(e)
+                        }}
+                        disabled={search.type == '' ? true : false}
+                        label="Search"
+                        variant="outlined"
+                        sx={{ ml: 2, mb: 1 }}
+                    />
+                </Box>
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                            download(e)
+                        }}
+                    >
+                        Download
+                    </Button>
+                </Box>
+            </Box>
+
+            <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
+                <ProductTable>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Record.NO</TableCell>
+                            <TableCell>Delivery Imported Date</TableCell>
+                            <TableCell>Tracking ID</TableCell>
+                            <TableCell>Order ID</TableCell>
+                            <TableCell>Order Date</TableCell>
+                            <TableCell>Item ID</TableCell>
+                            <TableCell>GEP Order</TableCell>
+                            <TableCell>IMEI</TableCell>
+                            <TableCell>Partner Purchase Price</TableCell>
+                            <TableCell>Partner Shop</TableCell>
+                            <TableCell>Base Discount</TableCell>
+                            <TableCell>Diagnostics Discount</TableCell>
+                            <TableCell>Storage Disscount</TableCell>
+                            <TableCell>Buyback Category</TableCell>
+                            <TableCell>Doorsteps Diagnostics</TableCell>
+                            <TableCell>Delivered Date</TableCell>
+                            <TableCell>Reason</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((data, index) => (
+                            <TableRow tabIndex={-1}>
+                                <TableCell>{data.id}</TableCell>
+                                <TableCell>
+                                    {new Date(data.created_at).toLocaleString(
+                                        'en-GB',
+                                        {
+                                            hour12: true,
+                                        }
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {data.tracking_id?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.order_id?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.order_date == null
+                                        ? ''
+                                        : new Date(
+                                              data?.order_date
+                                          ).toLocaleString('en-GB', {
+                                              year: 'numeric',
+                                              month: '2-digit',
+                                              day: '2-digit',
+                                          })}
+                                </TableCell>
+                                <TableCell>
+                                    {data.item_id?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.gep_order?.toString()}
+                                </TableCell>
+                                <TableCell>{data.imei?.toString()}</TableCell>
+                                <TableCell>
+                                    {data.partner_purchase_price?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.partner_shop?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.base_discount?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.diagnostics_discount?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.storage_disscount?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.buyback_category?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data.doorsteps_diagnostics?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {new Date(
+                                        data?.delivery_date
+                                    ).toLocaleString('en-GB', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    })}
+                                </TableCell>
+                                <TableCell style={{ color: 'red' }}>
+                                    {data?.reason?.join(', ')}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </ProductTable>
+                <TableFooter>
+                    <TablePagination
+                        sx={{ px: 2 }}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={item.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        backIconButtonProps={{
+                            'aria-label': 'Previous Page',
+                        }}
+                        nextIconButtonProps={{
+                            'aria-label': 'Next Page',
+                        }}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={({ target: { value } }) =>
+                            setRowsPerPage(value)
+                        }
+                    />
+                </TableFooter>
+            </Card>
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'name', // field name in the row object
-        label: 'Name', // column title that will be shown in table
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'email',
-        label: 'Email',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'company',
-        label: 'Company',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'balance',
-        label: 'Balance',
-        options: {
-            filter: true,
-        },
-    },
-]
 
 export default SimpleMuiTable

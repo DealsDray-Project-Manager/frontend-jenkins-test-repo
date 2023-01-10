@@ -85,7 +85,11 @@ const AddBrandAndEditDialog = ({
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -107,19 +111,22 @@ const AddBrandAndEditDialog = ({
                 })
             } else {
                 Swal.fire({
-                    position: 'top-center',
                     icon: 'failed',
                     title: response.data.message,
                     showConfirmButton: false,
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Add Location</H4>
 

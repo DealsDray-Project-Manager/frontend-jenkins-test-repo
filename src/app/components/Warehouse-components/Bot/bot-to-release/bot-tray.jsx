@@ -32,11 +32,11 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/release-bot-tray/' +
+                        '/tray-for-release/' +
                             location +
                             '/' +
-                            'Closed By Sorting Agent'
-                    )
+                            'Closed By Sorting Agent' + "/" + "BOT"
+                     )
                     if (response.status === 200) {
                         setBotTray(response.data.data)
                     }

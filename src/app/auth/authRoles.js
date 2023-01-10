@@ -6,6 +6,7 @@ export const authRoles = {
     sorting: ['Sorting Agent'],
     charging: ['Charging'],
     bqc: ['BQC'],
+    audit:["Audit"]
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

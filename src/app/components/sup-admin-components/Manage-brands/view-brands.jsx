@@ -85,7 +85,11 @@ const BrandTable = () => {
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -127,10 +131,18 @@ const BrandTable = () => {
                             })
                         }
                     } else {
-                        alert("This Brand You Can't Delete")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "This Brand You Can't Delete",
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })

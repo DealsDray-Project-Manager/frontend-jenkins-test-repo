@@ -58,7 +58,9 @@ const WhtReturnFromChargingViewItem = Loadable(
     lazy(() => import('./Wht/Return-from-charging/view-item'))
 )
 const WhtBqcRequests = Loadable(lazy(() => import('./Wht/Bqc-request/tray')))
-const WhtBqcRequestsApprove = Loadable(lazy(() => import('./Wht/Bqc-request/approve')))
+const WhtBqcRequestsApprove = Loadable(
+    lazy(() => import('./Wht/Bqc-request/approve'))
+)
 
 const WhtReturnFromBqc = Loadable(
     lazy(() => import('./Wht/Return-from-bqc/tray'))
@@ -86,7 +88,9 @@ const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
-const MergeRequestApprove = Loadable(lazy(() => import('./Merge/Merge-request/approve-request')))
+const MergeRequestApprove = Loadable(
+    lazy(() => import('./Merge/Merge-request/approve-request'))
+)
 
 const ReturnFromMerge = Loadable(
     lazy(() => import('./Merge/Return-from-merge/tray'))
@@ -97,9 +101,29 @@ const ReturnFromMergeClose = Loadable(
 const PmtReport = Loadable(lazy(() => import('./Report/pmt-report')))
 const MmtReport = Loadable(lazy(() => import('./Report/mmt-report')))
 const BotReport = Loadable(lazy(() => import('./Report/Bot-report/tray')))
-const BotReportSkuSum = Loadable(lazy(() => import('./Report/Bot-report/sku-summery')))
-const BotReportSkuSumView = Loadable(lazy(() => import('./Report/Bot-report/from-sku-summery-view-item')))
+const BotReportSkuSum = Loadable(
+    lazy(() => import('./Report/Bot-report/sku-summery'))
+)
+const BotReportSkuSumView = Loadable(
+    lazy(() => import('./Report/Bot-report/from-sku-summery-view-item'))
+)
+const AuditRequest = Loadable(lazy(() => import('./Wht/Audit-request/tray')))
+const AuditRequestApprove = Loadable(
+    lazy(() => import('./Wht/Audit-request/request-approve'))
+)
+const ReturnFromAuditeWhtRelease = Loadable(
+    lazy(() => import('./Wht/Return-from-audit/wht-tray-release'))
+)
+const OtherTrayReturnFromAudit = Loadable(
+    lazy(() => import('./Wht/Return-from-audit/other-tray-return-from-audit'))
+)
+const OtherTrayReturnFromAuditViewItem = Loadable(
+    lazy(() => import('./Wht/Return-from-audit/handel-view-tray-item'))
+)
 
+const OtherTrayReturnFromAuditClose = Loadable(
+    lazy(() => import('./Wht/Return-from-audit/close-tray'))
+)
 const WarehoueRouter = [
     {
         path: '/warehouse/dashboard',
@@ -254,7 +278,6 @@ const WarehoueRouter = [
         element: <BotReportSkuSumView />,
     },
     {
-
         path: '/wareshouse/merge/request',
         element: <MergeRequest />,
     },
@@ -270,7 +293,30 @@ const WarehoueRouter = [
         path: '/wareshouse/merge/return-from-merge/close/:trayId',
         element: <ReturnFromMergeClose />,
     },
-    
+    {
+        path: '/wareshouse/wht/audit-request',
+        element: <AuditRequest />,
+    },
+    {
+        path: '/wareshouse/wht/audit-request/approve/:trayId',
+        element: <AuditRequestApprove />,
+    },
+    {
+        path: '/wareshouse/wht/wht-release',
+        element: <ReturnFromAuditeWhtRelease />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-audit',
+        element: <OtherTrayReturnFromAudit />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-audit/tray-items/:trayId',
+        element: <OtherTrayReturnFromAuditViewItem />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-audit/close/:trayId',
+        element: <OtherTrayReturnFromAuditClose />,
+    },
 ]
 
 export default WarehoueRouter

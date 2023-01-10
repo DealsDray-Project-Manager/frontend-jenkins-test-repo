@@ -8,6 +8,7 @@ import { Paragraph } from 'app/components/Typography'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
+import { H4 } from 'app/components/Typography'
 import InputAdornment from '@mui/material/InputAdornment'
 
 const FlexBox = styled(Box)(() => ({
@@ -66,7 +67,7 @@ const Login = () => {
     useEffect(() => {
         let userExists = localStorage.getItem('prexo-authentication')
         if (userExists) {
-            const { user_type } = jwt_decode(userExists) 
+            const { user_type } = jwt_decode(userExists)
             if (user_type == undefined) {
                 navigate('/')
             } else if (user_type == 'super-admin') {
@@ -83,6 +84,8 @@ const Login = () => {
                 navigate('/bqc/dashboard')
             } else if (user_type == 'Sorting Agent') {
                 navigate('/sorting/dashboard')
+            } else if (user_type == 'Audit') {
+                navigate('/audit/dashboard')
             }
         } else {
             navigate('/')
@@ -118,6 +121,8 @@ const Login = () => {
                     navigate('/bqc/dashboard')
                 } else if (response.data.data?.user_type == 'Sorting Agent') {
                     navigate('/sorting/dashboard')
+                } else if (response.data.data?.user_type == 'Audit') {
+                    navigate('/audit/dashboard')
                 }
             } else {
                 setLoading(false)

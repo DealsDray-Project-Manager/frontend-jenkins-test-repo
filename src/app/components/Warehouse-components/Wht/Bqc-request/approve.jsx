@@ -15,7 +15,7 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
-// import jwt from "jsonwebtoken"
+
 import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -129,6 +129,8 @@ export default function DialogBox() {
             alert(error)
         }
     }
+
+ 
 
     const tableExpected = useMemo(() => {
         return (
@@ -296,6 +298,7 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
+                  
                 </Box>
                 <Box
                     sx={{
@@ -309,6 +312,7 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
+               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
@@ -324,7 +328,7 @@ export default function DialogBox() {
                         onChange={(e) => {
                             setDescription(e.target.value)
                         }}
-                        style={{ width: '400px' }}
+                        style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
                     <Button

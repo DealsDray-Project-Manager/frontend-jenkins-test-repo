@@ -147,6 +147,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            
 
             <MUIDataTable
                 title={'Requests'}

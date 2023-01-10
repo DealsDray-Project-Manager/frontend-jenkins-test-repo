@@ -12,7 +12,7 @@ import {
     Card,
     TablePagination,
     TextField,
-    Box
+    Box,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -197,6 +197,10 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Bqc Done Tray Closed Time Warehouse
                         </TableCell>
+                        <TableCell>Issued to Audit Date</TableCell>
+                        <TableCell>Audit Agnet Name</TableCell>
+                        <TableCell>Audit Done Date</TableCell>
+                        <TableCell>Audit Done Tray Recieved Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -449,6 +453,42 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
+                            <TableCell>
+                                {data?.delivery.issued_to_audit != undefined
+                                    ? new Date(
+                                          data?.delivery.issued_to_audit
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_user_name != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_user_name
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_done_date != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_done_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_done_recieved != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_done_recieved
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -481,9 +521,9 @@ const SimpleMuiTable = () => {
                             setSearch((p) => ({ ...p, type: e.target.value }))
                         }}
                     >
-                       <MenuItem value="order_id">Order Id</MenuItem>
-                <MenuItem value="uic">UIC</MenuItem>
-                <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="order_id">Order Id</MenuItem>
+                        <MenuItem value="uic">UIC</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
                     </TextField>
                     <TextField
                         onChange={(e) => {

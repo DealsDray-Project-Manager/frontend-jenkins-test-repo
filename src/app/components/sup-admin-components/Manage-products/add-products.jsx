@@ -43,7 +43,11 @@ const MemberEditorDialog = ({
                     setBrands(response.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -138,7 +142,11 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -169,7 +177,11 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -180,7 +192,7 @@ const MemberEditorDialog = ({
         })
     }
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Update Member</H4>
                 <img
@@ -244,7 +256,7 @@ const MemberEditorDialog = ({
                             label="Brand Name"
                             select
                             name="brand_name"
-                            defaultValue={getValues("brand_name")}
+                            defaultValue={getValues('brand_name')}
                             {...register('brand_name')}
                             error={errors.brand_name ? true : false}
                             helperText={

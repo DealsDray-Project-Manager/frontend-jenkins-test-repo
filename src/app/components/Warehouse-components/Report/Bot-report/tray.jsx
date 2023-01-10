@@ -113,15 +113,13 @@ const SimpleMuiTable = () => {
             name: 'actual_items',
             label: 'SKU Summery',
             options: {
-                filter: true,
+                filter: false,
                 customBodyRender: (value) => {
-                    return (
-                        <ol>
-                            {value.map((reptile) => (
-                                <li>{reptile}</li>
-                            ))}
-                        </ol>
-                    )
+                    return value.map((reptile, index) => (
+                        <p>
+                            {index + 1}-{reptile}
+                        </p>
+                    ))
                 },
             },
         },

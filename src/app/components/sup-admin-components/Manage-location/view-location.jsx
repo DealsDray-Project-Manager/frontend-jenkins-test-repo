@@ -61,7 +61,11 @@ const SimpleMuiTable = () => {
                 handleDialogOpen()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const handelDelete = (id) => {
@@ -91,10 +95,18 @@ const SimpleMuiTable = () => {
                             }
                         })
                     } else {
-                        alert(response.data.message)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message,
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })

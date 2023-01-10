@@ -370,7 +370,7 @@ const SimpleMuiTable = () => {
                                         setTrayId(tableMeta.rowData[1])
                                     }}
                                 >
-                                    RECEIVED
+                                    RECEIVE
                                 </Button>
                             ) : (
                                 <Button

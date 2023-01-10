@@ -90,13 +90,25 @@ const SimpleMuiTable = () => {
                                 }
                             })
                         } else {
-                            alert(response.data.message)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            })
                         }
                     } else {
-                        alert("You Can't Delete This Bag")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "You Can't Delete This Bag",
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -111,15 +123,23 @@ const SimpleMuiTable = () => {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
             } else if (response.status === 202) {
-                alert(response.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
-    const handelAudit =(bagId)=>{
-        navigate("/sup-admin/bag/audit/" + bagId)
+    const handelAudit = (bagId) => {
+        navigate('/sup-admin/bag/audit/' + bagId)
     }
 
     const columns = [

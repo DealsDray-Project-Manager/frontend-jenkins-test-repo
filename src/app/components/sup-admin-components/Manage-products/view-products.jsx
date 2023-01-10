@@ -59,10 +59,18 @@ const SimpleMuiTable = () => {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
             } else if (response.status == 202) {
-                alert(response.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -75,10 +83,18 @@ const SimpleMuiTable = () => {
                 setEditFetchData(res.data.data)
                 handleDialogOpenForProductEdit()
             } else {
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -129,13 +145,25 @@ const SimpleMuiTable = () => {
                                 }
                             })
                         } else {
-                            alert("You Can't Delete This Product")
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "You Can't Delete This Product",
+                            })
                         }
                     } else {
-                        alert("You Can't Delete This Product")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "You Can't Delete This Product",
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -155,7 +183,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'http://prexo-v6-dev-api.dealsdray.com/product/image/' +
+                                    ? 'http://prexo-v7-dev-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[1] +
                                       '.jpg'
                                     : value

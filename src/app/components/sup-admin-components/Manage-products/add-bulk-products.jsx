@@ -97,14 +97,12 @@ const AddBulkProduct = () => {
                 })
         )
     }, [pagination.page, pagination.item])
+
     const importExcel = () => {
-        if (exFile == null) {
-            alert('Please Select File')
-        } else {
-            setLoading(true)
-            readExcel(exFile)
-        }
+        setLoading(true)
+        readExcel(exFile)
     }
+
     // READ EXCEL FILLE
     const readExcel = async (file) => {
         const promise = new Promise((resolve, reject) => {
@@ -162,16 +160,31 @@ const AddBulkProduct = () => {
                 pagination.item
             )
             if (res.status == 200) {
-                setValidateState(true)
-                setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setValidateState(true)
+                        setLoading(false)
+                    }
+                })
             } else {
                 setErr(res.data.data)
                 setLoading(false)
-                alert('Please Check Errors')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Check Errors',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     // CREATE PRODUCTS API
@@ -183,16 +196,31 @@ const AddBulkProduct = () => {
                 pagination.item
             )
             if (res.status == 200) {
-                alert(res.data.message)
-                setLoading(false)
-                navigate('/sup-admin/products')
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setLoading(false)
+                        navigate('/sup-admin/products')
+                    }
+                })
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error.response.data.message)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.messag,
+            })
         }
     }
     const updateFieldChanged = (index) => (e) => {
@@ -277,7 +305,7 @@ const AddBulkProduct = () => {
                     {item.length == 0 ? (
                         <Button
                             variant="contained"
-                            disabled={loading}
+                            disabled={loading || exFile == null}
                             sx={{ mt: 3, mb: 1 }}
                             onClick={(e) => {
                                 importExcel(e)
@@ -503,7 +531,7 @@ const AddBulkProduct = () => {
                             </Box>
                         </StyledLoading>
                     ) : null}
-                    {pagination.item.length != 0 && loading !=true ? (
+                    {pagination.item.length != 0 && loading != true ? (
                         <Box
                             sx={{
                                 display: 'flex',

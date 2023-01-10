@@ -112,7 +112,11 @@ const MemberEditorDialog = ({
             }
         } catch (error) {
             setLoading(true)
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -135,15 +139,23 @@ const MemberEditorDialog = ({
             } else {
                 setEditFetchData({})
                 handleClose()
-                alert(response.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Add Location</H4>
 

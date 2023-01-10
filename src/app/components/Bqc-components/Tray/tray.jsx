@@ -127,21 +127,21 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    tableMeta.rowData[7].length == 0 &&
-                    tableMeta.rowData[8].length == 0
-                        ? value.length + '/' + tableMeta.rowData[6]
-                        : tableMeta.rowData[9] === 'BQC work inprogress'
-                        ? tableMeta.rowData[7].length +
-                          tableMeta.rowData[8].length +
-                          '/' +
-                          tableMeta.rowData[6]
-                        : tableMeta.rowData[7].length !== 0 ||
-                          tableMeta.rowData[8].length !== 0
-                        ? value.length +
-                          tableMeta.rowData[8].length +
+                    tableMeta.rowData[6].length == 0 &&
+                    tableMeta.rowData[7].length == 0
+                        ? value.length + '/' + tableMeta.rowData[5]
+                        : tableMeta.rowData[8] === 'BQC work inprogress'
+                        ? tableMeta.rowData[6].length +
                           tableMeta.rowData[7].length +
                           '/' +
-                          tableMeta.rowData[6]
+                          tableMeta.rowData[5]
+                        : tableMeta.rowData[6].length !== 0 ||
+                          tableMeta.rowData[7].length !== 0
+                        ? value.length +
+                          tableMeta.rowData[7].length +
+                          tableMeta.rowData[6].length +
+                          '/' +
+                          tableMeta.rowData[5]
                         : '',
             },
         },

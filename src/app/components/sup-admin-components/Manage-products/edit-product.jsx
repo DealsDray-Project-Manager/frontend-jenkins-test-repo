@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
-import { useForm } from 'react-hook-form'
+import { Dialog, Button, TextField } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import Swal from 'sweetalert2'
@@ -82,7 +79,11 @@ const MemberEditorDialog = ({
         } catch (error) {
             handleClose()
             setEditFetchData({})
-            alert('Updation Failed')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Updation Failed',
+            })
         }
     }
 
@@ -93,7 +94,7 @@ const MemberEditorDialog = ({
         })
     }
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Update Image</H4>
                 <img

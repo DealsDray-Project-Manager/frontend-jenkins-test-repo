@@ -51,7 +51,11 @@ const MemberEditorDialog = ({
                 open()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }, [])
 
@@ -62,21 +66,53 @@ const MemberEditorDialog = ({
             if (res.status == 200) {
                 setTrayCount(type + res.data.data)
                 if (type == 'BOT' && res.data.data > '2251') {
-                    alert('BOT Tray Maximum ID NO 2251')
-                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'BOT Tray Maximum ID NO 2251',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
                 } else if (type == 'MMT' && res.data.data > '8051') {
-                    alert('MMT Tray Maximum ID NO 8051')
-                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'MMT Tray Maximum ID NO 8051',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
                 } else if (type == 'WHT' && res.data.data > '1501') {
-                    alert('WHT Tray Maximum ID NO  1501')
-                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'WHT Tray Maximum ID NO  1501',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
                 } else if (type == 'PMT' && res.data.data > '8151') {
-                    alert('PMT Tray Maximum ID NO  8151')
-                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'PMT Tray Maximum ID NO  8151',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -144,7 +180,11 @@ const MemberEditorDialog = ({
                 setAllModel(res.data.data)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -187,7 +227,11 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const handelEdit = async (data) => {
@@ -219,7 +263,11 @@ const MemberEditorDialog = ({
         } catch (error) {
             handleClose()
             setEditFetchData({})
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -250,16 +298,15 @@ const MemberEditorDialog = ({
                             name="name"
                             {...register('name')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name.message : ''}
                         />
 
                         <TextFieldCustOm
                             label="Tray Limit"
-                            type="number"
-                            name="phone"
                             inputProps={{ maxLength: 2 }}
                             onPaste={(e) => {
                                 e.preventDefault()
@@ -297,8 +344,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -321,8 +369,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('warehouse')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
@@ -339,8 +388,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -375,6 +425,70 @@ const MemberEditorDialog = ({
                                 }}
                             >
                                 WHT
+                            </MenuItem>
+                            <MenuItem
+                                value="LUT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'LUT')
+                                }}
+                            >
+                                LUT
+                            </MenuItem>
+                            <MenuItem
+                                value="DUT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'DUT')
+                                }}
+                            >
+                                DUT
+                            </MenuItem>
+                            <MenuItem
+                                value="RBQ"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'RBQ')
+                                }}
+                            >
+                                RBQ
+                            </MenuItem>
+                            <MenuItem
+                                value="CFT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'CFT')
+                                }}
+                            >
+                                CFT
+                            </MenuItem>
+                            <MenuItem
+                                value="STA"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'STA')
+                                }}
+                            >
+                                STA
+                            </MenuItem>
+                            <MenuItem
+                                value="STB"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'STB')
+                                }}
+                            >
+                                STB
+                            </MenuItem>
+                            <MenuItem
+                                value="STC"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'STC')
+                                }}
+                            >
+                                STC
+                            </MenuItem>
+                            <MenuItem
+                                value="STD"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'STD')
+                                }}
+                            >
+                                STD
                             </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'WHT' ? (

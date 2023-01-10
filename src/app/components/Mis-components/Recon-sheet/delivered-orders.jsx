@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import {
-    Button,
+    MenuItem,
     TableCell,
     TableHead,
     Table,
@@ -11,6 +11,8 @@ import {
     TableBody,
     Card,
     TablePagination,
+    TextField,
+    Box,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -29,12 +31,18 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    const [isAlive, setIsAlive] = useState(true)
     const [page, setPage] = React.useState(0)
     const [item, setItem] = useState([])
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
     const [data, setData] = useState([])
     const [deliveryCount, setDeliveryCount] = useState([])
     const navigate = useNavigate()
+    const [search, setSearch] = useState({
+        type: '',
+        searchData: '',
+        location: '',
+    })
 
     useEffect(() => {
         try {
@@ -62,7 +70,7 @@ const SimpleMuiTable = () => {
         } catch (error) {
             alert(error)
         }
-    }, [page])
+    }, [page, isAlive])
 
     useEffect(() => {
         setData((_) =>
@@ -93,6 +101,34 @@ const SimpleMuiTable = () => {
             paddingLeft: '16px !important',
         },
     }))
+
+    const searchOrders = async (e) => {
+        e.preventDefault()
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setIsAlive((isAlive) => !isAlive)
+                } else {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                        status:"Delivered"
+                    }
+                    let res = await axiosMisUser.post('/searchDeliveredOrders', obj)
+                    setRowsPerPage(10)
+                    setPage(0)
+                    if (res.status == 200) {
+                        setItem(res.data.data)
+                    }
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const tableData = useMemo(() => {
         return (
@@ -318,6 +354,40 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <TextField
+                        select
+                        label="Select"
+                        variant="outlined"
+                        sx={{ mb: 1, width: '140px' }}
+                        onChange={(e) => {
+                            setSearch((p) => ({ ...p, type: e.target.value }))
+                        }}
+                    >
+                        <MenuItem value="order_id">Order Id</MenuItem>
+                        
+                        <MenuItem value="imei">IMEI</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="item_id">Item ID</MenuItem>
+                      
+                    </TextField>
+                    <TextField
+                        onChange={(e) => {
+                            searchOrders(e)
+                        }}
+                        disabled={search.type == '' ? true : false}
+                        label="Search"
+                        variant="outlined"
+                        sx={{ ml: 2, mb: 1 }}
+                    />
+                </Box>
+            </Box>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

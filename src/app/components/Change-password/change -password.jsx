@@ -63,7 +63,6 @@ const Login = () => {
     const [state, setState] = useState({})
     const [message, setMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
-    const { LoginPrxo } = useAuth()
 
     const handleChange = ({ target: { name, value } }) => {
         setState({

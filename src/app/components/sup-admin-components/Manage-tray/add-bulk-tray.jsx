@@ -6,6 +6,8 @@ import {
     TableCell,
     Button,
     TextField,
+    Icon,
+    IconButton,
 } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { Box, styled } from '@mui/system'
@@ -16,6 +18,7 @@ import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
 import CircularProgress from '@mui/material/CircularProgress'
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2'
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -88,16 +91,16 @@ const PaginationTable = () => {
             }
             fetchData()
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }, [])
     const importExcel = () => {
-        if (exFile == null) {
-            alert('Please Select File')
-        } else {
-            setLoading(true)
-            readExcel(exFile)
-        }
+        setLoading(true)
+        readExcel(exFile)
     }
     const readExcel = async (file) => {
         const promise = new Promise((resolve, reject) => {
@@ -138,37 +141,61 @@ const PaginationTable = () => {
         let count2 = 0
         let count3 = 0
         let count4 = 0
+        let count5 = 0
+        let count6 = 0
+        let count7 = 0
+        let count8 = 0
+        let count9 = 0
+        let count10 = 0
+        let count11 = 0
+        let count12 = 0
+
         let check = true
         try {
             for (let x of pagination.item) {
-                if (x.tray_id == undefined) {
-                    if (x.tray_category == 'BOT') {
-                        x.tray_id = 'BOT' + (countOfTray.BOT + count1)
-                        count1++
-                    } else if (x.tray_category == 'MMT') {
-                        x.tray_id = 'MMT' + (countOfTray.MMT + count2)
-                        count2++
-                    } else if (x.tray_category == 'PMT') {
-                        x.tray_id = 'PMT' + (countOfTray.PMT + count3)
-                        count3++
-                    } else if (x.tray_category == 'WHT') {
-                        x.tray_id = 'WHT' + (countOfTray.WHT + count4)
-                        count4++
-                    }
-                } else {
-                    check = false
-                    break
+                x.tray_id = ''
+                if (x.tray_category == 'BOT') {
+                    x.tray_id = 'BOT' + (countOfTray.BOT + count1)
+                    count1++
+                } else if (x.tray_category == 'MMT') {
+                    x.tray_id = 'MMT' + (countOfTray.MMT + count2)
+                    count2++
+                } else if (x.tray_category == 'PMT') {
+                    x.tray_id = 'PMT' + (countOfTray.PMT + count3)
+                    count3++
+                } else if (x.tray_category == 'WHT') {
+                    x.tray_id = 'WHT' + (countOfTray.WHT + count4)
+                    count4++
+                } else if (x.tray_category == 'LUT') {
+                    x.tray_id = 'LUT' + (countOfTray.LUT + count5)
+                    count5++
+                } else if (x.tray_category == 'DUT') {
+                    x.tray_id = 'DUT' + (countOfTray.DUT + count6)
+                    count6++
+                } else if (x.tray_category == 'RBQ') {
+                    x.tray_id = 'RBQ' + (countOfTray.RBQ + count7)
+                    count7++
+                } else if (x.tray_category == 'CFT') {
+                    x.tray_id = 'CFT' + (countOfTray.CFT + count8)
+                    count8++
+                } else if (x.tray_category == 'STA') {
+                    x.tray_id = 'STA' + (countOfTray.STA + count9)
+                    count9++
+                }
+                else if (x.tray_category == 'STB') {
+                    x.tray_id = 'STB' + (countOfTray.STA + count10)
+                    count10++
+                }
+                else if (x.tray_category == 'STC') {
+                    x.tray_id = 'STC' + (countOfTray.STA + count11)
+                    count11++
+                }
+                else if (x.tray_category == 'STD') {
+                    x.tray_id = 'STD' + (countOfTray.STA + count12)
+                    count12++
                 }
             }
-            if (check) {
-                setCountOfTray((p) => ({
-                    ...p,
-                    BOT: p.BOT + count1,
-                    MMT: p.MMT + count2,
-                    PMT: p.PMT + count3,
-                    WHT: p.WHT + count4,
-                }))
-            }
+
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
                 '/bulkValidationTray',
@@ -176,19 +203,34 @@ const PaginationTable = () => {
             )
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
-                setValidateState(true)
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setValidateState(true)
+                    }
+                })
             } else {
                 setLoading(false)
                 setErr(res.data.data)
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
             }
             // }
         } catch (error) {
             if (error.response.status == 400) {
                 setLoading(false)
                 setErr(error.response.data.data)
-                alert(error.response.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                })
             }
         }
     }
@@ -202,13 +244,24 @@ const PaginationTable = () => {
             }
             let res = await axiosSuperAdminPrexo.post('/createBulkTray', obj)
             if (res.status == 200) {
-                alert(res.data.message)
-                setLoading(false)
-                navigate('/sup-admin/tray')
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setLoading(false)
+                        navigate('/sup-admin/tray')
+                    }
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error.response.data.message)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.message,
+            })
         }
     }
     // ----------------------------------------------------------------------------------------------------------------------------
@@ -232,27 +285,7 @@ const PaginationTable = () => {
             ...p,
             item: pagination.item.filter((item) => item.tray_id != tray_id),
         }))
-        if (trayType == 'BOT') {
-            setCountOfTray((p) => ({
-                ...p,
-                BOT: p.BOT - 1,
-            }))
-        } else if (trayType == 'MMT') {
-            setCountOfTray((p) => ({
-                ...p,
-                MMT: p.MMT - 1,
-            }))
-        } else if (trayType == 'PMT') {
-            setCountOfTray((p) => ({
-                ...p,
-                PMT: p.PMT - 1,
-            }))
-        } else if (trayType == 'WHT') {
-            setCountOfTray((p) => ({
-                ...p,
-                WHT: p.WHT - 1,
-            }))
-        }
+      
     }
 
     const StyledLoading = styled('div')(() => ({
@@ -808,31 +841,28 @@ const PaginationTable = () => {
                                                 err?.tray_display_is_duplicate?.includes(
                                                     data.tray_display
                                                 ) == true ? (
-                                                    <Button
-                                                        sx={{
-                                                            ml: 2,
-                                                        }}
-                                                        variant="contained"
-                                                        style={{
-                                                            backgroundColor:
-                                                                'red',
-                                                        }}
-                                                        component="span"
-                                                        onClick={() => {
-                                                            if (
-                                                                window.confirm(
-                                                                    'You Want to Remove?'
-                                                                )
-                                                            ) {
-                                                                handelDelete(
-                                                                    data.tray_id,
-                                                                    data.tray_category
-                                                                )
-                                                            }
-                                                        }}
-                                                    >
-                                                        Remove
-                                                    </Button>
+                                                    <IconButton>
+                                                        <Icon
+                                                            sx={{
+                                                                ml: 2,
+                                                            }}
+                                                            color="error"
+                                                            onClick={() => {
+                                                                if (
+                                                                    window.confirm(
+                                                                        'You Want to Remove?'
+                                                                    )
+                                                                ) {
+                                                                    handelDelete(
+                                                                        data.tray_id,
+                                                                        data.tray_category
+                                                                    )
+                                                                }
+                                                            }}
+                                                        >
+                                                            delete
+                                                        </Icon>
+                                                    </IconButton>
                                                 ) : (
                                                     ''
                                                 )}
@@ -856,7 +886,7 @@ const PaginationTable = () => {
                         </StyledLoading>
                     ) : null}
                 </StyledTable>
-                {pagination.item.length != 0 ? (
+                {pagination.item.length != 0 && loading !== true ? (
                     <Box
                         sx={{
                             display: 'flex',

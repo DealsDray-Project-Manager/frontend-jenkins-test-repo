@@ -174,7 +174,7 @@ const Layout1Topbar = () => {
                         {userData !== 'super-admin' ? (
                             <StyledItem>
                                 <Link to="/change-password">
-                                    <Icon> person </Icon>
+                                    <Icon> lock </Icon>
                                     <Span> Change Password </Span>
                                 </Link>
                             </StyledItem>

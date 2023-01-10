@@ -91,7 +91,11 @@ const AddBulkBrand = () => {
             }
             fetchData()
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }, [])
     useEffect(() => {
@@ -109,11 +113,7 @@ const AddBulkBrand = () => {
     }, [pagination.page, pagination.item])
 
     const importExcel = () => {
-        if (exFile == null) {
-            alert('Please Select File')
-        } else {
-            readExcel(exFile)
-        }
+        readExcel(exFile)
     }
 
     const readExcel = async (file) => {
@@ -181,7 +181,6 @@ const AddBulkBrand = () => {
                 setValidateState(true)
                 setLoading(false)
                 Swal.fire({
-                    position: 'top-center',
                     icon: 'success',
                     title: res.data.message,
                 })
@@ -195,7 +194,11 @@ const AddBulkBrand = () => {
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const handelSubmit = async (e) => {
@@ -207,7 +210,6 @@ const AddBulkBrand = () => {
             )
             if (res.status == 200) {
                 Swal.fire({
-                    position: 'top-center',
                     icon: 'success',
                     title: res.data.message,
                     confirmButtonText: 'Ok',
@@ -218,11 +220,19 @@ const AddBulkBrand = () => {
                 navigate('/sup-admin/brands')
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error.response.data.message)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.message,
+            })
         }
     }
 
@@ -406,7 +416,6 @@ const AddBulkBrand = () => {
                                 ))}
                             </TableBody>
                         </StyledTable>
-                       
                     </>
                 ) : item.length != 0 ? (
                     <StyledLoading>
@@ -419,52 +428,50 @@ const AddBulkBrand = () => {
                     </StyledLoading>
                 ) : null}
 
-{pagination.item.length  && loading !=true ? (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'end',
-                                    mt: 1,
-                                    mr: 3,
-                                    ml: 3,
-                                }}
-                            >
-                                <Button
-                                    variant="contained"
-                                    sx={{ m: 1 }}
-                                    disabled={pagination.page === 1}
-                                    style={{ backgroundColor: '#206CE2' }}
-                                    onClick={(e) =>
-                                        setPagination((p) => ({
-                                            ...p,
-                                            page: --p.page,
-                                        }))
-                                    }
-                                >
-                                    Previous
-                                </Button>
+                {pagination.item.length && loading != true ? (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'end',
+                            mt: 1,
+                            mr: 3,
+                            ml: 3,
+                        }}
+                    >
+                        <Button
+                            variant="contained"
+                            sx={{ m: 1 }}
+                            disabled={pagination.page === 1}
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) =>
+                                setPagination((p) => ({
+                                    ...p,
+                                    page: --p.page,
+                                }))
+                            }
+                        >
+                            Previous
+                        </Button>
 
-                                <h6 style={{ marginTop: '19px' }}>
-                                    {pagination.page}/{pagination.totalPage}
-                                </h6>
-                                <Button
-                                    variant="contained"
-                                    sx={{ m: 1 }}
-                                    disabled={
-                                        pagination.page === pagination.totalPage
-                                    }
-                                    style={{ backgroundColor: '#206CE2' }}
-                                    onClick={(e) =>
-                                        setPagination((p) => ({
-                                            ...p,
-                                            page: ++p.page,
-                                        }))
-                                    }
-                                >
-                                    Next
-                                </Button>
-                            </Box>
-                        ) : null}
+                        <h6 style={{ marginTop: '19px' }}>
+                            {pagination.page}/{pagination.totalPage}
+                        </h6>
+                        <Button
+                            variant="contained"
+                            sx={{ m: 1 }}
+                            disabled={pagination.page === pagination.totalPage}
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) =>
+                                setPagination((p) => ({
+                                    ...p,
+                                    page: ++p.page,
+                                }))
+                            }
+                        >
+                            Next
+                        </Button>
+                    </Box>
+                ) : null}
             </SimpleCard>
         </Container>
     )

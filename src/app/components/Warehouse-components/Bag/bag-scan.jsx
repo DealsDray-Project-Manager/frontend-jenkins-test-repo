@@ -265,34 +265,40 @@ const PaginationTable = () => {
                     ]}
                 />
             </div>
+
             <SimpleCard title="Item">
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'row',
+                        justifyContent: 'space-between',
                         mb: 3,
                     }}
                 >
-                    <TextField
-                        size="medium"
-                        variant="outlined"
-                        type="text"
-                        label="Bag ID"
-                        onChange={(e) => setBagId(e.target.value)}
-                    />
-                    <Button
-                        sx={{ ml: 2, mb: 1, mt: 1 }}
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        disabled={bagId == ''}
-                        onClick={handelCheckBagId}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'row',
+                        }}
                     >
-                        GO
-                    </Button>
-                    {bagSuccess ? (
-                        <>
-                            <Box sx={{ ml: 2 }}>
+                        <TextField
+                            size="medium"
+                            variant="outlined"
+                            type="text"
+                            label="Bag ID"
+                            onChange={(e) => setBagId(e.target.value)}
+                        />
+                        <Button
+                            sx={{ ml: 2, mb: 1, mt: 1, mr: 2, height: '37px' }}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            disabled={bagId == ''}
+                            onClick={handelCheckBagId}
+                        >
+                            GO
+                        </Button>
+                        {bagSuccess ? (
+                            <>
                                 <TextField
                                     id="outlined-password-input"
                                     type="text"
@@ -309,8 +315,106 @@ const PaginationTable = () => {
                                         },
                                     }}
                                 />
+                            </>
+                        ) : (
+                            ''
+                        )}
+                    </Box>
+                    {bagData.length != 0 ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'end',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    m: 2,
+                                }}
+                            >
+                                <h4>Total </h4>
+                                <h4
+                                    style={{
+                                        marginLeft: '-2px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {
+                                        bagData[0]?.items?.filter(function (
+                                            item
+                                        ) {
+                                            return item.status != 'Duplicate'
+                                        }).length
+                                    }
+                                    /{bagData[0]?.limit}
+                                </h4>
                             </Box>
-                        </>
+
+                            <Box
+                                sx={{
+                                    m: 2,
+                                }}
+                            >
+                                <h4>Valid</h4>
+                                <h4
+                                    style={{
+                                        marginLeft: '13px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {
+                                        bagData[0]?.items?.filter(function (
+                                            item
+                                        ) {
+                                            return item.status == 'Valid'
+                                        }).length
+                                    }
+                                </h4>
+                            </Box>
+                            <Box
+                                sx={{
+                                    m: 2,
+                                }}
+                            >
+                                <h4>In Valid</h4>
+                                <h4
+                                    style={{
+                                        marginLeft: '13px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {
+                                        bagData[0]?.items?.filter(function (
+                                            item
+                                        ) {
+                                            return item.status == 'Invalid'
+                                        }).length
+                                    }
+                                </h4>
+                            </Box>
+
+                            <Box
+                                sx={{
+                                    m: 2,
+                                }}
+                            >
+                                <h4>Duplicate</h4>
+                                <h4
+                                    style={{
+                                        marginLeft: '16px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {
+                                        bagData[0]?.items?.filter(function (
+                                            item
+                                        ) {
+                                            return item.status == 'Duplicate'
+                                        }).length
+                                    }
+                                </h4>
+                            </Box>
+                        </Box>
                     ) : (
                         ''
                     )}

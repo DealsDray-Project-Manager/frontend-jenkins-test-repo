@@ -298,6 +298,11 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Mobile No"
                             name="contact"
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
                             {...register('contact')}
                             inputProps={{ maxLength: 10 }}
                             error={errors.contact ? true : false}

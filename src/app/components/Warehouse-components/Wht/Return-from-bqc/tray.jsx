@@ -245,7 +245,7 @@ const SimpleMuiTable = () => {
                                         setTrayId(value)
                                     }}
                                 >
-                                    RECEIVED
+                                    RECEIVE
                                 </Button>
                             ) : (
                                 <Button

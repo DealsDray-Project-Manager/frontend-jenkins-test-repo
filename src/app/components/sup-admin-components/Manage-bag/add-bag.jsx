@@ -45,7 +45,12 @@ const MemberEditorDialog = ({
                 open()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [])
 
@@ -77,7 +82,12 @@ const MemberEditorDialog = ({
                 setWarehouse(response.data.data.warehouse)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const schema = Yup.object().shape({
@@ -160,7 +170,12 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -193,7 +208,12 @@ const MemberEditorDialog = ({
         } catch (error) {
             handleClose()
             setEditFetchData({})
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     return (
@@ -228,7 +248,6 @@ const MemberEditorDialog = ({
 
                         <TextFieldCustOm
                             label="Bag Limit"
-                            type="number"
                             name="phone"
                             inputProps={{ maxLength: 2 }}
                             onPaste={(e) => {
@@ -265,7 +284,7 @@ const MemberEditorDialog = ({
                             select
                             type="text"
                             name="cpc"
-                            defaultValue={getValues("cpc")}
+                            defaultValue={getValues('cpc')}
                             {...register('cpc')}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
@@ -286,7 +305,7 @@ const MemberEditorDialog = ({
                             select
                             type="text"
                             name="warehouse"
-                            defaultValue={getValues("warehouse")}
+                            defaultValue={getValues('warehouse')}
                             {...register('warehouse')}
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
@@ -302,7 +321,7 @@ const MemberEditorDialog = ({
                             select
                             type="text"
                             name="type_taxanomy"
-                            defaultValue={getValues("type_taxanomy")}
+                            defaultValue={getValues('type_taxanomy')}
                             {...register('type_taxanomy')}
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}

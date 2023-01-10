@@ -56,10 +56,12 @@ const BootstrapDialogTitle = (props) => {
         </DialogTitle>
     )
 }
+
 BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -102,7 +104,6 @@ export default function DialogBox() {
                     )
                     if (response.status === 200) {
                         setTrayData(response.data.data)
-                        //   dataTableFun()
                     } else if (response.status === 202) {
                         Swal.fire({
                             icon: 'error',

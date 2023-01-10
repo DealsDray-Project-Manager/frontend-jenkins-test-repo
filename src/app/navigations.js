@@ -40,6 +40,12 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/audit/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.audit, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/bqc/dashboard',
         icon: 'dashboard',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
@@ -115,7 +121,18 @@ export const navigations = [
         path: '/sup-admin/track-item',
         auth: authRoles.admin,
     },
-
+    {
+        name: 'Report',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Bqc Report',
+                path: '/sup-admin/bqc/report',
+                iconText: 'PL',
+            },
+        ],
+        auth: authRoles.admin,
+    },
     {
         name: 'Order',
         icon: 'reorder',
@@ -358,6 +375,28 @@ export const navigations = [
                 path: '/wareshouse/wht/return-from-bqc',
                 iconText: 'VP',
             },
+            {
+                name: 'Audit Requests',
+                path: '/wareshouse/wht/audit-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Audit',
+                icon: 'shopping_cart',
+                children: [
+                    {
+                        name: 'WHT Release',
+                        path: '/wareshouse/wht/wht-release',
+                        iconText: 'VP',
+                    },
+                    {
+                        name: 'Other Tray',
+                        path: '/wareshouse/wht/return-from-audit',
+                        iconText: 'VP',
+                    },
+                ],
+                auth: authRoles.Warehouse,
+            },
         ],
         auth: authRoles.Warehouse,
     },
@@ -458,6 +497,19 @@ export const navigations = [
         path: '/bqc/tray',
         auth: authRoles.bqc,
     },
+    {
+        name: 'Audit Request',
+        icon: 'settings_system_daydream',
+        path: '/audit/audit-request',
+        auth: authRoles.audit,
+    },
+    {
+        name: 'Assigned Tray',
+        icon: 'settings_system_daydream',
+        path: '/audit/assigned-tray',
+        auth: authRoles.audit,
+    },
+
     // {
     //     name: 'Orders',
     //     icon: 'folder',

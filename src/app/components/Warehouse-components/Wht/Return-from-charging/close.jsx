@@ -339,7 +339,7 @@ export default function DialogBox() {
             onChange={(e) => {
               setDescription(e.target.value);
             }}
-            style={{ width: "400px" }}
+            style={{ width: '300px', height: '60px' }}
             placeholder="Description"
           ></textarea>
 

@@ -3,9 +3,10 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Checkbox } from '@mui/material'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import AssignDialogBox from './user-dailog'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -24,6 +25,8 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
+    const [auditUsers, setAuditUsers] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -57,26 +60,40 @@ const SimpleMuiTable = () => {
         }
     }
 
-    // const handelGetChargingUser = () => {
-    //     const fetchData = async () => {
-    //         try {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosMisUser.post(
-    //                     '/get-charging-users/' + 'Charging/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setChargingUsers(res.data.data)
-    //                     handleDialogOpen()
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             alert(error)
-    //         }
-    //     }
-    //     fetchData()
-    // }
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setAuditUsers([])
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const handelGetAuditUser = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/get-charging-users/' + 'Audit/' + location
+                    )
+                    if (res.status == 200) {
+                        setAuditUsers(res.data.data)
+                        handleDialogOpen()
+                    }
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    }
+
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/wht/tray/item/' + id)
+    }
 
     const columns = [
         {
@@ -202,6 +219,28 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={() => handelViewItem(value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            View
+                        </Button>
+                    )
+                },
+            },
+        },
     ]
 
     return (
@@ -214,8 +253,15 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Button sx={{ mb: 2 }} variant="contained" color="primary" disabled>
-                Assign
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="primary"
+                disabled
+                onClick={() => handelGetAuditUser()}
+                disabled={isCheck.length === 0}
+            >
+                Assign For Audit
             </Button>
             <MUIDataTable
                 title={'WHT'}
@@ -235,6 +281,15 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    auditUsers={auditUsers}
+                    isCheck={isCheck}
+                />
+            )}
         </Container>
     )
 }

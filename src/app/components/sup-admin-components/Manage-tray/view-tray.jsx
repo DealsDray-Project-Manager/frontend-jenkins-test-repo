@@ -7,7 +7,7 @@ import { Button, Box, IconButton, Icon } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-import EditRoadIcon from '@mui/icons-material/EditRoad';
+import EditRoadIcon from '@mui/icons-material/EditRoad'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -112,21 +112,19 @@ const SimpleMuiTable = () => {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
             } else if (response.status === 202) {
-                alert(response.data.message)
+                alert("You Can't Edit This Tray")
             }
         } catch (error) {
             alert(error)
         }
     }
 
-
-    const handelAudit =(trayId)=>{
-        navigate("/sup-admin/tray/audit/" + trayId)
+    const handelAudit = (trayId) => {
+        navigate('/sup-admin/tray/audit/' + trayId)
     }
 
-    const handelEditHistory=(trayId)=>{
-       
-        navigate("/sup-admin/tray/edit-history/" + trayId)
+    const handelEditHistory = (trayId) => {
+        navigate('/sup-admin/tray/edit-history/' + trayId)
     }
 
     const columns = [

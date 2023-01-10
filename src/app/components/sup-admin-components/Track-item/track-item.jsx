@@ -181,6 +181,18 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Bqc Done Tray Closed Time Warehouse
                         </TableCell>
+                        <TableCell>
+                           Issued to Audit Date
+                        </TableCell>
+                        <TableCell>
+                           Audit Agnet Name
+                        </TableCell>
+                        <TableCell>
+                           Audit Done Date
+                        </TableCell>
+                        <TableCell>
+                           Audit Done Tray Recieved Date
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -428,6 +440,42 @@ const SimpleMuiTable = () => {
                                 {data?.delivery.bqc_done_close != undefined
                                     ? new Date(
                                           data?.delivery.bqc_done_close
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.issued_to_audit != undefined
+                                    ? new Date(
+                                          data?.delivery.issued_to_audit
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_user_name != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_user_name
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_done_date != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_done_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_done_recieved != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_done_recieved
                                       ).toLocaleString('en-GB', {
                                           hour12: true,
                                       })

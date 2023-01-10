@@ -5,7 +5,6 @@ import * as XLSX from 'xlsx'
 import * as FileSaver from 'file-saver'
 import { styled } from '@mui/system'
 import {
-    Button,
     TableCell,
     TableHead,
     Table,
@@ -15,6 +14,8 @@ import {
     TablePagination,
     Checkbox,
     Box,
+    MenuItem,
+    TextField,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -42,8 +43,11 @@ const SimpleMuiTable = () => {
     const [data, setData] = useState([])
     const [deliveryCount, setDeliveryCount] = useState(0)
     const [isAlive, setIsAlive] = useState(true)
-
-
+    const [search, setSearch] = useState({
+        type: '',
+        searchData: '',
+        location: '',
+    })
 
     useEffect(() => {
         try {
@@ -70,7 +74,7 @@ const SimpleMuiTable = () => {
         } catch (error) {
             alert(error)
         }
-    }, [page,isAlive])
+    }, [page, isAlive])
 
     useEffect(() => {
         setData((_) =>
@@ -176,6 +180,39 @@ const SimpleMuiTable = () => {
         FileSaver.saveAs(data, fileName + fileExtension)
         setIsCheck([])
         setIsAlive((isAlive) => !isAlive)
+    }
+    const searchOrders = async (e) => {
+        e.preventDefault()
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setItem([])
+                    setRowsPerPage(10)
+                    setPage(0)
+                    setIsAlive((isAlive) => !isAlive)
+                } else {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                        uic_status: 'Created',
+                    }
+
+                    let res = await axiosMisUser.post('/searchUicPage', obj)
+                    setRowsPerPage(10)
+                    setPage(0)
+                    if (res.status == 200 && res.data.data?.length !== 0) {
+                        setItem(res.data.data)
+                    } else {
+                        alert('No data found')
+                    }
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const tableData = useMemo(() => {
@@ -469,15 +506,30 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Box>
-                <Button
-                    variant="contained"
-                    sx={{ mb: 2 }}
-                    onClick={(e) => {
-                        exportToCSV('UIC-Printing-Sheet')
+                <TextField
+                    select
+                    label="Select"
+                    variant="outlined"
+                    sx={{ mb: 1, width: '140px' }}
+                    onChange={(e) => {
+                        setSearch((p) => ({ ...p, type: e.target.value }))
                     }}
                 >
-                    Download
-                </Button>
+                    <MenuItem value="order_id">Order Id</MenuItem>
+                    <MenuItem value="uic">UIC</MenuItem>
+                    <MenuItem value="imei">IMEI</MenuItem>
+                    <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                    <MenuItem value="item_id">Item ID</MenuItem>
+                </TextField>
+                <TextField
+                    onChange={(e) => {
+                        searchOrders(e)
+                    }}
+                    disabled={search.type == '' ? true : false}
+                    label="Search"
+                    variant="outlined"
+                    sx={{ ml: 2, mb: 1 }}
+                />
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

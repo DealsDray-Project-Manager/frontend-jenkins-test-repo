@@ -35,6 +35,8 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { axiosBot } from '../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 import CircularProgress from '@mui/material/CircularProgress'
+import Swal from 'sweetalert2'
+
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -119,10 +121,22 @@ export default function DialogBox() {
             } catch (error) {
                 setPageLoading(true)
                 if (error.response.status == 201) {
-                    alert(error.response.data.message)
-                    navigate('/bot/bag')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error.response.data.message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate('/bot/bag')
+                        }
+                    })
                 } else {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
@@ -176,6 +190,7 @@ export default function DialogBox() {
         setModelMisMatch(false)
         setBodyDamage('NO')
     }
+
     /***************************************************************************************** */
     // BAG AND BOT TRAY CLOSE
     const handelClosebag = async () => {
@@ -193,20 +208,43 @@ export default function DialogBox() {
                 let res = await axiosBot.post('/closeBag', obj)
                 if (res.status === 200) {
                     setLoading(false)
-                    alert(res.data.message)
-                    navigate('/bot/bag')
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.data.message,
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate('/bot/bag')
+                        }
+                    })
                 } else {
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: res.data.message,
+                    })
                 }
             } else {
                 setLoading(false)
-                alert('Please Scan All Items')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: 'Please Scan All Items',
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
+
     const handelAwbn = async (e) => {
         if (e.target.value.length >= 12) {
             try {
@@ -224,33 +262,24 @@ export default function DialogBox() {
                 } else if (res.status === 202) {
                     setTextBoxDis(false)
                     setAwbn('')
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: res.data.message,
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
 
-    /************************************************************************** */
-    const handelDelete = async (trayId, id, awbn) => {
-        try {
-            let obj = {
-                id: id,
-                trayId: trayId,
-                awbn: awbn,
-            }
-            let data = await axiosBot.post('/trayItemRemove', obj)
-            if (data.status == 200) {
-                alert(data.data.message)
-                setRefresh((refresh) => !refresh)
-            } else {
-                alert(data.data.message)
-            }
-        } catch (error) {
-            alert(error)
-        }
-    }
     /************************************************************************************************* */
     const traySegrigation = async (e, trayType) => {
         if (e.keyCode !== 32) {
@@ -264,14 +293,27 @@ export default function DialogBox() {
                 if (trayType == 'MMT' && tray?.length !== 0) {
                     if (tray[0]?.limit <= tray?.[0]?.items?.length) {
                         if (tray[0]?.sort_id == 'Issued') {
-                            alert('Tray Is Full')
-                            if (window.confirm('You Want to Close Tray?')) {
-                                handelCloseTray(tray[0].code)
-                            }
+                            Swal.fire({
+                                title: 'Tray Is Full',
+                                text: 'You Want to Close Tray?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes,close!',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    handelCloseTray(tray[0].code)
+                                }
+                            })
                         } else {
                             setLoading(false)
-
-                            alert('Tray already closed')
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: 'Tray already closed',
+                            })
                         }
                     } else {
                         let obj = {
@@ -299,7 +341,6 @@ export default function DialogBox() {
                         if (res.status == 200) {
                             setTextBoxDis(false)
                             setLoading(false)
-                            alert('Successfully Added')
                             setRefresh((refresh) => !refresh)
                             setStickerOne('')
                             setStickerTwo('')
@@ -308,7 +349,12 @@ export default function DialogBox() {
                             setModelMisMatch(false)
                         } else if (res.status == 202) {
                             setLoading(false)
-                            alert(res.data.data)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: res.data.data,
+                            })
                         }
                     }
                 } else if (tray?.length !== 0) {
@@ -317,19 +363,38 @@ export default function DialogBox() {
                         trayType == 'BOT'
                     ) {
                         setLoading(false)
-                        alert('Tray Is Full')
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            confirmButtonText: 'Ok',
+                            text: 'Tray Is Full',
+                        })
                     } else if (
                         tray[0].limit <= tray?.[0]?.items?.length &&
                         trayType == 'PMT'
                     ) {
                         if (tray[0]?.sort_id == 'Issued') {
-                            alert('Tray Is Full')
-                            if (window.confirm('You Want to Close Tray?')) {
-                                handelCloseTray(tray[0].code)
-                            }
+                            Swal.fire({
+                                title: 'Tray Is Full',
+                                text: 'You Want to Close Tray?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes,close!',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    handelCloseTray(tray[0].code)
+                                }
+                            })
                         } else {
                             setLoading(false)
-                            alert('Tray Already Closed')
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: 'Tray already closed',
+                            })
                         }
                     } else {
                         let obj = {
@@ -356,7 +421,6 @@ export default function DialogBox() {
                         if (res.status == 200) {
                             setTextBoxDis(false)
                             setLoading(false)
-                            alert('Successfully Added')
                             setRefresh((refresh) => !refresh)
                             setStickerOne('')
                             setStickerTwo('')
@@ -367,11 +431,21 @@ export default function DialogBox() {
                             setOpneProductMisMatch(false)
                         } else if (res.status == 202) {
                             setLoading(false)
-                            alert(res.data.data)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: res.data.data,
+                            })
                         }
                     }
                 } else {
-                    alert('Tray Is full')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: 'Tray Is full',
+                    })
                     setStickerOne('')
                     setStickerTwo('')
                     setStickerThree('')
@@ -384,7 +458,12 @@ export default function DialogBox() {
                     setLoading(false)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -393,16 +472,33 @@ export default function DialogBox() {
         try {
             let res = await axiosBot.post('/trayClose/' + trayid)
             if (res.status == 200) {
-                alert(res.data.message)
-                setLoading(false)
-                setRefresh((refresh) => !refresh)
-                setOpneProductMisMatch(false)
-                setModelMisMatch(false)
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    showConfirmButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setLoading(false)
+                        setRefresh((refresh) => !refresh)
+                        setOpneProductMisMatch(false)
+                        setModelMisMatch(false)
+                    }
+                })
             } else if (res.status === 202) {
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res.data.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /***************************************************************************************** */
@@ -496,36 +592,6 @@ export default function DialogBox() {
                                                 >
                                                     {itemData.status}
                                                 </TableCell>
-                                                {itemData.status != 'Valid' ? (
-                                                    <TableCell>
-                                                        <Button
-                                                            sx={{
-                                                                ml: 2,
-                                                            }}
-                                                            variant="contained"
-                                                            style={{
-                                                                backgroundColor:
-                                                                    'red',
-                                                            }}
-                                                            component="span"
-                                                            onClick={() => {
-                                                                if (
-                                                                    window.confirm(
-                                                                        'Remove the item?'
-                                                                    )
-                                                                ) {
-                                                                    handelDelete(
-                                                                        data.code,
-                                                                        itemData._id,
-                                                                        itemData.awbn_number
-                                                                    )
-                                                                }
-                                                            }}
-                                                        >
-                                                            Remove
-                                                        </Button>
-                                                    </TableCell>
-                                                ) : null}
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -538,7 +604,7 @@ export default function DialogBox() {
         )
     }, [bagData[1]?.tray])
 
-    console.log(awabnDetails)
+   
     return (
         <>
             <BootstrapDialog
@@ -636,7 +702,7 @@ export default function DialogBox() {
                                     src={
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
-                                            ? 'http://prexo-v6-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v7-dev-api.dealsdray.com/product/image/' +
                                               awabnDetails?.[0]?.products
                                                   .vendor_sku_id +
                                               '.jpg'

@@ -32,6 +32,7 @@ import ChargingRoutes from "../components/Charging-components/ChargingRoutes"
 import BqcRoutes from "../components/Bqc-components/BqcRoutes"
 import Login from "../Login/loginRouter"
 import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
+import AuditRouter from "app/components/Audit-components/AuditRouter"
 
 export const AllPages = () => {
     const all_routes = [
@@ -68,7 +69,7 @@ export const AllPages = () => {
                 ...SortingRoutes,
                 ...ChargingRoutes,
                 ...BqcRoutes,
-                
+                ...AuditRouter
             ],
         },
         ...Login,

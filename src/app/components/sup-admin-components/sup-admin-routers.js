@@ -39,6 +39,7 @@ const RemoveInvalidItemView = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/view-item'))
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
+const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
 const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
@@ -124,7 +125,10 @@ const SuperAdminRouter = [
         path: '/sup-admin/user-history/:username',
         element: <ViewUserEditHistory />,
     },
-    
+    {
+        path: '/sup-admin/bqc/report',
+        element: <BqcReport />,
+    },
 ]
 
 export default SuperAdminRouter

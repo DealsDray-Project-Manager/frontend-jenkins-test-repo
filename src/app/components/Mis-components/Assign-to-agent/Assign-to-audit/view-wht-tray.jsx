@@ -257,7 +257,6 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                disabled
                 onClick={() => handelGetAuditUser()}
                 disabled={isCheck.length === 0}
             >

@@ -32,6 +32,9 @@ const ReadyForCharging = Loadable(
 const ReadyForChargingViewItem = Loadable(
     lazy(() => import('./Ready-for-charging/view-item'))
 )
+const ReadyForChargingBqc = Loadable(
+    lazy(() => import('./Ready-for-charging/bqc-tray'))
+)
 const RemoveInvalidItem = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/bag'))
 )
@@ -40,6 +43,8 @@ const RemoveInvalidItemView = Loadable(
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
+
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
@@ -102,8 +107,12 @@ const SuperAdminRouter = [
         element: <TrayEditHistory />,
     },
     {
-        path: '/sup-admin/ready-for-charging',
+        path: '/sup-admin/ready-for-charging/in-use-wht',
         element: <ReadyForCharging />,
+    },
+    {
+        path: '/sup-admin/ready-for-charging/bqc-tray',
+        element: <ReadyForChargingBqc />,
     },
     {
         path: '/sup-admin/ready-for-charging/view-item/:trayId',

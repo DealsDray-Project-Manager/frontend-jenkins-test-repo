@@ -52,7 +52,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
-            let res = await axiosMisUser.post('/oneTrayAssigToAudit', state)
+            let res = await axiosWarehouseIn.post('/oneTrayAssigToAudit', state)
             if (res.status == 200) {
                 setLoading(false)
                 alert(res.data.message)
@@ -73,12 +73,13 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 state
             )
             if (res.status === 200) {
-                setTrayStatus(res.data.tray_status)
+                console.log(res.data);
+                setTrayStatus(res.data.trayStatus)
                 setErr('')
                 setAssignButDis(false)
             } else {
                 console.log(res)
-                setTrayStatus(res.data.tray_status)
+                setTrayStatus(res.data.trayStatus)
                 setErr(res.data.message)
             }
         } catch (error) {

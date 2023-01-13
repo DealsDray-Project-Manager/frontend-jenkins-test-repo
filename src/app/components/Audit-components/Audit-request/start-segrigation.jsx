@@ -312,7 +312,7 @@ export default function DialogBox() {
                         <MenuItem onClick={(e) => setType('RBQ')} value="RBQ">
                             RBQ
                         </MenuItem>
-                        <MenuItem onClick={(e) => setType('STA')} value="CFT">
+                        <MenuItem onClick={(e) => setType('CFT')} value="CFT">
                             CFT
                         </MenuItem>
                         <MenuItem onClick={(e) => setType('STA')} value="STA">

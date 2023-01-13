@@ -106,9 +106,21 @@ export const navigations = [
     {
         name: 'Ready For Charging',
         icon: 'battery_charging_full',
-        path: '/sup-admin/ready-for-charging',
+        children: [
+            {
+                name: 'In-use wht Tray',
+                path: '/sup-admin/ready-for-charging/in-use-wht',
+                iconText: 'PL',
+            },
+            {
+                name: 'Ready for BQC wht Tray',
+                path: '/sup-admin/ready-for-charging/bqc-tray',
+                iconText: 'PL',
+            },
+        ],
         auth: authRoles.admin,
     },
+   
     {
         name: 'Remove invalid item',
         icon: 'leak_remove',

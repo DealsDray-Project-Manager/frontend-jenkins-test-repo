@@ -77,6 +77,7 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }, [page, refresh])
+    
 
     useEffect(() => {
         setData((_) =>

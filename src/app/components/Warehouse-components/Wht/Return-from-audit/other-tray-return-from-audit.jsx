@@ -393,6 +393,7 @@ const SimpleMuiTable = () => {
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
                     auditUsers={auditUsers}
+                    setIsAlive={setIsAlive}
                 />
             )}
         </Container>

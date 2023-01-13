@@ -1,15 +1,15 @@
 import React, { createContext, useEffect, useReducer, useState } from 'react'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
-import { firebaseConfig } from 'config.js'
+// import { firebaseConfig } from 'config.js'
 import { MatxLoading } from 'app/components'
 import { useNavigate } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { axiosSuperAdminPrexo } from '../../axios'
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig)
-}
+// if (!firebase.apps.length) {
+//     firebase.initializeApp(firebaseConfig)
+// }
 const initialAuthState = {
     isAuthenticated: false,
     isInitialised: false,

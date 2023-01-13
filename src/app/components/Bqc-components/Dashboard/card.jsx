@@ -4,9 +4,11 @@ import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
 import { axiosBqc } from '../../../../axios'
+import { useNavigate } from 'react-router-dom'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
@@ -30,6 +32,7 @@ const StatCard3 = () => {
             icon: 'settings_system_daydream',
             amount: count.bqc,
             title: 'BQC Request',
+            path: '/bqc/tray',
         },
     ]
     const { palette } = useTheme()
@@ -40,7 +43,12 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => navigate(item.path)}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"

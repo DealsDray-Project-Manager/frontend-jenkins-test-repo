@@ -40,7 +40,7 @@ const StatCard3 = () => {
             icon: 'move_to_inbox',
             amount: count.issuedPmtAndMMt,
             title: 'Issued PMT and MMT',
-            path: '/wareshouse/pmt-mmt/tray-close-request',
+            path: '/wareshouse/pmt-mmt/issued',
         },
         {
             icon: 'class',

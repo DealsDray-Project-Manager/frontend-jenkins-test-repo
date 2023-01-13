@@ -616,7 +616,6 @@ const SimpleMuiTable = () => {
             </div>
             <Button
                 variant="contained"
-                sx={{ mt: 5 }}
                 style={{ backgroundColor: 'primery' }}
                 onClick={(e) => {
                     handelOpen()

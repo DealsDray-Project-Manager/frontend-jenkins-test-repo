@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
                         </TableCell>
                         <TableCell>BQC Agent Name</TableCell>
                         <TableCell>Assigned to BQC</TableCell>
-                        <TableCell>BQC IN Date</TableCell>
+                      
                         <TableCell>BQC Done Date</TableCell>
                         <TableCell>
                             Tray Received From BQC Time Warehouse
@@ -409,15 +409,7 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
-                            <TableCell>
-                                {data?.delivery.bqc_in_date != undefined
-                                    ? new Date(
-                                          data?.delivery.bqc_in_date
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })
-                                    : ''}
-                            </TableCell>
+                         
                             <TableCell>
                                 {data?.delivery.bqc_out_date != undefined
                                     ? new Date(
@@ -455,13 +447,7 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_user_name != undefined
-                                    ? new Date(
-                                          data?.delivery.audit_user_name
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })
-                                    : ''}
+                                {data?.delivery.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined

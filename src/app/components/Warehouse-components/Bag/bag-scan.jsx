@@ -56,6 +56,7 @@ const PaginationTable = () => {
     const [uic, setUic] = useState(false)
     const [sleaves, setSleaves] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [disAwbnText, SetDisAwbText] = useState(false)
     const navigate = useNavigate()
 
     const handelCheckBagId = async (e) => {
@@ -104,6 +105,7 @@ const PaginationTable = () => {
                 alert('Please Fill The Input')
             } else {
                 try {
+                    SetDisAwbText(true)
                     let admin = localStorage.getItem('prexo-authentication')
                     if (admin) {
                         let { location } = jwt_decode(admin)
@@ -129,6 +131,7 @@ const PaginationTable = () => {
                                 handelSubmitStock(res.data.data, 'Valid')
                             }
                         } else {
+                            SetDisAwbText(false)
                             alert(res.data.message)
                         }
                     }
@@ -163,9 +166,11 @@ const PaginationTable = () => {
                         obj
                     )
                     if (res.status == 200) {
+                        SetDisAwbText(false)
                         setAwbn('')
                         getitem()
                     } else {
+                        SetDisAwbText(false)
                         alert(res.data.message)
                     }
                 } catch (error) {
@@ -302,9 +307,11 @@ const PaginationTable = () => {
                                 <TextField
                                     id="outlined-password-input"
                                     type="text"
+                                    inputRef={(input) => input && input.focus()}
                                     name="doorsteps_diagnostics"
                                     label="Please Enter AWB Number"
                                     value={awbn}
+                                    disabled={disAwbnText}
                                     onChange={(e) => {
                                         setAwbn(e.target.value)
                                         handelAwbn(e)

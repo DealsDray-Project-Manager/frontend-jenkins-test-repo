@@ -1,13 +1,14 @@
-import React,{ useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
 import { axiosSortingAgent } from '../../../../axios'
-
+import { useNavigate } from 'react-router-dom'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
+    const naviage = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
@@ -33,12 +34,14 @@ const StatCard3 = () => {
             icon: 'sort',
             amount: count.sorting,
             title: 'Sorting Requests',
+            path: '/sorting/request',
         },
         {
             icon: 'merge_type',
             amount: count.merge,
             title: 'Tray Merge',
-        }
+            path: '/sorting/merge',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary
@@ -48,7 +51,14 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => {
+                                naviage(item.path)
+                            }}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"

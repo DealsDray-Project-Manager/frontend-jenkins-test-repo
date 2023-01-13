@@ -216,7 +216,12 @@ export default function DialogBox() {
                 value.bqc_incomplete_reason = ''
                 value.technical_issue = ''
                 value.other = ''
+               
             }
+            else{
+                value.factory_reset_status=''
+            }
+         
             try {
                 let objData = {
                     trayId: trayId,
@@ -505,6 +510,7 @@ export default function DialogBox() {
                                     value="BQC Incomplete"
                                     onClick={(e) => {
                                         setBqcStatus('BQC Incomplete')
+                                        setResFact('NO')
                                     }}
                                 >
                                     BQC Incomplete
@@ -672,7 +678,7 @@ export default function DialogBox() {
                         }}
                         fullwidth
                         variant="contained"
-                        disabled={addButDis || restFact == 'NO'}
+                        disabled={addButDis || bqcStatus === 'BQC Finished' && restFact == 'NO' }
                         style={{ backgroundColor: 'green' }}
                         component="span"
                         type="submit"

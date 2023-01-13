@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useReducer } from 'react'
 // import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
-import { auth0Config } from 'config'
+// import { auth0Config } from 'config'
 import { MatxLoading } from 'app/components'
 
 let auth0Client = null
@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 auth0Client = new Auth0Client({
                     redirect_uri: window.location.origin,
-                    ...auth0Config,
+                    // ...auth0Config,
                 })
 
                 await auth0Client.checkSession()

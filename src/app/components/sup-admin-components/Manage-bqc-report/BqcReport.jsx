@@ -43,10 +43,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         <TableCell sx={{ pl: 2 }}>UIC</TableCell>
                         <TableCell>{BqcSowftwareReport?.uic}</TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.tray-id}>
-                            <TableCell sx={{ pl: 2 }}>Tray ID</TableCell>
-                            <TableCell>{BqcSowftwareReport?.tray-id}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?.tray_id}>
+                        <TableCell sx={{ pl: 2 }}>Tray ID</TableCell>
+                        <TableCell>{BqcSowftwareReport?.tray_id}</TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.date}>
                         <TableCell sx={{ pl: 2 }}>Date</TableCell>
                         <TableCell>{BqcSowftwareReport?.date}</TableCell>
@@ -113,10 +113,12 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.mobile_imei2}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?._ro.imei.check}>
-                            <TableCell sx={{ pl: 2 }}>Ro IMEI Check</TableCell>
-                            <TableCell>{BqcSowftwareReport?._ro.imei.check}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?._ro_imei_check}>
+                        <TableCell sx={{ pl: 2 }}>Ro IMEI Check</TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?._ro_imei_check}
+                        </TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.chargingjack}>
                         <TableCell sx={{ pl: 2 }}>Charging Jack</TableCell>
                         <TableCell>
@@ -167,10 +169,14 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.pq_dentdevicebody}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.pq_headphonejack_3.5mm}>
-                            <TableCell sx={{ pl: 2 }}>BQ Dentdevice Body</TableCell>
-                            <TableCell>{BqcSowftwareReport?.pq_headphonejack_3.5mm}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?.pq_headphonejack_3_5mm}>
+                        <TableCell sx={{ pl: 2 }}>
+                            BQ Headphone Jack 3.5 mm
+                        </TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?.pq_headphonejack_3_5mm}
+                        </TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.pq_missingparts}>
                         <TableCell sx={{ pl: 2 }}>BQ Missing Parts</TableCell>
                         <TableCell>
@@ -231,7 +237,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.carrier_signal_test}>
                         <TableCell sx={{ pl: 2 }}>
-                            Carrier Signal Test
+                            Carrier Signel Test
                         </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.carrier_signal_test}
@@ -247,10 +253,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.carrier_signal_sim_2_test}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.wi-fi_test}>
-                            <TableCell sx={{ pl: 2 }}>Carrier Signel Sim 2 Test</TableCell>
-                            <TableCell>{BqcSowftwareReport?.wi-fi_test}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?.wi_fi_test}>
+                        <TableCell sx={{ pl: 2 }}>WI-Fi Test</TableCell>
+                        <TableCell>{BqcSowftwareReport?.wi_fi_test}</TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.bluetooth_test}>
                         <TableCell sx={{ pl: 2 }}>Bluetooth Test</TableCell>
                         <TableCell>
@@ -273,7 +279,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.front_microphone_test}>
                         <TableCell sx={{ pl: 2 }}>
-                            Speaker Microphone Test
+                            Front Microphone Test
                         </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.front_microphone_test}
@@ -298,9 +304,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.receiver_test}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Speaker Microphone Front Test
-                        </TableCell>
+                        <TableCell sx={{ pl: 2 }}>Received Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.receiver_test}
                         </TableCell>
@@ -322,20 +326,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         <TableCell>{BqcSowftwareReport?.video_test}</TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.auto_focus_test}>
-                        <TableCell sx={{ pl: 2 }}>Video Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Auto Focus Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.auto_focus_test}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.camera_flash_test}>
-                        <TableCell sx={{ pl: 2 }}>Camera Falsh Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Camera Flash Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.camera_flash_test}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.front_camera_flash_test}>
                         <TableCell sx={{ pl: 2 }}>
-                            Front Camera Falsh Test
+                            Front Camera Flash Test
                         </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.front_camera_flash_test}
@@ -401,28 +405,34 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.back_key_test}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.recent/menu_key_test}>
-                            <TableCell sx={{ pl: 2 }}>back Key Test</TableCell>
-                            <TableCell>{BqcSowftwareReport?.recent/menu_key_test}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?.recent_menu_key_test}>
+                        <TableCell sx={{ pl: 2 }}>
+                            Recent Menu Key Test
+                        </TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?.recent_menu_key_test}
+                        </TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.screen_test}>
                         <TableCell sx={{ pl: 2 }}>Screen Test</TableCell>
                         <TableCell>{BqcSowftwareReport?.screen_test}</TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.live_call_test}>
-                        <TableCell sx={{ pl: 2 }}>Screen Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Live Call Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.live_call_test}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.live_call_sim_2_test}>
-                        <TableCell sx={{ pl: 2 }}>Screen Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Live Call Sim 2 Test
+                        </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.live_call_sim_2_test}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.screen_damage_test}>
-                        <TableCell sx={{ pl: 2 }}>Screen Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Screen Damage Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.screen_damage_test}
                         </TableCell>
@@ -443,10 +453,12 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.fingerprint_test}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.multi-touch_test}>
-                            <TableCell sx={{ pl: 2 }}>Multi Touch Test</TableCell>
-                            <TableCell>{BqcSowftwareReport?.multi-touch_test}</TableCell>
-                        </TableRow> */}
+                    <TableRow key={BqcSowftwareReport?.multi_touch_test}>
+                        <TableCell sx={{ pl: 2 }}>Multi Touch Test</TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?.multi_touch_test}
+                        </TableCell>
+                    </TableRow>
 
                     <TableRow key={BqcSowftwareReport?.face_id_test}>
                         <TableCell sx={{ pl: 2 }}>Face ID Test</TableCell>
@@ -467,7 +479,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.fm_radio_test}>
-                        <TableCell sx={{ pl: 2 }}>FM Radion Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>FM Radio Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.fm_radio_test}
                         </TableCell>
@@ -562,18 +574,36 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         <TableCell sx={{ pl: 2 }}>FRP Status</TableCell>
                         <TableCell>{BqcSowftwareReport?.frp_status}</TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?.blancco_data.blancco_hardware_report.system.mdm_status}>
-                        <TableCell sx={{ pl: 2 }}>FRP</TableCell>
-                        <TableCell>
-                            {BqcSowftwareReport?.blancco_data.blancco_hardware_report.system.mdm_status}
+                    <TableRow
+                        key={
+                            BqcSowftwareReport?.blancco_data_blancco_hardware_report_system_mdm_status
+                        }
+                    >
+                        <TableCell sx={{ pl: 2 }}>
+                            Blancco Data Blancco Hardware Report System MDM
+                            Status
                         </TableCell>
-                    </TableRow> */}
-                    {/* <TableRow key={BqcSowftwareReport?.blancco_data.blancco_hardware_report.hardware_tests.auto_fingerprint}>
-                        <TableCell sx={{ pl: 2 }}>FRP</TableCell>
                         <TableCell>
-                            {BqcSowftwareReport?.blancco_data.blancco_hardware_report.hardware_tests.auto_fingerprint}
+                            {
+                                BqcSowftwareReport?.blancco_data_blancco_hardware_report_system_mdm_status
+                            }
                         </TableCell>
-                    </TableRow> */}
+                    </TableRow>
+                    <TableRow
+                        key={
+                            BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint
+                        }
+                    >
+                        <TableCell sx={{ pl: 2 }}>
+                            Blancco Data Blancco Hardware Report Hardware Tests
+                            Auto Fingerprint
+                        </TableCell>
+                        <TableCell>
+                            {
+                                BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint
+                            }
+                        </TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.disk_capacity}>
                         <TableCell sx={{ pl: 2 }}>Disk Capacity</TableCell>
                         <TableCell>
@@ -604,14 +634,14 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.speaker_test}
                         </TableCell>
                     </TableRow>
-                    {/* <TableRow key={BqcSowftwareReport?._ro.ril.miui.imei0}>
-                        <TableCell sx={{ pl: 2 }}>Speaker Test</TableCell>
+                    <TableRow key={BqcSowftwareReport?._ro_ril_miui_imei0}>
+                        <TableCell sx={{ pl: 2 }}>RO Ril Miui IMEI 0</TableCell>
                         <TableCell>
-                            {BqcSowftwareReport?._ro.ril.miui.imei0}
+                            {BqcSowftwareReport?._ro_ril_miui_imei0}
                         </TableCell>
-                    </TableRow> */}
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.back_camera_test}>
-                        <TableCell sx={{ pl: 2 }}>Back Camer Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Back Camera Test</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.back_camera_test}
                         </TableCell>

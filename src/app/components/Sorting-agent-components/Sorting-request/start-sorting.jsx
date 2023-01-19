@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Box,
     Button,
@@ -73,6 +73,8 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
+    const [textDisable, setTextDisable] = useState(false)
+
     /*********************************************************** */
 
     useEffect(() => {
@@ -139,6 +141,7 @@ export default function DialogBox() {
             if (e.keyCode === 32) {
             } else {
                 setLoading(true)
+                setTextDisable(true)
                 let res = await axiosSortingAgent.post(
                     '/item-move-to-wht',
                     itemDetails
@@ -146,10 +149,12 @@ export default function DialogBox() {
                 if (res?.status === 200) {
                     setRefresh((refresh) => !refresh)
                     setAwbn('')
+                    setTextDisable(false)
                     handleClose()
                     setLoading(false)
                 } else {
                     setAwbn('')
+                    setTextDisable(false)
                     alert(res.data.message)
                 }
             }
@@ -189,6 +194,121 @@ export default function DialogBox() {
         e.preventDefault()
         navigate('/wareshouse/wht/tray/item/' + code)
     }
+
+    const tableFrom = useMemo(() => {
+        return (
+            <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                <h5>BOT TRAY ITEM</h5>
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                                <TableCell>IMEI</TableCell>
+                                <TableCell>MUIC</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {tray?.bot?.actual_items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.imei}</TableCell>
+                                    <TableCell>{data?.muic}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray?.bot?.actual_items])
+
+    const tableTo = useMemo(() => {
+        return (
+            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <h5>WHT TRAY</h5>
+                <TextField
+                    sx={{ m: 1 }}
+                    id="outlined-password-input"
+                    type="text"
+                    name="doorsteps_diagnostics"
+                    label="Please Enter UIC"
+                    disabled={textDisable}
+                    value={awbn}
+                    // onChange={(e) => setAwbn(e.target.value)}
+                    onChange={(e) => {
+                        setAwbn(e.target.value)
+                        handelAwbn(e)
+                    }}
+                    inputProps={{
+                        style: {
+                            width: 'auto',
+                        },
+                    }}
+                />
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>WHT TRay ID</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
+                                <TableCell>Quantity</TableCell>
+                                <TableCell>Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {tray?.wht?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.code}</TableCell>
+                                    <TableCell>{data?.brand}</TableCell>
+                                    <TableCell>{data?.model}</TableCell>
+                                    <TableCell>
+                                        {data?.items.length}/{data.limit}
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <Button
+                                            sx={{
+                                                m: 1,
+                                            }}
+                                            variant="contained"
+                                            onClick={(e) =>
+                                                handelViewItem(e, data.code)
+                                            }
+                                            style={{
+                                                backgroundColor: 'primery',
+                                            }}
+                                            component="span"
+                                        >
+                                            View
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray?.wht, awbn, textDisable])
 
     /***************************************************************************************** */
     return (
@@ -282,186 +402,10 @@ export default function DialogBox() {
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                        <h5>BOT TRAY ITEM</h5>
-
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>UIC</TableCell>
-                                        <TableCell>IMEI</TableCell>
-                                        <TableCell>MUIC</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {tray?.bot?.actual_items?.map(
-                                        (data, index) => (
-                                            <TableRow
-                                                hover
-                                                role="checkbox"
-                                                tabIndex={-1}
-                                            >
-                                                <TableCell>
-                                                    {index + 1}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.uic}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.imei}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.muic}
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {tableFrom}
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                        <h5>WHT TRAY</h5>
-                        <TextField
-                            sx={{ m: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
-                            value={awbn}
-                            // onChange={(e) => setAwbn(e.target.value)}
-                            onChange={(e) => {
-                                setAwbn(e.target.value)
-                                handelAwbn(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'end',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    m: 2,
-                                }}
-                            >
-                                {/* <Box sx={{}}>
-                  <h5>Total</h5>
-                  <p style={{ marginLeft: "5px", fontSize: "24px" }}>
-                    {tray?.whtactual?.length}/{picklist?.items?.length}
-                  </p>
-                </Box> */}
-                            </Box>
-                            {/* <Box
-                sx={{
-                  m: 2,
-                }}
-              >
-                <Box sx={{}}>
-                  <h5>Valid</h5>
-                  <p style={{ marginLeft: "19px", fontSize: "24px" }}>
-                    {
-                      picklist?.actual?.filter(function (item) {
-                        return item.item_status == "Valid";
-                      }).length
-                    }
-                  </p>
-                </Box>
-              </Box> */}
-                            {/* <Box
-                sx={{
-                  m: 2,
-                }}
-              >
-                <Box sx={{}}>
-                  <h5>Invalid</h5>
-                  <p style={{ marginLeft: "25px", fontSize: "24px" }}>
-                    {
-                      picklist?.actual?.filter(function (item) {
-                        return item.item_status == "Invalid";
-                      }).length
-                    }
-                  </p>
-                </Box>
-              </Box>{" "} */}
-                        </Box>
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>WHT TRay ID</TableCell>
-                                        <TableCell>Brand</TableCell>
-                                        <TableCell>Model</TableCell>
-                                        <TableCell>Quantity</TableCell>
-                                        <TableCell>Action</TableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                    {tray?.wht?.map((data, index) => (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                        >
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{data?.code}</TableCell>
-                                            <TableCell>{data?.brand}</TableCell>
-                                            <TableCell>{data?.model}</TableCell>
-                                            <TableCell>
-                                                {data?.items.length}/
-                                                {data.limit}
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <Button
-                                                    sx={{
-                                                        m: 1,
-                                                    }}
-                                                    variant="contained"
-                                                    onClick={(e) =>
-                                                        handelViewItem(
-                                                            e,
-                                                            data.code
-                                                        )
-                                                    }
-                                                    style={{
-                                                        backgroundColor:
-                                                            'primery',
-                                                    }}
-                                                    component="span"
-                                                >
-                                                    View
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {tableTo}
                 </Grid>
             </Grid>
             <div style={{ float: 'right' }}>

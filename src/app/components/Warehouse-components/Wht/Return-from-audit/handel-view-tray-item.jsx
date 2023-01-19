@@ -95,7 +95,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Reason', 
+            label: 'Reason',
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.reason,

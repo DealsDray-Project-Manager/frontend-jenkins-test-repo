@@ -438,8 +438,10 @@ export default function DialogBox() {
                                 {reportData?.delivery?.bqc_software_report
                                     ?.final_grade !== 'B' &&
                                 reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'D' &&
+                                reportData?.delivery?.bqc_software_report
                                     ?.final_grade !== 'C' ? (
-                                    <MenuItem value="D">B</MenuItem>
+                                    <MenuItem value="B">B</MenuItem>
                                 ) : null}
                                 {reportData?.delivery?.bqc_software_report
                                     ?.final_grade !== 'C' &&

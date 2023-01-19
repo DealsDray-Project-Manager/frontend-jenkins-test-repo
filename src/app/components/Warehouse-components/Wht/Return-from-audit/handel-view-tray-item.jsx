@@ -42,8 +42,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -78,24 +78,35 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'tracking_id',
-            label: 'Tracking Id',
+            name: 'audit_report',
+            label: 'Audit Status',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.stage,
             },
         },
         {
-            name: 'tray_id',
-            label: 'BOT Tray',
+            name: 'audit_report',
+            label: 'Grade',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.grade,
             },
         },
         {
-            name: 'bot_agent',
-            label: 'BOT Agent',
+            name: 'audit_report',
+            label: 'Reason', 
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.reason,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.description,
             },
         },
     ]
@@ -105,7 +116,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assigned Tray', path: '/pages' },
+                        { name: 'Assigned Tray', path: '/' },
                         { name: 'Tray-Item' },
                     ]}
                 />
@@ -125,6 +136,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

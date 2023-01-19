@@ -178,7 +178,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
@@ -213,7 +214,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Warehouse', path: '/pages' }]}
+                    routeSegments={[{ name: 'Warehouse', path: '/' }]}
                 />
             </div>
             <Button

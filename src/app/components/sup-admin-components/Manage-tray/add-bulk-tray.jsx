@@ -145,10 +145,6 @@ const PaginationTable = () => {
         let count6 = 0
         let count7 = 0
         let count8 = 0
-        let count9 = 0
-        let count10 = 0
-        let count11 = 0
-        let count12 = 0
 
         let check = true
         try {
@@ -166,33 +162,18 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'WHT') {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
-                } else if (x.tray_category == 'LUT') {
-                    x.tray_id = 'LUT' + (countOfTray.LUT + count5)
+                } else if (x.tray_category == 'CTA') {
+                    x.tray_id = 'CTA' + (countOfTray.STA + count5)
                     count5++
-                } else if (x.tray_category == 'DUT') {
-                    x.tray_id = 'DUT' + (countOfTray.DUT + count6)
+                } else if (x.tray_category == 'CTB') {
+                    x.tray_id = 'CTB' + (countOfTray.CTB + count6)
                     count6++
-                } else if (x.tray_category == 'RBQ') {
-                    x.tray_id = 'RBQ' + (countOfTray.RBQ + count7)
+                } else if (x.tray_category == 'CTC') {
+                    x.tray_id = 'CTC' + (countOfTray.CTC + count7)
                     count7++
-                } else if (x.tray_category == 'CFT') {
-                    x.tray_id = 'CFT' + (countOfTray.CFT + count8)
+                } else if (x.tray_category == 'CTD') {
+                    x.tray_id = 'CTD' + (countOfTray.CTD + count8)
                     count8++
-                } else if (x.tray_category == 'STA') {
-                    x.tray_id = 'STA' + (countOfTray.STA + count9)
-                    count9++
-                }
-                else if (x.tray_category == 'STB') {
-                    x.tray_id = 'STB' + (countOfTray.STA + count10)
-                    count10++
-                }
-                else if (x.tray_category == 'STC') {
-                    x.tray_id = 'STC' + (countOfTray.STA + count11)
-                    count11++
-                }
-                else if (x.tray_category == 'STD') {
-                    x.tray_id = 'STD' + (countOfTray.STA + count12)
-                    count12++
                 }
             }
 
@@ -285,7 +266,6 @@ const PaginationTable = () => {
             ...p,
             item: pagination.item.filter((item) => item.tray_id != tray_id),
         }))
-      
     }
 
     const StyledLoading = styled('div')(() => ({
@@ -311,7 +291,7 @@ const PaginationTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Tray', path: '/pages' },
+                        { name: 'Tray', path: '/' },
                         { name: 'Bulk-Tray' },
                     ]}
                 />

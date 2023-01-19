@@ -117,7 +117,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const handelIssue = async (e, trayId, type, length, limit) => {
+    const handelIssue = async (e, trayId, type, length, limit,status) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -129,6 +129,7 @@ export default function DialogBox() {
                     type: type,
                     length: length,
                     limit: limit,
+                    status:status
                 }
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',
@@ -427,7 +428,10 @@ export default function DialogBox() {
                                 employeeData[0]?.code,
                                 employeeData[0]?.type_taxanomy,
                                 employeeData[0]?.items.length,
-                                employeeData[0]?.limit
+                                employeeData[0]?.limit,
+                                employeeData[0]?.sort_id,
+
+
                             )
                         }}
                     >

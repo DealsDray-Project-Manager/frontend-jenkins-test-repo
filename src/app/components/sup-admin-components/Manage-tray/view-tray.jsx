@@ -132,8 +132,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -195,6 +195,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy',
+            label: 'Tray Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'sort_id',
             label: 'Status',
             options: {
@@ -205,7 +212,8 @@ const SimpleMuiTable = () => {
             name: 'created_at',
             label: 'Creation Date',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -276,7 +284,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Tray', path: '/pages' }]}
+                    routeSegments={[{ name: 'Tray', path: '/' }]}
                 />
             </div>
             <Button

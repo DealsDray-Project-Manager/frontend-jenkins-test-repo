@@ -60,7 +60,7 @@ export default function CenteredTabs() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Report', path: '/pages' },
+                        { name: 'Report', path: '/' },
                         { name: 'BQC' },
                     ]}
                 />

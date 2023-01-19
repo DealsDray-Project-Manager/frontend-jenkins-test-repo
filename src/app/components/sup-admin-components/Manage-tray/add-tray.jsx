@@ -426,69 +426,38 @@ const MemberEditorDialog = ({
                             >
                                 WHT
                             </MenuItem>
+
                             <MenuItem
-                                value="LUT"
+                                value="CTA"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'LUT')
+                                    fetchTypeWiseId(e, 'CTA')
                                 }}
                             >
-                                LUT
+                                CTA
                             </MenuItem>
                             <MenuItem
-                                value="DUT"
+                                value="CTB"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'DUT')
+                                    fetchTypeWiseId(e, 'CTB')
                                 }}
                             >
-                                DUT
+                                CTB
                             </MenuItem>
                             <MenuItem
-                                value="RBQ"
+                                value="CTC"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'RBQ')
+                                    fetchTypeWiseId(e, 'CTC')
                                 }}
                             >
-                                RBQ
+                                CTC
                             </MenuItem>
                             <MenuItem
-                                value="CFT"
+                                value="CTD"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CFT')
+                                    fetchTypeWiseId(e, 'CTD')
                                 }}
                             >
-                                CFT
-                            </MenuItem>
-                            <MenuItem
-                                value="STA"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'STA')
-                                }}
-                            >
-                                STA
-                            </MenuItem>
-                            <MenuItem
-                                value="STB"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'STB')
-                                }}
-                            >
-                                STB
-                            </MenuItem>
-                            <MenuItem
-                                value="STC"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'STC')
-                                }}
-                            >
-                                STC
-                            </MenuItem>
-                            <MenuItem
-                                value="STD"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'STD')
-                                }}
-                            >
-                                STD
+                                CTD
                             </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'WHT' ? (

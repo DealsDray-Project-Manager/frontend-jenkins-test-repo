@@ -31,14 +31,11 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
     const [otherTrayAssign, setOtherTrayAssign] = useState({
-        LUT: '',
-        DUT: '',
-        RBQ: '',
-        CFT: '',
-        STA: '',
-        STB: '',
-        STC: '',
-        STD: '',
+        
+        CTA: '',
+        CTB: '',
+        CTC: '',
+        CTD: '',
         WHT: '',
     })
 
@@ -75,14 +72,10 @@ export default function DialogBox() {
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
-                        LUT: trayFetch.data.data.LUT,
-                        DUT: trayFetch.data.data.DUT,
-                        RBQ: trayFetch.data.data.RBQ,
-                        CFT: trayFetch.data.data.CFT,
-                        STA: trayFetch.data.data.STA,
-                        STB: trayFetch.data.data.STB,
-                        STC: trayFetch.data.data.STC,
-                        STD: trayFetch.data.data.STD,
+                        CTA: trayFetch.data.data.CTA,
+                        CTB: trayFetch.data.data.CTB,
+                        CTC: trayFetch.data.data.CTC,
+                        CTD: trayFetch.data.data.CTD,
                         WHT: trayId,
                     })
                     setTrayIdNotChangeAble(trayFetch.data.data)

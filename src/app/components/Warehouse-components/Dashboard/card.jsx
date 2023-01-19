@@ -111,12 +111,6 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
-            amount: count.whtTrayRelease,
-            title: 'WHT Release',
-            path: '/wareshouse/wht/wht-release',
-        },
-        {
-            icon: 'shopping_cart',
             amount: count.otherTrayAuditDone,
             title: 'Return from Audit',
             path: '/wareshouse/wht/return-from-audit',

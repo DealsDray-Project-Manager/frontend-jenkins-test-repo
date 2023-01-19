@@ -138,8 +138,8 @@ const UserTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -248,7 +248,8 @@ const UserTable = () => {
             name: 'status',
             label: 'Actions',
             options: {
-                filter: true,
+                sort: false,
+                filter: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -303,9 +304,7 @@ const UserTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Users', path: '/pages' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Users', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}

@@ -1,5 +1,4 @@
 import { authRoles } from 'app/auth/authRoles'
-import { useEffect } from 'react'
 
 export const navigations = [
     {
@@ -120,7 +119,7 @@ export const navigations = [
         ],
         auth: authRoles.admin,
     },
-   
+
     {
         name: 'Remove invalid item',
         icon: 'leak_remove',
@@ -394,20 +393,9 @@ export const navigations = [
             },
             {
                 name: 'Return From Audit',
-                icon: 'shopping_cart',
-                children: [
-                    {
-                        name: 'WHT Release',
-                        path: '/wareshouse/wht/wht-release',
-                        iconText: 'VP',
-                    },
-                    {
-                        name: 'Other Tray',
-                        path: '/wareshouse/wht/return-from-audit',
-                        iconText: 'VP',
-                    },
-                ],
+                path: '/wareshouse/wht/return-from-audit',
                 auth: authRoles.Warehouse,
+                iconText: 'VP',
             },
         ],
         auth: authRoles.Warehouse,

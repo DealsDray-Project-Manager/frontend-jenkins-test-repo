@@ -16,6 +16,7 @@ import {
     Box,
     MenuItem,
     TextField,
+    Button
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -500,11 +501,17 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'UIC-Manage', path: '/pages' },
+                        { name: 'UIC-Manage', path: '/' },
                         { name: 'UIC-Generated' },
                     ]}
                 />
             </div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
             <Box>
                 <TextField
                     select
@@ -530,7 +537,20 @@ const SimpleMuiTable = () => {
                     variant="outlined"
                     sx={{ ml: 2, mb: 1 }}
                 />
+                 </Box>
+                 <Box>
+                    <Button
+                        variant="contained"
+                        sx={{ m: 1 }}
+                        onClick={(e) => {
+                            exportToCSV('UIC-Printing-Sheet')
+                        }}
+                    >
+                        Download
+                    </Button>
+                </Box>
             </Box>
+
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}
             </Card>

@@ -110,8 +110,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -169,7 +169,8 @@ const SimpleMuiTable = () => {
             name: 'type_taxanomy',
             label: 'Action',
             options: {
-                filter: true,
+                filter: false,
+                sort_id: false,
                 customBodyRender: (value, tableMeta) => {
                     return tableMeta.rowData[6] == 'BOT' ||
                         (tableMeta.rowData[6] == 'WHT' &&
@@ -212,7 +213,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/pages' },
+                        { name: 'Sorting', path: '/' },
                         { name: 'Request-Approve' },
                     ]}
                 />
@@ -251,6 +252,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

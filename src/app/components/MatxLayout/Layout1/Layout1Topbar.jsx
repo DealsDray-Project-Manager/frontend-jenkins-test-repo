@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'
 import useSettings from 'app/hooks/useSettings'
@@ -28,12 +28,6 @@ const TopbarRoot = styled('div')(({ theme }) => ({
     boxShadow: themeShadows[8],
     height: topBarHeight,
 }))
-
-
-
-
-
-
 
 const TopbarContainer = styled(Box)(({ theme }) => ({
     padding: '8px',
@@ -86,14 +80,14 @@ const Layout1Topbar = () => {
     const { settings, updateSettings } = useSettings()
     const { logout, user } = useAuth()
     const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
-    const [userData,setUser]=useState("")
-    useEffect(()=>{
+    const [userData, setUser] = useState('')
+    useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
-    if (admin) {
-        let { user_type } = jwt_decode(admin)
-       setUser(user_type)
-    }
-    },[])
+        if (admin) {
+            let { user_type } = jwt_decode(admin)
+            setUser(user_type)
+        }
+    }, [])
 
     const updateSidebarMode = (sidebarSettings) => {
         updateSettings({
@@ -127,6 +121,7 @@ const Layout1Topbar = () => {
                     <StyledIconButton onClick={handleSidebarToggle}>
                         <Icon>menu</Icon>
                     </StyledIconButton>
+                    <Span style={{marginTop:"10px"}}> <strong>{user.user_type?.toUpperCase()} PANEL</strong></Span>
 
                     {/* <IconBox>
                         <StyledIconButton>

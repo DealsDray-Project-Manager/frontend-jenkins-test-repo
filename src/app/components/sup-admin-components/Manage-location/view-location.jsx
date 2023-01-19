@@ -117,8 +117,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -176,7 +176,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
@@ -211,7 +212,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Location', path: '/pages' }]}
+                    routeSegments={[{ name: 'Location', path: '/' }]}
                 />
             </div>
             <Button

@@ -70,7 +70,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
-    const [refresh,setRefresh]=useState(false)
+    const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -113,28 +113,26 @@ const SimpleMuiTable = () => {
                 if (res.status == 200) {
                     alert(res.data.message)
                     setOpen(false)
-                    setRefresh((refresh)=> !refresh)
+                    setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
                 alert(error)
             }
         }
-
-
     }
 
     const handelViewDetailTray = (e, id) => {
-        e.preventDefault();
-        navigate("/wareshouse/merge/return-from-merge/close/" + id);
-      };
+        e.preventDefault()
+        navigate('/wareshouse/merge/return-from-merge/close/' + id)
+    }
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -158,7 +156,7 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: true,
+                filter: false,
 
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[2],
@@ -200,37 +198,38 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Action',
             options: {
-                filter: true,
-                customBodyRender: (value,tableMeta) => {
-                    return (
-                        tableMeta.rowData[6] != "Received From Merging" ? (
-                            <Button
-                              sx={{
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return tableMeta.rowData[6] != 'Received From Merging' &&
+                        tableMeta.rowData[6] !=
+                            'Audit Done Received From Merging' ? (
+                        <Button
+                            sx={{
                                 m: 1,
-                              }}
-                              variant="contained"
-                              style={{ backgroundColor: "green" }}
-                              onClick={(e) => {
-                                setOpen(true);
-                                setTrayId(value);
-                              }}
-                            >
-                              RECEIVED
-                            </Button>
-                          ) : (
-                            <Button
-                              sx={{
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: 'green' }}
+                            onClick={(e) => {
+                                setOpen(true)
+                                setTrayId(value)
+                            }}
+                        >
+                            RECEIVED
+                        </Button>
+                    ) : (
+                        <Button
+                            sx={{
                                 m: 1,
-                              }}
-                              variant="contained"
-                              style={{ backgroundColor: "red" }}
-                              onClick={(e) => {
-                                handelViewDetailTray(e, value);
-                              }}
-                            >
-                              Close
-                            </Button>
-                          )
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: 'red' }}
+                            onClick={(e) => {
+                                handelViewDetailTray(e, value)
+                            }}
+                        >
+                            Close
+                        </Button>
                     )
                 },
             },
@@ -285,7 +284,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Merge', path: '/pages' },
+                        { name: 'Merge', path: '/' },
                         { name: 'Return-From-Merge' },
                     ]}
                 />
@@ -305,6 +304,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

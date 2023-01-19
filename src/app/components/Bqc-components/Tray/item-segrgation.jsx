@@ -80,7 +80,7 @@ export default function DialogBox() {
         setTextBoxDis(false)
         setOpen(false)
     }
-    
+
     const handleClickOpen = () => {
         setOpen(true)
     }
@@ -164,8 +164,8 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const addActualitem = async (e,type, value) => {
-        if(e.keyCode !== 32){
+    const addActualitem = async (e, type, value) => {
+        if (e.keyCode !== 32) {
             if (
                 trayData.limit <=
                 trayData?.temp_array?.length + trayData?.actual_items?.length
@@ -501,7 +501,8 @@ export default function DialogBox() {
                         type="submit"
                         onClick={(e) => {
                             addActualitem(
-                               e, 'Device Out',
+                                e,
+                                'Device Out',
                                 'Device not to be checked for BQC'
                             )
                         }}
@@ -520,7 +521,8 @@ export default function DialogBox() {
                         disabled={deviceButDis}
                         onClick={(e) => {
                             addActualitem(
-                               e, 'Device In',
+                                e,
+                                'Device In',
                                 'Device in progress for BQC'
                             )
                         }}
@@ -555,7 +557,6 @@ export default function DialogBox() {
                         name="doorsteps_diagnostics"
                         label="Please Enter UIC"
                         value={uic}
-                        // onChange={(e) => setAwbn(e.target.value)}
                         onChange={(e) => {
                             setUic(e.target.value)
                             handelUic(e)

@@ -28,7 +28,9 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchBrand = async () => {
             try {
-                const res = await axiosSuperAdminPrexo.post('/getInvalidItemPresentBag')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/getInvalidItemPresentBag'
+                )
                 if (res.status === 200) {
                     setBagList(res.data.data)
                 }
@@ -53,8 +55,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -99,8 +101,8 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: true,
-
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[4],
             },
@@ -116,7 +118,8 @@ const SimpleMuiTable = () => {
             name: 'sort_id',
             label: 'Status',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -134,7 +137,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
@@ -158,9 +162,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Remove Invalid Item', path: '/pages' },
-                    ]}
+                    routeSegments={[{ name: 'Remove Invalid Item', path: '/' }]}
                 />
             </div>
 

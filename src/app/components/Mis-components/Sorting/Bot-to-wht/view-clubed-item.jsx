@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate,useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -21,46 +21,44 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [item, setItem] = useState({})
     const navigate = useNavigate()
-    const { state } = useLocation();
-    const { isCheck,muic } = state;
+    const { state } = useLocation()
+    const { isCheck, muic } = state
 
     useEffect(() => {
-        let admin = localStorage.getItem("prexo-authentication");
+        let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
-          const fetchData = async () => {
-            try {
-              let obj={
-                tray:isCheck,
-                muic:muic
-              }
-              let res = await axiosMisUser.post(
-                "/view-bot-clubed-data-model" ,obj
-              );
-              if (res.status === 200) {
-                setItem(res.data.data);
-              }
-              else{
-                alert(res.data.message)
-              }
-            } catch (error) {
-              alert(error);
+            const fetchData = async () => {
+                try {
+                    let obj = {
+                        tray: isCheck,
+                        muic: muic,
+                    }
+                    let res = await axiosMisUser.post(
+                        '/view-bot-clubed-data-model',
+                        obj
+                    )
+                    if (res.status === 200) {
+                        setItem(res.data.data)
+                    } else {
+                        alert(res.data.message)
+                    }
+                } catch (error) {
+                    alert(error)
+                }
             }
-          };
-          fetchData();
+            fetchData()
         } else {
-          navigate("/");
+            navigate('/')
         }
-      }, []);
+    }, [])
 
-   
-
-      const columns = [
+    const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -84,12 +82,9 @@ const SimpleMuiTable = () => {
             label: 'MUIC',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-               {
-                return (
-                    item.muic
-                )
-               }
+                customBodyRender: (value) => {
+                    return item.muic
+                },
             },
         },
         {
@@ -97,27 +92,20 @@ const SimpleMuiTable = () => {
             label: 'Brand',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-               {
-                return (
-                    item.brand
-                )
-               }
-
+                customBodyRender: (value) => {
+                    return item.brand
+                },
             },
         },
-       
+
         {
             name: 'model',
             label: 'Model',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-               {
-                return (
-                    item.model
-                )
-               }
+                customBodyRender: (value) => {
+                    return item.model
+                },
             },
         },
         {
@@ -147,12 +135,11 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
-       
     ]
 
     return (
@@ -160,13 +147,11 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/pages' },
+                        { name: 'Sorting', path: '/' },
                         { name: 'Bot-to-wht' },
                     ]}
                 />
             </div>
-          
-            
 
             <MUIDataTable
                 title={'Wht Tray'}
@@ -182,6 +167,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

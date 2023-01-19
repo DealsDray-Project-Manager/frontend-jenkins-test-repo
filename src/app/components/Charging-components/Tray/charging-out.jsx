@@ -86,6 +86,7 @@ export default function DialogBox() {
     const [textBoxDis, setTextBoxDis] = useState(false)
     const [charge, setCharge] = useState('')
     const handleClose = () => {
+        reset({})
         setOpen(false)
     }
     /************************************************************************** */
@@ -148,7 +149,6 @@ export default function DialogBox() {
                 }
             )
             .nullable(),
-        boady_part_missing: Yup.string().required('Required*').nullable(),
         part_name: Yup.string()
             .when('boady_part_missing', (boady_part_missing, schema) => {
                 if (boady_part_missing == 'YES') {
@@ -205,8 +205,15 @@ export default function DialogBox() {
                 }
                 setTextBoxDis(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
-                console.log(res)
                 if (res?.status == 200) {
+                    reset({
+                        ...res.data.data?.charging,
+                    })
+                    setCharge(res.data.data?.charging?.battery_status)
+                    if (res.data.data?.charging?.boady_part_missing == 'YES') {
+                        setBodyDamage(true)
+                    }
+                    console.log(res.data.data?.charging?.boady_part_missing)
                     setResDataUic(res.data.data)
                     handleClickOpen()
                 } else {
@@ -221,10 +228,29 @@ export default function DialogBox() {
     }
     const onSubmit = async (values) => {
         values.charging_person = user_name1
+
         if (trayData.limit <= trayData?.actual_items?.length) {
             alert('All Items Scanned')
         } else {
             setlLoading(true)
+            if (
+                values.battery_status !== 'Charge' &&
+                values.battery_status !== 'Heat Problem'
+            ) {
+                values.charge_percentage = ''
+                values.lock_status = ''
+            }
+
+            if (
+                values.battery_status !== 'Charge' &&
+                values.battery_status !== 'Heat Problem' &&
+                values.lock_status == 'Unlocked' &&
+                values.lock_status == 'Software Issue'
+            ) {
+                values.cimei_1 = ''
+                values.cimei_2 = ''
+            }
+
             try {
                 let objData = {
                     trayId: trayId,
@@ -277,8 +303,9 @@ export default function DialogBox() {
         }
     }
     const handleClickOpen = () => {
-        reset({})
-        setBodyDamage(false)
+        if (trayData.sort_id !== 'Recharging Station IN') {
+            setBodyDamage(false)
+        }
         setOpen(true)
     }
     const tableExpected = useMemo(() => {
@@ -432,6 +459,7 @@ export default function DialogBox() {
         )
     }, [trayData?.actual_items, textBoxDis, uic])
     /***************************************************************************************** */
+    console.log()
     return (
         <>
             <BootstrapDialog
@@ -469,6 +497,7 @@ export default function DialogBox() {
                                 labelId="demo-simple-select-label"
                                 fullWidth
                                 label="Battery Status"
+                                defaultValue={getValues('battery_status')}
                                 {...register('battery_status')}
                                 error={errors.battery_status ? true : false}
                                 helperText={errors.battery_status?.message}
@@ -519,6 +548,9 @@ export default function DialogBox() {
                                 <Select
                                     labelId="demo-simple-select-label"
                                     fullWidth
+                                    defaultValue={getValues(
+                                        'charge_percentage'
+                                    )}
                                     label="Charge Percentage"
                                     {...register('charge_percentage')}
                                     error={
@@ -555,7 +587,11 @@ export default function DialogBox() {
                             <Select
                                 labelId="demo-simple-select-label"
                                 fullWidth
+                                disabled={
+                                    trayData.sort_id == 'Recharging Station IN'
+                                }
                                 label="Body Condition"
+                                defaultValue={getValues('body_condition')}
                                 {...register('body_condition')}
                                 error={errors.body_condition ? true : false}
                                 helperText={errors.body_condition?.message}
@@ -585,6 +621,10 @@ export default function DialogBox() {
                             <Select
                                 labelId="demo-simple-select-label"
                                 fullWidth
+                                defaultValue={getValues('display_condition')}
+                                disabled={
+                                    trayData.sort_id == 'Recharging Station IN'
+                                }
                                 label="Display Condition"
                                 {...register('display_condition')}
                                 error={errors.display_condition ? true : false}
@@ -614,9 +654,14 @@ export default function DialogBox() {
                                     Lock Status
                                 </InputLabel>
                                 <Select
+                                    disabled={
+                                        trayData.sort_id ==
+                                        'Recharging Station IN'
+                                    }
                                     labelId="demo-simple-select-label"
                                     fullWidth
                                     label="Lock Status"
+                                    defaultValue={getValues('lock_status')}
                                     {...register('lock_status')}
                                     error={errors.lock_status ? true : false}
                                     helperText={errors.lock_status?.message}
@@ -649,8 +694,12 @@ export default function DialogBox() {
                                 Charging Jack type
                             </InputLabel>
                             <Select
+                                disabled={
+                                    trayData.sort_id == 'Recharging Station IN'
+                                }
                                 labelId="demo-simple-select-label"
                                 fullWidth
+                                defaultValue={getValues('charging_jack_type')}
                                 label="Charging Jack type"
                                 {...register('charging_jack_type')}
                                 error={errors.charging_jack_type ? true : false}
@@ -671,21 +720,52 @@ export default function DialogBox() {
                             </FormLabel>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
-                                defaultValue="NO"
+                                defaultValue={
+                                    trayData?.sort_id == 'Recharging Station IN'
+                                        ? getValues('boady_part_missing')
+                                        : 'NO'
+                                }
                                 name="boady_part_missing"
                             >
                                 <Box>
                                     <FormControlLabel
                                         value="YES"
+                                        disabled={
+                                            trayData.sort_id ==
+                                            'Recharging Station IN'
+                                        }
                                         {...register('boady_part_missing')}
-                                        onClick={(e) => setBodyDamage(true)}
+
+                                        onClick={(e) => {
+                                            if (
+                                                trayData?.sort_id ==
+                                                'Recharging Station IN'
+                                            ) {
+                                                return false
+                                            } else {
+                                                setBodyDamage(true)
+                                            }
+                                        }}
                                         control={<Radio />}
                                         label="YES"
                                     />
                                     <FormControlLabel
-                                        onClick={(e) => setBodyDamage(false)}
+                                    disabled={
+                                        trayData.sort_id ==
+                                        'Recharging Station IN'
+                                    }
                                         {...register('boady_part_missing')}
                                         value="NO"
+                                        onClick={(e) => {
+                                            if (
+                                                trayData?.sort_id ==
+                                                'Recharging Station IN'
+                                            ) {
+                                                return false
+                                            } else {
+                                                setBodyDamage(false)
+                                            }
+                                        }}
                                         control={<Radio />}
                                         label="NO"
                                     />
@@ -694,9 +774,13 @@ export default function DialogBox() {
                         </FormControl>
                         {bodyDamage == true ? (
                             <TextField
+                                defaultValue={getValues('part_name')}
                                 label="Missing Part Name"
                                 variant="outlined"
                                 type="text"
+                                disabled={
+                                    trayData.sort_id == 'Recharging Station IN'
+                                }
                                 {...register('part_name')}
                                 error={errors.part_name ? true : false}
                                 helperText={errors.part_name?.message}
@@ -708,6 +792,10 @@ export default function DialogBox() {
                             label="CIMEI-1"
                             variant="outlined"
                             type="text"
+                            disabled={
+                                trayData.sort_id == 'Recharging Station IN'
+                            }
+                            defaultValue={getValues('cimei_1')}
                             {...register('cimei_1')}
                             inputProps={{ maxLength: 15 }}
                             onKeyPress={(event) => {
@@ -724,6 +812,10 @@ export default function DialogBox() {
                             label="CIMEI-2"
                             variant="outlined"
                             type="text"
+                            disabled={
+                                trayData.sort_id == 'Recharging Station IN'
+                            }
+                            defaultValue={getValues('cimei_2')}
                             {...register('cimei_2')}
                             inputProps={{ maxLength: 15 }}
                             onKeyPress={(event) => {

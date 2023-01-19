@@ -171,6 +171,16 @@ const SimpleMuiTable = () => {
 
     const columns = [
         {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
             name: 'image', // field name in the row object
             label: 'Image', // column title that will be shown in table
             options: {
@@ -243,7 +253,8 @@ const SimpleMuiTable = () => {
             name: 'status',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -255,7 +266,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editProductData(tableMeta.rowData[5])
+                                        editProductData(tableMeta.rowData[6])
                                     }}
                                     color="primary"
                                 >
@@ -265,7 +276,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        handelDelete(tableMeta.rowData[5])
+                                        handelDelete(tableMeta.rowData[6])
                                     }}
                                     color="error"
                                 >
@@ -275,7 +286,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        editImage(tableMeta.rowData[5])
+                                        editImage(tableMeta.rowData[6])
                                     }}
                                     color="primary"
                                 >
@@ -293,7 +304,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Products', path: '/pages' }]}
+                    routeSegments={[{ name: 'Products', path: '/' }]}
                 />
             </div>
             <Button

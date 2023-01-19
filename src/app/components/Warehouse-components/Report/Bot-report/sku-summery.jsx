@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate,useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { Button } from '@mui/material'
@@ -21,7 +21,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [botTray, setBotTray] = useState([])
-    const {trayId}=useParams()
+    const { trayId } = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status === 200) {
-                        console.log(res.data.data.temp_array);
+                        console.log(res.data.data.temp_array)
                         setBotTray(res.data.data.temp_array)
                     }
                 }
@@ -51,17 +51,19 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewTray = (e, muic) => {
-        e.preventDefault();
-        navigate("/wareshouse/report/bot/sku-summery/details/" + trayId + "/" + muic);
-      };
+        e.preventDefault()
+        navigate(
+            '/wareshouse/report/bot/sku-summery/details/' + trayId + '/' + muic
+        )
+    }
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -87,14 +89,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-      
+
         {
             name: 'item',
             label: 'Units',
             options: {
                 filter: true,
                 customBodyRender: (value) => value?.length,
-
             },
         },
         {
@@ -109,7 +110,8 @@ const SimpleMuiTable = () => {
             name: 'muic',
             label: 'Action',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value) => {
                     return (
                         <Button
@@ -135,7 +137,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Report', path: '/pages' },
+                        { name: 'Report', path: '/' },
                         { name: 'Bot-Report' },
                     ]}
                 />
@@ -155,6 +157,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

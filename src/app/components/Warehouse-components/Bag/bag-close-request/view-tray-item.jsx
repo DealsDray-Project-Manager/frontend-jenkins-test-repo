@@ -42,8 +42,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Tray', path: '/pages' },
-                        { name: 'Tray-Item', path: '/pages' },
+                        { name: 'Tray', path: '/' },
+                        { name: 'Tray-Item', path: '/' },
                     ]}
                 />
             </div>
@@ -75,8 +75,8 @@ const columns = [
         name: 'index',
         label: 'Record No',
         options: {
-            filter: true,
-            sort: true,
+            filter: false,
+            sort: false,
             customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
         },
     },

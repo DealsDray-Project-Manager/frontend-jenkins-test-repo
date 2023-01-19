@@ -25,11 +25,12 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { H1, H3, H4 } from 'app/components/Typography'
 import { axiosAuditAgent, axiosSuperAdminPrexo } from '../../../../axios'
-import ChargingDetails from '../../sup-admin-components/Manage-bqc-report/ChargingDetails'
-import BqcReport from '../../sup-admin-components/Manage-bqc-report/BqcReport'
-import BqcUserReport from '../../sup-admin-components/Manage-bqc-report/BqcUserReport'
-import AmazonDetails from '../../sup-admin-components/Manage-bqc-report/AmazonDetails'
+import ChargingDetails from './Report/charging-user-report'
+import Botuser from './Report/bot-user-rport'
+import BqcUserReport from './Report/bqc-user-report'
+import AmazonDetails from './Report/amazon-data'
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -75,11 +76,13 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [open, setOpen] = React.useState(false)
     const [reportData, setReportData] = useState({})
-    const [type, setType] = useState('')
+
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
     const [addButDis, setAddButDis] = useState(false)
     const [closeButDis, SetCloseButDis] = useState(false)
+
+    const [state, setState] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -124,6 +127,7 @@ export default function DialogBox() {
         }
     }
     const handleClose = () => {
+        setState({})
         setOpen(false)
     }
     const handleOpen = () => {
@@ -136,26 +140,43 @@ export default function DialogBox() {
                 setAddButDis(true)
                 let obj = {
                     username: username,
-                    type: type,
                     uic: uic,
                     trayId: trayId,
+                }
+                obj.stage = state.stage
+                if (state.stage == 'Accepte') {
+                    obj.type = state.tray_type
+                } else if (
+                    state.stage == 'Upgrade' ||
+                    state.stage == 'Downgrade'
+                ) {
+                    obj.type = 'WHT'
+                    obj.grade = state.tray_grade
+                    obj.reason = state.reason
+                    obj.description = state.description
+                } else {
+                    obj.type = 'WHT'
+                    obj.description = state.description
                 }
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
                     handleClose()
                     alert(res.data.message)
                     setUic('')
+
                     setAddButDis(false)
                     setRefresh((refresh) => !refresh)
                 } else {
                     if (res.data.status == 2) {
                         setUic('')
                         setAddButDis(false)
+
                         if (window.confirm('Tray is full you want to Close?')) {
                             handelClose(res.data.trayId, 'no')
                         }
                     } else if (res.data.status == 4) {
                         setUic('')
+
                         setAddButDis(false)
                         alert(res.data.message)
                         handleClose()
@@ -186,6 +207,19 @@ export default function DialogBox() {
             }
         } catch (error) {
             alert(error)
+        }
+    }
+
+    const handleChange = ({ target: { name, value } }) => {
+        if (name === 'stage') {
+            setState({
+                [name]: value,
+            })
+        } else {
+            setState({
+                ...state,
+                [name]: value,
+            })
         }
     }
 
@@ -272,9 +306,26 @@ export default function DialogBox() {
                     All Informations
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
+                    {reportData?.delivery?.bqc_software_report?.final_grade ==
+                        undefined ||
+                    reportData?.delivery?.bqc_software_report?.final_grade ==
+                        '' ? (
+                        <H3>Grade not found</H3>
+                    ) : (
+                        <H3>
+                            Grade :{' '}
+                            {
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade
+                            }
+                        </H3>
+                    )}
                     <Grid sx={{ mt: 1 }} container spacing={3}>
                         <Grid item lg={4} md={6} xs={12}>
                             <AmazonDetails Order={reportData?.order} />
+                        </Grid>
+                        <Grid item lg={4} md={6} xs={12}>
+                            <Botuser BOt={reportData?.delivery?.bot_report} />
                         </Grid>
                         <Grid item lg={4} md={6} xs={12}>
                             <ChargingDetails
@@ -286,51 +337,180 @@ export default function DialogBox() {
                                 BqcUserReport={reportData?.delivery?.bqc_report}
                             />
                         </Grid>
-                        <Grid item lg={4} md={6} xs={12}>
-                            <BqcReport
-                                BqcSowftwareReport={
-                                    reportData?.delivery?.bqc_software_report
-                                }
-                            />
-                        </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <TextField
-                        label="Select Tray"
+                        label="Select"
                         sx={{
                             width: '140px',
                         }}
                         select
+                        onChange={handleChange}
+                        name="stage"
                     >
-                        <MenuItem onClick={(e) => setType('LUT')} value="LUT">
-                            LUT
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('DUT')} value="DUT">
-                            DUT
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('RBQ')} value="RBQ">
-                            RBQ
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('CFT')} value="CFT">
-                            CFT
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('STA')} value="STA">
-                            STA
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('STB')} value="STB">
-                            STB
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('STC')} value="STC">
-                            STC
-                        </MenuItem>
-                        <MenuItem onClick={(e) => setType('STD')} value="STD">
-                            STD
-                        </MenuItem>
+                        <MenuItem value="Accepte">Accepte</MenuItem>
+                        <MenuItem value="Upgrade">Upgrade</MenuItem>
+                        <MenuItem value="Downgrade">Downgrade</MenuItem>
+                        <MenuItem value="Repair">Repair</MenuItem>
                     </TextField>
+                    {state.stage === 'Accepte' ? (
+                        <TextField
+                            label="Select Tray"
+                            sx={{
+                                width: '140px',
+                            }}
+                            select
+                            onChange={handleChange}
+                            name="tray_type"
+                        >
+                            <MenuItem value="CTA">CTA</MenuItem>
+                            <MenuItem value="CTB">CTB</MenuItem>
+                            <MenuItem value="CTC">CTC</MenuItem>
+                            <MenuItem value="CTD">CTD</MenuItem>
+                        </TextField>
+                    ) : null}
+                    {state.stage === 'Upgrade' ? (
+                        <>
+                            <TextField
+                                label="Select Grade"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="tray_grade"
+                            >
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'A' ? (
+                                    <MenuItem value="A">A</MenuItem>
+                                ) : null}
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'B' &&
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'A' ? (
+                                    <MenuItem value="B">B</MenuItem>
+                                ) : null}
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'C' &&
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'A' &&
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'B' ? (
+                                    <MenuItem value="C">C</MenuItem>
+                                ) : null}
+                            </TextField>
+                            <TextField
+                                label="Upgrade Reason"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="reason"
+                            >
+                                <MenuItem value="Reason-1">Reason-1</MenuItem>
+                                <MenuItem value="Reason-2">Reason-2</MenuItem>
+                                <MenuItem value="Reason-3">Reason-3</MenuItem>
+                                <MenuItem value="Reason-4">Reason-4</MenuItem>
+                            </TextField>
+                            <TextField
+                                label="Description"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                onChange={handleChange}
+                                name="description"
+                            />
+                        </>
+                    ) : null}
+                    {state.stage === 'Downgrade' ? (
+                        <>
+                            <TextField
+                                label="Select Grade"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="tray_grade"
+                            >
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'B' &&
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'C' ? (
+                                    <MenuItem value="D">B</MenuItem>
+                                ) : null}
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'C' &&
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'D' ? (
+                                    <MenuItem value="C">C</MenuItem>
+                                ) : null}
+
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade !== 'D' ? (
+                                    <MenuItem value="D">D</MenuItem>
+                                ) : null}
+                            </TextField>
+                            <TextField
+                                label="Downgrade Reason"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="reason"
+                            >
+                                <MenuItem value="Reason-1">Reason-1</MenuItem>
+                                <MenuItem value="Reason-2">Reason-2</MenuItem>
+                                <MenuItem value="Reason-3">Reason-3</MenuItem>
+                                <MenuItem value="Reason-4">Reason-4</MenuItem>
+                            </TextField>
+                            <TextField
+                                label="Description"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                onChange={handleChange}
+                                name="description"
+                            />
+                        </>
+                    ) : null}
+                    {state.stage === 'Repair' ? (
+                        <>
+                            <TextField
+                                label="Description"
+                                sx={{
+                                    width: '140px',
+                                }}
+                                onChange={handleChange}
+                                name="description"
+                            />
+                        </>
+                    ) : null}
                     <Button
                         sx={{ ml: 2 }}
-                        disabled={type == '' || addButDis}
+                        disabled={
+                            state.stage == undefined ||
+                            (state.stage == 'Accepte' &&
+                                state.tray_type == undefined) ||
+                            (state.stage == 'Upgrade' &&
+                                state.tray_grade == undefined) ||
+                            (state.stage == 'Upgrade' &&
+                                state.reason == undefined) ||
+                            (state.stage == 'Upgrade' &&
+                                state.description == undefined) ||
+                            (state.stage == 'Downgrade' &&
+                                state.tray_grade == undefined) ||
+                            (state.stage == 'Downgrade' &&
+                                state.reason == undefined) ||
+                            (state.stage == 'Downgrade' &&
+                                state.description == undefined) ||
+                            (state.stage == 'Repair' &&
+                                state.description == undefined) ||
+                            addButDis
+                        }
                         onClick={(e) => handelAdd(e)}
                         variant="contained"
                         color="primary"
@@ -364,8 +544,8 @@ export default function DialogBox() {
                                     mr: 3,
                                 }}
                             >
-                                <Box sx={{}}>
-                                    <h4>Assigned Count</h4>
+                                <Box sx={{ mr: 4 }}>
+                                    <h4>IN CT</h4>
                                     <p
                                         style={{
                                             fontSize: '22px',
@@ -373,6 +553,17 @@ export default function DialogBox() {
                                         }}
                                     >
                                         {trayData?.wht?.actual_items?.length}
+                                    </p>
+                                </Box>
+                                <Box sx={{ mr: 4 }}>
+                                    <h4>IN WHT</h4>
+                                    <p
+                                        style={{
+                                            fontSize: '22px',
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        {trayData?.wht?.temp_array?.length}
                                     </p>
                                 </Box>
                                 <Box
@@ -434,7 +625,8 @@ export default function DialogBox() {
                             variant="contained"
                             disabled={
                                 trayData?.wht?.items?.length !==
-                                    trayData?.wht?.actual_items?.length ||
+                                    trayData?.wht?.actual_items?.length +
+                                        trayData?.wht?.temp_array?.length ||
                                 closeButDis
                             }
                             loadingPosition="end"

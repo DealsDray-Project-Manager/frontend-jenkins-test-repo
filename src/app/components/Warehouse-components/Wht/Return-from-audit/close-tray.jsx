@@ -90,7 +90,7 @@ export default function DialogBox() {
                 let obj = {
                     trayId: trayId,
                     description: description,
-                    type: 'Closed By Warehouse',
+                    type: 'Audit Done Closed By Warehouse',
                 }
                 let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
                 if (res.status == 200) {

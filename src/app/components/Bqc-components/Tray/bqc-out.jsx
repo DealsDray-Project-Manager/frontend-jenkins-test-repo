@@ -216,12 +216,10 @@ export default function DialogBox() {
                 value.bqc_incomplete_reason = ''
                 value.technical_issue = ''
                 value.other = ''
-               
+            } else {
+                value.factory_reset_status = ''
             }
-            else{
-                value.factory_reset_status=''
-            }
-         
+
             try {
                 let objData = {
                     trayId: trayId,
@@ -565,7 +563,7 @@ export default function DialogBox() {
                                             setIncompleteRes('Other')
                                         }}
                                     >
-                                        Other
+                                        BQC Remark
                                     </MenuItem>
                                 </Select>
                             </FormControl>
@@ -616,7 +614,7 @@ export default function DialogBox() {
                         {incompleteRes === 'Other' &&
                         bqcStatus === 'BQC Incomplete' ? (
                             <TextField
-                                label="Other"
+                                label="BQC Remark"
                                 variant="outlined"
                                 type="text"
                                 {...register('other')}
@@ -678,7 +676,10 @@ export default function DialogBox() {
                         }}
                         fullwidth
                         variant="contained"
-                        disabled={addButDis || bqcStatus === 'BQC Finished' && restFact == 'NO' }
+                        disabled={
+                            addButDis ||
+                            (bqcStatus === 'BQC Finished' && restFact == 'NO')
+                        }
                         style={{ backgroundColor: 'green' }}
                         component="span"
                         type="submit"

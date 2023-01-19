@@ -29,7 +29,9 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosSuperAdminPrexo.post('/chargeDoneFourDifferenceTray')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/chargeDoneFourDifferenceTray'
+                )
                 if (res.status === 200) {
                     setWhtTrayList(res.data.data)
                 }
@@ -57,6 +59,7 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 ischeck: isCheck,
+                status: 'Recharging',
             }
             let res = await axiosSuperAdminPrexo.post(
                 '/ready-for-charging',
@@ -92,8 +95,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Select',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -179,8 +182,8 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: true,
-
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[8],
             },
@@ -191,23 +194,25 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
             name: 'sort_id',
             label: 'Status',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
             name: 'code',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
@@ -231,9 +236,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Ready For Charging', path: '/pages' },
-                    ]}
+                    routeSegments={[{ name: 'Ready For Charging', path: '/' }]}
                 />
             </div>
             <Button
@@ -245,7 +248,7 @@ const SimpleMuiTable = () => {
                     handelReadyForCharging(e)
                 }}
             >
-                Ready For Charging
+                Ready For Recharging
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}

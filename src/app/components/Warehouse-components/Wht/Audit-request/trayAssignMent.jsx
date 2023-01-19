@@ -30,26 +30,17 @@ const MemberEditorDialog = ({
     otherTrayAssign,
     trayIdNotChangeAble,
 }) => {
-    const [auditUserName, setAuditUsername] = useState('')
     const [err, setErr] = useState({
-        LUT: '',
-        DUT: '',
-        RBQ: '',
-        CFT: '',
-        STA: '',
-        STB: '',
-        STC: '',
-        STD: '',
+        CTA: '',
+        CTB: '',
+        CTC: '',
+        CTD: '',
     })
     const [trayId, setTrayId] = useState({
-        lut: '',
-        dut: '',
-        rbq: '',
-        cft: '',
-        sta: '',
-        stb: '',
-        stc: '',
-        std: '',
+        cta: '',
+        ctb: '',
+        ctc: '',
+        ctd: '',
     })
 
     const handelTrayId = async (trayId, trayType) => {
@@ -85,23 +76,24 @@ const MemberEditorDialog = ({
         <Dialog fullWidth maxWidth="xs" open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Assign Tray</H4>
+
                 <TextFieldCustOm
                     onChange={(e) => {
                         setTrayId((trayId) => ({
                             ...trayId,
-                            lut: e.target.value,
+                            cta: e.target.value,
                         }))
                     }}
-                    disabled={trayIdNotChangeAble.LUT !== ''}
-                    value={trayId.lut || otherTrayAssign.LUT}
-                    error={err.LUT !== ''}
-                    helperText={err.LUT}
+                    disabled={trayIdNotChangeAble.CTA !== ''}
+                    value={trayId.cta || otherTrayAssign.CTA}
+                    error={err.CTA !== ''}
+                    helperText={err.CTA}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
                                     onClick={(e) => {
-                                        handelTrayId(trayId.lut, 'LUT')
+                                        handelTrayId(trayId.cta, 'CTA')
                                     }}
                                 >
                                     <SearchIcon />
@@ -109,27 +101,27 @@ const MemberEditorDialog = ({
                             </InputAdornment>
                         ),
                     }}
-                    label="LUT Tray"
+                    label="CTA Tray"
                     fullWidth
-                    name="lut"
+                    name="cta"
                 />
                 <TextFieldCustOm
                     onChange={(e) => {
                         setTrayId((trayId) => ({
                             ...trayId,
-                            dut: e.target.value,
+                            ctb: e.target.value,
                         }))
                     }}
-                    value={trayId.dut || otherTrayAssign.DUT}
-                    error={err.DUT !== ''}
-                    helperText={err.DUT}
-                    disabled={trayIdNotChangeAble.DUT !== ''}
+                    disabled={trayIdNotChangeAble.CTB !== ''}
+                    value={trayId.ctb || otherTrayAssign.CTB}
+                    error={err.CTB !== ''}
+                    helperText={err.CTB}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
                                     onClick={(e) => {
-                                        handelTrayId(trayId.dut, 'DUT')
+                                        handelTrayId(trayId.ctb, 'CTB')
                                     }}
                                 >
                                     <SearchIcon />
@@ -137,27 +129,27 @@ const MemberEditorDialog = ({
                             </InputAdornment>
                         ),
                     }}
-                    label="DUT Tray"
+                    label="CTB Tray"
                     fullWidth
-                    name="dut"
+                    name="ctb"
                 />
                 <TextFieldCustOm
                     onChange={(e) => {
                         setTrayId((trayId) => ({
                             ...trayId,
-                            rbq: e.target.value,
+                            ctc: e.target.value,
                         }))
                     }}
-                    value={trayId.rbq || otherTrayAssign.RBQ}
-                    error={err.RBQ !== ''}
-                    helperText={err.RBQ}
-                    disabled={trayIdNotChangeAble.RBQ !== ''}
+                    disabled={trayIdNotChangeAble.CTC !== ''}
+                    value={trayId.ctc || otherTrayAssign.CTC}
+                    error={err.CTC !== ''}
+                    helperText={err.CTC}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
                                     onClick={(e) => {
-                                        handelTrayId(trayId.rbq, 'RBQ')
+                                        handelTrayId(trayId.ctc, 'CTC')
                                     }}
                                 >
                                     <SearchIcon />
@@ -165,27 +157,27 @@ const MemberEditorDialog = ({
                             </InputAdornment>
                         ),
                     }}
-                    label="RBQ Tray"
+                    label="CTC Tray"
                     fullWidth
-                    name="rbq"
+                    name="ctc"
                 />
                 <TextFieldCustOm
                     onChange={(e) => {
                         setTrayId((trayId) => ({
                             ...trayId,
-                            cft: e.target.value,
+                            ctd: e.target.value,
                         }))
                     }}
-                    value={trayId.cft || otherTrayAssign.CFT}
-                    disabled={trayIdNotChangeAble.CFT !== ''}
-                    error={err.CFT !== ''}
-                    helperText={err.CFT}
+                    disabled={trayIdNotChangeAble.CTD !== ''}
+                    value={trayId.ctd || otherTrayAssign.CTD}
+                    error={err.CTD !== ''}
+                    helperText={err.CTD}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
                                     onClick={(e) => {
-                                        handelTrayId(trayId.cft, 'CFT')
+                                        handelTrayId(trayId.ctd, 'CTD')
                                     }}
                                 >
                                     <SearchIcon />
@@ -193,121 +185,9 @@ const MemberEditorDialog = ({
                             </InputAdornment>
                         ),
                     }}
-                    label="CFT Tray"
+                    label="CTD Tray"
                     fullWidth
-                    name="cft"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            sta: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.STA !== ''}
-                    value={trayId.sta || otherTrayAssign.STA}
-                    error={err.STA !== ''}
-                    helperText={err.STA}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.sta, 'STA')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="STA Tray"
-                    fullWidth
-                    name="sta"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            stb: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.STB !== ''}
-                    value={trayId.stb || otherTrayAssign.STB}
-                    error={err.STB !== ''}
-                    helperText={err.STB}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.stb, 'STB')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="STB Tray"
-                    fullWidth
-                    name="stb"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            stc: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.STC !== ''}
-                    value={trayId.stc || otherTrayAssign.STC}
-                    error={err.STC !== ''}
-                    helperText={err.STC}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.stc, 'STC')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="STC Tray"
-                    fullWidth
-                    name="stc"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            std: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.STD !== ''}
-                    value={trayId.std || otherTrayAssign.STD}
-                    error={err.STD !== ''}
-                    helperText={err.STD}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.std, 'STD')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="STD Tray"
-                    fullWidth
-                    name="std"
+                    name="ctd"
                 />
                 <FormHandlerBox>
                     <Button

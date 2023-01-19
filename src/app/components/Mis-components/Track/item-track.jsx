@@ -486,7 +486,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Track', path: '/pages' },
+                        { name: 'Track', path: '/' },
                         { name: 'Track-Item' },
                     ]}
                 />

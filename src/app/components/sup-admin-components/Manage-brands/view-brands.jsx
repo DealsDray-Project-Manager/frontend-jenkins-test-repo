@@ -153,8 +153,8 @@ const BrandTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -178,7 +178,8 @@ const BrandTable = () => {
             name: 'brand_id',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value) => {
                     return (
                         <>
@@ -213,7 +214,7 @@ const BrandTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Brands', path: '/pages' }]}
+                    routeSegments={[{ name: 'Brands', path: '/' }]}
                 />
             </div>
             <Button

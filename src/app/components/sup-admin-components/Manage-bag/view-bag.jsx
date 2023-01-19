@@ -147,8 +147,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -196,6 +196,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy',
+            label: 'Tray Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'sort_id',
             label: 'Status',
             options: {
@@ -217,7 +224,8 @@ const SimpleMuiTable = () => {
             name: 'status',
             label: 'Actions',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -266,7 +274,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Bag', path: '/pages' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Bag', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}

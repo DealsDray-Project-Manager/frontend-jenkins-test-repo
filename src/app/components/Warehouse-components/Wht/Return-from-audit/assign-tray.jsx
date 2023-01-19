@@ -73,7 +73,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 state
             )
             if (res.status === 200) {
-                console.log(res.data);
+                console.log(res.data)
                 setTrayStatus(res.data.trayStatus)
                 setErr('')
                 setAssignButDis(false)
@@ -116,14 +116,10 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                     name="tray_type"
                     onChange={handleChange}
                 >
-                    <MenuItem value={'LUT'}>LUT</MenuItem>
-                    <MenuItem value={'DUT'}>DUT</MenuItem>
-                    <MenuItem value={'RBQ'}>RBQ</MenuItem>
-                    <MenuItem value={'CFT'}>CFT</MenuItem>
-                    <MenuItem value={'STA'}>STA</MenuItem>
-                    <MenuItem value={'STB'}>STB</MenuItem>
-                    <MenuItem value={'STC'}>STC</MenuItem>
-                    <MenuItem value={'STD'}>STD</MenuItem>
+                    <MenuItem value={'CTA'}>CTA</MenuItem>
+                    <MenuItem value={'CTB'}>CTB</MenuItem>
+                    <MenuItem value={'CTC'}>CTC</MenuItem>
+                    <MenuItem value={'CTD'}>CTD</MenuItem>
                 </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Tray Id"

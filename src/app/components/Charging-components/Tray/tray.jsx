@@ -46,21 +46,21 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewTray = (e, id) => {
-        e.preventDefault();
-        navigate("/charging/tray/charging-in/" + id);
-      };
-      const handelChargingDone = (e, id) => {
-        e.preventDefault();
-        navigate("/charging/tray/charging-out/" + id);
-      };
+        e.preventDefault()
+        navigate('/charging/tray/charging-in/' + id)
+    }
+    const handelChargingDone = (e, id) => {
+        e.preventDefault()
+        navigate('/charging/tray/charging-out/' + id)
+    }
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -109,7 +109,6 @@ const SimpleMuiTable = () => {
             label: 'status',
             options: {
                 filter: true,
-                
             },
         },
         {
@@ -118,19 +117,20 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
-                
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
             name: 'code',
             label: 'Action',
             options: {
-                filter: true,
-                customBodyRender: (value,tableMeta) => {
-                    return tableMeta.rowData[6] == 'Issued to Charging' ? (
+                filter: false,
+                sort:false,
+                customBodyRender: (value, tableMeta) => {
+                    return tableMeta.rowData[6] == 'Issued to Charging' ||
+                        tableMeta.rowData[6] == 'Issued to Recharging' ? (
                         <Button
                             sx={{ m: 1 }}
                             type="submit"
@@ -165,7 +165,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Charging-Request', path: '/pages' },
+                        { name: 'Charging-Request', path: '/' },
                     ]}
                 />
             </div>
@@ -184,6 +184,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

@@ -97,8 +97,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Select',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -117,8 +117,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -147,7 +147,8 @@ const SimpleMuiTable = () => {
             name: 'limit',
             label: 'Limit',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 display: false,
             },
         },
@@ -182,89 +183,89 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/pages' },
+                        { name: 'Sorting', path: '/' },
                         { name: 'Bot-to-wht' },
                     ]}
                 />
             </div>
-            <Box sx={{
-                display:"flex",
-                justifyContent:"space-between"
-            }}>
-
-            <Box>
-                <h3>
-                    Date:-{' '}
-                    {new Date(
-                        sortDate != '' && sortData == true
-                            ? sortDate
-                            : yesterdayDate
-                    ).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    })}
-                </h3>
-            </Box>
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'start',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                 }}
             >
-                <TextField
-                    id="filled-select-currency"
-                    type="Date"
-                    onChange={(e) => {
-                        setSortDate(e.target.value)
-                    }}
-                    inputProps={{
-                        max: moment().format('YYYY-MM-DD'),
-                    }}
-                    sx={{ mt: 1, mb: 1 }}
-                    helperText="Please Select BOT closed Date"
-                    variant="filled"
-                />
-                <Button
+                <Box>
+                    <h3>
+                        Date:-{' '}
+                        {new Date(
+                            sortDate != '' && sortData == true
+                                ? sortDate
+                                : yesterdayDate
+                        ).toLocaleString('en-GB', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        })}
+                    </h3>
+                </Box>
+                <Box
                     sx={{
-                        mt: 20,
-                        m: 2,
-                        height: '38px',
-                    }}
-                    disabled={sortDate == '' ? true : false}
-                    variant="contained"
-                    style={{
-                        backgroundColor: '#206CE2',
-                        marginTop: '23px',
-                    }}
-                    onClick={(e) => {
-                        handelSort(e)
+                        display: 'flex',
+                        flexDirection: 'start',
+                        justifyContent: 'flex-end',
                     }}
                 >
-                    Sort
-                </Button>
-                <Box>
+                    <TextField
+                        id="filled-select-currency"
+                        type="Date"
+                        onChange={(e) => {
+                            setSortDate(e.target.value)
+                        }}
+                        inputProps={{
+                            max: moment().format('YYYY-MM-DD'),
+                        }}
+                        sx={{ mt: 1, mb: 1 }}
+                        helperText="Please Select BOT closed Date"
+                        variant="filled"
+                    />
                     <Button
                         sx={{
-                            mt: 2,
-                            height: '48px',
-                            width: '200px',
+                            mt: 20,
+                            m: 2,
+                            height: '38px',
                         }}
+                        disabled={sortDate == '' ? true : false}
                         variant="contained"
-                        style={{ backgroundColor: 'green' }}
-                        component="span"
-                        disabled={isCheck.length === 0}
+                        style={{
+                            backgroundColor: '#206CE2',
+                            marginTop: '23px',
+                        }}
                         onClick={(e) => {
-                            handelAssignForSorting(e)
+                            handelSort(e)
                         }}
                     >
-                        Assign For Sorting
+                        Sort
                     </Button>
+                    <Box>
+                        <Button
+                            sx={{
+                                mt: 2,
+                                height: '48px',
+                                width: '200px',
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                            disabled={isCheck.length === 0}
+                            onClick={(e) => {
+                                handelAssignForSorting(e)
+                            }}
+                        >
+                            Assign For Sorting
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
-            </Box>
-            
 
             <MUIDataTable
                 title={'Wht Tray'}
@@ -280,6 +281,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

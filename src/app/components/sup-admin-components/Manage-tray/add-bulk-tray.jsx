@@ -146,7 +146,6 @@ const PaginationTable = () => {
         let count7 = 0
         let count8 = 0
 
-        let check = true
         try {
             for (let x of pagination.item) {
                 x.tray_id = ''
@@ -163,7 +162,7 @@ const PaginationTable = () => {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
                 } else if (x.tray_category == 'CTA') {
-                    x.tray_id = 'CTA' + (countOfTray.STA + count5)
+                    x.tray_id = 'CTA' + (countOfTray.CTA + count5)
                     count5++
                 } else if (x.tray_category == 'CTB') {
                     x.tray_id = 'CTB' + (countOfTray.CTB + count6)
@@ -176,6 +175,17 @@ const PaginationTable = () => {
                     count8++
                 }
             }
+            setCountOfTray((p) => ({
+                ...p,
+                BOT: p.BOT + count1,
+                MMT: p.MMT + count2,
+                PMT: p.PMT + count3,
+                WHT: p.WHT + count4,
+                CTA: p.CTA + count5,
+                CTB: p.CTB + count6,
+                CTC: p.CTC + count7,
+                CTD: p.CTD + count8,
+            }))
 
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
@@ -371,7 +381,9 @@ const PaginationTable = () => {
                     ) : (
                         <Button
                             variant="contained"
-                            disabled={loading}
+                            disabled={
+                                Object.keys(countOfTray).length == 0 || loading
+                            }
                             sx={{ mt: 3, mb: 1 }}
                             onClick={(e) => {
                                 validateData(e)

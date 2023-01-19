@@ -59,7 +59,7 @@ const PaginationTable = () => {
     const [validateState, setValidateState] = useState(false)
     const [err, setErr] = useState({})
     const [loading, setLoading] = useState(false)
-    const [brandCount, setBrandCount] = useState(0)
+    const [brandCount, setBrandCount] = useState({})
     const [pagination, setPagination] = useState({
         page: 0,
         size: 10,
@@ -350,7 +350,7 @@ const PaginationTable = () => {
                     ) : (
                         <Button
                             variant="contained"
-                            disabled={loading}
+                            disabled={Object.keys(brandCount).length == 0 || loading}
                             sx={{ mt: 3, mb: 1 }}
                             onClick={(e) => {
                                 validateData(e)

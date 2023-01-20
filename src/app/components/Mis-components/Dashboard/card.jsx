@@ -1,115 +1,131 @@
-import React, { useEffect ,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
 import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-
+import { useNavigate } from 'react-router-dom'
 
 const StatCard3 = () => {
-    const [count,setCount]=useState({})
-   useEffect(()=>{
-     const fetchData= async()=>{
-        let user=localStorage.getItem("prexo-authentication")
-        if(user){
-            let { location } = jwt_decode(user)
-            try {
-                let res=await axiosMisUser.post("/dashboardData/" + location)
-                if(res.status  === 200){
-                    setCount(res.data.data)
+    const [count, setCount] = useState({})
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let user = localStorage.getItem('prexo-authentication')
+            if (user) {
+                let { location } = jwt_decode(user)
+                try {
+                    let res = await axiosMisUser.post(
+                        '/dashboardData/' + location
+                    )
+                    if (res.status === 200) {
+                        setCount(res.data.data)
+                    }
+                } catch (error) {
+                    alert(error)
                 }
-            } catch (error) {
-                alert(error)
             }
         }
-     }
-     fetchData()
-   },[])
+        fetchData()
+    }, [])
     const statList = [
         {
             icon: 'reorder',
             amount: count.orders,
             title: 'Orders',
+            path: '/mis/orders',
         },
         {
-            icon: 'shopping_cart',
+            icon: 'reorder',
             amount: count.badOrders,
             title: 'Bad Orders',
+            path: '/mis/bad-orders',
         },
         {
-            icon: 'format_indent_decrease',
+            icon: 'reorder',
             amount: count.delivered,
             title: 'Delivered Orders',
+            path: '/mis/recon-sheet/delivered-orders',
         },
         {
             icon: 'reorder',
             amount: count.notDelivered,
             title: 'Not Delivered Orders',
+            path: '/mis/recon-sheet/not-delivered-orders',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.delivery,
+            title: 'Delivery',
+            path: '/mis/delivery',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.badDelivery,
+            title: 'Bad Delivery',
+            path: '/mis/bad-delivery',
         },
         {
             icon: 'format_indent_decrease',
-            amount: count.delivery,
-            title: 'Delivery',
-        },
-        {
-            icon: 'assignment',
-            amount: count.badDelivery,
-            title: 'Bad Delivery',
-        },
-        {
-            icon: 'assignment',
             amount: count.uicGented,
             title: 'UIC Generated',
+            path: '/mis/uic-manage/uic-generated',
         },
         {
-            icon: 'assignment',
+            icon: 'format_indent_decrease',
             amount: count.uicNotGenrated,
             title: 'UIC Not Generated',
+            path: '/mis/uic-manage/uic-not-generated',
+        },
+        {
+            icon: 'format_indent_decrease',
+            amount: count.uicDownloaded,
+            title: 'UIC Downloaded',
+            path: '/mis/uic-manage/uic-downloaded',
         },
         {
             icon: 'assignment',
-            amount: count.uicDownloaded,
-            title: 'UIC Downloaded',
-        },
-        {
-            icon: 'sort',
             amount: count.assigBot,
             title: 'Assign To Bot',
+            path: '/mis/assign-to-agent/bot',
         },
         {
-            icon: 'merge_type',
+            icon: 'assignment',
             amount: count.assigCharging,
             title: 'Assign To Charging',
+            path: '/mis/assign-to-agent/charging',
         },
         {
-            icon: 'merge_type',
+            icon: 'assignment',
             amount: count.bqc,
             title: 'Assign To BQC',
+            path: '/mis/assign-to-agent/bqc',
         },
+
         {
-            icon: 'merge_type',
-            amount: count.audit,
-            title: 'Assign To Audit',
-        },
-        {
-            icon: 'merge_type',
+            icon: 'sort',
             amount: count.botToWht,
             title: 'BOT To WHT',
+            path: '/mis/sorting/bot-to-wht',
         },
         {
             icon: 'merge_type',
             amount: count.whtMerge,
             title: 'WHT Merge',
+            path: '/mis/merge/wht',
         },
         {
             icon: 'merge_type',
             amount: count.mmtMerge,
             title: 'MMT Merge',
+            path: '/mis/merge/mmt',
         },
         {
-            icon: 'merge_type',
+            icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',
+            path: '/mis/track/item',
         },
     ]
     const { palette } = useTheme()
@@ -120,7 +136,12 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => navigate(item.path)}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"

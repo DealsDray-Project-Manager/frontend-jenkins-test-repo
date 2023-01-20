@@ -221,10 +221,29 @@ export default function DialogBox() {
     }
     const onSubmit = async (values) => {
         values.charging_person = user_name1
+
         if (trayData.limit <= trayData?.actual_items?.length) {
             alert('All Items Scanned')
         } else {
             setlLoading(true)
+            if (
+                values.battery_status !== 'Charge' &&
+                values.battery_status !== 'Heat Problem'
+            ) {
+                values.charge_percentage = ''
+                values.lock_status = ''
+            }
+
+            if (
+                values.battery_status !== 'Charge' &&
+                values.battery_status !== 'Heat Problem' &&
+                values.lock_status == 'Unlocked' &&
+                values.lock_status == 'Software Issue'
+            ) {
+                values.cimei_1 = ''
+                values.cimei_2 = ''
+            }
+
             try {
                 let objData = {
                     trayId: trayId,

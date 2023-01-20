@@ -7,7 +7,7 @@ import { Button, Box, IconButton, Icon } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-import EditRoadIcon from '@mui/icons-material/EditRoad';
+import EditRoadIcon from '@mui/icons-material/EditRoad'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -119,14 +119,12 @@ const SimpleMuiTable = () => {
         }
     }
 
-
-    const handelAudit =(trayId)=>{
-        navigate("/sup-admin/tray/audit/" + trayId)
+    const handelAudit = (trayId) => {
+        navigate('/sup-admin/tray/audit/' + trayId)
     }
 
-    const handelEditHistory=(trayId)=>{
-       
-        navigate("/sup-admin/tray/edit-history/" + trayId)
+    const handelEditHistory = (trayId) => {
+        navigate('/sup-admin/tray/edit-history/' + trayId)
     }
 
     const columns = [
@@ -192,6 +190,13 @@ const SimpleMuiTable = () => {
         {
             name: 'display',
             label: 'Tray Display',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Type',
             options: {
                 filter: true,
             },

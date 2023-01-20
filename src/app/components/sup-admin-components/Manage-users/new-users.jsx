@@ -265,48 +265,6 @@ const MemberEditorDialog = ({
                             </MenuItem>
                         </TextFieldCustOm>
                         <TextFieldCustOm
-                            label="Device Name"
-                            type="text"
-                            name="device_name"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('device_name')}
-                            error={errors.device_name ? true : false}
-                            helperText={errors.device_name?.message}
-                        />
-                        <TextFieldCustOm
-                            label="Confirm Password"
-                            type="password"
-                            name="cpassword"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('cpassword')}
-                            error={errors.cpassword ? true : false}
-                            helperText={errors.cpassword?.message}
-                        />
-                    </Grid>
-
-                    <Grid item sm={6} xs={12}>
-                        <TextFieldCustOm
-                            label="Email"
-                            type="email"
-                            name="email"
-                            {...register('email')}
-                            error={errors.email ? true : false}
-                            helperText={
-                                errors.email ? errors.email.message : ''
-                            }
-                        />
-                        <TextFieldCustOm
-                            label="Mobile No"
-                            name="contact"
-                            {...register('contact')}
-                            inputProps={{ maxLength: 10 }}
-                            error={errors.contact ? true : false}
-                            helperText={
-                                errors.contact ? errors.contact.message : ''
-                            }
-                          
-                        />
-                        <TextFieldCustOm
                             label="CPC"
                             select
                             name="cpc"
@@ -326,6 +284,43 @@ const MemberEditorDialog = ({
                             ))}
                         </TextFieldCustOm>
                         <TextFieldCustOm
+                            label="Mobile No"
+                            name="contact"
+                            {...register('contact')}
+                            inputProps={{ maxLength: 10 }}
+                            error={errors.contact ? true : false}
+                            helperText={
+                                errors.contact ? errors.contact.message : ''
+                            }
+                          
+                        />
+                       
+                       
+                    </Grid>
+
+                    <Grid item sm={6} xs={12}>
+                        <TextFieldCustOm
+                            label="Email"
+                            type="email"
+                            name="email"
+                            {...register('email')}
+                            error={errors.email ? true : false}
+                            helperText={
+                                errors.email ? errors.email.message : ''
+                            }
+                        />
+                         <TextFieldCustOm
+                            label="Device Name"
+                            type="text"
+                            name="device_name"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('device_name')}
+                            error={errors.device_name ? true : false}
+                            helperText={errors.device_name?.message}
+                        />
+                       
+                       
+                        <TextFieldCustOm
                             label="Device Id"
                             type="text"
                             name="device_id"
@@ -343,6 +338,15 @@ const MemberEditorDialog = ({
                             {...register('password')}
                             error={errors.password ? true : false}
                             helperText={errors.password?.message}
+                        />
+                         <TextFieldCustOm
+                            label="Confirm Password"
+                            type="password"
+                            name="cpassword"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('cpassword')}
+                            error={errors.cpassword ? true : false}
+                            helperText={errors.cpassword?.message}
                         />
                     </Grid>
                 </Grid>

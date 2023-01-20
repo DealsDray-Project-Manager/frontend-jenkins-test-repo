@@ -49,6 +49,7 @@ const UserTable = () => {
     }, [isAlive])
 
     const handleDialogClose = () => {
+        setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
     const handleDialogOpen = () => {
@@ -145,13 +146,13 @@ const UserTable = () => {
             },
         },
         {
-            name: 'image',
+            name: 'profile',
             label: 'Profile',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: () => {
-                    return <Avatar variant="rounded" src="profile"></Avatar>
+                customBodyRender: (value) => {
+                    return <Avatar variant="rounded" src={value} />
                 },
             },
         },

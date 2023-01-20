@@ -48,6 +48,8 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
+              
+                fetchModel(editFetchData.brand)
                 open()
             }
         } catch (error) {
@@ -79,7 +81,6 @@ const MemberEditorDialog = ({
             alert(error)
         }
     }
-
     // Get Cpc data from server
     async function getCpcData(data) {
         try {
@@ -250,8 +251,9 @@ const MemberEditorDialog = ({
                             name="name"
                             {...register('name')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name.message : ''}
                         />
@@ -297,8 +299,10 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
+                            value={getValues('cpc')}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -313,21 +317,22 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-
                         <TextFieldCustOm
                             label="Warehouse"
                             select
                             type="text"
-                            name="cpc"
+                            name="warehouse"
                             {...register('warehouse')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
+                            value={getValues('warehouse')}
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
                             {warehouse.map((data) => (
-                                <MenuItem value={data.name}>
+                                <MenuItem key={data.name} value={data.name}>
                                     {data.name}
                                 </MenuItem>
                             ))}
@@ -339,8 +344,10 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
+                            value={getValues('type_taxanomy')}
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -383,6 +390,7 @@ const MemberEditorDialog = ({
                                     label="Brand"
                                     select
                                     type="text"
+                                    value={getValues('brand')}
                                     {...register('brand')}
                                     error={errors.brand ? true : false}
                                     helperText={
@@ -405,6 +413,7 @@ const MemberEditorDialog = ({
                                     select
                                     type="text"
                                     name="model"
+                                    value={getValues('model')}
                                     {...register('model')}
                                     error={errors.model ? true : false}
                                 >

@@ -193,7 +193,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'http://prexo-v7-dev-api.dealsdray.com/product/image/' +
+                                    ? 'http://prexo-v6-dev-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[1] +
                                       '.jpg'
                                     : value
@@ -304,7 +304,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Products', path: '/' }]}
+                    routeSegments={[{ name: 'Products', path: '/pages' }]}
                 />
             </div>
             <Button

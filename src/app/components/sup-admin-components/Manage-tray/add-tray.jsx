@@ -48,6 +48,8 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
+              
+                fetchModel(editFetchData.brand)
                 open()
             }
         } catch (error) {
@@ -115,7 +117,6 @@ const MemberEditorDialog = ({
             })
         }
     }
-
     // Get Cpc data from server
     async function getCpcData(data) {
         try {
@@ -344,9 +345,8 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues('type_taxanomy') == 'WHT' &&
-                                Object.keys(editFetchData).length !== 0
-                            }
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -361,22 +361,20 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-
                         <TextFieldCustOm
                             label="Warehouse"
                             select
                             type="text"
-                            name="cpc"
+                            name="warehouse"
                             {...register('warehouse')}
                             disabled={
-                                getValues('type_taxanomy') == 'WHT' &&
-                                Object.keys(editFetchData).length !== 0
-                            }
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
                             {warehouse.map((data) => (
-                                <MenuItem value={data.name}>
+                                <MenuItem key={data.name} value={data.name}>
                                     {data.name}
                                 </MenuItem>
                             ))}
@@ -388,9 +386,8 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues('type_taxanomy') == 'WHT' &&
-                                Object.keys(editFetchData).length !== 0
-                            }
+                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
+                              }
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -466,6 +463,7 @@ const MemberEditorDialog = ({
                                     label="Brand"
                                     select
                                     type="text"
+                                    defaultValue={getValues('brand')}
                                     {...register('brand')}
                                     error={errors.brand ? true : false}
                                     helperText={
@@ -488,6 +486,7 @@ const MemberEditorDialog = ({
                                     select
                                     type="text"
                                     name="model"
+                                    defaultValue={getValues('model')}
                                     {...register('model')}
                                     error={errors.model ? true : false}
                                 >

@@ -41,49 +41,42 @@ const StatCard3 = () => {
             amount: count.badOrders,
             title: 'Bad Orders',
             path: '/mis/bad-orders',
-
         },
         {
             icon: 'reorder',
             amount: count.delivered,
             title: 'Delivered Orders',
             path: '/mis/recon-sheet/delivered-orders',
-
         },
         {
             icon: 'reorder',
             amount: count.notDelivered,
             title: 'Not Delivered Orders',
             path: '/mis/recon-sheet/not-delivered-orders',
-
         },
         {
             icon: 'shopping_cart',
             amount: count.delivery,
             title: 'Delivery',
             path: '/mis/delivery',
-
         },
         {
             icon: 'shopping_cart',
             amount: count.badDelivery,
             title: 'Bad Delivery',
             path: '/mis/bad-delivery',
-
         },
         {
             icon: 'format_indent_decrease',
             amount: count.uicGented,
             title: 'UIC Generated',
             path: '/mis/uic-manage/uic-generated',
-
         },
         {
             icon: 'format_indent_decrease',
             amount: count.uicNotGenrated,
             title: 'UIC Not Generated',
             path: '/mis/uic-manage/uic-not-generated',
-
         },
         {
             icon: 'format_indent_decrease',
@@ -96,14 +89,12 @@ const StatCard3 = () => {
             amount: count.assigBot,
             title: 'Assign To Bot',
             path: '/mis/assign-to-agent/bot',
-
         },
         {
             icon: 'assignment',
             amount: count.assigCharging,
             title: 'Assign To Charging',
             path: '/mis/assign-to-agent/charging',
-
         },
         {
             icon: 'assignment',
@@ -124,28 +115,24 @@ const StatCard3 = () => {
             amount: count.botToWht,
             title: 'BOT To WHT',
             path: '/mis/sorting/bot-to-wht',
-
         },
         {
             icon: 'merge_type',
             amount: count.whtMerge,
             title: 'WHT Merge',
             path: '/mis/merge/wht',
-
         },
         {
             icon: 'merge_type',
             amount: count.mmtMerge,
             title: 'MMT Merge',
             path: '/mis/merge/mmt',
-
         },
         {
             icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',
             path: '/mis/track/item',
-
         },
     ]
     const { palette } = useTheme()

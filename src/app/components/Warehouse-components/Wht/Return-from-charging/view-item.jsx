@@ -123,7 +123,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) => {
-                    return value?.body_condition
+                    return value?.display_condition
                 },
             },
         },

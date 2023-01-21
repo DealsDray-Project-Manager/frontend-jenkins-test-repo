@@ -221,7 +221,7 @@ const AddBulkProduct = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Products', path: '/pages' },
+                        { name: 'Products', path: '/' },
                         { name: 'Bulk-Product' },
                     ]}
                 />

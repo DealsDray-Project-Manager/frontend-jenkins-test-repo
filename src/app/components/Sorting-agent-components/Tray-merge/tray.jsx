@@ -154,7 +154,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Tray-Merge', path: '/pages' }]}
+                    routeSegments={[{ name: 'Tray-Merge', path: '/' }]}
                 />
             </div>
 

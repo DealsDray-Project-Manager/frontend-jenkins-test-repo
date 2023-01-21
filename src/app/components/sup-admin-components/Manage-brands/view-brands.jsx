@@ -201,7 +201,7 @@ const BrandTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Brands', path: '/pages' }]}
+                    routeSegments={[{ name: 'Brands', path: '/' }]}
                 />
             </div>
             <Button

@@ -347,7 +347,7 @@ const MemberEditorDialog = ({
                                 getValues('type_taxanomy') == 'WHT' &&
                                 Object.keys(editFetchData).length !== 0
                             }
-                            value={getValues('type_taxanomy')}
+                            defaultValue={getValues('type_taxanomy')}
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -390,7 +390,7 @@ const MemberEditorDialog = ({
                                     label="Brand"
                                     select
                                     type="text"
-                                    value={getValues('brand')}
+                                    defaultValue={getValues('brand')}
                                     {...register('brand')}
                                     error={errors.brand ? true : false}
                                     helperText={
@@ -413,7 +413,7 @@ const MemberEditorDialog = ({
                                     select
                                     type="text"
                                     name="model"
-                                    value={getValues('model')}
+                                    defaultValue={getValues('model')}
                                     {...register('model')}
                                     error={errors.model ? true : false}
                                 >

@@ -123,7 +123,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) => {
-                    return value?.body_condition
+                    return value?.display_condition
                 },
             },
         },
@@ -184,7 +184,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/pages' },
+                        { name: 'WHT', path: '/' },
                         { name: 'Return-from-charging' },
                     ]}
                 />

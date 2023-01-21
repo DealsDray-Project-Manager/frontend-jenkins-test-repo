@@ -137,7 +137,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Bag', path: '/pages' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Bag', path: '/' }]} />
             </div>
 
             <MUIDataTable

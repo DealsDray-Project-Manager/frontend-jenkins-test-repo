@@ -504,13 +504,12 @@ const SimpleMuiTable = () => {
         )
     }, [data, isCheck, item])
 
-
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'UIC-Manage', path: '/pages' },
+                        { name: 'UIC-Manage', path: '/' },
                         { name: 'UIC-Not-Generated' },
                     ]}
                 />
@@ -518,7 +517,7 @@ const SimpleMuiTable = () => {
             <Box>
                 <Button
                     variant="contained"
-                    sx={{ mb: 2,m:1 }}
+                    sx={{ mb: 2, m: 1 }}
                     style={{ backgroundColor: 'primery' }}
                     onClick={(e) => {
                         handelUicGen(e)
@@ -528,7 +527,7 @@ const SimpleMuiTable = () => {
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{ mb: 2,m:1 }}
+                    sx={{ mb: 2, m: 1 }}
                     onClick={(e) => {
                         exportToCSV('UIC-Printing-Sheet')
                     }}

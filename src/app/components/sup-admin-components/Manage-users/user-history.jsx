@@ -166,7 +166,7 @@ const UserTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Users', path: '/pages' },
+                        { name: 'Users', path: '/' },
                         { name: 'History' },
                     ]}
                 />

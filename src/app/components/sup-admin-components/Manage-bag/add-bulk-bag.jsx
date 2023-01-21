@@ -239,7 +239,7 @@ const PaginationTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Bags', path: '/pages' },
+                        { name: 'Bags', path: '/' },
                         { name: 'Bulk-Bag' },
                     ]}
                 />

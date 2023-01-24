@@ -121,7 +121,7 @@ const Layout1Topbar = () => {
                     <StyledIconButton onClick={handleSidebarToggle}>
                         <Icon>menu</Icon>
                     </StyledIconButton>
-                    <Span style={{marginTop:"10px"}}> <strong>{user.user_type?.toUpperCase()} PANEL</strong></Span>
+                    <Span style={{marginTop:"10px"}}> <strong>{user.role?.toUpperCase()} PANEL</strong></Span>
 
                     {/* <IconBox>
                         <StyledIconButton>

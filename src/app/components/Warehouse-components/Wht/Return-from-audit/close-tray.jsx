@@ -91,6 +91,8 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     type: 'Audit Done Closed By Warehouse',
+                    length: trayData?.items?.length,
+                    limit: trayData?.limit,
                 }
                 let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
                 if (res.status == 200) {

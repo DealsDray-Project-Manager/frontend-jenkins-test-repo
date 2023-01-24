@@ -102,7 +102,7 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: false,
-                sort: false,
+                sort: true,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[4],
             },
@@ -173,6 +173,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
+                    download:false,
+                    print:false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

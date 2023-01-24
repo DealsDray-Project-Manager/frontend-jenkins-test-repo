@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,69 +36,61 @@ const StatCard3 = () => {
             icon: 'people',
             amount: count.usersCount,
             title: 'Users',
-            link:"/sup-admin/users"
+            link: '/sup-admin/users',
         },
         {
             icon: 'location_on_outlined',
             amount: count.location,
             title: 'Locations',
-            link:"/sup-admin/location"
+            link: '/sup-admin/location',
         },
         {
             icon: 'home',
             amount: count.warehouse,
             title: 'Warehouses',
-            link:"/sup-admin/warehouse"
-
+            link: '/sup-admin/warehouse',
         },
         {
             icon: 'branding_watermark',
             amount: count.brand,
             title: 'Brands',
-            link:"/sup-admin/brands"
-
+            link: '/sup-admin/brands',
         },
         {
             icon: 'shopping_cart',
             amount: count.products,
             title: 'Products',
-            link:"/sup-admin/products"
-
+            link: '/sup-admin/products',
         },
         {
             icon: 'add_shopping_cart',
             amount: count.bag,
             title: 'Bags',
-            link:"/sup-admin/bag"
-
+            link: '/sup-admin/bag',
         },
         {
             icon: 'add_shopping_cart',
             amount: count.tray,
             title: 'Trays',
-            link:"/sup-admin/tray"
-
+            link: '/sup-admin/tray',
         },
         {
             icon: 'battery_charging_full',
             amount: count.readyForCharging,
             title: 'Ready For Charging',
-            link:"/sup-admin/ready-for-charging"
-
+            link: '/sup-admin/ready-for-charging',
         },
         {
             icon: 'leak_remove',
             amount: count.removeInvalidItem,
             title: 'Remove invalid item',
-            link:"/sup-admin/remove-invalid-item"
-
+            link: '/sup-admin/remove-invalid-item',
         },
         {
             icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',
-            link:"/sup-admin/track-item"
-
+            link: '/sup-admin/track-item',
         },
     ]
     const { palette } = useTheme()
@@ -109,7 +101,14 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card style={{cursor:"pointer"}} onClick={(e)=>{navigate(item.link)}} elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => {
+                                navigate(item.link)
+                            }}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"
@@ -123,7 +122,7 @@ const StatCard3 = () => {
                                     </Icon>
                                 </IconButton>
                             </div>
-                            <Box  ml={2}>
+                            <Box ml={2}>
                                 <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
                                     {item.amount}
                                 </H3>

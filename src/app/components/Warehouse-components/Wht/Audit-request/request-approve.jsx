@@ -31,7 +31,6 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
     const [otherTrayAssign, setOtherTrayAssign] = useState({
-        
         CTA: '',
         CTB: '',
         CTC: '',
@@ -145,14 +144,10 @@ export default function DialogBox() {
             if (userAgent !== 'User is free') {
                 alert(userAgent)
             } else if (
-                otherTrayAssign.LUT == '' ||
-                otherTrayAssign.DUT == '' ||
-                otherTrayAssign.CFT == '' ||
-                otherTrayAssign.RBQ == '' ||
-                otherTrayAssign.STA == '' ||
-                otherTrayAssign.STB == '' ||
-                otherTrayAssign.STC == '' ||
-                otherTrayAssign.STD == ''
+                otherTrayAssign.CTA == '' ||
+                otherTrayAssign.CTB == '' ||
+                otherTrayAssign.CTC == '' ||
+                otherTrayAssign.CTD == ''
             ) {
                 alert('Please assign other tray')
                 handleDialogOpen()

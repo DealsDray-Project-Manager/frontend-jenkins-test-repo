@@ -85,7 +85,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/sup-admin/ready-for-charging/view-item/' + trayId)
+        navigate('/sup-admin/wht/view-item/' + trayId)
     }
 
     const columns = [
@@ -183,7 +183,7 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: false,
-                sort: false,
+                sort: true,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[8],
             },
@@ -253,6 +253,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
+                    download:false,
+                    print:false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -29,9 +29,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosSuperAdminPrexo.post(
-                    '/chargeDoneFourDifferenceTray'
-                )
+                const res = await axiosSuperAdminPrexo.post('/auditDoneWht')
                 if (res.status === 200) {
                     setWhtTrayList(res.data.data)
                 }
@@ -54,17 +52,12 @@ const SimpleMuiTable = () => {
             setIsCheck(isCheck.filter((item) => item !== id))
         }
     }
-
-    const handelReadyForCharging = async () => {
+    const handelReadyForRdl = async () => {
         try {
             let obj = {
                 ischeck: isCheck,
-                status: 'Recharging',
             }
-            let res = await axiosSuperAdminPrexo.post(
-                '/ready-for-charging',
-                obj
-            )
+            let res = await axiosSuperAdminPrexo.post('/sendToRdl', obj)
             setIsCheck([])
             if (res.status === 200) {
                 Swal.fire({
@@ -115,8 +108,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -139,7 +132,8 @@ const SimpleMuiTable = () => {
             name: 'type_taxanomy',
             label: 'Tray Category',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -167,7 +161,8 @@ const SimpleMuiTable = () => {
             name: 'limit',
             label: 'Limit',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 display: false,
             },
         },
@@ -189,14 +184,10 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'closed_time_bot',
-            label: 'Charging Done Date',
+            name: 'display',
+            label: 'Tray Display',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
@@ -236,7 +227,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For Charging', path: '/' }]}
+                    routeSegments={[{ name: 'Ready For RDL', path: '/' }]}
                 />
             </div>
             <Button
@@ -245,10 +236,10 @@ const SimpleMuiTable = () => {
                 color="primary"
                 disabled={isCheck.length === 0}
                 onClick={(e) => {
-                    handelReadyForCharging(e)
+                    handelReadyForRdl(e)
                 }}
             >
-                Ready For Recharging
+                Ready For RDL
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}
@@ -257,8 +248,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

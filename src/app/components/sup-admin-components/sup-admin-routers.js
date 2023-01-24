@@ -43,6 +43,7 @@ const RemoveInvalidItemView = Loadable(
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
+const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 
 
 const SuperAdminRouter = [
@@ -115,7 +116,7 @@ const SuperAdminRouter = [
         element: <ReadyForChargingBqc />,
     },
     {
-        path: '/sup-admin/ready-for-charging/view-item/:trayId',
+        path: '/sup-admin/wht/view-item/:trayId',
         element: <ReadyForChargingViewItem />,
     },
     {
@@ -137,6 +138,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/bqc/report',
         element: <BqcReport />,
+    },
+    {
+        path: '/sup-admin/ready-for-rdl',
+        element: <ReadyForRdl />,
     },
 ]
 

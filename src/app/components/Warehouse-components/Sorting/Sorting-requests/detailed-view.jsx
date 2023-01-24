@@ -202,7 +202,7 @@ const SimpleMuiTable = () => {
             name: 'actual_items',
             label: 'Quantity',
             options: {
-                filter: true,
+                filter: false,
                 display: false,
             },
         },
@@ -245,6 +245,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
+                    download:false,
+                    print:false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

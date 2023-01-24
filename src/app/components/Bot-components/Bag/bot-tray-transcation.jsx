@@ -604,7 +604,6 @@ export default function DialogBox() {
         )
     }, [bagData[1]?.tray])
 
-   
     return (
         <>
             <BootstrapDialog
@@ -702,7 +701,7 @@ export default function DialogBox() {
                                     src={
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
-                                            ? 'http://prexo-v7-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v7-uat-adminapi.dealsdray.com/product/image/' +
                                               awabnDetails?.[0]?.products
                                                   .vendor_sku_id +
                                               '.jpg'

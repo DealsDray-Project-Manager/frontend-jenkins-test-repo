@@ -127,6 +127,12 @@ export const navigations = [
         auth: authRoles.admin,
     },
     {
+        name: 'Ready for RDL',
+        icon: 'low_priority',
+        path: '/sup-admin/ready-for-rdl',
+        auth: authRoles.admin,
+    },
+    {
         name: 'Track item',
         icon: 'art_track',
         path: '/sup-admin/track-item',

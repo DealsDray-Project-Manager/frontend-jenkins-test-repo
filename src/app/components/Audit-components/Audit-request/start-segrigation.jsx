@@ -144,7 +144,7 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 obj.stage = state.stage
-                if (state.stage == 'Accepte') {
+                if (state.stage == 'Accept') {
                     obj.type = state.tray_type
                 } else if (
                     state.stage == 'Upgrade' ||
@@ -349,12 +349,12 @@ export default function DialogBox() {
                         onChange={handleChange}
                         name="stage"
                     >
-                        <MenuItem value="Accepte">Accepte</MenuItem>
+                        <MenuItem value="Accept">Accept</MenuItem>
                         <MenuItem value="Upgrade">Upgrade</MenuItem>
                         <MenuItem value="Downgrade">Downgrade</MenuItem>
                         <MenuItem value="Repair">Repair</MenuItem>
                     </TextField>
-                    {state.stage === 'Accepte' ? (
+                    {state.stage === 'Accept' ? (
                         <TextField
                             label="Select Tray"
                             sx={{
@@ -495,7 +495,7 @@ export default function DialogBox() {
                         sx={{ ml: 2 }}
                         disabled={
                             state.stage == undefined ||
-                            (state.stage == 'Accepte' &&
+                            (state.stage == 'Accept' &&
                                 state.tray_type == undefined) ||
                             (state.stage == 'Upgrade' &&
                                 state.tray_grade == undefined) ||

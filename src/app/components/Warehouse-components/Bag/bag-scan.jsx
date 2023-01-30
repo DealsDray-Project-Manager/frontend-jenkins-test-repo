@@ -309,7 +309,7 @@ const PaginationTable = () => {
                                     type="text"
                                     inputRef={(input) => input && input.focus()}
                                     name="doorsteps_diagnostics"
-                                    label="Please Enter AWB Number"
+                                    label="SCAN AWBN"
                                     value={awbn}
                                     disabled={disAwbnText}
                                     onChange={(e) => {

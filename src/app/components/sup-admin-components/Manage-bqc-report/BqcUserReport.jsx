@@ -39,6 +39,10 @@ const BqcUserReportPage = ({ BqcUserReport }) => {
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
+                    <TableRow key={BqcUserReport?.bqc_status}>
+                        <TableCell sx={{ pl: 2 }}>Status</TableCell>
+                        <TableCell>{BqcUserReport?.bqc_status}</TableCell>
+                    </TableRow>
                     <TableRow key={BqcUserReport?.blancoo_qc_status}>
                         <TableCell sx={{ pl: 2 }}>Blancco QC Status</TableCell>
                         <TableCell>

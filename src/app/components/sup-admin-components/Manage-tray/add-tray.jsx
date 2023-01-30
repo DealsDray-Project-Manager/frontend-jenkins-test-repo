@@ -457,7 +457,7 @@ const MemberEditorDialog = ({
                                 CTD
                             </MenuItem>
                         </TextFieldCustOm>
-                        {getValues('type_taxanomy') == 'WHT' ? (
+                        {getValues('type_taxanomy') !== 'BOT' &&  getValues('type_taxanomy') !== 'PMT' && getValues('type_taxanomy') !== 'MMT' ? (
                             <>
                                 <TextFieldCustOm
                                     label="Brand"

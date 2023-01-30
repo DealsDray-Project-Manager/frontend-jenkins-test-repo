@@ -459,7 +459,7 @@ const SimpleMuiTable = () => {
                     disabled={textBoxDis}
                     inputRef={(input) => input && input.focus()}
                     name="doorsteps_diagnostics"
-                    label="Please Enter AWB Number"
+                    label="SCAN AWBN"
                     value={awbn}
                     // onChange={(e) => setAwbn(e.target.value)}
                     onChange={(e) => {

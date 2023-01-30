@@ -303,7 +303,7 @@ export default function DialogBox() {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    All Informations
+                    Information Display
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     {reportData?.delivery?.bqc_software_report?.final_grade ==
@@ -409,10 +409,16 @@ export default function DialogBox() {
                                 onChange={handleChange}
                                 name="reason"
                             >
-                                <MenuItem value="Reason-1">Reason-1</MenuItem>
-                                <MenuItem value="Reason-2">Reason-2</MenuItem>
-                                <MenuItem value="Reason-3">Reason-3</MenuItem>
-                                <MenuItem value="Reason-4">Reason-4</MenuItem>
+                                <MenuItem value="Wrong Physical Checks values by operator">
+                                    Wrong Physical Checks values by operator
+                                </MenuItem>
+                                <MenuItem value="Wrong Funcational Checks values by operator">
+                                    Wrong Funcational Checks values by operator
+                                </MenuItem>
+                                <MenuItem value="Qualified as per new grading guidelines">
+                                    Qualified as per new grading guidelines
+                                </MenuItem>
+                                <MenuItem value="Other">Other</MenuItem>
                             </TextField>
                             <TextField
                                 label="Description"
@@ -464,10 +470,16 @@ export default function DialogBox() {
                                 onChange={handleChange}
                                 name="reason"
                             >
-                                <MenuItem value="Reason-1">Reason-1</MenuItem>
-                                <MenuItem value="Reason-2">Reason-2</MenuItem>
-                                <MenuItem value="Reason-3">Reason-3</MenuItem>
-                                <MenuItem value="Reason-4">Reason-4</MenuItem>
+                                <MenuItem value="Wrong Physical Checks values by operator">
+                                    Wrong Physical Checks values by operator
+                                </MenuItem>
+                                <MenuItem value="Wrong Funcational Checks values by operator">
+                                    Wrong Funcational Checks values by operator
+                                </MenuItem>
+                                <MenuItem value="Qualified as per new grading guidelines">
+                                    Qualified as per new grading guidelines
+                                </MenuItem>
+                                <MenuItem value="Other">Other</MenuItem>
                             </TextField>
                             <TextField
                                 label="Description"
@@ -594,7 +606,7 @@ export default function DialogBox() {
                         type="text"
                         autoComplete="off"
                         name="doorsteps_diagnostics"
-                        label="Please Enter UIC"
+                        label="SCAN UIC"
                         value={uic}
                         onChange={(e) => {
                             setUic(e.target.value)

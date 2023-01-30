@@ -29,6 +29,8 @@ const MemberEditorDialog = ({
     setOtherTrayAssign,
     otherTrayAssign,
     trayIdNotChangeAble,
+    brand,
+    model
 }) => {
     const [err, setErr] = useState({
         CTA: '',
@@ -54,7 +56,8 @@ const MemberEditorDialog = ({
                         '/' +
                         trayType +
                         '/' +
-                        location
+                        location  +
+                        "/" + brand +  "/" + model
                 )
                 if (res.status == 200) {
                     alert(res.data.message)
@@ -92,6 +95,7 @@ const MemberEditorDialog = ({
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
+                                    disabled={trayId.cta == ''}
                                     onClick={(e) => {
                                         handelTrayId(trayId.cta, 'CTA')
                                     }}
@@ -120,6 +124,7 @@ const MemberEditorDialog = ({
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
+                                    disabled={trayId.ctb == ''}
                                     onClick={(e) => {
                                         handelTrayId(trayId.ctb, 'CTB')
                                     }}
@@ -148,6 +153,7 @@ const MemberEditorDialog = ({
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
+                                    disabled={trayId.ctc == ''}
                                     onClick={(e) => {
                                         handelTrayId(trayId.ctc, 'CTC')
                                     }}
@@ -176,6 +182,7 @@ const MemberEditorDialog = ({
                         endAdornment: (
                             <InputAdornment>
                                 <IconButton
+                                    disabled={trayId.ctd == ''}
                                     onClick={(e) => {
                                         handelTrayId(trayId.ctd, 'CTD')
                                     }}

@@ -8,6 +8,7 @@ import AssignTrayDialogBox from './assign-tray'
 
 import {
     Button,
+    TextField,
     Dialog,
     DialogTitle,
     IconButton,
@@ -69,7 +70,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
-    const [receiveCheck, setReceiveCheck] = useState('')
+    const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [auditUsers, setAuditUsers] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -104,13 +105,13 @@ const SimpleMuiTable = () => {
     }
 
     const handelTrayReceived = async () => {
-        if (receiveCheck === '') {
+        if (counts === '') {
             alert('Please confirm counts')
         } else {
             try {
                 let obj = {
                     trayId: trayId,
-                    check: receiveCheck,
+                    counts: counts,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/recievedFromOtherTray',
@@ -319,29 +320,31 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    RECEIVED
+                    Please verify the count of - {trayId}
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <h4>
-                        {' '}
-                        <Checkbox
-                            onClick={(e) => {
-                                receiveCheck == ''
-                                    ? setReceiveCheck(
-                                          'I have validated the counts'
-                                      )
-                                    : receiveCheck('')
-                            }}
-                            sx={{ ml: 3 }}
-                        />
-                        I have validated the counts
-                    </h4>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
                         sx={{
                             m: 1,
                         }}
+                        disabled={counts === ''}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -378,8 +381,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

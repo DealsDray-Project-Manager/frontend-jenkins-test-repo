@@ -35,7 +35,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const CustomerBillings = ({ Order }) => {
     return (
         <Card elevation={3}>
-            <H4 sx={{ p: 2 }}>Amazon Data</H4>
+            <H4 sx={{ p: 2 }}>Purchase Data</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>

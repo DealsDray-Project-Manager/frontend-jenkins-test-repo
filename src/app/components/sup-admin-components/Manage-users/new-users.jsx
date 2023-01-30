@@ -161,9 +161,14 @@ const MemberEditorDialog = ({
 
     const handelEdit = async (values) => {
         try {
+            let formdata = new FormData()
+            formdata.append('profile', profile.store)
+            for (let [key, value] of Object.entries(values)) {
+                formdata.append(key, value)
+            }
             let response = await axiosSuperAdminPrexo.post(
                 '/edituserDetails',
-                values
+                formdata
             )
             if (response.status == 200) {
                 setEditFetchData({})
@@ -221,7 +226,6 @@ const MemberEditorDialog = ({
                             onChange={(e) => {
                                 handelProfile(e)
                             }}
-                            disabled={Object.keys(editFetchData).length !== 0}
                         />
                         <TextFieldCustOm
                             label="Name"

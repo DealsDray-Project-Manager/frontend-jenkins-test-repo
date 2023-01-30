@@ -1217,7 +1217,7 @@ export default function DialogBox() {
                             type="text"
                             autoComplete="off"
                             name="doorsteps_diagnostics"
-                            label="Please Enter AWBN"
+                            label="SCAN AWBN"
                             value={awbn}
                             onChange={(e) => {
                                 setAwbn(e.target.value)

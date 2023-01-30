@@ -336,7 +336,6 @@ export default function DialogBox() {
         )
     }, [trayData?.actual_items, textDisable, uic])
 
-    console.log(otherTrayAssign)
 
     return (
         <>
@@ -384,6 +383,8 @@ export default function DialogBox() {
                         setOtherTrayAssign={setOtherTrayAssign}
                         otherTrayAssign={otherTrayAssign}
                         trayIdNotChangeAble={trayIdNotChangeAble}
+                        brand={trayData?.brand}
+                        model={trayData?.model}
                     />
                 )}
             </Box>

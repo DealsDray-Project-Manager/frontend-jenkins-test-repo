@@ -11,10 +11,10 @@ import {
     IconButton,
     DialogContent,
     DialogActions,
+    TextField,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import Checkbox from '@mui/material/Checkbox'
 import { axiosWarehouseIn } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -67,7 +67,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
-    const [receiveCheck, setReceiveCheck] = useState('')
+    const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(refresh)
     const navigate = useNavigate()
@@ -100,24 +100,23 @@ const SimpleMuiTable = () => {
     }
 
     const handelTrayReceived = async () => {
-        if (receiveCheck === '') {
-            alert('Please confirm counts')
-        } else {
-            try {
-                let obj = {
-                    trayId: trayId,
-                    check: receiveCheck,
-                    type: 'charging',
-                }
-                let res = await axiosWarehouseIn.post('/receivedTray', obj)
-                if (res.status == 200) {
-                    alert(res.data.message)
-                    setOpen(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                alert(error)
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+                type: 'charging',
             }
+            let res = await axiosWarehouseIn.post('/receivedTray', obj)
+            if (res.status == 200) {
+                alert(res.data.message)
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            }
+            else{
+                alert(res.data.message) 
+            }
+        } catch (error) {
+            alert(error)
         }
     }
 
@@ -194,15 +193,6 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'actual_items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
-            },
-        },
-        {
             name: 'closed_time_bot',
             label: 'Charging Done Date',
             options: {
@@ -222,18 +212,6 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                style={{ backgroundColor: '#206CE2' }}
-                                onClick={(e) => {
-                                    handelViewTray(e, value)
-                                }}
-                            >
-                                View
-                            </Button>
                             {tableMeta.rowData[2] != 'Received From Charging' &&
                             tableMeta.rowData[2] !=
                                 'Received From Recharging' ? (
@@ -251,18 +229,32 @@ const SimpleMuiTable = () => {
                                     RECEIVE
                                 </Button>
                             ) : (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'red' }}
-                                    onClick={(e) => {
-                                        handelViewDetailTray(e, value)
-                                    }}
-                                >
-                                    Close
-                                </Button>
+                                <>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: '#206CE2' }}
+                                        onClick={(e) => {
+                                            handelViewTray(e, value)
+                                        }}
+                                    >
+                                        View
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
                             )}
                         </>
                     )
@@ -283,29 +275,31 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    RECEIVED
+                    Please verify the count of - {trayId}
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <h4>
-                        {' '}
-                        <Checkbox
-                            onClick={(e) => {
-                                receiveCheck == ''
-                                    ? setReceiveCheck(
-                                          'I have validated the counts'
-                                      )
-                                    : receiveCheck('')
-                            }}
-                            sx={{ ml: 3 }}
-                        />
-                        I have validated the counts
-                    </h4>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
                         sx={{
                             m: 1,
                         }}
+                        disabled={counts === ''}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -332,8 +326,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

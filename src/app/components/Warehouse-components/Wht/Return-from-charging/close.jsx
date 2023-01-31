@@ -215,7 +215,7 @@ export default function DialogBox() {
                     inputRef={(input) => input && input.focus()}
                     disabled={textDisable}
                     name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
+                    label="SCAN UIC"
                     value={uic}
                     // onChange={(e) => setAwbn(e.target.value)}
                     onChange={(e) => {
@@ -295,7 +295,6 @@ export default function DialogBox() {
         )
     }, [trayData?.items, textDisable, uic])
 
-   
     /***************************************************************************************** */
     return (
         <>
@@ -361,8 +360,7 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             trayData?.items?.length !==
-                                trayData?.actual_items?.length ||
-                            loading 
+                                trayData?.actual_items?.length || loading
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

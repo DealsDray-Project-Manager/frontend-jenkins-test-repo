@@ -100,7 +100,7 @@ const PaginationTable = () => {
         }
     }
     const handelAwbn = async (e) => {
-        if (e.target.value.length == 12) {
+        if (e.target.value.length >= 12) {
             if (bagId == '') {
                 alert('Please Fill The Input')
             } else {

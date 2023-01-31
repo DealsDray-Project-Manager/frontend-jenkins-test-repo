@@ -10,6 +10,7 @@ import {
     IconButton,
     DialogContent,
     DialogActions,
+    TextField,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -66,7 +67,7 @@ BootstrapDialogTitle.propTypes = {
 }
 
 const SimpleMuiTable = () => {
-    const [receiveCheck, setReceiveCheck] = useState('')
+    const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
@@ -100,24 +101,22 @@ const SimpleMuiTable = () => {
     }
 
     const handelTrayReceived = async () => {
-        if (receiveCheck === '') {
-            alert('Please confirm counts')
-        } else {
-            try {
-                let obj = {
-                    trayId: trayId,
-                    check: receiveCheck,
-                    type: 'Merging Done',
-                }
-                let res = await axiosWarehouseIn.post('/receivedTray', obj)
-                if (res.status == 200) {
-                    alert(res.data.message)
-                    setOpen(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                alert(error)
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+                type: 'Merging Done',
             }
+            let res = await axiosWarehouseIn.post('/receivedTray', obj)
+            if (res.status == 200) {
+                alert(res.data.message)
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
         }
     }
 
@@ -152,16 +151,7 @@ const SimpleMuiTable = () => {
                 display: false,
             },
         },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: false,
 
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[2],
-            },
-        },
         {
             name: 'type_taxanomy',
             label: 'Tray Type',
@@ -201,8 +191,8 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
-                    return tableMeta.rowData[6] != 'Received From Merging' &&
-                        tableMeta.rowData[6] !=
+                    return tableMeta.rowData[5] != 'Received From Merging' &&
+                        tableMeta.rowData[5] !=
                             'Audit Done Received From Merging' ? (
                         <Button
                             sx={{
@@ -248,23 +238,24 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    RECEIVED
+                    Please verify the count of - {trayId}
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <h4>
-                        {' '}
-                        <Checkbox
-                            onClick={(e) => {
-                                receiveCheck == ''
-                                    ? setReceiveCheck(
-                                          'I have validated the counts'
-                                      )
-                                    : receiveCheck('')
-                            }}
-                            sx={{ ml: 3 }}
-                        />
-                        I have validated the counts
-                    </h4>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -272,6 +263,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
+                        disabled={counts === ''}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -297,8 +289,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -240,7 +240,7 @@ export default function DialogBox() {
                     id="outlined-password-input"
                     type="text"
                     name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
+                    label="SCAN UIC"
                     disabled={textDisable}
                     value={awbn}
                     // onChange={(e) => setAwbn(e.target.value)}

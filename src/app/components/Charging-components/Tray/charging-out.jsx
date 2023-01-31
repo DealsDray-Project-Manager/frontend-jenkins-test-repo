@@ -388,7 +388,7 @@ export default function DialogBox() {
                             id="outlined-password-input"
                             type="text"
                             name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
+                            label="SCAN UIC"
                             disabled={textBoxDis}
                             inputRef={(input) => input && input.focus()}
                             value={uic}

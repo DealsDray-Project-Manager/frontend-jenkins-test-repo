@@ -74,12 +74,9 @@ export default function DialogBox() {
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
-    const [open, setOpen] = React.useState(false)
-    const [reportData, setReportData] = useState({})
 
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
-    const [addButDis, setAddButDis] = useState(false)
     const [closeButDis, SetCloseButDis] = useState(false)
 
     const [state, setState] = useState({})
@@ -115,8 +112,18 @@ export default function DialogBox() {
                     '/bqcReport/' + uicCode + '/' + trayId
                 )
                 if (res.status === 200) {
-                    setReportData(res.data.data)
-                    handleOpen()
+                    // setReportData(res.data.data)
+                    navigate(
+                        '/audit/audit-request/start-transaction/information-display',
+                        {
+                            state: {
+                                reportData: res.data.data,
+                                trayId: trayId,
+                                username: username,
+                                uic: uicCode,
+                            },
+                        }
+                    )
                 } else {
                     setUic('')
                     alert(res.data.message)
@@ -124,69 +131,6 @@ export default function DialogBox() {
             }
         } catch (error) {
             alert(error)
-        }
-    }
-    const handleClose = () => {
-        setState({})
-        setOpen(false)
-    }
-    const handleOpen = () => {
-        setOpen(true)
-    }
-
-    const handelAdd = async (e) => {
-        if (e.keyCode !== 32) {
-            try {
-                setAddButDis(true)
-                let obj = {
-                    username: username,
-                    uic: uic,
-                    trayId: trayId,
-                }
-                obj.stage = state.stage
-                if (state.stage == 'Accept') {
-                    obj.type = state.tray_type
-                } else if (
-                    state.stage == 'Upgrade' ||
-                    state.stage == 'Downgrade'
-                ) {
-                    obj.type = 'WHT'
-                    obj.grade = state.tray_grade
-                    obj.reason = state.reason
-                    obj.description = state.description
-                } else {
-                    obj.type = 'WHT'
-                    obj.description = state.description
-                }
-                let res = await axiosAuditAgent.post('/traySegrigation', obj)
-                if (res.status == 200) {
-                    handleClose()
-                    alert(res.data.message)
-                    setUic('')
-
-                    setAddButDis(false)
-                    setRefresh((refresh) => !refresh)
-                } else {
-                    if (res.data.status == 2) {
-                        setUic('')
-                        setAddButDis(false)
-
-                        if (window.confirm('Tray is full you want to Close?')) {
-                            handelClose(res.data.trayId, 'no')
-                        }
-                    } else if (res.data.status == 4) {
-                        setUic('')
-
-                        setAddButDis(false)
-                        alert(res.data.message)
-                        handleClose()
-                    } else {
-                        alert(res.data.message)
-                    }
-                }
-            } catch (error) {
-                alert(error)
-            }
         }
     }
 
@@ -293,247 +237,6 @@ export default function DialogBox() {
 
     return (
         <>
-            <BootstrapDialog
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                fullWidth
-                maxWidth="lg"
-            >
-                <BootstrapDialogTitle
-                    id="customized-dialog-title"
-                    onClose={handleClose}
-                >
-                    Information Display
-                </BootstrapDialogTitle>
-                <DialogContent dividers>
-                    {reportData?.delivery?.bqc_software_report?.final_grade ==
-                        undefined ||
-                    reportData?.delivery?.bqc_software_report?.final_grade ==
-                        '' ? (
-                        <H3>Grade not found</H3>
-                    ) : (
-                        <H3>
-                            Grade :{' '}
-                            {
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade
-                            }
-                        </H3>
-                    )}
-                    <Grid sx={{ mt: 1 }} container spacing={3}>
-                        <Grid item lg={4} md={6} xs={12}>
-                            <AmazonDetails Order={reportData?.order} />
-                        </Grid>
-                        <Grid item lg={4} md={6} xs={12}>
-                            <Botuser BOt={reportData?.delivery?.bot_report} />
-                        </Grid>
-                        <Grid item lg={4} md={6} xs={12}>
-                            <ChargingDetails
-                                Charging={reportData?.delivery?.charging}
-                            />
-                        </Grid>
-                        <Grid item lg={4} md={6} xs={12}>
-                            <BqcUserReport
-                                BqcUserReport={reportData?.delivery?.bqc_report}
-                            />
-                        </Grid>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <TextField
-                        label="Select"
-                        sx={{
-                            width: '140px',
-                        }}
-                        select
-                        onChange={handleChange}
-                        name="stage"
-                    >
-                        <MenuItem value="Accept">Accept</MenuItem>
-                        <MenuItem value="Upgrade">Upgrade</MenuItem>
-                        <MenuItem value="Downgrade">Downgrade</MenuItem>
-                        <MenuItem value="Repair">Repair</MenuItem>
-                    </TextField>
-                    {state.stage === 'Accept' ? (
-                        <TextField
-                            label="Select Tray"
-                            sx={{
-                                width: '140px',
-                            }}
-                            select
-                            onChange={handleChange}
-                            name="tray_type"
-                        >
-                            <MenuItem value="CTA">CTA</MenuItem>
-                            <MenuItem value="CTB">CTB</MenuItem>
-                            <MenuItem value="CTC">CTC</MenuItem>
-                            <MenuItem value="CTD">CTD</MenuItem>
-                        </TextField>
-                    ) : null}
-                    {state.stage === 'Upgrade' ? (
-                        <>
-                            <TextField
-                                label="Select Grade"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="tray_grade"
-                            >
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'A' ? (
-                                    <MenuItem value="A">A</MenuItem>
-                                ) : null}
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'B' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'A' ? (
-                                    <MenuItem value="B">B</MenuItem>
-                                ) : null}
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'C' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'A' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'B' ? (
-                                    <MenuItem value="C">C</MenuItem>
-                                ) : null}
-                            </TextField>
-                            <TextField
-                                label="Upgrade Reason"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="reason"
-                            >
-                                <MenuItem value="Wrong Physical Checks values by operator">
-                                    Wrong Physical Checks values by operator
-                                </MenuItem>
-                                <MenuItem value="Wrong Funcational Checks values by operator">
-                                    Wrong Funcational Checks values by operator
-                                </MenuItem>
-                                <MenuItem value="Qualified as per new grading guidelines">
-                                    Qualified as per new grading guidelines
-                                </MenuItem>
-                                <MenuItem value="Other">Other</MenuItem>
-                            </TextField>
-                            <TextField
-                                label="Description"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                onChange={handleChange}
-                                name="description"
-                            />
-                        </>
-                    ) : null}
-                    {state.stage === 'Downgrade' ? (
-                        <>
-                            <TextField
-                                label="Select Grade"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="tray_grade"
-                            >
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'B' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'D' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'C' ? (
-                                    <MenuItem value="B">B</MenuItem>
-                                ) : null}
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'C' &&
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'D' ? (
-                                    <MenuItem value="C">C</MenuItem>
-                                ) : null}
-
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade !== 'D' ? (
-                                    <MenuItem value="D">D</MenuItem>
-                                ) : null}
-                            </TextField>
-                            <TextField
-                                label="Downgrade Reason"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="reason"
-                            >
-                                <MenuItem value="Wrong Physical Checks values by operator">
-                                    Wrong Physical Checks values by operator
-                                </MenuItem>
-                                <MenuItem value="Wrong Funcational Checks values by operator">
-                                    Wrong Funcational Checks values by operator
-                                </MenuItem>
-                                <MenuItem value="Qualified as per new grading guidelines">
-                                    Qualified as per new grading guidelines
-                                </MenuItem>
-                                <MenuItem value="Other">Other</MenuItem>
-                            </TextField>
-                            <TextField
-                                label="Description"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                onChange={handleChange}
-                                name="description"
-                            />
-                        </>
-                    ) : null}
-                    {state.stage === 'Repair' ? (
-                        <>
-                            <TextField
-                                label="Description"
-                                sx={{
-                                    width: '140px',
-                                }}
-                                onChange={handleChange}
-                                name="description"
-                            />
-                        </>
-                    ) : null}
-                    <Button
-                        sx={{ ml: 2 }}
-                        disabled={
-                            state.stage == undefined ||
-                            (state.stage == 'Accept' &&
-                                state.tray_type == undefined) ||
-                            (state.stage == 'Upgrade' &&
-                                state.tray_grade == undefined) ||
-                            (state.stage == 'Upgrade' &&
-                                state.reason == undefined) ||
-                            (state.stage == 'Upgrade' &&
-                                state.description == undefined) ||
-                            (state.stage == 'Downgrade' &&
-                                state.tray_grade == undefined) ||
-                            (state.stage == 'Downgrade' &&
-                                state.reason == undefined) ||
-                            (state.stage == 'Downgrade' &&
-                                state.description == undefined) ||
-                            (state.stage == 'Repair' &&
-                                state.description == undefined) ||
-                            addButDis
-                        }
-                        onClick={(e) => handelAdd(e)}
-                        variant="contained"
-                        color="primary"
-                    >
-                        ADD
-                    </Button>
-                </DialogActions>
-            </BootstrapDialog>
-
             <Box sx={{ mt: 1 }}>
                 <Box>
                     <Grid container spacing={2}>

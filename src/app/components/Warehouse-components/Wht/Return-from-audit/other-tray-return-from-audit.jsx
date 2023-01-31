@@ -233,15 +233,6 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
-            },
-        },
-        {
             name: 'closed_time_bot',
             label: 'Audit Done Date',
             options: {
@@ -261,18 +252,6 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                style={{ backgroundColor: '#206CE2' }}
-                                onClick={(e) => {
-                                    handelViewTray(e, value)
-                                }}
-                            >
-                                View
-                            </Button>
                             {tableMeta.rowData[3] != 'Received From Audit' ? (
                                 <Button
                                     sx={{
@@ -288,18 +267,32 @@ const SimpleMuiTable = () => {
                                     RECEIVE
                                 </Button>
                             ) : (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'red' }}
-                                    onClick={(e) => {
-                                        handelViewDetailTray(e, value)
-                                    }}
-                                >
-                                    Close
-                                </Button>
+                                <>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: '#206CE2' }}
+                                        onClick={(e) => {
+                                            handelViewTray(e, value)
+                                        }}
+                                    >
+                                        View
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
                             )}
                         </>
                     )

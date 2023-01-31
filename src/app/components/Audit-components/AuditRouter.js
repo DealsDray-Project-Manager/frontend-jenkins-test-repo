@@ -12,6 +12,9 @@ const AuditRequest = Loadable(
 const WhtTransction = Loadable(
     lazy(() => import('./Audit-request/start-segrigation'))
 )
+const ReportDataDisplay = Loadable(
+    lazy(() => import('./Audit-request/report-data-display'))
+)
 
 const AuditRouter = [
     {
@@ -33,6 +36,10 @@ const AuditRouter = [
     {
         path: '/audit/audit-request/start-transaction/:trayId',
         element: <WhtTransction />,
+    },
+    {
+        path: '/audit/audit-request/start-transaction/information-display',
+        element: <ReportDataDisplay />,
     },
 ]
 

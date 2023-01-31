@@ -208,7 +208,7 @@ export default function DialogBox() {
                             type="text"
                             disabled={textBoxDis}
                             name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
+                            label="SCAN UIC"
                             inputRef={(input) => input && input.focus()}
                             value={uic}
                             // onChange={(e) => setAwbn(e.target.value)}

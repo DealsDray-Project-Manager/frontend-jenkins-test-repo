@@ -111,7 +111,6 @@ const PaginationTable = () => {
             filReader.onload = (e) => {
                 const bufferArray = e.target.result
                 const wb = XLSX.read(bufferArray, {
-                    type: 'buffer',
                     cellDates: true,
                 })
                 const wsname = wb.SheetNames[0]
@@ -150,8 +149,20 @@ const PaginationTable = () => {
             }
             pagination.item.forEach((data) => {
                 data.delivery_date = deliveryData
-                data.order_date = new Date(data.order_date)
+
                 data.reason = []
+                if (data?.base_discount !== undefined) {
+                    data.base_discount = data.base_discount.toString()
+                }
+                if(data?.partner_purchase_price !== undefined){
+                    data.partner_purchase_price = data.partner_purchase_price.toString() 
+                }
+                if(data?.diagnostics_discount !== undefined){
+                    data.diagnostics_discount=data.diagnostics_discount.toString()
+                }
+                if(data?.storage_discount !== undefined){
+                    data.storage_discount =data.storage_discount.toString() 
+                }
 
                 if (
                     err?.delivery_date?.includes(data?.order_date) ||

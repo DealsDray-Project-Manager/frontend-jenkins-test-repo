@@ -151,7 +151,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelAwbn = async (e) => {
-        if (e.target.value.length === 12) {
+        if (e.target.value.length >= 12) {
             try {
                 let obj = {
                     awbn: e.target.value,

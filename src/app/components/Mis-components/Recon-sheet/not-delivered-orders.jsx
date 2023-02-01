@@ -11,6 +11,9 @@ import {
     TableBody,
     Card,
     TablePagination,
+    Box,
+    MenuItem,
+    TextField
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -35,6 +38,11 @@ const SimpleMuiTable = () => {
     const [data, setData] = useState([])
     const [deliveryCount, setDeliveryCount] = useState([])
     const navigate = useNavigate()
+    const [search, setSearch] = useState({
+        type: '',
+        searchData: '',
+        location: '',
+    })
 
     useEffect(() => {
         try {
@@ -318,6 +326,38 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <TextField
+                        select
+                        label="Select"
+                        variant="outlined"
+                        sx={{ mb: 1, width: '140px' }}
+                        onChange={(e) => {
+                            setSearch((p) => ({ ...p, type: e.target.value }))
+                        }}
+                    >
+                        <MenuItem value="order_id">Order Id</MenuItem>
+                        <MenuItem value="imei">IMEI</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="item_id">Item ID</MenuItem>
+                    </TextField>
+                    <TextField
+                        onChange={(e) => {
+                            searchOrders(e)
+                        }}
+                        disabled={search.type == '' ? true : false}
+                        label="Search"
+                        variant="outlined"
+                        sx={{ ml: 2, mb: 1 }}
+                    />
+                </Box>
+            </Box>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

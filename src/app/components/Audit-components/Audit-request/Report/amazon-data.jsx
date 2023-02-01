@@ -66,7 +66,7 @@ const CustomerBillings = ({ Order }) => {
                             Customer Declaration Physical Defect Type
                         </TableCell>
                         <TableCell>
-                            {Order?.customer_declaration_physical_defect_type}
+                            {Order?.customer_declaration_physical_defect_type == undefined ? "Any" : Order?.customer_declaration_physical_defect_type}
                         </TableCell>
                     </TableRow>
                 </TableBody>

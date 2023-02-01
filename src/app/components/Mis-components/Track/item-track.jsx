@@ -532,6 +532,8 @@ const SimpleMuiTable = () => {
                 count={count}
                 rowsPerPage={rowsPerPage}
                 page={page}
+                showFirstButton="true"
+                showLastButton="true"
                 backIconButtonProps={{
                     'aria-label': 'Previous Page',
                 }}

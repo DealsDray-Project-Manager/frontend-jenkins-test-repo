@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
                         </TableCell>
                         <TableCell>BQC Agent Name</TableCell>
                         <TableCell>Assigned to BQC</TableCell>
-                      
+
                         <TableCell>BQC Done Date</TableCell>
                         <TableCell>
                             Tray Received From BQC Time Warehouse
@@ -181,18 +181,10 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Bqc Done Tray Closed Time Warehouse
                         </TableCell>
-                        <TableCell>
-                           Issued to Audit Date
-                        </TableCell>
-                        <TableCell>
-                           Audit Agnet Name
-                        </TableCell>
-                        <TableCell>
-                           Audit Done Date
-                        </TableCell>
-                        <TableCell>
-                           Audit Done Tray Recieved Date
-                        </TableCell>
+                        <TableCell>Issued to Audit Date</TableCell>
+                        <TableCell>Audit Agnet Name</TableCell>
+                        <TableCell>Audit Done Date</TableCell>
+                        <TableCell>Audit Done Tray Recieved Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -409,7 +401,7 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
-                         
+
                             <TableCell>
                                 {data?.delivery.bqc_out_date != undefined
                                     ? new Date(
@@ -501,6 +493,8 @@ const SimpleMuiTable = () => {
                         count={count}
                         rowsPerPage={rowsPerPage}
                         page={page}
+                        showFirstButton="true"
+                        showLastButton="true"
                         backIconButtonProps={{
                             'aria-label': 'Previous Page',
                         }}

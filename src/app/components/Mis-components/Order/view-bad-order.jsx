@@ -14,7 +14,6 @@ import {
     MenuItem,
     Box,
     TextField,
-
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -41,12 +40,12 @@ const SimpleMuiTable = () => {
     const [page, setPage] = useState(0)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
-    const [refresh,setRefresh]=useState(false)
+    const [refresh, setRefresh] = useState(false)
     const [search, setSearch] = useState({
-        type: "",
-        searchData: "",
-        location: "",
-      });
+        type: '',
+        searchData: '',
+        location: '',
+    })
 
     useEffect(() => {
         try {
@@ -114,32 +113,32 @@ const SimpleMuiTable = () => {
         FileSaver.saveAs(data, 'bad-orders' + fileExtension)
     }
     const searchOrders = async (e) => {
-        e.preventDefault();
-    
+        e.preventDefault()
+
         try {
-          let admin = localStorage.getItem("prexo-authentication");
-          if (admin) {
-            let { location } = jwt_decode(admin);
-            if (e.target.value == "") {
-              setRefresh((refresh) => !refresh);
-            }  else {
-              let obj = {
-                location: location,
-                type: search.type,
-                searchData: e.target.value,
-              };
-              let res = await axiosMisUser.post("/badOrdersSearch", obj);
-              if (res.status == 200) {
-                setRowsPerPage(10);
-                setPage(0);
-                setItem(res.data.data);
-              }
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setRefresh((refresh) => !refresh)
+                } else {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                    }
+                    let res = await axiosMisUser.post('/badOrdersSearch', obj)
+                    if (res.status == 200) {
+                        setRowsPerPage(10)
+                        setPage(0)
+                        setItem(res.data.data)
+                    }
+                }
             }
-          }
         } catch (error) {
-          alert(error);
+            alert(error)
         }
-      };
+    }
     return (
         <Container>
             <div className="breadcrumb">
@@ -188,19 +187,19 @@ const SimpleMuiTable = () => {
                     />
                 </Box>
                 <Box>
-                <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                onClick={(e) => {
-                    download(e)
-                }}
-            >
-                Download
-            </Button>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                            download(e)
+                        }}
+                    >
+                        Download
+                    </Button>
                 </Box>
             </Box>
-           
+
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 <ProductTable>
                     <TableHead>
@@ -368,28 +367,29 @@ const SimpleMuiTable = () => {
                         ))}
                     </TableBody>
                 </ProductTable>
-               
             </Card>
             <TableFooter>
-                    <TablePagination
-                        sx={{ px: 2 }}
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={item.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        backIconButtonProps={{
-                            'aria-label': 'Previous Page',
-                        }}
-                        nextIconButtonProps={{
-                            'aria-label': 'Next Page',
-                        }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={({ target: { value } }) =>
-                            setRowsPerPage(value)
-                        }
-                    />
-                </TableFooter>
+                <TablePagination
+                    sx={{ px: 2 }}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={item.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    showFirstButton="true"
+                    showLastButton="true"
+                    backIconButtonProps={{
+                        'aria-label': 'Previous Page',
+                    }}
+                    nextIconButtonProps={{
+                        'aria-label': 'Next Page',
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={({ target: { value } }) =>
+                        setRowsPerPage(value)
+                    }
+                />
+            </TableFooter>
         </Container>
     )
 }

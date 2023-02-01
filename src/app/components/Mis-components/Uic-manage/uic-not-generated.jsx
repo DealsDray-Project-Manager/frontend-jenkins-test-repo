@@ -50,7 +50,6 @@ const SimpleMuiTable = () => {
         location: '',
     })
 
-
     useEffect(() => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
@@ -265,8 +264,6 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }
-
-    
 
     const tableData = useMemo(() => {
         return (
@@ -623,6 +620,8 @@ const SimpleMuiTable = () => {
                 count={deliveryCount}
                 rowsPerPage={rowsPerPage}
                 page={page}
+                showFirstButton="true"
+                showLastButton="true"
                 backIconButtonProps={{
                     'aria-label': 'Previous Page',
                 }}

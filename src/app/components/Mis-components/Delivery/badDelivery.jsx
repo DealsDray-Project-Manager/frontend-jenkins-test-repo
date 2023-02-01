@@ -14,7 +14,7 @@ import {
     TableFooter,
     MenuItem,
     Box,
-    TextField
+    TextField,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -40,12 +40,12 @@ const SimpleMuiTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
     const [data, setData] = useState([])
     const navigate = useNavigate()
-    const [refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false)
     const [search, setSearch] = useState({
-      type: "",
-      searchData: "",
-      location: "",
-    });
+        type: '',
+        searchData: '',
+        location: '',
+    })
 
     useEffect(() => {
         try {
@@ -115,34 +115,34 @@ const SimpleMuiTable = () => {
     }
 
     const searchDelivery = async (e) => {
-        e.preventDefault();
-    
+        e.preventDefault()
+
         try {
-          let admin = localStorage.getItem("prexo-authentication");
-          if (admin) {
-            let { location } = jwt_decode(admin);
-            if (e.target.value == "") {
-              setRefresh((refresh) => !refresh);
-            } else if (search.type == "") {
-              alert("Please add input");
-            } else {
-              let obj = {
-                location: location,
-                type: search.type,
-                searchData: e.target.value,
-              };
-              let res = await axiosMisUser.post("/searchBadDelivery", obj);
-              if (res.status == 200) {
-                setRowsPerPage(10);
-                setPage(0);
-                setItem(res.data.data);
-              }
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setRefresh((refresh) => !refresh)
+                } else if (search.type == '') {
+                    alert('Please add input')
+                } else {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                    }
+                    let res = await axiosMisUser.post('/searchBadDelivery', obj)
+                    if (res.status == 200) {
+                        setRowsPerPage(10)
+                        setPage(0)
+                        setItem(res.data.data)
+                    }
+                }
             }
-          }
         } catch (error) {
-          alert(error);
+            alert(error)
         }
-      };
+    }
 
     return (
         <Container>
@@ -249,7 +249,16 @@ const SimpleMuiTable = () => {
                                               year: 'numeric',
                                               month: '2-digit',
                                               day: '2-digit',
-                                          })}
+                                          })  == 'Invalid Date'
+                                        ? data?.order_date
+                                        : new Date(data?.order_date).toLocaleString(
+                                            'en-GB',
+                                            {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                            }
+                                        )}
                                 </TableCell>
                                 <TableCell>
                                     {data.item_id?.toString()}

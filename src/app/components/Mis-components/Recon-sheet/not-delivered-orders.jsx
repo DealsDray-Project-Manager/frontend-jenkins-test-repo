@@ -13,7 +13,7 @@ import {
     TablePagination,
     Box,
     MenuItem,
-    TextField
+    TextField,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -32,6 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    const [isAlive, setIsAlive] = useState(true)
     const [page, setPage] = React.useState(0)
     const [item, setItem] = useState([])
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -70,7 +71,7 @@ const SimpleMuiTable = () => {
         } catch (error) {
             alert(error)
         }
-    }, [page])
+    }, [page, isAlive])
 
     useEffect(() => {
         setData((_) =>
@@ -101,6 +102,33 @@ const SimpleMuiTable = () => {
             paddingLeft: '16px !important',
         },
     }))
+
+    const searchOrders = async (e) => {
+        e.preventDefault()
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setIsAlive((isAlive) => !isAlive)
+                } else {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                    }
+                    let res = await axiosMisUser.post('/ordersSearch', obj)
+                    setRowsPerPage(10)
+                    setPage(0)
+                    if (res.status == 200) {
+                        setItem(res.data.data)
+                    }
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const tableData = useMemo(() => {
         return (
@@ -326,7 +354,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Box
+            {/* <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -357,7 +385,7 @@ const SimpleMuiTable = () => {
                         sx={{ ml: 2, mb: 1 }}
                     />
                 </Box>
-            </Box>
+            </Box> */}
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

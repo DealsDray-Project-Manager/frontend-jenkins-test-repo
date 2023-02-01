@@ -77,7 +77,6 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }, [page, refresh])
-    
 
     useEffect(() => {
         setData((_) =>
@@ -210,7 +209,16 @@ const SimpleMuiTable = () => {
                                               month: '2-digit',
                                               day: '2-digit',
                                           }
-                                      )}
+                                      ) == 'Invalid Date'
+                                    ? data?.order_date
+                                    : new Date(data?.order_date).toLocaleString(
+                                        'en-GB',
+                                        {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                        }
+                                    )}
                             </TableCell>
                             <TableCell>{data.item_id?.toString()}</TableCell>
                             <TableCell>{data.gep_order?.toString()}</TableCell>

@@ -199,7 +199,7 @@ export default function DialogBox() {
     return (
         <>
             <Box>
-                <BootstrapDialog
+                  <BootstrapDialog
                     aria-labelledby="customized-dialog-title"
                     open={open}
                     fullWidth

@@ -99,6 +99,8 @@ const MmtReport = Loadable(lazy(() => import('./Report/mmt-report')))
 const BotReport = Loadable(lazy(() => import('./Report/Bot-report/tray')))
 const BotReportSkuSum = Loadable(lazy(() => import('./Report/Bot-report/sku-summery')))
 const BotReportSkuSumView = Loadable(lazy(() => import('./Report/Bot-report/from-sku-summery-view-item')))
+const ReadyForAudit = Loadable(lazy(() => import('./Wht/Ready-for-rdl/wht-tray-view')))
+const ReadyForAuditAction = Loadable(lazy(() => import('./Wht/Ready-for-rdl/action')))
 
 const WarehoueRouter = [
     {
@@ -212,6 +214,14 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/return-from-bqc/close/:trayId',
         element: <WhtReturnFromBqcClose />,
+    },
+    {
+        path: '/wareshouse/wht/ready-for-audit',
+        element: <ReadyForAudit />,
+    },
+    {
+        path: '/wareshouse/wht/ready-for-audit/view/:trayId',
+        element: <ReadyForAuditAction />,
     },
     {
         path: '/wareshouse/sorting/request',

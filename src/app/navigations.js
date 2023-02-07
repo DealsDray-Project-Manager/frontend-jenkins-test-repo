@@ -358,6 +358,11 @@ export const navigations = [
                 path: '/wareshouse/wht/return-from-bqc',
                 iconText: 'VP',
             },
+            {
+                name: 'Ready for Audit',
+                path: '/wareshouse/wht/ready-for-audit',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
     },

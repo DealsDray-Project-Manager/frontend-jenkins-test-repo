@@ -99,8 +99,8 @@ const MmtReport = Loadable(lazy(() => import('./Report/mmt-report')))
 const BotReport = Loadable(lazy(() => import('./Report/Bot-report/tray')))
 const BotReportSkuSum = Loadable(lazy(() => import('./Report/Bot-report/sku-summery')))
 const BotReportSkuSumView = Loadable(lazy(() => import('./Report/Bot-report/from-sku-summery-view-item')))
-const ReadyForAudit = Loadable(lazy(() => import('./Wht/Ready-for-rdl/wht-tray-view')))
-const ReadyForAuditAction = Loadable(lazy(() => import('./Wht/Ready-for-rdl/action')))
+const ReadyForAudit = Loadable(lazy(() => import('./Wht/Ready-for-audit/wht-tray-view')))
+const ReadyForAuditAction = Loadable(lazy(() => import('./Wht/Ready-for-audit/action')))
 
 const WarehoueRouter = [
     {

@@ -11,12 +11,57 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem,
+    DialogContent,
+    DialogActions,
+    Dialog,
+    DialogTitle,
+    IconButton,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import { styled } from '@mui/material/styles'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -26,7 +71,12 @@ export default function DialogBox() {
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
+    const [addButDis, setAddButDis] = useState(false)
     const [refresh, setRefresh] = useState(false)
+    const [stateData, setStateData] = useState({})
+    const [itemDataVer, setItemDataVer] = useState({})
+    const [open, setOpen] = React.useState(false)
+
     /*********************************************************** */
 
     useEffect(() => {
@@ -57,9 +107,13 @@ export default function DialogBox() {
                 }
                 setTextDisable(true)
 
-                let res = await axiosWarehouseIn.post('/check-uic', obj)
+                let res = await axiosWarehouseIn.post(
+                    '/check-uic-ready-for-audit',
+                    obj
+                )
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setItemDataVer(res.data.data)
+                    handleOpen()
                 } else {
                     setTextDisable(false)
                     setUic('')
@@ -71,59 +125,70 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-            alert('All Items Scanned')
-        } else {
+    const handelAdd = async (e) => {
+        if (e.keyCode !== 32) {
             try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextDisable(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                alert(error)
-            }
-        }
-    }
-    /************************************************************************** */
-    const handelIssue = async (e, sortId) => {
-        try {
-            if (trayData?.actual_items?.length == trayData?.items?.length) {
-                setLoading(true)
+                setAddButDis(true)
                 let obj = {
+                    uic: uic,
                     trayId: trayId,
-                    description: description,
-                    sortId: trayData?.sort_id,
+                    item: itemDataVer,
+                }
+                obj.stage = stateData.stage
+                if (stateData.stage == 'Shift to Sales Bin') {
+                    obj.grade = stateData.grade
                 }
                 let res = await axiosWarehouseIn.post(
-                    '/issue-to-agent-wht',
+                    '/readyForAudit/itemSegrigation',
                     obj
                 )
                 if (res.status == 200) {
                     alert(res.data.message)
-                    if (trayData?.sort_id == 'Send for BQC') {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/bqc-request')
-                    } else {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/charging-request')
-                    }
+                    setRefresh((refresh) => !refresh)
                 } else {
                     alert(res.data.message)
                 }
+            } catch (error) {
+                alert(error)
+            }
+        }
+    }
+
+    const handleChange = ({ target: { name, value } }) => {
+        if (name === 'stage') {
+            setStateData({
+                [name]: value,
+            })
+        } else {
+            setStateData({
+                ...stateData,
+                [name]: value,
+            })
+        }
+    }
+    const handleClose = () => {
+        setOpen(false)
+        setStateData({})
+    }
+    const handleOpen = () => {
+        setOpen(true)
+    }
+    /************************************************************************** */
+    const handelIssue = async (e, sortId) => {
+        try {
+            setLoading(true)
+            let obj = {
+                trayId: trayId,
+                description: description,
+                sortId: trayData?.sort_id,
+                temp_array:trayData?.temp_array?.length
+            }
+            let res = await axiosWarehouseIn.post('/readyForAudit/closeTray', obj)
+            if (res.status == 200) {
+                alert(res.data.message)
+                 navigate("/wareshouse/wht/ready-for-audit")
             } else {
-                setLoading(false)
-                alert('Please Verify Actual Data')
+                alert(res.data.message)
             }
         } catch (error) {
             alert(error)
@@ -140,7 +205,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>Expected</h5>
+                        <h5>Sales Bin</h5>
                     </Box>
                     <Box
                         sx={{
@@ -151,12 +216,7 @@ export default function DialogBox() {
                         <Box sx={{}}>
                             <h5>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    trayData?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                                {trayData?.temp_array?.length}/{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -178,7 +238,7 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {trayData?.items?.map((data, index) => (
+                            {trayData?.temp_array?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
@@ -192,7 +252,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [trayData?.items])
+    }, [trayData?.temp_array])
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
@@ -203,26 +263,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>ACTUAL</h5>
-                        <TextField
-                            sx={{ mt: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            disabled={textDisable}
-                            name="doorsteps_diagnostics"
-                            inputRef={(input) => input && input.focus()}
-                            label="Please Enter UIC"
-                            value={uic}
-                            onChange={(e) => {
-                                setUic(e.target.value)
-                                handelUic(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
+                        <h5>Leave the Item in the tray</h5>
                     </Box>
                     <Box
                         sx={{
@@ -280,36 +321,71 @@ export default function DialogBox() {
     }, [trayData?.actual_items, textDisable, uic])
     return (
         <>
-           <BootstrapDialog
+            <BootstrapDialog
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 fullWidth
-                maxWidth="lg"
+                maxWidth="xs"
             >
                 <BootstrapDialogTitle
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    DETAILS
+                    Add
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
-                    <Box
+                    <TextField
+                        label="Select"
+                        fullWidth
+                        select
                         sx={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            flexDirection: 'column',
-                            p: 1,
-                            m: 1,
-                            bgcolor: 'background.paper',
-                            borderRadius: 1,
+                            mb: 2,
                         }}
+                        onChange={handleChange}
+                        name="stage"
                     >
-                       
-                              
-                           
-                    </Box>
+                        <MenuItem value="Leave the Item in the tray">
+                            Leave the Item in the tray
+                        </MenuItem>
+
+                        <MenuItem value="Shift to Sales Bin">
+                            Shift to Sales Bin
+                        </MenuItem>
+                    </TextField>
+                    {stateData?.stage == 'Shift to Sales Bin' ? (
+                        <TextField
+                            label="Select Grade"
+                            select
+                            fullWidth
+                            sx={{
+                                mb: 2,
+                            }}
+                            onChange={handleChange}
+                            name="grade"
+                        >
+                            <MenuItem value="A">A</MenuItem>
+                            <MenuItem value="B">B</MenuItem>
+                            <MenuItem value="C">C</MenuItem>
+                            <MenuItem value="D">D</MenuItem>
+                        </TextField>
+                    ) : null}
                 </DialogContent>
-                <DialogActions></DialogActions>
+                <DialogActions>
+                    <Button
+                        sx={{ ml: 2 }}
+                        disabled={
+                            (stateData?.stage == 'Shift to Sales Bin' &&
+                                stateData?.grade == '') ||
+                            stateData?.stage == undefined ||
+                            addButDis
+                        }
+                        onClick={(e) => handelAdd(e)}
+                        variant="contained"
+                        color="primary"
+                    >
+                        ADD
+                    </Button>
+                </DialogActions>
             </BootstrapDialog>
             <Box
                 sx={{
@@ -324,7 +400,27 @@ export default function DialogBox() {
                     }}
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
+                    <TextField
+                        sx={{ mt: 1, ml: 1 }}
+                        id="outlined-password-input"
+                        type="text"
+                        disabled={textDisable}
+                        name="doorsteps_diagnostics"
+                        inputRef={(input) => input && input.focus()}
+                        label="Please Enter UIC"
+                        value={uic}
+                        onChange={(e) => {
+                            setUic(e.target.value)
+                            handelUic(e)
+                        }}
+                        inputProps={{
+                            style: {
+                                width: 'auto',
+                            },
+                        }}
+                    />
                 </Box>
+
                 <Box
                     sx={{
                         float: 'right',
@@ -352,14 +448,24 @@ export default function DialogBox() {
                         onChange={(e) => {
                             setDescription(e.target.value)
                         }}
-                        style={{ width: '400px' }}
+                        style={{
+                            width: '400px',
+                            height: '70px',
+                            marginTop: '10px',
+                        }}
                         placeholder="Description"
                     ></textarea>
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' ? true : false
+                            trayData?.items?.length !==
+                                trayData?.temp_array?.length +
+                                    trayData?.actual_items?.length ||
+                            loading == true ||
+                            description == ''
+                                ? true
+                                : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -368,7 +474,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Issue To Agent
+                        Close
                     </Button>
                 </Box>
             </div>

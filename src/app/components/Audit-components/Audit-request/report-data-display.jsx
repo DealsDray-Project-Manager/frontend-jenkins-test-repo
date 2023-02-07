@@ -10,10 +10,8 @@ import {
     TextField,
     Grid,
     MenuItem,
-    InputLabel,
 } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useParams } from 'react-router-dom'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -24,9 +22,8 @@ import Botuser from './Report/bot-user-rport'
 import BqcUserReport from './Report/bqc-user-report'
 import AmazonDetails from './Report/amazon-data'
 import BqcApiReport from './Report/bqc-api-data'
+import BqcApiAllReport from './Report/bqc-all-api-report'
 
-// import jwt from "jsonwebtoken"
-import jwt_decode from 'jwt-decode'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -66,7 +63,7 @@ export default function DialogBox() {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [addButDis, setAddButDis] = useState(false)
-    const { reportData, trayId, username, uic } = state
+    const { reportData, trayId, username, uic, ctxTray } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
 
@@ -78,6 +75,8 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
+                    orgGrade:
+                        reportData.delivery.bqc_software_report.final_grade,
                 }
                 obj.stage = stateData.stage
                 if (stateData.stage == 'Accept') {
@@ -150,6 +149,53 @@ export default function DialogBox() {
         }
     }
 
+    console.log(ctxTray?.filter((data) => data))
+
+    const gridData = useMemo(() => {
+        return (
+            <Grid sx={{ mt: 1 }} container spacing={3}>
+                <Grid item lg={3} md={6} xs={12}>
+                    <AmazonDetails Order={reportData?.order} />
+                </Grid>
+                <Grid item lg={3} md={6} xs={12}>
+                    <Botuser BOt={reportData?.delivery?.bot_report} />
+                </Grid>
+                <Grid item lg={3} md={6} xs={12}>
+                    <ChargingDetails
+                        Charging={reportData?.delivery?.charging}
+                        ChargeDoneDate={
+                            reportData?.delivery?.charging_done_date
+                        }
+                    />
+                </Grid>
+                <Grid item lg={3} md={6} xs={12}>
+                    <BqcUserReport
+                        BqcUserReport={reportData?.delivery?.bqc_report}
+                    />
+                </Grid>
+                <Grid item lg={6} md={6} xs={12}>
+                    <BqcApiAllReport
+                        BqcSowftwareReport={
+                            reportData?.delivery?.bqc_software_report
+                        }
+                    />
+                </Grid>
+                <Grid item lg={6} md={6} xs={12}>
+                    <BqcApiReport
+                        BqcSowftwareReport={
+                            reportData?.delivery?.bqc_software_report
+                        }
+                        grade={
+                            reportData?.delivery?.bqc_software_report
+                                ?.final_grade
+                        }
+                        imei={reportData?.order?.imei}
+                    />
+                </Grid>
+            </Grid>
+        )
+    }, [reportData])
+
     return (
         <>
             <Box>
@@ -177,8 +223,14 @@ export default function DialogBox() {
                             name="stage"
                         >
                             <MenuItem value="Accept">Accept</MenuItem>
-                            <MenuItem value="Upgrade">Upgrade</MenuItem>
-                            <MenuItem value="Downgrade">Downgrade</MenuItem>
+                            {reportData?.delivery?.bqc_software_report
+                                ?.final_grade !== 'A' ? (
+                                <MenuItem value="Upgrade">Upgrade</MenuItem>
+                            ) : null}
+                            {reportData?.delivery?.bqc_software_report
+                                ?.final_grade !== 'D' ? (
+                                <MenuItem value="Downgrade">Downgrade</MenuItem>
+                            ) : null}
                             <MenuItem value="Repair">Repair</MenuItem>
                         </TextField>
                         {stateData.stage === 'Accept' ? (
@@ -194,16 +246,56 @@ export default function DialogBox() {
                             >
                                 {reportData?.delivery?.bqc_software_report
                                     ?.final_grade == 'A' ? (
-                                    <MenuItem value="CTA">CTA</MenuItem>
+                                    <MenuItem value="CTA">
+                                        CTA - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.type_taxanomy == 'CTA' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'B' ? (
-                                    <MenuItem value="CTB">CTB</MenuItem>
+                                    <MenuItem value="CTB">
+                                        CTB - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.type_taxanomy == 'CTB' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'C' ? (
-                                    <MenuItem value="CTC">CTC</MenuItem>
+                                    <MenuItem value="CTC">
+                                        CTC - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.type_taxanomy == 'CTC' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'D' ? (
-                                    <MenuItem value="CTD">CTD</MenuItem>
+                                    <MenuItem value="CTD">
+                                        CTD - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.type_taxanomy == 'CTD' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
                                 ) : null}
                             </TextField>
                         ) : null}
@@ -261,7 +353,7 @@ export default function DialogBox() {
                                     <MenuItem value="Other">Other</MenuItem>
                                 </TextField>
                                 <TextField
-                                    label="Description"
+                                    label="Audit Remark"
                                     fullWidth
                                     sx={{
                                         mb: 2,
@@ -326,7 +418,7 @@ export default function DialogBox() {
                                     <MenuItem value="Other">Other</MenuItem>
                                 </TextField>
                                 <TextField
-                                    label="Description"
+                                    label="Audit Remark"
                                     fullWidth
                                     onChange={handleChange}
                                     name="description"
@@ -336,7 +428,7 @@ export default function DialogBox() {
                         {stateData.stage === 'Repair' ? (
                             <>
                                 <TextField
-                                    label="Description"
+                                    label="Audit Remark"
                                     fullWidth
                                     sx={{
                                         mb: 2,
@@ -400,38 +492,7 @@ export default function DialogBox() {
                     )}
                     <H3>UIC : {uic}</H3>
                 </Box>
-                <Grid sx={{ mt: 1 }} container spacing={3}>
-                    <Grid item lg={3} md={6} xs={12}>
-                        <AmazonDetails Order={reportData?.order} />
-                    </Grid>
-                    <Grid item lg={3} md={6} xs={12}>
-                        <Botuser BOt={reportData?.delivery?.bot_report} />
-                    </Grid>
-                    <Grid item lg={3} md={6} xs={12}>
-                        <ChargingDetails
-                            Charging={reportData?.delivery?.charging}
-                        />
-                    </Grid>
-                    <Grid item lg={3} md={6} xs={12}>
-                        <BqcUserReport
-                            BqcUserReport={reportData?.delivery?.bqc_report}
-                        />
-                    </Grid>
-                    {reportData?.delivery?.bqc_software_report?.final_grade !==
-                    'A' ? (
-                        <Grid item lg={6} md={6} xs={12}>
-                            <BqcApiReport
-                                BqcApiReport={
-                                    reportData?.delivery?.bqc_software_report
-                                }
-                                grade={
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade
-                                }
-                            />
-                        </Grid>
-                    ) : null}
-                </Grid>
+                {gridData}
                 <Box
                     sx={{
                         display: 'flex',

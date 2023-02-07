@@ -64,10 +64,10 @@ export default function DialogBox() {
         const userStatusApiCall = async () => {
             try {
                 let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking/' + trayData.issued_user_name
+                    '/auditUserStatusChecking/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
                 )
                 let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit/' + trayData.issued_user_name
+                    '/fetchAssignedTrayForAudit/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
@@ -138,7 +138,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
+     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
             if (userAgent !== 'User is free') {

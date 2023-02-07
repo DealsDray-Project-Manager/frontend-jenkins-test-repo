@@ -3,8 +3,6 @@ import {
     Box,
     Button,
     Dialog,
-    DialogContent,
-    DialogActions,
     DialogTitle,
     IconButton,
     TextField,
@@ -16,8 +14,6 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem,
-    InputLabel,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
@@ -25,12 +21,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { H1, H3, H4 } from 'app/components/Typography'
-import { axiosAuditAgent, axiosSuperAdminPrexo } from '../../../../axios'
-import ChargingDetails from './Report/charging-user-report'
-import Botuser from './Report/bot-user-rport'
-import BqcUserReport from './Report/bqc-user-report'
-import AmazonDetails from './Report/amazon-data'
+import { axiosAuditAgent } from '../../../../axios'
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -79,8 +70,6 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [closeButDis, SetCloseButDis] = useState(false)
 
-    const [state, setState] = useState({})
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -121,6 +110,7 @@ export default function DialogBox() {
                                 trayId: trayId,
                                 username: username,
                                 uic: uicCode,
+                                ctxTray:trayData?.otherTray
                             },
                         }
                     )
@@ -151,19 +141,6 @@ export default function DialogBox() {
             }
         } catch (error) {
             alert(error)
-        }
-    }
-
-    const handleChange = ({ target: { name, value } }) => {
-        if (name === 'stage') {
-            setState({
-                [name]: value,
-            })
-        } else {
-            setState({
-                ...state,
-                [name]: value,
-            })
         }
     }
 

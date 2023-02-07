@@ -87,7 +87,15 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Grade',
+            label: 'Orginel Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.orgGrade,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Audit Recomendad Grade',
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.grade,
@@ -129,8 +137,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

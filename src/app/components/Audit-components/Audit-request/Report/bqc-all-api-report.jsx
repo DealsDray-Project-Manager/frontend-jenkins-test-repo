@@ -89,10 +89,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         <TableCell sx={{ pl: 2 }}>Market Name</TableCell>
                         <TableCell>{BqcSowftwareReport?.market_name}</TableCell>
                     </TableRow>
-                    <TableRow key={BqcSowftwareReport?.device_color}>
+                    <TableRow key={BqcSowftwareReport?.device_color_one}>
                         <TableCell sx={{ pl: 2 }}>Device Color</TableCell>
                         <TableCell>
-                            {BqcSowftwareReport?.device_color}
+                            {BqcSowftwareReport?.device_color_one}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.bq_batterychargerange}>
@@ -343,6 +343,12 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                         </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.front_camera_flash_test}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow key={BqcSowftwareReport?.device_color}>
+                        <TableCell sx={{ pl: 2 }}>Device Color</TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?.device_color}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcSowftwareReport?.battery_charging_test}>

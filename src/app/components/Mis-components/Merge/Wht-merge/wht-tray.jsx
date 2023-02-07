@@ -126,7 +126,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     /* OPEN DIALOG BOX */
-    const handelMerge = async (e, model, brand, trayId, itemCount) => {
+    const handelMerge = async (e, model, brand, trayId, itemCount, status) => {
         e.preventDefault()
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -138,8 +138,9 @@ const SimpleMuiTable = () => {
                     brand: brand,
                     fromTray: trayId,
                     itemCount: itemCount,
+                    status: status,
                 }
-                
+
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
                 if (res.status === 200) {
                     setOpen(true)
@@ -184,8 +185,8 @@ const SimpleMuiTable = () => {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -197,13 +198,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -222,7 +217,8 @@ const SimpleMuiTable = () => {
             name: 'limit',
             label: 'Tray Id',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 display: false,
             },
         },
@@ -285,7 +281,8 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Action',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
@@ -309,10 +306,11 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
+                                        tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length
+                                        tableMeta.rowData[5]?.length,
+                                        tableMeta.rowData[10]
                                     )
                                 }}
                                 style={{ backgroundColor: 'primery' }}
@@ -439,6 +437,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -446,6 +446,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

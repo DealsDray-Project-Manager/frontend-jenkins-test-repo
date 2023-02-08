@@ -200,37 +200,38 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: 'Action',
             options: {
-                filter: true,
-                customBodyRender: (value,tableMeta) => {
-                    return (
-                        tableMeta.rowData[6] != "Received From Merging" ||   ? (
-                            <Button
-                              sx={{
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return tableMeta.rowData[6] != 'Received From Merging' &&
+                        tableMeta.rowData[6] !=
+                            'Audit Done Received From Merging' ? (
+                        <Button
+                            sx={{
                                 m: 1,
-                              }}
-                              variant="contained"
-                              style={{ backgroundColor: "green" }}
-                              onClick={(e) => {
-                                setOpen(true);
-                                setTrayId(value);
-                              }}
-                            >
-                              RECEIVED
-                            </Button>
-                          ) : (
-                            <Button
-                              sx={{
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: 'green' }}
+                            onClick={(e) => {
+                                setOpen(true)
+                                setTrayId(value)
+                            }}
+                        >
+                            RECEIVED
+                        </Button>
+                    ) : (
+                        <Button
+                            sx={{
                                 m: 1,
-                              }}
-                              variant="contained"
-                              style={{ backgroundColor: "red" }}
-                              onClick={(e) => {
-                                handelViewDetailTray(e, value);
-                              }}
-                            >
-                              Close
-                            </Button>
-                          )
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: 'red' }}
+                            onClick={(e) => {
+                                handelViewDetailTray(e, value)
+                            }}
+                        >
+                            Close
+                        </Button>
                     )
                 },
             },

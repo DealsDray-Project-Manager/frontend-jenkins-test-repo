@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
+
 import {
     Box,
     Button,
@@ -23,10 +24,9 @@ import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
-
+import jwt_decode from 'jwt-decode'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -70,12 +70,13 @@ export default function DialogBox() {
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
-    const [description, setDescription] = useState([])
     const [addButDis, setAddButDis] = useState(false)
+    const [description, setDescription] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [stateData, setStateData] = useState({})
     const [itemDataVer, setItemDataVer] = useState({})
     const [open, setOpen] = React.useState(false)
+    const inputRef = useRef(null)
 
     /*********************************************************** */
 
@@ -113,6 +114,8 @@ export default function DialogBox() {
                 )
                 if (res?.status == 200) {
                     setItemDataVer(res.data.data)
+                    setTextDisable(false)
+
                     handleOpen()
                 } else {
                     setTextDisable(false)
@@ -124,32 +127,48 @@ export default function DialogBox() {
             }
         }
     }
+
     /************************************************************************** */
     const handelAdd = async (e) => {
         if (e.keyCode !== 32) {
-            try {
-                setAddButDis(true)
-                let obj = {
-                    uic: uic,
-                    trayId: trayId,
-                    item: itemDataVer,
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                const { user_name } = jwt_decode(admin)
+                try {
+                    setAddButDis(true)
+                    let obj = {
+                        uic: uic,
+                        trayId: trayId,
+                        item: itemDataVer,
+                        username: user_name,
+                    }
+                    obj.stage = stateData.stage
+                    if (stateData.stage == 'Shift to Sales Bin') {
+                        console.log('wor')
+                        obj.grade = stateData.grade
+                        obj.description = stateData.description
+                    }
+                    let res = await axiosWarehouseIn.post(
+                        '/readyForAudit/itemSegrigation',
+                        obj
+                    )
+                    if (res.status == 200) {
+                        handleClose()
+                        setAddButDis(false)
+                        setUic('')
+                        alert(res.data.message)
+
+                        setRefresh((refresh) => !refresh)
+                    } else {
+                        handleClose()
+                        setUic('')
+                        setAddButDis(false)
+
+                        alert(res.data.message)
+                    }
+                } catch (error) {
+                    alert(error)
                 }
-                obj.stage = stateData.stage
-                if (stateData.stage == 'Shift to Sales Bin') {
-                    obj.grade = stateData.grade
-                }
-                let res = await axiosWarehouseIn.post(
-                    '/readyForAudit/itemSegrigation',
-                    obj
-                )
-                if (res.status == 200) {
-                    alert(res.data.message)
-                    setRefresh((refresh) => !refresh)
-                } else {
-                    alert(res.data.message)
-                }
-            } catch (error) {
-                alert(error)
             }
         }
     }
@@ -173,20 +192,23 @@ export default function DialogBox() {
     const handleOpen = () => {
         setOpen(true)
     }
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
             setLoading(true)
             let obj = {
                 trayId: trayId,
-                description: description,
                 sortId: trayData?.sort_id,
-                temp_array:trayData?.temp_array?.length
+                temp_array: trayData?.temp_array?.length,
             }
-            let res = await axiosWarehouseIn.post('/readyForAudit/closeTray', obj)
+            let res = await axiosWarehouseIn.post(
+                '/readyForAudit/closeTray',
+                obj
+            )
             if (res.status == 200) {
                 alert(res.data.message)
-                 navigate("/wareshouse/wht/ready-for-audit")
+                navigate('/wareshouse/wht/ready-for-audit')
             } else {
                 alert(res.data.message)
             }
@@ -319,8 +341,9 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
-        <>
+        <Box>
             <BootstrapDialog
                 aria-labelledby="customized-dialog-title"
                 open={open}
@@ -341,7 +364,9 @@ export default function DialogBox() {
                         sx={{
                             mb: 2,
                         }}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e)
+                        }}
                         name="stage"
                     >
                         <MenuItem value="Leave the Item in the tray">
@@ -353,21 +378,36 @@ export default function DialogBox() {
                         </MenuItem>
                     </TextField>
                     {stateData?.stage == 'Shift to Sales Bin' ? (
-                        <TextField
-                            label="Select Grade"
-                            select
-                            fullWidth
-                            sx={{
-                                mb: 2,
-                            }}
-                            onChange={handleChange}
-                            name="grade"
-                        >
-                            <MenuItem value="A">A</MenuItem>
-                            <MenuItem value="B">B</MenuItem>
-                            <MenuItem value="C">C</MenuItem>
-                            <MenuItem value="D">D</MenuItem>
-                        </TextField>
+                        <>
+                            <TextField
+                                label="Select Grade"
+                                select
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                onChange={(e) => {
+                                    handleChange(e)
+                                }}
+                                name="grade"
+                            >
+                                <MenuItem value="A">A</MenuItem>
+                                <MenuItem value="B">B</MenuItem>
+                                <MenuItem value="C">C</MenuItem>
+                                <MenuItem value="D">D</MenuItem>
+                            </TextField>
+                            <TextField
+                                label="Description"
+                                fullWidth
+                                name="description"
+                                sx={{
+                                    mb: 2,
+                                }}
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                variant="outlined"
+                            />
+                        </>
                     ) : null}
                 </DialogContent>
                 <DialogActions>
@@ -375,7 +415,9 @@ export default function DialogBox() {
                         sx={{ ml: 2 }}
                         disabled={
                             (stateData?.stage == 'Shift to Sales Bin' &&
-                                stateData?.grade == '') ||
+                                stateData?.grade == undefined) ||
+                            (stateData?.stage == 'Shift to Sales Bin' &&
+                                stateData.description == undefined) ||
                             stateData?.stage == undefined ||
                             addButDis
                         }
@@ -387,6 +429,7 @@ export default function DialogBox() {
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
+
             <Box
                 sx={{
                     mt: 1,
@@ -406,8 +449,8 @@ export default function DialogBox() {
                         type="text"
                         disabled={textDisable}
                         name="doorsteps_diagnostics"
-                        inputRef={(input) => input && input.focus()}
-                        label="Please Enter UIC"
+                        label="SCAN UIC"
+                        autoFocus
                         value={uic}
                         onChange={(e) => {
                             setUic(e.target.value)
@@ -444,17 +487,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <textarea
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        style={{
-                            width: '400px',
-                            height: '70px',
-                            marginTop: '10px',
-                        }}
-                        placeholder="Description"
-                    ></textarea>
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
@@ -462,10 +494,7 @@ export default function DialogBox() {
                             trayData?.items?.length !==
                                 trayData?.temp_array?.length +
                                     trayData?.actual_items?.length ||
-                            loading == true ||
-                            description == ''
-                                ? true
-                                : false
+                            loading == true
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -478,6 +507,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Box>
     )
 }

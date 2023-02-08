@@ -58,7 +58,9 @@ const WhtReturnFromChargingViewItem = Loadable(
     lazy(() => import('./Wht/Return-from-charging/view-item'))
 )
 const WhtBqcRequests = Loadable(lazy(() => import('./Wht/Bqc-request/tray')))
-const WhtBqcRequestsApprove = Loadable(lazy(() => import('./Wht/Bqc-request/approve')))
+const WhtBqcRequestsApprove = Loadable(
+    lazy(() => import('./Wht/Bqc-request/approve'))
+)
 
 const WhtReturnFromBqc = Loadable(
     lazy(() => import('./Wht/Return-from-bqc/tray'))
@@ -86,7 +88,9 @@ const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
-const MergeRequestApprove = Loadable(lazy(() => import('./Merge/Merge-request/approve-request')))
+const MergeRequestApprove = Loadable(
+    lazy(() => import('./Merge/Merge-request/approve-request'))
+)
 
 const ReturnFromMerge = Loadable(
     lazy(() => import('./Merge/Return-from-merge/tray'))
@@ -97,10 +101,19 @@ const ReturnFromMergeClose = Loadable(
 const PmtReport = Loadable(lazy(() => import('./Report/pmt-report')))
 const MmtReport = Loadable(lazy(() => import('./Report/mmt-report')))
 const BotReport = Loadable(lazy(() => import('./Report/Bot-report/tray')))
-const BotReportSkuSum = Loadable(lazy(() => import('./Report/Bot-report/sku-summery')))
-const BotReportSkuSumView = Loadable(lazy(() => import('./Report/Bot-report/from-sku-summery-view-item')))
-const ReadyForAudit = Loadable(lazy(() => import('./Wht/Ready-for-audit/wht-tray-view')))
-const ReadyForAuditAction = Loadable(lazy(() => import('./Wht/Ready-for-audit/action')))
+const BotReportSkuSum = Loadable(
+    lazy(() => import('./Report/Bot-report/sku-summery'))
+)
+const BotReportSkuSumView = Loadable(
+    lazy(() => import('./Report/Bot-report/from-sku-summery-view-item'))
+)
+const ReadyForAudit = Loadable(
+    lazy(() => import('./Wht/Ready-for-audit/wht-tray-view'))
+)
+const ReadyForAuditAction = Loadable(
+    lazy(() => import('./Wht/Ready-for-audit/action'))
+)
+const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
 
 const WarehoueRouter = [
     {
@@ -256,6 +269,10 @@ const WarehoueRouter = [
         element: <BotReport />,
     },
     {
+        path: '/wareshouse/report/sales-bin',
+        element: <SalesBinItem />,
+    },
+    {
         path: '/wareshouse/report/bot/sku-summery/:trayId',
         element: <BotReportSkuSum />,
     },
@@ -264,7 +281,6 @@ const WarehoueRouter = [
         element: <BotReportSkuSumView />,
     },
     {
-
         path: '/wareshouse/merge/request',
         element: <MergeRequest />,
     },
@@ -280,7 +296,6 @@ const WarehoueRouter = [
         path: '/wareshouse/merge/return-from-merge/close/:trayId',
         element: <ReturnFromMergeClose />,
     },
-    
 ]
 
 export default WarehoueRouter

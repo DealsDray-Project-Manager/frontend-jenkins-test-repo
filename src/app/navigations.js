@@ -424,6 +424,11 @@ export const navigations = [
                 path: '/wareshouse/report/bot',
                 iconText: 'VP',
             },
+            {
+                name: 'Sales Bin',
+                path: '/wareshouse/report/sales-bin',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
     },

@@ -203,7 +203,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value,tableMeta) => {
                     return (
-                        tableMeta.rowData[6] != "Received From Merging" ? (
+                        tableMeta.rowData[6] != "Received From Merging" ||   ? (
                             <Button
                               sx={{
                                 m: 1,

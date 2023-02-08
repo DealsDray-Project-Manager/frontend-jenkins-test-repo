@@ -117,7 +117,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const handelIssue = async (e, trayId, type, length, limit) => {
+    const handelIssue = async (e, trayId, type, length, limit, status) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -129,6 +129,7 @@ export default function DialogBox() {
                     type: type,
                     length: length,
                     limit: limit,
+                    status: status,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',
@@ -244,7 +245,7 @@ export default function DialogBox() {
                     inputRef={(input) => input && input.focus()}
                     disabled={textDisable}
                     name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
+                    label="SCAN UIC"
                     value={awbn}
                     onChange={(e) => {
                         setAwbn(e.target.value)
@@ -385,7 +386,7 @@ export default function DialogBox() {
                         onChange={(e) => {
                             setDescription(e.target.value)
                         }}
-                        style={{ width: '400px' }}
+                        style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
 
@@ -427,7 +428,8 @@ export default function DialogBox() {
                                 employeeData[0]?.code,
                                 employeeData[0]?.type_taxanomy,
                                 employeeData[0]?.items.length,
-                                employeeData[0]?.limit
+                                employeeData[0]?.limit,
+                                employeeData[0]?.sort_id
                             )
                         }}
                     >

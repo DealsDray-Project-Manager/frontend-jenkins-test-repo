@@ -28,6 +28,6 @@ export const axiosSortingAgent = axios.create({
   headers: { "x-access-token": localStorage.getItem("prexo-authentication") },
 });
 export const axiosAuditAgent = axios.create({
-  baseURL: "http://prexo-v7-dev-api.dealsdray.com/api/v7/audit-agent",
+  baseURL: "http://localhost:8000/api/v7/audit-agent",
   headers: { "x-access-token": localStorage.getItem("prexo-authentication") },
 });

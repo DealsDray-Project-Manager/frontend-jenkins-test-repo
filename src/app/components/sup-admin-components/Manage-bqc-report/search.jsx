@@ -6,6 +6,8 @@ import ChargingDetails from './ChargingDetails'
 import BqcReport from './BqcReport'
 import BqcUserReport from './BqcUserReport'
 import AmazonDetails from './AmazonDetails'
+import BotUserReprt from './Bot-user-report'
+import BqcApiSummery from './Bqc-api-data-summery'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
 
@@ -83,21 +85,43 @@ export default function CenteredTabs() {
             </Box>
             {Object.keys(reportData)?.length !== 0 ? (
                 <Grid sx={{ mt: 1 }} container spacing={3}>
-                    <Grid item lg={4} md={6} xs={12}>
+                    <Grid item lg={3} md={6} xs={12}>
                         <AmazonDetails Order={reportData?.order} />
                     </Grid>
-                    <Grid item lg={4} md={6} xs={12}>
+                    <Grid item lg={3} md={6} xs={12}>
+                        <BotUserReprt BOt={reportData?.delivery?.bot_report} />
+                    </Grid>
+                    <Grid item lg={3} md={6} xs={12}>
                         <ChargingDetails
                             Charging={reportData?.delivery?.charging}
+                            ChargeDoneDate={
+                                reportData?.delivery?.charging_done_date
+                            }
                         />
                     </Grid>
-                    <Grid item lg={4} md={6} xs={12}>
+                    <Grid item lg={3} md={6} xs={12}>
                         <BqcUserReport
                             BqcUserReport={reportData?.delivery?.bqc_report}
                         />
                     </Grid>
-                    <Grid item lg={4} md={6} xs={12}>
-                        <BqcReport BqcSowftwareReport={reportData?.delivery?.bqc_software_report} />
+                    <Grid item lg={6} md={6} xs={12}>
+                        <BqcReport
+                            BqcSowftwareReport={
+                                reportData?.delivery?.bqc_software_report
+                            }
+                        />
+                    </Grid>
+                    <Grid item lg={6} md={6} xs={12}>
+                        <BqcApiSummery
+                            BqcSowftwareReport={
+                                reportData?.delivery?.bqc_software_report
+                            }
+                            grade={
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade
+                            }
+                            imei={reportData?.order?.imei}
+                        />
                     </Grid>
                 </Grid>
             ) : null}

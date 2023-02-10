@@ -110,7 +110,7 @@ export default function DialogBox() {
                                 trayId: trayId,
                                 username: username,
                                 uic: uicCode,
-                                ctxTray:trayData?.otherTray
+                                ctxTray: trayData?.otherTray,
                             },
                         }
                     )

@@ -32,7 +32,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 }))
 
-const CustomerBillings = ({ Charging }) => {
+const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
     return (
         <Card elevation={3}>
             <H4 sx={{ p: 2 }}>Charging User Report</H4>
@@ -74,6 +74,14 @@ const CustomerBillings = ({ Charging }) => {
                             Missing Body Part Name
                         </TableCell>
                         <TableCell>{Charging?.part_name}</TableCell>
+                    </TableRow>
+                    <TableRow key={ChargeDoneDate}>
+                        <TableCell sx={{ pl: 2 }}>
+                           Last Charge Done Date
+                        </TableCell>
+                        <TableCell>{  new Date(ChargeDoneDate).toLocaleString('en-GB', {
+                        hour12: true,
+                    })}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

@@ -35,43 +35,11 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const CustomerBillings = ({ Order }) => {
     return (
         <Card elevation={3}>
-            <H4 sx={{ p: 2 }}>Amazon Data</H4>
+            <H4 sx={{ p: 2 }}>Purchase Data</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
-                    <TableRow key={Order?.order_id}>
-                        <TableCell sx={{ pl: 2 }}>Order ID</TableCell>
-                        <TableCell>{Order?.order_id}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.order_status}>
-                        <TableCell sx={{ pl: 2 }}>Order Status</TableCell>
-                        <TableCell>{Order?.order_status}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.item_id}>
-                        <TableCell sx={{ pl: 2 }}>Item ID</TableCell>
-                        <TableCell>{Order?.item_id}</TableCell>
-                    </TableRow>
-
-                    {/* <TableRow key={Order?.imei}>
-                        <TableCell sx={{ pl: 2 }}>IMEI</TableCell>
-                        <TableCell>{Order?.imei}</TableCell>
-                    </TableRow> */}
-                    <TableRow key={Order?.base_discount}>
-                        <TableCell sx={{ pl: 2 }}>Base Disscount</TableCell>
-                        <TableCell>{Order?.base_discount}</TableCell>
-                    </TableRow>
-
-                    <TableRow key={Order?.partner_purchase_price}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Partner Purchase Price
-                        </TableCell>
-                        <TableCell>{Order?.partner_purchase_price}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.diagnstic_status}>
-                        <TableCell sx={{ pl: 2 }}>Diagonstic Status</TableCell>
-                        <TableCell>{Order?.diagnstic_status}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.vc_eligible}>
+                    {/* <TableRow key={Order?.vc_eligible}>
                         <TableCell sx={{ pl: 2 }}>VC Eligible</TableCell>
                         <TableCell>{Order?.vc_eligible}</TableCell>
                     </TableRow>
@@ -89,7 +57,7 @@ const CustomerBillings = ({ Order }) => {
                                 Order?.customer_declaration_physical_defect_present
                             }
                         </TableCell>
-                    </TableRow>
+                    </TableRow> */}
                     <TableRow
                         key={Order?.customer_declaration_physical_defect_type}
                     >
@@ -98,31 +66,10 @@ const CustomerBillings = ({ Order }) => {
                             Customer Declaration Physical Defect Type
                         </TableCell>
                         <TableCell>
-                            {Order?.customer_declaration_physical_defect_type}
-                        </TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.partner_price_no_defect}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Partner Price No Defect
-                        </TableCell>
-                        <TableCell>{Order?.partner_price_no_defect}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.revised_partner_price}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Revised Partner Price
-                        </TableCell>
-                        <TableCell>{Order?.revised_partner_price}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.delivery_fee}>
-                        <TableCell sx={{ pl: 2 }}>Delivery Fee</TableCell>
-                        <TableCell>{Order?.delivery_fee}</TableCell>
-                    </TableRow>
-                    <TableRow key={Order?.exchange_facilitation_fee}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Exchange Facilitation Fee
-                        </TableCell>
-                        <TableCell>
-                            {Order?.exchange_facilitation_fee}
+                            {Order?.customer_declaration_physical_defect_type ==
+                            undefined
+                                ? 'N/A'
+                                : Order?.customer_declaration_physical_defect_type}
                         </TableCell>
                     </TableRow>
                 </TableBody>

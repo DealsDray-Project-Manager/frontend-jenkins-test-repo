@@ -67,7 +67,7 @@ export default function DialogBox() {
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
 
-    const handelAdd = async (e) => {
+    const handelAdd = async (e, stageType) => {
         if (e.keyCode !== 32) {
             try {
                 setAddButDis(true)
@@ -75,23 +75,33 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
-                    orgGrade:
-                        reportData.delivery.bqc_software_report.final_grade,
+                    stage:"BQC Not Done"
                 }
-                obj.stage = stateData.stage
-                if (stateData.stage == 'Accept') {
-                    obj.type = stateData.tray_type
-                } else if (
-                    stateData.stage == 'Upgrade' ||
-                    stateData.stage == 'Downgrade'
-                ) {
+                if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
-                    obj.grade = stateData.tray_grade
-                    obj.reason = stateData.reason
-                    obj.description = stateData.description
                 } else {
-                    obj.type = 'WHT'
-                    obj.description = stateData.description
+                    if (
+                        reportData?.delivery?.bqc_software_report
+                            ?.final_grade !== undefined
+                    ) {
+                        obj.orgGrade =
+                            reportData.delivery.bqc_software_report.final_grade
+                    }
+                    obj.stage = stateData.stage
+                    if (stateData?.stage == 'Accept') {
+                        obj.type = stateData.tray_type
+                    } else if (
+                        stateData?.stage == 'Upgrade' ||
+                        stateData?.stage == 'Downgrade'
+                    ) {
+                        obj.type = 'WHT'
+                        obj.grade = stateData.tray_grade
+                        obj.reason = stateData.reason
+                        obj.description = stateData.description
+                    } else {
+                        obj.type = 'WHT'
+                        obj.description = stateData.description
+                    }
                 }
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
@@ -199,7 +209,7 @@ export default function DialogBox() {
     return (
         <>
             <Box>
-                  <BootstrapDialog
+                <BootstrapDialog
                     aria-labelledby="customized-dialog-title"
                     open={open}
                     fullWidth
@@ -425,7 +435,7 @@ export default function DialogBox() {
                                 />
                             </>
                         ) : null}
-                        {stateData.stage === 'Repair' ? (
+                        {stateData.stage == 'Repair' ? (
                             <>
                                 <TextField
                                     label="Audit Remark"
@@ -462,7 +472,9 @@ export default function DialogBox() {
                                     stateData.description == undefined) ||
                                 addButDis
                             }
-                            onClick={(e) => handelAdd(e)}
+                            onClick={(e) =>
+                                handelAdd(e, 'Device in progress for BQC')
+                            }
                             variant="contained"
                             color="primary"
                         >
@@ -503,14 +515,28 @@ export default function DialogBox() {
                         mb: 2,
                     }}
                 >
-                    <Button
-                        sx={{ ml: 2 }}
-                        onClick={(e) => handleOpen()}
-                        variant="contained"
-                        color="primary"
-                    >
-                        ADD
-                    </Button>
+                    {reportData?.delivery?.bqc_report?.bqc_status ==
+                    'Device not to be checked for BQC' ? (
+                        <Button
+                            sx={{ ml: 2 }}
+                            onClick={(e) =>
+                                handelAdd(e, 'Device not to be checked for BQC')
+                            }
+                            variant="contained"
+                            color="primary"
+                        >
+                            ADD to WHT
+                        </Button>
+                    ) : (
+                        <Button
+                            sx={{ ml: 2 }}
+                            onClick={(e) => handleOpen()}
+                            variant="contained"
+                            color="primary"
+                        >
+                            ADD
+                        </Button>
+                    )}
                 </Box>
             </Box>
         </>

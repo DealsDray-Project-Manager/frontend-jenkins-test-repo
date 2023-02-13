@@ -127,6 +127,7 @@ const SimpleMuiTable = () => {
 
     /* OPEN DIALOG BOX */
     const handelMerge = async (e, model, brand, trayId, itemCount, status) => {
+    const handelMerge = async (e, model, brand, trayId, itemCount, status) => {
         e.preventDefault()
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -198,13 +199,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -234,7 +229,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[4],
             },
         },
         {
@@ -312,11 +307,10 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
+                                        tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length,
-                                        tableMeta.rowData[11]
+                                        tableMeta.rowData[6]?.length
                                     )
                                 }}
                                 style={{ backgroundColor: 'primery' }}
@@ -443,8 +437,6 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -474,6 +466,7 @@ const SimpleMuiTable = () => {
             />
         </Container>
     )
+}
 }
 
 export default SimpleMuiTable

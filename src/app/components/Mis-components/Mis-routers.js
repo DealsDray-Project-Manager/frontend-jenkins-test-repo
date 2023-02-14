@@ -166,7 +166,7 @@ const dataTableRoutes = [
         element: <TrackItem />,
     },
     {
-        path: '/mis/imei-search/search',
+        path: '/mis/imei-search',
         element: <SearchImei />,
     },
 ]

@@ -304,13 +304,14 @@ export const navigations = [
     {
         name: 'IMEI Search',
         icon: 'search',
-        children: [
-            {
-                name: 'Search',
-                path: '/mis/imei-search/search',
-                iconText: 'VP',
-            },
-        ],
+        path:'/mis/imei-search',
+        // children: [
+        //     {
+        //         name: 'Search',
+        //         path: '/mis/imei-search/search',
+        //         iconText: 'VP',
+        //     },
+        // ],
         auth: authRoles.Mis,
     },
     {

@@ -429,7 +429,8 @@ export default function DialogBox() {
                                 employeeData[0]?.code,
                                 employeeData[0]?.type_taxanomy,
                                 employeeData[0]?.items.length,
-                                employeeData[0]?.limit
+                                employeeData[0]?.limit,
+                                employeeData[0]?.sort_id
                             )
                         }}
                     >

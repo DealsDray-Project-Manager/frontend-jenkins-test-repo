@@ -15,6 +15,7 @@ ReactDOM.render(
         </BrowserRouter>
     </StyledEngineProvider>,
     document.getElementById('root')
+    
 )
 
 // for IE-11 support un-comment cssVars() and it's import in this file

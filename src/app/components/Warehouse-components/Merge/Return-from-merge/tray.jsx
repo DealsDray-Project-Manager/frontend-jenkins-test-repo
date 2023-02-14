@@ -121,6 +121,8 @@ const SimpleMuiTable = () => {
         }
     }
 
+    
+
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
         navigate('/wareshouse/merge/return-from-merge/close/' + id)

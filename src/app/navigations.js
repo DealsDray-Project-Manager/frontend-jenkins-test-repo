@@ -302,6 +302,18 @@ export const navigations = [
         auth: authRoles.Mis,
     },
     {
+        name: 'IMEI Search',
+        icon: 'search',
+        children: [
+            {
+                name: 'Search',
+                path: '/mis/imei-search/search',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+    },
+    {
         name: 'Bag',
         icon: 'class',
         children: [

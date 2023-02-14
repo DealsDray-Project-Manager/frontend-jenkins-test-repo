@@ -516,7 +516,7 @@ export default function DialogBox() {
                     }}
                 >
                     {reportData?.delivery?.bqc_report?.bqc_status ==
-                    'Device not to be checked for BQC' ? (
+                    'Device not to be checked for BQC' &&   reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() == "failed" ? (
                         <Button
                             sx={{ ml: 2 }}
                             onClick={(e) =>

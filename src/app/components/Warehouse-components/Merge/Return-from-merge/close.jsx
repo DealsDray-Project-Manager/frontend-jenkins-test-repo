@@ -102,6 +102,7 @@ export default function DialogBox() {
                 order_id: uic.order_id,
                 order_date: uic.order_date,
                 uic: uic.uic,
+                status:uic.status,
                 stock_in: new Date(),
             }
             let res = await axiosWarehouseIn.post('/addActualitem', obj)
@@ -129,6 +130,7 @@ export default function DialogBox() {
                     type: type,
                     length: length,
                     limit: limit,
+                    status:status
                 }
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',

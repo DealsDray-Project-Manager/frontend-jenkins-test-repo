@@ -39,7 +39,6 @@ function Search() {
             alert('invalid IMEI')
           }
           setdeliveryData(response?.data?.resultdata)
-          // setCount(response?.data?.count())
         })
         await axiosMisUser.post('/imeiOrderSearch', value).then((response) => {
           if (response?.data?.error) {

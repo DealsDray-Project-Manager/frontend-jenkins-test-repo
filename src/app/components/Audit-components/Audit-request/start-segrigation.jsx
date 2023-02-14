@@ -285,6 +285,7 @@ export default function DialogBox() {
                         id="outlined-password-input"
                         type="text"
                         autoComplete="off"
+                        autoFocus
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
                         value={uic}

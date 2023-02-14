@@ -104,6 +104,7 @@ function Search() {
             <TableCell>order_id</TableCell>
             <TableCell>order_date</TableCell>
             <TableCell>order_timestamp</TableCell>
+            <TableCell>delivery_status</TableCell>
             <TableCell>order_status</TableCell>
             <TableCell>buyback_category</TableCell>
             <TableCell>partner_id</TableCell>
@@ -121,11 +122,15 @@ function Search() {
             <TableCell>vc_eligible</TableCell>
             <TableCell>customer_declaration_physical_defect_present</TableCell>
             <TableCell>exchange_facilitation_fee</TableCell>
-            <TableCell>delivery_status</TableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
           {
+
+            orderData?.length!==0?
+
+
             orderData?.map((data, index) => (
               <TableRow>
                 <TableCell>{data?.order_id}</TableCell>
@@ -139,7 +144,18 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>{data?.order_timestamp}</TableCell>
+                <TableCell>{data?.delivery_status}</TableCell>
                 <TableCell>{data?.order_status}</TableCell>
+
+                <TableCell
+                  style={
+                    data?.order_status === 'printed'
+                      ? { color: 'green' }
+                      : { color: 'red' }
+                  }
+                >
+                  {data?.uic_status}
+                </TableCell>
                 <TableCell>{data?.buyback_category}</TableCell>
                 <TableCell>{data?.partner_id}</TableCell>
                 <TableCell>{data?.partner_email}</TableCell>
@@ -172,9 +188,12 @@ function Search() {
                 <TableCell>{data?.customer_declaration_physical_defect_present}</TableCell>
                 <TableCell>{data?.delivery_fee}</TableCell>
                 <TableCell>{data?.exchange_facilitation_fee}</TableCell>
-                <TableCell>{data?.delivery_status}</TableCell>
+               
               </TableRow>
-            ))
+            )):
+            <TableRow>
+              <tableCell>Order Not Exist</tableCell>
+            </TableRow>
           }
         </TableBody>
       </OrderTable>
@@ -247,6 +266,8 @@ function Search() {
         </TableHead>
         <TableBody>
           {
+            deliveryData?.length!==0?
+
             deliveryData?.map((data, index) =>
             (
               <TableRow >
@@ -509,7 +530,10 @@ function Search() {
                     : ''}
                 </TableCell>
               </TableRow>
-            ))
+            )):
+            <TableRow>
+              <TableCell>Delivery order Not Exist.</TableCell>
+            </TableRow>
           }
         </TableBody>
       </DeiveryTable>

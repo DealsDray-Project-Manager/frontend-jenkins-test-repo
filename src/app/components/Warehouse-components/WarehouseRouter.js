@@ -107,6 +107,7 @@ const BotReportSkuSum = Loadable(
 const BotReportSkuSumView = Loadable(
     lazy(() => import('./Report/Bot-report/from-sku-summery-view-item'))
 )
+
 const AuditRequest = Loadable(lazy(() => import('./Wht/Audit-request/tray')))
 const AuditRequestApprove = Loadable(
     lazy(() => import('./Wht/Audit-request/request-approve'))
@@ -121,6 +122,14 @@ const OtherTrayReturnFromAuditViewItem = Loadable(
     lazy(() => import('./Wht/Return-from-audit/handel-view-tray-item'))
 )
 
+const ReadyForAudit = Loadable(
+    lazy(() => import('./Wht/Ready-for-audit/wht-tray-view'))
+)
+
+const ReadyForAuditAction = Loadable(
+    lazy(() => import('./Wht/Ready-for-audit/action'))
+)
+const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
 const OtherTrayReturnFromAuditClose = Loadable(
     lazy(() => import('./Wht/Return-from-audit/close-tray'))
 )
@@ -238,6 +247,14 @@ const WarehoueRouter = [
         element: <WhtReturnFromBqcClose />,
     },
     {
+        path: '/wareshouse/wht/ready-for-audit',
+        element: <ReadyForAudit />,
+    },
+    {
+        path: '/wareshouse/wht/ready-for-audit/view/:trayId',
+        element: <ReadyForAuditAction />,
+    },
+    {
         path: '/wareshouse/sorting/request',
         element: <SortingRequest />,
     },
@@ -268,6 +285,10 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/report/bot',
         element: <BotReport />,
+    },
+    {
+        path: '/wareshouse/report/sales-bin',
+        element: <SalesBinItem />,
     },
     {
         path: '/wareshouse/report/bot/sku-summery/:trayId',
@@ -313,6 +334,7 @@ const WarehoueRouter = [
         path: '/wareshouse/wht/return-from-audit/tray-items/:trayId',
         element: <OtherTrayReturnFromAuditViewItem />,
     },
+
     {
         path: '/wareshouse/wht/return-from-audit/close/:trayId',
         element: <OtherTrayReturnFromAuditClose />,

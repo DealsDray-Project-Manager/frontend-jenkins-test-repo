@@ -102,6 +102,7 @@ export default function DialogBox() {
                 order_id: uic.order_id,
                 order_date: uic.order_date,
                 uic: uic.uic,
+                status:uic.status,
                 stock_in: new Date(),
             }
             let res = await axiosWarehouseIn.post('/addActualitem', obj)
@@ -429,9 +430,7 @@ export default function DialogBox() {
                                 employeeData[0]?.type_taxanomy,
                                 employeeData[0]?.items.length,
                                 employeeData[0]?.limit,
-                                employeeData[0]?.sort_id,
-
-
+                                employeeData[0]?.sort_id
                             )
                         }}
                     >

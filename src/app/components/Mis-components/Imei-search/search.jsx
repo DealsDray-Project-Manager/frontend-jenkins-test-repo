@@ -25,24 +25,32 @@ function Search() {
   const [data, setdata] = useState('')
   const [deliveryData, setdeliveryData] = useState()
   const [orderData, setorderData] = useState()
+  const [invalidimei, setinvalidimei] = useState({
+    error:'false'
+  })
 
 
   const searchIMEI = async (e) => {
     e.preventDefault()
     try {
+      
+
       const fetchData = async () => {
         const value = data
+        setinvalidimei({error:'false'})
         await axiosMisUser.post('/imeiDeliverySearch', value).then((response) => {
-          console.log(response);
           console.log('response');
           if (response?.data?.error) {
             alert('invalid IMEI')
+            setinvalidimei({error:'true'})
+            
           }
           setdeliveryData(response?.data?.resultdata)
         })
         await axiosMisUser.post('/imeiOrderSearch', value).then((response) => {
           if (response?.data?.error) {
-            alert('invaliid IMEI')
+            setinvalidimei({error:'true'})
+            alert('invalid IMEI')
           }
           setorderData(response?.data?.resultdata)
         })
@@ -114,7 +122,7 @@ function Search() {
             <TableCell>Gc redeem time</TableCell>
             <TableCell>Vc_eligible</TableCell>
             <TableCell>Customer declaration physical defect_present</TableCell>
-            <TableCell>Exchange_facilitation_fee</TableCell>
+            <TableCell>Exchange facilitation fee</TableCell>
             
           </TableRow>
         </TableHead>
@@ -563,7 +571,9 @@ function Search() {
               </TableRow>
             )):
             <TableRow>
-              <TableCell>Delivery order Not Exist.</TableCell>
+              {invalidimei?.error==='false'?
+              <TableCell>Delivery Not Exist.</TableCell>:''
+              }
             </TableRow>
           }
         </TableBody>

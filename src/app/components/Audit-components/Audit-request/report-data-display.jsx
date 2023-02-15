@@ -63,7 +63,7 @@ export default function DialogBox() {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [addButDis, setAddButDis] = useState(false)
-    const { reportData, trayId, username, uic, ctxTray } = state
+    const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
 
@@ -75,7 +75,7 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
-                    stage:"BQC Not Done"
+                    stage: 'BQC Not Done',
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -158,8 +158,6 @@ export default function DialogBox() {
             alert(error)
         }
     }
-
-    console.log(ctxTray?.filter((data) => data))
 
     const gridData = useMemo(() => {
         return (
@@ -502,6 +500,7 @@ export default function DialogBox() {
                             }
                         </H3>
                     )}
+                    <H3>Tray Id : {whtTrayId}</H3>
                     <H3>UIC : {uic}</H3>
                 </Box>
                 {gridData}
@@ -515,8 +514,25 @@ export default function DialogBox() {
                         mb: 2,
                     }}
                 >
-                    {reportData?.delivery?.bqc_report?.bqc_status ==
-                    'Device not to be checked for BQC' &&   reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() == "failed" ? (
+                    {(reportData?.delivery?.bqc_report?.bqc_status ==
+                        'Device not to be checked for BQC' &&
+                        reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            'failed') ||
+                    reportData?.delivery?.bqc_software_report == undefined ||
+                    (reportData?.delivery?.bqc_report?.bqc_status ==
+                        'BQC Incomplete' &&
+                        reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            'failed') ||
+                    reportData?.delivery?.charging?.battery_status ==
+                        'Charge failed' ||
+                    reportData?.delivery?.charging?.battery_status ==
+                        'No-battery' ||
+                    reportData?.delivery?.charging?.battery_status ==
+                        'Heat Problem' ||
+                    (reportData?.delivery?.charging?.lock_status !==
+                        'Unlocked' &&
+                        reportData?.delivery?.charging?.lock_status !==
+                            'Software Issue') ? (
                         <Button
                             sx={{ ml: 2 }}
                             onClick={(e) =>

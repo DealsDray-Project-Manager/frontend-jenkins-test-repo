@@ -172,6 +172,7 @@ export default function DialogBox() {
             ) {
                 alert('All Items Scanned')
             } else {
+                handleClose()
                 try {
                     resDataUic.bqc_status = value
                     let objData = {
@@ -330,7 +331,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.temp_array, textBoxDis])
-    console.log(trayData?.sort_id)
+    
     return (
         <>
             <BootstrapDialog

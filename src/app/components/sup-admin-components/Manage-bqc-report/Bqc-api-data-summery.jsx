@@ -78,6 +78,17 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         <>
                             <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -512,6 +523,30 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -675,6 +710,36 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
@@ -874,6 +939,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Touch Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
                             {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -892,6 +971,18 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         <>
                             <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
                             {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -1013,7 +1104,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
                             'no' ? (
                                 <TableRow
                                     key={
@@ -1314,6 +1405,30 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -1494,6 +1609,36 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
@@ -1709,6 +1854,17 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         <>
                             <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -1830,7 +1986,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={
@@ -2118,6 +2274,30 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -2311,6 +2491,36 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
@@ -2527,6 +2737,17 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         <>
                             <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -2932,6 +3153,30 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -3125,6 +3370,36 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ) : null}

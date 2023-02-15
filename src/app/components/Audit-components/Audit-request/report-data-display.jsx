@@ -66,9 +66,11 @@ export default function DialogBox() {
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
+    const [butDis, setButDis] = useState(false)
 
     const handelAdd = async (e, stageType) => {
         if (e.keyCode !== 32) {
+            setButDis(true)
             try {
                 setAddButDis(true)
                 let obj = {
@@ -105,6 +107,7 @@ export default function DialogBox() {
                 }
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
+                    setButDis(false)
                     alert(res.data.message)
                     navigate(-1)
                 } else {
@@ -538,6 +541,7 @@ export default function DialogBox() {
                             onClick={(e) =>
                                 handelAdd(e, 'Device not to be checked for BQC')
                             }
+                            disabled={butDis}
                             variant="contained"
                             color="primary"
                         >
@@ -546,6 +550,7 @@ export default function DialogBox() {
                     ) : (
                         <Button
                             sx={{ ml: 2 }}
+                            disabled={butDis}
                             onClick={(e) => handleOpen()}
                             variant="contained"
                             color="primary"

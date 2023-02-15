@@ -103,26 +103,26 @@ function Search() {
       <OrderTable >
         <TableHead>
           <TableRow>
-            <TableCell>Order id</TableCell>
-            <TableCell>Order date</TableCell>
-            <TableCell>Order timestamp</TableCell>
-            <TableCell>Delivery status</TableCell>
-            <TableCell>Order status</TableCell>
-            <TableCell>Buyback category</TableCell>
-            <TableCell>Partner id</TableCell>
-            <TableCell>Partner email</TableCell>
-            <TableCell>Partner shop</TableCell>
-            <TableCell>Item id</TableCell>
-            <TableCell>Old item details</TableCell>
-            <TableCell>Imei</TableCell>
-            <TableCell>Gep order</TableCell>
-            <TableCell>Base discount</TableCell>
-            <TableCell>Partner purchase price</TableCell>
-            <TableCell>Gc amount redeemed</TableCell>
-            <TableCell>Gc redeem time</TableCell>
-            <TableCell>Vc_eligible</TableCell>
-            <TableCell>Customer declaration physical defect_present</TableCell>
-            <TableCell>Exchange facilitation fee</TableCell>
+            <TableCell>Order ID</TableCell>
+            <TableCell>Order Date</TableCell>
+            <TableCell>Order Timestamp</TableCell>
+            <TableCell>Delivery Status</TableCell>
+            <TableCell>Order Status</TableCell>
+            <TableCell>Buyback Category</TableCell>
+            <TableCell>Partner ID</TableCell>
+            <TableCell>Partner Email</TableCell>
+            <TableCell>Partner Shop</TableCell>
+            <TableCell>Item ID</TableCell>
+            <TableCell>Old Item Details</TableCell>
+            <TableCell>IMEI</TableCell>
+            <TableCell>GEP Order</TableCell>
+            <TableCell>Base Discount Price</TableCell>
+            <TableCell>Partner Purchase Price</TableCell>
+            <TableCell>GC Amount Redeemed</TableCell>
+            <TableCell>GC Redeem Time</TableCell>
+            <TableCell>VC Eligible</TableCell>
+            <TableCell>Customer Declaration Physical Defect Present</TableCell>
+            <TableCell>Exchange Facilitation Fee</TableCell>
             
           </TableRow>
         </TableHead>
@@ -212,64 +212,62 @@ function Search() {
       <DeiveryTable>
         <TableHead>
           <TableRow>
-          <TableCell sx={{ ml: 1 }}>Uic code</TableCell>
-          <TableCell>Uic status</TableCell>
-            <TableCell>Tracking id</TableCell>
-            <TableCell>Order id</TableCell>
-            <TableCell>Order date</TableCell>
-            <TableCell>Item id</TableCell>
-            <TableCell>Gep order</TableCell>
-            <TableCell>Imei</TableCell>
-            <TableCell>Partner purchase price</TableCell>
-            <TableCell>Partner shop</TableCell>
-            <TableCell>Buyback category</TableCell>
-            <TableCell>Delivery date</TableCell>
+          <TableCell sx={{ ml: 1 }}>UIC Code</TableCell>
+          <TableCell>UIC Status</TableCell>
+            <TableCell>Tracking ID</TableCell>
+            <TableCell>Order ID</TableCell>
+            <TableCell>Order Date</TableCell>
+            <TableCell>Item ID</TableCell>
+            <TableCell>Gep Order</TableCell>
+            <TableCell>IMEI</TableCell>
+            <TableCell>Partner Purchase Price</TableCell>
+            <TableCell>Partner Shop</TableCell>
+            <TableCell>Buyback Category</TableCell>
+            <TableCell>Delivery Date</TableCell>
             
-            <TableCell>Bag id</TableCell>
-            <TableCell>Stock in status</TableCell>
-            <TableCell>Stockin date</TableCell>
-            <TableCell>Bag close date</TableCell>
+            <TableCell>Bag ID</TableCell>
+            <TableCell>Stock Status</TableCell>
+            <TableCell>Stockin Date</TableCell>
+            <TableCell>Bag Close Date</TableCell>
 
            
-            <TableCell sx={{ ml: 1 }}>Uic created at</TableCell>
-            <TableCell sx={{ ml: 1 }}>Uic user</TableCell>
+            <TableCell sx={{ ml: 1 }}>UIC Created Date</TableCell>
+            <TableCell sx={{ ml: 1 }}>UIC User</TableCell>
 
-            <TableCell>Download time</TableCell>
-            <TableCell>Agent name</TableCell>
-            <TableCell>Assign to agent</TableCell>
+            <TableCell>Download Time</TableCell>
+            <TableCell>Agent Name</TableCell>
+            <TableCell>Assign to BOT Agent Date</TableCell>
 
-            <TableCell>Tray id</TableCell>
-            <TableCell>Tray location</TableCell>
-            <TableCell>Tray status</TableCell>
-            <TableCell>Tray type</TableCell>
-            <TableCell>Tray closed by bot</TableCell>
-            <TableCell>Bot done received</TableCell>
-            <TableCell>Tray close wh date</TableCell>
-            <TableCell>Handover sorting date</TableCell>
-            <TableCell>Sorting agent name</TableCell>
-            <TableCell>Wht tray</TableCell>
-            <TableCell>Wht tray assigned date</TableCell>
-            <TableCell>Received from sorting</TableCell>
-            <TableCell>Closed from sorting</TableCell>
-            <TableCell>Agent name charging</TableCell>
-            <TableCell>Assign to agent charging</TableCell>
-            <TableCell>Charging in date</TableCell>
+            <TableCell>Tray ID</TableCell>
+            <TableCell>Tray Location</TableCell>
+            <TableCell>Tray Status</TableCell>
+            <TableCell>Tray Type</TableCell>
+            <TableCell>Tray Closed Time BOT</TableCell>
+            <TableCell>BOT Received Time</TableCell>
+            <TableCell>Tray closed Time Ware House</TableCell>
+            <TableCell>Handover To Sorting Date</TableCell>
+            <TableCell>Sorting Agent Name</TableCell>
+            <TableCell>WHT Tray</TableCell>
+            <TableCell>WHT Tray Assigned Date</TableCell>
+            <TableCell>WHT Tray Received From Sorting</TableCell>
+            <TableCell>WHT Tray Closed After Sorting</TableCell>
+            <TableCell>Charging Agent Name</TableCell>
+            <TableCell>Charging Assigned Date</TableCell>
+            <TableCell>Charging In Date</TableCell>
 
-            <TableCell>Charging done date</TableCell>
-            <TableCell>Charging done received</TableCell>
-            <TableCell>Charging done close</TableCell>
-            <TableCell>Agent name bqc</TableCell>
-            <TableCell>Assign to agent bqc</TableCell>
-            <TableCell>Bqc out date</TableCell>
+            <TableCell>Charge Done Date</TableCell>
+           
+            <TableCell>BQC Agent Name</TableCell>
+            <TableCell>BQC Agent Assigned Date</TableCell>
 
-            <TableCell>Bqc done received</TableCell>
-            <TableCell>Bqc done close</TableCell>
-            <TableCell>Audit user name</TableCell>
-            <TableCell>Issued to audit</TableCell>
+            <TableCell>BQC Done Date</TableCell>
+            <TableCell>BQC Done Tray Closed Time Warehouse</TableCell>
+            <TableCell>Audit Agent Name</TableCell>
+            <TableCell>Issued To Audit Date</TableCell>
 
-            <TableCell>Audit done recieved</TableCell>
-            <TableCell>Audit done date</TableCell>
-            <TableCell>Audit done close</TableCell>
+            <TableCell>Audit Done Tray Recieved Date</TableCell>
+            <TableCell>Audit Done Date</TableCell>
+            <TableCell>Audit Done Close Date</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -474,24 +472,8 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                <TableCell>
-                  {data?.charging_done_received != undefined
-                    ? new Date(
-                      data?.charging_done_received
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
-                <TableCell>
-                  {data?.charging_done_close != undefined
-                    ? new Date(
-                      data?.charging_done_close
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
+                
+                
                 <TableCell>{data?.agent_name_bqc}</TableCell>
                 <TableCell>
                   {data?.assign_to_agent_bqc != undefined
@@ -502,15 +484,7 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                <TableCell>
-                  {data?.bqc_out_date != undefined
-                    ? new Date(
-                      data?.bqc_out_date
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
+                
 
                 <TableCell>
                   {data?.bqc_done_received != undefined

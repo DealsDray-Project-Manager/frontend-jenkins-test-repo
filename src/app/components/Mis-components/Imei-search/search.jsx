@@ -39,7 +39,6 @@ function Search() {
             alert('invalid IMEI')
           }
           setdeliveryData(response?.data?.resultdata)
-          // setCount(response?.data?.count())
         })
         await axiosMisUser.post('/imeiOrderSearch', value).then((response) => {
           if (response?.data?.error) {
@@ -91,46 +90,37 @@ function Search() {
     },
   }))
 
-
-  console.log(deliveryData);
-  console.log('deliveryData');
-
-
   const OrderSearchData = useMemo(() => {
     return (
       <OrderTable >
         <TableHead>
           <TableRow>
-            <TableCell>order_id</TableCell>
-            <TableCell>order_date</TableCell>
-            <TableCell>order_timestamp</TableCell>
-            <TableCell>delivery_status</TableCell>
-            <TableCell>order_status</TableCell>
-            <TableCell>buyback_category</TableCell>
-            <TableCell>partner_id</TableCell>
-            <TableCell>partner_email</TableCell>
-            <TableCell>partner_shop</TableCell>
-            <TableCell>item_id</TableCell>
-            <TableCell>old_item_details</TableCell>
-            <TableCell>imei</TableCell>
-            <TableCell>gep_order</TableCell>
-            <TableCell>base_discount</TableCell>
-            <TableCell>partner_purchase_price</TableCell>
-            <TableCell>delivery_date</TableCell>
-            <TableCell>gc_amount_redeemed</TableCell>
-            <TableCell>gc_redeem_time</TableCell>
-            <TableCell>vc_eligible</TableCell>
-            <TableCell>customer_declaration_physical_defect_present</TableCell>
-            <TableCell>exchange_facilitation_fee</TableCell>
+            <TableCell>Order id</TableCell>
+            <TableCell>Order date</TableCell>
+            <TableCell>Order timestamp</TableCell>
+            <TableCell>Delivery status</TableCell>
+            <TableCell>Order status</TableCell>
+            <TableCell>Buyback category</TableCell>
+            <TableCell>Partner id</TableCell>
+            <TableCell>Partner email</TableCell>
+            <TableCell>Partner shop</TableCell>
+            <TableCell>Item id</TableCell>
+            <TableCell>Old item details</TableCell>
+            <TableCell>Imei</TableCell>
+            <TableCell>Gep order</TableCell>
+            <TableCell>Base discount</TableCell>
+            <TableCell>Partner purchase price</TableCell>
+            <TableCell>Gc amount redeemed</TableCell>
+            <TableCell>Gc redeem time</TableCell>
+            <TableCell>Vc_eligible</TableCell>
+            <TableCell>Customer declaration physical defect_present</TableCell>
+            <TableCell>Exchange_facilitation_fee</TableCell>
             
           </TableRow>
         </TableHead>
         <TableBody>
           {
-
             orderData?.length!==0?
-
-
             orderData?.map((data, index) => (
               <TableRow>
                 <TableCell>{data?.order_id}</TableCell>
@@ -138,14 +128,29 @@ function Search() {
                   {data?.order_date != undefined
                     ? new Date(
                       data?.order_date
+                    ).toLocaleDateString('en-GB')
+                    : ''}
+                </TableCell>
+                <TableCell>
+                  {data?.order_timestamp != undefined
+                    ? new Date(
+                      data?.order_timestamp
                     ).toLocaleString('en-GB', {
                       hour12: true,
                     })
                     : ''}
                 </TableCell>
-                <TableCell>{data?.order_timestamp}</TableCell>
-                <TableCell>{data?.delivery_status}</TableCell>
-                <TableCell>{data?.order_status}</TableCell>
+
+
+                <TableCell
+                  style={
+                    data?.delivery_status === 'Delivered'
+                      ? { color: 'green' }
+                      : { color: 'red' }
+                  }
+                >
+                  {data?.delivery_status}
+                </TableCell>
 
                 <TableCell
                   style={
@@ -154,7 +159,7 @@ function Search() {
                       : { color: 'red' }
                   }
                 >
-                  {data?.uic_status}
+                  { data?.order_status}
                 </TableCell>
                 <TableCell>{data?.buyback_category}</TableCell>
                 <TableCell>{data?.partner_id}</TableCell>
@@ -163,36 +168,29 @@ function Search() {
                 <TableCell>{data?.item_id}</TableCell>
                 <TableCell>{data?.old_item_details}</TableCell>
                 <TableCell>{data?.imei}</TableCell>
+                <TableCell>{data?.gep_order}</TableCell>
                 <TableCell>{data?.base_discount}</TableCell>
                 <TableCell>{data?.partner_purchase_price}</TableCell>
                 <TableCell>
-                  {data?.delivery_date != undefined
-                    ? new Date(
-                      data?.delivery_date
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
+                {data?.gc_amount_redeemed}
                 </TableCell>
                 <TableCell>
-                  {data?.gc_amount_redeemed != undefined
+                  {data?.gc_redeem_time != undefined
                     ? new Date(
-                      data?.gc_amount_redeemed
+                      data?.gc_redeem_time
                     ).toLocaleString('en-GB', {
                       hour12: true,
                     })
                     : ''}
                 </TableCell>
-                <TableCell>{data?.gc_redeem_time}</TableCell>
                 <TableCell>{data?.vc_eligible}</TableCell>
                 <TableCell>{data?.customer_declaration_physical_defect_present}</TableCell>
-                <TableCell>{data?.delivery_fee}</TableCell>
                 <TableCell>{data?.exchange_facilitation_fee}</TableCell>
                
               </TableRow>
             )):
             <TableRow>
-              <tableCell>Order Not Exist</tableCell>
+              <tableCell>Order Not Exist.</tableCell>
             </TableRow>
           }
         </TableBody>
@@ -206,62 +204,64 @@ function Search() {
       <DeiveryTable>
         <TableHead>
           <TableRow>
-            <TableCell>tracking_id</TableCell>
-            <TableCell>order_id</TableCell>
-            <TableCell>order_date</TableCell>
-            <TableCell>item_id</TableCell>
-            <TableCell>gep_order</TableCell>
-            <TableCell>imei</TableCell>
-            <TableCell>partner_purchase_price</TableCell>
-            <TableCell>partner_shop</TableCell>
-            <TableCell>buyback_category</TableCell>
-            <TableCell>delivery_date</TableCell>
-            <TableCell>uic_status</TableCell>
-            <TableCell>bag_id</TableCell>
-            <TableCell>stock_in_status</TableCell>
-            <TableCell>stockin_date</TableCell>
-            <TableCell>bag_close_date</TableCell>
+          <TableCell sx={{ ml: 1 }}>Uic code</TableCell>
+          <TableCell>Uic status</TableCell>
+            <TableCell>Tracking id</TableCell>
+            <TableCell>Order id</TableCell>
+            <TableCell>Order date</TableCell>
+            <TableCell>Item id</TableCell>
+            <TableCell>Gep order</TableCell>
+            <TableCell>Imei</TableCell>
+            <TableCell>Partner purchase price</TableCell>
+            <TableCell>Partner shop</TableCell>
+            <TableCell>Buyback category</TableCell>
+            <TableCell>Delivery date</TableCell>
+            
+            <TableCell>Bag id</TableCell>
+            <TableCell>Stock in status</TableCell>
+            <TableCell>Stockin date</TableCell>
+            <TableCell>Bag close date</TableCell>
 
-            <TableCell sx={{ ml: 1 }}>uic_code</TableCell>
-            <TableCell sx={{ ml: 1 }}>uic_created_at</TableCell>
-            <TableCell sx={{ ml: 1 }}>uic_user</TableCell>
+           
+            <TableCell sx={{ ml: 1 }}>Uic created at</TableCell>
+            <TableCell sx={{ ml: 1 }}>Uic user</TableCell>
 
-            <TableCell>download_time</TableCell>
-            <TableCell>agent_name</TableCell>
-            <TableCell>assign_to_agent</TableCell>
+            <TableCell>Download time</TableCell>
+            <TableCell>Agent name</TableCell>
+            <TableCell>Assign to agent</TableCell>
 
-            <TableCell>tray_id</TableCell>
-            <TableCell>tray_location</TableCell>
-            <TableCell>tray_status</TableCell>
-            <TableCell>tray_type</TableCell>
-            <TableCell>tray_closed_by_bot</TableCell>
-            <TableCell>bot_done_received</TableCell>
-            <TableCell>tray_close_wh_date</TableCell>
-            <TableCell>handover_sorting_date</TableCell>
-            <TableCell>sorting_agent_name</TableCell>
-            <TableCell>wht_tray</TableCell>
-            <TableCell>wht_tray_assigned_date</TableCell>
-            <TableCell>received_from_sorting</TableCell>
-            <TableCell>closed_from_sorting</TableCell>
-            <TableCell>agent_name_charging</TableCell>
-            <TableCell>assign_to_agent_charging</TableCell>
-            <TableCell>charging_in_date</TableCell>
+            <TableCell>Tray id</TableCell>
+            <TableCell>Tray location</TableCell>
+            <TableCell>Tray status</TableCell>
+            <TableCell>Tray type</TableCell>
+            <TableCell>Tray closed by bot</TableCell>
+            <TableCell>Bot done received</TableCell>
+            <TableCell>Tray close wh date</TableCell>
+            <TableCell>Handover sorting date</TableCell>
+            <TableCell>Sorting agent name</TableCell>
+            <TableCell>Wht tray</TableCell>
+            <TableCell>Wht tray assigned date</TableCell>
+            <TableCell>Received from sorting</TableCell>
+            <TableCell>Closed from sorting</TableCell>
+            <TableCell>Agent name charging</TableCell>
+            <TableCell>Assign to agent charging</TableCell>
+            <TableCell>Charging in date</TableCell>
 
-            <TableCell>charging_done_date</TableCell>
-            <TableCell>charging_done_received</TableCell>
-            <TableCell>charging_done_close</TableCell>
-            <TableCell>agent_name_bqc</TableCell>
-            <TableCell>assign_to_agent_bqc</TableCell>
-            <TableCell>bqc_out_date</TableCell>
+            <TableCell>Charging done date</TableCell>
+            <TableCell>Charging done received</TableCell>
+            <TableCell>Charging done close</TableCell>
+            <TableCell>Agent name bqc</TableCell>
+            <TableCell>Assign to agent bqc</TableCell>
+            <TableCell>Bqc out date</TableCell>
 
-            <TableCell>bqc_done_received</TableCell>
-            <TableCell>bqc_done_close</TableCell>
-            <TableCell>audit_user_name</TableCell>
-            <TableCell>issued_to_audit</TableCell>
+            <TableCell>Bqc done received</TableCell>
+            <TableCell>Bqc done close</TableCell>
+            <TableCell>Audit user name</TableCell>
+            <TableCell>Issued to audit</TableCell>
 
-            <TableCell>audit_done_recieved</TableCell>
-            <TableCell>audit_done_date</TableCell>
-            <TableCell>audit_done_close</TableCell>
+            <TableCell>Audit done recieved</TableCell>
+            <TableCell>Audit done date</TableCell>
+            <TableCell>Audit done close</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -271,6 +271,16 @@ function Search() {
             deliveryData?.map((data, index) =>
             (
               <TableRow >
+                <TableCell sx={{ ml: 1 }}>{data?.uic_code?.code}</TableCell>
+                <TableCell
+                  style={
+                    data?.uic_status == 'printed'
+                      ? { color: 'green' }
+                      : { color: 'red' }
+                  }
+                >
+                  {data?.uic_status}
+                </TableCell>
                 <TableCell>{data?.tracking_id}</TableCell>
                 <TableCell>{data?.order_id}</TableCell>
                 <TableCell>
@@ -282,9 +292,6 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
-
-
                 <TableCell>{data?.item_id}</TableCell>
                 <TableCell>{data?.gep_order}</TableCell>
                 <TableCell>{data?.imei}</TableCell>
@@ -300,15 +307,7 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                <TableCell
-                  style={
-                    data?.uic_status === 'printed'
-                      ? { color: 'green' }
-                      : { color: 'red' }
-                  }
-                >
-                  {data?.uic_status}
-                </TableCell>
+               
                 <TableCell>{data?.bag_id}</TableCell>
                 <TableCell>{data?.stock_in_status}</TableCell>
 
@@ -332,7 +331,7 @@ function Search() {
                     : ''}
                 </TableCell>
 
-                <TableCell sx={{ ml: 1 }}>{data?.uic_code?.code}</TableCell>
+                
                 <TableCell>
                   {data?.uic_code?.created_at != undefined
                     ? new Date(
@@ -371,8 +370,24 @@ function Search() {
                 <TableCell>{data?.tray_location}</TableCell>
                 <TableCell>{data?.tray_status}</TableCell>
                 <TableCell>{data?.tray_type}</TableCell>
-                <TableCell>{data?.tray_closed_by_bot}</TableCell>
-                <TableCell>{data?.bot_done_received}</TableCell>
+                <TableCell>
+                  {data?.tray_closed_by_bot != undefined
+                    ? new Date(
+                      data?.tray_closed_by_bot
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
+                <TableCell>
+                  {data?.bot_done_received != undefined
+                    ? new Date(
+                      data?.bot_done_received
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
                 <TableCell>
                   {data?.tray_close_wh_date != undefined
                     ? new Date(
@@ -423,7 +438,15 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>{data?.agent_name_charging}</TableCell>
-                <TableCell>{data?.assign_to_agent_charging}</TableCell>
+                <TableCell>
+                  {data?.assign_to_agent_charging != undefined
+                    ? new Date(
+                      data?.assign_to_agent_charging
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
                 <TableCell>
                   {data?.charging_in_date != undefined
                     ? new Date(
@@ -462,7 +485,15 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>{data?.agent_name_bqc}</TableCell>
-                <TableCell>{data?.assign_to_agent_bqc}</TableCell>
+                <TableCell>
+                  {data?.assign_to_agent_bqc != undefined
+                    ? new Date(
+                      data?.assign_to_agent_bqc
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
                 <TableCell>
                   {data?.bqc_out_date != undefined
                     ? new Date(
@@ -563,7 +594,7 @@ function Search() {
             onChange={(e) => {
               setdata(() => ({ ...data, value: e.target.value }))
             }}
-            sx={{ ml: 4, mb: 3, mt: 3 }}
+            sx={{  mb: 3, mt: 3 }}
           />
         </Box>
         <Box>

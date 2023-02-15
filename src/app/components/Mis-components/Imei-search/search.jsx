@@ -110,7 +110,6 @@ function Search() {
             <TableCell>Gep order</TableCell>
             <TableCell>Base discount</TableCell>
             <TableCell>Partner purchase price</TableCell>
-            <TableCell>Delivery date</TableCell>
             <TableCell>Gc amount redeemed</TableCell>
             <TableCell>Gc redeem time</TableCell>
             <TableCell>Vc_eligible</TableCell>
@@ -152,7 +151,6 @@ function Search() {
                 >
                   {data?.delivery_status}
                 </TableCell>
-                <TableCell>{data?.order_status}</TableCell>
 
                 <TableCell
                   style={
@@ -161,7 +159,7 @@ function Search() {
                       : { color: 'red' }
                   }
                 >
-                  {data?.uic_status}
+                  { data?.order_status}
                 </TableCell>
                 <TableCell>{data?.buyback_category}</TableCell>
                 <TableCell>{data?.partner_id}</TableCell>
@@ -170,17 +168,9 @@ function Search() {
                 <TableCell>{data?.item_id}</TableCell>
                 <TableCell>{data?.old_item_details}</TableCell>
                 <TableCell>{data?.imei}</TableCell>
+                <TableCell>{data?.gep_order}</TableCell>
                 <TableCell>{data?.base_discount}</TableCell>
                 <TableCell>{data?.partner_purchase_price}</TableCell>
-                <TableCell>
-                  {data?.delivery_date != undefined
-                    ? new Date(
-                      data?.delivery_date
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
                 <TableCell>
                 {data?.gc_amount_redeemed}
                 </TableCell>

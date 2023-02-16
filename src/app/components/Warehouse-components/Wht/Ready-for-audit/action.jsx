@@ -25,6 +25,10 @@ import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import jwt_decode from 'jwt-decode'
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -71,12 +75,10 @@ export default function DialogBox() {
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const [addButDis, setAddButDis] = useState(false)
-    const [description, setDescription] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [stateData, setStateData] = useState({})
     const [itemDataVer, setItemDataVer] = useState({})
     const [open, setOpen] = React.useState(false)
-    const inputRef = useRef(null)
 
     /*********************************************************** */
 
@@ -98,6 +100,34 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
+    const schema = Yup.object().shape({
+        stage: Yup.string().required('Required*').nullable(),
+
+        grade: Yup.string()
+            .when('stage', (stage, schema) => {
+                if (stage == 'Shift to Sales Bin') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        description: Yup.string()
+            .when('stage', (stage, schema) => {
+                if (stage == 'Shift to Sales Bin') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+    })
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
 
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
@@ -129,8 +159,8 @@ export default function DialogBox() {
     }
 
     /************************************************************************** */
-    const handelAdd = async (e) => {
-        if (e.keyCode !== 32) {
+    const onSubmit = async (e,value) => {
+       
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 const { user_name } = jwt_decode(admin)
@@ -145,8 +175,8 @@ export default function DialogBox() {
                     obj.stage = stateData.stage
                     if (stateData.stage == 'Shift to Sales Bin') {
                         console.log('wor')
-                        obj.grade = stateData.grade
-                        obj.description = stateData.description
+                        obj.grade = value.grade
+                        obj.description = value.description
                     }
                     let res = await axiosWarehouseIn.post(
                         '/readyForAudit/itemSegrigation',
@@ -170,7 +200,7 @@ export default function DialogBox() {
                     alert(error)
                 }
             }
-        }
+        
     }
 
     const handleChange = ({ target: { name, value } }) => {
@@ -187,9 +217,11 @@ export default function DialogBox() {
     }
     const handleClose = () => {
         setOpen(false)
+      
         setStateData({})
     }
     const handleOpen = () => {
+        reset({})
         setOpen(true)
     }
 
@@ -364,6 +396,9 @@ export default function DialogBox() {
                         sx={{
                             mb: 2,
                         }}
+                        {...register('stage')}
+                        error={errors.stage ? true : false}
+                        helperText={errors.stage?.message}
                         onChange={(e) => {
                             handleChange(e)
                         }}
@@ -383,12 +418,13 @@ export default function DialogBox() {
                                 label="Select Grade"
                                 select
                                 fullWidth
+                                {...register('grade')}
+                                error={errors.grade ? true : false}
+                                helperText={errors.grade?.message}
                                 sx={{
                                     mb: 2,
                                 }}
-                                onChange={(e) => {
-                                    handleChange(e)
-                                }}
+                              
                                 name="grade"
                             >
                                 <MenuItem value="A">A</MenuItem>
@@ -403,8 +439,10 @@ export default function DialogBox() {
                                 sx={{
                                     mb: 2,
                                 }}
+                                {...register('description')}
+                                error={errors.description ? true : false}
+                                helperText={errors.description?.message}
                                 type="text"
-                                onChange={(e) => handleChange(e)}
                                 variant="outlined"
                             />
                         </>
@@ -414,14 +452,10 @@ export default function DialogBox() {
                     <Button
                         sx={{ ml: 2 }}
                         disabled={
-                            (stateData?.stage == 'Shift to Sales Bin' &&
-                                stateData?.grade == undefined) ||
-                            (stateData?.stage == 'Shift to Sales Bin' &&
-                                stateData.description == undefined) ||
-                            stateData?.stage == undefined ||
+                           
                             addButDis
                         }
-                        onClick={(e) => handelAdd(e)}
+                        onClick={handleSubmit(onSubmit)}
                         variant="contained"
                         color="primary"
                     >
@@ -450,6 +484,8 @@ export default function DialogBox() {
                         disabled={textDisable}
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
+                        inputRef={(input) => input && input.focus()}
+
                         autoFocus
                         value={uic}
                         onChange={(e) => {

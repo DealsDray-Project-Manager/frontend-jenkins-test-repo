@@ -19,7 +19,7 @@ const FlexBox = styled(Box)(() => ({
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
     return (
-        <Card elevation={3}>
+        <Card >
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>

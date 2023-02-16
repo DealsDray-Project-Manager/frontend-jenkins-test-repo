@@ -33,8 +33,6 @@ function Search() {
   const searchIMEI = async (e) => {
     e.preventDefault()
     try {
-      
-
       const fetchData = async () => {
         const value = data
         setinvalidimei({error:'false'})
@@ -43,7 +41,6 @@ function Search() {
           if (response?.data?.error) {
             alert('invalid IMEI')
             setinvalidimei({error:'true'})
-            
           }
           setdeliveryData(response?.data?.resultdata)
         })
@@ -54,7 +51,6 @@ function Search() {
           }
           setorderData(response?.data?.resultdata)
         })
-
       }
       fetchData()
     } catch (error) {
@@ -212,62 +208,52 @@ function Search() {
       <DeiveryTable>
         <TableHead>
           <TableRow>
-          <TableCell sx={{ ml: 1 }}>UIC Code</TableCell>
-          <TableCell>UIC Status</TableCell>
-            <TableCell>Tracking ID</TableCell>
+          <TableCell>Tracking ID</TableCell>
             <TableCell>Order ID</TableCell>
-            <TableCell>Order Date</TableCell>
-            <TableCell>Item ID</TableCell>
-            <TableCell>Gep Order</TableCell>
+            <TableCell>UIC Status</TableCell>
+            <TableCell>UIC</TableCell>
             <TableCell>IMEI</TableCell>
-            <TableCell>Partner Purchase Price</TableCell>
-            <TableCell>Partner Shop</TableCell>
-            <TableCell>Buyback Category</TableCell>
-            <TableCell>Delivery Date</TableCell>
-            
-            <TableCell>Bag ID</TableCell>
-            <TableCell>Stock Status</TableCell>
+            <TableCell>Item ID</TableCell>
             <TableCell>Stockin Date</TableCell>
-            <TableCell>Bag Close Date</TableCell>
-
-           
-            <TableCell sx={{ ml: 1 }}>UIC Created Date</TableCell>
-            <TableCell sx={{ ml: 1 }}>UIC User</TableCell>
-
-            <TableCell>Download Time</TableCell>
-            <TableCell>Agent Name</TableCell>
-            <TableCell>Assign to BOT Agent Date</TableCell>
-
+            <TableCell>Bag ID</TableCell>
+            <TableCell>Stockin Status</TableCell>
+            <TableCell>Bag close Date</TableCell>
+            <TableCell>BOT Agent Name</TableCell>
+            
+            <TableCell>Assigned to BOT Agent Date</TableCell>
             <TableCell>Tray ID</TableCell>
-            <TableCell>Tray Location</TableCell>
-            <TableCell>Tray Status</TableCell>
             <TableCell>Tray Type</TableCell>
-            <TableCell>Tray Closed Time BOT</TableCell>
-            <TableCell>BOT Received Time</TableCell>
-            <TableCell>Tray closed Time Ware House</TableCell>
-            <TableCell>Handover To Sorting Date</TableCell>
+            <TableCell>Tray Status</TableCell>
+            <TableCell >Tray Location</TableCell>
+            <TableCell >Tray Closed Time BOT</TableCell>
+            <TableCell> Tray Received From BOT Time Warehouse</TableCell>
+            <TableCell> Tray Closed Time Warehouse</TableCell>
             <TableCell>Sorting Agent Name</TableCell>
+
+            <TableCell>Handover to Sorting Date</TableCell>
             <TableCell>WHT Tray</TableCell>
             <TableCell>WHT Tray Assigned Date</TableCell>
             <TableCell>WHT Tray Received From Sorting</TableCell>
             <TableCell>WHT Tray Closed After Sorting</TableCell>
-            <TableCell>Charging Agent Name</TableCell>
+            <TableCell>Charging Username</TableCell>
             <TableCell>Charging Assigned Date</TableCell>
-            <TableCell>Charging In Date</TableCell>
-
+            <TableCell>Charge In Date</TableCell>
             <TableCell>Charge Done Date</TableCell>
-           
+            <TableCell> Tray Received From Charging Time Warehouse</TableCell>
+            <TableCell> Charging Done Tray Closed Time Warehouse</TableCell>
             <TableCell>BQC Agent Name</TableCell>
-            <TableCell>BQC Agent Assigned Date</TableCell>
-
+            <TableCell>Assigned to BQC</TableCell>
             <TableCell>BQC Done Date</TableCell>
-            <TableCell>BQC Done Tray Closed Time Warehouse</TableCell>
-            <TableCell>Audit Agent Name</TableCell>
-            <TableCell>Issued To Audit Date</TableCell>
+            <TableCell> Tray Received From BQC Time Warehouse</TableCell>
+            <TableCell> BQC Done Tray Closed Time Warehouse</TableCell>
+
+            <TableCell>Issued to Audit Date</TableCell>
+           
+            <TableCell>Audit Agnet Name</TableCell>
+            <TableCell>Audit Done Date</TableCell>
 
             <TableCell>Audit Done Tray Recieved Date</TableCell>
-            <TableCell>Audit Done Date</TableCell>
-            <TableCell>Audit Done Close Date</TableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
@@ -277,46 +263,21 @@ function Search() {
             deliveryData?.map((data, index) =>
             (
               <TableRow >
-                <TableCell sx={{ ml: 1 }}>{data?.uic_code?.code}</TableCell>
-                <TableCell
-                  style={
-                    data?.uic_status == 'printed'
-                      ? { color: 'green' }
-                      : { color: 'red' }
-                  }
-                >
-                  {data?.uic_status}
-                </TableCell>
+                
                 <TableCell>{data?.tracking_id}</TableCell>
                 <TableCell>{data?.order_id}</TableCell>
-                <TableCell>
-                  {data?.order_date != undefined
-                    ? new Date(
-                      data?.order_date
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
+                <TableCell
+                  style={
+                    data?.uic_status ==='printed'
+                      ? { color: 'green' }
+                      : { color: 'red'  }
+                  }
+                >
+                  { data?.uic_status}
                 </TableCell>
-                <TableCell>{data?.item_id}</TableCell>
-                <TableCell>{data?.gep_order}</TableCell>
+                <TableCell>{data?.uic_code?.code}</TableCell>
                 <TableCell>{data?.imei}</TableCell>
-                <TableCell>{data?.partner_purchase_price}</TableCell>
-                <TableCell>{data?.partner_shop}</TableCell>
-                <TableCell>{data?.buyback_category}</TableCell>
-                <TableCell>
-                  {data?.delivery_date != undefined
-                    ? new Date(
-                      data?.delivery_date
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
-               
-                <TableCell>{data?.bag_id}</TableCell>
-                <TableCell>{data?.stock_in_status}</TableCell>
-
+                <TableCell>{data?.item_id}</TableCell>
                 <TableCell>
                   {data?.stockin_date != undefined
                     ? new Date(
@@ -326,7 +287,8 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
+                <TableCell>{data?.bag_id}</TableCell>
+                <TableCell>{data?.stock_in_status}</TableCell>
                 <TableCell>
                   {data?.bag_close_date != undefined
                     ? new Date(
@@ -336,31 +298,6 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
-                
-                <TableCell>
-                  {data?.uic_code?.created_at != undefined
-                    ? new Date(
-                      data?.uic_code?.created_at
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
-
-
-                <TableCell sx={{ ml: 1 }}>{data?.uic_code?.user}</TableCell>
-
-                <TableCell>
-                  {data?.download_time != undefined
-                    ? new Date(
-                      data?.download_time
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
-
                 <TableCell>{data?.agent_name}</TableCell>
                 <TableCell>
                   {data?.assign_to_agent != undefined
@@ -371,11 +308,10 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
                 <TableCell>{data?.tray_id}</TableCell>
-                <TableCell>{data?.tray_location}</TableCell>
-                <TableCell>{data?.tray_status}</TableCell>
                 <TableCell>{data?.tray_type}</TableCell>
+                <TableCell>{data?.tray_status}</TableCell>
+                <TableCell>{data?.tray_location}</TableCell>
                 <TableCell>
                   {data?.tray_closed_by_bot != undefined
                     ? new Date(
@@ -403,8 +339,7 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
-
+                <TableCell>{data?.sorting_agent_name}</TableCell>
                 <TableCell>
                   {data?.handover_sorting_date != undefined
                     ? new Date(
@@ -414,7 +349,6 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                <TableCell>{data?.sorting_agent_name}</TableCell>
                 <TableCell>{data?.wht_tray}</TableCell>
                 <TableCell>
                   {data?.wht_tray_assigned_date != undefined
@@ -435,7 +369,7 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>
-                  {data?.closed_from_sorting != undefined
+                  {data?.closed_from_sorting!= undefined
                     ? new Date(
                       data?.closed_from_sorting
                     ).toLocaleString('en-GB', {
@@ -445,7 +379,7 @@ function Search() {
                 </TableCell>
                 <TableCell>{data?.agent_name_charging}</TableCell>
                 <TableCell>
-                  {data?.assign_to_agent_charging != undefined
+                  {data?.assign_to_agent_charging!= undefined
                     ? new Date(
                       data?.assign_to_agent_charging
                     ).toLocaleString('en-GB', {
@@ -454,7 +388,7 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>
-                  {data?.charging_in_date != undefined
+                  {data?.charging_in_date!= undefined
                     ? new Date(
                       data?.charging_in_date
                     ).toLocaleString('en-GB', {
@@ -462,9 +396,8 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
                 <TableCell>
-                  {data?.charging_done_date != undefined
+                  {data?.charging_done_date!= undefined
                     ? new Date(
                       data?.charging_done_date
                     ).toLocaleString('en-GB', {
@@ -472,11 +405,27 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                
-                
+                <TableCell>
+                  {data?.charging_done_received!= undefined
+                    ? new Date(
+                      data?.charging_done_received
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
+                <TableCell>
+                  {data?.charging_done_close!= undefined
+                    ? new Date(
+                      data?.charging_done_close
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
                 <TableCell>{data?.agent_name_bqc}</TableCell>
                 <TableCell>
-                  {data?.assign_to_agent_bqc != undefined
+                  {data?.assign_to_agent_bqc!= undefined
                     ? new Date(
                       data?.assign_to_agent_bqc
                     ).toLocaleString('en-GB', {
@@ -484,10 +433,17 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                
-
                 <TableCell>
-                  {data?.bqc_done_received != undefined
+                  {data?.bqc_out_date!= undefined
+                    ? new Date(
+                      data?.bqc_out_date
+                    ).toLocaleString('en-GB', {
+                      hour12: true,
+                    })
+                    : ''}
+                </TableCell>
+                <TableCell>
+                  {data?.bqc_done_received!= undefined
                     ? new Date(
                       data?.bqc_done_received
                     ).toLocaleString('en-GB', {
@@ -496,7 +452,7 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>
-                  {data?.bqc_done_close != undefined
+                  {data?.bqc_done_close!= undefined
                     ? new Date(
                       data?.bqc_done_close
                     ).toLocaleString('en-GB', {
@@ -504,9 +460,8 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-                <TableCell>{data?.audit_user_name}</TableCell>
                 <TableCell>
-                  {data?.issued_to_audit != undefined
+                  {data?.issued_to_audit!= undefined
                     ? new Date(
                       data?.issued_to_audit
                     ).toLocaleString('en-GB', {
@@ -514,18 +469,9 @@ function Search() {
                     })
                     : ''}
                 </TableCell>
-
+                <TableCell>{data?.audit_user_name}</TableCell>
                 <TableCell>
-                  {data?.audit_done_recieved != undefined
-                    ? new Date(
-                      data?.audit_done_recieved
-                    ).toLocaleString('en-GB', {
-                      hour12: true,
-                    })
-                    : ''}
-                </TableCell>
-                <TableCell>
-                  {data?.audit_done_date != undefined
+                  {data?.audit_done_date!= undefined
                     ? new Date(
                       data?.audit_done_date
                     ).toLocaleString('en-GB', {
@@ -534,14 +480,15 @@ function Search() {
                     : ''}
                 </TableCell>
                 <TableCell>
-                  {data?.audit_done_close != undefined
+                  {data?.audit_done_recieved!= undefined
                     ? new Date(
-                      data?.audit_done_close
+                      data?.audit_done_recieved
                     ).toLocaleString('en-GB', {
                       hour12: true,
                     })
                     : ''}
                 </TableCell>
+               
               </TableRow>
             )):
             <TableRow>
@@ -614,7 +561,7 @@ function Search() {
       >
         Delivery
       </Typography>
-      <Card sx={{ maxHeight: '100%', overflow: 'auto', mb: 4 }} >
+      <Card sx={{ maxHeight: '100%', overflow: 'auto', mb: 4 }} elevation={6} >
         {deliverySearchData}
       </Card>
     </Container>

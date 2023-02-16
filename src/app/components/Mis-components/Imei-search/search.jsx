@@ -580,7 +580,7 @@ function Search() {
                 Delivery
             </Typography>
             <Card
-                sx={{ maxHeight: '100%', overflow: 'auto', mb: 4 }}
+                sx={{ maxHeight: '100%', overflow: 'auto' }}
                 elevation={6}
             >
                 <DeiveryTable>{deliverySearchData}</DeiveryTable>

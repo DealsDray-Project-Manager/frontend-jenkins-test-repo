@@ -3584,4 +3584,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
     )
 }
 
+
+
+
 export default BqcSowftwareReportPage

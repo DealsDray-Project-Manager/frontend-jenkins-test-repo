@@ -78,7 +78,7 @@ function Search() {
 
   const OrderTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 3000,
+    width: 8000,
     height: 100,
     whiteSpace: 'pre',
     '& thead': {
@@ -99,25 +99,42 @@ function Search() {
       <OrderTable >
         <TableHead>
           <TableRow>
+            <TableCell>Delivery Status</TableCell>
+            <TableCell>Order Imported TimeStamp</TableCell>
             <TableCell>Order ID</TableCell>
             <TableCell>Order Date</TableCell>
-            <TableCell>Order Timestamp</TableCell>
-            <TableCell>Delivery Status</TableCell>
+            <TableCell>Order TimeStamp</TableCell>
             <TableCell>Order Status</TableCell>
-            <TableCell>Buyback Category</TableCell>
             <TableCell>Partner ID</TableCell>
-            <TableCell>Partner Email</TableCell>
-            <TableCell>Partner Shop</TableCell>
             <TableCell>Item ID</TableCell>
             <TableCell>Old Item Details</TableCell>
+            <TableCell>Brand Name</TableCell>
+            <TableCell>Product Name</TableCell>
+            <TableCell>MUIC</TableCell>
             <TableCell>IMEI</TableCell>
-            <TableCell>GEP Order</TableCell>
-            <TableCell>Base Discount Price</TableCell>
+            <TableCell>Base Disscount</TableCell>
+            <TableCell>Diganostic</TableCell>
             <TableCell>Partner Purchase Price</TableCell>
+            <TableCell>Tracking ID</TableCell>
+            <TableCell>Delivery Date</TableCell>
+            <TableCell>Order ID Replaced</TableCell>
+            <TableCell>Deliverd With OTP</TableCell>
+            <TableCell>Deliverd With Bag Exception</TableCell>
             <TableCell>GC Amount Redeemed</TableCell>
+            <TableCell>GC Amount Refund</TableCell>
             <TableCell>GC Redeem Time</TableCell>
+            <TableCell>GC Amount Refund Time</TableCell>
+            <TableCell>Diagonstic Status</TableCell>
             <TableCell>VC Eligible</TableCell>
-            <TableCell>Customer Declaration Physical Defect Present</TableCell>
+            <TableCell>
+              Customer Declaration Physical Defect Present
+            </TableCell>
+            <TableCell>
+              Customer Declaration Physical Defect Type
+            </TableCell>
+            <TableCell>Partner Price No Defect</TableCell>
+            <TableCell>Revised Partner Price</TableCell>
+            <TableCell>Delivery Fee</TableCell>
             <TableCell>Exchange Facilitation Fee</TableCell>
 
           </TableRow>
@@ -127,69 +144,141 @@ function Search() {
             orderData?.length !== 0 ?
               orderData?.map((data, index) => (
                 <TableRow>
-                  <TableCell>{data?.order_id}</TableCell>
-                  <TableCell>
-                    {data?.order_date != undefined
-                      ? new Date(
-                        data?.order_date
-                      ).toLocaleDateString('en-GB')
-                      : ''}
-                  </TableCell>
-                  <TableCell>
-                    {data?.order_timestamp != undefined
-                      ? new Date(
-                        data?.order_timestamp
-                      ).toLocaleString('en-GB', {
-                        hour12: true,
-                      })
-                      : ''}
-                  </TableCell>
-
-
-                  <TableCell
-                    style={
-                      data?.delivery_status === 'Delivered'
-                        ? { color: 'green' }
-                        : { color: 'red' }
-                    }
-                  >
-                    {data?.delivery_status}
-                  </TableCell>
-
-                  <TableCell
-                    style={
-                      data?.order_status === 'printed'
-                        ? { color: 'green' }
-                        : { color: 'red' }
-                    }
-                  >
-                    {data?.order_status}
-                  </TableCell>
-                  <TableCell>{data?.buyback_category}</TableCell>
-                  <TableCell>{data?.partner_id}</TableCell>
-                  <TableCell>{data?.partner_email}</TableCell>
-                  <TableCell>{data?.partner_shop}</TableCell>
-                  <TableCell>{data?.item_id}</TableCell>
-                  <TableCell>{data?.old_item_details}</TableCell>
-                  <TableCell>{data?.imei}</TableCell>
-                  <TableCell>{data?.gep_order}</TableCell>
-                  <TableCell>{data?.base_discount}</TableCell>
-                  <TableCell>{data?.partner_purchase_price}</TableCell>
-                  <TableCell>
-                    {data?.gc_amount_redeemed}
-                  </TableCell>
-                  <TableCell>
-                    {data?.gc_redeem_time != undefined
-                      ? new Date(
-                        data?.gc_redeem_time
-                      ).toLocaleString('en-GB', {
-                        hour12: true,
-                      })
-                      : ''}
-                  </TableCell>
-                  <TableCell>{data?.vc_eligible}</TableCell>
-                  <TableCell>{data?.customer_declaration_physical_defect_present}</TableCell>
-                  <TableCell>{data?.exchange_facilitation_fee}</TableCell>
+                                <TableCell
+                                    style={
+                                        data?.delivery_status == 'Pending'
+                                            ? { color: 'red' }
+                                            : { color: 'green' }
+                                    }
+                                >
+                                    {data?.delivery_status}
+                                </TableCell>
+                                <TableCell>
+                                    {new Date(data?.created_at).toLocaleString(
+                                        'en-GB',
+                                        {
+                                            hour12: true,
+                                        }
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.order_id?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.order_date == null
+                                        ? ''
+                                        : new Date(
+                                              data?.order_date
+                                          ).toLocaleString('en-GB', {
+                                              year: 'numeric',
+                                              month: '2-digit',
+                                              day: '2-digit',
+                                          })}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.order_timestamp == null
+                                        ? ''
+                                        : new Date(
+                                              data?.order_timestamp
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.order_status?.toString()}
+                                </TableCell>
+                                {/* <TableCell>{data.buyback_category?.toString()}</TableCell> */}
+                                <TableCell>
+                                    {data?.partner_id?.toString()}
+                                </TableCell>
+                                {/* <TableCell>{data.partner_email?.toString()}</TableCell> */}
+                                {/* <TableCell>{data.partner_shop?.toString()}</TableCell> */}
+                                <TableCell>
+                                    {data?.item_id?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.old_item_details?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.products[0]?.brand_name}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.products[0]?.model_name}
+                                </TableCell>
+                                <TableCell>{data?.products[0]?.muic}</TableCell>
+                                <TableCell>{data?.imei?.toString()}</TableCell>
+                                {/* <TableCell>{data.gep_order?.toString()}</TableCell> */}
+                                <TableCell>
+                                    ₹{data?.base_discount?.toString()}
+                                </TableCell>
+                                <TableCell>{data?.diagnostic}</TableCell>
+                                <TableCell>
+                                    ₹{data?.partner_purchase_price}
+                                </TableCell>
+                                <TableCell>{data?.tracking_id}</TableCell>
+                                <TableCell>
+                                    {data?.delivery_date == null
+                                        ? ''
+                                        : new Date(
+                                              data?.delivery_date
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
+                                </TableCell>
+                                <TableCell>{data?.order_id_replaced}</TableCell>
+                                <TableCell>{data?.deliverd_with_otp}</TableCell>
+                                <TableCell>
+                                    {data?.deliverd_with_bag_exception}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.gc_amount_redeemed?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.gc_amount_refund?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.gc_redeem_time == null
+                                        ? ''
+                                        : new Date(
+                                              data?.gc_redeem_time
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.gc_amount_refund_time == null
+                                        ? ''
+                                        : new Date(
+                                              data?.gc_amount_refund_time
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.diagnstic_status?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.vc_eligible?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.customer_declaration_physical_defect_present?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.customer_declaration_physical_defect_type?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    {data?.partner_price_no_defect?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    ₹{data?.revised_partner_price?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    ₹{data?.delivery_fee?.toString()}
+                                </TableCell>
+                                <TableCell>
+                                    ₹
+                                    {data?.exchange_facilitation_fee?.toString()}
+                                </TableCell>
 
                 </TableRow>
               )) :
@@ -211,6 +300,7 @@ function Search() {
 
             <TableCell>Delivery Status</TableCell>
             <TableCell>Delivery Imported Date</TableCell>
+            <TableCell>UIC</TableCell>
             <TableCell>UIC Status</TableCell>
             <TableCell>Tracking ID</TableCell>
             <TableCell>Order ID</TableCell>
@@ -226,17 +316,8 @@ function Search() {
             <TableCell>Buyback Category</TableCell>
             <TableCell>Doorsteps Diagnostics</TableCell>
             <TableCell>Actual Delivered Date</TableCell>
-
-
-
-            {/* <TableCell>Tracking ID</TableCell>
-            <TableCell>Order ID</TableCell>
-            <TableCell>UIC Status</TableCell>
-            <TableCell>UIC</TableCell>
-            <TableCell>IMEI</TableCell>
-            <TableCell>Item ID</TableCell>
-            <TableCell>Stockin Date</TableCell> */}
             <TableCell>Bag ID</TableCell>
+            <TableCell>Stockin Date</TableCell>
             <TableCell>Stockin Status</TableCell>
             <TableCell>Bag close Date</TableCell>
             <TableCell>BOT Agent Name</TableCell>
@@ -305,6 +386,7 @@ function Search() {
                       }
                     )}
                   </TableCell>
+                  <TableCell>{data?.uic_code?.code}</TableCell>
                   <TableCell
                     style={
                       data?.uic_status == 'Printed'
@@ -400,6 +482,15 @@ function Search() {
                     : ''}
                 </TableCell> */}
                   <TableCell>{data?.bag_id}</TableCell>
+                  <TableCell>
+                    {data?.stockin_date != undefined
+                      ? new Date(
+                        data?.stockin_date
+                      ).toLocaleString('en-GB', {
+                        hour12: true,
+                      })
+                      : ''}
+                  </TableCell>
                   <TableCell>{data?.stock_in_status}</TableCell>
                   <TableCell>
                     {data?.bag_close_date != undefined

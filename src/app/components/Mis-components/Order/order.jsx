@@ -63,11 +63,11 @@ const SimpleMuiTable = () => {
                     }
                     let res = await axiosMisUser.post(
                         '/getOrders/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
+                        location +
+                        '/' +
+                        page +
+                        '/' +
+                        rowsPerPage
                     )
                     if (res.status == 200) {
                         setItem(res.data.data)
@@ -108,7 +108,7 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
-                    setIsAlive((isAlive)=> !isAlive)
+                    setIsAlive((isAlive) => !isAlive)
                 } else {
                     let obj = {
                         location: location,
@@ -252,18 +252,18 @@ const SimpleMuiTable = () => {
                     <TableBody>
                         {data.map((data, index) => (
                             <TableRow tabIndex={-1}>
-                                <TableCell>{data.id}</TableCell>
+                                <TableCell>{data?.id}</TableCell>
                                 <TableCell
                                     style={
-                                        data.delivery_status == 'Pending'
+                                        data?.delivery_status == 'Pending'
                                             ? { color: 'red' }
                                             : { color: 'green' }
                                     }
                                 >
-                                    {data.delivery_status}
+                                    {data?.delivery_status}
                                 </TableCell>
                                 <TableCell>
-                                    {new Date(data.created_at).toLocaleString(
+                                    {new Date(data?.created_at).toLocaleString(
                                         'en-GB',
                                         {
                                             hour12: true,
@@ -277,21 +277,21 @@ const SimpleMuiTable = () => {
                                     {data?.order_date == null
                                         ? ''
                                         : new Date(
-                                              data.order_date
-                                          ).toLocaleString('en-GB', {
-                                              year: 'numeric',
-                                              month: '2-digit',
-                                              day: '2-digit',
-                                          })}
+                                            data.order_date
+                                        ).toLocaleString('en-GB', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                        })}
                                 </TableCell>
                                 <TableCell>
                                     {data?.order_timestamp == null
                                         ? ''
                                         : new Date(
-                                              data.order_timestamp
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
+                                            data.order_timestamp
+                                        ).toLocaleString('en-GB', {
+                                            hour12: true,
+                                        })}
                                 </TableCell>
                                 <TableCell>
                                     {data.order_status?.toString()}
@@ -329,10 +329,10 @@ const SimpleMuiTable = () => {
                                     {data.delivery_date == null
                                         ? ''
                                         : new Date(
-                                              data.delivery_date
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
+                                            data.delivery_date
+                                        ).toLocaleString('en-GB', {
+                                            hour12: true,
+                                        })}
                                 </TableCell>
                                 <TableCell>{data.order_id_replaced}</TableCell>
                                 <TableCell>{data.deliverd_with_otp}</TableCell>
@@ -349,19 +349,19 @@ const SimpleMuiTable = () => {
                                     {data.gc_redeem_time == null
                                         ? ''
                                         : new Date(
-                                              data.gc_redeem_time
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
+                                            data.gc_redeem_time
+                                        ).toLocaleString('en-GB', {
+                                            hour12: true,
+                                        })}
                                 </TableCell>
                                 <TableCell>
                                     {data.gc_amount_refund_time == null
                                         ? ''
                                         : new Date(
-                                              data.gc_amount_refund_time
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
+                                            data.gc_amount_refund_time
+                                        ).toLocaleString('en-GB', {
+                                            hour12: true,
+                                        })}
                                 </TableCell>
                                 <TableCell>
                                     {data.diagnstic_status?.toString()}

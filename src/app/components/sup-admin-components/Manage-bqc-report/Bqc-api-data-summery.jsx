@@ -1772,7 +1772,23 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                           
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.assisted_camera_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Assisted Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.assisted_camera_test
+                                        }
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -3479,7 +3495,23 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                           
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.assisted_camera_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Assisted Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.assisted_camera_test
+                                        }
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
 
                             {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
                             'failed' ? (

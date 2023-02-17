@@ -17,24 +17,9 @@ const FlexBox = styled(Box)(() => ({
     alignItems: 'center',
 }))
 
-const ContentBox = styled(FlexBox)(() => ({
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-}))
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    fontSize: '13px',
-    marginBottom: '16px',
-    color: theme.palette.text.primary,
-    '& span, svg': {
-        fontSize: '1.25rem',
-        marginRight: '16px',
-    },
-}))
-
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
     return (
-        <Card elevation={3}>
+        <Card >
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
@@ -47,9 +32,13 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             BqcSowftwareReport?.mobile_imei2 ||
                         imei?.match(/[0-9]/g).join('') ==
                             BqcSowftwareReport?._ro_ril_miui_imei0 ? (
-                            <TableCell>Verified</TableCell>
+                            <TableCell style={{ color: 'green' }}>
+                                Verified
+                            </TableCell>
                         ) : (
-                            <TableCell>No Verified</TableCell>
+                            <TableCell style={{ color: 'red' }}>
+                                Not Verified
+                            </TableCell>
                         )}
                     </TableRow>
 
@@ -91,10 +80,21 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                     )}
                     {grade == 'A' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>Cosmetic</H6>
+                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_headphonejack_3_5mm
@@ -110,8 +110,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
@@ -123,8 +123,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
@@ -209,8 +209,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_bentondevicebody
@@ -226,8 +226,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
@@ -239,8 +239,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() !==
-                            'original folder' ? (
+                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() ==
+                            'copy folder' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
@@ -252,8 +252,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.powerkey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.powerkey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
@@ -264,8 +264,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volumekey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.volumekey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Volume Key
@@ -275,8 +275,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silentkey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.silentkey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Silent Key
@@ -287,7 +287,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
                             {BqcSowftwareReport?.homekey?.toLowerCase() !=
-                            'successful' ? (
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Home Key
@@ -298,7 +298,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
                             {BqcSowftwareReport?.simtray?.toLowerCase() !=
-                            'successful' ? (
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
                                         SIM Tray
@@ -309,7 +309,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
                             {BqcSowftwareReport?.chargingjack?.toLowerCase() !==
-                            'successful' ? (
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
@@ -321,8 +321,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.fingerprint?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.fingerprint?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Finger Print
@@ -332,8 +332,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.flashlight?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.flashlight?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Flash Light
@@ -344,11 +344,11 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Automatic</H6>
+                            <H6 sx={{ p: 2 }}>List of Automated Failed Test</H6>
                             <Divider />
 
-                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
@@ -360,8 +360,21 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.back_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.back_camera_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Back Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.back_camera_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.carrier_signal_test
@@ -377,8 +390,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.carrier_signal_sim_2_test
@@ -394,8 +407,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.speaker_microphone_test
@@ -411,8 +424,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         WI-Fi Test
@@ -422,8 +435,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
@@ -435,8 +448,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.bluetooth_test}
                                 >
@@ -448,8 +461,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.video_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.video_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Video Test
@@ -459,8 +472,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.agps_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.agps_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Agps Test
@@ -471,11 +484,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Manual</H6>
-
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.touch_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.touch_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Touch Test
@@ -485,8 +497,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
@@ -498,8 +510,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.live_call_sim_2_test
@@ -515,8 +527,32 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.microphone_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
@@ -528,8 +564,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.receiver_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.receiver_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
@@ -541,8 +577,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
@@ -554,8 +590,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
@@ -567,8 +603,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.vibration_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.vibration_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
@@ -580,8 +616,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
@@ -594,8 +630,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint
@@ -612,8 +648,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.front_camera_flash_test
@@ -629,8 +665,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
@@ -642,8 +678,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.multi_touch_test}
                                 >
@@ -655,8 +691,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.infrared_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.infrared_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.infrared_test}
                                 >
@@ -668,8 +704,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
@@ -681,43 +717,79 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-
-                            <H6 sx={{ p: 2 }}>Assisted</H6>
-                            <Divider />
-
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
-                                    key={BqcSowftwareReport?.screen_damage_test}
+                                    key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Headset Test
                                     </TableCell>
                                     <TableCell>
-                                        {BqcSowftwareReport?.screen_damage_test}
+                                        {BqcSowftwareReport?.headset_test}
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
-                                        BqcSowftwareReport?.assisted_camera_test
+                                        BqcSowftwareReport?.headset_microphone_test
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Headset Microphone Test
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            BqcSowftwareReport?.assisted_camera_test
+                                            BqcSowftwareReport?.headset_microphone_test
                                         }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() !=
-                            'successful' ? (
+                              {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.headset_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                    Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                              {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.headset_microphone_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                    Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_microphone_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <Divider />
+
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.screen_damage_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Damage Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
+                           
+                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.battery_charging_test
@@ -733,8 +805,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.home_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.home_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
@@ -746,8 +818,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.screen_lock_key_test
@@ -763,8 +835,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
@@ -776,8 +848,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.recent_menu_key_test
@@ -793,8 +865,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.assisted_front_camera_test
@@ -810,8 +882,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.assisted_camera_test
@@ -827,8 +899,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.proximity_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.proximity_test}
                                 >
@@ -840,8 +912,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.compass_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.compass_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.compass_test}
                                 >
@@ -853,8 +925,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.light_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.light_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Light Test
@@ -864,8 +936,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() !==
-                            'successful' ? (
+                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
@@ -877,8 +949,34 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.face_id_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Touch Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
+                             {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.headset_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Touch Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            
+                            {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
@@ -890,13 +988,26 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+
                         </>
                     ) : grade == 'B' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>Cosmetic</H6>
+                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
+                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_headphonejack_3_5mm
@@ -912,8 +1023,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
@@ -925,8 +1036,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
@@ -938,8 +1049,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchchromeside > 4 ||
-                            BqcSowftwareReport?.pq_scratchchromeside < 3 ? (
+                            {BqcSowftwareReport?.pq_scratchchromeside > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchchromeside
@@ -955,8 +1065,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_dentdevicebody > 4 ||
-                            BqcSowftwareReport?.pq_dentdevicebody < 3 ? (
+                            {BqcSowftwareReport?.pq_dentdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
@@ -968,8 +1077,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchesdisplay > 4 ||
-                            BqcSowftwareReport?.pq_scratchesdisplay < 3 ? (
+                            {BqcSowftwareReport?.pq_scratchesdisplay > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesdisplay
@@ -986,8 +1094,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.pq_scratchesbackpanel > 4 ||
-                            BqcSowftwareReport?.pq_scratchesbackpanel < 3 ? (
+                            {BqcSowftwareReport?.pq_scratchesbackpanel > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesbackpanel
@@ -1003,8 +1110,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_crackdevicebody > 4 ||
-                            BqcSowftwareReport?.pq_crackdevicebody < 3 ? (
+                            {BqcSowftwareReport?.pq_crackdevicebody == 4 ||
+                            BqcSowftwareReport?.pq_crackdevicebody == 3 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
@@ -1016,8 +1123,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_bentondevicebody
@@ -1033,8 +1140,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
@@ -1046,8 +1153,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() !==
-                            'original folder' ? (
+                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() ==
+                            'copy folder' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
@@ -1059,8 +1166,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.powerkey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.powerkey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
@@ -1071,8 +1178,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volumekey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.volumekey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Volume Key
@@ -1082,8 +1189,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silentkey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.silentkey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Silent Key
@@ -1093,8 +1200,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.homekey?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.homekey?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Home Key
@@ -1104,8 +1211,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.simtray?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.simtray?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
                                         SIM Tray
@@ -1115,8 +1222,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.chargingjack?.toLowerCase() !==
-                            'successful' ? (
+                            {BqcSowftwareReport?.chargingjack?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
@@ -1128,8 +1235,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.fingerprint?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.fingerprint?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Finger Print
@@ -1139,8 +1246,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.flashlight?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.flashlight?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Flash Light
@@ -1151,10 +1258,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Automatic</H6>
+                            <H6 sx={{ p: 2 }}>List of Automated Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
@@ -1166,8 +1273,21 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.back_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.back_camera_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Back Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.back_camera_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.carrier_signal_test
@@ -1183,8 +1303,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.carrier_signal_sim_2_test
@@ -1200,8 +1320,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.speaker_microphone_test
@@ -1217,8 +1337,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         WI-Fi Test
@@ -1228,8 +1348,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
@@ -1241,7 +1361,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.bluetooth_test}
@@ -1254,7 +1374,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.video_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.video_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1265,7 +1385,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.agps_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.agps_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1277,11 +1397,11 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Manual</H6>
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
                             <Divider />
 
-                            {BqcSowftwareReport?.touch_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.touch_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Touch Test
@@ -1291,8 +1411,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
@@ -1304,8 +1424,32 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.live_call_sim_2_test
@@ -1322,8 +1466,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.microphone_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
@@ -1335,8 +1479,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.receiver_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.receiver_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
@@ -1348,8 +1492,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
@@ -1361,8 +1505,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
@@ -1374,8 +1518,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.vibration_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.vibration_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
@@ -1387,8 +1531,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
@@ -1400,8 +1544,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint
@@ -1418,8 +1562,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.front_camera_flash_test
@@ -1435,8 +1579,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
@@ -1448,7 +1592,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.multi_touch_test}
@@ -1461,7 +1605,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.infrared_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.infrared_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.infrared_test}
@@ -1474,8 +1618,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
@@ -1487,28 +1631,42 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-
-                            <H6 sx={{ p: 2 }}>Assisted</H6>
-                            <Divider />
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
-                                        BqcSowftwareReport?.assisted_camera_test
+                                        BqcSowftwareReport?.headset_microphone_test
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Headset Microphone Test
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            BqcSowftwareReport?.assisted_camera_test
+                                            BqcSowftwareReport?.headset_microphone_test
                                         }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
-                            'successful' ? (
+
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <Divider />
+                           
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
@@ -1520,8 +1678,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.battery_charging_test
@@ -1537,8 +1695,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.home_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.home_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
@@ -1550,8 +1708,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.screen_lock_key_test
@@ -1567,8 +1725,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
@@ -1580,8 +1738,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.recent_menu_key_test
@@ -1597,7 +1755,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -1614,7 +1772,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -1631,7 +1789,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.proximity_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.proximity_test}
@@ -1644,7 +1802,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.compass_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.compass_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.compass_test}
@@ -1657,7 +1815,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.light_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.light_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1668,8 +1826,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() !==
-                            'successful' ? (
+                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
@@ -1681,8 +1839,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.face_id_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
@@ -1697,9 +1855,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         </>
                     ) : grade == 'C' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>Cosmetic</H6>
+                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() !=
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -1716,8 +1885,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
@@ -1729,8 +1898,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() !=
-                            'no' ? (
+                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() ==
+                            'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
@@ -1742,8 +1911,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchchromeside > 6 ||
-                            BqcSowftwareReport?.pq_scratchchromeside < 5 ? (
+                            {BqcSowftwareReport?.pq_scratchchromeside > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchchromeside
@@ -1759,8 +1927,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_dentdevicebody > 6 ||
-                            BqcSowftwareReport?.pq_dentdevicebody < 5 ? (
+                            {BqcSowftwareReport?.pq_dentdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
@@ -1772,8 +1939,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchesdisplay > 6 ||
-                            BqcSowftwareReport?.pq_scratchesdisplay < 5 ? (
+                            {BqcSowftwareReport?.pq_scratchesdisplay > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesdisplay
@@ -1790,8 +1956,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.pq_scratchesbackpanel > 6 ||
-                            BqcSowftwareReport?.pq_scratchesbackpanel < 5 ? (
+                            {BqcSowftwareReport?.pq_scratchesbackpanel > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesbackpanel
@@ -1807,8 +1972,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_crackdevicebody > 6 ||
-                            BqcSowftwareReport?.pq_crackdevicebody < 5 ? (
+                            {BqcSowftwareReport?.pq_crackdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
@@ -1820,7 +1984,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={
@@ -1837,7 +2001,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_batterybulging}
@@ -1850,7 +2014,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() !==
+                            {BqcSowftwareReport?.pq_screen_type?.toLowerCase() ==
                             'copy folder' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screen_type}
@@ -1863,7 +2027,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.powerkey?.toLowerCase() !=
+                            {BqcSowftwareReport?.powerkey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1875,18 +2039,19 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volumekey?.toLowerCase() !=
+                            {BqcSowftwareReport?.volumekey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Volume Key
                                     </TableCell>
+
                                     <TableCell>
                                         {BqcSowftwareReport?.volumekey}
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silentkey?.toLowerCase() !=
+                            {BqcSowftwareReport?.silentkey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1897,7 +2062,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.homekey?.toLowerCase() !=
+                            {BqcSowftwareReport?.homekey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1908,7 +2073,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.simtray?.toLowerCase() !=
+                            {BqcSowftwareReport?.simtray?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1919,8 +2084,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.chargingjack?.toLowerCase() !==
-                            'successful' ? (
+                            {BqcSowftwareReport?.chargingjack?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
@@ -1932,7 +2097,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.fingerprint?.toLowerCase() !=
+                            {BqcSowftwareReport?.fingerprint?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1943,7 +2108,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.flashlight?.toLowerCase() !=
+                            {BqcSowftwareReport?.flashlight?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1954,7 +2119,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.video_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.video_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -1966,10 +2131,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Automatic</H6>
+                            <H6 sx={{ p: 2 }}>List of Automated Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
@@ -1981,7 +2146,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.back_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.back_camera_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Back Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.back_camera_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -1998,7 +2176,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2015,7 +2193,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2032,7 +2210,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2043,7 +2221,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_focus_test}
@@ -2056,7 +2234,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.bluetooth_test}
@@ -2069,7 +2247,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.agps_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.agps_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2081,10 +2259,10 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Manual</H6>
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.touch_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.touch_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
                                         Touch Test
@@ -2094,8 +2272,32 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
@@ -2107,8 +2309,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() !=
-                            'successful' ? (
+                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.live_call_sim_2_test
@@ -2124,7 +2326,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.microphone_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.microphone_test}
@@ -2137,7 +2339,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.receiver_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.receiver_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.receiver_test}
@@ -2150,7 +2352,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
@@ -2163,7 +2365,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
@@ -2176,7 +2378,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.vibration_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.vibration_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.vibration_test}
@@ -2189,7 +2391,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.camera_flash_test}
@@ -2203,7 +2405,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() !=
+                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2221,7 +2423,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2238,7 +2440,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
@@ -2251,7 +2453,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.multi_touch_test}
@@ -2264,7 +2466,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.infrared_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.infrared_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.infrared_test}
@@ -2277,40 +2479,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
-                            'successful' ? (
-                                <TableRow
-                                    key={BqcSowftwareReport?.screen_damage_test}
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {BqcSowftwareReport?.screen_damage_test}
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
-
-                            <H6 sx={{ p: 2 }}>Assisted</H6>
-                            <Divider />
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
-                            'successful' ? (
-                                <TableRow
-                                    key={
-                                        BqcSowftwareReport?.assisted_camera_test
-                                    }
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            BqcSowftwareReport?.assisted_camera_test
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
@@ -2323,7 +2492,54 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Microphone Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <Divider />
+                           
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.screen_damage_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Damage Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_damage_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2340,7 +2556,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.home_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.home_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.home_key_test}
@@ -2353,7 +2569,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2370,7 +2586,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.volume_keys_test}
@@ -2383,7 +2599,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2400,7 +2616,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2417,7 +2633,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2434,7 +2650,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.proximity_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.proximity_test}
@@ -2447,7 +2663,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.compass_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.compass_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.compass_test}
@@ -2460,7 +2676,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.light_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.light_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2472,8 +2688,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() !==
-                            'successful' ? (
+                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() ==
+                            'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
@@ -2485,7 +2701,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.face_id_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.face_id_test}
@@ -2501,9 +2717,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         </>
                     ) : grade == 'D' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>Cosmetic</H6>
+                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() !=
+                            {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.crackedlens}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Cracked Lens
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.crackedlens}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.pq_headphonejack_3_5mm?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2520,7 +2747,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_screencracked?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screencracked}
@@ -2533,7 +2760,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_missingparts?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_missingparts}
@@ -2546,7 +2773,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchchromeside >= 7 ? (
+                            {BqcSowftwareReport?.pq_scratchchromeside > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchchromeside
@@ -2562,7 +2789,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_dentdevicebody >= 7 ? (
+                            {BqcSowftwareReport?.pq_dentdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
@@ -2574,7 +2801,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_scratchesdisplay >= 7 ? (
+                            {BqcSowftwareReport?.pq_scratchesdisplay > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesdisplay
@@ -2591,7 +2818,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.pq_scratchesbackpanel >= 7 ? (
+                            {BqcSowftwareReport?.pq_scratchesbackpanel > 2 ? (
                                 <TableRow
                                     key={
                                         BqcSowftwareReport?.pq_scratchesbackpanel
@@ -2607,7 +2834,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_crackdevicebody >= 7 ? (
+                            {BqcSowftwareReport?.pq_crackdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
@@ -2619,7 +2846,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_bentondevicebody?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={
@@ -2636,7 +2863,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() !=
+                            {BqcSowftwareReport?.pq_batterybulging?.toLowerCase() ==
                             'yes' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_batterybulging}
@@ -2650,9 +2877,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
                             {BqcSowftwareReport?.pq_screen_type?.toLowerCase() ==
-                                'copy folder' ||
-                            BqcSowftwareReport?.pq_screen_type?.toLowerCase() ==
-                                'orginel folder' ? (
+                            'copy folder' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
@@ -2664,7 +2889,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.powerkey?.toLowerCase() !=
+                            {BqcSowftwareReport?.powerkey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2676,7 +2901,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volumekey?.toLowerCase() !=
+                            {BqcSowftwareReport?.volumekey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2687,7 +2912,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silentkey?.toLowerCase() !=
+                            {BqcSowftwareReport?.silentkey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2698,7 +2923,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.homekey?.toLowerCase() !=
+                            {BqcSowftwareReport?.homekey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2709,7 +2934,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.simtray?.toLowerCase() !=
+                            {BqcSowftwareReport?.simtray?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2720,7 +2945,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.chargingjack?.toLowerCase() !==
+                            {BqcSowftwareReport?.chargingjack?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.chargingjack}
@@ -2733,7 +2958,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.fingerprint?.toLowerCase() !=
+                            {BqcSowftwareReport?.fingerprint?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2744,7 +2969,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.flashlight?.toLowerCase() !=
+                            {BqcSowftwareReport?.flashlight?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2756,9 +2981,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Automatic</H6>
+                            <H6 sx={{ p: 2 }}>List of Automated Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.front_camera_test}
@@ -2771,7 +2996,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.back_camera_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.back_camera_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Back Camera Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.back_camera_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.carrier_signal_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2788,7 +3026,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.carrier_signal_sim_2_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2805,7 +3043,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2822,7 +3060,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.wi_fi_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2833,7 +3071,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.auto_focus_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_focus_test}
@@ -2846,7 +3084,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.bluetooth_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.bluetooth_test}
@@ -2859,7 +3097,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.video_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.video_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2870,7 +3108,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.agps_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.agps_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2882,9 +3120,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>Manual</H6>
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.touch_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.touch_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -2895,7 +3133,31 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.fm_radio_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.fm_radio_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        FM Radio Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.fm_radio_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.screen_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow key={BqcSowftwareReport?.screen_test}>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Screen Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.screen_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.live_call_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.live_call_test}
@@ -2908,7 +3170,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.live_call_sim_2_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -2925,7 +3187,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
@@ -2938,7 +3200,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.receiver_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.receiver_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.receiver_test}
@@ -2951,7 +3213,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
@@ -2964,7 +3226,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.speaker_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.speaker_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.speaker_test}
@@ -2977,7 +3239,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.vibration_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.vibration_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.vibration_test}
@@ -2990,7 +3252,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.camera_flash_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.camera_flash_test}
@@ -3003,7 +3265,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() !=
+                            {BqcSowftwareReport?.blancco_data_blancco_hardware_report_hardware_tests_auto_fingerprint?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3021,7 +3283,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.front_camera_flash_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3038,7 +3300,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.auto_rotation_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
@@ -3052,7 +3314,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.multi_touch_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.multi_touch_test}
@@ -3065,7 +3327,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.infrared_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.infrared_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.infrared_test}
@@ -3078,7 +3340,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.screen_damage_test}
@@ -3091,28 +3353,42 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-
-                            <H6 sx={{ p: 2 }}>Assisted</H6>
-                            <Divider />
-
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            'failed' ? (
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
+                                    <TableCell sx={{ pl: 2 }}>
+                                        Headset Test
+                                    </TableCell>
+                                    <TableCell>
+                                        {BqcSowftwareReport?.headset_test}
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
-                                        BqcSowftwareReport?.assisted_camera_test
+                                        BqcSowftwareReport?.headset_microphone_test
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Headset Microphone Test
                                     </TableCell>
                                     <TableCell>
                                         {
-                                            BqcSowftwareReport?.assisted_camera_test
+                                            BqcSowftwareReport?.headset_microphone_test
                                         }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() !=
+
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <Divider />
+
+                           
+                            {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3129,7 +3405,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.microphone_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.microphone_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.microphone_test}
@@ -3142,7 +3418,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.home_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.home_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.home_key_test}
@@ -3155,7 +3431,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.screen_lock_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3172,7 +3448,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.volume_keys_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.volume_keys_test}
@@ -3185,7 +3461,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.recent_menu_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3202,7 +3478,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_front_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3219,7 +3495,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={
@@ -3237,7 +3513,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.proximity_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.proximity_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.proximity_test}
@@ -3250,7 +3526,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.compass_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.compass_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.compass_test}
@@ -3263,7 +3539,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.light_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.light_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -3274,7 +3550,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() !==
+                            {BqcSowftwareReport?.silent_key_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.silent_key_test}
@@ -3287,7 +3563,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.face_id_test?.toLowerCase() !=
+                            {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.face_id_test}
@@ -3307,5 +3583,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
         </Card>
     )
 }
+
+
+
 
 export default BqcSowftwareReportPage

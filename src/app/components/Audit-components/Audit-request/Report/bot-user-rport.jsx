@@ -34,7 +34,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const BqcUserReportPage = ({ BOt }) => {
     return (
-        <Card elevation={3}>
+        <Card elevation={3} sx={{mt:2}}>
             <H4 sx={{ p: 2 }}>BOT User Report</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>

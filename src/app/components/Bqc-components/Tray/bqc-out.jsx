@@ -339,7 +339,6 @@ export default function DialogBox() {
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
                                 <TableCell>BOT Agent</TableCell>
-                                {/* <TableCell>Tracking Number</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -376,7 +375,7 @@ export default function DialogBox() {
                             disabled={textBoxDis}
                             inputRef={(input) => input && input.focus()}
                             name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
+                            label="SCAN UIC"
                             value={uic}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {

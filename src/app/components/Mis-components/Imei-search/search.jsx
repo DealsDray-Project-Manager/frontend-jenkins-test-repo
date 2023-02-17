@@ -78,7 +78,7 @@ function Search() {
 
   const OrderTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 8000,
+    width: 9000,
     height: 100,
     whiteSpace: 'pre',
     '& thead': {
@@ -364,8 +364,6 @@ function Search() {
               deliveryData?.map((data, index) =>
               (
                 <TableRow >
-
-
                   <TableCell
                     style={
                       data?.result?.length != 0

@@ -486,27 +486,78 @@ export default function DialogBox() {
                     sx={{
                         mt: 2,
                         ml: 2,
+                        display: 'flex',
+                        justifyContent: 'space-between',
                     }}
                 >
-                    {reportData?.delivery?.bqc_software_report?.final_grade ==
-                        undefined ||
-                    reportData?.delivery?.bqc_software_report?.final_grade ==
-                        '' ? (
-                        <H3>Grade: Not found</H3>
-                    ) : (
-                        <H3>
-                            Grade :{' '}
-                            {
-                                reportData?.delivery?.bqc_software_report
-                                    ?.final_grade
-                            }
-                        </H3>
-                    )}
-                    <H3>Tray Id : {whtTrayId}</H3>
-                    <H3>UIC : {uic}</H3>
+                    <Box>
+                        {reportData?.delivery?.bqc_software_report
+                            ?.final_grade == undefined ||
+                        reportData?.delivery?.bqc_software_report
+                            ?.final_grade == '' ? (
+                            <H3>Grade: Not found</H3>
+                        ) : (
+                            <H3>
+                                Grade :{' '}
+                                {
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.final_grade
+                                }
+                            </H3>
+                        )}
+                        <H3 sx={{ mt: 2 }}>Tray Id : {whtTrayId}</H3>
+                        <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
+                    </Box>
+                    <Box>
+                        {(reportData?.delivery?.bqc_report?.bqc_status ==
+                            'Device not to be checked for BQC' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ||
+                        reportData?.delivery?.bqc_software_report ==
+                            undefined ||
+                        (reportData?.delivery?.bqc_report?.bqc_status ==
+                            'BQC Incomplete' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ||
+                        reportData?.delivery?.charging?.battery_status ==
+                            'Charge failed' ||
+                        reportData?.delivery?.charging?.battery_status ==
+                            'No-battery' ||
+                        reportData?.delivery?.charging?.battery_status ==
+                            'Heat Problem' ||
+                        (reportData?.delivery?.charging?.lock_status !==
+                            'Unlocked' &&
+                            reportData?.delivery?.charging?.lock_status !==
+                                'Software Issue') ? (
+                            <Button
+                                sx={{ mr: 2 }}
+                                onClick={(e) =>
+                                    handelAdd(
+                                        e,
+                                        'Device not to be checked for BQC'
+                                    )
+                                }
+                                disabled={butDis}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD to WHT
+                            </Button>
+                        ) : (
+                            <Button
+                                sx={{ mr: 2 }}
+                                disabled={butDis}
+                                onClick={(e) => handleOpen()}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
                 {gridData}
-                <Box
+                {/* <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
@@ -516,48 +567,8 @@ export default function DialogBox() {
                         mb: 2,
                     }}
                 >
-                    {(reportData?.delivery?.bqc_report?.bqc_status ==
-                        'Device not to be checked for BQC' &&
-                        reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            'failed') ||
-                    reportData?.delivery?.bqc_software_report == undefined ||
-                    (reportData?.delivery?.bqc_report?.bqc_status ==
-                        'BQC Incomplete' &&
-                        reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            'failed') ||
-                    reportData?.delivery?.charging?.battery_status ==
-                        'Charge failed' ||
-                    reportData?.delivery?.charging?.battery_status ==
-                        'No-battery' ||
-                    reportData?.delivery?.charging?.battery_status ==
-                        'Heat Problem' ||
-                    (reportData?.delivery?.charging?.lock_status !==
-                        'Unlocked' &&
-                        reportData?.delivery?.charging?.lock_status !==
-                            'Software Issue') ? (
-                        <Button
-                            sx={{ ml: 2 }}
-                            onClick={(e) =>
-                                handelAdd(e, 'Device not to be checked for BQC')
-                            }
-                            disabled={butDis}
-                            variant="contained"
-                            color="primary"
-                        >
-                            ADD to WHT
-                        </Button>
-                    ) : (
-                        <Button
-                            sx={{ ml: 2 }}
-                            disabled={butDis}
-                            onClick={(e) => handleOpen()}
-                            variant="contained"
-                            color="primary"
-                        >
-                            ADD
-                        </Button>
-                    )}
-                </Box>
+                  
+                </Box> */}
             </Box>
         </>
     )

@@ -48,7 +48,7 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-              
+
                 fetchModel(editFetchData.brand)
                 open()
             }
@@ -102,6 +102,46 @@ const MemberEditorDialog = ({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'PMT Tray Maximum ID NO  8151',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTA' && res.data.data > '1999') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'cta Tray Maximum ID NO  1999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTB' && res.data.data > '2999') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTB Tray Maximum ID NO  2999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTC' && res.data.data > '3999') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTC Tray Maximum ID NO  3999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTD' && res.data.data > '4999') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTD Tray Maximum ID NO  4999',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             handleClose()
@@ -345,8 +385,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -368,8 +409,9 @@ const MemberEditorDialog = ({
                             name="warehouse"
                             {...register('warehouse')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
@@ -386,8 +428,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -457,7 +500,9 @@ const MemberEditorDialog = ({
                                 CTD
                             </MenuItem>
                         </TextFieldCustOm>
-                        {getValues('type_taxanomy') !== 'BOT' &&  getValues('type_taxanomy') !== 'PMT' && getValues('type_taxanomy') !== 'MMT' ? (
+                        {getValues('type_taxanomy') !== 'BOT' &&
+                        getValues('type_taxanomy') !== 'PMT' &&
+                        getValues('type_taxanomy') !== 'MMT' ? (
                             <>
                                 <TextFieldCustOm
                                     label="Brand"

@@ -200,14 +200,13 @@ function Search() {
                                     {data?.old_item_details?.toString()}
                                 </TableCell>
                                 <TableCell>
-                                    {data?.products[0]?.brand_name}
+                                    {data?.products?.[0]?.brand_name}
                                 </TableCell>
                                 <TableCell>
-                                    {data?.products[0]?.model_name}
+                                    {data?.products?.[0]?.model_name}
                                 </TableCell>
-                                <TableCell>{data?.products[0]?.muic}</TableCell>
+                                <TableCell>{data?.products?.[0]?.muic}</TableCell>
                                 <TableCell>{data?.imei?.toString()}</TableCell>
-                                {/* <TableCell>{data.gep_order?.toString()}</TableCell> */}
                                 <TableCell>
                                     ₹{data?.base_discount?.toString()}
                                 </TableCell>

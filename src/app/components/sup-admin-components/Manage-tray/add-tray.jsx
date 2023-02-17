@@ -66,8 +66,10 @@ const MemberEditorDialog = ({
         try {
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
+              
                 setTrayCount(type + res.data.data)
                 if (type == 'BOT' && res.data.data > '2251') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -78,6 +80,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'MMT' && res.data.data > '8051') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -88,6 +91,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'WHT' && res.data.data > '1501') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -98,6 +102,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'PMT' && res.data.data > '8151') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -108,6 +113,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'CTA' && res.data.data > '1999') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -118,6 +124,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'CTB' && res.data.data > '2999') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -128,6 +135,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'CTC' && res.data.data > '3999') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -138,6 +146,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'CTD' && res.data.data > '4999') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

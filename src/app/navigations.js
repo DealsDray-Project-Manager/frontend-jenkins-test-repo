@@ -46,7 +46,7 @@ export const navigations = [
     {
         name: 'Dashboard',
         path: '/bqc/dashboard',
-        icon: 'dashboard',
+        icon: '',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     // {
@@ -522,7 +522,7 @@ export const navigations = [
     },
     {
         name: 'Bqc Request',
-        icon: 'settings_system_daydream',
+        icon: '',
         path: '/bqc/tray',
         auth: authRoles.bqc,
     },

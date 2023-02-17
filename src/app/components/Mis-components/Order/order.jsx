@@ -408,8 +408,7 @@ const SimpleMuiTable = () => {
                 nextIconButtonProps={{
                     'aria-label': 'Next Page',
                 }}
-                showFirstButton="true"
-                showLastButton="true"
+
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={({ target: { value } }) =>
                     setRowsPerPage(value)

@@ -267,6 +267,7 @@ const MemberEditorDialog = ({
                             <MenuItem value="Sorting Agent">
                                 Sorting Agent
                             </MenuItem>
+                           
                         </TextFieldCustOm>
                         <TextFieldCustOm
                             label="CPC"

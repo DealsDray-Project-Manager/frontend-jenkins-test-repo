@@ -48,7 +48,7 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-              
+
                 fetchModel(editFetchData.brand)
                 open()
             }
@@ -66,8 +66,10 @@ const MemberEditorDialog = ({
         try {
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
+              
                 setTrayCount(type + res.data.data)
                 if (type == 'BOT' && res.data.data > '2251') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -78,6 +80,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'MMT' && res.data.data > '8051') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -88,6 +91,7 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'WHT' && res.data.data > '1501') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -98,10 +102,55 @@ const MemberEditorDialog = ({
                         }
                     })
                 } else if (type == 'PMT' && res.data.data > '8151') {
+                    handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'PMT Tray Maximum ID NO  8151',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTA' && res.data.data > '1999') {
+                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'cta Tray Maximum ID NO  1999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTB' && res.data.data > '2999') {
+                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTB Tray Maximum ID NO  2999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTC' && res.data.data > '3999') {
+                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTC Tray Maximum ID NO  3999',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            handleClose()
+                        }
+                    })
+                } else if (type == 'CTD' && res.data.data > '4999') {
+                    handleClose()
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'CTD Tray Maximum ID NO  4999',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             handleClose()
@@ -345,8 +394,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -368,8 +418,9 @@ const MemberEditorDialog = ({
                             name="warehouse"
                             {...register('warehouse')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
@@ -386,8 +437,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -457,7 +509,9 @@ const MemberEditorDialog = ({
                                 CTD
                             </MenuItem>
                         </TextFieldCustOm>
-                        {getValues('type_taxanomy') !== 'BOT' &&  getValues('type_taxanomy') !== 'PMT' && getValues('type_taxanomy') !== 'MMT' ? (
+                        {getValues('type_taxanomy') !== 'BOT' &&
+                        getValues('type_taxanomy') !== 'PMT' &&
+                        getValues('type_taxanomy') !== 'MMT' ? (
                             <>
                                 <TextFieldCustOm
                                     label="Brand"

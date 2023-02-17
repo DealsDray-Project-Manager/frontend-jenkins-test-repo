@@ -118,10 +118,14 @@ const Layout1Topbar = () => {
         <TopbarRoot>
             <TopbarContainer>
                 <Box display="flex">
-                    <StyledIconButton onClick={handleSidebarToggle}>
+                    {
+                        user?.role != 'BQC' ? 
+                        <StyledIconButton onClick={handleSidebarToggle}>
                         <Icon>menu</Icon>
-                    </StyledIconButton>
-                    <Span style={{marginTop:"10px"}}> <strong>{user.role?.toUpperCase()} PANEL</strong></Span>
+                    </StyledIconButton>:'.'
+                    }
+                   
+                    <Span style={{marginTop:"10px"}}> <strong>{user?.role?.toUpperCase()} PANEL</strong></Span>
 
                     {/* <IconBox>
                         <StyledIconButton>

@@ -48,7 +48,7 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-              
+
                 fetchModel(editFetchData.brand)
                 open()
             }
@@ -345,8 +345,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -368,8 +369,9 @@ const MemberEditorDialog = ({
                             name="warehouse"
                             {...register('warehouse')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
@@ -386,8 +388,9 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues("type_taxanomy") == "WHT" && Object.keys(editFetchData).length !== 0
-                              }
+                                getValues('type_taxanomy') == 'WHT' &&
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -457,7 +460,9 @@ const MemberEditorDialog = ({
                                 CTD
                             </MenuItem>
                         </TextFieldCustOm>
-                        {getValues('type_taxanomy') !== 'BOT' &&  getValues('type_taxanomy') !== 'PMT' && getValues('type_taxanomy') !== 'MMT' ? (
+                        {getValues('type_taxanomy') !== 'BOT' &&
+                        getValues('type_taxanomy') !== 'PMT' &&
+                        getValues('type_taxanomy') !== 'MMT' ? (
                             <>
                                 <TextFieldCustOm
                                     label="Brand"

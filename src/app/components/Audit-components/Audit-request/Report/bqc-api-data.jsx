@@ -787,23 +787,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
-                            'failed' ? (
-                                <TableRow
-                                    key={
-                                        BqcSowftwareReport?.assisted_camera_test
-                                    }
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            BqcSowftwareReport?.assisted_camera_test
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
+                           
                             {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -1680,23 +1664,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
 
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
-                            'failed' ? (
-                                <TableRow
-                                    key={
-                                        BqcSowftwareReport?.assisted_camera_test
-                                    }
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            BqcSowftwareReport?.assisted_camera_test
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
+                           
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -2557,23 +2525,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
 
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
-                            'failed' ? (
-                                <TableRow
-                                    key={
-                                        BqcSowftwareReport?.assisted_camera_test
-                                    }
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            BqcSowftwareReport?.assisted_camera_test
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
+                           
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -3435,23 +3387,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
 
-                            {BqcSowftwareReport?.assisted_camera_test?.toLowerCase() ==
-                            'failed' ? (
-                                <TableRow
-                                    key={
-                                        BqcSowftwareReport?.assisted_camera_test
-                                    }
-                                >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            BqcSowftwareReport?.assisted_camera_test
-                                        }
-                                    </TableCell>
-                                </TableRow>
-                            ) : null}
+                           
                             {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow

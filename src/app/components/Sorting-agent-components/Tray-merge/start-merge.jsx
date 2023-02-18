@@ -95,6 +95,7 @@ export default function DialogBox() {
                 fromTray: trayId,
                 toTray: tray[1].code,
                 item: data,
+                trayType:tray[1].type_taxanomy
             }
             let res = await axiosSortingAgent.post('/itemShifteToMmtTray', obj)
             if (res?.status === 200) {

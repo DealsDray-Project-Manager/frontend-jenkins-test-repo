@@ -465,6 +465,7 @@ const SimpleMuiTable = () => {
             </ProductTable>
         )
     }, [item, data])
+
     return (
         <Container>
             <div className="breadcrumb">

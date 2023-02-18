@@ -122,7 +122,7 @@ const Layout1Topbar = () => {
                         user?.role != 'BQC' ? 
                         <StyledIconButton onClick={handleSidebarToggle}>
                         <Icon>menu</Icon>
-                    </StyledIconButton>:'.'
+                    </StyledIconButton>:''
                     }
                    
                     <Span style={{marginTop:"10px"}}> <strong>{user?.role?.toUpperCase()} PANEL</strong></Span>

@@ -79,6 +79,12 @@ export const navigations = [
         auth: authRoles.admin,
     },
     {
+        name: 'Category',
+        icon: 'home',
+        path: '/sup-admin/Category',
+        auth: authRoles.admin,
+    },
+    {
         name: 'Brands',
         icon: 'branding_watermark',
         path: '/sup-admin/brands',

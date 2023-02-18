@@ -52,6 +52,12 @@ const StatCard3 = () => {
         },
         {
             icon: 'branding_watermark',
+            amount: count.Category,
+            title: 'Category',
+            link: '/sup-admin/category',
+        },
+        {
+            icon: 'branding_watermark',
             amount: count.brand,
             title: 'Brands',
             link: '/sup-admin/brands',

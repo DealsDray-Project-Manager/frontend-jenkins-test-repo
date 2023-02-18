@@ -44,6 +44,7 @@ const RemoveInvalidItemView = Loadable(
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
+const Categorys = Loadable(lazy(() => import('./Ctx-category/view-categorys')))
 
 
 const SuperAdminRouter = [
@@ -70,6 +71,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/warehouse',
         element: <Warehouse />,
+    },
+    {
+        path: '/sup-admin/Category',
+        element: <Categorys />,
     },
     {
         path: '/sup-admin/brands',

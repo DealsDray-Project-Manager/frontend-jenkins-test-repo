@@ -76,9 +76,15 @@ const StatCard3 = () => {
         },
         {
             icon: 'battery_charging_full',
-            amount: count.readyForCharging,
-            title: 'Ready For Charging',
-            link: '/sup-admin/ready-for-charging',
+            amount: count.readyForChargingInuse,
+            title: 'Ready For Charging In use',
+            link: '/sup-admin/ready-for-charging/in-use-wht',
+        },
+        {
+            icon: 'battery_charging_full',
+            amount: count.readyForChargingBqc,
+            title: 'Ready For Charging Bqc',
+            link: '/sup-admin/ready-for-charging/bqc-tray',
         },
         {
             icon: 'leak_remove',

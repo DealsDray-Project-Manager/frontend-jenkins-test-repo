@@ -64,6 +64,7 @@ const SimpleMuiTable = () => {
             navigate('/')
         }
     }, [refresh, page])
+    
 
     useEffect(() => {
         setData((_) =>

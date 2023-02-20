@@ -531,7 +531,7 @@ export default function DialogBox() {
                             'Heat Problem' &&
                             reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
                                 'failed') ||
-                        (reportData?.delivery?.charging?.lock_status !==
+                        (reportData?.delivery?.charging?.lock_status ==
                             'Software Issue' &&
                             reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
                                 'failed') ? (

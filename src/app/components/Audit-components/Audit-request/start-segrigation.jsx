@@ -65,7 +65,6 @@ export default function DialogBox() {
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
-
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
     const [closeButDis, SetCloseButDis] = useState(false)

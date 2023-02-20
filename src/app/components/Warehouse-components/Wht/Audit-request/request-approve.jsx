@@ -60,6 +60,8 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
+    
     useEffect(() => {
         const userStatusApiCall = async () => {
             try {
@@ -250,6 +252,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>

@@ -519,16 +519,22 @@ export default function DialogBox() {
                             'BQC Incomplete' &&
                             reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
                                 'failed') ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'Charge failed' ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'No-battery' ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'Heat Problem' ||
+                        (reportData?.delivery?.charging?.battery_status ==
+                            'Charge failed' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ||
+                        (reportData?.delivery?.charging?.battery_status ==
+                            'No-battery' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ||
+                        (reportData?.delivery?.charging?.battery_status ==
+                            'Heat Problem' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ||
                         (reportData?.delivery?.charging?.lock_status !==
-                            'Unlocked' &&
-                            reportData?.delivery?.charging?.lock_status !==
-                                'Software Issue') ? (
+                            'Software Issue' &&
+                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                                'failed') ? (
                             <Button
                                 sx={{ mr: 2 }}
                                 onClick={(e) =>

@@ -38,7 +38,7 @@ const TrackItem = () => {
     const navigate = useNavigate()
     const [displayText, setDisplayText] = useState('')
     const [refresh, setRefresh] = useState(false)
-    // const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0)
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
@@ -51,7 +51,7 @@ const TrackItem = () => {
                     )
                     if (res.status == 200) {
                         setDisplayText('')
-                        // setCount(res.data.count)
+                        setCount(res.data.count)
                         setItem(res.data.data)
                     }
                 } catch (error) {
@@ -120,6 +120,7 @@ const TrackItem = () => {
                         setRowsPerPage(10)
                         setPage(0)
                     } else {
+                        setItem(res.data.data)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -504,7 +505,7 @@ const TrackItem = () => {
                         sx={{ px: 2 }}
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={item?.length}
+                        count={count}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         showFirstButton="true"

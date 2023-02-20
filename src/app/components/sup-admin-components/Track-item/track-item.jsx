@@ -32,7 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const TrackItem = () => {
     const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
@@ -62,7 +62,7 @@ const TrackItem = () => {
         } else {
             navigate('/')
         }
-    }, [refresh, page])
+    }, [refresh, page,rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -129,6 +129,8 @@ const TrackItem = () => {
             alert(error)
         }
     }
+
+    console.log(rowsPerPage);
 
     const tableData = useMemo(() => {
         return (
@@ -503,7 +505,7 @@ const TrackItem = () => {
                 <TableRow>
                     <TablePagination
                         sx={{ px: 2 }}
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[100, 150, 200]}
                         component="div"
                         count={count}
                         rowsPerPage={rowsPerPage}

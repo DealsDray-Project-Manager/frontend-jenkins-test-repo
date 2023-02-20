@@ -77,13 +77,13 @@ const StatCard3 = () => {
         {
             icon: 'battery_charging_full',
             amount: count.readyForChargingInuse,
-            title: 'Ready For Charging In use',
+            title: 'Ready For Charging (Inuse tray)',
             link: '/sup-admin/ready-for-charging/in-use-wht',
         },
         {
             icon: 'battery_charging_full',
             amount: count.readyForChargingBqc,
-            title: 'Ready For Charging Bqc',
+            title: 'Ready For Charging (BQC Ready Tray)',
             link: '/sup-admin/ready-for-charging/bqc-tray',
         },
         {

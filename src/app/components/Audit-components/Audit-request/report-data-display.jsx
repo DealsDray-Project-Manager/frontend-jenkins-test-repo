@@ -534,7 +534,9 @@ export default function DialogBox() {
                         (reportData?.delivery?.charging?.lock_status ==
                             'Software Issue' &&
                             reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                                'failed') ? (
+                                'failed') ||
+                        reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            'failed' ? (
                             <Button
                                 sx={{ mr: 2 }}
                                 onClick={(e) =>

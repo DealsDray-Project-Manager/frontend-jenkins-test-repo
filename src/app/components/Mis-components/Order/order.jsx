@@ -12,9 +12,6 @@ import {
     Card,
     MenuItem,
     Box,
-    FormControl,
-    InputLabel,
-    Select,
     TextField,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -42,14 +39,17 @@ const SimpleMuiTable = () => {
     const [orderCount, setOrderCount] = useState(0)
     const [data, setData] = useState([])
     const [item, setItem] = useState([])
+    const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
         location: '',
     })
+
     const navigate = useNavigate()
 
     useEffect(() => {
+        setDisplayText('Loading...')
         const fetchOrder = async () => {
             try {
                 let user = localStorage.getItem('prexo-authentication')
@@ -70,6 +70,7 @@ const SimpleMuiTable = () => {
                             rowsPerPage
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setItem(res.data.data)
                     }
                 } else {
@@ -108,7 +109,7 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
-                    setIsAlive((isAlive)=> !isAlive)
+                    setIsAlive((isAlive) => !isAlive)
                 } else {
                     let obj = {
                         location: location,
@@ -408,8 +409,6 @@ const SimpleMuiTable = () => {
                 nextIconButtonProps={{
                     'aria-label': 'Next Page',
                 }}
-              
-               
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={({ target: { value } }) =>
                     setRowsPerPage(value)

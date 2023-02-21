@@ -5,6 +5,7 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 import { axiosAuditAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
@@ -23,7 +24,13 @@ const StatCard3 = () => {
                         setCount(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text:error,
+                    })
+                    
                 }
             }
         }

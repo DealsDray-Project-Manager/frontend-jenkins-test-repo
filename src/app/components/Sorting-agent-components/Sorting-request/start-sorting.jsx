@@ -24,6 +24,7 @@ import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 import { axiosSortingAgent } from '../../../../axios'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -98,7 +99,11 @@ export default function DialogBox() {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
             }
         }
         fetchData()
@@ -131,7 +136,11 @@ export default function DialogBox() {
             } catch (error) {
                 setAwbn('')
 
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
             }
         }
     }
@@ -159,7 +168,11 @@ export default function DialogBox() {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
     /************************************************************************** */
@@ -187,7 +200,11 @@ export default function DialogBox() {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
     const handelViewItem = (e, code) => {

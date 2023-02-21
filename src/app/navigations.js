@@ -80,7 +80,7 @@ export const navigations = [
     },
     {
         name: 'Category',
-        icon: 'home',
+        icon: 'category',
         path: '/sup-admin/Category',
         auth: authRoles.admin,
     },

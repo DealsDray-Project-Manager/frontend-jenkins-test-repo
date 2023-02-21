@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 import { axiosSortingAgent, axiosWarehouseIn } from '../../../../axios'
 
@@ -51,7 +52,11 @@ export default function DialogBox() {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
             }
         }
         fetchData()
@@ -83,7 +88,11 @@ export default function DialogBox() {
             } catch (error) {
                 setAwbn('')
 
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
             }
         }
     }

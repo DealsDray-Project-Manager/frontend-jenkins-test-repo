@@ -209,7 +209,12 @@ export default function DialogBox() {
     }
     const onSubmit = async (value) => {
         if (trayData.actual_items.length <= trayData?.items?.length) {
-            alert('All Items Scanned')
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:'All Items Scanned',
+            })
         } else {
             setAddButDis(true)
             if (value.blancoo_qc_status == 'BQC Finished') {

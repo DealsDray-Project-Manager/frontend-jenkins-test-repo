@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosAuditAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,7 +41,12 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+            
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -56,13 +62,29 @@ const SimpleMuiTable = () => {
         try {
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-                alert(res.data.message)
+            
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
                 setIsAlive((isAlive) => !isAlive)
             } else {
-                alert(res.data.message)
+              
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
+                
             }
         } catch (error) {
-            alert(error)
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 

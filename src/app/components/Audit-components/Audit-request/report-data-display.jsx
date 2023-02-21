@@ -23,6 +23,7 @@ import BqcUserReport from './Report/bqc-user-report'
 import AmazonDetails from './Report/amazon-data'
 import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
+import Swal from 'sweetalert2'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {

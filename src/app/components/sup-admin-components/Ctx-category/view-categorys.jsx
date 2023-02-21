@@ -22,30 +22,32 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    // const [warehouseList, setWarehouseList] = useState([])
-    // const [editFetchData, setEditFetchData] = useState({})
+    const [ctxCategorylist, setctxCategorylist] = useState([])
+    const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
-    useEffect(() => {
-        // const fetchLocation = async () => {
-        //     try {
-        //         const res = await axiosSuperAdminPrexo.post('/getWarehouse')
-        //         if (res.status === 200) {
-        //             setWarehouseList(res.data.data)
-        //         }
-        //     } catch (error) {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: error,
-        //         })
-        //     }
-        // }
-        // fetchLocation()
+    useEffect(async() => {
+       
+            try {
+                const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
+                if (res.status === 200) {
+                    setctxCategorylist(res?.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
         return () => setIsAlive(false)
     }, [isAlive])
 
+    console.log(ctxCategorylist);
+    console.log('ctxCategorylist');
+
     const handleDialogClose = () => {
+        setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
 
@@ -53,57 +55,95 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    // const editWarehouse = async (empId) => {
-    //     try {
-    //         let response = await axiosSuperAdminPrexo.get('/getInfra/' + empId)
-    //         if (response.status == 200) {
-    //             setEditFetchData(response.data.data)
-    //             handleDialogOpen()
-    //         }
-    //     } catch (error) {
-    //         alert(error)
-    //     }
-    // }
-    // const handelDelete = (id) => {
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: 'You want to Delete Location!',
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, Delete it!',
-    //     }).then(async (result) => {
-    //         if (result.isConfirmed) {
-    //             try {
-    //                 let response = await axiosSuperAdminPrexo.post(
-    //                     '/deleteInfra/' + id
-    //                 )
-    //                 if (response.status == 200) {
-    //                     Swal.fire({
-    //                         position: 'top-center',
-    //                         icon: 'success',
-    //                         title: 'Location has been Deleted',
-    //                         confirmButtonText: 'Ok',
-    //                     }).then((result) => {
-    //                         if (result.isConfirmed) {
-    //                             setIsAlive((isAlive) => !isAlive)
-    //                         }
-    //                     })
-    //                 } else {
-    //                     alert(response.data.message)
-    //                 }
-    //             } catch (error) {
-    //                 alert(error)
-    //             }
-    //         }
-    //     })
-    // }
+    const editCtxcategory = async (empId) => {
+        try {
+          
+             let categoryCheck= await axiosSuperAdminPrexo.post('/categoryCheck',{empId})
+             if(categoryCheck?.status==200){
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'fail',
+                    title: 'You Cannot Edit This Catagory',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+
+             }else{
+                 let response = await axiosSuperAdminPrexo.get('/geteditctxcategory/' + empId)
+                if (response.status == 200) {
+                setEditFetchData(response.data.data)
+                handleDialogOpen()
+            }}
+           
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+    const handelDelete = (code) => {
+
+        console.log(code);
+        console.log('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to Delete Location!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete it!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/deleteCtxcategory/',{code}
+                    )
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Category has been Deleted',
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    } else  {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'fail',
+                            title: 'You Cannot Delete This Category',
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
+                }
+            }
+        })
+    }
 
     const columns = [
         {
             name: 'ReocrdId',
-            label: 'ReocrdId',
+            label: 'Reocrd Id',
             options: {
                 filter: true,
                 sort: true,
@@ -126,7 +166,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'Float Number',
+            name: 'Float',
             label: 'Float Number',
             options: {
                 filter: true,
@@ -145,7 +185,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        // editWarehouse(value)
+                                        editCtxcategory(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
@@ -155,7 +195,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        // handelDelete(value)
+                                        handelDelete(tableMeta.rowData[1])
                                     }}
                                     color="error"
                                 >
@@ -173,7 +213,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'CTX-Catgorys', path: '/' }]}
+                    routeSegments={[{ name: 'CTX-Category', path: '/' }]}
                 />
             </div>
             <Button
@@ -182,11 +222,11 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => setShouldOpenEditorDialog(true)}
             >
-                Add New Category
+                Add Category
             </Button>
             <MUIDataTable
                 title={'All Categorys'}
-                // data={warehouseList}
+                data={ctxCategorylist}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -209,8 +249,8 @@ const SimpleMuiTable = () => {
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
                     setIsAlive={setIsAlive}
-                    // editFetchData={editFetchData}
-                    // setEditFetchData={setEditFetchData}
+                    editFetchData={editFetchData}
+                    setEditFetchData={setEditFetchData}
                 />
             )}
         </Container>

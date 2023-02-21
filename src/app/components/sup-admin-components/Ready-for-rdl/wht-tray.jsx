@@ -72,10 +72,18 @@ const SimpleMuiTable = () => {
                     }
                 })
             } else if (res.status == 202) {
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:res?.data?.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
 

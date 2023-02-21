@@ -186,7 +186,11 @@ const MemberEditorDialog = ({
             }
         } catch (error) {
             setEditFetchData({})
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -264,9 +268,9 @@ const MemberEditorDialog = ({
                             <MenuItem value="Charging">Charging</MenuItem>
                             <MenuItem value="BQC">BQC</MenuItem>
                             <MenuItem value="Audit">Audit</MenuItem>
-                            <MenuItem value="Sorting Agent">
-                                Sorting Agent
-                            </MenuItem>
+                            <MenuItem value="Sorting Agent">Sorting Agent</MenuItem>
+                            <MenuItem value="Pricing Agent">Pricing Agent</MenuItem>
+                            <MenuItem value="Sales Agent">Sales Agent</MenuItem>
                            
                         </TextFieldCustOm>
                         <TextFieldCustOm

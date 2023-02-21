@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
-
+import Swal from 'sweetalert2'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -39,13 +39,24 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else if (response.status === 202) {
-                    alert(response.data.message)
+                
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response?.data?.message,
+                    })
                     navigate(-1)
                 } else {
                     navigate('/bag-issue-request')
                 }
             } catch (error) {
-                alert(error)
+              
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+
             }
         }
         fetchData()
@@ -65,10 +76,20 @@ export default function DialogBox() {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setUic('')
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                 }
             } catch (error) {
-                alert(error)
+              
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
     }
@@ -94,7 +115,13 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
-                alert(error)
+             
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+                
             }
         }
     }
@@ -113,18 +140,38 @@ export default function DialogBox() {
                 }
                 let res = await axiosCharging.post('/charge-in', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                     setLoading(false)
                     navigate('/charging/tray')
                 } else {
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                 }
             } else {
-                alert('Please Verify Actual Data')
+              
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Verify Actual Data',
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const tableActual = useMemo(() => {

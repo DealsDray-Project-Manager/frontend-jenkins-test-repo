@@ -3,6 +3,7 @@ import { Span } from '../../components/Typography'
 import { styled, Box } from '@mui/system'
 import useSettings from 'app/hooks/useSettings'
 import MatxLogo from '../MatxLogo/MatxLogo'
+import Swal from 'sweetalert2'
 
 const BrandRoot = styled(Box)(({ theme }) => ({
     display: 'flex',

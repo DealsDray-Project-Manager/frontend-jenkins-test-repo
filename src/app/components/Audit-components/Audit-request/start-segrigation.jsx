@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { axiosAuditAgent } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -83,12 +84,21 @@ export default function DialogBox() {
                     if (response.status === 200) {
                         setTrayData(response.data.data)
                     } else {
-                        alert(response.data.message)
+                      
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response?.data?.message,
+                        })
                         navigate(-1)
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -117,11 +127,19 @@ export default function DialogBox() {
                     )
                 } else {
                     setUic('')
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
 
@@ -138,10 +156,18 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } else {
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:res?.data?.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
 

@@ -286,6 +286,11 @@ export const navigations = [
                 path: '/mis/merge/mmt',
                 iconText: 'NP',
             },
+            {
+                name: 'Pickup',
+                path: '/mis/merge/pickup',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
     },
@@ -304,7 +309,7 @@ export const navigations = [
     {
         name: 'IMEI Search',
         icon: 'search',
-        path:'/mis/imei-search',
+        path: '/mis/imei-search',
         // children: [
         //     {
         //         name: 'Search',
@@ -488,6 +493,12 @@ export const navigations = [
                 iconText: 'VP',
             },
         ],
+        auth: authRoles.Warehouse,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        path: '/wareshouse/ctx/all',
         auth: authRoles.Warehouse,
     },
     {

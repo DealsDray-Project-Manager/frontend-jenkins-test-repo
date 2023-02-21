@@ -133,6 +133,9 @@ const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
 const OtherTrayReturnFromAuditClose = Loadable(
     lazy(() => import('./Wht/Return-from-audit/close-tray'))
 )
+const CtxTray =Loadable(lazy(()=> import('./Ctx-tray/ctx-tray-view/tray')))
+const CtxTrayItem =Loadable(lazy(()=>import('./Ctx-tray/ctx-tray-view/view-item')))
+
 const WarehoueRouter = [
     {
         path: '/warehouse/dashboard',
@@ -338,6 +341,14 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/return-from-audit/close/:trayId',
         element: <OtherTrayReturnFromAuditClose />,
+    },
+    {
+        path: '/wareshouse/ctx/all',
+        element: <CtxTray />,
+    },
+    {
+        path: '/wareshouse/ctx/view-item/:trayId',
+        element: <CtxTrayItem />,
     },
 ]
 

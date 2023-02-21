@@ -127,7 +127,6 @@ const SimpleMuiTable = () => {
         }
     }
 
-    console.log(rowsPerPage);
 
     const tableData = useMemo(() => {
         return (

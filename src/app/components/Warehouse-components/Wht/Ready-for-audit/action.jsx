@@ -174,7 +174,6 @@ export default function DialogBox() {
                     }
                     obj.stage = stateData.stage
                     if (stateData.stage == 'Shift to Sales Bin') {
-                        console.log('wor')
                         obj.grade = value.grade
                         obj.description = value.description
                     }

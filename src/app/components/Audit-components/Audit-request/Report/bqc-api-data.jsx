@@ -19,7 +19,7 @@ const FlexBox = styled(Box)(() => ({
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
     return (
-        <Card >
+        <Card>
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
@@ -747,25 +747,33 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                              {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
                             'failed' ? (
-                                <TableRow key={BqcSowftwareReport?.headset_test}>
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
                                     <TableCell sx={{ pl: 2 }}>
-                                    Headset Test
+                                        Headset Test
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                              {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
+                            {BqcSowftwareReport?.headset_microphone_test?.toLowerCase() ==
                             'failed' ? (
-                                <TableRow key={BqcSowftwareReport?.headset_microphone_test}>
+                                <TableRow
+                                    key={
+                                        BqcSowftwareReport?.headset_microphone_test
+                                    }
+                                >
                                     <TableCell sx={{ pl: 2 }}>
-                                    Headset Microphone Test
+                                        Headset Microphone Test
                                     </TableCell>
                                     <TableCell>
-                                        {BqcSowftwareReport?.headset_microphone_test}
+                                        {
+                                            BqcSowftwareReport?.headset_microphone_test
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ) : null}
@@ -787,7 +795,6 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                           
                             {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -963,9 +970,11 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                             {BqcSowftwareReport?.headset_test?.toLowerCase() ==
+                            {BqcSowftwareReport?.headset_test?.toLowerCase() ==
                             'failed' ? (
-                                <TableRow key={BqcSowftwareReport?.headset_test}>
+                                <TableRow
+                                    key={BqcSowftwareReport?.headset_test}
+                                >
                                     <TableCell sx={{ pl: 2 }}>
                                         Touch Test
                                     </TableCell>
@@ -974,7 +983,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            
+
                             {BqcSowftwareReport?.face_id_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -988,7 +997,6 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-
                         </>
                     ) : grade == 'B' ? (
                         <>
@@ -1664,7 +1672,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
 
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
-                           
+
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -2525,7 +2533,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
 
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
-                           
+
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -3387,7 +3395,6 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
                             <Divider />
 
-                           
                             {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
@@ -3583,8 +3590,5 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
         </Card>
     )
 }
-
-
-
 
 export default BqcSowftwareReportPage

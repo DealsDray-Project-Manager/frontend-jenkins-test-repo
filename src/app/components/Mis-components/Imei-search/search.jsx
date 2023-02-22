@@ -58,6 +58,7 @@ function Search() {
         }
     }
 
+
     const DeiveryTable = styled(Table)(() => ({
         minWidth: 750,
         width: 9000,
@@ -361,6 +362,100 @@ function Search() {
                             BQC Done Tray Closed Time Warehouse
                         </TableCell>
 
+
+              deliveryData?.map((data, index) =>
+              (
+                <TableRow >
+                  <TableCell
+                    style={
+                      data?.result?.length != 0
+                        ? { color: 'green' }
+                        : { color: 'red' }
+                    }
+                  >
+                    {data?.result?.length != 0
+                      ? 'Match'
+                      : 'Not Match'}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(data?.created_at).toLocaleString(
+                      'en-GB',
+                      {
+                        hour12: true,
+                      }
+                    )}
+                  </TableCell>
+                  <TableCell>{data?.uic_code?.code}</TableCell>
+                  <TableCell
+                    style={
+                      data?.uic_status == 'Printed'
+                        ? { color: 'green' }
+                        : data?.uic_status == 'Created'
+                          ? { color: 'orange' }
+                          : { color: 'red' }
+                    }
+                  >
+                    {data?.uic_status}
+                  </TableCell>
+                  <TableCell>
+                    {data?.tracking_id?.toString()}
+                  </TableCell>
+                  <TableCell>{data?.order_id?.toString()}</TableCell>
+                  <TableCell>
+                    {data?.order_date == null
+                      ? ''
+                      : new Date(data?.order_date).toLocaleString(
+                        'en-GB',
+                        {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                        }
+                      ) == 'Invalid Date'
+                        ? data?.order_date
+                        : new Date(data?.order_date).toLocaleString(
+                          'en-GB',
+                          {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                          }
+                        )}
+                  </TableCell>
+                  <TableCell>{data?.item_id?.toString()}</TableCell>
+                  <TableCell>{data?.gep_order?.toString()}</TableCell>
+                  <TableCell>{data?.imei?.toString()}</TableCell>
+                  <TableCell>
+                    {data?.partner_purchase_price?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.partner_shop?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.base_discount?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.diagnostics_discount?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.storage_disscount?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.buyback_category?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {data?.doorsteps_diagnostics?.toString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(data?.delivery_date).toLocaleString(
+                      'en-GB',
+                      {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                      }
+                    )}
+                  </TableCell>
                         <TableCell>Issued to Audit Date</TableCell>
 
                         <TableCell>Audit Agnet Name</TableCell>

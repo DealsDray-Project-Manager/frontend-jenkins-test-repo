@@ -31,3 +31,4 @@ export const axiosAuditAgent = axios.create({
     baseURL: 'http://localhost:8000/api/v7/audit-agent',
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
+

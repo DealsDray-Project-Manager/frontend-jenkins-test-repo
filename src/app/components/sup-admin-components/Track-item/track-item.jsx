@@ -12,6 +12,7 @@ import {
     Card,
     TablePagination,
     TableFooter,
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -29,29 +30,27 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const TrackItem = () => {
     const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
+    const [displayText, setDisplayText] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
-    const [search, setSearch] = useState({
-        type: '',
-        searchData: '',
-        location: '',
-    })
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
+            setDisplayText('Loading...')
             const fetchData = async () => {
                 try {
                     let res = await axiosSuperAdminPrexo.post(
                         '/itemTracking/' + page + '/' + rowsPerPage
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setCount(res.data.count)
                         setItem(res.data.data)
                     }
@@ -63,7 +62,7 @@ const SimpleMuiTable = () => {
         } else {
             navigate('/')
         }
-    }, [refresh, page])
+    }, [refresh, page,rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -100,13 +99,13 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
                 } else {
                     let obj = {
                         location: location,
-                        type: search.type,
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -117,8 +116,12 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setItem(res.data.data)
+                        setDisplayText('')
                         setRowsPerPage(10)
                         setPage(0)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -126,6 +129,7 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }
+
 
     const tableData = useMemo(() => {
         return (
@@ -188,6 +192,17 @@ const SimpleMuiTable = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {displayText !== '' ? (
+                        <TableCell
+                            colSpan={8}
+                            align="center"
+                            sx={{ verticalAlign: 'top' }}
+                        >
+                            <Typography variant="p" gutterBottom>
+                                {displayText}
+                            </Typography>
+                        </TableCell>
+                    ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
@@ -465,6 +480,7 @@ const SimpleMuiTable = () => {
             </ProductTable>
         )
     }, [item, data])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -488,7 +504,7 @@ const SimpleMuiTable = () => {
                 <TableRow>
                     <TablePagination
                         sx={{ px: 2 }}
-                        rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPageOptions={[100, 150, 200]}
                         component="div"
                         count={count}
                         rowsPerPage={rowsPerPage}
@@ -512,4 +528,4 @@ const SimpleMuiTable = () => {
     )
 }
 
-export default SimpleMuiTable
+export default TrackItem

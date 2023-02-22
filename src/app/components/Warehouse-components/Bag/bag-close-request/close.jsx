@@ -74,7 +74,6 @@ export default function DialogBox() {
             setBagStatus(1)
         }
     }, [employeeData])
-    console.log(employeeData[0]?.items[0]?.bag_id)
     /******************************************************************************** */
     const getitem = async () => {
         try {

@@ -73,12 +73,10 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 state
             )
             if (res.status === 200) {
-                console.log(res.data)
                 setTrayStatus(res.data.trayStatus)
                 setErr('')
                 setAssignButDis(false)
             } else {
-                console.log(res)
                 setTrayStatus(res.data.trayStatus)
                 setErr(res.data.message)
             }

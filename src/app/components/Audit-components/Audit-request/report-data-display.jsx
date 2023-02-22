@@ -509,26 +509,35 @@ export default function DialogBox() {
                         <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
                     </Box>
                     <Box>
-                        {(reportData?.delivery?.bqc_report?.bqc_status ==
-                            'Device not to be checked for BQC' &&
-                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                                'failed') ||
+                        {
+                        // (reportData?.delivery?.bqc_report?.bqc_status ==
+                        //     'Device not to be checked for BQC' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
                         reportData?.delivery?.bqc_software_report ==
                             undefined ||
-                        (reportData?.delivery?.bqc_report?.bqc_status ==
-                            'BQC Incomplete' &&
-                            reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                                'failed') ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'Charge failed' ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'No-battery' ||
-                        reportData?.delivery?.charging?.battery_status ==
-                            'Heat Problem' ||
-                        (reportData?.delivery?.charging?.lock_status !==
-                            'Unlocked' &&
-                            reportData?.delivery?.charging?.lock_status !==
-                                'Software Issue') ? (
+                        // (reportData?.delivery?.bqc_report?.bqc_status ==
+                        //     'BQC Incomplete' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'Charge failed' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'No-battery' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'Heat Problem' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.lock_status ==
+                        //     'Software Issue' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                                reportData?.delivery?.bqc_software_report
+                                ?.final_grade == undefined ? (
                             <Button
                                 sx={{ mr: 2 }}
                                 onClick={(e) =>

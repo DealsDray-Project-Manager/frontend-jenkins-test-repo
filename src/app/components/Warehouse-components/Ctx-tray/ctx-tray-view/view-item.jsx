@@ -2,9 +2,8 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import jwt_decode from 'jwt-decode'
-import { useNavigate } from 'react-router-dom'
-import { axiosMisUser } from '../../../../../axios'
+import { useParams, useNavigate } from 'react-router-dom'
+import { axiosAuditAgent } from '../../../../../axios'
 import { Button } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,26 +19,18 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [botTray, setBotTray] = useState([])
+    const [trayItem, setTrayItem] = useState([])
+    const { trayId } = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let response = await axiosMisUser.post(
-                        '/view-sorting-item/' + location + '/' + 'warehouse'
-                    )
-                    if (response.status === 200) {
-                        setBotTray(response.data.data)
-                    } else {
-                        alert(response.data.message)
-                    }
-                } else {
-                    navigate('/')
+                let response = await axiosAuditAgent.post(
+                    '/view-items/' + trayId
+                )
+                if (response.status === 200) {
+                    setTrayItem(response.data.data.items)
                 }
             } catch (error) {
                 alert(error)
@@ -48,9 +39,8 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelViewTrayForSorting = (e, code) => {
-        e.preventDefault()
-        navigate('/wareshouse/sorting/request/approve/' + code)
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/ctx/view-item/' + id)
     }
 
     const columns = [
@@ -65,100 +55,92 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'tray',
-            label: 'BOT Tray Id',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value?.[0]?.botTray?.join(', '),
-            },
-        },
-        {
-            name: '_id',
-            label: 'Sorting Agent',
+            name: 'uic',
+            label: 'UIC',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'tray',
-            label: 'Assigned Date',
+            name: 'muic',
+            label: 'MUIC',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value?.[0]?.status_change_time).toLocaleString(
-                        'en-GB',
-                        {
-                            hour12: true,
-                        }
-                    ),
+            },
+        },
+
+        {
+            name: 'brand_name',
+            label: 'Brand',
+            options: {
+                filter: true,
             },
         },
         {
-            name: 'tray',
-            label: 'Status',
+            name: 'model_name',
+            label: 'Model',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => value?.[0]?.sort_id,
             },
         },
         {
-            name: 'tray',
-            label: 'WHT Tray',
+            name: 'audit_report',
+            label: 'Audit Status',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value?.[0]?.WhtTray?.join(', '),
+                customBodyRender: (value, dataIndex) => value?.stage,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Orginel Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.orgGrade,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Audit Recomendad Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.grade,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Reason',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.reason,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.description,
             },
         },
         {
             name: 'code',
-            label: 'WHT Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'sort_id',
             label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
-                    return value == 'Assigned to sorting agent' ? (
+                    return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) =>
-                                handelViewTrayForSorting(
-                                    e,
-                                    tableMeta.rowData[6]
-                                )
-                            }
+                            onClick={() => handelViewItem(value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Handover to Agent
-                        </Button>
-                    ) : (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) =>
-                                handelViewTrayForSorting(
-                                    e,
-                                    tableMeta.rowData[2]
-                                )
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Issue Trays
+                            View
                         </Button>
                     )
                 },
@@ -171,21 +153,21 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/' },
-                        { name: 'Requests' },
+                        { name: 'CTX Tray', path: '/' },
+                        { name: 'Tray-Item' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={botTray}
+                data={trayItem}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

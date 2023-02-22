@@ -6,6 +6,8 @@ import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import Tab from '@mui/material/Tab'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import Swal from 'sweetalert2'
+import AssignToSorting from './assign-to-user'
+import jwt_decode from 'jwt-decode'
 
 import {
     Box,
@@ -21,6 +23,7 @@ import {
     TextField,
     Button,
     MenuItem,
+    Checkbox,
 } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
@@ -38,7 +41,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 2000,
+    width: 1300,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -53,7 +56,8 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const PickupPage = () => {
+    /*-----------------------state----------------------------------*/
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [displayText, setDisplayText] = useState('')
@@ -63,18 +67,26 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0)
     const [brand, setbrand] = useState([])
     const [model, setModel] = useState([])
+    const [refresh, setRefresh] = useState(false)
+    const [state, setState] = useState({})
+    const [isCheck, setIsCheck] = useState([])
+    const [sortingUsers, SetSortingUsers] = useState([])
+    const [whtTray, setWhtTray] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     const navigate = useNavigate()
+    /*--------------------------------------------------------------*/
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
     }
-
+    /*---------------------------USEEFFECT-----------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setDisplayText('Loading...')
                     let response = await axiosMisUser.post(
                         '/pickup/items/' +
                             value +
@@ -88,6 +100,8 @@ const SimpleMuiTable = () => {
                         setItem(response.data.data)
                         setCount(response.data.count)
                     } else {
+                        setItem(response.data.data)
+                        setCount(response.data.count)
                         setDisplayText(response.data.message)
                     }
                 } else {
@@ -98,7 +112,16 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [value, page, rowsPerPage])
+    }, [value, page, rowsPerPage, refresh])
+
+    useEffect(() => {
+        setData((_) =>
+            item.map((d, index) => {
+                d.id = page * rowsPerPage + index + 1
+                return d
+            })
+        )
+    }, [page, item, rowsPerPage])
 
     useEffect(() => {
         const FetchModel = async () => {
@@ -109,6 +132,15 @@ const SimpleMuiTable = () => {
         }
         FetchModel()
     }, [])
+    /*--------------------------------------------------------------*/
+    const handleClick = (e) => {
+        const { id, checked } = e.target
+        setIsCheck([...isCheck, id])
+        if (!checked) {
+            setIsCheck(isCheck.filter((item) => item !== id))
+        }
+    }
+    /*-----------------FETCH MODEL BASED ON THE BRAND---------------*/
 
     /* Fetch model */
     const fetchModel = async (brandName) => {
@@ -128,14 +160,7 @@ const SimpleMuiTable = () => {
         }
     }
 
-    useEffect(() => {
-        setData((_) =>
-            item.map((d, index) => {
-                d.id = page * rowsPerPage + index + 1
-                return d
-            })
-        )
-    }, [page, item, rowsPerPage])
+    /*-----------------------------HANDELPAGE CHANGE------------------*/
 
     const handleChangePage = (event, newPage) => {
         setRowsPerPage(100)
@@ -143,30 +168,149 @@ const SimpleMuiTable = () => {
         setPage(newPage)
     }
 
+    /*---------------------STATE CHANGE FOR SORT----------------------*/
+    const handleChangeSort = ({ target: { name, value } }) => {
+        setState({
+            ...state,
+            [name]: value,
+        })
+    }
+
+    const handleDialogClose = () => {
+        setIsCheck([])
+        SetSortingUsers([])
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    /*---------------------HANDEL SORT-------------------------------*/
+
+    const handelSort = async () => {
+        try {
+            setIsCheck([])
+            setDisplayText('Loading...')
+            const res = await axiosMisUser.post(
+                '/pickup/sortItem/' +
+                    state?.brand +
+                    '/' +
+                    state?.model +
+                    '/' +
+                    value +
+                    '/' +
+                    page +
+                    '/' +
+                    rowsPerPage
+            )
+            if (res.status == 200) {
+                setDisplayText('')
+                setItem(res.data.data)
+                setCount(res.data.count)
+            } else {
+                setItem(res.data.data)
+                setCount(res.data.count)
+                setDisplayText(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    /*---------------------------SEARCH UIC-----------------------------*/
+
+    const handelSearchUid = async (e) => {
+        try {
+            if (e.target.value == '') {
+                setRefresh((refresh) => !refresh)
+            } else {
+                setItem([])
+                setIsCheck([])
+                setDisplayText('Searching....')
+                const res = await axiosMisUser.post(
+                    '/pickup/uicSearch/' + e.target.value + '/' + value
+                )
+                if (res.status == 200) {
+                    setDisplayText('')
+                    setPage(0)
+                    setRowsPerPage(100)
+                    setItem(res.data.data)
+                } else {
+                
+                    setItem([])
+                    setDisplayText(res.data.message)
+                    setCount(0)
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handelSortingAgent = async () => {
+        try {
+            let token = localStorage.getItem('prexo-authentication')
+            if (token) {
+                const { location } = jwt_decode(token)
+
+                let sortingUsers = await axiosMisUser.post(
+                    '/getSortingAgentMergeMmt/' + location
+                )
+
+                if (sortingUsers.status == 200) {
+                    SetSortingUsers(sortingUsers.data.data)
+                }
+                let obj = {
+                    isCheck: isCheck,
+                    type:value
+                }
+                let whtTray = await axiosMisUser.post('/pickup/whtTray', obj)
+                if (whtTray.status == 200) {
+                    setWhtTray(whtTray.data.data)
+                    handleDialogOpen()
+                } else {
+                    alert(whtTray.data.message)
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    /*---------------------------USEMEMO-----------------------------*/
+
     const tableForAllTab = useMemo(() => {
         return (
             <ProductTable>
                 <TableHead>
                     <TableRow>
+                        <TableCell>Select</TableCell>
+
                         <TableCell>Record.NO</TableCell>
 
+                        <TableCell>UIC</TableCell>
                         <TableCell>Order ID</TableCell>
 
-                        <TableCell>UIC</TableCell>
                         <TableCell>IMEI</TableCell>
                         <TableCell>Item ID</TableCell>
 
-                        <TableCell>Bag ID</TableCell>
+                        <TableCell>Brand</TableCell>
 
-                        <TableCell>BOT Agent Name</TableCell>
+                        <TableCell>Model</TableCell>
 
-                        <TableCell>Sorting Agent Name</TableCell>
+                        <TableCell>MUIC</TableCell>
 
-                        <TableCell>WHT Tray</TableCell>
-
-                        <TableCell>BQC Agent Name</TableCell>
-
-                        <TableCell>Audit Agnet Name</TableCell>
+                        <TableCell>WHT Tray Id</TableCell>
+                        {value == 'Charge Done' ? (
+                            <TableCell>
+                                Charge Done Warehouse Close Date
+                            </TableCell>
+                        ) : value == 'BQC Done' ? (
+                            <TableCell>Bqc Done Warehouse Close Date</TableCell>
+                        ) : value == 'Audit Done' ? (
+                            <TableCell>
+                                Audit Done Warehouse Close Date
+                            </TableCell>
+                        ) : null}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -183,34 +327,73 @@ const SimpleMuiTable = () => {
                     ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
+                            <Checkbox
+                                onClick={(e) => {
+                                    handleClick(e)
+                                }}
+                                id={data.uic_code?.code}
+                                key={data.uic_code?.code}
+                                checked={isCheck.includes(data.uic_code?.code)}
+                            />
                             <TableCell>{data.id}</TableCell>
 
+                            <TableCell>{data.uic_code?.code}</TableCell>
                             <TableCell>{data.order_id}</TableCell>
 
-                            <TableCell>{data.uic_code?.code}</TableCell>
                             <TableCell>{data.imei}</TableCell>
 
                             <TableCell>{data.item_id}</TableCell>
 
-                            <TableCell>{data.agent_name}</TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.brand_name}
+                            </TableCell>
 
-                            <TableCell>{data.tray_id}</TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name}
+                            </TableCell>
 
-                            <TableCell>{data.sorting_agent_name}</TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
+                            <TableCell>{data?.wht_tray}</TableCell>
 
-                            <TableCell>{data.wht_tray}</TableCell>
-
-                            <TableCell>{data.agent_name_charging}</TableCell>
-
-                            <TableCell>{data.agent_name_bqc}</TableCell>
-
-                            <TableCell>{data?.audit_user_name}</TableCell>
+                            {value == 'Charge Done' ? (
+                                <TableCell>
+                                    {data?.charging_done_close != undefined
+                                        ? new Date(
+                                              data?.charging_done_close
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })
+                                        : ''}
+                                </TableCell>
+                            ) : value == 'BQC Done' ? (
+                                <TableCell>
+                                    {' '}
+                                    {data?.bqc_done_close != undefined
+                                        ? new Date(
+                                              data?.bqc_done_close
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })
+                                        : ''}
+                                </TableCell>
+                            ) : value == 'Audit Done' ? (
+                                <TableCell>
+                                    {data?.audit_done_close != undefined
+                                        ? new Date(
+                                              data?.audit_done_close
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })
+                                        : ''}
+                                </TableCell>
+                            ) : null}
                         </TableRow>
                     ))}
                 </TableBody>
             </ProductTable>
         )
-    }, [data, displayText])
+    }, [data, displayText, isCheck])
+    /*--------------------------------------------------------------*/
 
     return (
         <Container>
@@ -249,13 +432,19 @@ const SimpleMuiTable = () => {
                                 label="Search UIC"
                                 variant="outlined"
                                 sx={{ ml: 3 }}
+                                onChange={(e) => {
+                                    handelSearchUid(e)
+                                }}
                             />
                             <TextField
                                 select
-                                
                                 label="Select Brand"
                                 variant="outlined"
-                                sx={{ ml: 2,width:150 }}
+                                sx={{ ml: 2, width: 150 }}
+                                name="brand"
+                                onChange={(e) => {
+                                    handleChangeSort(e)
+                                }}
                             >
                                 {brand.map((brandData) => (
                                     <MenuItem
@@ -272,10 +461,34 @@ const SimpleMuiTable = () => {
                                 select
                                 label="Select Model"
                                 variant="outlined"
-                                sx={{ ml: 2 ,width:150}}
+                                name="model"
+                                onChange={(e) => {
+                                    handleChangeSort(e)
+                                }}
+                                sx={{ ml: 2, width: 150 }}
                             >
-                                <MenuItem></MenuItem>
+                                {model.map((modelData) => (
+                                    <MenuItem value={modelData.model_name}>
+                                        {modelData.model_name}
+                                    </MenuItem>
+                                ))}
                             </TextField>
+                            <Button
+                                sx={{
+                                    ml: 2,
+                                    mt: 1,
+                                }}
+                                variant="contained"
+                                disabled={
+                                    state.brand == undefined ||
+                                    state.model == undefined
+                                }
+                                onClick={() => handelSort()}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                Sort
+                            </Button>
                         </Box>
                         <Box>
                             <Button
@@ -283,7 +496,8 @@ const SimpleMuiTable = () => {
                                     mr: 3,
                                 }}
                                 variant="contained"
-                                // onClick={() => handelViewItem(value)}
+                                disabled={isCheck.length == 0}
+                                onClick={() => handelSortingAgent(value)}
                                 style={{ backgroundColor: 'primery' }}
                                 component="span"
                             >
@@ -344,8 +558,18 @@ const SimpleMuiTable = () => {
                     </TableRow>
                 </TableFooter>
             </Box>
+            {shouldOpenEditorDialog && (
+                <AssignToSorting
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setRefresh={setRefresh}
+                    sortingUsers={sortingUsers}
+                    whtTray={whtTray}
+                    isCheck={isCheck}
+                />
+            )}
         </Container>
     )
 }
 
-export default SimpleMuiTable
+export default PickupPage

@@ -130,7 +130,6 @@ const TrackItem = () => {
         }
     }
 
-    console.log(rowsPerPage);
 
     const tableData = useMemo(() => {
         return (

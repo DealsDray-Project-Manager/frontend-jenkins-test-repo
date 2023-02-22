@@ -95,7 +95,6 @@ const SimpleMuiTable = () => {
         setPage(newPage)
     }
 
-    console.log(item);
 
     const searchItem = async (inputData) => {
         try {

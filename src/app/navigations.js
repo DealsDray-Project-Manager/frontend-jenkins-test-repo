@@ -465,6 +465,16 @@ export const navigations = [
                 path: '/wareshouse/merge/return-from-merge',
                 iconText: 'VP',
             },
+            {
+                name: 'Pickup Request',
+                path: '/wareshouse/wht/pickup/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Pickup',
+                path: '/wareshouse/merge/return-from-merge',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
     },

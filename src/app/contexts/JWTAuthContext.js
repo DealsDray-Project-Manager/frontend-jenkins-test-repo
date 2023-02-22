@@ -84,7 +84,6 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const login = async (email, password) => {
-        console.log('testjskjslj')
         const response = await axios.post('/api/auth/login', {
             email,
             password,

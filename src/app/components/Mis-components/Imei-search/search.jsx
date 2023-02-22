@@ -36,7 +36,6 @@ function Search() {
                 await axiosMisUser
                     .post('/imeiDeliverySearch', value)
                     .then((response) => {
-                        console.log('response')
                         if (response?.data?.error) {
                             alert('invalid IMEI')
                             setinvalidimei({ error: 'true' })

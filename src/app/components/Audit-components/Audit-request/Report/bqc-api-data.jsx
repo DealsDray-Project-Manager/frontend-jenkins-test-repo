@@ -286,7 +286,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.homekey?.toLowerCase() !=
+                            {BqcSowftwareReport?.homekey?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -297,7 +297,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.simtray?.toLowerCase() !=
+                            {BqcSowftwareReport?.simtray?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
@@ -308,7 +308,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
-                            {BqcSowftwareReport?.chargingjack?.toLowerCase() !==
+                            {BqcSowftwareReport?.chargingjack?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.chargingjack}
@@ -1131,7 +1131,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Benton device Body
+                                        PQ Bent on device Body
                                     </TableCell>
                                     <TableCell>
                                         {

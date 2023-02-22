@@ -95,7 +95,13 @@ const Login = () => {
                     state
                 )
                 if (response.status == 200) {
-                    alert(response.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: response?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     if (user_type == 'MIS') {
                         navigate('/mis/dashboard')
                     } else if (user_type == 'Warehouse') {

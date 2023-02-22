@@ -20,6 +20,7 @@ import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -65,7 +66,12 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [refresh])
 
@@ -136,7 +142,12 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     return (

@@ -182,14 +182,7 @@ const MemberEditorDialog = ({
         }
     }
 
-    const dataa=async ()=>{
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text:'error',
-        })
-
-    }
+   
 
     const handelEdit = async (data) => {
         try {
@@ -364,8 +357,8 @@ const MemberEditorDialog = ({
                         variant="outlined"
                         color="secondary"
                         onClick={() =>
-                            //  handleClose()
-                             dataa()
+                             handleClose()
+                            //  dataa()
                         }
                     >
                         Cancel

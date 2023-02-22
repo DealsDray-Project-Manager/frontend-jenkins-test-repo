@@ -93,7 +93,13 @@ export default function DialogBox() {
                     if (response.status === 200) {
                         setTray(response.data.data)
                     } else {
-                        alert(response.data.message)
+                
+                         Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please check',
+                    confirmButtonText: 'Ok',
+                })
                     }
                 } else {
                     navigate('/')
@@ -131,7 +137,13 @@ export default function DialogBox() {
                     setOpen(true)
                 } else {
                     setAwbn('')
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
                 setAwbn('')
@@ -164,7 +176,13 @@ export default function DialogBox() {
                 } else {
                     setAwbn('')
                     setTextDisable(false)
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
@@ -180,7 +198,13 @@ export default function DialogBox() {
         e.preventDefault()
         try {
             if (description == '') {
-                alert('Please Add Description')
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: "Please Add Description",
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 setLoading2(true)
                 let obj = {
@@ -192,11 +216,23 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status === 200) {
-                    alert(res.data.message)
+             
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading2(false)
                     navigate('/sorting/request')
                 } else {
-                    alert(res.data.message)
+            
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {

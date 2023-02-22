@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { axiosWarehouseIn } from "../../../../../axios";
+import Swal from "sweetalert2";
 
 export default function DialogBox() {
   const navigate = useNavigate();
@@ -33,11 +34,22 @@ export default function DialogBox() {
         if (response.status === 200) {
           setTrayData(response.data.data);
         } else {
-          alert(response.data.message);
+ 
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: response?.data?.message,
+            confirmButtonText: 'Ok',
+        })
           navigate(-1);
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     };
     fetchData();
@@ -57,17 +69,34 @@ export default function DialogBox() {
         } else {
           setTextDisable(false);
           setUic("");
-          alert(res.data.message);
+         
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: res?.data?.message,
+            confirmButtonText: 'Ok',
+        })
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     }
   };
   /************************************************************************** */
   const addActualitem = async (obj) => {
     if (trayData.limit <= trayData?.actual_items?.length) {
-      alert("All Items Scanned");
+    
+      Swal.fire({
+        position: 'top-center',
+        icon: 'success',
+        title:"All Items Scanned",
+        confirmButtonText: 'Ok',
+    })
     } else {
       setTextDisable(true);
       try {
@@ -82,10 +111,21 @@ export default function DialogBox() {
           setRefresh((refresh) => !refresh);
         } else {
           setTextDisable(false);
-          alert(res.data.message);
+         
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: res?.data?.message,
+            confirmButtonText: 'Ok',
+        })
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     }
   };

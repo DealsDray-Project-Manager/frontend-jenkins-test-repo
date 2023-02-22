@@ -205,7 +205,13 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                                alert(res.data.message)
+                               
+                                Swal.fire({
+                                    position: 'top-center',
+                                    icon: 'error',
+                                    title: res?.data?.message,
+                                    confirmButtonText: 'Ok',
+                                })
                             }
                         } catch (error) {
                             Swal.fire({

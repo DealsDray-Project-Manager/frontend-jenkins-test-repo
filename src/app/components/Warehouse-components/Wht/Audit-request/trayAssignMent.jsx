@@ -11,6 +11,7 @@ import { H4 } from 'app/components/Typography'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -60,7 +61,13 @@ const MemberEditorDialog = ({
                         "/" + brand +  "/" + model
                 )
                 if (res.status == 200) {
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setOtherTrayAssign((otherTrayAssign) => ({
                         ...otherTrayAssign,
                         [trayType]: res.data.trayId,
@@ -71,7 +78,12 @@ const MemberEditorDialog = ({
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

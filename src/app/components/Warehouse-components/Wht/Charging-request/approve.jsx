@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from "../../../../../axios";
@@ -38,11 +39,22 @@ export default function DialogBox() {
         if (response.status === 200) {
           setTrayData(response.data.data);
         } else {
-          alert(response.data.message);
+        
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: response?.data?.message,
+            confirmButtonText: 'Ok',
+        })
           navigate(-1);
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     };
     fetchData();
@@ -64,17 +76,34 @@ export default function DialogBox() {
         } else {
           setTextDisable(false);
           setUic("");
-          alert(res.data.message);
+         
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: res?.data?.message,
+            confirmButtonText: 'Ok',
+        })
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     }
   };
   /************************************************************************** */
   const addActualitem = async (obj) => {
     if (trayData.items.length < trayData?.actual_items?.length) {
-      alert("All Items Scanned");
+     
+      Swal.fire({
+        position: 'top-center',
+        icon: 'success',
+        title: 'All Items Scanned',
+        confirmButtonText: 'Ok',
+    })
     } else {
       try {
         let objData = {
@@ -89,7 +118,12 @@ export default function DialogBox() {
           setRefresh((refresh) => !refresh);
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          confirmButtonText: 'Ok',
+          text: error,
+      })
       }
     }
   };
@@ -105,7 +139,13 @@ export default function DialogBox() {
         };
         let res = await axiosWarehouseIn.post("/issue-to-agent-wht", obj);
         if (res.status == 200) {
-          alert(res.data.message);
+         
+          Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: res?.data?.message,
+            confirmButtonText: 'Ok',
+        })
           if (trayData?.sort_id == "Send for BQC") {
             setLoading(false);
             navigate("/bqc-request");
@@ -114,14 +154,31 @@ export default function DialogBox() {
             navigate("/wareshouse/wht/charging-request");
           }
         } else {
-          alert(res.data.message);
+         
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: res?.data?.message,
+            confirmButtonText: 'Ok',
+        })
         }
       } else {
         setLoading(false);
-        alert("Please Verify Actual Data");
+       
+        Swal.fire({
+          position: 'top-center',
+          icon: 'error',
+          title: "Please Verify Actual Data",
+          confirmButtonText: 'Ok',
+      })
       }
     } catch (error) {
-      alert(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        confirmButtonText: 'Ok',
+        text: error,
+    })
     }
   };
 

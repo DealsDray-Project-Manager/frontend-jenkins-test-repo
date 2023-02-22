@@ -157,11 +157,12 @@ const MemberEditorDialog = ({
             } else {
                 setEditFetchData({})
                 handleClose()
-                alert(response.data.message)
+               
                 Swal.fire({
+                    position: 'top-center',
                     icon: 'error',
-                    title: 'Oops...',
-                    text:response?.data?.message,
+                    title:'Please check',
+                    confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {

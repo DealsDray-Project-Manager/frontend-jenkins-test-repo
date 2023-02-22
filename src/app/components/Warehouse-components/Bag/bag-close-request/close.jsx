@@ -18,6 +18,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -41,11 +42,22 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setEmployeeData(response.data.data)
                 } else {
-                    alert(response.data.message)
+         
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:response?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -59,10 +71,21 @@ export default function DialogBox() {
                 if (res.status === 200) {
                     setBagStatus(res.data.status)
                 } else {
-                    alert(res.data.message)
+             
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         if (
@@ -87,10 +110,21 @@ export default function DialogBox() {
                 //   dataTableFun()
             } else if (response.status == 201) {
                 setEmployeeData(response.data.data)
-                alert(response.data.message)
+   
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:response?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /******************************************************************************** */
@@ -107,11 +141,22 @@ export default function DialogBox() {
                     addActualitem(res.data.data)
                 } else if (res.status == 202) {
                     setTextDisable(false)
-                    alert(res.data.message)
+               
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
                 setTextDisable(false)
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -126,7 +171,13 @@ export default function DialogBox() {
                 }).length >=
             employeeData[0].limit
         ) {
-            alert('Bag Is Full')
+          
+            Swal.fire({
+                position: 'top-center',
+                icon: 'error',
+                title: "Bag Is Full",
+                confirmButtonText: 'Ok',
+            })
         } else {
             let data = employeeData[0]?.items?.filter(function (item) {
                 return item.awbn_number == uic.awbn_number
@@ -148,10 +199,21 @@ export default function DialogBox() {
                     setTextDisable(false)
                     getitem()
                 } else {
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -164,20 +226,38 @@ export default function DialogBox() {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 if (description == '') {
-                    alert('Please Add Description')
+               
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title:"Please Add Description",
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                 } else if (
                     employeeData[0]?.type_taxanomy == 'BOT' &&
                     bagReuse == false
                 ) {
-                    alert('Please confirm bag release')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title:"Please Confirm Bag Release",
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                 } else if (
                     employeeData[0]?.actual_items?.filter(function (item) {
                         return item.status == 'Duplicate'
                     })?.length != 0
                 ) {
-                    alert('Please Remove Duplicate Items')
+                
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:"Please Remove Duplicate Items",
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                 } else if (
                     employeeData[0]?.actual_items?.length ==
@@ -192,11 +272,23 @@ export default function DialogBox() {
                     if (employeeData?.[0]?.type_taxanomy != 'BOT') {
                         let res = await axiosWarehouseIn.post('/trayclose', obj)
                         if (res.status == 200) {
-                            alert(res.data.message)
+                        
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'success',
+                                title:res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                             setLoading(false)
                             navigate('/wareshouse/pmt-mmt/tray-close-request')
                         } else {
-                            alert(res.data.message)
+                          
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title:res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     } else {
                         let res = await axiosWarehouseIn.post(
@@ -204,19 +296,42 @@ export default function DialogBox() {
                             obj
                         )
                         if (res.status == 200) {
-                            alert(res.data.message)
+                         
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'success',
+                                title:res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                             setLoading(false)
                             navigate('/wareshouse/bag/bag-close-requests')
                         } else {
-                            alert(res.data.message)
+                           
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title:res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     }
                 } else {
-                    alert('Please Verify Actual Data')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:'Please verify Actual Data',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /******************************************************************************** */
@@ -228,13 +343,30 @@ export default function DialogBox() {
             }
             let data = await axiosWarehouseIn.post('/actualBagItem', obj)
             if (data.status == 200) {
-                alert(data.data.message)
+             
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:data?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 getitem()
             } else {
-                alert(data.data.message)
+             
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:data?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /***************************************************************************************** */

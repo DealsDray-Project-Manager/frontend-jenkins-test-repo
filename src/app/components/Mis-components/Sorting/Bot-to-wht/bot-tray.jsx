@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import moment from 'moment'
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -45,7 +46,12 @@ const SimpleMuiTable = () => {
                         setItem(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()
@@ -72,7 +78,12 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handleClick = (e) => {

@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -34,11 +35,22 @@ const SimpleMuiTable = () => {
                 if (botTray.status == 200) {
                     setBot(botTray.data.data)
                 } else {
-                    alert(botTray.data.message)
+                
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:botTray?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()

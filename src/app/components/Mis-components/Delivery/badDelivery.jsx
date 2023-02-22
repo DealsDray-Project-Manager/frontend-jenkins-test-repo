@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -65,7 +66,12 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [refresh])
 
@@ -124,7 +130,13 @@ const SimpleMuiTable = () => {
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
                 } else if (search.type == '') {
-                    alert('Please add input')
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: "Please Add Input",
+                        confirmButtonText: 'Ok',
+                    })
+                   
                 } else {
                     let obj = {
                         location: location,
@@ -140,7 +152,12 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

@@ -170,7 +170,13 @@ export default function DialogBox() {
                 trayData.limit <=
                 trayData?.temp_array?.length + trayData?.actual_items?.length
             ) {
-                alert('All Items Scanned')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:'All Items Scaanned',
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 handleClose()
                 try {
@@ -197,12 +203,14 @@ export default function DialogBox() {
                         })
                     }
                 } catch (error) {
+                   
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
+                        confirmButtonText: 'Ok',
                         text: error,
                     })
-                    // alert(error);
+                    
                 }
             }
         }

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
@@ -29,7 +29,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosSuperAdminPrexo.post('/auditDoneWht')
+                const res = await axiosMisUser.post('/auditDoneWht')
                 if (res.status === 200) {
                     setWhtTrayList(res.data.data)
                 }
@@ -57,7 +57,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 ischeck: isCheck,
             }
-            let res = await axiosSuperAdminPrexo.post('/sendToRdl', obj)
+            let res = await axiosMisUser.post('/sendToRdl', obj)
             setIsCheck([])
             if (res.status === 200) {
                 Swal.fire({
@@ -89,7 +89,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/sup-admin/wht/view-item/' + trayId)
+        navigate('/mis/assign-to-agent/Rdl/view-item/' + trayId)
     }
 
     const columns = [
@@ -236,7 +236,9 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For RDL', path: '/' }]}
+                    routeSegments={[{ name: 'Assign-to-RDL', path: '/' },
+                    { name: 'RDL'}]}
+                    
                 />
             </div>
             <Button

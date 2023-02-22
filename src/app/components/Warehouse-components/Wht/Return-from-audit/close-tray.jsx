@@ -15,6 +15,7 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -40,11 +41,22 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                    alert(response.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: response?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -53,7 +65,13 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
-            alert('All Items are Verified')
+           
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title:"All Items Are Verified",
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let objData = {
@@ -71,10 +89,21 @@ export default function DialogBox() {
                     setUic('')
                 } else {
                     setTextDisable(false)
-                    alert(res.data.message)
+               
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -84,7 +113,13 @@ export default function DialogBox() {
         try {
             setLoading(true)
             if (description == '') {
-                alert('Please Add Description')
+                
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"please Add Description",
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else {
                 let obj = {
@@ -96,17 +131,34 @@ export default function DialogBox() {
                 }
                 let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+            
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     navigate('/wareshouse/wht/return-from-audit')
                 } else {
                     setLoading(false)
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelUic = async (e) => {
@@ -126,10 +178,21 @@ export default function DialogBox() {
                 } else {
                     setUic('')
                     setTextDisable(false)
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }

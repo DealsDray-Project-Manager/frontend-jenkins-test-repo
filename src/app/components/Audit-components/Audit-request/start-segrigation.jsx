@@ -148,7 +148,13 @@ export default function DialogBox() {
             SetCloseButDis(true)
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-                alert(res.data.message)
+              
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 SetCloseButDis(false)
                 if (from == 'wht') {
                     navigate('/audit/audit-request')

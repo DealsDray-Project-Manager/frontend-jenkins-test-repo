@@ -266,11 +266,11 @@ export default function DialogBox() {
 
                 let res = await axiosBqc.post('/bqc-done', obj)
                 if (res.status == 200) {
-                    // alert(res.data.message);
+                
                     setLoading(false)
                     Swal.fire({
                         icon: 'success',
-                        title: res.data.message,
+                        title: res?.data?.message,
                         showConfirmButton: true,
                     }).then((result) => {
                         if (result.isConfirmed) {

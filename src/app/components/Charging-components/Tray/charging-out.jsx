@@ -251,7 +251,13 @@ export default function DialogBox() {
         values.charging_person = user_name1
 
         if (trayData.limit <= trayData?.actual_items?.length) {
-            alert('All Items Scanned')
+        
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: "All Items Scanned",
+                confirmButtonText: 'Ok',
+            })
         } else {
             setlLoading(true)
             if (
@@ -304,7 +310,13 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         try {
             if (description == '') {
-                alert('Please Add Description')
+              
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:"Please Add Description",
+                    confirmButtonText: 'Ok',
+                })
             } else if (
                 trayData?.actual_items?.length == trayData?.items?.length
             ) {

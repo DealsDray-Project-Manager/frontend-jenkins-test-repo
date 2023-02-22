@@ -14,6 +14,7 @@ import { SimpleCard, Breadcrumb } from 'app/components'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -70,19 +71,36 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/checkBagId', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+              
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     getitem()
                     setbagSuccess(true)
                 } else {
                     setbagSuccess(false)
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } else {
                 navigate('/')
             }
         } catch (error) {
             setbagSuccess(false)
-            alert(error.response.data.message)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const getitem = async () => {
@@ -93,16 +111,33 @@ const PaginationTable = () => {
                 //   dataTableFun()
             } else if (response.status == 201) {
                 setBagData(response.data.data)
-                alert(response.data.message)
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: response?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelAwbn = async (e) => {
         if (e.target.value.length >= 12) {
             if (bagId == '') {
-                alert('Please Fill The Input')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: ' Please Fill The Input',
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 try {
                     SetDisAwbText(true)
@@ -132,25 +167,49 @@ const PaginationTable = () => {
                             }
                         } else {
                             SetDisAwbText(false)
-                            alert(res.data.message)
+                           
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title: res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     }
                 } catch (error) {
-                    alert(error.response.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
     }
     const handelSubmitStock = async (awbn, status) => {
         if (bagId == '') {
-            alert('Please Fill the Input')
+           
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: 'Please Fill The Input',
+                confirmButtonText: 'Ok',
+            })
         } else if (bagData[0]?.items != undefined) {
             if (
                 bagData[0]?.items?.filter(function (item) {
                     return item.status != 'Duplicate'
                 }).length == bagData[0]?.limit
             ) {
-                alert('Bag Is Full')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Bag Is Full',
+                    confirmButtonText: 'Ok',
+                })
+
             } else {
                 try {
                     let obj = {
@@ -171,10 +230,21 @@ const PaginationTable = () => {
                         getitem()
                     } else {
                         SetDisAwbText(false)
-                        alert(res.data.message)
+                     
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.messsage,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
@@ -201,14 +271,26 @@ const PaginationTable = () => {
                     return item.status == 'Duplicate'
                 }).length != 0
             ) {
-                alert('Please Remove Duplicate Items')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please Remove uplicate Items',
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else if (
                 bagData[0]?.items.filter(function (item) {
                     return item.status == 'Invalid'
                 }).length != 0
             ) {
-                alert('Invalid item found request to admin remove')
+                
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: 'Invalid item found request to admin remove',
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else if (bagData[0]?.items.length == bagData[0]?.limit) {
                 let obj = {
@@ -219,11 +301,23 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+                    
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     window.location.reload(false)
                 } else {
-                    alert(res.data.message)
+                
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } else {
                 let obj = {
@@ -234,13 +328,24 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
-                    alert('Bag going to Pre-closure')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title:"Bag going to Pre-closure",
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     window.location.reload(false)
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelDelete = async (id, awbn, state) => {
@@ -253,11 +358,22 @@ const PaginationTable = () => {
             }
             let data = await axiosWarehouseIn.post('/stockin', obj)
             if (data.status == 200) {
-                alert(data.data.message)
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:data?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 getitem()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     return (

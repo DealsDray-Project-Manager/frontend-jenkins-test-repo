@@ -37,7 +37,13 @@ const MemberEditorDialog = ({
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'Success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            
                 setBqcUserName('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()

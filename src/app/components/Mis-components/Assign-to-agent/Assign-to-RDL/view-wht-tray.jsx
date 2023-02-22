@@ -2,9 +2,9 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import Swal from 'sweetalert2'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
-import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -18,49 +18,50 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
+    const [isAlive, setIsAlive] = useState(true)
+    const [isCheck, setIsCheck] = useState([])
+    const [whtTrayItem, setWhtTrayItem] = useState([])
     const { trayId } = useParams()
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchWht = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
+                const res = await axiosWarehouseIn.post(
                     '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
                 )
-                if (response.status === 200) {
-                    if (response.data.data?.items?.length == 0) {
-                        setWhtTray(response.data.data.actual_items)
-                    } else {
-                        setWhtTray(response.data.data.items)
-                    }
+                if (res.status === 200) {
+                    setWhtTrayItem(res.data?.data?.items)
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
         }
-        fetchData()
-    }, [])
+        fetchWht()
+        return () => setIsAlive(false)
+    }, [isAlive])
+
+   
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
-            name: 'uic',
-            label: 'UIC',
+            name: 'uic', // field name in the row object
+            label: 'UIC', // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -72,7 +73,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
         {
             name: 'brand_name',
             label: 'Brand',
@@ -96,16 +96,17 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray_id',
-            label: 'BOT Tray',
+            label: 'Bot Tray',
             options: {
                 filter: true,
             },
         },
         {
             name: 'bot_agent',
-            label: 'BOT Agent',
+            label: 'Bot Agent',
             options: {
                 filter: true,
+                display: false,
             },
         },
     ]
@@ -115,15 +116,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'WHT-Tray-Item' },
+                        { name: 'Assign To RDL', path: '/' },
+                        { name: 'View-Item' },
                     ]}
                 />
             </div>
-
             <MUIDataTable
-                title={'Tray'}
-                data={whtTray}
+                title={'WHT Tray Item'}
+                data={whtTrayItem}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -137,22 +137,6 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

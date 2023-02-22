@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import AssignTrayDialogBox from './assign-tray'
+import Swal from 'sweetalert2'
 
 import {
     Button,
@@ -93,7 +94,12 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -106,7 +112,13 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         if (counts === '') {
-            alert('Please confirm counts')
+          
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: "Please Confirm Counts",
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let obj = {
@@ -118,14 +130,31 @@ const SimpleMuiTable = () => {
                     obj
                 )
                 if (res.status == 200) {
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setOpen(false)
                     setIsAlive((isAlive) => !isAlive)
                 } else {
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -162,7 +191,12 @@ const SimpleMuiTable = () => {
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()

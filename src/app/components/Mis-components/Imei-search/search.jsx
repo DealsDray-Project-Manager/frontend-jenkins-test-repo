@@ -18,6 +18,7 @@ import {
   TextField,
   Box,
 } from '@mui/material'
+import Swal from 'sweetalert2';
 
 
 function Search() {
@@ -39,7 +40,13 @@ function Search() {
         await axiosMisUser.post('/imeiDeliverySearch', value).then((response) => {
           console.log('response');
           if (response?.data?.error) {
-            alert('invalid IMEI')
+         
+            Swal.fire({
+              position: 'top-center',
+              icon: 'error',
+              title: "Invalid IMEI",
+              confirmButtonText: 'Ok',
+          })
             setinvalidimei({ error: 'true' })
           }
           setdeliveryData(response?.data?.resultdata)
@@ -47,14 +54,25 @@ function Search() {
         await axiosMisUser.post('/imeiOrderSearch', value).then((response) => {
           if (response?.data?.error) {
             setinvalidimei({ error: 'true' })
-            alert('invalid IMEI')
+           
+            Swal.fire({
+              position: 'top-center',
+              icon: 'error',
+              title:"Invalid IMEI",
+              confirmButtonText: 'Ok',
+          })
           }
           setorderData(response?.data?.resultdata)
         })
       }
       fetchData()
     } catch (error) {
-      alert(error)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        confirmButtonText: 'Ok',
+        text: error,
+    })
     }
   }
 

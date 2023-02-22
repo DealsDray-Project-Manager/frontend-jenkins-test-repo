@@ -33,6 +33,12 @@ const AssignToAudit = Loadable(
 const AssignToCharging = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
 )
+const AssignToRdl = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-RDL/wht-tray'))
+)
+const AssignToRdltrayView = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-RDL/view-wht-tray'))
+)
 const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
 const UicDownloaded = Loadable(
     lazy(() => import('./Uic-manage/uic-downloaded'))
@@ -124,6 +130,14 @@ const dataTableRoutes = [
     {
         path: '/mis/assign-to-agent/audit',
         element: <AssignToAudit />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl',
+        element: <AssignToRdl />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl/view-item/:trayId',
+        element: <AssignToRdltrayView />,
     },
     {
         path: '/mis/sorting/bot-to-wht',

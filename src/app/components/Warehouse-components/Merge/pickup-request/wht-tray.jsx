@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'status_change_time',
+            name: 'requested_date',
             label: 'Assigned Date',
             options: {
                 filter: true,
@@ -134,7 +134,7 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
-                            disabled
+                            
                             variant="contained"
                             onClick={(e) => handelApprove(e, value)}
                             style={{ backgroundColor: 'green' }}

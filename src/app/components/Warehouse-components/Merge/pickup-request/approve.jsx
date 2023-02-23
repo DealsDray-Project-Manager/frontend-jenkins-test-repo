@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     Table,
@@ -44,63 +44,73 @@ export default function StickyHeadTable({ props }) {
         }
         fetchData()
     }, [])
-    useEffect(() => {
-        const userStatusApiCall = async () => {
-            try {
-                let res = await axiosWarehouseIn.post(
-                    '/sortingAgnetStatus/' + tray[0]?.issued_user_name
-                )
-                if (res.status === 200) {
-                    setUserAgent(res.data.data)
-                }
-            } catch (error) {
-                alert(error)
-            }
-        }
-        if (tray[0]?.issued_user_name !== undefined) {
-            userStatusApiCall()
-        }
-    }, [tray])
+    // useEffect(() => {
+    //     const userStatusApiCall = async () => {
+    //         try {
+    //             let res = await axiosWarehouseIn.post(
+    //                 '/sortingAgnetStatus/' + tray[0]?.issued_user_name
+    //             )
+    //             if (res.status === 200) {
+    //                 setUserAgent(res.data.data)
+    //             }
+    //         } catch (error) {
+    //             alert(error)
+    //         }
+    //     }
+    //     if (tray[0]?.issued_user_name !== undefined) {
+    //         userStatusApiCall()
+    //     }
+    // }, [tray])
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/request/approve/item-verifiying/' + code)
+        navigate(
+            '/wareshouse/wht/pickup/request/approve/item-verifying/' + code
+        )
     }
-
     /******************************************************************************* */
     const handelIssue = async (e, type) => {
         try {
-            if (userAgent !== 'User is free') {
-                alert(userAgent)
-            } else {
-                setLoading(true)
-                let flag = false
-                for (let x of tray) {
-                    if (x.items.length !== x.actual_items.length) {
-                        flag = true
-                        break
-                    }
-                }
-                if (flag == false) {
-                    let obj = {
-                        fromTray: tray[0].code,
-                        toTray: tray[1].code,
-                        username: tray[0]?.issued_user_name,
-                    }
-                    let res = await axiosWarehouseIn.post(
-                        '/mmtTraySendToSorting',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        alert(res.data.message)
-                        setLoading(false)
-                        navigate('/wareshouse/merge/request')
-                    } else {
-                        alert(res.data.message)
-                    }
+            let userStatus = await axiosWarehouseIn.post(
+                '/sortingAgnetStatus/' + tray[0]?.issued_user_name
+            )
+            if (userStatus.status === 200) {
+                if (userStatus.data.data !== 'User is free') {
+                   alert(userStatus.data.data)
+
                 } else {
-                    setLoading(false)
-                    alert('Please Issue all Tray')
+                    setLoading(true)
+                    let flag = false
+                    for (let x of tray) {
+                        if (x.items.length !== x.actual_items.length) {
+                            flag = true
+                            break
+                        }
+                    }
+                    if (flag == false) {
+                        let obj = {
+                            fromTray: tray[0].code,
+                            toTray: tray[1].code,
+                            username: tray[0]?.issued_user_name,
+                        }
+                        
+                        let res = await axiosWarehouseIn.post(
+                            '/pickup/issueToAgent',
+                            obj
+                        )
+                        console.log(res);
+                        if (res.status == 200) {
+
+                            alert(res.data.message)
+                            setLoading(false)
+                            navigate('/wareshouse/wht/pickup/request')
+                        } else {
+                            alert(res.data.message)
+                        }
+                    } else {
+                        setLoading(false)
+                        alert('Please Issue all Tray')
+                    }
                 }
             }
         } catch (error) {
@@ -122,13 +132,14 @@ export default function StickyHeadTable({ props }) {
                 >
                     <h4>
                         Assigned Date -{' '}
-                        {new Date(
-                            tray[0]?.status_change_time
-                        ).toLocaleString('en-GB', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        })}
+                        {new Date(tray[0]?.requested_date).toLocaleString(
+                            'en-GB',
+                            {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                            }
+                        )}
                     </h4>
                     <h4>Agent Name- {tray[0]?.issued_user_name}</h4>
                 </Box>
@@ -166,13 +177,8 @@ export default function StickyHeadTable({ props }) {
                                                 {data.items.length}/{data.limit}
                                             </TableCell>
                                             <TableCell>
-                                                {data.sort_id ==
-                                                    'Sorting Request Sent To Warehouse' &&
-                                                data.type_taxanomy == 'BOT'
-                                                    ? 'Not Issued'
-                                                    : data.type_taxanomy ==
-                                                          'WHT' &&
-                                                      data.items.length !== 0
+                                                {data.type_taxanomy == 'WHT' &&
+                                                data.items.length !== 0
                                                     ? 'Not Issued'
                                                     : data.type_taxanomy ==
                                                       'WHT'
@@ -232,56 +238,3 @@ export default function StickyHeadTable({ props }) {
         </>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

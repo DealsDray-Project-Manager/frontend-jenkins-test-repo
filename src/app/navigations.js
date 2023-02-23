@@ -536,6 +536,12 @@ export const navigations = [
         auth: authRoles.sorting,
     },
     {
+        name: 'Pickup',
+        icon: 'merge_type',
+        path: '/sorting/pickup/request',
+        auth: authRoles.sorting,
+    },
+    {
         name: 'Charging Request',
         icon: 'battery_charging_full',
         path: '/charging/tray',

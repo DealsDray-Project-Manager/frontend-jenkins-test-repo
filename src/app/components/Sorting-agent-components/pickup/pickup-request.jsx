@@ -47,7 +47,7 @@ const SimpleMuiTable = () => {
 
     const handelStartSorting = (e, code) => {
         e.preventDefault()
-        navigate('/sorting/request/start-sorting/' + code)
+        navigate('/sorting/pickup/request/start/' + code)
     }
 
     const columns = [
@@ -115,9 +115,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
+                        hour12: true,
                     }),
             },
         },

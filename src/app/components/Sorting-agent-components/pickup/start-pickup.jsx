@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Box,
     Button,
@@ -11,13 +11,55 @@ import {
     TableHead,
     TableRow,
     Grid,
+    Dialog,
+    DialogContent,
+    DialogActions,
+    DialogTitle,
+    IconButton,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import { styled } from '@mui/material/styles'
+import { axiosSortingAgent } from '../../../../axios'
+import CloseIcon from '@mui/icons-material/Close'
+import PropTypes from 'prop-types'
 
-import { axiosSortingAgent, axiosWarehouseIn } from '../../../../axios'
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -39,8 +81,8 @@ export default function DialogBox() {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo/' + location + '/' + trayId
+                    let response = await axiosSortingAgent.post(
+                        '/pickup/getTray/' + trayId
                     )
                     if (response.status === 200) {
                         setTray(response.data.data)
@@ -56,6 +98,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
     const handleClose = () => {
         setOpen(false)
         setLoading(false)
@@ -67,15 +110,15 @@ export default function DialogBox() {
             try {
                 let obj = {
                     uic: e.target.value,
-                    trayId: trayId,
-                    wht_tray: tray?.wht,
+                    fromTray: trayId,
+                    toTray: tray?.[1].code,
                 }
                 let res = await axiosSortingAgent.post(
-                    '/cheack-uic-for-sorting',
+                    '/pickup/itemTransferUicScan',
                     obj
                 )
                 if (res?.status === 200) {
-                    addActualitem(res.data.data)
+                    setItemDetails(res.data.data)
                     setOpen(true)
                 } else {
                     alert(res.data.message)
@@ -87,30 +130,40 @@ export default function DialogBox() {
             }
         }
     }
+
     /************************************************************************** */
-    const addActualitem = async (data) => {
+    const addActualitem = async (e) => {
         try {
-            setLoading(true)
-            let obj = {
-                fromTray: trayId,
-                toTray: tray[1].code,
-                item: data,
-                trayType: tray[1].type_taxanomy,
-            }
-            let res = await axiosSortingAgent.post('/itemShifteToMmtTray', obj)
-            if (res?.status === 200) {
-                setRefresh((refresh) => !refresh)
-                setAwbn('')
-                handleClose()
-                setLoading(false)
-            } else {
-                alert(res.data.message)
+            if (e.keyCode !== 32) {
+                setLoading(true)
+
+                let obj = {
+                    fromTray: trayId,
+                    toTray: tray[1].code,
+                    item: itemDetails,
+                    trayType: tray[1].type_taxanomy,
+                }
+                let res = await axiosSortingAgent.post(
+                    '/pickup/itemTransfer',
+                    obj
+                )
+                if (res?.status === 200) {
+                    alert(res.data.message)
+                    handleClose()
+                    setAwbn('')
+                    setLoading(false)
+                    setRefresh((refresh) => !refresh)
+                } else {
+                    alert(res.data.message)
+                }
             }
         } catch (error) {
             alert(error)
         }
     }
+
     /************************************************************************** */
+
     const handelIssue = async (e, trayId) => {
         e.preventDefault()
         try {
@@ -123,7 +176,7 @@ export default function DialogBox() {
                     toTray: tray?.[1].code,
                 }
                 let res = await axiosSortingAgent.post(
-                    '/mergeDoneTraySendToWarehouse',
+                    'sorting/pickup/request',
                     obj
                 )
                 if (res.status === 200) {
@@ -140,8 +193,177 @@ export default function DialogBox() {
     }
 
     /***************************************************************************************** */
+
+    const tableFrom = useMemo(() => {
+        return (
+            <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h4>FROM TRAY ITEMS - {tray[0]?.code}</h4>
+                    <Box sx={{ mr: 4 }}>
+                        <h4 style={{ marginLeft: '10px' }}>Total</h4>
+                        <p style={{ fontSize: '21px', textAlign: 'center' }}>
+                            {tray[0]?.actual_items?.length}/{tray[0]?.limit}
+                        </p>
+                    </Box>
+                </Box>
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {tray[0]?.actual_items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray[0]?.actual_items])
+
+    const TableToTray = useMemo(() => {
+        return (
+            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h4>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
+                    <Box sx={{ mr: 4 }}>
+                        <h4 style={{ marginLeft: '5px' }}>Total</h4>
+                        <p style={{ fontSize: '21px', textAlign: 'center' }}>
+                            {tray[1]?.items?.length}/{tray[1]?.limit}
+                        </p>
+                    </Box>
+                </Box>
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                                <TableCell>Model</TableCell>
+                                <TableCell>Brand</TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {tray?.[0]?.items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray?.[0]?.items])
+
     return (
         <>
+            <BootstrapDialog
+                aria-labelledby="customized-dialog-title"
+                open={open}
+            >
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                    width="600px"
+                >
+                    You are moving
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            flexDirection: 'column',
+                            p: 1,
+                            m: 1,
+                            bgcolor: 'background.paper',
+                            borderRadius: 1,
+                        }}
+                    >
+                        {itemDetails?.pickup_toTray == '' ||
+                        itemDetails?.pickup_toTray == undefined ? (
+                            <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <h4>MUIC:-{itemDetails?.muic}</h4>
+                                    <h4>UIC:-{itemDetails?.uic}</h4>
+                                    <h4>From:-{trayId}</h4>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <h4>
+                                        Model Name:-{itemDetails?.model_name}
+                                    </h4>
+                                    <h4>
+                                        Brand Name:-{itemDetails?.brand_name}
+                                    </h4>
+                                    <h4>To:-{trayId}</h4>
+                                </Grid>
+                            </Grid>
+                        ) : (
+                            <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <h4>MUIC:-{itemDetails?.muic}</h4>
+                                    <h4>UIC:-{itemDetails?.uic}</h4>
+                                    <h4>From:-{trayId}</h4>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <h4>
+                                        Model Name:-{itemDetails?.model_name}
+                                    </h4>
+                                    <h4>
+                                        Brand Name:-{itemDetails?.brand_name}
+                                    </h4>
+                                    <h4>To:-{itemDetails?.pickup_toTray}</h4>
+                                </Grid>
+                            </Grid>
+                        )}
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{
+                            ml: 2,
+                        }}
+                        fullwidth
+                        variant="contained"
+                        style={{ backgroundColor: 'primery' }}
+                        disabled={loading}
+                        component="span"
+                        onClick={(e) => {
+                            addActualitem(e)
+                        }}
+                    >
+                        YES
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
             <Box
                 sx={{
                     mt: 1,
@@ -155,6 +377,24 @@ export default function DialogBox() {
                     }}
                 >
                     <h4 style={{ marginLeft: '13px' }}>FROM TRAY - {trayId}</h4>
+                    <TextField
+                        sx={{ m: 1 }}
+                        id="outlined-password-input"
+                        type="text"
+                        name="doorsteps_diagnostics"
+                        label="SCAN UIC"
+                        // inputRef={(input) => input && input.focus()}
+                        value={awbn}
+                        onChange={(e) => {
+                            setAwbn(e.target.value)
+                            handelAwbn(e)
+                        }}
+                        inputProps={{
+                            style: {
+                                width: 'auto',
+                            },
+                        }}
+                    />
                 </Box>
                 <Box
                     sx={{
@@ -163,7 +403,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginRight: '13px' }}>
                         Assigned Date --{' '}
-                        {new Date(tray?.[0]?.assigned_date).toLocaleString(
+                        {new Date(tray?.[0]?.requested_date).toLocaleString(
                             'en-GB',
                             {
                                 hour12: true,
@@ -174,116 +414,10 @@ export default function DialogBox() {
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                        <h4>FROM TRAY ITEMS - {tray[0]?.code}</h4>
-
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>UIC</TableCell>
-                                        <TableCell>Order Id</TableCell>
-                                        <TableCell>AWBN</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {tray[0]?.actual_items?.map(
-                                        (data, index) => (
-                                            <TableRow
-                                                hover
-                                                role="checkbox"
-                                                tabIndex={-1}
-                                            >
-                                                <TableCell>
-                                                    {index + 1}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.uic}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.order_id}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.awbn_number ==
-                                                    undefined
-                                                        ? data?.tracking_id
-                                                        : data?.awbn_number}
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {tableFrom}
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                        <h4>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
-                        <TextField
-                            sx={{ m: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
-                            value={awbn}
-                            // onChange={(e) => setAwbn(e.target.value)}
-                            onChange={(e) => {
-                                setAwbn(e.target.value)
-                                handelAwbn(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
-
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>UIC</TableCell>
-                                        <TableCell>Order Id</TableCell>
-                                        <TableCell>AWBN</TableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                    {tray?.[1]?.items?.map((data, index) => (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                        >
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{data?.uic}</TableCell>
-                                            <TableCell>
-                                                {data?.order_id}
-                                            </TableCell>
-                                            <TableCell>
-                                                {data?.awbn_number == undefined
-                                                    ? data?.tracking_id
-                                                    : data?.awbn_number}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {TableToTray}
                 </Grid>
             </Grid>
             <div style={{ float: 'right' }}>
@@ -300,7 +434,9 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            tray?.[0]?.actual_items?.length !== 0
+                            tray?.[0]?.actual_items?.length !==
+                            tray?.[1]?.temp_array?.length +
+                                tray?.[1]?.items?.length
                                 ? true
                                 : loading2 == true
                                 ? true

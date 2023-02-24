@@ -50,7 +50,7 @@ const MemberEditorDialog = ({
             alert(error)
         }
     }
-    console.log(whtTrayCode)
+
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>

@@ -7,6 +7,7 @@ const StartSorting = Loadable(lazy(() => import('./Sorting-request/start-sorting
 const TrayMerge = Loadable(lazy(() => import('./Tray-merge/tray')))
 const StartTrayMerge = Loadable(lazy(() => import('./Tray-merge/start-merge')))
 const PickupRequest =Loadable(lazy(() => import('./pickup/pickup-request')))
+const PickupRequestStartPage = Loadable(lazy(() => import('./pickup/start-pickup')))
 
 const SortingRouter= [
     {
@@ -32,6 +33,10 @@ const SortingRouter= [
     {
         path: '/sorting/pickup/request',
         element: <PickupRequest />,
+    },
+    {
+        path: '/sorting/pickup/request/start/:trayId',
+        element: <PickupRequestStartPage />,
     },
 ]
 

@@ -78,6 +78,7 @@ const PickupPage = () => {
     /*--------------------------------------------------------------*/
 
     const handleChange = (event, newValue) => {
+        setIsCheck([])
         setValue(newValue)
     }
     /*---------------------------USEEFFECT-----------------------------------*/
@@ -114,6 +115,7 @@ const PickupPage = () => {
         fetchData()
     }, [value, page, rowsPerPage, refresh])
 
+
     useEffect(() => {
         setData((_) =>
             item.map((d, index) => {
@@ -132,6 +134,7 @@ const PickupPage = () => {
         }
         FetchModel()
     }, [])
+    
     /*--------------------------------------------------------------*/
     const handleClick = (e) => {
         const { id, checked } = e.target
@@ -236,7 +239,6 @@ const PickupPage = () => {
                     setRowsPerPage(100)
                     setItem(res.data.data)
                 } else {
-                
                     setItem([])
                     setDisplayText(res.data.message)
                     setCount(0)
@@ -262,7 +264,7 @@ const PickupPage = () => {
                 }
                 let obj = {
                     isCheck: isCheck,
-                    type:value
+                    type: value,
                 }
                 let whtTray = await axiosMisUser.post('/pickup/whtTray', obj)
                 if (whtTray.status == 200) {

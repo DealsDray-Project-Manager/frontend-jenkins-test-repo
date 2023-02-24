@@ -197,13 +197,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+      
         {
             name: 'warehouse',
             label: 'Warehouse',

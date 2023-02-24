@@ -123,29 +123,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.description,
             },
         },
-        {
-            name: 'code',
-            label: 'Actions',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() => handelViewItem(value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
-                    )
-                },
-            },
-        },
+       
     ]
 
     return (

@@ -119,7 +119,14 @@ export default function DialogBox() {
                 )
                 if (res?.status === 200) {
                     setItemDetails(res.data.data)
-                    setOpen(true)
+                    if (
+                        res.data.data.pickup_toTray == undefined ||
+                        res.data.data.pickup_toTray == ''
+                    ) {
+                        addActualitemTop(res.data.data)
+                    } else {
+                        setOpen(true)
+                    }
                 } else {
                     alert(res.data.message)
                 }
@@ -128,6 +135,30 @@ export default function DialogBox() {
 
                 alert(error)
             }
+        }
+    }
+    const addActualitemTop = async (dataItem) => {
+        try {
+            setLoading(true)
+
+            let obj = {
+                fromTray: trayId,
+                toTray: tray[1].code,
+                item: dataItem,
+                trayType: tray[1].type_taxanomy,
+            }
+            let res = await axiosSortingAgent.post('/pickup/itemTransfer', obj)
+            if (res?.status === 200) {
+                alert(res.data.message)
+                handleClose()
+                setAwbn('')
+                setLoading(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
         }
     }
 
@@ -174,15 +205,16 @@ export default function DialogBox() {
                 let obj = {
                     fromTray: trayId,
                     toTray: tray?.[1].code,
+                    toTrayLength: tray?.[1]?.items?.length,
+                    toTrayLimit: tray?.[1]?.limit,
+                    allItem: tray[0]?.temp_array,
                 }
-                let res = await axiosSortingAgent.post(
-                    'sorting/pickup/request',
-                    obj
-                )
+
+                let res = await axiosSortingAgent.post('/pickup/closeTray', obj)
                 if (res.status === 200) {
                     alert(res.data.message)
                     setLoading2(false)
-                    navigate('/sorting/merge')
+                    navigate('/sorting/pickup/request')
                 } else {
                     alert(res.data.message)
                 }
@@ -202,7 +234,7 @@ export default function DialogBox() {
                     <Box sx={{ mr: 4 }}>
                         <h4 style={{ marginLeft: '10px' }}>Total</h4>
                         <p style={{ fontSize: '21px', textAlign: 'center' }}>
-                            {tray[0]?.actual_items?.length}/{tray[0]?.limit}
+                            {tray[0]?.temp_array?.length}/{tray[0]?.limit}
                         </p>
                     </Box>
                 </Box>
@@ -223,7 +255,7 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {tray[0]?.actual_items?.map((data, index) => (
+                            {tray[0]?.temp_array?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
@@ -236,7 +268,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [tray[0]?.actual_items])
+    }, [tray[0]?.temp_array])
 
     const TableToTray = useMemo(() => {
         return (
@@ -268,7 +300,7 @@ export default function DialogBox() {
                         </TableHead>
 
                         <TableBody>
-                            {tray?.[0]?.items?.map((data, index) => (
+                            {tray?.[1]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
@@ -281,7 +313,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [tray?.[0]?.items])
+    }, [tray?.[1]?.items])
 
     return (
         <>
@@ -364,6 +396,7 @@ export default function DialogBox() {
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
+
             <Box
                 sx={{
                     mt: 1,
@@ -435,8 +468,7 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             tray?.[0]?.actual_items?.length !==
-                            tray?.[1]?.temp_array?.length +
-                                tray?.[1]?.items?.length
+                            tray?.[0]?.items?.length
                                 ? true
                                 : loading2 == true
                                 ? true

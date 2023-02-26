@@ -50,7 +50,7 @@ const SimpleMuiTable = () => {
 
     const handelApprove = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/pickup/request/approve/' + id)
+        navigate('/wareshouse/wht/pickup/request/approve/item-verifying/' + id)
     }
 
     const columns = [
@@ -122,7 +122,7 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        
+
         {
             name: 'code',
             label: 'Action',
@@ -134,7 +134,6 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
-                            
                             variant="contained"
                             onClick={(e) => handelApprove(e, value)}
                             style={{ backgroundColor: 'green' }}

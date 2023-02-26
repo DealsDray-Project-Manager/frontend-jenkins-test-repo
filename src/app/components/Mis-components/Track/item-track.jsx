@@ -13,7 +13,7 @@ import {
     TablePagination,
     TextField,
     Box,
-    Typography
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -139,8 +139,7 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setPage(0)
                         setItem(res.data.data)
-                    }
-                    else {
+                    } else {
                         setItem(res.data.data)
                         setDisplayText('Sorry no data found')
                     }
@@ -212,7 +211,7 @@ const SimpleMuiTable = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {displayText !== '' ? (
+                    {displayText !== '' ? (
                         <TableCell
                             colSpan={8}
                             align="center"
@@ -474,7 +473,7 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_user_name }
+                                {data?.delivery.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined
@@ -499,8 +498,8 @@ const SimpleMuiTable = () => {
                 </TableBody>
             </ProductTable>
         )
-    }, [item, data,displayText])
-    
+    }, [item, data, displayText])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -543,7 +542,6 @@ const SimpleMuiTable = () => {
                 </Box>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-          
                 {tableData}
             </Card>
             <TablePagination

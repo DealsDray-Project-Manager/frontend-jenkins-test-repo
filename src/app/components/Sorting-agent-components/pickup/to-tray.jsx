@@ -21,6 +21,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
+    const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { user_name } = jwt_decode(admin)
                     let response = await axiosSortingAgent.post(
-                        '/pickup/assigendTray/' + user_name + '/' + 'fromTray'
+                        '/pickup/assigendTray/' + user_name + '/' + 'toTray'
                     )
                     if (response.status === 200) {
                         setTray(response.data.data)
@@ -43,11 +44,27 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
-    const handelStartSorting = (e, code) => {
+    const handelViewTrayItem = (e, code) => {
         e.preventDefault()
-        navigate('/sorting/pickup/request/start/' + code)
+        navigate('/sorting/pickup/to-tray/view-item/' + code)
+    }
+
+    const handelClose = async (e, code) => {
+        e.preventDefault()
+        try {
+            let res = await axiosSortingAgent.post(
+                '/pickup/edoCloseTray/' + code
+            )
+            if (res.status == 200) {
+                setRefresh((refresh) => !refresh)
+            } else {
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const columns = [
@@ -101,13 +118,7 @@ const SimpleMuiTable = () => {
                     value.length + '/' + tableMeta.rowData[4],
             },
         },
-        {
-            name: 'to_tray_for_pickup',
-            label: 'To Tray',
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'requested_date',
             label: 'Assigned Date',
@@ -120,23 +131,49 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'temp_array',
+            label: 'Tray Id',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+        {
             name: 'code',
             label: 'Action',
             options: {
                 filter: true,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => handelStartSorting(e, value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Start
-                        </Button>
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={(e) => handelViewTrayItem(e, value)}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                View
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                disabled={
+                                    tableMeta.rowData[5]?.length !==
+                                    tableMeta.rowData[7]?.length
+                                }
+                                variant="contained"
+                                onClick={(e) => handelClose(e, value)}
+                                style={{ backgroundColor: 'red' }}
+                                component="span"
+                            >
+                                Close
+                            </Button>
+                        </>
                     )
                 },
             },

@@ -472,7 +472,7 @@ export const navigations = [
             },
             {
                 name: 'Return From Pickup',
-                path: '/wareshouse/merge/return-from-merge',
+                path: '/wareshouse/wht/pickup/return-from-pickup',
                 iconText: 'VP',
             },
         ],
@@ -538,9 +538,21 @@ export const navigations = [
     {
         name: 'Pickup',
         icon: 'merge_type',
-        path: '/sorting/pickup/request',
+        children: [
+            {
+                name: 'From Tray',
+                icon: 'merge_type',
+                path: '/sorting/pickup/request',
+            },
+            {
+                name: 'To Tray',
+                icon: 'merge_type',
+                path: '/sorting/pickup/to-tray',
+            },
+        ],
         auth: authRoles.sorting,
     },
+
     {
         name: 'Charging Request',
         icon: 'battery_charging_full',

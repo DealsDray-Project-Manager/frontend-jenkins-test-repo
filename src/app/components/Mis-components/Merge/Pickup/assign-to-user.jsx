@@ -22,6 +22,7 @@ const MemberEditorDialog = ({
     sortingUsers,
     whtTray,
     isCheck,
+    value
 }) => {
     const [sortingUserName, setSortingUsername] = useState('')
     const [whtTrayCode, setWhtTrayCode] = useState('')
@@ -35,6 +36,7 @@ const MemberEditorDialog = ({
                 user_name: sortingUserName,
                 sort_id: 'Send for Pickup',
                 toTray: whtTrayCode,
+                value:value
             }
             let res = await axiosMisUser.post('/pickup/requestSendToWh', obj)
             if (res.status == 200) {

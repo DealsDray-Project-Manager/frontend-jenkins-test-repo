@@ -79,6 +79,8 @@ const PickupPage = () => {
 
     const handleChange = (event, newValue) => {
         setIsCheck([])
+        setPage(0)
+        setRowsPerPage(100)
         setValue(newValue)
     }
     /*---------------------------USEEFFECT-----------------------------------*/
@@ -194,6 +196,8 @@ const PickupPage = () => {
     const handelSort = async () => {
         try {
             setIsCheck([])
+            setPage(0)
+            setRowsPerPage(100)
             setDisplayText('Loading...')
             const res = await axiosMisUser.post(
                 '/pickup/sortItem/' +
@@ -229,6 +233,8 @@ const PickupPage = () => {
             } else {
                 setItem([])
                 setIsCheck([])
+                setPage(0)
+                setRowsPerPage(100)
                 setDisplayText('Searching....')
                 const res = await axiosMisUser.post(
                     '/pickup/uicSearch/' + e.target.value + '/' + value
@@ -403,7 +409,7 @@ const PickupPage = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Pickup', path: '/' },
-                        { name: 'Items' },
+                        { name: 'Uinits' },
                     ]}
                 />
             </div>
@@ -415,11 +421,11 @@ const PickupPage = () => {
                             aria-label="lab API tabs example"
                         >
                             <Tab
-                                label="Charge Done Item's"
+                                label="Charge Done Unit's"
                                 value="Charge Done"
                             />
-                            <Tab label="BQC Done Item's" value="BQC Done" />
-                            <Tab label="Audit Done Item's" value="Audit Done" />
+                            <Tab label="BQC Done Unit's" value="BQC Done" />
+                            <Tab label="Audit Done Unit's" value="Audit Done" />
                         </TabList>
                     </Box>
                     <Box
@@ -568,6 +574,7 @@ const PickupPage = () => {
                     sortingUsers={sortingUsers}
                     whtTray={whtTray}
                     isCheck={isCheck}
+                    value={value}
                 />
             )}
         </Container>

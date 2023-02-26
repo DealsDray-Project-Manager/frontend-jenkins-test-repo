@@ -18,7 +18,8 @@ import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
-    const { trayId, sortId } = useParams()
+    const { trayId } = useParams()
+    const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
@@ -52,7 +53,7 @@ export default function DialogBox() {
                 }
                 setTextDisable(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
-                if (res?. status === 200) {
+                if (res?.status === 200) {
                     addActualitem(res.data.data)
                 } else {
                     setTextDisable(false)
@@ -92,10 +93,41 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const handelIssue = async (e) => {
-        e.preventDefault()
-        navigate(-1)
+
+    const handelIssue = async (e, type) => {
+        try {
+            let userStatus = await axiosWarehouseIn.post(
+                '/sortingAgnetStatus/' + trayData?.issued_user_name
+            )
+            if (userStatus.status === 200) {
+                if (userStatus.data.data !== 'User is free') {
+                    alert(userStatus.data.data)
+                } else {
+                    setLoading(true)
+
+                    let obj = {
+                        fromTray: trayData.code,
+                        toTray: trayData.to_tray_for_pickup,
+                        username: trayData.issued_user_name,
+                    }
+
+                    let res = await axiosWarehouseIn.post(
+                        '/pickup/issueToAgent',
+                        obj
+                    )
+                    console.log(res)
+                    if (res.status == 200) {
+                        alert(res.data.message)
+                        setLoading(false)
+                        navigate('/wareshouse/wht/pickup/request')
+                    } else {
+                        alert(res.data.message)
+                    }
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
     /************************************************************************** */
     const tableExpected = useMemo(() => {
@@ -307,13 +339,17 @@ export default function DialogBox() {
                 <Box sx={{ float: 'right' }}>
                     <Button
                         sx={{ m: 3, mb: 9 }}
+                        disabled={
+                            trayData?.items?.length !==
+                                trayData?.actual_items?.length || loading
+                        }
                         variant="contained"
-                        style={{ backgroundColor: 'primery' }}
+                        style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
-                            handelIssue(e)
+                            handelIssue(e, 'Assigned to sorting agent')
                         }}
                     >
-                        Back to List
+                        Assign To Agent
                     </Button>
                 </Box>
             </div>

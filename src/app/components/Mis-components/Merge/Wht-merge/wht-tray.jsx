@@ -197,7 +197,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-      
+
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -227,7 +227,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[4],
             },
         },
         {
@@ -305,11 +305,11 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
+                                        tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length,
-                                        tableMeta.rowData[11]
+                                        tableMeta.rowData[5]?.length,
+                                        tableMeta.rowData[10]
                                     )
                                 }}
                                 style={{ backgroundColor: 'primery' }}

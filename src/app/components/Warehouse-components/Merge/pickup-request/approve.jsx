@@ -76,8 +76,7 @@ export default function StickyHeadTable({ props }) {
             )
             if (userStatus.status === 200) {
                 if (userStatus.data.data !== 'User is free') {
-                   alert(userStatus.data.data)
-
+                    alert(userStatus.data.data)
                 } else {
                     setLoading(true)
                     let flag = false
@@ -93,14 +92,13 @@ export default function StickyHeadTable({ props }) {
                             toTray: tray[1].code,
                             username: tray[0]?.issued_user_name,
                         }
-                        
+
                         let res = await axiosWarehouseIn.post(
                             '/pickup/issueToAgent',
                             obj
                         )
-                        console.log(res);
+                        console.log(res)
                         if (res.status == 200) {
-
                             alert(res.data.message)
                             setLoading(false)
                             navigate('/wareshouse/wht/pickup/request')
@@ -177,23 +175,28 @@ export default function StickyHeadTable({ props }) {
                                                 {data.items.length}/{data.limit}
                                             </TableCell>
                                             <TableCell>
-                                                {data.type_taxanomy == 'WHT' &&
-                                                data.items.length !== 0
+                                                {data.items.length !== 0 &&
+                                                data?.sort_id ==
+                                                    'Pickup Request sent to Warehouse'
                                                     ? 'Not Issued'
-                                                    : data.type_taxanomy ==
-                                                      'WHT'
-                                                    ? 'New WHT'
-                                                    : 'Issued'}
+                                                    :data.items.length !== 0 &&
+                                                    data?.sort_id !==
+                                                        'Pickup Request sent to Warehouse'
+                                                    ? 'Issued'
+                                                    : 'Scanned'}
                                             </TableCell>
                                             <TableCell>
                                                 <Button
                                                     variant="contained"
-                                                    disabled={
-                                                        data.items.length ===
-                                                        data.actual_items.length
-                                                            ? true
-                                                            : false
-                                                    }
+                                                    disabled= {data.items.length !== 0  &&
+                                                        data?.sort_id ==
+                                                            'Pickup Request sent to Warehouse'
+                                                            ? false
+                                                            :data.items.length !== 0 &&
+                                                            data?.sort_id !==
+                                                                'Pickup Request sent to Warehouse'
+                                                            ? 'Issued'
+                                                            : 'Scanned'}
                                                     onClick={(e) =>
                                                         handelExvsAt(
                                                             e,

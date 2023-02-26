@@ -117,7 +117,7 @@ const TrackItem = () => {
                     if (res.status == 200) {
                         setItem(res.data.data)
                         setDisplayText('')
-                        setRowsPerPage(10)
+                        setRowsPerPage(100)
                         setPage(0)
                     } else {
                         setItem(res.data.data)

@@ -58,6 +58,7 @@ const SimpleMuiTable = () => {
                 '/pickup/edoCloseTray/' + code
             )
             if (res.status == 200) {
+                alert(res.data.message)
                 setRefresh((refresh) => !refresh)
             } else {
                 alert(res.data.message)

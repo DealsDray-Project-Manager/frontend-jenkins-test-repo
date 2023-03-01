@@ -189,6 +189,8 @@ const TrackItem = () => {
                         <TableCell>Audit Agnet Name</TableCell>
                         <TableCell>Audit Done Date</TableCell>
                         <TableCell>Audit Done Tray Recieved Date</TableCell>
+                        <TableCell>Audit Done Tray Closed By Warehouse Date</TableCell>
+
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -454,7 +456,7 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_user_name}
+                                {data?.delivery?.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined
@@ -466,9 +468,18 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_done_recieved != undefined
+                                {data?.delivery?.audit_done_recieved != undefined
                                     ? new Date(
                                           data?.delivery.audit_done_recieved
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.audit_done_close != undefined
+                                    ? new Date(
+                                          data?.delivery?.audit_done_close
                                       ).toLocaleString('en-GB', {
                                           hour12: true,
                                       })

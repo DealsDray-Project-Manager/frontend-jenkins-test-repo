@@ -111,7 +111,7 @@ export default function DialogBox() {
                 let obj = {
                     uic: e.target.value,
                     fromTray: trayId,
-                    toTray: tray?.[1].code,
+                    toTray: tray?.[1]?.code,
                 }
                 let res = await axiosSortingAgent.post(
                     '/pickup/itemTransferUicScan',
@@ -121,7 +121,7 @@ export default function DialogBox() {
                     setItemDetails(res.data.data)
                     if (
                         res.data.data.pickup_toTray == undefined ||
-                        res.data.data.pickup_toTray == ''
+                        res.data.data.pickup_toTray == '' || res.data.data.pickup_toTray == null
                     ) {
                         addActualitemTop(res.data.data)
                     } else {
@@ -137,6 +137,7 @@ export default function DialogBox() {
             }
         }
     }
+    
     const addActualitemTop = async (dataItem) => {
         try {
             setLoading(true)
@@ -341,7 +342,7 @@ export default function DialogBox() {
                         }}
                     >
                         {itemDetails?.pickup_toTray == '' ||
-                        itemDetails?.pickup_toTray == undefined ? (
+                        itemDetails?.pickup_toTray == undefined || itemDetails?.pickup_toTray == null ? (
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
                                     <h4>MUIC:-{itemDetails?.muic}</h4>

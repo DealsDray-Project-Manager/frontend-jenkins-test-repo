@@ -48,8 +48,8 @@ const MemberEditorDialog = ({
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-
                 fetchModel(editFetchData.brand)
+
                 open()
             }
         } catch (error) {
@@ -66,7 +66,6 @@ const MemberEditorDialog = ({
         try {
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
-              
                 setTrayCount(type + res.data.data)
                 if (type == 'BOT' && res.data.data > '2251') {
                     handleClose()
@@ -393,6 +392,7 @@ const MemberEditorDialog = ({
                             type="text"
                             name="cpc"
                             {...register('cpc')}
+                            defaultValue={getValues('cpc')}
                             disabled={
                                 getValues('type_taxanomy') == 'WHT' &&
                                 Object.keys(editFetchData).length !== 0
@@ -416,6 +416,7 @@ const MemberEditorDialog = ({
                             select
                             type="text"
                             name="warehouse"
+                            defaultValue={getValues('warehouse')}
                             {...register('warehouse')}
                             disabled={
                                 getValues('type_taxanomy') == 'WHT' &&
@@ -435,6 +436,7 @@ const MemberEditorDialog = ({
                             select
                             type="text"
                             name="cpc"
+                            defaultValue={getValues('type_taxanomy')}
                             {...register('type_taxanomy')}
                             disabled={
                                 getValues('type_taxanomy') == 'WHT' &&

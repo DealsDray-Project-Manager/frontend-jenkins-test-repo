@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
@@ -11,23 +12,18 @@ import jwt_decode from 'jwt-decode'
 
 import {
     Box,
-    TableCell,
-    TableHead,
     Table,
-    TableRow,
-    TableBody,
-    Typography,
-    TableFooter,
-    TablePagination,
     Card,
     TextField,
     Button,
     MenuItem,
     Checkbox,
 } from '@mui/material'
+import { includes } from 'lodash'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
+
     [theme.breakpoints.down('sm')]: {
         margin: '16px',
     },
@@ -41,7 +37,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 1300,
+    width: 1500,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -56,15 +52,48 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
+
+const ProductTableTwo = styled(Table)(() => ({
+    minWidth: 750,
+    width: 1500,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ProductTableThere = styled(Table)(() => ({
+    minWidth: 750,
+    width: 2000,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
-    const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(100)
+
     const [displayText, setDisplayText] = useState('')
-    const [data, setData] = useState([])
     const [value, setValue] = React.useState('Charge Done')
     const [item, setItem] = useState([])
-    const [count, setCount] = useState(0)
     const [brand, setbrand] = useState([])
     const [model, setModel] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -79,8 +108,7 @@ const PickupPage = () => {
 
     const handleChange = (event, newValue) => {
         setIsCheck([])
-        setPage(0)
-        setRowsPerPage(100)
+        setItem([])
         setValue(newValue)
     }
     /*---------------------------USEEFFECT-----------------------------------*/
@@ -91,20 +119,14 @@ const PickupPage = () => {
                 if (admin) {
                     setDisplayText('Loading...')
                     let response = await axiosMisUser.post(
-                        '/pickup/items/' +
-                            value +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
+                        '/pickup/items/' + value + '/'
                     )
                     if (response.status === 200) {
                         setDisplayText('')
                         setItem(response.data.data)
-                        setCount(response.data.count)
                     } else {
                         setItem(response.data.data)
-                        setCount(response.data.count)
+
                         setDisplayText(response.data.message)
                     }
                 } else {
@@ -115,17 +137,7 @@ const PickupPage = () => {
             }
         }
         fetchData()
-    }, [value, page, rowsPerPage, refresh])
-
-
-    useEffect(() => {
-        setData((_) =>
-            item.map((d, index) => {
-                d.id = page * rowsPerPage + index + 1
-                return d
-            })
-        )
-    }, [page, item, rowsPerPage])
+    }, [value, refresh])
 
     useEffect(() => {
         const FetchModel = async () => {
@@ -136,7 +148,7 @@ const PickupPage = () => {
         }
         FetchModel()
     }, [])
-    
+
     /*--------------------------------------------------------------*/
     const handleClick = (e) => {
         const { id, checked } = e.target
@@ -165,14 +177,6 @@ const PickupPage = () => {
         }
     }
 
-    /*-----------------------------HANDELPAGE CHANGE------------------*/
-
-    const handleChangePage = (event, newPage) => {
-        setRowsPerPage(100)
-        setPage(0)
-        setPage(newPage)
-    }
-
     /*---------------------STATE CHANGE FOR SORT----------------------*/
     const handleChangeSort = ({ target: { name, value } }) => {
         setState({
@@ -196,8 +200,6 @@ const PickupPage = () => {
     const handelSort = async () => {
         try {
             setIsCheck([])
-            setPage(0)
-            setRowsPerPage(100)
             setDisplayText('Loading...')
             const res = await axiosMisUser.post(
                 '/pickup/sortItem/' +
@@ -206,18 +208,14 @@ const PickupPage = () => {
                     state?.model +
                     '/' +
                     value +
-                    '/' +
-                    page +
-                    '/' +
-                    rowsPerPage
+                    '/'
             )
             if (res.status == 200) {
                 setDisplayText('')
                 setItem(res.data.data)
-                setCount(res.data.count)
             } else {
                 setItem(res.data.data)
-                setCount(res.data.count)
+
                 setDisplayText(res.data.message)
             }
         } catch (error) {
@@ -226,34 +224,31 @@ const PickupPage = () => {
     }
     /*---------------------------SEARCH UIC-----------------------------*/
 
-    const handelSearchUid = async (e) => {
-        try {
-            if (e.target.value == '') {
-                setRefresh((refresh) => !refresh)
-            } else {
-                setItem([])
-                setIsCheck([])
-                setPage(0)
-                setRowsPerPage(100)
-                setDisplayText('Searching....')
-                const res = await axiosMisUser.post(
-                    '/pickup/uicSearch/' + e.target.value + '/' + value
-                )
-                if (res.status == 200) {
-                    setDisplayText('')
-                    setPage(0)
-                    setRowsPerPage(100)
-                    setItem(res.data.data)
-                } else {
-                    setItem([])
-                    setDisplayText(res.data.message)
-                    setCount(0)
-                }
-            }
-        } catch (error) {
-            alert(error)
-        }
-    }
+    // const handelSearchUid = async (e) => {
+    //     try {
+    //         if (e.target.value == '') {
+    //             setRefresh((refresh) => !refresh)
+    //         } else {
+    //             setItem([])
+    //             setIsCheck([])
+
+    //             setDisplayText('Searching....')
+    //             const res = await axiosMisUser.post(
+    //                 '/pickup/uicSearch/' + e.target.value + '/' + value
+    //             )
+    //             if (res.status == 200) {
+    //                 setDisplayText('')
+
+    //                 setItem(res.data.data)
+    //             } else {
+    //                 setItem([])
+    //                 setDisplayText(res.data.message)
+    //             }
+    //         }
+    //     } catch (error) {
+    //         alert(error)
+    //     }
+    // }
 
     const handelSortingAgent = async () => {
         try {
@@ -284,124 +279,734 @@ const PickupPage = () => {
             alert(error)
         }
     }
-    /*---------------------------USEMEMO-----------------------------*/
 
-    const tableForAllTab = useMemo(() => {
-        return (
-            <ProductTable>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Select</TableCell>
+    const columnsOne = [
+        {
+            name: 'items',
+            label: 'Select',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value.uic}
+                            key={value.uic}
+                            checked={isCheck.includes(value.uic)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
 
-                        <TableCell>Record.NO</TableCell>
+        {
+            name: 'items', // field name in the row object
+            label: 'UIC', // column title that will be shown in table
 
-                        <TableCell>UIC</TableCell>
-                        <TableCell>Order ID</TableCell>
+            options: {
+                filter: true,
 
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Item ID</TableCell>
+                customBodyRender: (value, dataIndex) => value.uic,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Order Id',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.order_id,
+            },
+        },
+        {
+            name: 'items',
+            label: 'IMEI',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.imei || ''
+            },
+        },
 
-                        <TableCell>Brand</TableCell>
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'MUIC',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.muic || ''
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Battery Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.battery_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charge Percentage',
+            options: {
+                filter: true,
 
-                        <TableCell>Model</TableCell>
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charge_percentage || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.body_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Display Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.display_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Lock Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.lock_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charging Jack',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charging_jack_type || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Part Missing',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.boady_part_missing || ''
+            },
+        },
+    ]
+    const columnsTwo = [
+        {
+            name: 'items',
+            label: 'Select',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value.uic}
+                            key={value.uic}
+                            checked={isCheck.includes(value.uic)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
 
-                        <TableCell>MUIC</TableCell>
+        {
+            name: 'items', // field name in the row object
+            label: 'UIC', // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.uic || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Order Id',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.order_id || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'IMEI',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.imei || ''
+            },
+        },
 
-                        <TableCell>WHT Tray Id</TableCell>
-                        {value == 'Charge Done' ? (
-                            <TableCell>
-                                Charge Done Warehouse Close Date
-                            </TableCell>
-                        ) : value == 'BQC Done' ? (
-                            <TableCell>Bqc Done Warehouse Close Date</TableCell>
-                        ) : value == 'Audit Done' ? (
-                            <TableCell>
-                                Audit Done Warehouse Close Date
-                            </TableCell>
-                        ) : null}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {displayText !== '' ? (
-                        <TableCell
-                            colSpan={8}
-                            align="center"
-                            sx={{ verticalAlign: 'top' }}
-                        >
-                            <Typography variant="p" gutterBottom>
-                                {displayText}
-                            </Typography>
-                        </TableCell>
-                    ) : null}
-                    {data.map((data, index) => (
-                        <TableRow tabIndex={-1}>
-                            <Checkbox
-                                onClick={(e) => {
-                                    handleClick(e)
-                                }}
-                                id={data.uic_code?.code}
-                                key={data.uic_code?.code}
-                                checked={isCheck.includes(data.uic_code?.code)}
-                            />
-                            <TableCell>{data.id}</TableCell>
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'MUIC',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.muic || ''
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Battery Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.battery_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charge Percentage',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charge_percentage || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.body_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Display Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.display_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Lock Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.lock_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charging Jack',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charging_jack_type || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Part Missing',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.boady_part_missing || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Blancoo QC Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.blancoo_qc_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Factory Reset Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.factory_reset_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC Incomplete Reason',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.bqc_incomplete_reason || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Technical Issue',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.technical_issue || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC User Remark',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.other || ''
+            },
+        },
+    ]
+    const columnsThree = [
+        {
+            name: 'items',
+            label: 'Select',
+            options: {
+                filter: false,
+                sort: false,
+                   setCellProps: () => ({ style: { width: '100px' } }),
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value.uic}
+                            key={value.uic}
+                            checked={isCheck.includes(value.uic)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
 
-                            <TableCell>{data.uic_code?.code}</TableCell>
-                            <TableCell>{data.order_id}</TableCell>
+        {
+            name: 'items', // field name in the row object
+            label: 'UIC', // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.uic || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Order Id',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.order_id || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'IMEI',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.imei || ''
+            },
+        },
 
-                            <TableCell>{data.imei}</TableCell>
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'MUIC',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.muic || ''
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Battery Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.battery_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charge Percentage',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charge_percentage || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.body_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Display Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.display_condition || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Lock Status',
+            options: {
+                filter: true,
+                setCellProps: () => ({ style: { width: '100px' } }),
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.lock_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charging Jack',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charging_jack_type || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Part Missing',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.boady_part_missing || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Blancoo QC Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.blancoo_qc_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Factory Reset Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.factory_reset_status || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC Incomplete Reason',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.bqc_incomplete_reason || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Technical Issue',
+            options: {
+                filter: true,
 
-                            <TableCell>{data.item_id}</TableCell>
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.technical_issue || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC User Remark',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.other || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Orginal Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.orgGrade || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Audit Recomendad Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.grade || ''
+            },
+        },
+        {
+            name: 'items',
+            label: 'Stage',
+            options: {
+                filter:true,
+               
+               
+                customBodyRender: (value, dataIndex) => value?.audit_report?.stage || ''
+                    
+            },
+        },
+        {
+            name: 'items',
+            label: 'Reason',
+            options: {
+                filter: true,
+                FileList: value => value?.audit_report?.reason,
+                customBodyRender: (value, dataIndex) =>
+                   value?.audit_report?.reason || '' 
+                
+            }
+        },
+        {
+            name: 'items',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.description || ''
+            },
+        },
+    ]
 
-                            <TableCell>
-                                {data?.products?.[0]?.brand_name}
-                            </TableCell>
-
-                            <TableCell>
-                                {data?.products?.[0]?.model_name}
-                            </TableCell>
-
-                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
-                            <TableCell>{data?.wht_tray}</TableCell>
-
-                            {value == 'Charge Done' ? (
-                                <TableCell>
-                                    {data?.charging_done_close != undefined
-                                        ? new Date(
-                                              data?.charging_done_close
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })
-                                        : ''}
-                                </TableCell>
-                            ) : value == 'BQC Done' ? (
-                                <TableCell>
-                                    {' '}
-                                    {data?.bqc_done_close != undefined
-                                        ? new Date(
-                                              data?.bqc_done_close
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })
-                                        : ''}
-                                </TableCell>
-                            ) : value == 'Audit Done' ? (
-                                <TableCell>
-                                    {data?.audit_done_close != undefined
-                                        ? new Date(
-                                              data?.audit_done_close
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })
-                                        : ''}
-                                </TableCell>
-                            ) : null}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </ProductTable>
-        )
-    }, [data, displayText, isCheck])
     /*--------------------------------------------------------------*/
+
+    const tableData = useMemo(() => {
+        return (
+            <MUIDataTable
+                title={'UNITS'}
+                data={item}
+                columns={columnsOne}
+                options={{
+                    filterType: 'dropdown',
+                    responsive: 'standared',
+                    download: false,
+                    print: false,
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
+        )
+    }, [item, columnsOne])
+
+    const tableDataTwo = useMemo(() => {
+        return (
+            <MUIDataTable
+                title={'UNITS'}
+                data={item}
+                columns={columnsTwo}
+                options={{
+                    filterType: 'dropdown',
+                    responsive: 'standared',
+                    download: false,
+                    print: false,
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
+        )
+    }, [item, columnsTwo])
+
+    const tableDataThree = useMemo(() => {
+        return (
+            <MUIDataTable
+                title={'UNITS'}
+                data={item}
+                columns={columnsThree}
+                options={{
+                    filterType: 'dropdown',
+                    responsive: 'standared',
+                    download: false,
+                    print: false,
+                  
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
+        )
+    }, [item, columnsThree])
 
     return (
         <Container>
@@ -409,7 +1014,7 @@ const PickupPage = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Pickup', path: '/' },
-                        { name: 'Uinits' },
+                        { name: 'Units' },
                     ]}
                 />
             </div>
@@ -436,19 +1041,19 @@ const PickupPage = () => {
                         }}
                     >
                         <Box>
-                            <TextField
+                            {/* <TextField
                                 label="Search UIC"
                                 variant="outlined"
                                 sx={{ ml: 3 }}
                                 onChange={(e) => {
                                     handelSearchUid(e)
                                 }}
-                            />
+                            /> */}
                             <TextField
                                 select
                                 label="Select Brand"
                                 variant="outlined"
-                                sx={{ ml: 2, width: 150 }}
+                                sx={{ ml: 3, width: 150 }}
                                 name="brand"
                                 onChange={(e) => {
                                     handleChangeSort(e)
@@ -518,8 +1123,7 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            {' '}
-                            {tableForAllTab}{' '}
+                            <ProductTable>{tableData}</ProductTable>
                         </Card>
                     </TabPanel>
                     <TabPanel value="BQC Done">
@@ -527,8 +1131,10 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            {' '}
-                            {tableForAllTab}{' '}
+                            <ProductTableTwo>
+
+                            {tableDataTwo}
+                            </ProductTableTwo>
                         </Card>
                     </TabPanel>
                     <TabPanel value="Audit Done">
@@ -536,36 +1142,15 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            {' '}
-                            {tableForAllTab}{' '}
+                            <ProductTableThere>
+
+                            {tableDataThree}
+                            </ProductTableThere>
                         </Card>
                     </TabPanel>
                 </TabContext>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            sx={{ px: 2 }}
-                            rowsPerPageOptions={[100, 150, 200]}
-                            component="div"
-                            count={count}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            showFirstButton="true"
-                            showLastButton="true"
-                            backIconButtonProps={{
-                                'aria-label': 'Previous Page',
-                            }}
-                            nextIconButtonProps={{
-                                'aria-label': 'Next Page',
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={({ target: { value } }) =>
-                                setRowsPerPage(value)
-                            }
-                        />
-                    </TableRow>
-                </TableFooter>
             </Box>
+
             {shouldOpenEditorDialog && (
                 <AssignToSorting
                     handleClose={handleDialogClose}

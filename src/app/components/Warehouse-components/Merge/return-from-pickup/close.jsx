@@ -16,7 +16,6 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
-import Checkbox from '@mui/material/Checkbox'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -24,10 +23,11 @@ export default function DialogBox() {
     const { trayId } = useParams()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
-    const [stage, setStage] = useState('')
+
     const [description, setDescription] = useState([])
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
+    const [stage, setStage] = useState('')
     const [refresh, setRefresh] = useState(false)
     /******************************************************************************** */
 
@@ -100,8 +100,13 @@ export default function DialogBox() {
             if (admin) {
                 let obj = {
                     trayId: trayId,
-                    stage: tray.pickup_type,
+                    stage: tray[0].pickup_type,
+                    length:length
                 }
+                if (tray?.[0]?.to_tray_for_pickup == null) {
+                    obj.stage = stage
+                }
+
                 let res = await axiosWarehouseIn.post('/pickupDone/close', obj)
                 if (res.status === 200) {
                     alert(res.data.message)
@@ -137,7 +142,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{ paddingLeft: '18px', }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {
                                     tray[0]?.items?.filter(function (item) {
@@ -216,7 +221,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{ paddingLeft: '18px', }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     tray[0]?.actual_items?.filter(function (
@@ -287,13 +292,13 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginRight: '13px' }}>
                         Closed On --{' '}
-                        {new Date(tray[0]?.closed_date_agent).toLocaleString(
+                        {new Date(tray?.[0]?.closed_date_agent).toLocaleString(
                             'en-GB',
                             { hour12: true }
                         )}
                     </h4>
                     <h4 style={{ marginRight: '13px' }}>
-                        Type :- {tray.pickup_type}
+                        Type :- {tray?.[0]?.pickup_type}
                     </h4>
                 </Box>
             </Box>
@@ -314,27 +319,27 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
-
-                    <>
+                    {tray?.[0]?.to_tray_for_pickup == null ? (
                         <TextField
-                            select
                             label="Select Next Stage"
-                            variant="outlined"
+                            select
+                            name="stage"
                             sx={{ ml: 2, mt: 1, width: 150 }}
-                            name="brand"
                             onChange={(e) => setStage(e.target.value)}
                         >
-                            <MenuItem value="Charge Done">Charge Done</MenuItem>
-                            <MenuItem value="BQC Done">BQC Done</MenuItem>
-                            <MenuItem value="Audit Done">Audit Done</MenuItem>
+                            <MenuItem value="Recharge">Recharge</MenuItem>
+                            <MenuItem value="Charge Done">Re-BQC</MenuItem>
+                            <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         </TextField>
-                    </>
+                    ) : null}
 
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         disabled={
+                            (tray?.[0]?.to_tray_for_pickup == null &&
+                                stage == '') ||
                             loading == true ||
                             description == '' ||
                             tray[0]?.actual_items?.length !==
@@ -360,3 +365,4 @@ export default function DialogBox() {
         </>
     )
 }
+

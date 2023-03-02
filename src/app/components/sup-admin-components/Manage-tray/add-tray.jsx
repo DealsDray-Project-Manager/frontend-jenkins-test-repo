@@ -49,7 +49,12 @@ const MemberEditorDialog = ({
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 fetchModel(editFetchData.brand)
-
+                let arr=[]
+                let obj={
+                    name:editFetchData.warehouse
+                }
+                arr.push(obj)
+                setWarehouse(arr)
                 open()
             }
         } catch (error) {
@@ -422,9 +427,11 @@ const MemberEditorDialog = ({
                                 getValues('type_taxanomy') == 'WHT' &&
                                 Object.keys(editFetchData).length !== 0
                             }
+                           
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
+                          
                             {warehouse.map((data) => (
                                 <MenuItem key={data.name} value={data.name}>
                                     {data.name}

@@ -115,7 +115,7 @@ export default function DialogBox() {
                         '/pickup/issueToAgent',
                         obj
                     )
-                    console.log(res)
+                
                     if (res.status == 200) {
                         alert(res.data.message)
                         setLoading(false)

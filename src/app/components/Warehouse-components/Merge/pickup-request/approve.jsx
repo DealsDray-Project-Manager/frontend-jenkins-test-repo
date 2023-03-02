@@ -97,7 +97,7 @@ export default function StickyHeadTable({ props }) {
                             '/pickup/issueToAgent',
                             obj
                         )
-                        console.log(res)
+                       
                         if (res.status == 200) {
                             alert(res.data.message)
                             setLoading(false)

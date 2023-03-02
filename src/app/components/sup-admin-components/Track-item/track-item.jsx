@@ -37,32 +37,58 @@ const TrackItem = () => {
     const [data, setData] = useState([])
     const navigate = useNavigate()
     const [displayText, setDisplayText] = useState('')
+    const [inputSearch, setInputSearch] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
-            setDisplayText('Loading...')
-            const fetchData = async () => {
-                try {
+            if (inputSearch !== '') {
+                let { location } = jwt_decode(admin)
+                const search=async()=>{
+                    let obj = {
+                     
+                        searchData: inputSearch,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
                     let res = await axiosSuperAdminPrexo.post(
-                        '/itemTracking/' + page + '/' + rowsPerPage
+                        '/search-admin-track-item',
+                        obj
                     )
                     if (res.status == 200) {
-                        setDisplayText('')
-                        setCount(res.data.count)
                         setItem(res.data.data)
+                        setDisplayText('')
+                      
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
-                } catch (error) {
-                    alert(error)
                 }
+                search()
+            } else {
+                setDisplayText('Loading...')
+                const fetchData = async () => {
+                    try {
+                        let res = await axiosSuperAdminPrexo.post(
+                            '/itemTracking/' + page + '/' + rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setCount(res.data.count)
+                            setItem(res.data.data)
+                        }
+                    } catch (error) {
+                        alert(error)
+                    }
+                }
+                fetchData()
             }
-            fetchData()
         } else {
             navigate('/')
         }
-    }, [refresh, page,rowsPerPage])
+    }, [refresh, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -95,6 +121,7 @@ const TrackItem = () => {
     }))
 
     const searchTrackItem = async (e) => {
+        setInputSearch(e.target.value)
         e.preventDefault()
         try {
             let admin = localStorage.getItem('prexo-authentication')
@@ -129,7 +156,6 @@ const TrackItem = () => {
             alert(error)
         }
     }
-
 
     const tableData = useMemo(() => {
         return (
@@ -189,8 +215,9 @@ const TrackItem = () => {
                         <TableCell>Audit Agnet Name</TableCell>
                         <TableCell>Audit Done Date</TableCell>
                         <TableCell>Audit Done Tray Recieved Date</TableCell>
-                        <TableCell>Audit Done Tray Closed By Warehouse Date</TableCell>
-
+                        <TableCell>
+                            Audit Done Tray Closed By Warehouse Date
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -468,7 +495,8 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.audit_done_recieved != undefined
+                                {data?.delivery?.audit_done_recieved !=
+                                undefined
                                     ? new Date(
                                           data?.delivery.audit_done_recieved
                                       ).toLocaleString('en-GB', {

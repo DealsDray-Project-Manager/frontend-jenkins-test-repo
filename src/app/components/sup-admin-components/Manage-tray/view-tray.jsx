@@ -1,7 +1,7 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-tray'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useMemo } from 'react'
 import { styled } from '@mui/system'
 import { Button, Box, IconButton, Icon } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -280,6 +280,31 @@ const SimpleMuiTable = () => {
         },
     ]
 
+    const trayData=useMemo(()=>{
+        return (
+            <MUIDataTable
+            title={'All Tray'}
+            data={trayList}
+            columns={columns}
+            options={{
+                filterType: 'textField',
+                responsive: 'simple',
+                download: false,
+                print: false,
+                selectableRows: 'none', // set checkbox for each row
+                // search: false, // set search option
+                // filter: false, // set data filter option
+                // download: false, // set download option
+                // print: false, // set print option
+                // pagination: true, //set pagination option
+                // viewColumns: false, // set column option
+                elevation: 0,
+                rowsPerPageOptions: [10, 20, 40, 80, 100],
+            }}
+        />
+        )
+    },[trayList])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -301,26 +326,7 @@ const SimpleMuiTable = () => {
             >
                 Add Bulk Tray
             </Button>
-            <MUIDataTable
-                title={'All Tray'}
-                data={trayList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+           {trayData}
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

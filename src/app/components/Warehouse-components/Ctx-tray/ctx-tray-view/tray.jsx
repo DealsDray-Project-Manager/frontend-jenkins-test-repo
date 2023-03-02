@@ -3,8 +3,8 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosBot } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
 import { Button } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,19 +20,20 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [trayData, setTrayData] = useState([])
+    const [ctxTray, setCtxTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let token = localStorage.getItem('prexo-authentication')
-                if (token) {
-                    const { user_name } = jwt_decode(token)
-                    let res = await axiosBot.post('/assignedTray/' + user_name)
-                    if (res.status == 200) {
-                        setTrayData(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/ctxTray/' + 'all' + '/' + location
+                    )
+                    if (response.status === 200) {
+                        setCtxTray(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -42,12 +43,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-        return () => setIsAlive(false)
-    }, [isAlive])
+    }, [])
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/bot/tray/item/' + id)
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/ctx/view-item/' + id)
     }
 
     const columns = [
@@ -69,8 +68,23 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy',
+            label: 'Tray Category',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'actual_items',
+            label: 'acutual_items',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
             name: 'limit',
-            label: 'Tray Id',
+            label: 'limit',
             options: {
                 filter: true,
                 display: false,
@@ -81,13 +95,50 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        (value.length == 0
+                            ? tableMeta.rowData[3].length
+                            : value.length) +
+                        '/' +
+                        tableMeta.rowData[4]
+                    )
+                },
+            },
+        },
+
+        {
+            name: 'issued_user_name',
+            label: 'Agent Name',
+            options: {
+                filter: true,
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'name',
+            label: 'Tray Name',
+            options: {
+                filter: true,
+            },
+        },
+
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'display',
+            label: 'Tray Display',
             options: {
                 filter: true,
             },
@@ -100,8 +151,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'status_change_time',
-            label: 'Assigned Date',
+            name: 'created_at',
+            label: 'Creation Date',
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -111,22 +162,21 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'sort_id',
-            label: 'Action',
+            name: 'code',
+            label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                            style={{ backgroundColor: 'primery' }}
+                            onClick={() => handelViewItem(value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
                         >
                             View
                         </Button>
@@ -139,18 +189,25 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'CTX', path: '/' },
+                        { name: 'CTX-Tray' },
+                    ]}
+                />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={trayData}
+                data={ctxTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

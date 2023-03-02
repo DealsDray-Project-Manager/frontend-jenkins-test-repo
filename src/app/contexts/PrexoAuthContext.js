@@ -100,9 +100,10 @@ export const AuthProvider = ({ children }) => {
                     user: null,
                 },
             })
-        }
+        }  
         return
     }, [dispatch])
+
     if (!state.isInitialised) {
         return <MatxLoading />
     }

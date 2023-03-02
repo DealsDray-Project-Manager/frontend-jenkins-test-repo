@@ -402,7 +402,7 @@ const AddBulkProduct = () => {
                                                     value={data.brand_name?.toString()}
                                                 />
                                                 {err?.brand_name?.includes(
-                                                    data.brand_name
+                                                    data.brand_name?.toString()
                                                 ) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
@@ -419,7 +419,7 @@ const AddBulkProduct = () => {
                                                 )}
 
                                                 {err?.brand_name?.includes(
-                                                    data.brand_name
+                                                    data.brand_name?.toString()
                                                 ) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Brand Name Does Not
@@ -432,14 +432,14 @@ const AddBulkProduct = () => {
                                             <TableCell>
                                                 <TextField
                                                     onChange={updateFieldChanged(
-                                                        data.muic
+                                                        data.muic?.toString()
                                                     )}
                                                     type="text"
                                                     name="model_name"
                                                     value={data.model_name?.toString()}
                                                 />
                                                 {err?.model_name?.includes(
-                                                    data.model_name
+                                                    data.model_name?.toString()
                                                 ) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
@@ -456,7 +456,7 @@ const AddBulkProduct = () => {
                                                 )}
 
                                                 {err?.model_name?.includes(
-                                                    data.model_name
+                                                   data.model_name?.toString()
                                                 ) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Duplicate Model Name
@@ -477,13 +477,13 @@ const AddBulkProduct = () => {
                                             </TableCell>
                                             <TableCell>
                                                 {err?.duplicate_vendor_iD?.includes(
-                                                    data.vendor_sku_id
+                                                    data.vendor_sku_id?.toString()
                                                 ) == true ||
                                                 err?.brand_name?.includes(
-                                                    data.brand_name
+                                                    data.brand_name?.toString()
                                                 ) == true ||
                                                 err?.model_name?.includes(
-                                                    data.model_name
+                                                    data.model_name?.toString()
                                                 ) == true ? (
                                                     <Button
                                                         sx={{

@@ -46,7 +46,7 @@ export const navigations = [
     {
         name: 'Dashboard',
         path: '/bqc/dashboard',
-        icon: 'dashboard',
+        icon: '',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     // {
@@ -286,6 +286,11 @@ export const navigations = [
                 path: '/mis/merge/mmt',
                 iconText: 'NP',
             },
+            {
+                name: 'Pickup',
+                path: '/mis/merge/pickup',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
     },
@@ -304,7 +309,7 @@ export const navigations = [
     {
         name: 'IMEI Search',
         icon: 'search',
-        path:'/mis/imei-search',
+        path: '/mis/imei-search',
         // children: [
         //     {
         //         name: 'Search',
@@ -460,6 +465,16 @@ export const navigations = [
                 path: '/wareshouse/merge/return-from-merge',
                 iconText: 'VP',
             },
+            {
+                name: 'Pickup Request',
+                path: '/wareshouse/wht/pickup/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Pickup',
+                path: '/wareshouse/wht/pickup/return-from-pickup',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
     },
@@ -491,6 +506,12 @@ export const navigations = [
         auth: authRoles.Warehouse,
     },
     {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        path: '/wareshouse/ctx/all',
+        auth: authRoles.Warehouse,
+    },
+    {
         name: 'Bag',
         icon: 'class',
         path: '/bot/bag',
@@ -515,6 +536,24 @@ export const navigations = [
         auth: authRoles.sorting,
     },
     {
+        name: 'Pickup',
+        icon: 'merge_type',
+        children: [
+            {
+                name: 'From Tray',
+                icon: 'merge_type',
+                path: '/sorting/pickup/request',
+            },
+            {
+                name: 'To Tray',
+                icon: 'merge_type',
+                path: '/sorting/pickup/to-tray',
+            },
+        ],
+        auth: authRoles.sorting,
+    },
+
+    {
         name: 'Charging Request',
         icon: 'battery_charging_full',
         path: '/charging/tray',
@@ -522,7 +561,7 @@ export const navigations = [
     },
     {
         name: 'Bqc Request',
-        icon: 'settings_system_daydream',
+        icon: '',
         path: '/bqc/tray',
         auth: authRoles.bqc,
     },

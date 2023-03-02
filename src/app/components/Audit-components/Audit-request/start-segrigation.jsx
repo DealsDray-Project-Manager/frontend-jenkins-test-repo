@@ -65,7 +65,6 @@ export default function DialogBox() {
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
-
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
     const [closeButDis, SetCloseButDis] = useState(false)
@@ -111,6 +110,7 @@ export default function DialogBox() {
                                 username: username,
                                 uic: uicCode,
                                 ctxTray: trayData?.otherTray,
+                                whtTrayId: trayId,
                             },
                         }
                     )
@@ -176,6 +176,7 @@ export default function DialogBox() {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell>S.NO</TableCell>
+                                            <TableCell>Wht tray</TableCell>
                                             <TableCell>UIC</TableCell>
                                             <TableCell>Brand</TableCell>
                                             <TableCell>Model</TableCell>
@@ -190,6 +191,12 @@ export default function DialogBox() {
                                             >
                                                 <TableCell>
                                                     {index + 1}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {
+                                                        itemData?.audit_report
+                                                            ?.wht_tray
+                                                    }
                                                 </TableCell>
                                                 <TableCell>
                                                     {itemData.uic}
@@ -208,6 +215,61 @@ export default function DialogBox() {
                         </Paper>
                     </Grid>
                 ))}
+                <Grid item xs={12} md={4}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                        }}
+                    >
+                        <h4 style={{ paddingLeft: '10px' }}>
+                            WHT Tray Id:- {trayData?.wht?.code}
+                        </h4>
+                    </Box>
+                    <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                        <TableContainer>
+                            <Table
+                                style={{ width: '100%' }}
+                                id="example"
+                                stickyHeader
+                                aria-label="sticky table"
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>S.NO</TableCell>
+                                        <TableCell>UIC</TableCell>
+                                        <TableCell>Brand</TableCell>
+                                        <TableCell>Model</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {trayData?.wht?.temp_array?.map(
+                                        (itemData, index) => (
+                                            <TableRow
+                                                hover
+                                                role="checkbox"
+                                                tabIndex={-1}
+                                            >
+                                                <TableCell>
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {itemData.uic}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {itemData.brand_name}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {itemData.model_name}
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
             </Grid>
         )
     }, [trayData?.otherTray])

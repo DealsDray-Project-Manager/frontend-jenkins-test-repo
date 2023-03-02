@@ -193,7 +193,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'http://prexo-v7-uat-adminapi.dealsdray.com/product/image/' +
+                                    ? 'http://prexo-v7-1-uat-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[1] +
                                       '.jpg'
                                     : value
@@ -330,8 +330,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

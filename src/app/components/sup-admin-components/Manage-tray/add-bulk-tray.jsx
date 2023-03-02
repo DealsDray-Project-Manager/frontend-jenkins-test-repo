@@ -588,7 +588,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                ) ? (
+                                                ) || Object.keys(err).length !=
+                                                0 &&
+                                                data.brand ==
+                                                    undefined  ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -602,7 +605,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                ) ? (
+                                                )  ||  Object.keys(err).length !=
+                                                0 &&
+                                                data.brand ==
+                                                    undefined ?  (
                                                     <p style={{ color: 'red' }}>
                                                         Brand name not exists
                                                     </p>
@@ -620,7 +626,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                ) ? (
+                                                ) ||  Object.keys(err).length !=
+                                                0 &&
+                                                data.tray_model ==
+                                                    undefined ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -634,7 +643,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                ) ? (
+                                                )  ||  Object.keys(err).length !=
+                                                0 &&
+                                                data.tray_model ==
+                                                    undefined ? (
                                                     <p style={{ color: 'red' }}>
                                                         Model name not exists
                                                     </p>
@@ -800,7 +812,13 @@ const PaginationTable = () => {
                                                 ) ||
                                                 err?.model?.includes(
                                                     data.tray_brand
-                                                ) ||
+                                                ) ||  Object.keys(err).length !=
+                                                0 &&
+                                                data.brand ==
+                                                    undefined ||  Object.keys(err).length !=
+                                                    0 &&
+                                                    data.tray_model ==
+                                                        undefined  ||
                                                 err?.tray_id?.includes(
                                                     data.tray_id
                                                 ) ||

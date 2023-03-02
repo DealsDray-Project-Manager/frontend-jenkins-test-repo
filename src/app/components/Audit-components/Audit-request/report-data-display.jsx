@@ -63,19 +63,21 @@ export default function DialogBox() {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [addButDis, setAddButDis] = useState(false)
-    const { reportData, trayId, username, uic, ctxTray } = state
+    const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
+    const [butDis, setButDis] = useState(false)
 
     const handelAdd = async (e, stageType) => {
         if (e.keyCode !== 32) {
+            setButDis(true)
             try {
                 setAddButDis(true)
                 let obj = {
                     username: username,
                     uic: uic,
                     trayId: trayId,
-                    stage:"BQC Not Done"
+                    stage: 'BQC Not Done',
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -105,6 +107,7 @@ export default function DialogBox() {
                 }
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
+                    setButDis(false)
                     alert(res.data.message)
                     navigate(-1)
                 } else {
@@ -159,38 +162,10 @@ export default function DialogBox() {
         }
     }
 
-    console.log(ctxTray?.filter((data) => data))
-
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
-                <Grid item lg={3} md={6} xs={12}>
-                    <AmazonDetails Order={reportData?.order} />
-                </Grid>
-                <Grid item lg={3} md={6} xs={12}>
-                    <Botuser BOt={reportData?.delivery?.bot_report} />
-                </Grid>
-                <Grid item lg={3} md={6} xs={12}>
-                    <ChargingDetails
-                        Charging={reportData?.delivery?.charging}
-                        ChargeDoneDate={
-                            reportData?.delivery?.charging_done_date
-                        }
-                    />
-                </Grid>
-                <Grid item lg={3} md={6} xs={12}>
-                    <BqcUserReport
-                        BqcUserReport={reportData?.delivery?.bqc_report}
-                    />
-                </Grid>
-                <Grid item lg={6} md={6} xs={12}>
-                    <BqcApiAllReport
-                        BqcSowftwareReport={
-                            reportData?.delivery?.bqc_software_report
-                        }
-                    />
-                </Grid>
-                <Grid item lg={6} md={6} xs={12}>
+                <Grid item sx={{ m: 1, boxShadow: 1 }} lg={12} md={12} xs={12}>
                     <BqcApiReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
@@ -200,6 +175,31 @@ export default function DialogBox() {
                                 ?.final_grade
                         }
                         imei={reportData?.order?.imei}
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <AmazonDetails Order={reportData?.order} />
+                    <Botuser BOt={reportData?.delivery?.bot_report} />
+                </Grid>
+
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <ChargingDetails
+                        Charging={reportData?.delivery?.charging}
+                        ChargeDoneDate={
+                            reportData?.delivery?.charging_done_date
+                        }
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <BqcUserReport
+                        BqcUserReport={reportData?.delivery?.bqc_report}
+                    />
+                </Grid>
+                <Grid sx={{ m: 1, boxShadow: 1 }} item lg={12} md={12} xs={12}>
+                    <BqcApiAllReport
+                        BqcSowftwareReport={
+                            reportData?.delivery?.bqc_software_report
+                        }
                     />
                 </Grid>
             </Grid>
@@ -486,26 +486,87 @@ export default function DialogBox() {
                     sx={{
                         mt: 2,
                         ml: 2,
+                        display: 'flex',
+                        justifyContent: 'space-between',
                     }}
                 >
-                    {reportData?.delivery?.bqc_software_report?.final_grade ==
-                        undefined ||
-                    reportData?.delivery?.bqc_software_report?.final_grade ==
-                        '' ? (
-                        <H3>Grade: Not found</H3>
-                    ) : (
-                        <H3>
-                            Grade :{' '}
-                            {
+                    <Box>
+                        {reportData?.delivery?.bqc_software_report
+                            ?.final_grade == undefined ||
+                        reportData?.delivery?.bqc_software_report
+                            ?.final_grade == '' ? (
+                            <H3>Grade: Not found</H3>
+                        ) : (
+                            <H3>
+                                Grade :{' '}
+                                {
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.final_grade
+                                }
+                            </H3>
+                        )}
+                        <H3 sx={{ mt: 2 }}>Tray Id : {whtTrayId}</H3>
+                        <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
+                    </Box>
+                    <Box>
+                        {
+                        // (reportData?.delivery?.bqc_report?.bqc_status ==
+                        //     'Device not to be checked for BQC' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        reportData?.delivery?.bqc_software_report ==
+                            undefined ||
+                        // (reportData?.delivery?.bqc_report?.bqc_status ==
+                        //     'BQC Incomplete' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'Charge failed' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'No-battery' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.battery_status ==
+                        //     'Heat Problem' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
+                        // (reportData?.delivery?.charging?.lock_status ==
+                        //     'Software Issue' &&
+                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                        //         'failed') ||
                                 reportData?.delivery?.bqc_software_report
-                                    ?.final_grade
-                            }
-                        </H3>
-                    )}
-                    <H3>UIC : {uic}</H3>
+                                ?.final_grade == undefined ? (
+                            <Button
+                                sx={{ mr: 2 }}
+                                onClick={(e) =>
+                                    handelAdd(
+                                        e,
+                                        'Device not to be checked for BQC'
+                                    )
+                                }
+                                disabled={butDis}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD to WHT
+                            </Button>
+                        ) : (
+                            <Button
+                                sx={{ mr: 2 }}
+                                disabled={butDis}
+                                onClick={(e) => handleOpen()}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
                 {gridData}
-                <Box
+                {/* <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
@@ -515,29 +576,8 @@ export default function DialogBox() {
                         mb: 2,
                     }}
                 >
-                    {reportData?.delivery?.bqc_report?.bqc_status ==
-                    'Device not to be checked for BQC' &&   reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() == "failed" ? (
-                        <Button
-                            sx={{ ml: 2 }}
-                            onClick={(e) =>
-                                handelAdd(e, 'Device not to be checked for BQC')
-                            }
-                            variant="contained"
-                            color="primary"
-                        >
-                            ADD to WHT
-                        </Button>
-                    ) : (
-                        <Button
-                            sx={{ ml: 2 }}
-                            onClick={(e) => handleOpen()}
-                            variant="contained"
-                            color="primary"
-                        >
-                            ADD
-                        </Button>
-                    )}
-                </Box>
+                  
+                </Box> */}
             </Box>
         </>
     )

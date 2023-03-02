@@ -35,10 +35,10 @@ const MemberEditorDialog = ({
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {
+                handleClose()
                 setLoading(false)
                 alert(res.data.message)
                 setIsAlive((isAlive) => !isAlive)
-                handleClose()
             } else {
                 setLoading(false)
                 alert(res.data.message)

@@ -52,6 +52,11 @@ const SimpleMuiTable = () => {
         navigate('/audit/audit-request/start-transaction/' + id)
     }
 
+    const handelViewTrayItem = (e, id) => {
+        e.preventDefault()
+        navigate('/audit/audit-request/wht/view-item/' + id)
+    }
+
     const columns = [
         {
             name: 'index',
@@ -142,9 +147,9 @@ const SimpleMuiTable = () => {
                             onClick={(e) => {
                                 handelViewTray(e, value)
                             }}
-                            style={{ backgroundColor: 'primery' }}
+                            style={{ backgroundColor: 'green' }}
                         >
-                            View
+                            Start
                         </Button>
                     )
                 },
@@ -167,8 +172,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

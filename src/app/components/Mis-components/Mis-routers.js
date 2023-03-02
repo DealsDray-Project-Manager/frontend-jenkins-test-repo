@@ -57,7 +57,8 @@ const MergeMmt = Loadable(lazy(() => import('./Merge/Mmt-merge/mmt-tray')))
 const MergeMmtViewItem = Loadable(lazy(() => import('./Merge/Mmt-merge/view-item')))
 const MergeWht = Loadable(lazy(() => import('./Merge/Wht-merge/wht-tray')))
 const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
-
+const SearchImei = Loadable(lazy(() => import('./Imei-search/search')))
+const Pickup =Loadable(lazy(() => import('./Merge/Pickup/pickup')))
 
 const dataTableRoutes = [
     {
@@ -145,6 +146,10 @@ const dataTableRoutes = [
         element: <MergeMmt />,
     },
     {
+        path: '/mis/merge/pickup',
+        element: <Pickup />,
+    },
+    {
         path: '/mis/merge/mmt/view-item/:trayId',
         element: <MergeMmtViewItem />,
     },
@@ -163,6 +168,10 @@ const dataTableRoutes = [
     {
         path: '/mis/track/item',
         element: <TrackItem />,
+    },
+    {
+        path: '/mis/imei-search',
+        element: <SearchImei />,
     },
 ]
 

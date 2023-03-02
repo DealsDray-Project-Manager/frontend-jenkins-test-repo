@@ -34,7 +34,6 @@ const SimpleMuiTable = () => {
                         '/view-sorting-item/' + location + '/' + 'warehouse'
                     )
                     if (response.status === 200) {
-                        console.log(response.data.data)
                         setBotTray(response.data.data)
                     } else {
                         alert(response.data.message)

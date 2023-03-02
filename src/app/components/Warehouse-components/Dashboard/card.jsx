@@ -152,6 +152,18 @@ const StatCard3 = () => {
             title: 'Return From Merge',
             path: '/wareshouse/merge/return-from-merge',
         },
+        {
+            icon: 'merge_type',
+            amount: count.pickupRequest,
+            title: 'Pickup Request',
+            path: '/wareshouse/wht/pickup/request',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.returnFromPickup,
+            title: 'Return From Pickup',
+            path: '/wareshouse/wht/pickup/return-from-pickup',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

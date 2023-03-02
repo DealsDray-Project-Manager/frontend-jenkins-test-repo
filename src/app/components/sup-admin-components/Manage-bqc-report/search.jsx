@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { Box, Grid, TextField, Button } from '@mui/material'
@@ -32,10 +32,9 @@ export default function CenteredTabs() {
         setValue(newValue)
     }
 
-    useEffect(() => {}, [])
-
     const fetchData = async () => {
         try {
+            setReportData({})
             let res = await axiosSuperAdminPrexo.post('/bqcReport/' + uicCode)
             if (res.status === 200) {
                 setReportData(res.data.data)

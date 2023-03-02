@@ -99,6 +99,7 @@ const SimpleMuiTable = () => {
     const handleClose = () => {
         setOpen(false)
     }
+    
 
     const handelTrayReceived = async () => {
         try {

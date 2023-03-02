@@ -70,7 +70,6 @@ BootstrapDialogTitle.propTypes = {
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [userList, setUserList] = useState([])
     const [whtTray, setWhtTray] = useState([])
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
@@ -237,13 +236,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -273,7 +266,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[4],
             },
         },
         {
@@ -351,11 +344,11 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
+                                        tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length,
-                                        tableMeta.rowData[11]
+                                        tableMeta.rowData[5]?.length,
+                                        tableMeta.rowData[10]
                                     )
                                 }}
                                 style={{ backgroundColor: 'primery' }}
@@ -482,8 +475,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

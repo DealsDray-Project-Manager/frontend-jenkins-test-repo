@@ -87,7 +87,6 @@ const MemberEditorDialog = ({
     })
 
     const onSubmit = async (data) => {
-        console.log(data)
         setLoading(true)
         let muis_code = ''
         let alphebet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

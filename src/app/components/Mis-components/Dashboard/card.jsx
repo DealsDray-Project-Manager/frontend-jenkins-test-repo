@@ -22,7 +22,6 @@ const StatCard3 = () => {
                     )
                     if (res.status === 200) {
                         setCount(res.data.data)
-                        console.log('kk');
                     }
                 } catch (error) {
                     Swal.fire({

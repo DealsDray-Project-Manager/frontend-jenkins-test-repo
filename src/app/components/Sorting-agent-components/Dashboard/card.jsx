@@ -47,6 +47,18 @@ const StatCard3 = () => {
             title: 'Tray Merge',
             path: '/sorting/merge',
         },
+        {
+            icon: 'merge_type',
+            amount: count.pickup,
+            title: 'Pickup From Tray',
+            path: '/sorting/pickup/request',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.pickupToTray,
+            title: 'Pickup To Tray',
+            path: '/sorting/pickup/to-tray',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

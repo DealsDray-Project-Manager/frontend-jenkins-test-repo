@@ -224,7 +224,6 @@ export default function DialogBox() {
                     if (res.data.data?.charging?.boady_part_missing == 'YES') {
                         setBodyDamage(true)
                     }
-                    console.log(res.data.data?.charging?.boady_part_missing)
                     setResDataUic(res.data.data)
                     handleClickOpen()
                 } else {
@@ -514,7 +513,6 @@ export default function DialogBox() {
         )
     }, [trayData?.actual_items, textBoxDis, uic])
     /***************************************************************************************** */
-    console.log()
     return (
         <>
             <BootstrapDialog

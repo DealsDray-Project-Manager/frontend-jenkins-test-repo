@@ -2,11 +2,8 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
-import { axiosBot } from '../../../../axios'
-import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
-import Swal from 'sweetalert2'
+import { axiosWarehouseIn } from '../../../../axios'
+import { useParams } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,40 +18,28 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [trayData, setTrayData] = useState([])
-    const navigate = useNavigate()
+    const [whtTray, setWhtTray] = useState([])
+    const { trayId } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let token = localStorage.getItem('prexo-authentication')
-                if (token) {
-                    const { user_name } = jwt_decode(token)
-                    let res = await axiosBot.post('/assignedTray/' + user_name)
-                    if (res.status == 200) {
-                        setTrayData(res.data.data)
+                let response = await axiosWarehouseIn.post(
+                    '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
+                )
+                if (response.status === 200) {
+                    if (response.data.data?.items?.length == 0) {
+                        setWhtTray(response.data.data.actual_items)
+                    } else {
+                        setWhtTray(response.data.data.items)
                     }
-                } else {
-                    navigate('/')
                 }
             } catch (error) {
-             
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text:error,
-                })
+                alert(error)
             }
         }
         fetchData()
-        return () => setIsAlive(false)
-    }, [isAlive])
-
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/bot/tray/item/' + id)
-    }
+    }, [])
 
     const columns = [
         {
@@ -68,76 +53,53 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: 'Tray Id',
+            name: 'uic',
+            label: 'UIC',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'limit',
-            label: 'Tray Id',
+            name: 'muic',
+            label: 'MUIC',
             options: {
                 filter: true,
-                display: false,
             },
         },
+
         {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'brand_name',
+            label: 'Brand',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'model_name',
+            label: 'Model',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'status_change_time',
-            label: 'Assigned Date',
+            name: 'tracking_id',
+            label: 'Tracking Id',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
-            name: 'sort_id',
-            label: 'Action',
+            name: 'tray_id',
+            label: 'BOT Tray',
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                            style={{ backgroundColor: 'primery' }}
-                        >
-                            View
-                        </Button>
-                    )
-                },
+                filter: true,
+            },
+        },
+        {
+            name: 'bot_agent',
+            label: 'BOT Agent',
+            options: {
+                filter: true,
             },
         },
     ]
@@ -145,12 +107,17 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'WHT-Tray-Item' },
+                    ]}
+                />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={trayData}
+                data={whtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

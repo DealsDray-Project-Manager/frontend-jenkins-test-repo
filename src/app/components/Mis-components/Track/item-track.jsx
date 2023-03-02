@@ -13,6 +13,7 @@ import {
     TablePagination,
     TextField,
     Box,
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -33,12 +34,13 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
+    const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
@@ -48,6 +50,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
+            setDisplayText('Loading...')
             const { location } = jwt_decode(admin)
             const fetchData = async () => {
                 try {
@@ -60,10 +63,9 @@ const SimpleMuiTable = () => {
                             rowsPerPage
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setCount(res.data.count)
-
                         setItem(res.data.data)
-                        // dataTableFun();
                     }
                 } catch (error) {
                     Swal.fire({
@@ -124,6 +126,7 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
@@ -139,8 +142,12 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setRowsPerPage(10)
+                        setDisplayText('')
                         setPage(0)
                         setItem(res.data.data)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -212,9 +219,23 @@ const SimpleMuiTable = () => {
                         <TableCell>Audit Agnet Name</TableCell>
                         <TableCell>Audit Done Date</TableCell>
                         <TableCell>Audit Done Tray Recieved Date</TableCell>
+                        <TableCell>
+                            Audit Done Tray Closed By Warehouse Date
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {displayText !== '' ? (
+                        <TableCell
+                            colSpan={8}
+                            align="center"
+                            sx={{ verticalAlign: 'top' }}
+                        >
+                            <Typography variant="p" gutterBottom>
+                                {displayText}
+                            </Typography>
+                        </TableCell>
+                    ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
@@ -466,7 +487,7 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_user_name }
+                                {data?.delivery.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined
@@ -486,12 +507,22 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
+                            <TableCell>
+                                {data?.delivery.audit_done_close != undefined
+                                    ? new Date(
+                                          data?.delivery.audit_done_close
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </ProductTable>
         )
-    }, [item, data])
+    }, [item, data, displayText])
+
     return (
         <Container>
             <div className="breadcrumb">

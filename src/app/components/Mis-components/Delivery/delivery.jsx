@@ -14,6 +14,7 @@ import {
     MenuItem,
     Box,
     TextField,
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -35,9 +36,11 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
     const [item, setItem] = useState([])
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(50)
     const [data, setData] = useState([])
     const [deliveryCount, setDeliveryCount] = useState([])
+    const [displayText, setDisplayText] = useState('')
+
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
@@ -50,6 +53,7 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Loading...')
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
                     let deliveryCountRes = await axiosMisUser.post(
@@ -67,6 +71,7 @@ const SimpleMuiTable = () => {
                             rowsPerPage
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setItem(res.data.data)
                     }
                 }
@@ -120,6 +125,8 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
+
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
@@ -132,8 +139,14 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post('/searchDelivery', obj)
                     if (res.status == 200) {
                         setRowsPerPage(10)
+                        setDisplayText('')
+
                         setPage(0)
+
                         setItem(res.data.data)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -173,6 +186,17 @@ const SimpleMuiTable = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {displayText !== '' ? (
+                        <TableCell
+                            colSpan={8}
+                            align="center"
+                            sx={{ verticalAlign: 'top' }}
+                        >
+                            <Typography variant="p" gutterBottom>
+                                {displayText}
+                            </Typography>
+                        </TableCell>
+                    ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
@@ -223,13 +247,13 @@ const SimpleMuiTable = () => {
                                       ) == 'Invalid Date'
                                     ? data?.order_date
                                     : new Date(data?.order_date).toLocaleString(
-                                        'en-GB',
-                                        {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                        }
-                                    )}
+                                          'en-GB',
+                                          {
+                                              year: 'numeric',
+                                              month: '2-digit',
+                                              day: '2-digit',
+                                          }
+                                      )}
                             </TableCell>
                             <TableCell>{data.item_id?.toString()}</TableCell>
                             <TableCell>{data.gep_order?.toString()}</TableCell>

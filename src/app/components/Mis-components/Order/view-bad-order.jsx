@@ -14,6 +14,7 @@ import {
     MenuItem,
     Box,
     TextField,
+    Typography
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -42,6 +43,7 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
@@ -52,12 +54,14 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Loading...')
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
                     let res = await axiosMisUser.post(
                         '/getBadOrders/' + location
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setItem(res.data.data)
                     }
                 }
@@ -124,6 +128,8 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
+
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
@@ -137,7 +143,11 @@ const SimpleMuiTable = () => {
                     if (res.status == 200) {
                         setRowsPerPage(10)
                         setPage(0)
+                        setDisplayText('')
                         setItem(res.data.data)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -253,6 +263,17 @@ const SimpleMuiTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {displayText !== '' ? (
+                            <TableCell
+                                colSpan={8}
+                                align="center"
+                                sx={{ verticalAlign: 'top' }}
+                            >
+                                <Typography variant="p" gutterBottom>
+                                    {displayText}
+                                </Typography>
+                            </TableCell>
+                        ) : null}
                         {data.map((data, index) => (
                             <TableRow tabIndex={-1}>
                                 <TableCell>{data.id}</TableCell>

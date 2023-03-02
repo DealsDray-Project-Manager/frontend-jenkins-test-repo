@@ -40,7 +40,6 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status === 200) {
-                        console.log(res.data.data.temp_array)
                         setBotTray(res.data.data.temp_array)
                     }
                 }

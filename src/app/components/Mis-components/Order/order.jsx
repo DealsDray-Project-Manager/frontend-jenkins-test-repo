@@ -12,10 +12,8 @@ import {
     Card,
     MenuItem,
     Box,
-    FormControl,
-    InputLabel,
-    Select,
     TextField,
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -37,19 +35,22 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [rowsPerPage, setRowsPerPage] = useState(50)
     const [page, setPage] = useState(0)
     const [orderCount, setOrderCount] = useState(0)
     const [data, setData] = useState([])
     const [item, setItem] = useState([])
+    const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
         location: '',
     })
+
     const navigate = useNavigate()
 
     useEffect(() => {
+        setDisplayText('Loading...')
         const fetchOrder = async () => {
             try {
                 let user = localStorage.getItem('prexo-authentication')
@@ -70,6 +71,7 @@ const SimpleMuiTable = () => {
                         rowsPerPage
                     )
                     if (res.status == 200) {
+                        setDisplayText('')
                         setItem(res.data.data)
                     }
                 } else {
@@ -106,6 +108,7 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setIsAlive((isAlive) => !isAlive)
@@ -120,6 +123,10 @@ const SimpleMuiTable = () => {
                     setPage(0)
                     if (res.status == 200) {
                         setItem(res.data.data)
+                        setDisplayText('')
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -255,6 +262,17 @@ const SimpleMuiTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {displayText !== '' ? (
+                            <TableCell
+                                colSpan={8}
+                                align="center"
+                                sx={{ verticalAlign: 'top' }}
+                            >
+                                <Typography variant="p" gutterBottom>
+                                    {displayText}
+                                </Typography>
+                            </TableCell>
+                        ) : null}
                         {data.map((data, index) => (
                             <TableRow tabIndex={-1}>
                                 <TableCell>{data?.id}</TableCell>
@@ -413,7 +431,6 @@ const SimpleMuiTable = () => {
                 nextIconButtonProps={{
                     'aria-label': 'Next Page',
                 }}
-
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={({ target: { value } }) =>
                     setRowsPerPage(value)

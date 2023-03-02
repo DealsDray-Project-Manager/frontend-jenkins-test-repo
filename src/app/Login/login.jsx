@@ -86,6 +86,8 @@ const Login = () => {
                 navigate('/sorting/dashboard')
             } else if (user_type == 'Audit') {
                 navigate('/audit/dashboard')
+            } else if (user_type == 'RDL') {
+                navigate('/RDL_one/dashboard')
             }
         } else {
             navigate('/')

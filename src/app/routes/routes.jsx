@@ -33,6 +33,8 @@ import BqcRoutes from "../components/Bqc-components/BqcRoutes"
 import Login from "../Login/loginRouter"
 import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
 import AuditRouter from "app/components/Audit-components/AuditRouter"
+import RDL_one from "app/components/Rdl_one-components/Rdl_routers"
+
 
 export const AllPages = () => {
     const all_routes = [
@@ -69,7 +71,8 @@ export const AllPages = () => {
                 ...SortingRoutes,
                 ...ChargingRoutes,
                 ...BqcRoutes,
-                ...AuditRouter
+                ...AuditRouter,
+                ...RDL_one
             ],
         },
         ...Login,

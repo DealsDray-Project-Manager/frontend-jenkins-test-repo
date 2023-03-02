@@ -139,7 +139,9 @@ export const H5 = ({
     )
 }
 
-export const H6 = ({
+
+
+export const H6 = ({ 
     children,
     className,
     ellipsis,

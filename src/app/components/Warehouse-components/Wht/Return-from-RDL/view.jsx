@@ -2,10 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+
 import { axiosWarehouseIn } from '../../../../../axios'
-import { useParams } from 'react-router-dom'
-import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,99 +21,104 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [isCheck, setIsCheck] = useState([])
-    const [whtTrayItem, setWhtTrayItem] = useState([])
-    
+    const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
 
     useEffect(() => {
-        const fetchWht = async () => {
+        const fetchData = async () => {
             try {
-                const res = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
-                )
+                let res = await axiosWarehouseIn.post('/trayItem/' + trayId)
                 if (res.status === 200) {
-                    setWhtTrayItem(res.data?.data?.items)
+                    setTrayData(res.data.data)
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
+                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
         }
-        fetchWht()
-        return () => setIsAlive(false)
-    }, [isAlive])
-
-
-   
-
-   
+        fetchData()
+    }, [])
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
-            name: 'uic', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            name: 'imei',
+            label: 'IMEI',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'muic',
-            label: 'MUIC',
+            name: 'uic',
+            label: 'UIC',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand_name',
+            name: 'sort_id',
             label: 'Brand',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return trayData.brand
+                },
             },
         },
         {
-            name: 'model_name',
+            name: 'sort_id',
             label: 'Model',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return trayData.model
+                },
             },
         },
         {
-            name: 'tracking_id',
-            label: 'Tracking Id',
+            name: 'sort_id',
+            label: 'RDL Assign Date',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return trayData?.assigned_date
+                },
             },
         },
         {
-            name: 'tray_id',
-            label: 'Bot Tray',
+            name: 'Rdl_status',
+            label: 'RDL Status',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return value?.selected_status
+                },
             },
         },
         {
-            name: 'bot_agent',
-            label: 'Bot Agent',
+            name: 'Rdl_status',
+            label: 'RDL Decription',
             options: {
                 filter: true,
-                display: false,
+                customBodyRender: (value) => {
+                    return value?.description
+                },
             },
         },
+        
     ]
 
     return (
@@ -121,14 +126,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign To RDL', path: '/' },
-                        { name: 'View-Item' },
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-from-RDL_one' },
                     ]}
                 />
             </div>
+
             <MUIDataTable
-                title={'WHT Tray Item'}
-                data={whtTrayItem}
+                title={'Tray'}
+                data={trayData.items}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -142,17 +148,26 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-
-
-           
-
-
-
-
         </Container>
     )
 }

@@ -6,6 +6,8 @@ import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import AssignDialogBox from './user-dailog'
+import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -24,6 +26,8 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const [whtTrayList, setWhtTrayList] = useState([])
+    const [RDLUsers, setRDLUsers] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -47,50 +51,68 @@ const SimpleMuiTable = () => {
 
     const handleClick = (e) => {
         const { id, checked } = e.target
+
+        console.log(id,"idddd");
+        console.log(checked,"checked");
         setIsCheck([...isCheck, id])
         if (!checked) {
             setIsCheck(isCheck.filter((item) => item !== id))
         }
     }
-    const handelReadyForRdl = async () => {
-        try {
-            let obj = {
-                ischeck: isCheck,
-            }
-            let res = await axiosMisUser.post('/sendToRdl', obj)
-            setIsCheck([])
-            if (res.status === 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res.data.message,
-                    confirmButtonText: 'Ok',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsCheck([])
-                        setIsAlive((isAlive) => !isAlive)
+
+  
+    
+
+    const handelReadyForRdl = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/get-RDL_one-users/' + 'RDL/' + location
+                    )
+                    if (res.status == 200) {
+                        setRDLUsers(res.data.data)
+                        handleDialogOpen()
                     }
-                })
-            } else if (res.status == 202) {
+                }
+            } catch (error) {
                 Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
                 })
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text:error,
-            })
         }
+        fetchData()
+    }
+
+
+
+
+   
+
+
+    const handleDialogClose = () => {
+        console.log('1');
+        setIsCheck([])
+        console.log('2');
+        setRDLUsers([])
+        console.log('3');
+        setShouldOpenEditorDialog(false)
+        console.log('4');
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
     }
 
     const handelViewItem = (trayId) => {
         navigate('/mis/assign-to-agent/Rdl/view-item/' + trayId)
     }
+
+    console.log(isCheck,'isCheckkkkkkkkk');
 
     const columns = [
         {
@@ -250,7 +272,7 @@ const SimpleMuiTable = () => {
                     handelReadyForRdl(e)
                 }}
             >
-                Ready For RDL
+               Assign For RDL
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}
@@ -272,6 +294,17 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+
+
+{shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    RDLUsers={RDLUsers}
+                    isCheckk={isCheck}
+                />
+            )}
         </Container>
     )
 }

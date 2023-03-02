@@ -49,6 +49,12 @@ export const navigations = [
         icon: '',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
+    {
+        name: 'Dashboard',
+        path: '/RDL_one/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.RDL_one, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
     // {
     //     name: 'Analytics',
     //     path: '/dashboard/analytics',
@@ -325,6 +331,7 @@ export const navigations = [
         // ],
         auth: authRoles.Mis,
     },
+    
     {
         name: 'Bag',
         icon: 'class',
@@ -430,6 +437,16 @@ export const navigations = [
             {
                 name: 'Ready for Audit',
                 path: '/wareshouse/wht/ready-for-audit',
+                iconText: 'VP',
+            },
+            {
+                name: 'RDL Request',
+                path: '/wareshouse/wht/RDL-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From RDL',
+                path: '/wareshouse/wht/Return-From-RDL',
                 iconText: 'VP',
             },
         ],
@@ -548,6 +565,13 @@ export const navigations = [
         icon: 'settings_system_daydream',
         path: '/audit/assigned-tray',
         auth: authRoles.audit,
+    },
+
+    {
+        name: 'RDL One Requests',
+        icon: 'class',
+        path: '/RDL_one/tray',
+        auth: authRoles.RDL_one,
     },
 
     // {

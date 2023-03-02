@@ -129,6 +129,29 @@ const ReadyForAudit = Loadable(
 const ReadyForAuditAction = Loadable(
     lazy(() => import('./Wht/Ready-for-audit/action'))
 )
+const ReadyForRDL = Loadable(
+    lazy(() => import('./Wht/RDL Request/tray'))
+)
+
+const ReadyForRDLApprove = Loadable(
+    lazy(() => import('./Wht/RDL Request/approve'))
+)
+
+const ReturnFormRDL = Loadable(
+    lazy(() => import('./Wht/Return-from-RDL/tray'))
+)
+
+const ReturnFormRDLClose = Loadable(
+    lazy(() => import('./Wht/Return-from-RDL/close'))
+)
+
+const ReturnFormRDLviewitems = Loadable(
+    lazy(() => import('./Wht/Return-from-RDL/view'))
+)
+
+
+
+
 const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
 const OtherTrayReturnFromAuditClose = Loadable(
     lazy(() => import('./Wht/Return-from-audit/close-tray'))
@@ -217,6 +240,30 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/return-from-charging',
         element: <WhtReturnFromCharging />,
+    },
+    {
+        path: '/wareshouse/wht/RDL-request',
+        element: <ReadyForRDL />,
+    },
+    {
+        path: '/wareshouse/wht/RDL-request/approve/:trayId',
+        element: <ReadyForRDLApprove />,
+    },
+    {
+        path: '/wareshouse/wht/Return-From-RDL',
+        element: <ReturnFormRDL />,
+    },
+    // {
+    //     path: '/wareshouse/wht/Return-From-RDL/approve/:trayId',
+    //     element: <ReturnFormRDLApprove />,
+    // },ReturnFormRDLviewitems
+    {
+        path: '/wareshouse/wht/Return-From-RDL/close/:trayId',
+        element: <ReturnFormRDLClose />,
+    },
+    {
+        path: '/wareshouse/wht/Return-From-RDL/view/:trayId',
+        element: <ReturnFormRDLviewitems />,
     },
     {
         path: '/wareshouse/wht/return-from-charging/view-item/:trayId',

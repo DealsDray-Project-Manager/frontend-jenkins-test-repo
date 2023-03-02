@@ -274,6 +274,11 @@ export const navigations = [
                 path: '/mis/assign-to-agent/Rdl',
                 iconText: 'NP',
             },
+            {
+                name: 'Assign to RDL Two',
+                path: '/mis/assign-to-agent/Rdl_two',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
     },

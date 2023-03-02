@@ -543,10 +543,33 @@ export default function DialogBox() {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleStatusOpen} color="primary">
+                    {/* <Button onClick={handleClose}>Cancel</Button> */}
+                    <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={handleClose}
+                            style={{ backgroundColor: 'red' }}
+                            component="span"
+                        >
+                            Cancel
+                        </Button>
+                    {/* <Button onClick={handleStatusOpen} color="primary">
                         Add Status
-                    </Button>
+                    </Button> */}
+                    <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            type='submit'
+                            variant="contained"
+                            onClick={handleStatusOpen}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                             Add Status
+                        </Button>
                 </DialogActions>
             </Dialog>
 
@@ -566,7 +589,7 @@ export default function DialogBox() {
                             error={errors.selected_status ? true : false}
                             helperText={errors.selected_status?.message}
                             style={{ minWidth: 300 }}
-                            defaultValue="Select an Option "
+                            defaultValue="Battery Boosted"
                         >
                             <MenuItem value="Battery Boosted" onClick={()=>setSelectedStatus('Battery Boosted')}>Battery Boosted</MenuItem>
                             <MenuItem value="Charge jack Replaced & Boosted" onClick={()=>setSelectedStatus('Charge jack Replaced & Boosted')}>Charge jack Replaced & Boosted</MenuItem>
@@ -626,12 +649,37 @@ export default function DialogBox() {
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleStatusclose}>Cancel</Button>
-                    <Button  type='submit' color="success"  onClick={
+                    {/* <Button onClick={handleStatusclose}>Cancel</Button> */}
+                    <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={handleStatusclose}
+                            style={{ backgroundColor: 'red' }}
+                            component="span"
+                        >
+                            Cancel
+                        </Button>
+                    {/* <Button  type='submit' color="success"  onClick={
                         handleSubmit(statusSubmit)
                    }>
                         Submit
-                    </Button>
+                    </Button> */}
+                    <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            type='submit'
+                            variant="contained"
+                            onClick={
+                                handleSubmit(statusSubmit)
+                           }
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            Submit
+                        </Button>
                 </DialogActions>
             </Dialog>
 

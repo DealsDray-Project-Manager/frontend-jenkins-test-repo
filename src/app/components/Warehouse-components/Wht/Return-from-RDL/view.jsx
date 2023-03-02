@@ -95,9 +95,13 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value) => {
                     return trayData?.assigned_date
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    })
                 },
             },
         },
+       
         {
             name: 'Rdl_status',
             label: 'RDL Status',

@@ -56,6 +56,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+    
     const handleClose = () => {
         setOpen(false)
         setLoading(false)

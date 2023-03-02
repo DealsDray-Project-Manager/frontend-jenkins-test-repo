@@ -32,8 +32,6 @@ export default function CenteredTabs() {
         setValue(newValue)
     }
 
-    useEffect(() => {}, [])
-
     const fetchData = async () => {
         try {
             setReportData({})
@@ -57,8 +55,6 @@ export default function CenteredTabs() {
             })
         }
     }
-
-  
 
     return (
         <Container>

@@ -12,6 +12,7 @@ import {
     Card,
     TablePagination,
     TableFooter,
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -29,41 +30,65 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const TrackItem = () => {
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
+    const [displayText, setDisplayText] = useState('')
+    const [inputSearch, setInputSearch] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
-    const [search, setSearch] = useState({
-        type: '',
-        searchData: '',
-        location: '',
-    })
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
-            const fetchData = async () => {
-                try {
+            if (inputSearch !== '') {
+                let { location } = jwt_decode(admin)
+                const search=async()=>{
+                    let obj = {
+                     
+                        searchData: inputSearch,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
                     let res = await axiosSuperAdminPrexo.post(
-                        '/itemTracking/' + page + '/' + rowsPerPage
+                        '/search-admin-track-item',
+                        obj
                     )
                     if (res.status == 200) {
-                        setCount(res.data.count)
                         setItem(res.data.data)
+                        setDisplayText('')
+                      
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
-                } catch (error) {
-                    alert(error)
                 }
+                search()
+            } else {
+                setDisplayText('Loading...')
+                const fetchData = async () => {
+                    try {
+                        let res = await axiosSuperAdminPrexo.post(
+                            '/itemTracking/' + page + '/' + rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setCount(res.data.count)
+                            setItem(res.data.data)
+                        }
+                    } catch (error) {
+                        alert(error)
+                    }
+                }
+                fetchData()
             }
-            fetchData()
         } else {
             navigate('/')
         }
-    }, [refresh, page,rowsPerPage])
+    }, [refresh, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -96,17 +121,18 @@ const SimpleMuiTable = () => {
     }))
 
     const searchTrackItem = async (e) => {
+        setInputSearch(e.target.value)
         e.preventDefault()
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
                 } else {
                     let obj = {
                         location: location,
-                        type: search.type,
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -117,8 +143,12 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setItem(res.data.data)
-                        setRowsPerPage(10)
+                        setDisplayText('')
+                        setRowsPerPage(100)
                         setPage(0)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
                 }
             }
@@ -126,7 +156,6 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }
-
 
     const tableData = useMemo(() => {
         return (
@@ -186,9 +215,23 @@ const SimpleMuiTable = () => {
                         <TableCell>Audit Agnet Name</TableCell>
                         <TableCell>Audit Done Date</TableCell>
                         <TableCell>Audit Done Tray Recieved Date</TableCell>
+                        <TableCell>
+                            Audit Done Tray Closed By Warehouse Date
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {displayText !== '' ? (
+                        <TableCell
+                            colSpan={8}
+                            align="center"
+                            sx={{ verticalAlign: 'top' }}
+                        >
+                            <Typography variant="p" gutterBottom>
+                                {displayText}
+                            </Typography>
+                        </TableCell>
+                    ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
@@ -440,7 +483,7 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_user_name}
+                                {data?.delivery?.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined
@@ -452,9 +495,19 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.audit_done_recieved != undefined
+                                {data?.delivery?.audit_done_recieved !=
+                                undefined
                                     ? new Date(
                                           data?.delivery.audit_done_recieved
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.audit_done_close != undefined
+                                    ? new Date(
+                                          data?.delivery?.audit_done_close
                                       ).toLocaleString('en-GB', {
                                           hour12: true,
                                       })
@@ -466,6 +519,7 @@ const SimpleMuiTable = () => {
             </ProductTable>
         )
     }, [item, data])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -513,4 +567,4 @@ const SimpleMuiTable = () => {
     )
 }
 
-export default SimpleMuiTable
+export default TrackItem

@@ -3,8 +3,8 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosBot } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
 import { Button } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,34 +20,37 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [trayData, setTrayData] = useState([])
+    const [tray, setTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let token = localStorage.getItem('prexo-authentication')
-                if (token) {
-                    const { user_name } = jwt_decode(token)
-                    let res = await axiosBot.post('/assignedTray/' + user_name)
+        try {
+            let token = localStorage.getItem('prexo-authentication')
+            if (token) {
+                const { location } = jwt_decode(token)
+                const fetchData = async () => {
+                    let res = await axiosWarehouseIn.post(
+                        '/pickup/request/' +
+                            location +
+                            '/' +
+                            'Pickup Request sent to Warehouse'
+                    )
                     if (res.status == 200) {
-                        setTrayData(res.data.data)
+                        setTray(res.data.data)
                     }
-                } else {
-                    navigate('/')
                 }
-            } catch (error) {
-                alert(error)
+                fetchData()
+            } else {
+                navigate('/')
             }
+        } catch (error) {
+            alert(error)
         }
-        fetchData()
-        return () => setIsAlive(false)
-    }, [isAlive])
+    }, [])
 
-    const handelViewTray = (e, id) => {
+    const handelApprove = (e, id) => {
         e.preventDefault()
-        navigate('/bot/tray/item/' + id)
+        navigate('/wareshouse/wht/pickup/request/approve/item-verifying/' + id)
     }
 
     const columns = [
@@ -72,7 +75,8 @@ const SimpleMuiTable = () => {
             name: 'limit',
             label: 'Tray Id',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 display: false,
             },
         },
@@ -81,13 +85,21 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
+
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
+                    value.length + '/' + tableMeta.rowData[2],
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'issued_user_name',
+            label: 'Sorting Agent',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'to_tray_for_pickup',
+            label: 'To Tray',
             options: {
                 filter: true,
             },
@@ -100,7 +112,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'status_change_time',
+            name: 'requested_date',
             label: 'Assigned Date',
             options: {
                 filter: true,
@@ -110,12 +122,12 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
+
         {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
                 customBodyRender: (value) => {
                     return (
                         <Button
@@ -123,12 +135,11 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                            style={{ backgroundColor: 'primery' }}
+                            onClick={(e) => handelApprove(e, value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
                         >
-                            View
+                            Approve
                         </Button>
                     )
                 },
@@ -139,12 +150,17 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Pickup', path: '/' },
+                        { name: 'Pickup-Requests' },
+                    ]}
+                />
             </div>
 
             <MUIDataTable
-                title={'Tray'}
-                data={trayData}
+                title={'tray'}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

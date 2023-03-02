@@ -12,41 +12,24 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
-import { useParams } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-import TrayAssignDialogBox from './trayAssignMent'
-
-// import jwt from "jsonwebtoken"
+import { useParams, useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-    const [userAgent, setUserAgent] = useState('')
     /**************************************************************************** */
     const [uic, setUic] = useState('')
-    const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
-    const [otherTrayAssign, setOtherTrayAssign] = useState({
-        CTA: '',
-        CTB: '',
-        CTC: '',
-        CTD: '',
-        WHT: '',
-    })
-
-    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-
     /*********************************************************** */
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for Audit'
+                    '/pickup/approve/ex-vs-act/' + trayId
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -61,38 +44,6 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-    
-    useEffect(() => {
-        const userStatusApiCall = async () => {
-            try {
-                let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
-                )
-                let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
-                )
-                if (trayFetch.status == 200) {
-                    setOtherTrayAssign({
-                        CTA: trayFetch.data.data.CTA,
-                        CTB: trayFetch.data.data.CTB,
-                        CTC: trayFetch.data.data.CTC,
-                        CTD: trayFetch.data.data.CTD,
-                        WHT: trayId,
-                    })
-                    setTrayIdNotChangeAble(trayFetch.data.data)
-                }
-                if (res.status === 200) {
-                    setUserAgent(res.data.data)
-                }
-            } catch (error) {
-                alert(error)
-            }
-        }
-        if (trayData.issued_user_name !== undefined) {
-            userStatusApiCall()
-        }
-    }, [trayData])
-
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
             try {
@@ -101,9 +52,8 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextDisable(true)
-
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
-                if (res?.status == 200) {
+                if (res?.status === 200) {
                     addActualitem(res.data.data)
                 } else {
                     setTextDisable(false)
@@ -117,78 +67,69 @@ export default function DialogBox() {
     }
     /************************************************************************** */
     const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
+        if (trayData.limit <= trayData?.actual_items?.length) {
             alert('All Items Scanned')
         } else {
+            setTextDisable(true)
             try {
                 let objData = {
                     trayId: trayId,
                     item: obj,
                 }
-                setTextDisable(true)
                 let res = await axiosWarehouseIn.post(
                     '/wht-add-actual-item',
                     objData
                 )
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setUic('')
                     setTextDisable(false)
                     setRefresh((refresh) => !refresh)
+                } else {
+                    setTextDisable(false)
+                    alert(res.data.message)
                 }
             } catch (error) {
                 alert(error)
             }
         }
     }
-     /************************************************************************** */
-    const handelIssue = async (e, sortId) => {
+
+    const handelIssue = async (e, type) => {
         try {
-            if (userAgent !== 'User is free') {
-                alert(userAgent)
-            } else if (
-                otherTrayAssign.CTA == '' ||
-                otherTrayAssign.CTB == '' ||
-                otherTrayAssign.CTC == '' ||
-                otherTrayAssign.CTD == ''
-            ) {
-                alert('Please assign other tray')
-                handleDialogOpen()
-            } else {
-                if (trayData?.actual_items?.length == trayData?.items?.length) {
+            let userStatus = await axiosWarehouseIn.post(
+                '/sortingAgnetStatus/' + trayData?.issued_user_name
+            )
+            if (userStatus.status === 200) {
+                if (userStatus.data.data !== 'User is free') {
+                    alert(userStatus.data.data)
+                } else {
                     setLoading(true)
+
                     let obj = {
-                        trayId: Object.values(otherTrayAssign),
-                        description: description,
+                        fromTray: trayData.code,
+                        toTray: trayData.to_tray_for_pickup,
                         username: trayData.issued_user_name,
                     }
+
                     let res = await axiosWarehouseIn.post(
-                        '/auditTrayIssueToAgent',
+                        '/pickup/issueToAgent',
                         obj
                     )
+                
                     if (res.status == 200) {
                         alert(res.data.message)
-                        navigate('/wareshouse/wht/audit-request')
+                        setLoading(false)
+                        navigate('/wareshouse/wht/pickup/request')
                     } else {
                         alert(res.data.message)
                     }
-                } else {
-                    setLoading(false)
-                    alert('Please Verify Actual Data')
                 }
             }
         } catch (error) {
             alert(error)
         }
     }
-
-    const handleDialogClose = () => {
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-
+    /************************************************************************** */
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
@@ -199,7 +140,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h4>Expected</h4>
+                        <h5>Expected</h5>
                     </Box>
                     <Box
                         sx={{
@@ -208,14 +149,9 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4>Total</h4>
-                            <p style={{ fontSize: '22px' }}>
-                                {
-                                    trayData?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                            <h5>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                                {trayData?.items?.length}/{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -231,9 +167,18 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                {trayData?.type_taxanomy === 'MMT' &&
+                                trayData?.prefix == 'tray-master' ? (
+                                    <TableCell>AWBN Number</TableCell>
+                                ) : (
+                                    <TableCell>MUIC</TableCell>
+                                )}
+                                {trayData?.type_taxanomy === 'MMT' &&
+                                trayData?.prefix == 'tray-master' ? (
+                                    <TableCell>Bag ID</TableCell>
+                                ) : (
+                                    <TableCell>BOT Tray</TableCell>
+                                )}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -241,9 +186,20 @@ export default function DialogBox() {
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>
+                                            {data?.awbn_number}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell>{data?.muic}</TableCell>
+                                    )}
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>{data?.bag_id}</TableCell>
+                                    ) : (
+                                        <TableCell>{data?.tray_id}</TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -252,8 +208,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
-
-    const tableActual = useMemo(() => {
+    const tableActul = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
                 <Box sx={{}}>
@@ -263,14 +218,14 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h4>ACTUAL</h4>
+                        <h5>ACTUAL</h5>
                         <TextField
                             sx={{ mt: 1 }}
                             id="outlined-password-input"
                             type="text"
-                            disabled={textDisable}
-                            name="doorsteps_diagnostics"
                             inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            disabled={textDisable}
                             label="SCAN UIC"
                             value={uic}
                             onChange={(e) => {
@@ -291,16 +246,10 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4>Total</h4>
-                            <p style={{ fontSize: '24px' }}>
-                                {
-                                    trayData.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                            <h5>Total</h5>
+                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                                {trayData.actual_items?.length}/
+                                {trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -316,9 +265,18 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                {trayData?.type_taxanomy === 'MMT' &&
+                                trayData?.prefix == 'tray-master' ? (
+                                    <TableCell>AWBN Number</TableCell>
+                                ) : (
+                                    <TableCell>MUIC</TableCell>
+                                )}
+                                {trayData?.type_taxanomy === 'MMT' &&
+                                trayData?.prefix == 'tray-master' ? (
+                                    <TableCell>Bag ID</TableCell>
+                                ) : (
+                                    <TableCell>BOT Tray</TableCell>
+                                )}
                             </TableRow>
                         </TableHead>
 
@@ -327,9 +285,20 @@ export default function DialogBox() {
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>
+                                            {data?.awbn_number}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell>{data?.muic}</TableCell>
+                                    )}
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>{data?.bag_id}</TableCell>
+                                    ) : (
+                                        <TableCell>{data?.tray_id}</TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -338,8 +307,6 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
-
-
     return (
         <>
             <Box
@@ -358,70 +325,31 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                    <Button
-                        sx={{ m: 2 }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleDialogOpen()}
-                    >
-                        Assign Other Tray
-                    </Button>
                 </Box>
-                <Box
-                    sx={{
-                        float: 'right',
-                    }}
-                >
-                    <h4 style={{ marginRight: '13px' }}>
-                        Brand -- {trayData?.brand}
-                    </h4>
-                    <h4 style={{ marginRight: '13px' }}>
-                        Model -- {trayData?.model}
-                    </h4>
-                </Box>
-                {shouldOpenEditorDialog && (
-                    <TrayAssignDialogBox
-                        handleClose={handleDialogClose}
-                        open={handleDialogOpen}
-                        setOtherTrayAssign={setOtherTrayAssign}
-                        otherTrayAssign={otherTrayAssign}
-                        trayIdNotChangeAble={trayIdNotChangeAble}
-                        brand={trayData?.brand}
-                        model={trayData?.model}
-                    />
-                )}
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     {tableExpected}
                 </Grid>
                 <Grid item xs={6}>
-                    {tableActual}
+                    {tableActul}
                 </Grid>
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <textarea
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        style={{ width: '300px', height: '60px' }}
-                        placeholder="Description"
-                    ></textarea>
                     <Button
-                        sx={{ m: 3, mb: 7 }}
-                        variant="contained"
+                        sx={{ m: 3, mb: 9 }}
                         disabled={
-                            loading == true || description == '' ? true : false
+                            trayData?.items?.length !==
+                                trayData?.actual_items?.length || loading
                         }
+                        variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
-                            if (window.confirm('You Want to Issue?')) {
-                                handelIssue(e)
-                            }
+                            handelIssue(e, 'Assigned to sorting agent')
                         }}
                     >
-                        Issue To Agent
+                        Assign To Agent
                     </Button>
                 </Box>
             </div>

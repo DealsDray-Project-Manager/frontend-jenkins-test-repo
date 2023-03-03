@@ -106,7 +106,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/mis/assign-to-agent/Rdl/view-item/' + trayId)
+        navigate('/mis/assign-to-agent/Rdl_two/view-item/' + trayId)
     }
 
     console.log(isCheck,'isCheckkkkkkkkk');

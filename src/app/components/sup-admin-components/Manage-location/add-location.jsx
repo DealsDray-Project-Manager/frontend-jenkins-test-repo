@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dialog, Button, Grid, TextField } from '@mui/material'
+import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
@@ -71,6 +71,9 @@ const MemberEditorDialog = ({
             .min(6, 'Please Enter valid Pincode')
             .required('Required*')
             .nullable(),
+        Location_type: Yup.string()
+            .required('Required*')
+            .nullable(),   
     })
 
     const {
@@ -179,6 +182,19 @@ const MemberEditorDialog = ({
                                 errors.address ? errors.address?.message : ''
                             }
                         />
+                        <TextFieldCustOm
+                            label="Location Type"
+                            select
+                            name="Location_type"
+                            {...register('Location_type')}
+                            error={errors.Location_type ? true : false}
+                            helperText={errors.Location_type?.message}
+                            // defaultValue={value}
+                        >
+                            <MenuItem value="Dock">Dock</MenuItem>
+                            <MenuItem value="Processing">Processing</MenuItem>
+                            <MenuItem value="Sales">Sales</MenuItem>
+                        </TextFieldCustOm>
 
                         <TextFieldCustOm
                             label="State"

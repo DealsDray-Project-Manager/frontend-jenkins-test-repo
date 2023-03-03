@@ -130,7 +130,7 @@ export default function DialogBox() {
   /************************************************************************** */
   const handelIssue = async (e, sortId) => {
     try {
-     if (trayData?.actual_items?.length !== trayData?.items?.length) {
+     if (trayData?.actual_items?.length == trayData?.items?.length) {
         setLoading(true);
         let obj = {
           trayId: trayId,

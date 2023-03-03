@@ -140,6 +140,18 @@ const StatCard3 = () => {
             title: 'Track Item',
             path: '/mis/track/item',
         },
+        {
+            icon: 'art_track',
+            amount: count.rdl,
+            title: 'RDL Request',
+            path: '/mis/assign-to-agent/Rdl',
+        },
+        {
+            icon: 'art_track',
+            amount: count.rdl_two,
+            title: 'RDL two Request',
+            path: '/mis/assign-to-agent/Rdl_two',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

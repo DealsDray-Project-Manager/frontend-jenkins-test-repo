@@ -1,23 +1,69 @@
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { styled } from '@mui/system'
-// import { makeStyles } from '@material-ui/core/styles'
-import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { axiosMisUser } from '../../../../axios'
 import {
     Button,
-    MenuItem,
     TableCell,
     TableHead,
     Table,
     TableRow,
     TableBody,
     Card,
-    TablePagination,
     TextField,
     Box,
 } from '@mui/material'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
+
+const DeiveryTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: 9000,
+    height: 100,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const OrderTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: 8000,
+    height: 100,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
 
 function Search() {
     const [data, setdata] = useState('')
@@ -27,72 +73,9 @@ function Search() {
         error: 'false',
     })
 
-    const searchIMEI = async (e) => {
-        e.preventDefault()
-        try {
-            const fetchData = async () => {
-                const value = data
-                setinvalidimei({ error: 'false' })
-                await axiosMisUser
-                    .post('/imeiDeliverySearch', value)
-                    .then((response) => {
-                        if (response?.data?.error) {
-                            alert('invalid IMEI')
-                            setinvalidimei({ error: 'true' })
-                        }
-                        setdeliveryData(response?.data?.resultdata)
-                    })
-                await axiosMisUser
-                    .post('/imeiOrderSearch', value)
-                    .then((response) => {
-                        if (response?.data?.error) {
-                            setinvalidimei({ error: 'true' })
-                            alert('invalid IMEI')
-                        }
-                        setorderData(response?.data?.resultdata)
-                    })
-            }
-            fetchData()
-        } catch (error) {
-            alert(error)
-        }
-    }
+   
 
-    const DeiveryTable = styled(Table)(() => ({
-        minWidth: 750,
-        width: 9000,
-        height: 100,
-        whiteSpace: 'pre',
-        '& thead': {
-            '& th:first-of-type': {
-                paddingLeft: 16,
-            },
-        },
-        '& td': {
-            borderBottom: 'none',
-        },
-        '& td:first-of-type': {
-            paddingLeft: '16px !important',
-        },
-    }))
-
-    const OrderTable = styled(Table)(() => ({
-        minWidth: 750,
-        width: 8000,
-        height: 100,
-        whiteSpace: 'pre',
-        '& thead': {
-            '& th:first-of-type': {
-                paddingLeft: 16,
-            },
-        },
-        '& td': {
-            borderBottom: 'none',
-        },
-        '& td:first-of-type': {
-            paddingLeft: '16px !important',
-        },
-    }))
+   
 
     const OrderSearchData = useMemo(() => {
         return (
@@ -719,13 +702,14 @@ function Search() {
             </DeiveryTable>
         )
     })
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'IMEI Search', path: '/' },
-                        { name: 'Search' },
+                        { name: 'WHT Utility', path: '/' },
+                       
                     ]}
                 />
             </div>
@@ -737,22 +721,22 @@ function Search() {
             >
                 <Box>
                     <TextField
-                        label="Search IMEI"
+                        label="Search Old UIC"
                         variant="outlined"
                         onChange={(e) => {
                             setdata(() => ({ ...data, value: e.target.value }))
                         }}
-                        sx={{ mb: 3, mt: 3 }}
+                     
                     />
                 </Box>
                 <Box>
                     <Button
-                        sx={{ mb: 2, mt: 4, ml: 3 }}
+                        sx={{ mb: 2, mt: 1, ml: 3 }}
                         variant="contained"
                         color="primary"
-                        onClick={(e) => {
-                            searchIMEI(e)
-                        }}
+                        // onClick={(e) => {
+                        //     searchIMEI(e)
+                        // }}
                     >
                         Search
                     </Button>

@@ -307,7 +307,7 @@ export const navigations = [
         auth: authRoles.Mis,
     },
     {
-        name: 'IMEI Search',
+        name: 'WHT Utility',
         icon: 'search',
         path: '/mis/imei-search',
         // children: [

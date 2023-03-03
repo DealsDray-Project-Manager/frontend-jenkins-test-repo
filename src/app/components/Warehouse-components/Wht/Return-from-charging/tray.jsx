@@ -67,7 +67,7 @@ BootstrapDialogTitle.propTypes = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(refresh)
@@ -242,6 +242,7 @@ const SimpleMuiTable = () => {
                                     sx={{
                                         m: 1,
                                     }}
+                                    
                                     variant="contained"
                                     style={{ backgroundColor: 'green' }}
                                     onClick={(e) => {

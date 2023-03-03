@@ -307,7 +307,7 @@ export default function DialogBox() {
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
-                        title: res?.data?.message,
+                        title: "Succesfully Closed",
                         confirmButtonText: 'Ok',
                     })
                     if (trayData?.sort_id == 'Send for RDL_one') {
@@ -607,7 +607,7 @@ export default function DialogBox() {
                     ?
                     <TextField
                                 defaultValue={getValues('description')}
-                                label="Desciption"
+                                label="Description"
                                 variant="outlined"
                                 type="text"
                                

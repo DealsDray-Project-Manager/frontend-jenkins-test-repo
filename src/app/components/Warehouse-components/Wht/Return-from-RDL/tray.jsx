@@ -112,15 +112,15 @@ const SimpleMuiTable = () => {
             }
             let res = await axiosWarehouseIn.post('/recieved-from-RDL_one', obj)
             if (res.status == 200) {
-                setOpen(false)
-                setIsAlive((isAlive) => !isAlive)
-          
+                setOpen(!open)
+                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setIsAlive((isAlive) => !isAlive)
             } else {
             
                 Swal.fire({
@@ -129,6 +129,7 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setOpen(!open)
             }
         } catch (error) {
             Swal.fire({

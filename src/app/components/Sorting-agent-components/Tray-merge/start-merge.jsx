@@ -56,7 +56,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
-    
+
     const handleClose = () => {
         setOpen(false)
         setLoading(false)
@@ -96,7 +96,7 @@ export default function DialogBox() {
                 fromTray: trayId,
                 toTray: tray[1].code,
                 item: data,
-                trayType:tray[1].type_taxanomy
+                trayType: tray[1].type_taxanomy,
             }
             let res = await axiosSortingAgent.post('/itemShifteToMmtTray', obj)
             if (res?.status === 200) {
@@ -122,6 +122,7 @@ export default function DialogBox() {
                 let obj = {
                     fromTray: trayId,
                     toTray: tray?.[1].code,
+                    type:tray?.[1]?.type_taxanomy
                 }
                 let res = await axiosSortingAgent.post(
                     '/mergeDoneTraySendToWarehouse',
@@ -139,7 +140,7 @@ export default function DialogBox() {
             alert(error)
         }
     }
-    
+
     /***************************************************************************************** */
     return (
         <>
@@ -301,7 +302,8 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            tray?.[0]?.actual_items?.length !== 0
+                            tray?.[0]?.actual_items?.length !== 0 &&
+                            tray?.[0]?.type_taxanomy == 'MMT'
                                 ? true
                                 : loading2 == true
                                 ? true

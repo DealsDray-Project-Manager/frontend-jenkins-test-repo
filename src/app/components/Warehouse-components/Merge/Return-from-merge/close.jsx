@@ -126,12 +126,15 @@ export default function DialogBox() {
             if (admin) {
                 let obj = {
                     toTray: trayId,
-                    fromTray: tray[0].from_merge,
                     type: type,
                     length: length,
                     limit: limit,
                     status: status,
                 }
+                if(type == "MMT"){
+                    obj.fromTray=tray[0].from_merge
+                }
+              
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',
                     obj

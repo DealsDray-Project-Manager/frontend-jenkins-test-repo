@@ -741,12 +741,12 @@ export default function DialogBox() {
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
-                            if (window.confirm('You Want to Issue?')) {
+                            if (window.confirm('You Want to Close?')) {
                                 handelIssue(e)
                             }
                         }}
                     >
-                        Issue To Agent
+                        Close
                     </Button>
                 </Box>
             </div>

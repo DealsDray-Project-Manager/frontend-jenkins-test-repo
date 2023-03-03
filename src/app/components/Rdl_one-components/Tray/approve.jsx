@@ -185,6 +185,7 @@ export default function DialogBox() {
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
+                    console.log('kkk');
                 } else {
                     Swal.fire({
                         position: 'top-center',

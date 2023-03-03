@@ -73,10 +73,6 @@ function Search() {
         error: 'false',
     })
 
-   
-
-   
-
     const OrderSearchData = useMemo(() => {
         return (
             <OrderTable>

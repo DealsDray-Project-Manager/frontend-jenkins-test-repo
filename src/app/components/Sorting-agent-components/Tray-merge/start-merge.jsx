@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import {
     Box,
     Button,
@@ -122,7 +122,7 @@ export default function DialogBox() {
                 let obj = {
                     fromTray: trayId,
                     toTray: tray?.[1].code,
-                    type:tray?.[1]?.type_taxanomy
+                    type: tray?.[1]?.type_taxanomy,
                 }
                 let res = await axiosSortingAgent.post(
                     '/mergeDoneTraySendToWarehouse',
@@ -140,6 +140,132 @@ export default function DialogBox() {
             alert(error)
         }
     }
+
+    const tableFrom = useMemo(() => {
+        return (
+            <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <h4>FROM TRAY ITEMS - {tray[0]?.code}</h4>
+
+                    <Box>
+                        <h5 style={{ marginLeft: '14px' }}>Total</h5>
+                        <p style={{ margin: '5px', fontSize: '22px' }}>
+                            {tray?.[0]?.actual_items?.length}/{tray?.[0]?.limit}
+                        </p>
+                    </Box>
+                </Box>
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                                <TableCell>Order Id</TableCell>
+                                <TableCell>AWBN</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {tray[0]?.actual_items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.order_id}</TableCell>
+                                    <TableCell>
+                                        {data?.awbn_number == undefined
+                                            ? data?.tracking_id
+                                            : data?.awbn_number}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray[0]?.actual_items, tray[0]?.code])
+
+    const toTrayTable = useMemo(() => {
+        return (
+            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <h4>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
+                    <Box>
+                        <h5 style={{ marginLeft: '14px' }}>Total</h5>
+                        <p style={{ margin: '5px', fontSize: '22px' }}>
+                            {tray?.[1]?.items?.length}/{tray?.[1]?.limit}
+                        </p>
+                    </Box>
+                </Box>
+                <TextField
+                    sx={{ m: 1 }}
+                    id="outlined-password-input"
+                    type="text"
+                    name="doorsteps_diagnostics"
+                    label="Please Enter UIC"
+                    value={awbn}
+                    // onChange={(e) => setAwbn(e.target.value)}
+                    onChange={(e) => {
+                        setAwbn(e.target.value)
+                        handelAwbn(e)
+                    }}
+                    inputProps={{
+                        style: {
+                            width: 'auto',
+                        },
+                    }}
+                />
+
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                                <TableCell>Order Id</TableCell>
+                                <TableCell>AWBN</TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {tray?.[1]?.items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.order_id}</TableCell>
+                                    <TableCell>
+                                        {data?.awbn_number == undefined
+                                            ? data?.tracking_id
+                                            : data?.awbn_number}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [tray?.[1]?.items, awbn, tray?.[1]?.code])
 
     /***************************************************************************************** */
     return (
@@ -176,116 +302,10 @@ export default function DialogBox() {
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                        <h4>FROM TRAY ITEMS - {tray[0]?.code}</h4>
-
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>UIC</TableCell>
-                                        <TableCell>Order Id</TableCell>
-                                        <TableCell>AWBN</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {tray[0]?.actual_items?.map(
-                                        (data, index) => (
-                                            <TableRow
-                                                hover
-                                                role="checkbox"
-                                                tabIndex={-1}
-                                            >
-                                                <TableCell>
-                                                    {index + 1}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.uic}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.order_id}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {data?.awbn_number ==
-                                                    undefined
-                                                        ? data?.tracking_id
-                                                        : data?.awbn_number}
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {tableFrom}
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                        <h4>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
-                        <TextField
-                            sx={{ m: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
-                            value={awbn}
-                            // onChange={(e) => setAwbn(e.target.value)}
-                            onChange={(e) => {
-                                setAwbn(e.target.value)
-                                handelAwbn(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
-
-                        <TableContainer>
-                            <Table
-                                style={{ width: '100%' }}
-                                id="example"
-                                stickyHeader
-                                aria-label="sticky table"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>S.NO</TableCell>
-                                        <TableCell>UIC</TableCell>
-                                        <TableCell>Order Id</TableCell>
-                                        <TableCell>AWBN</TableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                    {tray?.[1]?.items?.map((data, index) => (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                        >
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{data?.uic}</TableCell>
-                                            <TableCell>
-                                                {data?.order_id}
-                                            </TableCell>
-                                            <TableCell>
-                                                {data?.awbn_number == undefined
-                                                    ? data?.tracking_id
-                                                    : data?.awbn_number}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
+                    {toTrayTable}
                 </Grid>
             </Grid>
             <div style={{ float: 'right' }}>

@@ -159,22 +159,22 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>Expected</h5>
-
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
+                <h5>Expected</h5>
+
                     <Box
                         sx={{
                             m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                            <h4 style={{marginLeft:"7px"}}>Total</h4>
+                            <p style={{  fontSize: '22px' }}>
                                 {
                                     tray[0]?.items?.filter(function (
                                         item
@@ -241,6 +241,14 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Box>
+
                 <h5>ACTUAL</h5>
                 <TextField
                     sx={{ m: 1 }}
@@ -261,21 +269,16 @@ export default function DialogBox() {
                         },
                     }}
                 />
+                    </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
                             m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            <h4 style={{marginLeft:"7px"}}>Total</h4>
+                            <p style={{  fontSize: '24px' }}>
                                 {
                                     tray[0]?.actual_items?.filter(
                                         function (item) {
@@ -416,6 +419,7 @@ export default function DialogBox() {
                         </>
                     ) : null}
 
+
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
@@ -423,7 +427,7 @@ export default function DialogBox() {
                         disabled={
                             loading == true ||
                             description == '' ||
-                            bagReuse == false ||
+                            bagReuse == false  && tray?.[0]?.type_taxanomy == 'MMT' ||
                             tray[0]?.actual_items?.length !==
                             tray[0]?.items?.length
                                 ? true

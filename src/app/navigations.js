@@ -309,14 +309,18 @@ export const navigations = [
     {
         name: 'WHT Utility',
         icon: 'search',
-        path: '/mis/imei-search',
-        // children: [
-        //     {
-        //         name: 'Search',
-        //         path: '/mis/imei-search/search',
-        //         iconText: 'VP',
-        //     },
-        // ],
+        children: [
+            {
+                name: 'Search And Import',
+                path: '/mis/wht-utility/import-data',
+                iconText: 'VP',
+            },
+            {
+                name: 'Bot Tray',
+                path: '/mis/wht-utility/Bot-tray',
+                iconText: 'VP',
+            },
+        ],
         auth: authRoles.Mis,
     },
     {

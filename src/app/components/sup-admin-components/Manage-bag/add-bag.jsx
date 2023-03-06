@@ -56,7 +56,7 @@ const MemberEditorDialog = ({
 
     async function getCpcData(data, cpc) {
         try {
-            if (cpc == 'Gurgaon_122016') {
+            if (cpc == 'Gurgaon_122016' || cpc== "Gurgaon_122003") {
                 let res = await axiosSuperAdminPrexo.post(
                     '/getMasterHighest/' + cpc
                 )

@@ -3,6 +3,8 @@ import React, { useState, useMemo } from 'react'
 import { styled } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import { axiosMisUser } from '../../../../axios'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
 import {
     Button,
     TableCell,
@@ -13,7 +15,16 @@ import {
     Card,
     TextField,
     Box,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    DialogActions,
+    MenuItem,
 } from '@mui/material'
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -81,6 +92,41 @@ const TempOrderStyle = styled(Table)(() => ({
     },
 }))
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
+
 function Search() {
     const [data, setdata] = useState('')
     const [deliveryData, setdeliveryData] = useState([])
@@ -88,6 +134,25 @@ function Search() {
     const [tempOrders, setTempOrders] = useState([])
     const [tempDelivery, setTempDelivery] = useState([])
     const [show, setShow] = useState(false)
+    const [open, setOpen] = React.useState(false)
+    const [botTray, setBotTray] = useState([])
+    const [bag, setBag] = useState([])
+    const [botUsers, setBotUsers] = useState([])
+
+    const schema = Yup.object().shape({
+        bot_agent: Yup.string().required('Required*').nullable(),
+        tray_id: Yup.string().required('Required*').nullable(),
+        bag_id: Yup.string().required('Required*').nullable()
+    })
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
 
     const searchOldUic = async () => {
         try {
@@ -117,6 +182,51 @@ function Search() {
             if (res.status == 200) {
                 alert(res.data.message)
                 searchOldUic()
+            } else {
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+    const onsubmit = async (value) => {
+        try {
+            let obj = {
+                utilty: tempDelivery[0],
+                extra: value,
+            }
+            let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
+            if (data.status == 200) {
+                alert(res.data.message)
+                window.location.reload(false)
+            } else {
+                alert(res.data.message)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+
+
+
+    
+    const handleOpen = async () => {
+        try {
+            let res = await axiosMisUser.post(
+                '/whtUtility/bagAndBotTray/' + tempDelivery?.[0]?.partner_shop
+            )
+            if (res.status == 200) {
+                console.log(res.data)
+                setBotUsers(res.data.botUsers)
+                setBag(res.data.bag)
+                setBotTray(res.data.tray)
+                reset({})
+                setOpen(true)
             } else {
                 alert(res.data.message)
             }
@@ -639,6 +749,89 @@ function Search() {
 
     return (
         <Container>
+            <BootstrapDialog
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth
+                maxWidth="xs"
+            >
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                >
+                    Add Delivery
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        label="Select Bag Id"
+                        variant="outlined"
+                        select
+                        fullWidth
+                        name="bag_id"
+                        {...register('bag_id')}
+                        error={errors.bag_id ? true : false}
+                        helperText={errors.bag_id?.message}
+                        sx={{ mt: 2 }}
+                    >
+                        {bag.map((bagData) => (
+                            <MenuItem value={bagData.code} key={bagData.code}>
+                                {bagData.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    <TextField
+                        label="Select Tray Id"
+                        variant="outlined"
+                        select
+                        fullWidth
+                        sx={{ mt: 2 }}
+                        name="tray_id"
+                        {...register('tray_id')}
+                        error={errors.tray_id ? true : false}
+                        helperText={errors.tray_id?.message}
+                    >
+                        {botTray.map((BotData) => (
+                            <MenuItem value={BotData.code} key={BotData.code}>
+                                {BotData.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Select Bot Agent"
+                        variant="outlined"
+                        select
+                        fullWidth
+                        name="bot_agent"
+                        {...register('bot_agent')}
+                        error={errors.bot_agent ? true : false}
+                        helperText={errors.bot_agent?.message}
+                        sx={{ mt: 2 }}
+                    >
+                        {botUsers.map((botAgentData) => (
+                            <MenuItem
+                                value={botAgentData.user_name}
+                                key={botAgentData.user_name}
+                            >
+                                {botAgentData.user_name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        variant="contained"
+                        style={{ backgroundColor: 'green' }}
+                        type="submit"
+                        onClick={handleSubmit(onsubmit)}
+                    >
+                        Submit
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[{ name: 'WHT Utility', path: '/' }]}
@@ -748,6 +941,26 @@ function Search() {
                     >
                         {deliverySearchData}
                     </Card>
+                    {show == true && deliveryData.length == 0 ? (
+                        <Box
+                            sx={{
+                                float: 'right',
+                            }}
+                        >
+                            <Button
+                                sx={{
+                                    mb: 1,
+                                }}
+                                variant="contained"
+                                onClick={(e) => {
+                                    handleOpen()
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                            >
+                                Add Delivery
+                            </Button>
+                        </Box>
+                    ) : null}
                 </>
             ) : null}
         </Container>

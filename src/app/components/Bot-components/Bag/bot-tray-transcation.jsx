@@ -104,6 +104,7 @@ export default function DialogBox() {
         let { user_name } = jwt_decode(admin)
         user_name1 = user_name
     }
+    
     useEffect(() => {
         const fetchData = async () => {
             setCount(0)
@@ -142,6 +143,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
     useEffect(() => {
         setCount(0)
         if (bagData?.[1]?.tray !== undefined) {
@@ -159,6 +161,7 @@ export default function DialogBox() {
             }
         }
     }, [bagData])
+
     /************************************************************************************* */
     const handleClose = () => {
         setOpen(false)

@@ -47,7 +47,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, id) => {
         e.preventDefault()
-        navigate('/bot/tray/item/' + id)
+        navigate('/wareshouse/tray/item/' + id)
     }
 
     const handelClose = async (trayId) => {
@@ -119,7 +119,7 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,
@@ -127,7 +127,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value) => {
                     return (
                         <>
-                            <Button
+                            {/* <Button
                                 sx={{
                                     m: 1,
                                 }}
@@ -138,7 +138,7 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'primery' }}
                             >
                                 View
-                            </Button>
+                            </Button> */}
                             <Button
                                 sx={{
                                     m: 1,

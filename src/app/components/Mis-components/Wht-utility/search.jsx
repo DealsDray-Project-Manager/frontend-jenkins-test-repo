@@ -202,7 +202,7 @@ function Search() {
             let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
             if (data.status == 200) {
                 alert(res.data.message)
-                window.location.reload(false)
+                window.location.reload(true)
             } else {
                 alert(res.data.message)
             }

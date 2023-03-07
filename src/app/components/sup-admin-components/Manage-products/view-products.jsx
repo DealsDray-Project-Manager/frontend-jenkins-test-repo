@@ -194,7 +194,7 @@ const SimpleMuiTable = () => {
                             src={
                                 value == undefined
                                     ? 'http://prexo-v7-2-dev-api.dealsdray.com/product/image/' +
-                                      tableMeta.rowData[1] +
+                                      tableMeta.rowData[2] +
                                       '.jpg'
                                     : value
                             }
@@ -243,7 +243,7 @@ const SimpleMuiTable = () => {
             label: 'Creation Date',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
+                customBodyRender: (value, tableMeta) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),

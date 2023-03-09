@@ -112,25 +112,25 @@ const SimpleMuiTable = () => {
             }
             let res = await axiosWarehouseIn.post('/recieved-from-bqc', obj)
             if (res.status == 200) {
-          
+                setOpen(false)
                 Swal.fire({
-                    position: 'top-center',
+                    position: 'top',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setOpen(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
-            
+                setOpen(false)
                 Swal.fire({
-                    position: 'top-center',
+                    position: 'top',
                     icon: 'error',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {
+
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

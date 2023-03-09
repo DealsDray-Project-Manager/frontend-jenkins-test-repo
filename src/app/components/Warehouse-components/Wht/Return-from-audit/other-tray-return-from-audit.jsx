@@ -131,16 +131,16 @@ const SimpleMuiTable = () => {
                 )
                 if (res.status == 200) {
                  
+                    setOpen(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    setOpen(false)
                     setIsAlive((isAlive) => !isAlive)
                 } else {
-                  
+                    setOpen(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',

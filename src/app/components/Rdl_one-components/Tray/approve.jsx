@@ -102,7 +102,8 @@ export default function DialogBox() {
                     selected_status == 'Charge jack Replaced & Boosted' ||
                     selected_status == 'Battery Damage' ||
                     selected_status == 'Repair Required' ||
-                    selected_status == 'Dead'
+                    selected_status == 'Dead'||
+                    selected_status == 'Select an Option'
                 ) {
                     return schema.required('Required')
                 }
@@ -590,7 +591,7 @@ export default function DialogBox() {
                             error={errors.selected_status ? true : false}
                             helperText={errors.selected_status?.message}
                             style={{ minWidth: 300 }}
-                            defaultValue="Battery Boosted"
+                            defaultValue="Select an Option"
                         >
                             <MenuItem value="Battery Boosted" onClick={()=>setSelectedStatus('Battery Boosted')}>Battery Boosted</MenuItem>
                             <MenuItem value="Charge jack Replaced & Boosted" onClick={()=>setSelectedStatus('Charge jack Replaced & Boosted')}>Charge jack Replaced & Boosted</MenuItem>

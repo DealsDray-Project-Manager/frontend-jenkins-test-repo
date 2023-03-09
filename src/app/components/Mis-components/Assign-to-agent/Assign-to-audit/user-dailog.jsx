@@ -38,12 +38,14 @@ const MemberEditorDialog = ({
             if (res.status == 200) {
                 handleClose()
                 setLoading(false)
-              
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res?.data?.message,
+                    position: 'top-center',
+                    icon: 'Success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
                 })
+              
+               
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setLoading(false)

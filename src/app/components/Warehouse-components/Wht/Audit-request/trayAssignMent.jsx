@@ -63,11 +63,12 @@ const MemberEditorDialog = ({
                 if (res.status == 200) {
                    
                     Swal.fire({
-                        position: 'top-center',
+                        position: 'top',
                         icon: 'success',
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
+                    alert(res?.data?.message)
                     setOtherTrayAssign((otherTrayAssign) => ({
                         ...otherTrayAssign,
                         [trayType]: res.data.trayId,
@@ -75,6 +76,14 @@ const MemberEditorDialog = ({
                     setErr((err) => ({ ...err, [trayType]: '' }))
                 } else {
                     setErr((err) => ({ ...err, [trayType]: res.data.message }))
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'Error',
+                        title: res?.data?.message, 
+                        confirmButtonText: 'Ok',
+                        zIndex: 99999,
+                    })
+                    // alert(res?.data?.message)
                 }
             }
         } catch (error) {

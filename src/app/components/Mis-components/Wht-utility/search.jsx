@@ -142,7 +142,7 @@ function Search() {
     const schema = Yup.object().shape({
         bot_agent: Yup.string().required('Required*').nullable(),
         tray_id: Yup.string().required('Required*').nullable(),
-        bag_id: Yup.string().required('Required*').nullable()
+        bag_id: Yup.string().required('Required*').nullable(),
     })
     const {
         register,
@@ -200,8 +200,10 @@ function Search() {
                 extra: value,
             }
             let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
-            if (data.status == 200) {
+            if (res.status == 200) {
+
                 alert(res.data.message)
+                handleClose()
                 window.location.reload(true)
             } else {
                 alert(res.data.message)
@@ -211,10 +213,6 @@ function Search() {
         }
     }
 
-
-
-
-    
     const handleOpen = async () => {
         try {
             let res = await axiosMisUser.post(
@@ -244,6 +242,7 @@ function Search() {
                         <TableCell>Order Imported TimeStamp</TableCell>
                         <TableCell>Order ID</TableCell>
                         <TableCell>Order Date</TableCell>
+                        <TableCell>Partner Shop</TableCell>
 
                         <TableCell>Order Status</TableCell>
 
@@ -300,6 +299,9 @@ function Search() {
                                           }
                                       )}
                             </TableCell>
+                            <TableCell>
+                                {data?.partner_shop?.toString()}
+                            </TableCell>
 
                             <TableCell>
                                 {data?.order_status?.toString()}
@@ -342,9 +344,9 @@ function Search() {
                         <TableCell>Partner ID</TableCell>
                         <TableCell>Item ID</TableCell>
                         <TableCell>Old Item Details</TableCell>
-                        <TableCell>Brand Name</TableCell>
+                        {/* <TableCell>Brand Name</TableCell>
                         <TableCell>Product Name</TableCell>
-                        <TableCell>MUIC</TableCell>
+                        <TableCell>MUIC</TableCell> */}
                         <TableCell>IMEI</TableCell>
                         <TableCell>Base Disscount</TableCell>
                         <TableCell>Diganostic</TableCell>
@@ -437,13 +439,13 @@ function Search() {
                             <TableCell>
                                 {data?.old_item_details?.toString()}
                             </TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 {data?.products?.[0]?.brand_name}
                             </TableCell>
                             <TableCell>
                                 {data?.products?.[0]?.model_name}
                             </TableCell>
-                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell> */}
                             <TableCell>{data?.imei?.toString()}</TableCell>
                             <TableCell>
                                 ₹{data?.base_discount?.toString()}
@@ -521,6 +523,7 @@ function Search() {
             </OrderTable>
         )
     }, [orderData])
+
     const deliverySearchData = useMemo(() => {
         return (
             <DeiveryTable>
@@ -656,6 +659,7 @@ function Search() {
             </DeiveryTable>
         )
     }, [deliveryData])
+
     const tempDeliverySearchData = useMemo(() => {
         return (
             <TempOrderStyle>
@@ -941,7 +945,7 @@ function Search() {
                     >
                         {deliverySearchData}
                     </Card>
-                    {show == true && deliveryData.length == 0 ? (
+                    {show == true && deliveryData.length == 0 && orderData?.length !== 0 ? (
                         <Box
                             sx={{
                                 float: 'right',

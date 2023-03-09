@@ -97,7 +97,7 @@ export default function DialogBox() {
     const handelIssue = async (e, type) => {
         try {
             let userStatus = await axiosWarehouseIn.post(
-                '/sortingAgnetStatus/' + trayData?.issued_user_name
+                '/sortingAgnetStatus/' + trayData?.issued_user_name + "/" + trayData?.to_tray_for_pickup
             )
             if (userStatus.status === 200) {
                 if (userStatus.data.data !== 'User is free') {

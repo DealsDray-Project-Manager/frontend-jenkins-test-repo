@@ -66,8 +66,7 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setCount(res.data.count)
                         setItem(res.data.data)
-                        console.log(res.data.data);
-                        console.log('hshshshshhsshshshhsshhs');
+                        
                     }
                 } catch (error) {
                     Swal.fire({

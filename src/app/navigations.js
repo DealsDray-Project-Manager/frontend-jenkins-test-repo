@@ -617,6 +617,18 @@ export const navigations = [
         path: '/RDL_one/tray',
         auth: authRoles.RDL_one,
     },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.Sales_Agent,
+    },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.pricing_Agent,
+    },
 
     // {
     //     name: 'Orders',

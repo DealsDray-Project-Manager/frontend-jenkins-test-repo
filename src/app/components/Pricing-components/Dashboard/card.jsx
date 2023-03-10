@@ -3,7 +3,7 @@ import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon, RepairIcon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
-import { axiosRDL_oneAgent } from '../../../../axios'
+import { axiospricingAgent } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -18,13 +18,14 @@ const StatCard3 = () => {
                 let { user_name } = jwt_decode(user)
                 console.log( user_name," user_name");
                 try {
-                    let res = await axiosRDL_oneAgent.post(
+                    let res = await axiospricingAgent.post(
                         '/dashboard/' + user_name
                     )
                     if (res?.status === 200) {
                         setCount(res?.data.data)
                     }
                 } catch (error) {
+                  
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -40,8 +41,8 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.charging,
-            title: 'RDL_one Request',
-            path: '/RDL_one/tray',
+            title: 'Dummy panel',
+            path: '',
         },
     ]
     const { palette } = useTheme()

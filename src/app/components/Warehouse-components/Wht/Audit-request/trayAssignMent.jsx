@@ -12,6 +12,7 @@ import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import './trayAssignMent.css'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -81,9 +82,10 @@ const MemberEditorDialog = ({
                         icon: 'Error',
                         title: res?.data?.message, 
                         confirmButtonText: 'Ok',
-                        zIndex: 99999,
+                        zIndex: '99999',
                     })
                     // alert(res?.data?.message)
+
                 }
             }
         } catch (error) {

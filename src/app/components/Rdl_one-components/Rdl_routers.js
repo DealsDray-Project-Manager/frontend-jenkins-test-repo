@@ -9,7 +9,7 @@ const TrayRDL_oneApprove = Loadable(lazy(() => import('./Tray/approve')))
 
 
 
-const BqcRouter= [
+const RDLRouter= [
 
     {
         path: '/RDL_one/dashboard',
@@ -26,4 +26,4 @@ const BqcRouter= [
    
 ]
 
-export default BqcRouter
+export default RDLRouter

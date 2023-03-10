@@ -68,7 +68,10 @@ const Login = () => {
         let userExists = localStorage.getItem('prexo-authentication')
         if (userExists) {
             const { user_type } = jwt_decode(userExists)
+
+            console.log(user_type,"usertypeeee");
             if (user_type == undefined) {
+                console.log('dsdsd');
                 navigate('/')
             } else if (user_type == 'super-admin') {
                 navigate('/sup-admin/dashboard')
@@ -88,9 +91,16 @@ const Login = () => {
                 navigate('/audit/dashboard')
             } else if (user_type == 'RDL') {
                 navigate('/RDL_one/dashboard')
+            } else if (user_type == 'Sales Agent') {
+                console.log('dsdsdsd');
+                navigate('/sales/dashboard')
+            }else if (user_type == 'Pricing Agent') {
+                console.log('dsdsdsd');
+                navigate('/pricing/dashboard')
             }
         } else {
             navigate('/')
+            console.log('kdddkdkddkdk');
         }
     }, [])
     const handleChange = ({ target: { name, value } }) => {
@@ -125,7 +135,16 @@ const Login = () => {
                     navigate('/sorting/dashboard')
                 } else if (response.data.data?.user_type == 'Audit') {
                     navigate('/audit/dashboard')
+                }else if ( response.data.data?.user_type == 'RDL') {
+                    navigate('/RDL_one/dashboard')
+                } else if (response.data.data?.user_type == 'Sales Agent') {
+                    console.log('dsdsdsd');
+                    navigate('/sales/dashboard')
+                }else if (response.data.data?.user_type == 'Pricing Agent') {
+                    console.log('dsdsdsd');
+                    navigate('/pricing/dashboard')
                 }
+
             } else {
                 setLoading(false)
                 setMessage(response.data.data.message)

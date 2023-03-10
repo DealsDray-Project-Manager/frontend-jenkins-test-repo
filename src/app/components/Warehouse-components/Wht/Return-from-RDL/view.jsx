@@ -122,6 +122,16 @@ const SimpleMuiTable = () => {
                 },
             },
         },
+        {
+            name: 'part_list',
+            label: 'Changing Part',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list
+                },
+            },
+        },
         
     ]
 

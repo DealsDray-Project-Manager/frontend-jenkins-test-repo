@@ -55,6 +55,18 @@ export const navigations = [
         icon: 'dashboard',
         auth: authRoles.RDL_one, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
+    {
+        name: 'Dashboard',
+        path: '/sales/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.Sales_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/pricing/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.pricing_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
     // {
     //     name: 'Analytics',
     //     path: '/dashboard/analytics',

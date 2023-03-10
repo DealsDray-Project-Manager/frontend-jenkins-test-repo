@@ -4,9 +4,7 @@ import { H3 } from 'app/components/Typography'
 import { styled } from '@mui/system'
 
 
-// useEffect(()=>{
-//     console.log('jsjsjjsjsjsjs');
-// },[])
+
 
 const AnalyticsRoot = styled('div')(({ theme }) => ({
     margin: '30px',

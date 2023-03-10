@@ -83,6 +83,7 @@ const MemberEditorDialog = ({
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
                 setTrayCount(type + res.data.data)
+                console.log(res.data.data,"counttttttttt");
                 if (type == 'BOT' && res.data.data > '2251') {
                     handleClose()
                     Swal.fire({
@@ -138,7 +139,7 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } else if (type == 'CTB' && res.data.data > '2999') {
+                } else if (type == 'CTB' && res.data.data > '3999') {
                     handleClose()
                     Swal.fire({
                         icon: 'error',

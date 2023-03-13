@@ -676,6 +676,7 @@ const PaginationTable = () => {
                                                         ''
                                                     )}
                                                 </TableCell>
+                                                
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(

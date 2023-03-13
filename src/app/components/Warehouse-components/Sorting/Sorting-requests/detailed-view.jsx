@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { Button, Box } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,7 +37,12 @@ const SimpleMuiTable = () => {
                     setBotTray(response.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -51,7 +57,12 @@ const SimpleMuiTable = () => {
                     setUserAgent(res.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         if (botTray[0]?.issued_user_name !== undefined) {
@@ -88,20 +99,43 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                      
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setLoading(false)
                         navigate('/wareshouse/sorting/request')
                     } else {
                         setLoading(false)
-                        alert(res.data.message)
+                      
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     setLoading(false)
-                    alert('Please Issue all Tray')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: "Please Issue All Tray",
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

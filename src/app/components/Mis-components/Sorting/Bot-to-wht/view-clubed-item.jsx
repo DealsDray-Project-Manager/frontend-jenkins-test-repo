@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,10 +41,21 @@ const SimpleMuiTable = () => {
                     if (res.status === 200) {
                         setItem(res.data.data)
                     } else {
-                        alert(res.data.message)
+                    
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()

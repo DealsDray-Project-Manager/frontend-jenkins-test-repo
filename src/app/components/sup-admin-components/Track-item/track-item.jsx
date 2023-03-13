@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -153,7 +154,12 @@ const TrackItem = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

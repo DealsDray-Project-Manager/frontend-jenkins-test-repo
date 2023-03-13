@@ -16,6 +16,7 @@ import {
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -87,7 +88,12 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -106,14 +112,31 @@ const SimpleMuiTable = () => {
             }
             let res = await axiosWarehouseIn.post('/recieved-from-bqc', obj)
             if (res.status == 200) {
-                alert(res.data.message)
                 setOpen(false)
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setIsAlive((isAlive) => !isAlive)
             } else {
-                alert(res.data.message)
+                setOpen(false)
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

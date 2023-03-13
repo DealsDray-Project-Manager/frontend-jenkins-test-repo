@@ -28,6 +28,7 @@ import jwt_decode from 'jwt-decode'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -91,11 +92,22 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                    alert(response.data.message)
+               
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: response?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -150,10 +162,21 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -185,7 +208,13 @@ export default function DialogBox() {
                         handleClose()
                         setAddButDis(false)
                         setUic('')
-                        alert(res.data.message)
+                        
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
 
                         setRefresh((refresh) => !refresh)
                     } else {
@@ -193,10 +222,21 @@ export default function DialogBox() {
                         setUic('')
                         setAddButDis(false)
 
-                        alert(res.data.message)
+                       
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         
@@ -238,13 +278,30 @@ export default function DialogBox() {
                 obj
             )
             if (res.status == 200) {
-                alert(res.data.message)
+                
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 navigate('/wareshouse/wht/ready-for-audit')
             } else {
-                alert(res.data.message)
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

@@ -7,6 +7,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+import Swal from 'sweetalert2'
 import {
     Dialog,
     DialogTitle,
@@ -89,7 +90,12 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -119,15 +125,32 @@ const SimpleMuiTable = () => {
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+              
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setOpen(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setLoading(false)
-                alert(res.data.message)
+      
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

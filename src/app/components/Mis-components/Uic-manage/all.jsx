@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -74,7 +75,12 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [page, isAlive])
 
@@ -129,14 +135,26 @@ const SimpleMuiTable = () => {
 
     const exportToCSV = (fileName) => {
         if (isCheck.length == 0) {
-            alert('Please Select Atleast One Data')
+           
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: "Please Select Atleast One Data",
+                confirmButtonText: 'Ok',
+            })
         } else {
             let arr = []
             let status = false
             let changeStatus = async () => {
                 for (let i = 0; i < isCheck.length; i++) {
                     if (item[isCheck[i]].uic_code == undefined) {
-                        alert('Please Generate UIC')
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'warning',
+                            title:"Please Generate UIC",
+                            confirmButtonText: 'Ok',
+                        })
+                       
                         status = true
                         break
                     } else {
@@ -146,10 +164,21 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                                alert(res.data.message)
+                               
+                                Swal.fire({
+                                    position: 'top-center',
+                                    icon: 'error',
+                                    title: res?.data?.message,
+                                    confirmButtonText: 'Ok',
+                                })
                             }
                         } catch (error) {
-                            alert(error)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: error,
+                            })
                         }
                         let obj = {
                             UIC: item[isCheck[i]].uic_code?.code,
@@ -186,7 +215,13 @@ const SimpleMuiTable = () => {
     const handelUicGen = (e) => {
         e.preventDefault()
         if (isCheck.length == 0) {
-            alert('Please Select Atleast One Delivered Data')
+           
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: "Please Select Atleast One Delivered Data",
+                confirmButtonText: 'Ok',
+            })
         } else {
             let token = localStorage.getItem('prexo-authentication')
             if (token) {
@@ -196,7 +231,13 @@ const SimpleMuiTable = () => {
                     let count = 0
                     for (let i = 0; i < isCheck.length; i++) {
                         if (item[isCheck[i]].uic_status != 'Pending') {
-                            alert('Already UIC Created')
+                           
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'warning',
+                                title: "Already UIC Created",
+                                confirmButtonText: 'Ok',
+                            })
 
                             break
                         }
@@ -212,15 +253,32 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                                alert(res.data.message)
+                              
+                                Swal.fire({
+                                    position: 'top-center',
+                                    icon: 'error',
+                                    title: res?.data?.message,
+                                    confirmButtonText: 'Ok',
+                                })
                             }
                         } catch (error) {
-                            alert(error)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                confirmButtonText: 'Ok',
+                                text: error,
+                            })
                         }
                         count++
                     }
                     if (count == isCheck.length) {
-                        alert('Successfully Generated')
+                     
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title:"Sucessfully Generated",
+                            confirmButtonText: 'Ok',
+                        })
                         setIsCheck([])
                         setIsAlive((isAlive) => !isAlive)
                     }
@@ -253,12 +311,23 @@ const SimpleMuiTable = () => {
                     if (res.status == 200 && res.data.data?.length !== 0) {
                         setItem(res.data.data)
                     } else {
-                        alert('No data found')
+                     
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: "No Data Found",
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

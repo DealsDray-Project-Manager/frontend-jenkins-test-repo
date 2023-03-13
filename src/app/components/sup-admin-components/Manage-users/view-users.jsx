@@ -65,7 +65,11 @@ const UserTable = () => {
                 handleDialogOpen()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -98,7 +102,11 @@ const UserTable = () => {
                         )
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -128,7 +136,12 @@ const UserTable = () => {
                         )
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         })

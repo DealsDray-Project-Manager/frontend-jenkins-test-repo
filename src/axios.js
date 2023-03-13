@@ -31,3 +31,18 @@ export const axiosAuditAgent = axios.create({
     baseURL: 'http://prexo-v7-1-uat-api.dealsdray.com/api/v7/audit-agent',
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
+
+export const axiosRDL_oneAgent = axios.create({
+    baseURL: 'http://localhost:8000/api/v7/RDL_onePanel',
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})
+
+export const axiosSalsAgent = axios.create({
+    baseURL: 'http://localhost:8000/api/v7/sales-agent',
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})
+
+export const axiospricingAgent = axios.create({
+    baseURL: 'http://localhost:8000/api/v7/pricing-agent',
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})

@@ -36,6 +36,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -184,13 +185,23 @@ export default function DialogBox() {
                     setTrayData(response.data.data)
                     //   dataTableFun()
                 } else if (response.status === 202) {
-                    alert(response.data.message)
+                   
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response?.data?.message,
+                    })
                     navigate(-1)
                 } else {
                     navigate('/bag-issue-request')
                 }
             } catch (error) {
-                alert(error)
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -218,10 +229,20 @@ export default function DialogBox() {
                 } else {
                     setTextBoxDis(false)
                     setUic('')
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
+                   
                 }
             } catch (error) {
-                alert(error)
+               
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
     }
@@ -229,7 +250,13 @@ export default function DialogBox() {
         values.charging_person = user_name1
 
         if (trayData.limit <= trayData?.actual_items?.length) {
-            alert('All Items Scanned')
+        
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: "All Items Scanned",
+                confirmButtonText: 'Ok',
+            })
         } else {
             setlLoading(true)
             if (
@@ -268,7 +295,12 @@ export default function DialogBox() {
                     handleClose()
                 }
             } catch (error) {
-                alert(error)
+             
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
     }
@@ -277,7 +309,13 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         try {
             if (description == '') {
-                alert('Please Add Description')
+              
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:"Please Add Description",
+                    confirmButtonText: 'Ok',
+                })
             } else if (
                 trayData?.actual_items?.length == trayData?.items?.length
             ) {
@@ -289,16 +327,33 @@ export default function DialogBox() {
 
                 let res = await axiosCharging.post('/charging-done', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+                
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
+
                     setlLoading(false)
                     navigate('/charging/tray')
                 }
             } else {
-                alert('Please Verify Actual Data')
+            
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Verify Actual Data',
+                })
             }
         } catch (error) {
             setlLoading(false)
-            alert(error)
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+            
         }
     }
     const handleClickOpen = () => {

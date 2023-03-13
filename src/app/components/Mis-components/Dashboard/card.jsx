@@ -5,6 +5,7 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
@@ -23,7 +24,12 @@ const StatCard3 = () => {
                         setCount(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
@@ -133,6 +139,18 @@ const StatCard3 = () => {
             amount: count.trackItem,
             title: 'Track Item',
             path: '/mis/track/item',
+        },
+        {
+            icon: 'art_track',
+            amount: count.rdl,
+            title: 'RDL Request',
+            path: '/mis/assign-to-agent/Rdl',
+        },
+        {
+            icon: 'art_track',
+            amount: count.rdl_two,
+            title: 'RDL two Request',
+            path: '/mis/assign-to-agent/Rdl_two',
         },
     ]
     const { palette } = useTheme()

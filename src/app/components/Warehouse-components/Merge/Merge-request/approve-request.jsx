@@ -14,6 +14,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
+import Swal from "sweetalert2";
 
 export default function StickyHeadTable({ props }) {
     const [mmtTray, setMmtTray] = useState([])
@@ -33,13 +34,24 @@ export default function StickyHeadTable({ props }) {
                     if (response.status === 200) {
                         setMmtTray(response.data.data)
                     } else {
-                        alert(response.data.message)
+                  
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -54,7 +66,12 @@ export default function StickyHeadTable({ props }) {
                     setUserAgent(res.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         if (mmtTray[0]?.issued_user_name !== undefined) {
@@ -92,19 +109,42 @@ export default function StickyHeadTable({ props }) {
                         obj
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                       
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setLoading(false)
                         navigate('/wareshouse/merge/request')
                     } else {
-                        alert(res.data.message)
+                    
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     setLoading(false)
-                    alert('Please Issue all Tray')
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Issue All Tray',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

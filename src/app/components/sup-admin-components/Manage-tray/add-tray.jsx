@@ -32,6 +32,7 @@ const MemberEditorDialog = ({
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
     const [allModel, setAllModel] = useState([])
+    const [categorys, setCategorys] = useState([])
 
     useEffect(() => {
         try {
@@ -46,6 +47,14 @@ const MemberEditorDialog = ({
                 }
             }
             fetchCpc()
+
+            const fetchCategory=async()=>{
+                let categorys=await axiosSuperAdminPrexo.get('/getCtxTrayCategory')
+                console.log(categorys,'categoryyyyzzzzzzzz');
+                setCategorys(categorys.data)
+            }
+            fetchCategory()
+
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 fetchModel(editFetchData.brand)
@@ -66,12 +75,15 @@ const MemberEditorDialog = ({
         }
     }, [])
 
+
+
     const fetchTypeWiseId = async (e, type) => {
         e.preventDefault()
         try {
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
                 setTrayCount(type + res.data.data)
+                console.log(res.data.data,"counttttttttt");
                 if (type == 'BOT' && res.data.data > '2251') {
                     handleClose()
                     Swal.fire({
@@ -127,7 +139,7 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } else if (type == 'CTB' && res.data.data > '2999') {
+                } else if (type == 'CTB' && res.data.data > '3999') {
                     handleClose()
                     Swal.fire({
                         icon: 'error',
@@ -482,39 +494,19 @@ const MemberEditorDialog = ({
                             >
                                 WHT
                             </MenuItem>
-
-                            <MenuItem
-                                value="CTA"
+                            {
+                                categorys?.map((item)=>(
+                                    <MenuItem
+                                value={item?.Code}
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CTA')
+                                    fetchTypeWiseId(e,item?.Code)
                                 }}
                             >
-                                CTA
+                               {item?.Code}
                             </MenuItem>
-                            <MenuItem
-                                value="CTB"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CTB')
-                                }}
-                            >
-                                CTB
-                            </MenuItem>
-                            <MenuItem
-                                value="CTC"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CTC')
-                                }}
-                            >
-                                CTC
-                            </MenuItem>
-                            <MenuItem
-                                value="CTD"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CTD')
-                                }}
-                            >
-                                CTD
-                            </MenuItem>
+                                ))
+                            }
+                           
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') !== 'BOT' &&
                         getValues('type_taxanomy') !== 'PMT' &&

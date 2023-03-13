@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -46,7 +47,12 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -60,11 +66,22 @@ const SimpleMuiTable = () => {
             )
             if (res.status === 200) {
                 setLoading(false)
-                alert(res.data.message)
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

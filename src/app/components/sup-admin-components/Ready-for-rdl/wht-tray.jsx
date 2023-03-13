@@ -72,10 +72,19 @@ const SimpleMuiTable = () => {
                     }
                 })
             } else if (res.status == 202) {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
 

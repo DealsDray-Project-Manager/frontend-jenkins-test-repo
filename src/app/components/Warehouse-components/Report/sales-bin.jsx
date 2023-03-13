@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import { axiosWarehouseIn } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -68,7 +69,12 @@ const SimpleMuiTable = () => {
                         }
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()
@@ -109,7 +115,12 @@ const SimpleMuiTable = () => {
                 setTableMessage(res.data.message)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

@@ -40,19 +40,34 @@ const MemberEditorDialog = ({
             let res = await axiosMisUser.post('/issueRequestSend', obj)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+               
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:res?.data?.message,
+                })
                 setBotName('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:res?.data?.message,
+                })
                 setBotName('')
                 handleClose()
                 navigate('/mis/assign-to-agent/bot/uic-genaration/' + res.data.bagId)
             }
         } catch (error) {
-            alert(error)
+        
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:error,
+            })
         }
     }
     return (

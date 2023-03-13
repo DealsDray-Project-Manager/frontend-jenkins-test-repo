@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
+import Swal from 'sweetalert2'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -41,11 +42,22 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTray(response.data.data)
                 } else {
-                    alert(response.data.message)
+                 
+                     Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:'Please check',
+                    confirmButtonText: 'Ok',
+                })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -64,11 +76,22 @@ export default function DialogBox() {
                 setTray(response.data.data)
                 alert(response.data.message)
             } else if (response.status == 202) {
-                alert(response.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: response?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+               
                 navigate(-1)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /******************************************************************************** */
@@ -85,10 +108,21 @@ export default function DialogBox() {
                     addActualitem(res.data.data)
                 } else {
                     setTextDisable(false)
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -111,10 +145,21 @@ export default function DialogBox() {
                 setTextDisable(false)
                 getitem()
             } else {
-                alert(res.data.message)
+              
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /************************************************************************** */
@@ -140,16 +185,33 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status === 200) {
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     navigate('/wareshouse/merge/return-from-merge')
                 } else {
                     setLoading(false)
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

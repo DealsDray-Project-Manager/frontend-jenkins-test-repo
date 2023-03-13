@@ -20,6 +20,7 @@ import jwt_decode from 'jwt-decode'
 import * as XLSX from 'xlsx'
 import { axiosMisUser } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -99,7 +100,13 @@ const PaginationTable = () => {
 
     const importExcel = (e) => {
         if (exFile == null) {
-            alert('Please Select File')
+          
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: 'Please Select File',
+                confirmButtonText: 'Ok',
+            })
         } else {
             setLoading(true)
             readExcel(exFile)
@@ -153,16 +160,33 @@ const PaginationTable = () => {
                 if (res.status == 200) {
                     setValidate(true)
                     setLoading(false)
-                    alert(res.data.message)
+           
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 } else {
                     setErr(res.data.data)
                     setValidate(true)
                     setLoading(false)
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     // handelSubmit
@@ -315,12 +339,23 @@ const PaginationTable = () => {
             })
             let res = await axiosMisUser.post('/ordersImport', obj)
             if (res.status == 200) {
-                alert('Successfully Added')
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:"Successfully Added",
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
                 navigate('/mis/orders')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     // ----------------------------------------------------------------------------------------------------------------------------

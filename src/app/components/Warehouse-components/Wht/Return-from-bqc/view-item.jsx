@@ -3,6 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 import { axiosBot } from '../../../../../axios'
 
@@ -31,7 +32,12 @@ const SimpleMuiTable = () => {
                     setTrayData(res.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()

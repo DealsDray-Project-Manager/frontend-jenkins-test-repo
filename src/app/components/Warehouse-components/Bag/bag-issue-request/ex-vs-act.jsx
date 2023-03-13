@@ -23,6 +23,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { H5 } from 'app/components/Typography'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -92,14 +93,25 @@ const SimpleMuiTable = () => {
                             pmtTray: res.data.pmtTray,
                         })
                     } else {
-                        alert(res.data.message)
+                     
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title:res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         navigate(-1)
                     }
                 } else {
                     navigate('/wareshouse/bag/bag-issue-request')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -114,11 +126,22 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setReadyForAssign(res.data.data)
                 } else {
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         if (bagData[0]?.issued_user_name !== undefined) {
@@ -140,13 +163,30 @@ const SimpleMuiTable = () => {
                 setBagData(response.data.data)
                 setUic(response.data.data[0]?.uic === 'true')
                 setSleaves(response.data.data[0]?.sleaves === 'true')
-                alert(response.data.message)
+           
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:response?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             } else if (response.status == 202) {
-                alert(response.data.status)
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:response?.data?.status,
+                    confirmButtonText: 'Ok',
+                })
                 navigate(-1)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -164,14 +204,31 @@ const SimpleMuiTable = () => {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setAwbn('')
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 } else if (res.status == 203) {
                     setTextBoxDis(false)
                     setAwbn('')
-                    alert('This Item Does Not Exist In This Bag')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title:'This item Does Not Exist In This Bag',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -187,7 +244,13 @@ const SimpleMuiTable = () => {
                 }).length >=
             bagData[0].limit
         ) {
-            alert('Bag Is Full')
+        
+            Swal.fire({
+                position: 'top-center',
+                icon: 'error',
+                title:"bag Is Full",
+                confirmButtonText: 'Ok',
+            })
         } else {
             setTextBoxDis(true)
             let data = bagData[0]?.items?.filter(function (item) {
@@ -208,10 +271,21 @@ const SimpleMuiTable = () => {
                     setTextBoxDis(false)
                     getitem()
                 } else {
-                    alert(res.data.message)
+           
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -221,12 +295,25 @@ const SimpleMuiTable = () => {
         try {
             setLoading(true)
             if (uic == false) {
-                alert('Please Confirm UIC')
+            
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"Please Confirm UIC",
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else if (sleaves == false) {
-                alert('Please Confirm Sleeves')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"Please Confirm Sleeves",
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else if (readyForAssign !== 'User is free' && type == 'Issued') {
+                
                 alert(readyForAssign)
                 setLoading(false)
             } else if (
@@ -234,7 +321,13 @@ const SimpleMuiTable = () => {
                 (mmtTray == null && type == 'Issued') ||
                 (botTray == '' && type == 'Issued')
             ) {
-                alert('Please Assign Tray')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"Please Assign Tray",
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
             } else {
                 let obj = {
@@ -248,15 +341,32 @@ const SimpleMuiTable = () => {
 
                 let res = await axiosWarehouseIn.post('/issueToBot', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     navigate('/wareshouse/bag/bag-issue-request')
                 } else {
-                    alert(res.data.message)
+             
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title:res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -268,13 +378,30 @@ const SimpleMuiTable = () => {
             }
             let data = await axiosWarehouseIn.post('/actualBagItem', obj)
             if (data.status == 200) {
-                alert(data.data.message)
+             
+                 Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title:data?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 getitem()
             } else {
-                alert(data.data.message)
+          
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:data?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -290,17 +417,41 @@ const SimpleMuiTable = () => {
                         '/checkBotTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                     
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title:res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setBotTray(res.data.data)
                     } else {
-                        alert(res.data.message)
+                   
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title:res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 }
             } else {
-                alert('Please enter tray id')
+        
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"Please Enter Tray ID",
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error.response.data.message)
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error?.response?.data?.message,
+            })
         }
     }
 
@@ -315,17 +466,41 @@ const SimpleMuiTable = () => {
                         '/checkMmtTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                       
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title:res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setMmtTray(res.data.data)
                     } else {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        
                     }
                 } else {
-                    alert('Please enter tray id')
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Enter Tray Id',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error.response.data.message)
+        
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error?.response?.data?.message,
+            })
         }
     }
 
@@ -340,17 +515,41 @@ const SimpleMuiTable = () => {
                         '/checkPmtTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                   
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setPmtTray(res.data.data)
                     } else {
-                        alert(res.data.message)
+                       
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 }
             } else {
-                alert('Please enter tray id')
+             
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: "Please Enter Tray ID",
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error.response.data.message)
+   
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

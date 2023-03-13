@@ -20,6 +20,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
+import Swal from 'sweetalert2'
 
 export default function DialogBox() {
     const [clubModel, setClubModel] = useState({})
@@ -49,11 +50,22 @@ export default function DialogBox() {
                 if (res.status === 200) {
                     setClubModel(res.data.data)
                 } else {
-                    alert(res.data.message)
+                
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate('/bag-issue-request')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -101,7 +113,12 @@ export default function DialogBox() {
             }
             fetchData()
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [refresh, clubModel])
     /***********************************GET TRAY***************************************************** */
@@ -128,7 +145,12 @@ export default function DialogBox() {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /****************************************SELECT TRAY*********************************************** */
@@ -170,13 +192,30 @@ export default function DialogBox() {
                     setLoading(false)
                     setRefresh((refresh) => !refresh)
                     handeTrayGet(currentstate)
-                    alert(res.data.message)
+                
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } else {
-                alert('Tray Already Full')
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title:"Tray Already Full",
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     /**********************************DATATABLE************************************************* */
@@ -193,10 +232,21 @@ export default function DialogBox() {
             let res = await axiosWarehouseIn.post('/removeItemWht', obj)
             if (res.status === 200) {
                 setRefresh((refresh)=> !refresh)
-                alert(res.data.message)
+         
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelIssue = async (e) => {

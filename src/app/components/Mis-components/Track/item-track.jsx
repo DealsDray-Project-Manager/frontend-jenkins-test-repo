@@ -17,6 +17,7 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -65,9 +66,15 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setCount(res.data.count)
                         setItem(res.data.data)
+                        
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()
@@ -139,14 +146,22 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setPage(0)
                         setItem(res.data.data)
+                        console.log(res.data.data);
+                        console.log('dadaddadadadad');
                     } else {
                         setItem(res.data.data)
                         setDisplayText('Sorry no data found')
+
                     }
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -211,6 +226,20 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
+                         <TableCell>
+                            RDL Fls Issued Date
+                        </TableCell>
+                        <TableCell>
+                            RDL Fls Done Date
+                        </TableCell>
+                        <TableCell>
+                            RDL Agent name
+                        </TableCell>
+                       
+                        <TableCell>
+                            RDL One Status
+                        </TableCell>
+                      
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -505,6 +534,22 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
+                             <TableCell>
+                                {data?.delivery.rdl_fls_issued_date!= undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_issued_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_fls_one_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_fls_one_report?.selected_status}
+                            </TableCell>
+                           
                         </TableRow>
                     ))}
                 </TableBody>

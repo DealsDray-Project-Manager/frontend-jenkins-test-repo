@@ -23,6 +23,8 @@ import BqcUserReport from './Report/bqc-user-report'
 import AmazonDetails from './Report/amazon-data'
 import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
+import Swal from 'sweetalert2'
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -108,7 +110,12 @@ export default function DialogBox() {
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
                     setButDis(false)
-                    alert(res.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 } else {
                     if (res.data.status == 2) {
@@ -118,13 +125,18 @@ export default function DialogBox() {
                         }
                     } else if (res.data.status == 4) {
                         setAddButDis(false)
-                        alert(res.data.message)
+                        alert(res.data.message) 
                     } else {
                         alert(res.data.message)
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -152,13 +164,30 @@ export default function DialogBox() {
         try {
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-                alert(res.data.message)
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 navigate(-1)
             } else {
-                alert(res.data.message)
+             
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 

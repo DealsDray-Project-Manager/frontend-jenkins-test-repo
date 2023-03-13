@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import AssignDialogBox from './assign-dailog'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,10 +41,21 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setItem(res.data.data)
                 } else {
-                    alert(res.data.message)
+             
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -95,7 +107,12 @@ const SimpleMuiTable = () => {
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()

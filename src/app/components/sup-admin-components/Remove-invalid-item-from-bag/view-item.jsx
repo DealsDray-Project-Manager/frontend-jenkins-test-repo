@@ -34,7 +34,11 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setBagItemList(res.data.data.items)
                 } else {
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text:res?.data?.message,
+                    })
                 }
             } catch (error) {
                 Swal.fire({
@@ -58,14 +62,27 @@ const SimpleMuiTable = () => {
           };
           let data = await axiosWarehouseIn.post("/stockin", obj);
           if (data.status == 200) {
-            alert(data.data.message);
+             Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text:data?.data?.message,
+                    })
             setIsAlive((isAlive)=> !isAlive)
           }
           else{
-            alert(data.data.message)
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:data?.data?.message,
+            })
           }
         } catch (error) {
-          alert(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+        })
         }
       };
 

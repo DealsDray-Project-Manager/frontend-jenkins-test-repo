@@ -209,7 +209,12 @@ export default function DialogBox() {
     }
     const onSubmit = async (value) => {
         if (trayData.actual_items.length <= trayData?.items?.length) {
-            alert('All Items Scanned')
+           
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:'All Items Scanned',
+            })
         } else {
             setAddButDis(true)
             if (value.blancoo_qc_status == 'BQC Finished') {
@@ -261,11 +266,11 @@ export default function DialogBox() {
 
                 let res = await axiosBqc.post('/bqc-done', obj)
                 if (res.status == 200) {
-                    // alert(res.data.message);
+                
                     setLoading(false)
                     Swal.fire({
                         icon: 'success',
-                        title: res.data.message,
+                        title: res?.data?.message,
                         showConfirmButton: true,
                     }).then((result) => {
                         if (result.isConfirmed) {

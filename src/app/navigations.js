@@ -49,6 +49,24 @@ export const navigations = [
         icon: '',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
+    {
+        name: 'Dashboard',
+        path: '/RDL_one/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.RDL_one, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/sales/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.Sales_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/pricing/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.pricing_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
     // {
     //     name: 'Analytics',
     //     path: '/dashboard/analytics',
@@ -76,6 +94,12 @@ export const navigations = [
         name: 'Warehouses',
         icon: 'home',
         path: '/sup-admin/warehouse',
+        auth: authRoles.admin,
+    },
+    {
+        name: 'Category',
+        icon: 'category',
+        path: '/sup-admin/Category',
         auth: authRoles.admin,
     },
     {
@@ -257,6 +281,16 @@ export const navigations = [
                 path: '/mis/assign-to-agent/audit',
                 iconText: 'NP',
             },
+            {
+                name: 'Assign to RDL',
+                path: '/mis/assign-to-agent/Rdl',
+                iconText: 'NP',
+            },
+            {
+                name: 'Assign to RDL Two',
+                path: '/mis/assign-to-agent/Rdl_two',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
     },
@@ -412,6 +446,16 @@ export const navigations = [
             {
                 name: 'Ready for Audit',
                 path: '/wareshouse/wht/ready-for-audit',
+                iconText: 'VP',
+            },
+            {
+                name: 'RDL Request',
+                path: '/wareshouse/wht/RDL-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From RDL',
+                path: '/wareshouse/wht/Return-From-RDL',
                 iconText: 'VP',
             },
         ],
@@ -582,6 +626,25 @@ export const navigations = [
         icon: 'settings_system_daydream',
         path: '/audit/assigned-tray',
         auth: authRoles.audit,
+    },
+
+    {
+        name: 'RDL One Requests',
+        icon: 'class',
+        path: '/RDL_one/tray',
+        auth: authRoles.RDL_one,
+    },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.Sales_Agent,
+    },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.pricing_Agent,
     },
 
     // {

@@ -51,21 +51,22 @@ const SimpleMuiTable = () => {
     }
 
     const handelClose = async (trayId) => {
-        try {
-            let obj = {
-                trayId: trayId,
-                bagId: null,
-            }
-            let res = await axiosWarehouseIn.post('/traycloseBot', obj)
-            if (res.status == 200) {
-                alert(res.data.message)
-                setIsAlive((isAlive) => !isAlive)
-            } else {
-                alert(res.data.message)
-            }
-        } catch (error) {
-            alert(error)
-        }
+        navigate('/warehouse/wht-utility/Bot-tray/resticker/' + trayId)
+        // try {
+        //     let obj = {
+        //         trayId: trayId,
+        //         bagId: null,
+        //     }
+        //     let res = await axiosWarehouseIn.post('/traycloseBot', obj)
+        //     if (res.status == 200) {
+        //         alert(res.data.message)
+        //         setIsAlive((isAlive) => !isAlive)
+        //     } else {
+        //         alert(res.data.message)
+        //     }
+        // } catch (error) {
+        //     alert(error)
+        // }
     }
 
     const columns = [
@@ -124,28 +125,53 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {/* <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                onClick={(e) => {
-                                    handelViewTray(e, value)
-                                }}
-                                style={{ backgroundColor: 'primery' }}
-                            >
-                                View
-                            </Button> */}
                             <Button
                                 sx={{
                                     m: 1,
                                 }}
                                 variant="contained"
+                                onClick={() => {
+                                    navigate(
+                                        '/mis/assign-to-agent/bot/uic-genaration/' +
+                                            value
+                                    )
+                                }}
+                                style={{ backgroundColor: 'primery' }}
+                            >
+                                UIC
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                disabled={
+                                    tableMeta.rowData[5] ==
+                                    'Wht-utility Resticker Done'
+                                }
+                                variant="contained"
                                 onClick={(e) => {
                                     handelClose(value)
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                            >
+                                Resticker
+                            </Button>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                disabled={
+                                    tableMeta.rowData[5] == 'Wht-utility-work'
+                                }
+                                variant="contained"
+                                onClick={(e) => {
+                                    navigate(
+                                        '/warehouse/wht-utility/Bot-tray/close/' +
+                                            value
+                                    )
                                 }}
                                 style={{ backgroundColor: 'red' }}
                             >

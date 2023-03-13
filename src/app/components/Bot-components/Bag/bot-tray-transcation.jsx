@@ -104,7 +104,7 @@ export default function DialogBox() {
         let { user_name } = jwt_decode(admin)
         user_name1 = user_name
     }
-    
+
     useEffect(() => {
         const fetchData = async () => {
             setCount(0)
@@ -704,7 +704,7 @@ export default function DialogBox() {
                                     src={
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
-                                            ? 'http://prexo-v7-2-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v7-2-uat-api.dealsdray.com/product/image/' +
                                               awabnDetails?.[0]?.products
                                                   .vendor_sku_id +
                                               '.jpg'

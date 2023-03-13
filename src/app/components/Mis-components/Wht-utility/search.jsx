@@ -21,6 +21,7 @@ import {
     DialogContent,
     DialogActions,
     MenuItem,
+    Grid
 } from '@mui/material'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -201,7 +202,6 @@ function Search() {
             }
             let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
             if (res.status == 200) {
-
                 alert(res.data.message)
                 handleClose()
                 window.location.reload(true)
@@ -233,24 +233,26 @@ function Search() {
         }
     }
 
+ 
+
     const tempOrderSearchData = useMemo(() => {
         return (
             <TempOrderStyle>
                 <TableHead>
                     <TableRow>
+                   
                         <TableCell>Delivery Status</TableCell>
                         <TableCell>Order Imported TimeStamp</TableCell>
                         <TableCell>Order ID</TableCell>
                         <TableCell>Order Date</TableCell>
                         <TableCell>Partner Shop</TableCell>
-
+                        <TableCell>Brand Name</TableCell>
+                        <TableCell>Model Name</TableCell>
+                        <TableCell>MUIC</TableCell>
                         <TableCell>Order Status</TableCell>
-
                         <TableCell>Item ID</TableCell>
                         <TableCell>Old Item Details</TableCell>
-
                         <TableCell>IMEI</TableCell>
-
                         <TableCell>Tracking ID</TableCell>
                         <TableCell>Delivery Date</TableCell>
                     </TableRow>
@@ -269,6 +271,7 @@ function Search() {
                     ) : null}
                     {tempOrders?.map((data, index) => (
                         <TableRow>
+                           
                             <TableCell
                                 style={
                                     data?.delivery_status == 'Pending'
@@ -302,6 +305,13 @@ function Search() {
                             <TableCell>
                                 {data?.partner_shop?.toString()}
                             </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.brand_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name}
+                            </TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
 
                             <TableCell>
                                 {data?.order_status?.toString()}
@@ -335,6 +345,7 @@ function Search() {
             <OrderTable>
                 <TableHead>
                     <TableRow>
+                       
                         <TableCell>Delivery Status</TableCell>
                         <TableCell>Order Imported TimeStamp</TableCell>
                         <TableCell>Order ID</TableCell>
@@ -344,9 +355,9 @@ function Search() {
                         <TableCell>Partner ID</TableCell>
                         <TableCell>Item ID</TableCell>
                         <TableCell>Old Item Details</TableCell>
-                        {/* <TableCell>Brand Name</TableCell>
+                        <TableCell>Brand Name</TableCell>
                         <TableCell>Product Name</TableCell>
-                        <TableCell>MUIC</TableCell> */}
+                        <TableCell>MUIC</TableCell>
                         <TableCell>IMEI</TableCell>
                         <TableCell>Base Disscount</TableCell>
                         <TableCell>Diganostic</TableCell>
@@ -388,6 +399,7 @@ function Search() {
                     ) : null}
                     {orderData?.map((data, index) => (
                         <TableRow>
+                         
                             <TableCell
                                 style={
                                     data?.delivery_status == 'Pending'
@@ -439,13 +451,13 @@ function Search() {
                             <TableCell>
                                 {data?.old_item_details?.toString()}
                             </TableCell>
-                            {/* <TableCell>
+                            <TableCell>
                                 {data?.products?.[0]?.brand_name}
                             </TableCell>
                             <TableCell>
                                 {data?.products?.[0]?.model_name}
                             </TableCell>
-                            <TableCell>{data?.products?.[0]?.muic}</TableCell> */}
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
                             <TableCell>{data?.imei?.toString()}</TableCell>
                             <TableCell>
                                 ₹{data?.base_discount?.toString()}
@@ -537,6 +549,9 @@ function Search() {
                         <TableCell>Order ID</TableCell>
                         <TableCell>Order Date</TableCell>
                         <TableCell>Item ID</TableCell>
+                        <TableCell>Brand Name</TableCell>
+                        <TableCell>Model Name</TableCell>
+                        <TableCell>MUIC</TableCell>
                         <TableCell>GEP Order</TableCell>
                         <TableCell>IMEI</TableCell>
                         <TableCell>Partner Purchase Price</TableCell>
@@ -563,6 +578,7 @@ function Search() {
                     ) : null}
                     {deliveryData?.map((data, index) => (
                         <TableRow>
+                           
                             <TableCell
                                 style={
                                     data?.result?.length != 0
@@ -620,6 +636,13 @@ function Search() {
                                       )}
                             </TableCell>
                             <TableCell>{data?.item_id?.toString()}</TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.brand_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name}
+                            </TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
                             <TableCell>{data?.gep_order?.toString()}</TableCell>
                             <TableCell>{data?.imei?.toString()}</TableCell>
                             <TableCell>
@@ -665,6 +688,7 @@ function Search() {
             <TempOrderStyle>
                 <TableHead>
                     <TableRow>
+                        
                         <TableCell>Old UIC</TableCell>
                         <TableCell>Temp Delivery Imported Date</TableCell>
                         <TableCell>UIC</TableCell>
@@ -673,6 +697,9 @@ function Search() {
                         <TableCell>Order ID</TableCell>
                         <TableCell>Order Date</TableCell>
                         <TableCell>Item ID</TableCell>
+                        <TableCell>Brand Name</TableCell>
+                        <TableCell>Model Name</TableCell>
+                        <TableCell>MUIC</TableCell>
                         <TableCell>IMEI</TableCell>
                         <TableCell>Partner Shop</TableCell>
                         <TableCell>Last Status</TableCell>
@@ -692,6 +719,7 @@ function Search() {
                     ) : null}
                     {tempDelivery?.map((data, index) => (
                         <TableRow>
+                          
                             <TableCell>{data?.old_uic}</TableCell>
                             <TableCell>
                                 {new Date(data?.created_at).toLocaleString(
@@ -739,6 +767,13 @@ function Search() {
                                       )}
                             </TableCell>
                             <TableCell>{data?.item_id?.toString()}</TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.brand_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name}
+                            </TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
 
                             <TableCell>{data?.imei?.toString()}</TableCell>
 
@@ -750,6 +785,7 @@ function Search() {
             </TempOrderStyle>
         )
     }, [tempDelivery])
+    
 
     return (
         <Container>
@@ -870,8 +906,54 @@ function Search() {
                     </Button>
                 </Box>
             </Box>
+            
             {show !== false ? (
                 <>
+                <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            flexDirection: 'column',
+                            mb:2,
+                            bgcolor: 'background.paper',
+                            borderRadius: 1,
+                        }}
+                    >
+                        <Grid container spacing={1}>
+                            <Grid item xs={6}>
+                                <h3 style={{ marginLeft: '11px' }}>
+                                    AWBN:-{tempDelivery?.[0]?.products[0]?.vendor_sku_id}
+                                </h3>
+                                <h3 style={{ marginLeft: '11px' }}>
+                                    NEW UIC :- {tempDelivery?.[0]?.uic_code?.code}
+                                </h3>
+                                <h3 style={{ marginLeft: '11px' }}>
+                                    BRAND :- {tempOrders?.[0]?.products[0]?.brand_name}
+                                </h3>
+                                <h3 style={{ marginLeft: '11px' }}>
+                                    MODEL :- {tempOrders?.[0]?.products[0]?.model_name}
+                                </h3>
+                                <h3 style={{ marginLeft: '11px' }}>
+                                    MUIC :- {tempOrders?.[0]?.products[0]?.muic}
+                                </h3>
+                              
+                            </Grid>
+                            <Grid item xs={6}>
+                                <img
+                                    height="auto"
+                                    width="400px"
+                                    alt="No product image"
+                                    src={
+                                        tempDelivery?.[0]?.products[0]?.image == undefined
+                                            ? 'http://prexo-v7-2-uat-api.dealsdray.com/product/image/' +
+                                            tempDelivery?.[0]?.products[0]?.vendor_sku_id +
+                                              '.jpg'
+                                            : tempDelivery?.[0]?.products[0]?.image
+                                    }
+                                />
+                            </Grid>
+                        </Grid>
+                    </Box>
                     <Typography
                         sx={{ flex: '1 1 100%' }}
                         variant="h6"
@@ -945,7 +1027,9 @@ function Search() {
                     >
                         {deliverySearchData}
                     </Card>
-                    {show == true && deliveryData.length == 0 && orderData?.length !== 0 ? (
+                    {show == true &&
+                    deliveryData.length == 0 &&
+                    orderData?.length !== 0 ? (
                         <Box
                             sx={{
                                 float: 'right',

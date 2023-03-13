@@ -62,6 +62,8 @@ const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
 const SearchImei = Loadable(lazy(() => import('./Wht-utility/search')))
 const Pickup = Loadable(lazy(() => import('./Merge/Pickup/pickup')))
 const WhtutilityBotTray =Loadable(lazy(() => import('./Wht-utility/bot-tray')))
+const WhtUtilityBotTrayResticker=Loadable(lazy(() => import('./Wht-utility/bot-tray-resticker')))
+const WhtUtilityBotTrayClose=Loadable(lazy(() => import('./Wht-utility/bot-tray-close')))
 
 const dataTableRoutes = [
     {
@@ -173,12 +175,20 @@ const dataTableRoutes = [
         element: <TrackItem />,
     },
     {
-        path: '/mis/wht-utility/import-data',
+        path: '/warehouse/wht-utility/import-data',
         element: <SearchImei />,
     },
     {
-        path: '/mis/wht-utility/Bot-tray',
+        path: '/warehouse/wht-utility/Bot-tray',
         element: <WhtutilityBotTray />,
+    },
+    {
+        path: '/warehouse/wht-utility/Bot-tray/resticker/:trayId',
+        element: <WhtUtilityBotTrayResticker />,
+    },
+    {
+        path: '/warehouse/wht-utility/Bot-tray/close/:trayId',
+        element: <WhtUtilityBotTrayClose />,
     },
 ]
 

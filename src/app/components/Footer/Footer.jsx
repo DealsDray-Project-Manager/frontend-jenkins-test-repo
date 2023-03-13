@@ -48,7 +48,7 @@ const Footer = () => {
                                 Get MatX Pro
                             </Button>
                         </a> */}
-                        <Span sx={{ m: 'auto' }}> 2022 © Prexo. </Span>
+                        <Span sx={{ m: 'auto' }}> 2023 © Prexo. </Span>
                     </FooterContent>
                 </AppFooter>
             </AppBar>

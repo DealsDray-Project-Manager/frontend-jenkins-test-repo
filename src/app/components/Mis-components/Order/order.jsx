@@ -64,11 +64,11 @@ const SimpleMuiTable = () => {
                     }
                     let res = await axiosMisUser.post(
                         '/getOrders/' +
-                        location +
-                        '/' +
-                        page +
-                        '/' +
-                        rowsPerPage
+                            location +
+                            '/' +
+                            page +
+                            '/' +
+                            rowsPerPage
                     )
                     if (res.status == 200) {
                         setDisplayText('')
@@ -295,21 +295,21 @@ const SimpleMuiTable = () => {
                                     {data?.order_date == null
                                         ? ''
                                         : new Date(
-                                            data.order_date
-                                        ).toLocaleString('en-GB', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                        })}
+                                              data.order_date
+                                          ).toLocaleString('en-GB', {
+                                              year: 'numeric',
+                                              month: '2-digit',
+                                              day: '2-digit',
+                                          })}
                                 </TableCell>
                                 <TableCell>
                                     {data?.order_timestamp == null
                                         ? ''
                                         : new Date(
-                                            data.order_timestamp
-                                        ).toLocaleString('en-GB', {
-                                            hour12: true,
-                                        })}
+                                              data.order_timestamp
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
                                 </TableCell>
                                 <TableCell>
                                     {data.order_status?.toString()}
@@ -347,10 +347,10 @@ const SimpleMuiTable = () => {
                                     {data.delivery_date == null
                                         ? ''
                                         : new Date(
-                                            data.delivery_date
-                                        ).toLocaleString('en-GB', {
-                                            hour12: true,
-                                        })}
+                                              data.delivery_date
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
                                 </TableCell>
                                 <TableCell>{data.order_id_replaced}</TableCell>
                                 <TableCell>{data.deliverd_with_otp}</TableCell>
@@ -367,19 +367,19 @@ const SimpleMuiTable = () => {
                                     {data.gc_redeem_time == null
                                         ? ''
                                         : new Date(
-                                            data.gc_redeem_time
-                                        ).toLocaleString('en-GB', {
-                                            hour12: true,
-                                        })}
+                                              data.gc_redeem_time
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
                                 </TableCell>
                                 <TableCell>
                                     {data.gc_amount_refund_time == null
                                         ? ''
                                         : new Date(
-                                            data.gc_amount_refund_time
-                                        ).toLocaleString('en-GB', {
-                                            hour12: true,
-                                        })}
+                                              data.gc_amount_refund_time
+                                          ).toLocaleString('en-GB', {
+                                              hour12: true,
+                                          })}
                                 </TableCell>
                                 <TableCell>
                                     {data.diagnstic_status?.toString()}

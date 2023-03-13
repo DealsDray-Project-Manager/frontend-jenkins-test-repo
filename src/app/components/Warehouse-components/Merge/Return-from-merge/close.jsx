@@ -19,7 +19,7 @@ import Checkbox from '@mui/material/Checkbox'
 
 export default function DialogBox() {
     const navigate = useNavigate()
-    const [employeeData, setEmployeeData] = useState([])
+    const [tray, setTray] = useState([])
     const { trayId } = useParams()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
@@ -39,7 +39,7 @@ export default function DialogBox() {
                         'Received From Merging'
                 )
                 if (response.status === 200) {
-                    setEmployeeData(response.data.data)
+                    setTray(response.data.data)
                 } else {
                     alert(response.data.message)
                     navigate(-1)
@@ -57,11 +57,11 @@ export default function DialogBox() {
                 '/getBagItemRequest/' + trayId + '/' + 'Received From Merging'
             )
             if (response.status === 200) {
-                setEmployeeData(response.data.data)
+                setTray(response.data.data)
 
                 //   dataTableFun()
             } else if (response.status == 201) {
-                setEmployeeData(response.data.data)
+                setTray(response.data.data)
                 alert(response.data.message)
             } else if (response.status == 202) {
                 alert(response.data.message)
@@ -102,7 +102,7 @@ export default function DialogBox() {
                 order_id: uic.order_id,
                 order_date: uic.order_date,
                 uic: uic.uic,
-                status:uic.status,
+                status: uic.status,
                 stock_in: new Date(),
             }
             let res = await axiosWarehouseIn.post('/addActualitem', obj)
@@ -118,7 +118,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const handelIssue = async (e, trayId, type, length, limit,status) => {
+    const handelIssue = async (e, trayId, type, length, limit, status) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -126,12 +126,15 @@ export default function DialogBox() {
             if (admin) {
                 let obj = {
                     toTray: trayId,
-                    fromTray: employeeData[0].from_merge,
                     type: type,
                     length: length,
                     limit: limit,
-                    status:status
+                    status: status,
                 }
+                if(type == "MMT"){
+                    obj.fromTray=tray[0].from_merge
+                }
+              
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',
                     obj
@@ -156,30 +159,30 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>Expected</h5>
-
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
+                <h5>Expected</h5>
+
                     <Box
                         sx={{
                             m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                            <h4 style={{marginLeft:"7px"}}>Total</h4>
+                            <p style={{  fontSize: '22px' }}>
                                 {
-                                    employeeData[0]?.items?.filter(function (
+                                    tray[0]?.items?.filter(function (
                                         item
                                     ) {
                                         return item.status != 'Duplicate'
                                     }).length
                                 }
-                                /{employeeData[0]?.limit}
+                                /{tray[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -203,7 +206,7 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {employeeData[0]?.items?.map((data, index) => (
+                            {tray[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
@@ -234,10 +237,18 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [employeeData[0]?.items])
+    }, [tray[0]?.items])
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Box>
+
                 <h5>ACTUAL</h5>
                 <TextField
                     sx={{ m: 1 }}
@@ -258,29 +269,24 @@ export default function DialogBox() {
                         },
                     }}
                 />
+                    </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
                             m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            <h4 style={{marginLeft:"7px"}}>Total</h4>
+                            <p style={{  fontSize: '24px' }}>
                                 {
-                                    employeeData[0]?.actual_items?.filter(
+                                    tray[0]?.actual_items?.filter(
                                         function (item) {
                                             return item.status != 'Duplicate'
                                         }
                                     ).length
                                 }
-                                /{employeeData[0]?.limit}
+                                /{tray[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -304,7 +310,7 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {employeeData[0]?.actual_items?.map(
+                            {tray[0]?.actual_items?.map(
                                 (data, index) => (
                                     <TableRow
                                         hover
@@ -340,7 +346,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [employeeData[0]?.actual_items, textDisable, awbn])
+    }, [tray[0]?.actual_items, textDisable, awbn])
     return (
         <>
             <Box
@@ -357,7 +363,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {employeeData[0]?.issued_user_name}
+                        AGENT NAME - {tray[0]?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -368,7 +374,7 @@ export default function DialogBox() {
                     <h4 style={{ marginRight: '13px' }}>
                         Closed On --{' '}
                         {new Date(
-                            employeeData[0]?.closed_time_sorting_agent
+                            tray[0]?.closed_time_sorting_agent
                         ).toLocaleString('en-GB', { hour12: true })}
                     </h4>
                 </Box>
@@ -390,25 +396,29 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
+                    {tray?.[0]?.type_taxanomy == 'MMT' ? (
+                        <>
+                            <Checkbox
+                                checked={bagReuse}
+                                onClick={(e) => {
+                                    if (
+                                        window.confirm(
+                                            bagReuse
+                                                ? 'Already Added'
+                                                : 'You Want to Release Tray ?'
+                                        )
+                                    ) {
+                                        setBagReuse(true)
+                                    }
+                                }}
+                                {...label}
+                            />
+                            <label>
+                                {tray[0]?.from_merge} - Release
+                            </label>
+                        </>
+                    ) : null}
 
-                    <>
-                        <Checkbox
-                            checked={bagReuse}
-                            onClick={(e) => {
-                                if (
-                                    window.confirm(
-                                        bagReuse
-                                            ? 'Already Added'
-                                            : 'You Want to Release Tray ?'
-                                    )
-                                ) {
-                                    setBagReuse(true)
-                                }
-                            }}
-                            {...label}
-                        />
-                        <label>{employeeData[0]?.from_merge} - Release</label>
-                    </>
 
                     <Button
                         sx={{ m: 3, mb: 9 }}
@@ -417,20 +427,20 @@ export default function DialogBox() {
                         disabled={
                             loading == true ||
                             description == '' ||
-                            bagReuse == false ||
-                            employeeData[0]?.actual_items?.length !==
-                                employeeData[0]?.items?.length
+                            bagReuse == false  && tray?.[0]?.type_taxanomy == 'MMT' ||
+                            tray[0]?.actual_items?.length !==
+                            tray[0]?.items?.length
                                 ? true
                                 : false
                         }
                         onClick={(e) => {
                             handelIssue(
                                 e,
-                                employeeData[0]?.code,
-                                employeeData[0]?.type_taxanomy,
-                                employeeData[0]?.items.length,
-                                employeeData[0]?.limit,
-                                employeeData[0]?.sort_id
+                                tray[0]?.code,
+                                tray[0]?.type_taxanomy,
+                                tray[0]?.items.length,
+                                tray[0]?.limit,
+                                tray[0]?.sort_id
                             )
                         }}
                     >

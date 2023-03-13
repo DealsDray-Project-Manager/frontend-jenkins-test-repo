@@ -306,19 +306,7 @@ export const navigations = [
         ],
         auth: authRoles.Mis,
     },
-    {
-        name: 'IMEI Search',
-        icon: 'search',
-        path: '/mis/imei-search',
-        // children: [
-        //     {
-        //         name: 'Search',
-        //         path: '/mis/imei-search/search',
-        //         iconText: 'VP',
-        //     },
-        // ],
-        auth: authRoles.Mis,
-    },
+   
     {
         name: 'Bag',
         icon: 'class',
@@ -506,11 +494,29 @@ export const navigations = [
         auth: authRoles.Warehouse,
     },
     {
+        name: 'WHT Utility',
+        icon: 'search',
+        children: [
+            {
+                name: 'Search And Import',
+                path: '/warehouse/wht-utility/import-data',
+                iconText: 'VP',
+            },
+            {
+                name: 'Bot Tray',
+                path: '/warehouse/wht-utility/Bot-tray',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+    },
+    {
         name: 'CTX',
         icon: 'shopping_cart',
         path: '/wareshouse/ctx/all',
         auth: authRoles.Warehouse,
     },
+  
     {
         name: 'Bag',
         icon: 'class',

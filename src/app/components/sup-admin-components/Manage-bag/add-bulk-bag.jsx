@@ -152,7 +152,7 @@ const PaginationTable = () => {
             setLoading(true)
             for (let x of pagination.item) {
                 x.bag_id = ''
-                if (x.cpc == 'Gurgaon_122016') {
+                if (x.cpc == 'Gurgaon_122016' || x.cpc == "Gurgaon_122003") {
                     x.bag_id = 'DDB-GGN-' + (brandCount.bagGurgaon + count1)
                     count1++
                 } else {

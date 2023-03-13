@@ -141,6 +141,7 @@ const PickupRequestApproveExvsActPage =Loadable(lazy(()=>import('./Merge/pickup-
 const PickupDoneClosedBySorting =Loadable(lazy(()=>import('./Merge/return-from-pickup/return-from-pickup')))
 const PickupDoneClose = Loadable(lazy(()=>import('./Merge/return-from-pickup/close')))
 
+
 const WarehoueRouter = [
     {
         path: '/warehouse/dashboard',

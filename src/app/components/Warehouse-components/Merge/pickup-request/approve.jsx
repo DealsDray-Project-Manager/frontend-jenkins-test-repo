@@ -72,7 +72,7 @@ export default function StickyHeadTable({ props }) {
     const handelIssue = async (e, type) => {
         try {
             let userStatus = await axiosWarehouseIn.post(
-                '/sortingAgnetStatus/' + tray[0]?.issued_user_name
+                '/sortingAgnetStatus/' + tray?.[0]?.issued_user_name + "/" + tray?.[0]?.to_tray_for_pickup
             )
             if (userStatus.status === 200) {
                 if (userStatus.data.data !== 'User is free') {

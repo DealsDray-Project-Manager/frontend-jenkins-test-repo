@@ -54,11 +54,16 @@ const SortingBotTowhtAssign = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/wht-assignment'))
 )
 const MergeMmt = Loadable(lazy(() => import('./Merge/Mmt-merge/mmt-tray')))
-const MergeMmtViewItem = Loadable(lazy(() => import('./Merge/Mmt-merge/view-item')))
+const MergeMmtViewItem = Loadable(
+    lazy(() => import('./Merge/Mmt-merge/view-item'))
+)
 const MergeWht = Loadable(lazy(() => import('./Merge/Wht-merge/wht-tray')))
 const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
-const SearchImei = Loadable(lazy(() => import('./Imei-search/search')))
-const Pickup =Loadable(lazy(() => import('./Merge/Pickup/pickup')))
+const SearchImei = Loadable(lazy(() => import('./Wht-utility/search')))
+const Pickup = Loadable(lazy(() => import('./Merge/Pickup/pickup')))
+const WhtutilityBotTray =Loadable(lazy(() => import('./Wht-utility/bot-tray')))
+const WhtUtilityBotTrayResticker=Loadable(lazy(() => import('./Wht-utility/bot-tray-resticker')))
+const WhtUtilityBotTrayClose=Loadable(lazy(() => import('./Wht-utility/bot-tray-close')))
 
 const dataTableRoutes = [
     {
@@ -170,8 +175,20 @@ const dataTableRoutes = [
         element: <TrackItem />,
     },
     {
-        path: '/mis/imei-search',
+        path: '/warehouse/wht-utility/import-data',
         element: <SearchImei />,
+    },
+    {
+        path: '/warehouse/wht-utility/Bot-tray',
+        element: <WhtutilityBotTray />,
+    },
+    {
+        path: '/warehouse/wht-utility/Bot-tray/resticker/:trayId',
+        element: <WhtUtilityBotTrayResticker />,
+    },
+    {
+        path: '/warehouse/wht-utility/Bot-tray/close/:trayId',
+        element: <WhtUtilityBotTrayClose />,
     },
 ]
 

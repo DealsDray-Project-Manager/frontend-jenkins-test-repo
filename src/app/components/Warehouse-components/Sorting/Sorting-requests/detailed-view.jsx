@@ -45,7 +45,7 @@ const SimpleMuiTable = () => {
         const userStatusApiCall = async () => {
             try {
                 let res = await axiosWarehouseIn.post(
-                    '/sortingAgnetStatus/' + botTray[0]?.issued_user_name
+                    '/sortingAgnetStatus/' + botTray[0]?.issued_user_name + "/" +  botTray[0]?.code
                 )
                 if (res.status === 200) {
                     setUserAgent(res.data.data)

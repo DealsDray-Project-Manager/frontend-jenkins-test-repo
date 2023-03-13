@@ -138,7 +138,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'Location_type',
+            name: 'location_type',
             label: 'Location Type',
             options: {
                 filter: true,

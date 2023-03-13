@@ -71,14 +71,13 @@ const MemberEditorDialog = ({
             .min(6, 'Please Enter valid Pincode')
             .required('Required*')
             .nullable(),
-        Location_type: Yup.string()
-            .required('Required*')
-            .nullable(),   
+        location_type: Yup.string().required('Required*').nullable(),
     })
 
     const {
         register,
         handleSubmit,
+        getValues,
         formState: { errors },
         reset,
     } = useForm({
@@ -185,11 +184,11 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Location Type"
                             select
-                            name="Location_type"
-                            {...register('Location_type')}
-                            error={errors.Location_type ? true : false}
-                            helperText={errors.Location_type?.message}
-                            // defaultValue={value}
+                            name="location_type"
+                            {...register('location_type')}
+                            error={errors.location_type ? true : false}
+                            helperText={errors.location_type?.message}
+                            defaultValue={getValues("location_type")}
                         >
                             <MenuItem value="Dock">Dock</MenuItem>
                             <MenuItem value="Processing">Processing</MenuItem>

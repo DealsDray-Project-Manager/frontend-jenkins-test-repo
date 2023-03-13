@@ -33,6 +33,8 @@ const MemberEditorDialog = ({
     })
     const [loading, setLoading] = useState(false)
     const [cpc, setCpc] = useState([])
+    const [cpcType, setCpcType] = useState([])
+    const [selectedCpc,setSelectedCpc]=useState("")
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -67,6 +69,7 @@ const MemberEditorDialog = ({
             .nullable(),
         contact: Yup.string().required('Required*').nullable(),
         cpc: Yup.string().required('Required*').nullable(),
+        cpc_type: Yup.string().required('Required*').nullable(),
         user_type: Yup.string().required('Required*').nullable(),
         device_id: Yup.string()
             .required('Required*')
@@ -159,6 +162,18 @@ const MemberEditorDialog = ({
         }
     }
 
+    const getLocationType = async (value) => {
+
+        try {
+            let res = await axiosSuperAdminPrexo.post('/location/type/' + value)
+            if (res.status == 200) {
+                setCpcType(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
     const handelEdit = async (values) => {
         try {
             let formdata = new FormData()
@@ -200,9 +215,10 @@ const MemberEditorDialog = ({
             store: event.target.files[0],
         })
     }
+  
 
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 {Object.keys(editFetchData).length !== 0 ? (
                     <H4 sx={{ mb: '20px' }}>Update Member</H4>
@@ -252,28 +268,7 @@ const MemberEditorDialog = ({
                             }
                             inputProps={{ maxLength: 40 }}
                         />
-                        <TextFieldCustOm
-                            label="User Type"
-                            select
-                            name="user_type"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            value={getValues('user_type')}
-                            {...register('user_type')}
-                            error={errors.user_type ? true : false}
-                            helperText={errors.user_type?.message}
-                        >
-                            <MenuItem value="MIS">MIS</MenuItem>
-                            <MenuItem value="Warehouse">Warehouse</MenuItem>
-                            <MenuItem value="Bag Opening">Bag Opening</MenuItem>
-                            <MenuItem value="Charging">Charging</MenuItem>
-                            <MenuItem value="BQC">BQC</MenuItem>
-                            <MenuItem value="Audit">Audit</MenuItem>
-                            <MenuItem value="Sorting Agent">Sorting Agent</MenuItem>
-                            <MenuItem value="Pricing Agent">Pricing Agent</MenuItem>
-                            <MenuItem value="Sales Agent">Sales Agent</MenuItem>
-                            <MenuItem value="RDL">RDL Agent</MenuItem>
-                           
-                        </TextFieldCustOm>
+
                         <TextFieldCustOm
                             label="CPC"
                             select
@@ -281,6 +276,9 @@ const MemberEditorDialog = ({
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('cpc')}
                             value={getValues('cpc')}
+                            onChange={(e) => {
+                                getLocationType(e.target.value)
+                            }}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -294,18 +292,79 @@ const MemberEditorDialog = ({
                             ))}
                         </TextFieldCustOm>
                         <TextFieldCustOm
-                            label="Mobile No"
-                            name="contact"
-                            {...register('contact')}
-                            inputProps={{ maxLength: 10 }}
-                            error={errors.contact ? true : false}
-                            helperText={
-                                errors.contact ? errors.contact.message : ''
-                            }
-                          
-                        />
-                       
-                       
+                            label="CPC Type"
+                            select
+                            name="cpc_type"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('cpc_type')}
+                            value={getValues('cpc_type')}
+                            error={errors.cpc_type ? true : false}
+                            helperText={errors.cpc_type?.message}
+                        >
+                            {cpcType?.map((cpcData) => (
+                                <MenuItem
+                                onClick={(e)=>{setSelectedCpc(cpcData.location_type)}}
+                                    key={cpcData.location_type}
+                                    value={cpcData.location_type}
+                                >
+                                    {cpcData.location_type}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="User Type"
+                            select
+                            name="user_type"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            defaultValue={getValues('user_type')}
+                            {...register('user_type')}
+                            error={errors.user_type ? true : false}
+                            helperText={errors.user_type?.message}
+                        >
+                            {selectedCpc == 'Dock' ? (
+                                <>
+                                    <MenuItem value="MIS">MIS</MenuItem>
+                                    <MenuItem value="Warehouse">
+                                        Warehouse
+                                    </MenuItem>
+                                </>
+                            ) : selectedCpc == 'Processing' ? (
+                                <>
+                                    <MenuItem value="MIS">MIS</MenuItem>
+                                    <MenuItem value="Warehouse">
+                                        Warehouse
+                                    </MenuItem>
+                                    <MenuItem value="Bag Opening">
+                                        Bag Opening
+                                    </MenuItem>
+                                    <MenuItem value="Charging">
+                                        Charging
+                                    </MenuItem>
+                                    <MenuItem value="BQC">BQC</MenuItem>
+                                    <MenuItem value="Audit">Audit</MenuItem>
+                                    <MenuItem value="Sorting Agent">
+                                        Sorting Agent
+                                    </MenuItem>
+                                    <MenuItem value="RDL">RDL Agent</MenuItem>
+                                </>
+                            ) : selectedCpc == 'Sales' ? (
+                                <>
+                                    <MenuItem value="MIS">MIS</MenuItem>
+                                    <MenuItem value="Warehouse">
+                                        Warehouse
+                                    </MenuItem>
+                                    <MenuItem value="Sales Agent">
+                                        Sales Agent
+                                    </MenuItem>
+                                    <MenuItem value="Sorting Agent">
+                                        Sorting Agent
+                                    </MenuItem>
+                                    <MenuItem value="Pricing Agent">
+                                        Pricing Agent
+                                    </MenuItem>
+                                </>
+                            ) : null}
+                        </TextFieldCustOm>
                     </Grid>
 
                     <Grid item sm={6} xs={12}>
@@ -319,7 +378,17 @@ const MemberEditorDialog = ({
                                 errors.email ? errors.email.message : ''
                             }
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
+                            label="Mobile No"
+                            name="contact"
+                            {...register('contact')}
+                            inputProps={{ maxLength: 10 }}
+                            error={errors.contact ? true : false}
+                            helperText={
+                                errors.contact ? errors.contact.message : ''
+                            }
+                        />
+                        <TextFieldCustOm
                             label="Device Name"
                             type="text"
                             name="device_name"
@@ -328,8 +397,7 @@ const MemberEditorDialog = ({
                             error={errors.device_name ? true : false}
                             helperText={errors.device_name?.message}
                         />
-                       
-                       
+
                         <TextFieldCustOm
                             label="Device Id"
                             type="text"
@@ -349,7 +417,7 @@ const MemberEditorDialog = ({
                             error={errors.password ? true : false}
                             helperText={errors.password?.message}
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Confirm Password"
                             type="password"
                             name="cpassword"

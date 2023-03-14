@@ -945,7 +945,7 @@ function Search() {
                                     alt="No product image"
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image == undefined
-                                            ? 'http://prexo-testing-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v7-2-adminapi.dealsdray.com/product/image/' +
                                             tempDelivery?.[0]?.products[0]?.vendor_sku_id +
                                               '.jpg'
                                             : tempDelivery?.[0]?.products[0]?.image

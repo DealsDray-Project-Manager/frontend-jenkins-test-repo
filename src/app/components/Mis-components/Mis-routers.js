@@ -34,16 +34,16 @@ const AssignToCharging = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
 )
 const AssignToRdl = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-RDL/wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/wht-tray'))
 )
 const AssignToRdltrayView = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-RDL/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/view-wht-tray'))
 )
 const AssignToRdltwo = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-RDL_two/wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/wht-tray'))
 )
 const AssignToRdltwoview = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-RDL_two/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))
 )
 const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
 const UicDownloaded = Loadable(
@@ -143,19 +143,19 @@ const dataTableRoutes = [
         element: <AssignToAudit />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl',
+        path: '/mis/assign-to-agent/rdl-fls',
         element: <AssignToRdl />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl/view-item/:trayId',
+        path: '/mis/assign-to-agent/rdl-fls/view-item/:trayId',
         element: <AssignToRdltrayView />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl_two',
+        path: '/mis/assign-to-agent/Rdl-repair',
         element: <AssignToRdltwo />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl_two/view-item/:trayId',
+        path: '/mis/assign-to-agent/Rdl-repair/view-item/:trayId',
         element: <AssignToRdltwoview />,
     },
     {

@@ -18,7 +18,6 @@ import Swal from 'sweetalert2'
 
 import { axiosWarehouseIn } from '../../../../../axios'
 
-
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -35,7 +34,7 @@ export default function DialogBox() {
         const fetchData = async () => {
             try {
                 let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Received from RDL_one'
+                    '/getWhtTrayItem/' + trayId + '/' + 'Received from RDL-FLS'
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -60,8 +59,7 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-
-    console.log(trayData,"trayData");
+    console.log(trayData, 'trayData')
 
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
@@ -78,7 +76,7 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -99,11 +97,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All items Scanned",
+                title: 'All items Scanned',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -134,8 +131,6 @@ export default function DialogBox() {
     }
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
-
-        console.log('poooddd');
         try {
             if (trayData?.actual_items?.length == trayData?.items?.length) {
                 setLoading(true)
@@ -145,27 +140,19 @@ export default function DialogBox() {
                     sortId: trayData?.sort_id,
                 }
                 let res = await axiosWarehouseIn.post(
-                    '/issue-to-agent-wht-Recieved-RDL',
+                    '/rdl-fls/closedByWh',
                     obj
                 )
                 if (res.status == 200) {
-                    console.log('fffff');
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    if (trayData?.sort_id == 'Received from RDL_one') {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/RDL-request')
-                    } else {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/RDL-request')
-                    }
+                    setLoading(false)
+                    navigate('/wareshouse/wht/rdl-fls-request')
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -175,11 +162,11 @@ export default function DialogBox() {
                 }
             } else {
                 setLoading(false)
-                
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:"Please Verify Actual Data",
+                    title: 'Please Verify Actual Data',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -192,8 +179,6 @@ export default function DialogBox() {
             })
         }
     }
-
- 
 
     const tableExpected = useMemo(() => {
         return (
@@ -361,7 +346,6 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                  
                 </Box>
                 <Box
                     sx={{
@@ -375,7 +359,6 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
-               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>

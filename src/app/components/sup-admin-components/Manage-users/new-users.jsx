@@ -34,7 +34,7 @@ const MemberEditorDialog = ({
     const [loading, setLoading] = useState(false)
     const [cpc, setCpc] = useState([])
     const [cpcType, setCpcType] = useState([])
-    const [selectedCpc,setSelectedCpc]=useState("")
+    const [selectedCpc, setSelectedCpc] = useState('')
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -163,7 +163,6 @@ const MemberEditorDialog = ({
     }
 
     const getLocationType = async (value) => {
-
         try {
             let res = await axiosSuperAdminPrexo.post('/location/type/' + value)
             if (res.status == 200) {
@@ -215,7 +214,6 @@ const MemberEditorDialog = ({
             store: event.target.files[0],
         })
     }
-  
 
     return (
         <Dialog open={open}>
@@ -303,7 +301,9 @@ const MemberEditorDialog = ({
                         >
                             {cpcType?.map((cpcData) => (
                                 <MenuItem
-                                onClick={(e)=>{setSelectedCpc(cpcData.location_type)}}
+                                    onClick={(e) => {
+                                        setSelectedCpc(cpcData.location_type)
+                                    }}
                                     key={cpcData.location_type}
                                     value={cpcData.location_type}
                                 >
@@ -311,60 +311,87 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="User Type"
-                            select
-                            name="user_type"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={getValues('user_type')}
-                            {...register('user_type')}
-                            error={errors.user_type ? true : false}
-                            helperText={errors.user_type?.message}
-                        >
-                            {selectedCpc == 'Dock' ? (
-                                <>
-                                    <MenuItem value="MIS">MIS</MenuItem>
-                                    <MenuItem value="Warehouse">
-                                        Warehouse
-                                    </MenuItem>
-                                </>
-                            ) : selectedCpc == 'Processing' ? (
-                                <>
-                                    <MenuItem value="MIS">MIS</MenuItem>
-                                    <MenuItem value="Warehouse">
-                                        Warehouse
-                                    </MenuItem>
-                                    <MenuItem value="Bag Opening">
-                                        Bag Opening
-                                    </MenuItem>
-                                    <MenuItem value="Charging">
-                                        Charging
-                                    </MenuItem>
-                                    <MenuItem value="BQC">BQC</MenuItem>
-                                    <MenuItem value="Audit">Audit</MenuItem>
-                                    <MenuItem value="Sorting Agent">
-                                        Sorting Agent
-                                    </MenuItem>
-                                    <MenuItem value="RDL">RDL Agent</MenuItem>
-                                </>
-                            ) : selectedCpc == 'Sales' ? (
-                                <>
-                                    <MenuItem value="MIS">MIS</MenuItem>
-                                    <MenuItem value="Warehouse">
-                                        Warehouse
-                                    </MenuItem>
-                                    <MenuItem value="Sales Agent">
-                                        Sales Agent
-                                    </MenuItem>
-                                    <MenuItem value="Sorting Agent">
-                                        Sorting Agent
-                                    </MenuItem>
-                                    <MenuItem value="Pricing Agent">
-                                        Pricing Agent
-                                    </MenuItem>
-                                </>
-                            ) : null}
-                        </TextFieldCustOm>
+
+                        {selectedCpc == 'Dock' ? (
+                            <TextFieldCustOm
+                                label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            >
+                                <MenuItem value="MIS">MIS</MenuItem>
+                                <MenuItem value="Warehouse">Warehouse</MenuItem>
+                            </TextFieldCustOm>
+                        ) : selectedCpc == 'Processing' ? (
+                            <TextFieldCustOm
+                                label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            >
+                                <MenuItem value="MIS">MIS</MenuItem>
+                                <MenuItem value="Warehouse">Warehouse</MenuItem>
+                                <MenuItem value="Bag Opening">
+                                    Bag Opening
+                                </MenuItem>
+                                <MenuItem value="Charging">Charging</MenuItem>
+                                <MenuItem value="BQC">BQC</MenuItem>
+                                <MenuItem value="Audit">Audit</MenuItem>
+                                <MenuItem value="Sorting Agent">
+                                    Sorting Agent
+                                </MenuItem>
+                                <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
+                            </TextFieldCustOm>
+                        ) : selectedCpc == 'Sales' ? (
+                            <TextFieldCustOm
+                                label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            >
+                                <MenuItem value="MIS">MIS</MenuItem>
+                                <MenuItem value="Warehouse">Warehouse</MenuItem>
+                                <MenuItem value="Sales Agent">
+                                    Sales Agent
+                                </MenuItem>
+                                <MenuItem value="Sorting Agent">
+                                    Sorting Agent
+                                </MenuItem>
+                                <MenuItem value="Pricing Agent">
+                                    Pricing Agent
+                                </MenuItem>
+                            </TextFieldCustOm>
+                        ) : <TextFieldCustOm
+                        label="User Type"
+                        select
+                        name="user_type"
+                        disabled={
+                            Object.keys(editFetchData).length !== 0
+                        }
+                        defaultValue={getValues('user_type')}
+                        {...register('user_type')}
+                        error={errors.user_type ? true : false}
+                        helperText={errors.user_type?.message}
+                    />
+                        }
                     </Grid>
 
                     <Grid item sm={6} xs={12}>

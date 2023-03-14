@@ -88,22 +88,10 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        {
-            name: 'sort_id',
-            label: 'RDL Assign Date',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return trayData?.assigned_date
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    })
-                },
-            },
-        },
+       
        
         {
-            name: 'Rdl_status',
+            name: 'rdl_fls_report',
             label: 'RDL Status',
             options: {
                 filter: true,
@@ -113,22 +101,32 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'Rdl_status',
-            label: 'RDL Decription',
+            name: 'rdl_fls_report',
+            label: 'Model Required',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
-                    return value?.description
+                    return value?.model_reg
                 },
             },
         },
         {
-            name: 'part_list',
-            label: 'Changing Part',
+            name: 'rdl_fls_report',
+            label: 'Part List',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
                     return value?.part_list
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.description
                 },
             },
         },
@@ -141,7 +139,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'Return-from-RDL_one' },
+                        { name: 'Return-from-RDL-FLS' },
                     ]}
                 />
             </div>

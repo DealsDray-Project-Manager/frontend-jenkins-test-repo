@@ -6,7 +6,7 @@ import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
-import AssignDialogBox from './user-dailog'
+// import AssignDialogBox from './user-dailog'
 import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
@@ -33,9 +33,10 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosMisUser.post('/auditDoneWht')
+                const res = await axiosMisUser.post('/RDLoneDoneTray')
                 if (res.status === 200) {
                     setWhtTrayList(res.data.data)
+                  
                 }
             } catch (error) {
                 Swal.fire({
@@ -52,16 +53,11 @@ const SimpleMuiTable = () => {
     const handleClick = (e) => {
         const { id, checked } = e.target
 
-        console.log(id,"idddd");
-        console.log(checked,"checked");
         setIsCheck([...isCheck, id])
         if (!checked) {
             setIsCheck(isCheck.filter((item) => item !== id))
         }
     }
-
-  
-    
 
     const handelReadyForRdl = () => {
         const fetchData = async () => {
@@ -70,7 +66,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/get-RDL_one-users/' + 'RDL/' + location
+                        '/get-RDL_one-users/' + 'RDL-FLS/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)
@@ -81,27 +77,11 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
         fetchData()
-    }
-
-
-
-
-   
-
-
-    const handleDialogClose = () => {
-        console.log('1');
-        setIsCheck([])
-        console.log('2');
-        setRDLUsers([])
-        console.log('3');
-        setShouldOpenEditorDialog(false)
-        console.log('4');
     }
 
     const handleDialogOpen = () => {
@@ -109,10 +89,8 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/mis/assign-to-agent/Rdl/view-item/' + trayId)
+        navigate('/mis/assign-to-agent/Rdl-repair/view-item/' + trayId)
     }
-
-    console.log(isCheck,'isCheckkkkkkkkk');
 
     const columns = [
         {
@@ -222,6 +200,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'assigned_date',
+            label: 'RDL one Closed Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
             name: 'sort_id',
             label: 'Status',
             options: {
@@ -258,9 +247,10 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Assign-to-RDL', path: '/' },
-                    { name: 'RDL'}]}
-                    
+                    routeSegments={[
+                        { name: 'Assign to RDL Two', path: '/' },
+                        { name: 'RDL Two' },
+                    ]}
                 />
             </div>
             <Button
@@ -272,7 +262,7 @@ const SimpleMuiTable = () => {
                     handelReadyForRdl(e)
                 }}
             >
-               Assign For RDL
+                Assign For RDL
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}
@@ -295,8 +285,7 @@ const SimpleMuiTable = () => {
                 }}
             />
 
-
-{shouldOpenEditorDialog && (
+            {/* {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
@@ -304,7 +293,7 @@ const SimpleMuiTable = () => {
                     RDLUsers={RDLUsers}
                     isCheckk={isCheck}
                 />
-            )}
+            )} */}
         </Container>
     )
 }

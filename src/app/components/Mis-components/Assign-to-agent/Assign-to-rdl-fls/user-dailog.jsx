@@ -32,9 +32,9 @@ const MemberEditorDialog = ({
             let obj = {
                 tray: isCheckk,
                 user_name: RDLUserName,
-                sort_id: 'send for RDL',
+                sort_id: 'send for RDL-FLS',
             }
-            let res = await axiosMisUser.post('/sendToRdl', obj)
+            let res = await axiosMisUser.post('/assignToAgent/rdl-fls/sentToWarehouse', obj)
             if (res.status == 200) {
                 handleClose()
                 setLoading(false)

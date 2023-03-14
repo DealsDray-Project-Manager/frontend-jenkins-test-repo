@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +40,7 @@ const StatCard3 = () => {
             icon: 'reorder',
             amount: count.orders,
             title: 'Orders',
-            path:"/mis/orders"
+            path: '/mis/orders',
         },
         {
             icon: 'reorder',
@@ -107,14 +107,25 @@ const StatCard3 = () => {
             amount: count.bqc,
             title: 'Assign To BQC',
             path: '/mis/assign-to-agent/bqc',
-
         },
         {
             icon: 'assignment',
             amount: count.audit,
             title: 'Assign To Audit',
             path: '/mis/assign-to-agent/audit',
-
+        },
+        
+        {
+            icon: 'art_track',
+            amount: count.rdl,
+            title: 'Assign To RDL-FLS',
+            path: '/mis/assign-to-agent/Rdl-fls',
+        },
+        {
+            icon: 'art_track',
+            amount: count.rdl_two,
+            title: 'Assign To RDL-Repair',
+            path: '/mis/assign-to-agent/Rdl-repair',
         },
         {
             icon: 'sort',
@@ -140,18 +151,6 @@ const StatCard3 = () => {
             title: 'Track Item',
             path: '/mis/track/item',
         },
-        {
-            icon: 'art_track',
-            amount: count.rdl,
-            title: 'RDL Request',
-            path: '/mis/assign-to-agent/Rdl',
-        },
-        {
-            icon: 'art_track',
-            amount: count.rdl_two,
-            title: 'RDL two Request',
-            path: '/mis/assign-to-agent/Rdl_two',
-        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary
@@ -161,7 +160,12 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card style={{cursor:"pointer"}} onClick={((e)=> navigate(item.path))} elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => navigate(item.path)}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"

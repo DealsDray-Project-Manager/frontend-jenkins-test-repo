@@ -18,7 +18,6 @@ import Swal from 'sweetalert2'
 
 import { axiosWarehouseIn } from '../../../../../axios'
 
-
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -35,7 +34,7 @@ export default function DialogBox() {
         const fetchData = async () => {
             try {
                 let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for RDL_one'
+                    '/getWhtTrayItem/' + trayId + '/' + 'Send for RDL-FLS'
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -60,9 +59,6 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-
-    console.log(trayData,"trayData");
-
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
             try {
@@ -78,7 +74,6 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -98,12 +93,11 @@ export default function DialogBox() {
     }
     /************************************************************************** */
     const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-          
+        if (trayData.items.length <= trayData?.actual_items?.length) {
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All items Scanned",
+                title: 'All items Scanned',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -134,10 +128,11 @@ export default function DialogBox() {
     }
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
-
-        console.log('poooddd');
         try {
-            if (trayData?.actual_items?.length == trayData?.items?.length) {
+            let userStatus = await axiosWarehouseIn.post(
+                '/checkRdl-flsUserStatus/' + trayData?.issued_user_name
+            )
+            if (userStatus.status == 200) {
                 setLoading(true)
                 let obj = {
                     trayId: trayId,
@@ -149,23 +144,16 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status == 200) {
-                    console.log('fffff');
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    if (trayData?.sort_id == 'Send for RDL_one') {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/RDL-request')
-                    } else {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/RDL-request')
-                    }
+                    navigate('/wareshouse/wht/rdl-fls-request')
+
+                    setLoading(false)
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -174,14 +162,7 @@ export default function DialogBox() {
                     })
                 }
             } else {
-                setLoading(false)
-                
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title:"Please Verify Actual Data",
-                    confirmButtonText: 'Ok',
-                })
+                alert(userStatus.data.data)
             }
         } catch (error) {
             Swal.fire({
@@ -192,8 +173,6 @@ export default function DialogBox() {
             })
         }
     }
-
- 
 
     const tableExpected = useMemo(() => {
         return (
@@ -214,7 +193,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{ marginLeft: '10px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {
                                     trayData?.items?.filter(function (item) {
@@ -238,8 +217,8 @@ export default function DialogBox() {
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -248,8 +227,8 @@ export default function DialogBox() {
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -296,7 +275,8 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{ marginLeft: '10px' }}>Total</h5>
+
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (
@@ -322,8 +302,8 @@ export default function DialogBox() {
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -333,8 +313,8 @@ export default function DialogBox() {
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -361,7 +341,6 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                  
                 </Box>
                 <Box
                     sx={{
@@ -375,7 +354,6 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
-               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
@@ -398,7 +376,12 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' ? true : false
+                            loading == true ||
+                            trayData?.actual_items?.length !==
+                                trayData?.items?.length ||
+                            description == ''
+                                ? true
+                                : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

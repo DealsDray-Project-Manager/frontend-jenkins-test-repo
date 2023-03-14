@@ -40,8 +40,8 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.charging,
-            title: 'RDL_one Request',
-            path: '/RDL_one/tray',
+            title: 'RDL-FLS Request',
+            path: '/rdl-fls/tray',
         },
     ]
     const { palette } = useTheme()

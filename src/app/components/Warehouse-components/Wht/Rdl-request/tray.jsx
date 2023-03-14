@@ -3,11 +3,10 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
-import { axiosRDL_oneAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -22,8 +21,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-   
-
     const [RDLRequest, setRDLRequest] = useState([])
     const navigate = useNavigate()
 
@@ -33,8 +30,8 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let res = await axiosRDL_oneAgent.post(
-                        '/request-for-RDL_one/' + 'Issued to RDL_one/' + location
+                    let res = await axiosWarehouseIn.post(
+                        '/request-for-RDL-fls/' + 'Send for RDL-FLS/' + location
                     )
                     if (res.status == 200) {
                         setRDLRequest(res.data.data)
@@ -54,14 +51,10 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-
-    
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/RDL_one/tray/approve/' + trayId)
+        navigate('/wareshouse/wht/rdl-fls-request/approve/' + trayId)
     }
-
-
 
     const columns = [
         {
@@ -81,18 +74,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'assigned_date',
-            label: 'Assigned Date',
-            options: {
-                filter: true,
-                sort:false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }), 
-            },
-        },
+        // {
+        //     name: 'issued_user_name',
+        //     label: 'Agent Name',
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -116,11 +104,30 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: 'limit',
+            label: 'Limit',
             options: {
                 filter: false,
                 sort: false,
                 display: false,
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'RDL Agent',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: 'Request sent Date',
+            options: {
+                filter: true,
+                sort:false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }), 
             },
         },
 
@@ -129,8 +136,8 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
-                customBodyRender: (items, tableMeta) =>
-                items?.length + '/' +  tableMeta.rowData[6],
+                customBodyRender: (items,tableMeta) =>
+                items?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
@@ -157,18 +164,13 @@ const SimpleMuiTable = () => {
             },
         },
     ]
-
-
-   
-
-   
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'RDL-Requests' },
+                        { name: 'RDL-FLS-Requests' },
                     ]}
                 />
             </div>

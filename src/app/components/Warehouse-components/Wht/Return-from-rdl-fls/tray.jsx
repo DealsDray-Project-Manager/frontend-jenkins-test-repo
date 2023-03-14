@@ -78,9 +78,7 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    
-                    let res = await axiosWarehouseIn.post('/request-for-RDL_one_returnrdl/' + 'RDL_one_done_send_to_warehouse/' + location)
-
+                    let res = await axiosWarehouseIn.post('/request-for-RDL_one_returnrdl-fls/' + 'Closed by RDL-FLS/' + location)
                     if (res.status == 200) {
                         setTray(res?.data?.data)
                     }
@@ -101,7 +99,7 @@ const SimpleMuiTable = () => {
 
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/Return-From-RDL/close/' + id)
+        navigate('/wareshouse/wht/return-from-rdl-fls/close/' + id)
     }
 
     const handelTrayReceived = async () => {
@@ -147,7 +145,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/Return-From-RDL/view/' + id)
+        navigate('/wareshouse/wht/return-from-rdl-fls/view/' + id)
     }
 
     const columns = [
@@ -233,7 +231,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[3] != 'Received From RDL_one' ? (
+                            {tableMeta.rowData[3] != 'Received From RDL-FLS' ? (
                                 <Button
                                     sx={{
                                         m: 1,
@@ -333,7 +331,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'Return-from-RDL_one' },
+                        { name: 'Return-from-RDL-FLS' },
                     ]}
                 />
             </div>

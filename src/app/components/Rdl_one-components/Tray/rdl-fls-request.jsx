@@ -3,9 +3,9 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
+import { axiosRDL_oneAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -25,13 +25,13 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL_one/' + 'send for RDL_one/' + location
+                    let { user_name } = jwt_decode(admin)
+                    let res = await axiosRDL_oneAgent.post(
+                        '/assigned-tray/' + user_name
                     )
                     if (res.status == 200) {
                         setRDLRequest(res.data.data)
@@ -39,21 +39,21 @@ const SimpleMuiTable = () => {
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [])
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/RDL-request/approve/' + trayId)
+        navigate('/rdl-fls/tray/approve/' + trayId)
     }
 
     const columns = [
@@ -74,13 +74,18 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'issued_user_name',
-        //     label: 'Agent Name',
-        //     options: {
-        //         filter: true,
-        //     },
-        // },
+        {
+            name: 'requested_date',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
         {
             name: 'warehouse',
             label: 'Warehouse',
@@ -104,30 +109,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: 'Limit',
+            label: 'limit',
             options: {
                 filter: false,
                 sort: false,
                 display: false,
-            },
-        },
-        {
-            name: 'issued_user_name',
-            label: 'RDL Agent',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'assigned_date',
-            label: 'RDL Assume Date',
-            options: {
-                filter: true,
-                sort:false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }), 
             },
         },
 
@@ -136,8 +122,8 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
-                customBodyRender: (items,tableMeta) =>
-                items?.length + '/' + tableMeta.rowData[5],
+                customBodyRender: (items, tableMeta) =>
+                    items?.length + '/' + tableMeta.rowData[6],
             },
         },
         {
@@ -164,6 +150,7 @@ const SimpleMuiTable = () => {
             },
         },
     ]
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -182,8 +169,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

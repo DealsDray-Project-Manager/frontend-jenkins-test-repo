@@ -51,9 +51,9 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
-        path: '/RDL_one/dashboard',
+        path: '/rdl-fls/dashboard',
         icon: 'dashboard',
-        auth: authRoles.RDL_one, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
@@ -282,13 +282,13 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL',
-                path: '/mis/assign-to-agent/Rdl',
+                name: 'Assign to RDL-Fls',
+                path: '/mis/assign-to-agent/Rdl-fls',
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL Two',
-                path: '/mis/assign-to-agent/Rdl_two',
+                name: 'Assign to RDL-Repair',
+                path: '/mis/assign-to-agent/Rdl-repair',
                 iconText: 'NP',
             },
         ],
@@ -449,13 +449,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL Request',
-                path: '/wareshouse/wht/RDL-request',
+                name: 'RDL-FLS Request',
+                path: '/wareshouse/wht/rdl-fls-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return From RDL',
-                path: '/wareshouse/wht/Return-From-RDL',
+                name: 'Return From RDL-FLS',
+                path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
         ],
@@ -629,10 +629,10 @@ export const navigations = [
     },
 
     {
-        name: 'RDL One Requests',
+        name: 'RDL FLS Requests',
         icon: 'class',
-        path: '/RDL_one/tray',
-        auth: authRoles.RDL_one,
+        path: '/rdl-fls/tray',
+        auth: authRoles.RDL_FLS,
     },
     {
         name: 'Dummy Panel',

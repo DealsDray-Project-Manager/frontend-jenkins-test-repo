@@ -141,10 +141,9 @@ const PaginationTable = () => {
         let count2 = 0
         let count3 = 0
         let count4 = 0
-        let count5 = 0
-        let count6 = 0
-        let count7 = 0
-        let count8 = 0
+        let obj = {
+            ...countOfTray,
+        }
 
         try {
             for (let x of pagination.item) {
@@ -161,19 +160,26 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'WHT') {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
-                } else if (x.tray_category == 'CTA') {
-                    x.tray_id = 'CTA' + (countOfTray.CTA + count5)
-                    count5++
-                } else if (x.tray_category == 'CTB') {
-                    x.tray_id = 'CTB' + (countOfTray.CTB + count6)
-                    count6++
-                } else if (x.tray_category == 'CTC') {
-                    x.tray_id = 'CTC' + (countOfTray.CTC + count7)
-                    count7++
-                } else if (x.tray_category == 'CTD') {
-                    x.tray_id = 'CTD' + (countOfTray.CTD + count8)
-                    count8++
+                } else {
+                
+                    x.tray_id =
+                        x.tray_category +
+                        (countOfTray[x.tray_category] + obj[x.tray_category])
+                    obj[x.tray_category] = Number(obj[x.tray_category] + 1)
                 }
+                // else if (x.tray_category == 'CTA') {
+                //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
+                //     count5++
+                // } else if (x.tray_category == 'CTB') {
+                //     x.tray_id = 'CTB' + (countOfTray.CTB + count6)
+                //     count6++
+                // } else if (x.tray_category == 'CTC') {
+                //     x.tray_id = 'CTC' + (countOfTray.CTC + count7)
+                //     count7++
+                // } else if (x.tray_category == 'CTD') {
+                //     x.tray_id = 'CTD' + (countOfTray.CTD + count8)
+                //     count8++
+                // }
             }
             setCountOfTray((p) => ({
                 ...p,
@@ -181,10 +187,7 @@ const PaginationTable = () => {
                 MMT: p.MMT + count2,
                 PMT: p.PMT + count3,
                 WHT: p.WHT + count4,
-                CTA: p.CTA + count5,
-                CTB: p.CTB + count6,
-                CTC: p.CTC + count7,
-                CTD: p.CTD + count8,
+                ...obj,
             }))
 
             setLoading(true)
@@ -225,6 +228,7 @@ const PaginationTable = () => {
             }
         }
     }
+
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
@@ -573,8 +577,29 @@ const PaginationTable = () => {
                                                     id="outlined-password-input"
                                                     type="text"
                                                     name="tray_category"
-                                                    value={data.tray_category?.toString()}
+                                                    value={data?.tray_category?.toString()}
                                                 />
+                                                {err?.category?.includes(
+                                                    data.tray_category?.toString()
+                                                ) ? (
+                                                    <ClearIcon
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                ) : Object.keys(err).length !=
+                                                  0 ? (
+                                                    <DoneIcon
+                                                        style={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                {err?.category?.includes(
+                                                    data?.tray_category?.toString()
+                                                ) ? (
+                                                    <p style={{ color: 'red' }}>
+                                                        Tray Category not Exists
+                                                    </p>
+                                                ) : null}
                                             </TableCell>
                                             <TableCell>
                                                 <TextField
@@ -588,10 +613,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                ) || Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined  ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -605,10 +630,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                )  ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined ?  (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Brand name not exists
                                                     </p>
@@ -626,10 +651,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                ) ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.tray_model ==
-                                                    undefined ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_model ==
+                                                        undefined) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -643,10 +668,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                )  ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.tray_model ==
-                                                    undefined ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_model ==
+                                                        undefined) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Model name not exists
                                                     </p>
@@ -807,18 +832,21 @@ const PaginationTable = () => {
                                                 (Object.keys(err).length != 0 &&
                                                     data.tray_id ==
                                                         undefined) ||
+                                                err?.category?.includes(
+                                                    data?.tray_category?.toString()
+                                                ) ||
                                                 err?.model?.includes(
                                                     data.tray_model
                                                 ) ||
                                                 err?.model?.includes(
                                                     data.tray_brand
-                                                ) ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined ||  Object.keys(err).length !=
-                                                    0 &&
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
                                                     data.tray_model ==
-                                                        undefined  ||
+                                                        undefined) ||
                                                 err?.tray_id?.includes(
                                                     data.tray_id
                                                 ) ||

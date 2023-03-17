@@ -120,7 +120,6 @@ const SimpleMuiTable = () => {
                     if (res.status === 200) {
                         setSortingAgent(res.data.data)
                     } else {
-                       
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -142,7 +141,15 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     /* OPEN DIALOG BOX */
-    const handelMerge = async (e, model, brand, trayId, itemCount, status) => {
+    const handelMerge = async (
+        e,
+        model,
+        brand,
+        trayId,
+        itemCount,
+        status,
+        type
+    ) => {
         e.preventDefault()
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -155,6 +162,7 @@ const SimpleMuiTable = () => {
                     fromTray: trayId,
                     itemCount: itemCount,
                     status: status,
+                    type: type,
                 }
 
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
@@ -162,7 +170,6 @@ const SimpleMuiTable = () => {
                     setOpen(true)
                     setToWhatTray(res.data.data)
                 } else {
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -198,7 +205,6 @@ const SimpleMuiTable = () => {
                 mergreData
             )
             if (res.status === 200) {
-              
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -348,7 +354,8 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[8],
                                         value,
                                         tableMeta.rowData[5]?.length,
-                                        tableMeta.rowData[10]
+                                        tableMeta.rowData[10],
+                                        tableMeta.rowData[6]
                                     )
                                 }}
                                 style={{ backgroundColor: 'primery' }}
@@ -460,14 +467,6 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                // onClick={() => setShouldOpenEditorDialog(true)}
-            >
-                Assign
-            </Button>
             <MUIDataTable
                 title={'Wht Tray'}
                 data={whtTray}

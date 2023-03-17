@@ -154,7 +154,7 @@ export default function DialogBox() {
             }}
           >
             <Box sx={{}}>
-              <h5>Total</h5>
+              <h5 style={{marginLeft:"14px"}}>Total</h5>
               <p style={{ paddingLeft: "5px", fontSize: "22px" }}>
                 {
                   trayData?.items?.length
@@ -252,7 +252,8 @@ export default function DialogBox() {
             }}
           >
             <Box sx={{}}>
-              <h5>Total</h5>
+            <h5 style={{marginLeft:"14px"}}>Total</h5>
+
               <p style={{ marginLeft: "5px", fontSize: "24px" }}>
                 {
                   trayData.actual_items?.length

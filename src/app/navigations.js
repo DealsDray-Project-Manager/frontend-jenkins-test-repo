@@ -77,55 +77,54 @@ export const navigations = [
         label: 'Pages',
         type: 'label',
     },
+    {
+        name: 'Masters',
+        icon: 'fiber_manual_record',
+        children: [
+            {
+                name: 'Users',
+                // icon: 'people',
+                path: '/sup-admin/users',
+            },
+            {
+                name: 'Locations',
+                // icon: 'location_on_outlined',
+                path: '/sup-admin/location',
+            },
+            {
+                name: 'Warehouses',
+                // icon: 'home',
+                path: '/sup-admin/warehouse',
+            },
+            {
+                name: 'CTX Tray Category',
+                // icon: 'category',
+                path: '/sup-admin/Category',
+            },
+            {
+                name: 'Brands',
+                // icon: 'branding_watermark',
+                path: '/sup-admin/brands',
+            },
+            {
+                name: 'Products',
+                // icon: 'shopping_cart',
+                path: '/sup-admin/products',
+            },
+            {
+                name: 'Bags',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/bag',
+            },
+            {
+                name: 'Trays',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/tray',
+            },
+        ],
+        auth: authRoles.admin,
+    },
 
-    {
-        name: 'Users',
-        icon: 'people',
-        path: '/sup-admin/users',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Locations',
-        icon: 'location_on_outlined',
-        path: '/sup-admin/location',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Warehouses',
-        icon: 'home',
-        path: '/sup-admin/warehouse',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Category',
-        icon: 'category',
-        path: '/sup-admin/Category',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Brands',
-        icon: 'branding_watermark',
-        path: '/sup-admin/brands',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Products',
-        icon: 'shopping_cart',
-        path: '/sup-admin/products',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Bags',
-        icon: 'add_shopping_cart',
-        path: '/sup-admin/bag',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Trays',
-        icon: 'add_shopping_cart',
-        path: '/sup-admin/tray',
-        auth: authRoles.admin,
-    },
     {
         name: 'Ready For Charging',
         icon: 'battery_charging_full',
@@ -146,14 +145,20 @@ export const navigations = [
 
     {
         name: 'Remove invalid item',
-        icon: 'leak_remove',
+        icon: 'remove',
         path: '/sup-admin/remove-invalid-item',
         auth: authRoles.admin,
     },
     {
-        name: 'Ready for RDL',
+        name: 'Ready for RDL-FLS',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
+        auth: authRoles.admin,
+    },
+    {
+        name: 'Ready for Transfer CTX',
+        icon: 'transform',
+        path: '/sup-admin/ready-for-transfer',
         auth: authRoles.admin,
     },
     {
@@ -321,9 +326,31 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
+                name: 'CTX Merge',
+                path: '/mis/merge/ctx',
+                iconText: 'NP',
+            },
+            {
                 name: 'Pickup',
                 path: '/mis/merge/pickup',
                 iconText: 'NP',
+            },
+        ],
+        auth: authRoles.Mis,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Transfer',
+                path: '/mis/ctx/transfer',
+                iconText: 'VP',
+            },
+            {
+                name: 'Receive',
+                path: '/mis/ctx/receive',
+                iconText: 'VP',
             },
         ],
         auth: authRoles.Mis,
@@ -340,7 +367,7 @@ export const navigations = [
         ],
         auth: authRoles.Mis,
     },
-   
+
     {
         name: 'Bag',
         icon: 'class',
@@ -511,6 +538,27 @@ export const navigations = [
         auth: authRoles.Warehouse,
     },
     {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'CTX Tray',
+                path: '/wareshouse/ctx/all',
+                iconText: 'VP',
+            },
+            {
+                name: 'Transfer Request',
+                path: '/wareshouse/ctx/transfer/request',
+            },
+            {
+                name: 'Receive From Processing',
+                path: '/wareshouse/ctx/receive/request',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+    },
+    {
         name: 'Report',
         icon: 'report',
         children: [
@@ -554,13 +602,8 @@ export const navigations = [
         ],
         auth: authRoles.Warehouse,
     },
-    {
-        name: 'CTX',
-        icon: 'shopping_cart',
-        path: '/wareshouse/ctx/all',
-        auth: authRoles.Warehouse,
-    },
-  
+ 
+
     {
         name: 'Bag',
         icon: 'class',

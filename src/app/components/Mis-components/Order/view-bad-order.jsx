@@ -60,7 +60,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post(
                         '/getBadOrders/' + location
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setDisplayText('')
                         setItem(res.data.data)
                     }
@@ -131,7 +131,7 @@ const SimpleMuiTable = () => {
                 setDisplayText('Searching...')
 
                 let { location } = jwt_decode(admin)
-                if (e.target.value == '') {
+                if (e.target.value === '') {
                     setRefresh((refresh) => !refresh)
                 } else {
                     let obj = {
@@ -201,7 +201,7 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             searchOrders(e)
                         }}
-                        disabled={search.type == '' ? true : false}
+                        disabled={search.type === '' ? true : false}
                         label="Search"
                         variant="outlined"
                         sx={{ ml: 2, mb: 1 }}

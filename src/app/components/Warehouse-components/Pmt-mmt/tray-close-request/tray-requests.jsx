@@ -218,7 +218,7 @@ const SimpleMuiTable = () => {
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setLoadinRecieved(false)
-               
+                setOpen(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',

@@ -46,11 +46,10 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-             
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -91,11 +90,10 @@ const SimpleMuiTable = () => {
                     }
                 }
             } catch (error) {
-             
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -185,7 +183,7 @@ const SimpleMuiTable = () => {
             label: 'Limit',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 display: false,
             },
         },
@@ -228,7 +226,7 @@ const SimpleMuiTable = () => {
             label: 'Action',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 customBodyRender: (value) => {
                     return (
                         <Button
@@ -274,8 +272,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -40,34 +40,34 @@ const BqcUserReportPage = ({ BqcUserReport }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={BqcUserReport?.bqc_status}>
-                        <TableCell sx={{ pl: 2 }}>Status</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Status :</TableCell>
                         <TableCell>{BqcUserReport?.bqc_status}</TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.blancoo_qc_status}>
-                        <TableCell sx={{ pl: 2 }}>Blancco QC Status</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Blancco QC Status :</TableCell>
                         <TableCell>
                             {BqcUserReport?.blancoo_qc_status}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.bqc_incomplete_reason}>
                         <TableCell sx={{ pl: 2 }}>
-                            BQC Incomplete Reason
+                            BQC Incomplete Reason :
                         </TableCell>
                         <TableCell>
                             {BqcUserReport?.bqc_incomplete_reason}
                         </TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.technical_issue}>
-                        <TableCell sx={{ pl: 2 }}>Technical Issue</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Technical Issue :</TableCell>
                         <TableCell>{BqcUserReport?.technical_issue}</TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.other}>
-                        <TableCell sx={{ pl: 2 }}>BQC User Remark</TableCell>
+                        <TableCell sx={{ pl: 2 }}>BQC User Remark :</TableCell>
                         <TableCell>{BqcUserReport?.other}</TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.factory_reset_status}>
                         <TableCell sx={{ pl: 2 }}>
-                            Factory reset status
+                            Factory reset status :
                         </TableCell>
                         <TableCell>
                             {BqcUserReport?.factory_reset_status}

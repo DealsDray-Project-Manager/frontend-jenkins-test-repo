@@ -11,8 +11,8 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
-    
 }))
+
 
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
@@ -26,7 +26,6 @@ const MemberEditorDialog = ({
     setIsAlive,
     editFetchData,
     setEditFetchData,
-   
 }) => {
     const [loading, setLoading] = useState(false)
 
@@ -40,39 +39,49 @@ const MemberEditorDialog = ({
         fetchData()
     }, [])
 
-   
-
-
     const schema = Yup.object().shape({
-        Code: Yup.string()
-        .transform(value => value ? value.toUpperCase() : value)
-            .matches(/^[A-Z]{3}.*/,'Please enter valid code')
+        code: Yup.string()
+            .transform((value) => (value ? value.toUpperCase() : value))
+            .matches(/^[A-Z]{3}.*/, 'Please enter valid code')
             .max(40)
             .required('Required*')
             .nullable(),
-        Description: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid Description')
+        description: Yup.string()
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,
+                'Please enter valid Description'
+            )
             .max(40)
             .required('Required*')
             .nullable(),
-         Float: Yup.number('Must be  number')
+        float: Yup.number()
             .required('Required*')
-            .positive()
-            .moreThan(0, 'Must be Float')
-            .min(1, 'Minimum is 1')
+
             .nullable(),
+        sereis_start: Yup.number()
+            .required('Required*')
+
+            .nullable(),
+            series_end: Yup.number()
+            .required('Series End is required')
+            .when('sereis_start', (sereis_start, schema) => {
+              return schema.test(
+                'greaterThan',
+                'Series End must be greater than Series Start',
+                (series_end) => series_end > sereis_start
+              );
+            }),
     })
 
-     const {
+    const {
         register,
         handleSubmit,
-        getValues,   
+        getValues,
         formState: { errors },
         reset,
     } = useForm({
         resolver: yupResolver(schema),
     })
-   
 
     const onSubmit = async (data) => {
         try {
@@ -86,8 +95,7 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Added',
                     confirmButtonText: 'Ok',
-                })
-                .then((result) => {
+                }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
                     }
@@ -115,7 +123,10 @@ const MemberEditorDialog = ({
 
     const handelEdit = async (data) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/editctxcategory', data)
+            let response = await axiosSuperAdminPrexo.post(
+                '/editctxcategory',
+                data
+            )
             if (response.status == 200) {
                 setEditFetchData({})
                 handleClose()
@@ -129,8 +140,7 @@ const MemberEditorDialog = ({
                         setIsAlive((isAlive) => !isAlive)
                     }
                 })
-            }
-             else {
+            } else {
                 setEditFetchData({})
                 handleClose()
                 Swal.fire({
@@ -150,7 +160,7 @@ const MemberEditorDialog = ({
         }
     }
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3} sm={9}>
                 <H4 sx={{ mb: '20px' }}>Add Category</H4>
 
@@ -159,31 +169,85 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Code"
                             type="text"
-                            name="Code"
-                            {...register('Code')}
-                            defaultValue={getValues('Code')}
-                            error={errors?.Code ? true : false}
-                            helperText={errors?.Code ? errors.Code?.message : ''}
+                            name="code"
+                            
+                            {...register('code')}
+                            onKeyPress={(event) => {
+                                if (!/[A-Za-z+]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            defaultValue={getValues('code')}
+                            error={errors?.code ? true : false}
+                            helperText={
+                                errors?.Code ? errors.code?.message : ''
+                            }
+                            onBlur={(event) => {
+                                event.target.value = event.target.value.toUpperCase();
+                              }}
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Float Number"
                             type="text"
-                            name="Float"
-                            defaultValue={getValues('Float')}
-                            {...register('Float')}
-                            error={errors?.Float ? true : false}
-                            helperText={ errors?.Float?.message }
+                            name="float"
+                            onKeyPress={(event) => {
+                                if (!/[0-9.]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            inputProps={{ maxLength: 3 }}
+                            defaultValue={getValues('float')}
+                            {...register('float')}
+                            error={errors?.float ? true : false}
+                            helperText={errors?.float?.message}
+                        />
+                        <TextFieldCustOm
+                            label="Series Start"
+                            type="number"
+                            disabled={
+                               
+                                Object.keys(editFetchData).length !== 0
+                            }
+                            name="sereis_start"
+                            inputProps={{ maxLength: 5 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            defaultValue={getValues('sereis_start')}
+                            {...register('sereis_start')}
+                            error={errors?.sereis_start ? true : false}
+                            helperText={errors?.sereis_start?.message}
+                        />
+                        <TextFieldCustOm
+                            label="Series End"
+                            type="number"
+                            name="series_end"
+                            disabled={
+                               
+                                Object.keys(editFetchData).length !== 0
+                            }
+                            inputProps={{ maxLength: 5 }}
+                            defaultValue={getValues('series_end')}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            {...register('series_end')}
+                            error={errors?.series_end ? true : false}
+                            helperText={errors?.series_end?.message}
                         />
                         <TextFieldCustOm
                             label="Description"
                             type="text"
-                            name="Description"
-                            {...register('Description')}
-                            defaultValue={getValues('Description')}
-                            error={errors?.Description ? true : false}
-                            helperText={errors?.Description?.message}
-                        >
-                        </TextFieldCustOm>
+                            name="description"
+                            {...register('description')}
+                            defaultValue={getValues('description')}
+                            error={errors?.description ? true : false}
+                            helperText={errors?.description?.message}
+                        ></TextFieldCustOm>
                     </Grid>
                 </Grid>
 
@@ -194,11 +258,11 @@ const MemberEditorDialog = ({
                         disabled={loading}
                         onClick={
                             Object.keys(editFetchData).length !== 0
-                            ? handleSubmit(handelEdit)
-                            : handleSubmit(onSubmit)
+                                ? handleSubmit(handelEdit)
+                                : handleSubmit(onSubmit)
                         }
                         type="submit"
-                    >   
+                    >
                         Submit
                     </Button>
                     <Button

@@ -24,26 +24,26 @@ const AuditReport = ({ AuditData }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={AuditData?.stage}>
-                        <TableCell sx={{ pl: 2 }}> Audit Status</TableCell>
+                        <TableCell sx={{ pl: 2 }}> Audit Status  :</TableCell>
                         <TableCell>{AuditData?.stage}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.orgGrade}>
-                        <TableCell sx={{ pl: 2 }}> Orginal Grade</TableCell>
+                        <TableCell sx={{ pl: 2 }}> Orginal Grade :</TableCell>
                         <TableCell>{AuditData?.orgGrade}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.grade}>
                         <TableCell sx={{ pl: 2 }}>
                             {' '}
-                            Audit Recomendad Grade
+                            Audit Recomendad Grade :
                         </TableCell>
                         <TableCell>{AuditData?.grade}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.reason}>
-                        <TableCell sx={{ pl: 2 }}> Reason</TableCell>
+                        <TableCell sx={{ pl: 2 }}> Reason :</TableCell>
                         <TableCell>{AuditData?.reason}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.description}>
-                        <TableCell sx={{ pl: 2 }}> Description</TableCell>
+                        <TableCell sx={{ pl: 2 }}> Description :</TableCell>
                         <TableCell>{AuditData?.description}</TableCell>
                     </TableRow>
                 </TableBody>

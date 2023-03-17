@@ -26,18 +26,21 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayList, setTrayList] = useState([])
     const navigate = useNavigate()
+    const [isLoading,setIsLoading]=useState("")
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 let obj = {
                     master_type: 'tray-master',
                 }
                 const res = await axiosSuperAdminPrexo.post('/getMasters', obj)
                 if (res.status === 200) {
                     setTrayList(res.data.data)
+                    setIsLoading(false)
                 }
             } catch (error) {
                 Swal.fire({
@@ -306,6 +309,7 @@ const SimpleMuiTable = () => {
             title={'All Tray'}
             data={trayList}
             columns={columns}
+            isLoading={true}
             options={{
                 filterType: 'textField',
                 responsive: 'simple',
@@ -323,7 +327,7 @@ const SimpleMuiTable = () => {
             }}
         />
         )
-    },[trayList])
+    },[trayList,isLoading])
 
     return (
         <Container>

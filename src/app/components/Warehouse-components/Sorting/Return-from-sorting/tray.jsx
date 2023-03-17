@@ -109,7 +109,6 @@ const SimpleMuiTable = () => {
             }
             let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
             if (res.status == 200) {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -119,7 +118,7 @@ const SimpleMuiTable = () => {
                 setOpen(false)
                 setRefresh((refresh) => !refresh)
             } else {
-               
+                setOpen(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -128,6 +127,7 @@ const SimpleMuiTable = () => {
                 })
             }
         } catch (error) {
+            setOpen(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post(
                         '/getSortingAgent/' + location
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setSortingAgent(res.data.data)
                         handleDialogOpen()
                     }

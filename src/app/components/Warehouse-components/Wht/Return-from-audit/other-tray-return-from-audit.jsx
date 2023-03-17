@@ -149,6 +149,7 @@ const SimpleMuiTable = () => {
                     })
                 }
             } catch (error) {
+                setOpen(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

@@ -329,9 +329,10 @@ export default function DialogBox() {
                 if (res.status == 200) {
                 
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res?.data?.message,
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
                     })
 
                     setlLoading(false)

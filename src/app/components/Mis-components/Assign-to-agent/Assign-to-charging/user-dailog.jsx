@@ -23,7 +23,7 @@ const MemberEditorDialog = ({
     chargingUsers,
     isCheck,
 }) => {
-    const [chargingUserName, setCharging] = useState("")
+    const [chargingUserName, setCharging] = useState('')
     const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
@@ -37,30 +37,29 @@ const MemberEditorDialog = ({
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {
                 setLoading(false)
-              
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'Success',
+                    icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setCharging("")
+                setCharging('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-                
+
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:res?.data?.message,
+                    text: res?.data?.message,
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

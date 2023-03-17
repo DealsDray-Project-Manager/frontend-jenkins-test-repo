@@ -41,7 +41,6 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
-            
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -62,24 +61,21 @@ const SimpleMuiTable = () => {
         try {
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-            
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res?.data?.message,
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
                 })
                 setIsAlive((isAlive) => !isAlive)
             } else {
-              
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: res?.data?.message,
                 })
-                
             }
         } catch (error) {
-           
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -206,8 +202,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

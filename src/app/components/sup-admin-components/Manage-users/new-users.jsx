@@ -379,19 +379,20 @@ const MemberEditorDialog = ({
                                     Pricing Agent
                                 </MenuItem>
                             </TextFieldCustOm>
-                        ) : <TextFieldCustOm
-                        label="User Type"
-                        select
-                        name="user_type"
-                        disabled={
-                            Object.keys(editFetchData).length !== 0
-                        }
-                        defaultValue={getValues('user_type')}
-                        {...register('user_type')}
-                        error={errors.user_type ? true : false}
-                        helperText={errors.user_type?.message}
-                    />
-                        }
+                        ) : (
+                            <TextFieldCustOm
+                                label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            />
+                        )}
                     </Grid>
 
                     <Grid item sm={6} xs={12}>

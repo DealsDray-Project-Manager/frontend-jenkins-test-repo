@@ -125,7 +125,7 @@ const Layout1Topbar = () => {
                     </StyledIconButton>:''
                     }
                    
-                    <Span style={{marginTop:"10px"}}> <strong>{user?.role?.toUpperCase()} PANEL</strong></Span>
+                    <Span style={{marginTop:"10px"}}> <strong>{user?.cpc_type?.toUpperCase()} {user?.role?.toUpperCase()} PANEL</strong></Span>
 
                     {/* <IconBox>
                         <StyledIconButton>

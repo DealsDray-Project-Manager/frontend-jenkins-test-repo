@@ -62,10 +62,6 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
-
-
-    console.log(trayData,"trayData");
-
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
             try {
@@ -81,7 +77,7 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -102,11 +98,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All items Scanned",
+                title: 'All items Scanned',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -137,8 +132,6 @@ export default function DialogBox() {
     }
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
-
-        console.log('poooddd');
         try {
             if (trayData?.actual_items?.length == trayData?.items?.length) {
                 setLoading(true)
@@ -153,8 +146,6 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status == 200) {
-                    console.log('fffff');
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -164,7 +155,6 @@ export default function DialogBox() {
                     setUic('')
                     setTextDisable(false)
                     setRefresh((refresh) => !refresh)
-                   
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -178,7 +168,7 @@ export default function DialogBox() {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:"Please Verify Actual Data",
+                    title: 'Please Verify Actual Data',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -191,8 +181,6 @@ export default function DialogBox() {
             })
         }
     }
-
- 
 
     const tableExpected = useMemo(() => {
         return (
@@ -360,7 +348,6 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                  
                 </Box>
                 <Box
                     sx={{
@@ -374,7 +361,6 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
-               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>

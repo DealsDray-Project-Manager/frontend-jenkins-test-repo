@@ -146,6 +146,12 @@ const StatCard3 = () => {
             path: '/mis/merge/mmt',
         },
         {
+            icon: 'merge_type',
+            amount: count.readyToTransfer,
+            title: 'Transfer CTX',
+            path: '/mis/ctx/transfer',
+        },
+        {
             icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',

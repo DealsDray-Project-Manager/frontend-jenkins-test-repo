@@ -40,44 +40,44 @@ const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={Charging?.battery_status}>
-                        <TableCell sx={{ pl: 2 }}>Battery Status</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Battery Status :</TableCell>
                         <TableCell>{Charging?.battery_status}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.charge_percentage}>
-                        <TableCell sx={{ pl: 2 }}>Charge Percentage</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Charge Percentage :</TableCell>
                         <TableCell>{Charging?.charge_percentage}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.body_condition}>
-                        <TableCell sx={{ pl: 2 }}>Body Condition</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Body Condition :</TableCell>
                         <TableCell>{Charging?.body_condition}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.display_condition}>
-                        <TableCell sx={{ pl: 2 }}>Display Condition</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Display Condition :</TableCell>
                         <TableCell>{Charging?.display_condition}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.lock_status}>
-                        <TableCell sx={{ pl: 2 }}>Lock Status</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Lock Status :</TableCell>
                         <TableCell>{Charging?.lock_status}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.charging_jack_type}>
-                        <TableCell sx={{ pl: 2 }}>Charging Jack Type</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Charging Jack Type :</TableCell>
                         <TableCell>{Charging?.charging_jack_type}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.boady_part_missing}>
                         <TableCell sx={{ pl: 2 }}>
-                            Any Body Part Missing
+                            Any Body Part Missing :
                         </TableCell>
                         <TableCell>{Charging?.boady_part_missing}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.part_name}>
                         <TableCell sx={{ pl: 2 }}>
-                            Missing Body Part Name
+                            Missing Body Part Name :
                         </TableCell>
                         <TableCell>{Charging?.part_name}</TableCell>
                     </TableRow>
                     <TableRow key={ChargeDoneDate}>
                         <TableCell sx={{ pl: 2 }}>
-                           Last Charge Done Date
+                           Last Charge Done Date :
                         </TableCell>
                         <TableCell>{  new Date(ChargeDoneDate).toLocaleString('en-GB', {
                         hour12: true,

@@ -47,12 +47,11 @@ const MemberEditorDialog = ({
                 }
             }
             fetchCpc()
-
             const fetchCategory=async()=>{
                 let categorys=await axiosSuperAdminPrexo.get('/getCtxTrayCategory')
-                console.log(categorys,'categoryyyyzzzzzzzz');
                 setCategorys(categorys.data)
             }
+
             fetchCategory()
 
             if (Object.keys(editFetchData).length !== 0) {
@@ -74,16 +73,13 @@ const MemberEditorDialog = ({
             })
         }
     }, [])
-
-
-
     const fetchTypeWiseId = async (e, type) => {
         e.preventDefault()
         try {
             let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
             if (res.status == 200) {
                 setTrayCount(type + res.data.data)
-                console.log(res.data.data,"counttttttttt");
+                
                 if (type == 'BOT' && res.data.data > '2251') {
                     handleClose()
                     Swal.fire({
@@ -117,7 +113,8 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } else if (type == 'PMT' && res.data.data > '8151') {
+                } 
+                else if (type == 'PMT' && res.data.data > '8151') {
                     handleClose()
                     Swal.fire({
                         icon: 'error',
@@ -128,51 +125,65 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } else if (type == 'CTA' && res.data.data > '1999') {
-                    handleClose()
+                } 
+                
+                // else if (type == 'CTA' && res.data.data > '1999') {
+                //     handleClose()
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: 'cta Tray Maximum ID NO  1999',
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             handleClose()
+                //         }
+                //     })
+                // } else if (type == 'CTB' && res.data.data > '3999') {
+                //     handleClose()
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: 'CTB Tray Maximum ID NO  2999',
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             handleClose()
+                //         }
+                //     })
+                // } else if (type == 'CTC' && res.data.data > '3999') {
+                //     handleClose()
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: 'CTC Tray Maximum ID NO  3999',
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             handleClose()
+                //         }
+                //     })
+                // } else if (type == 'CTD' && res.data.data > '4999') {
+                //     handleClose()
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: 'CTD Tray Maximum ID NO  4999',
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             handleClose()
+                //         }
+                //     })
+                // }
+            }
+            else{
+                handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'cta Tray Maximum ID NO  1999',
+                        text: res.data.message,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             handleClose()
                         }
                     })
-                } else if (type == 'CTB' && res.data.data > '3999') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'CTB Tray Maximum ID NO  2999',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                } else if (type == 'CTC' && res.data.data > '3999') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'CTC Tray Maximum ID NO  3999',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                } else if (type == 'CTD' && res.data.data > '4999') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'CTD Tray Maximum ID NO  4999',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                }
             }
         } catch (error) {
             Swal.fire({
@@ -456,7 +467,7 @@ const MemberEditorDialog = ({
                             defaultValue={getValues('type_taxanomy')}
                             {...register('type_taxanomy')}
                             disabled={
-                                getValues('type_taxanomy') == 'WHT' &&
+                                
                                 Object.keys(editFetchData).length !== 0
                             }
                             error={errors.type_taxanomy ? true : false}
@@ -497,12 +508,12 @@ const MemberEditorDialog = ({
                             {
                                 categorys?.map((item)=>(
                                     <MenuItem
-                                value={item?.Code}
+                                value={item?.code}
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e,item?.Code)
+                                    fetchTypeWiseId(e,item?.code)
                                 }}
                             >
-                               {item?.Code}
+                               {item?.code}
                             </MenuItem>
                                 ))
                             }

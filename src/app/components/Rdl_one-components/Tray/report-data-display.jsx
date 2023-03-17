@@ -212,13 +212,13 @@ export default function DialogBox() {
                         BqcUserReport={reportData?.delivery?.bqc_report}
                     />
                 </Grid>
-                <Grid item lg={12} md={12} xs={12}>
+                {/* <Grid item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
                         }
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
         )
     }, [reportData])
@@ -413,7 +413,7 @@ export default function DialogBox() {
                             variant="contained"
                             color="primary"
                         >
-                            ADD
+                            ACTION
                         </Button>
                     </Box>
                 </Box>

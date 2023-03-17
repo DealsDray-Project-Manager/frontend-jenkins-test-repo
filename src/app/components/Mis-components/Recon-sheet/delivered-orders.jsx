@@ -59,7 +59,7 @@ const SimpleMuiTable = () => {
                             '/' +
                             rowsPerPage
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setItem(res.data.data)
                         setDeliveryCount(res.data.count)
                     }
@@ -114,7 +114,7 @@ const SimpleMuiTable = () => {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 let { location } = jwt_decode(admin)
-                if (e.target.value == '') {
+                if (e.target.value === '') {
                     setIsAlive((isAlive) => !isAlive)
                 } else {
                     let obj = {
@@ -126,7 +126,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post('/searchDeliveredOrders', obj)
                     setRowsPerPage(10)
                     setPage(0)
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setItem(res.data.data)
                     }
                 }
@@ -214,7 +214,7 @@ const SimpleMuiTable = () => {
                             </TableCell>
                             <TableCell>{data.order_id?.toString()}</TableCell>
                             <TableCell>
-                                {data.order_date == null
+                                {data.order_date === null
                                     ? ''
                                     : new Date(data.order_date).toLocaleString(
                                           'en-GB',
@@ -227,7 +227,7 @@ const SimpleMuiTable = () => {
                             </TableCell>
                             <TableCell>
                                 {' '}
-                                {data.order_timestamp == null
+                                {data.order_timestamp === null
                                     ? ''
                                     : new Date(
                                           data.order_timestamp
@@ -255,7 +255,7 @@ const SimpleMuiTable = () => {
                             <TableCell>{data.tracking_id}</TableCell>
                             <TableCell>
                                 {' '}
-                                {data.delivery_date == null
+                                {data.delivery_date === null
                                     ? ''
                                     : new Date(
                                           data.delivery_date
@@ -392,7 +392,7 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             searchOrders(e)
                         }}
-                        disabled={search.type == '' ? true : false}
+                        disabled={search.type === '' ? true : false}
                         label="Search"
                         variant="outlined"
                         sx={{ ml: 2, mb: 1 }}

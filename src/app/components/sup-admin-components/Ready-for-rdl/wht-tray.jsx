@@ -56,8 +56,9 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 ischeck: isCheck,
+                type:"Ready to RDL"
             }
-            let res = await axiosSuperAdminPrexo.post('/sendToRdl', obj)
+            let res = await axiosSuperAdminPrexo.post('/forceFullReadySend', obj)
             setIsCheck([])
             if (res.status === 200) {
                 Swal.fire({

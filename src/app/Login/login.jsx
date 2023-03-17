@@ -69,7 +69,6 @@ const Login = () => {
         if (userExists) {
             const { user_type } = jwt_decode(userExists)
             if (user_type == undefined) {
-                console.log('dsdsd')
                 navigate('/')
             } else if (user_type == 'super-admin') {
                 navigate('/sup-admin/dashboard')
@@ -90,15 +89,12 @@ const Login = () => {
             } else if (user_type == 'RDL-FLS') {
                 navigate('/rdl-fls/dashboard')
             } else if (user_type == 'Sales Agent') {
-                console.log('dsdsdsd')
                 navigate('/sales/dashboard')
             } else if (user_type == 'Pricing Agent') {
-                console.log('dsdsdsd')
                 navigate('/pricing/dashboard')
             }
         } else {
             navigate('/')
-            console.log('kdddkdkddkdk')
         }
     }, [])
     const handleChange = ({ target: { name, value } }) => {
@@ -136,10 +132,8 @@ const Login = () => {
                 } else if (response.data.data?.user_type == 'RDL-FLS') {
                     navigate('/rdl-fls/dashboard')
                 } else if (response.data.data?.user_type == 'Sales Agent') {
-                    console.log('dsdsdsd')
                     navigate('/sales/dashboard')
                 } else if (response.data.data?.user_type == 'Pricing Agent') {
-                    console.log('dsdsdsd')
                     navigate('/pricing/dashboard')
                 }
             } else {
@@ -148,7 +142,7 @@ const Login = () => {
             }
         } catch (e) {
             setLoading(false)
-            console.log(e)
+
             setMessage(e.message)
         }
     }

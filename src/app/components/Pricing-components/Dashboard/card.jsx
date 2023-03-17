@@ -16,7 +16,7 @@ const StatCard3 = () => {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
                 let { user_name } = jwt_decode(user)
-                console.log( user_name," user_name");
+             
                 try {
                     let res = await axiospricingAgent.post(
                         '/dashboard/' + user_name

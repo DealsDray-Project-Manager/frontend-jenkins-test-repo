@@ -45,7 +45,7 @@ const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./Ctx-category/view-categorys')))
-
+const ReadyToTransfer =Loadable(lazy(() => import('./Ready-for-transfer/ctx-tray')))
 
 const SuperAdminRouter = [
     {
@@ -147,6 +147,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/ready-for-rdl',
         element: <ReadyForRdl />,
+    },
+    {
+        path: '/sup-admin/ready-for-transfer',
+        element: <ReadyToTransfer />,
     },
 ]
 

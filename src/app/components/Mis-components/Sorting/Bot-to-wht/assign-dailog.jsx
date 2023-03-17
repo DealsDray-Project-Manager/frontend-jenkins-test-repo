@@ -103,7 +103,7 @@ const MemberEditorDialog = ({
                     <Button
                         variant="contained"
                         p
-                        disabled={loading || sortingAgentName == ''}
+                        disabled={loading || sortingAgentName === ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

@@ -224,6 +224,11 @@ const TrackItem = () => {
                         <TableCell>
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
+                        <TableCell>RDL FLS Agent name</TableCell>
+                        <TableCell>Tray Issued to RDL FLS Date</TableCell>
+                        <TableCell>Tray Closed By RDL FLS Date</TableCell>
+                        <TableCell>Tray Received From RDL FLS Date</TableCell>
+                        <TableCell>RDL FLS Done Closed By Warehouse</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -514,6 +519,45 @@ const TrackItem = () => {
                                 {data?.delivery?.audit_done_close != undefined
                                     ? new Date(
                                           data?.delivery?.audit_done_close
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_fls_one_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_issued_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_issued_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_closed_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_closed_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_done_recieved_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_recieved_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_done_closed_wh != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_closed_wh
                                       ).toLocaleString('en-GB', {
                                           hour12: true,
                                       })

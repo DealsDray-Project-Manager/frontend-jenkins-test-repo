@@ -63,7 +63,7 @@ const CustomerBillings = ({ Order }) => {
                     >
                         <TableCell sx={{ pl: 2 }}>
                             {' '}
-                            Customer Declaration Physical Defect Type
+                            Customer Declaration Physical Defect Type :
                         </TableCell>
                         <TableCell>
                             {Order?.customer_declaration_physical_defect_type == undefined ? "N/A" : Order?.customer_declaration_physical_defect_type}

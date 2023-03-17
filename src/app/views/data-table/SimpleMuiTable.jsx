@@ -23,7 +23,6 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
         Axios.get('/api/user/all').then(({ data }) => {
-            console.log(data);
             if (isAlive) setUserList(data)
         })
         return () => setIsAlive(false)

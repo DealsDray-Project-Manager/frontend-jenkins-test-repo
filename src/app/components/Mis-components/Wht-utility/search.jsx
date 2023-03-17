@@ -219,7 +219,7 @@ function Search() {
                 '/whtUtility/bagAndBotTray/' + tempDelivery?.[0]?.partner_shop
             )
             if (res.status == 200) {
-                console.log(res.data)
+              
                 setBotUsers(res.data.botUsers)
                 setBag(res.data.bag)
                 setBotTray(res.data.tray)

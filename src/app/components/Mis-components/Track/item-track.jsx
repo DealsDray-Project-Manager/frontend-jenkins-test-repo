@@ -66,7 +66,6 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setCount(res.data.count)
                         setItem(res.data.data)
-                        
                     }
                 } catch (error) {
                     Swal.fire({
@@ -146,12 +145,9 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setPage(0)
                         setItem(res.data.data)
-                        console.log(res.data.data);
-                        console.log('dadaddadadadad');
                     } else {
                         setItem(res.data.data)
                         setDisplayText('Sorry no data found')
-
                     }
                 }
             }
@@ -226,20 +222,11 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
-                         <TableCell>
-                            RDL Fls Issued Date
-                        </TableCell>
-                        <TableCell>
-                            RDL Fls Done Date
-                        </TableCell>
-                        <TableCell>
-                            RDL Agent name
-                        </TableCell>
-                       
-                        <TableCell>
-                            RDL One Status
-                        </TableCell>
-                      
+                        <TableCell>RDL FLS Agent name</TableCell>
+                        <TableCell>Tray Issued to RDL FLS Date</TableCell>
+                        <TableCell>Tray Closed By RDL FLS Date</TableCell>
+                        <TableCell>Tray Received From RDL FLS Date</TableCell>
+                        <TableCell>RDL FLS Done Closed By Warehouse</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -534,8 +521,11 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
-                             <TableCell>
-                                {data?.delivery.rdl_fls_issued_date!= undefined
+                            <TableCell>
+                                {data?.delivery?.rdl_fls_one_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_issued_date != undefined
                                     ? new Date(
                                           data?.delivery.rdl_fls_issued_date
                                       ).toLocaleString('en-GB', {
@@ -544,12 +534,34 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.rdl_fls_one_user_name}
+                                {data?.delivery.rdl_fls_closed_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_closed_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.rdl_fls_one_report?.selected_status}
+                                {data?.delivery.rdl_fls_done_recieved_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_recieved_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_done_closed_wh != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_closed_wh
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
                             </TableCell>
                            
+                            
                         </TableRow>
                     ))}
                 </TableBody>

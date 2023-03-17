@@ -36,20 +36,17 @@ const MemberEditorDialog = ({
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {
-                handleClose()
                 setLoading(false)
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'Success',
+                    icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-              
-               
                 setIsAlive((isAlive) => !isAlive)
+                handleClose()
             } else {
                 setLoading(false)
-              
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -57,11 +54,10 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
-         
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

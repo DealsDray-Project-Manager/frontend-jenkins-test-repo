@@ -26,25 +26,23 @@ const SimpleMuiTable = () => {
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
-    useEffect(async() => {
-       
-            try {
-                const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
-                if (res.status === 200) {
-                    setctxCategorylist(res?.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
+    useEffect(async () => {
+        try {
+            const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
+            if (res.status === 200) {
+                setctxCategorylist(res?.data)
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
         return () => setIsAlive(false)
     }, [isAlive])
 
-    console.log(ctxCategorylist);
-    console.log('ctxCategorylist');
+   
 
     const handleDialogClose = () => {
         setEditFetchData({})
@@ -57,9 +55,11 @@ const SimpleMuiTable = () => {
 
     const editCtxcategory = async (empId) => {
         try {
-          
-             let categoryCheck= await axiosSuperAdminPrexo.post('/categoryCheck',{empId})
-             if(categoryCheck?.status==200){
+            let categoryCheck = await axiosSuperAdminPrexo.post(
+                '/categoryCheck',
+                { empId }
+            )
+            if (categoryCheck?.status == 200) {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'fail',
@@ -70,14 +70,15 @@ const SimpleMuiTable = () => {
                         setIsAlive((isAlive) => !isAlive)
                     }
                 })
-
-             }else{
-                 let response = await axiosSuperAdminPrexo.get('/geteditctxcategory/' + empId)
+            } else {
+                let response = await axiosSuperAdminPrexo.get(
+                    '/geteditctxcategory/' + empId
+                )
                 if (response.status == 200) {
-                setEditFetchData(response.data.data)
-                handleDialogOpen()
-            }}
-           
+                    setEditFetchData(response.data.data)
+                    handleDialogOpen()
+                }
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -88,9 +89,7 @@ const SimpleMuiTable = () => {
         }
     }
     const handelDelete = (code) => {
-
-        console.log(code);
-        console.log('id');
+       
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Delete Location!',
@@ -103,7 +102,8 @@ const SimpleMuiTable = () => {
             if (result.isConfirmed) {
                 try {
                     let response = await axiosSuperAdminPrexo.post(
-                        '/deleteCtxcategory/',{code}
+                        '/deleteCtxcategory/',
+                        { code }
                     )
                     if (response.status == 200) {
                         Swal.fire({
@@ -116,7 +116,7 @@ const SimpleMuiTable = () => {
                                 setIsAlive((isAlive) => !isAlive)
                             }
                         })
-                    } else  {
+                    } else {
                         Swal.fire({
                             position: 'top-center',
                             icon: 'fail',
@@ -152,27 +152,41 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'Code', // field name in the row object
+            name: 'code', // field name in the row object
             label: 'Code', // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'Description',
-            label: 'Description',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'Float',
+            name: 'float',
             label: 'Float Number',
             options: {
                 filter: true,
             },
         },
-       
+        {
+            name: 'sereis_start',
+            label: 'Series Start',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'series_end',
+            label: 'Series End',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'description',
+            label: 'Description',
+            options: {
+                filter: true,
+            },
+        },
+
         {
             name: 'code',
             label: 'Actions',
@@ -231,8 +245,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

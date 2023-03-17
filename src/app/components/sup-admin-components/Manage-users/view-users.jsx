@@ -223,6 +223,13 @@ const UserTable = () => {
             },
         },
         {
+            name: 'cpc_type',
+            label: 'CPC Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'device_name',
             label: 'Device Name',
             options: {

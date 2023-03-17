@@ -73,10 +73,20 @@ const MergeWht = Loadable(lazy(() => import('./Merge/Wht-merge/wht-tray')))
 const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
 const SearchImei = Loadable(lazy(() => import('./Wht-utility/search')))
 const Pickup = Loadable(lazy(() => import('./Merge/Pickup/pickup')))
-const WhtutilityBotTray =Loadable(lazy(() => import('./Wht-utility/bot-tray')))
-const WhtUtilityBotTrayResticker=Loadable(lazy(() => import('./Wht-utility/bot-tray-resticker')))
-const WhtUtilityBotTrayClose=Loadable(lazy(() => import('./Wht-utility/bot-tray-close')))
-
+const WhtutilityBotTray = Loadable(lazy(() => import('./Wht-utility/bot-tray')))
+const WhtUtilityBotTrayResticker = Loadable(
+    lazy(() => import('./Wht-utility/bot-tray-resticker'))
+)
+const WhtUtilityBotTrayClose = Loadable(
+    lazy(() => import('./Wht-utility/bot-tray-close'))
+)
+const CtxMerge = Loadable(lazy(() => import('./Merge/Ctx-merge/ctx-tray')))
+const CtxTrayTransfer = Loadable(
+    lazy(() => import('./ctx-tray/Transfer/ctx-tray'))
+)
+const CtxTrayReceiveFromProcessing = Loadable(
+    lazy(() => import('./ctx-tray/Receive/request'))
+)
 const dataTableRoutes = [
     {
         path: '/mis/dashboard',
@@ -191,6 +201,10 @@ const dataTableRoutes = [
         element: <MergeWht />,
     },
     {
+        path: '/mis/merge/ctx',
+        element: <CtxMerge />,
+    },
+    {
         path: '/mis/orders/bulk-import',
         element: <BulkImportOrder />,
     },
@@ -201,6 +215,14 @@ const dataTableRoutes = [
     {
         path: '/mis/track/item',
         element: <TrackItem />,
+    },
+    {
+        path: '/mis/ctx/transfer',
+        element: <CtxTrayTransfer />,
+    },
+    {
+        path: '/mis/ctx/receive',
+        element: <CtxTrayReceiveFromProcessing />,
     },
     {
         path: '/warehouse/wht-utility/import-data',

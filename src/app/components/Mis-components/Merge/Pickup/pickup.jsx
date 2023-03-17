@@ -52,7 +52,6 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
     width: 1500,
@@ -87,7 +86,6 @@ const ProductTableThere = styled(Table)(() => ({
     },
 }))
 
-
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
 
@@ -117,9 +115,10 @@ const PickupPage = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    const { location } = jwt_decode(admin)
                     setDisplayText('Loading...')
                     let response = await axiosMisUser.post(
-                        '/pickup/items/' + value + '/'
+                        '/pickup/items/' + value + '/' + location
                     )
                     if (response.status === 200) {
                         setDisplayText('')
@@ -199,24 +198,30 @@ const PickupPage = () => {
 
     const handelSort = async () => {
         try {
-            setIsCheck([])
-            setDisplayText('Loading...')
-            const res = await axiosMisUser.post(
-                '/pickup/sortItem/' +
-                    state?.brand +
-                    '/' +
-                    state?.model +
-                    '/' +
-                    value +
-                    '/'
-            )
-            if (res.status == 200) {
-                setDisplayText('')
-                setItem(res.data.data)
-            } else {
-                setItem(res.data.data)
+            const admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                const { location } = jwt_decode(admin)
 
-                setDisplayText(res.data.message)
+                setIsCheck([])
+                setDisplayText('Loading...')
+                const res = await axiosMisUser.post(
+                    '/pickup/sortItem/' +
+                        state?.brand +
+                        '/' +
+                        state?.model +
+                        '/' +
+                        value +
+                        '/' +
+                        location
+                )
+                if (res.status == 200) {
+                    setDisplayText('')
+                    setItem(res.data.data)
+                } else {
+                    setItem(res.data.data)
+
+                    setDisplayText(res.data.message)
+                }
             }
         } catch (error) {
             alert(error)
@@ -335,7 +340,7 @@ const PickupPage = () => {
             label: 'IMEI',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.imei || ''
+                customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
 
@@ -358,7 +363,7 @@ const PickupPage = () => {
             label: 'MUIC',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.muic || ''
+                customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
@@ -374,7 +379,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.battery_status || ''
+                    value?.charging?.battery_status || '',
             },
         },
         {
@@ -384,7 +389,7 @@ const PickupPage = () => {
                 filter: true,
 
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charge_percentage || ''
+                    value?.charging?.charge_percentage || '',
             },
         },
         {
@@ -393,7 +398,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.body_condition || ''
+                    value?.charging?.body_condition || '',
             },
         },
         {
@@ -402,7 +407,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.display_condition || ''
+                    value?.charging?.display_condition || '',
             },
         },
         {
@@ -411,7 +416,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.lock_status || ''
+                    value?.charging?.lock_status || '',
             },
         },
         {
@@ -420,7 +425,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charging_jack_type || ''
+                    value?.charging?.charging_jack_type || '',
             },
         },
         {
@@ -429,7 +434,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.boady_part_missing || ''
+                    value?.charging?.boady_part_missing || '',
             },
         },
     ]
@@ -470,7 +475,7 @@ const PickupPage = () => {
             label: 'UIC', // column title that will be shown in table
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.uic || ''
+                customBodyRender: (value, dataIndex) => value.uic || '',
             },
         },
         {
@@ -478,7 +483,7 @@ const PickupPage = () => {
             label: 'Order Id',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.order_id || ''
+                customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
         {
@@ -486,7 +491,7 @@ const PickupPage = () => {
             label: 'IMEI',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.imei || ''
+                customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
 
@@ -509,7 +514,7 @@ const PickupPage = () => {
             label: 'MUIC',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.muic || ''
+                customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
@@ -525,7 +530,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.battery_status || ''
+                    value?.charging?.battery_status || '',
             },
         },
         {
@@ -534,7 +539,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charge_percentage || ''
+                    value?.charging?.charge_percentage || '',
             },
         },
         {
@@ -543,7 +548,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.body_condition || ''
+                    value?.charging?.body_condition || '',
             },
         },
         {
@@ -552,7 +557,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.display_condition || ''
+                    value?.charging?.display_condition || '',
             },
         },
         {
@@ -561,7 +566,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.lock_status || ''
+                    value?.charging?.lock_status || '',
             },
         },
         {
@@ -570,7 +575,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charging_jack_type || ''
+                    value?.charging?.charging_jack_type || '',
             },
         },
         {
@@ -579,7 +584,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.boady_part_missing || ''
+                    value?.charging?.boady_part_missing || '',
             },
         },
         {
@@ -588,7 +593,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.blancoo_qc_status || ''
+                    value?.bqc_report?.blancoo_qc_status || '',
             },
         },
         {
@@ -597,7 +602,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.factory_reset_status || ''
+                    value?.bqc_report?.factory_reset_status || '',
             },
         },
         {
@@ -606,7 +611,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.bqc_incomplete_reason || ''
+                    value?.bqc_report?.bqc_incomplete_reason || '',
             },
         },
         {
@@ -615,7 +620,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.technical_issue || ''
+                    value?.bqc_report?.technical_issue || '',
             },
         },
         {
@@ -624,7 +629,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.other || ''
+                    value?.bqc_report?.other || '',
             },
         },
     ]
@@ -635,7 +640,7 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                   setCellProps: () => ({ style: { width: '100px' } }),
+                setCellProps: () => ({ style: { width: '100px' } }),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -666,7 +671,7 @@ const PickupPage = () => {
             label: 'UIC', // column title that will be shown in table
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.uic || ''
+                customBodyRender: (value, dataIndex) => value.uic || '',
             },
         },
         {
@@ -674,7 +679,7 @@ const PickupPage = () => {
             label: 'Order Id',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.order_id || ''
+                customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
         {
@@ -682,7 +687,7 @@ const PickupPage = () => {
             label: 'IMEI',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.imei || ''
+                customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
 
@@ -705,7 +710,7 @@ const PickupPage = () => {
             label: 'MUIC',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.muic || ''
+                customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
@@ -721,7 +726,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.battery_status || ''
+                    value?.charging?.battery_status || '',
             },
         },
         {
@@ -730,7 +735,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charge_percentage || ''
+                    value?.charging?.charge_percentage || '',
             },
         },
         {
@@ -739,7 +744,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.body_condition || ''
+                    value?.charging?.body_condition || '',
             },
         },
         {
@@ -748,7 +753,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.display_condition || ''
+                    value?.charging?.display_condition || '',
             },
         },
         {
@@ -758,7 +763,7 @@ const PickupPage = () => {
                 filter: true,
                 setCellProps: () => ({ style: { width: '100px' } }),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.lock_status || ''
+                    value?.charging?.lock_status || '',
             },
         },
         {
@@ -767,7 +772,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charging_jack_type || ''
+                    value?.charging?.charging_jack_type || '',
             },
         },
         {
@@ -776,7 +781,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.boady_part_missing || ''
+                    value?.charging?.boady_part_missing || '',
             },
         },
         {
@@ -785,7 +790,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.blancoo_qc_status || ''
+                    value?.bqc_report?.blancoo_qc_status || '',
             },
         },
         {
@@ -794,7 +799,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.factory_reset_status || ''
+                    value?.bqc_report?.factory_reset_status || '',
             },
         },
         {
@@ -803,7 +808,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.bqc_incomplete_reason || ''
+                    value?.bqc_report?.bqc_incomplete_reason || '',
             },
         },
         {
@@ -813,7 +818,7 @@ const PickupPage = () => {
                 filter: true,
 
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.technical_issue || ''
+                    value?.bqc_report?.technical_issue || '',
             },
         },
         {
@@ -822,7 +827,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.other || ''
+                    value?.bqc_report?.other || '',
             },
         },
         {
@@ -831,7 +836,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.audit_report?.orgGrade || ''
+                    value?.audit_report?.orgGrade || '',
             },
         },
         {
@@ -840,18 +845,17 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.audit_report?.grade || ''
+                    value?.audit_report?.grade || '',
             },
         },
         {
             name: 'items',
             label: 'Stage',
             options: {
-                filter:true,
-               
-               
-                customBodyRender: (value, dataIndex) => value?.audit_report?.stage || ''
-                    
+                filter: true,
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.stage || '',
             },
         },
         {
@@ -859,11 +863,10 @@ const PickupPage = () => {
             label: 'Reason',
             options: {
                 filter: true,
-                FileList: value => value?.audit_report?.reason,
+                FileList: (value) => value?.audit_report?.reason,
                 customBodyRender: (value, dataIndex) =>
-                   value?.audit_report?.reason || '' 
-                
-            }
+                    value?.audit_report?.reason || '',
+            },
         },
         {
             name: 'items',
@@ -871,7 +874,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
-                    value?.audit_report?.description || ''
+                    value?.audit_report?.description || '',
             },
         },
     ]
@@ -975,7 +978,7 @@ const PickupPage = () => {
                     responsive: 'standared',
                     download: false,
                     print: false,
-                  
+
                     showFirstButton: 'true',
                     showLastButton: 'true',
                     selectableRows: 'none', // set checkbox for each row
@@ -1131,10 +1134,7 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableTwo>
-
-                            {tableDataTwo}
-                            </ProductTableTwo>
+                            <ProductTableTwo>{tableDataTwo}</ProductTableTwo>
                         </Card>
                     </TabPanel>
                     <TabPanel value="Audit Done">
@@ -1143,8 +1143,7 @@ const PickupPage = () => {
                             elevation={6}
                         >
                             <ProductTableThere>
-
-                            {tableDataThree}
+                                {tableDataThree}
                             </ProductTableThere>
                         </Card>
                     </TabPanel>

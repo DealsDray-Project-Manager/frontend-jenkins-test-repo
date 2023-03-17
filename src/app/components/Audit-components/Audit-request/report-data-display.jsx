@@ -194,7 +194,7 @@ export default function DialogBox() {
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
-                <Grid item sx={{ m: 1, boxShadow: 1 }} lg={12} md={12} xs={12}>
+                <Grid item sx={{  boxShadow: 1 }} lg={12} md={12} xs={12}>
                     <BqcApiReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
@@ -224,7 +224,7 @@ export default function DialogBox() {
                         BqcUserReport={reportData?.delivery?.bqc_report}
                     />
                 </Grid>
-                <Grid sx={{ m: 1, boxShadow: 1 }} item lg={12} md={12} xs={12}>
+                <Grid sx={{  boxShadow: 1 }} item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report

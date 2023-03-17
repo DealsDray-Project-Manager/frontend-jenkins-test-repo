@@ -42,7 +42,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post(
                         '/wh-closed-bot-tray/' + location
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setItem(res.data.data)
                     }
                 } catch (error) {
@@ -72,7 +72,7 @@ const SimpleMuiTable = () => {
                     location: location,
                 }
                 let res = await axiosMisUser.post('/wht-bot-sort', obj)
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setSortData(true)
                     setItem(res.data.data)
                 }
@@ -209,7 +209,7 @@ const SimpleMuiTable = () => {
                     <h3>
                         Date:-{' '}
                         {new Date(
-                            sortDate != '' && sortData == true
+                            sortDate != '' && sortData === true
                                 ? sortDate
                                 : yesterdayDate
                         ).toLocaleString('en-GB', {

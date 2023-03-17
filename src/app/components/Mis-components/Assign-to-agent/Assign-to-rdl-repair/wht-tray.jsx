@@ -36,7 +36,6 @@ const SimpleMuiTable = () => {
                 const res = await axiosMisUser.post('/RDLoneDoneTray')
                 if (res.status === 200) {
                     setWhtTrayList(res.data.data)
-                  
                 }
             } catch (error) {
                 Swal.fire({

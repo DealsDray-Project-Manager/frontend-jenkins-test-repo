@@ -28,6 +28,7 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
+    
     /************************************************************/
     useEffect(() => {
         const fetchData = async () => {
@@ -41,11 +42,10 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title: "Please check Details",
+                        title: 'Please check Details',
                         confirmButtonText: 'Ok',
                     })
                     navigate(-1)
@@ -64,11 +64,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
-        
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title: "All Items Are Verified",
+                title: 'All Items Are Verified',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -88,7 +87,7 @@ export default function DialogBox() {
                     setUic('')
                 } else {
                     setTextDisable(false)
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -111,32 +110,20 @@ export default function DialogBox() {
         e.preventDefault()
         try {
             setLoading(true)
-            if (description == '') {
-                
+            trayData.description = description
+            let res = await axiosWarehouseIn.post(
+                '/wht-tray-close-from-sorting',
+                trayData
+            )
+            if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'warning',
-                    title:'Please Add Description',
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-            } else {
-                trayData.description = description
-                let res = await axiosWarehouseIn.post(
-                    '/wht-tray-close-from-sorting',
-                    trayData
-                )
-                if (res.status == 200) {
-                
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    navigate('/wareshouse/sorting/return-from-sorting')
-                }
+                navigate('/wareshouse/sorting/return-from-sorting')
             }
         } catch (error) {
             Swal.fire({
@@ -164,7 +151,7 @@ export default function DialogBox() {
                 } else {
                     setUic('')
                     setTextDisable(false)
-              
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -289,7 +276,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 >Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData?.actual_items?.length}/
                                 {trayData?.limit}
@@ -408,9 +395,8 @@ export default function DialogBox() {
                         disabled={
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
-                            loading == false
-                                ? false
-                                : true
+                            description == '' ||
+                            loading
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

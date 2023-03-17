@@ -59,8 +59,6 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-    console.log(trayData, 'trayData')
-
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
             try {

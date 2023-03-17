@@ -129,6 +129,18 @@ const StatCard3 = () => {
             path: '/wareshouse/wht/return-from-audit',
         },
         {
+            icon: 'shopping_cart',
+            amount: count.rdlFlsRequest,
+            title: 'RDL-FLS Requests',
+            path: '/wareshouse/wht/rdl-fls-request',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.returnFromRdlFls,
+            title: 'Return from RDL-FLS',
+            path: '/wareshouse/wht/return-from-rdl-fls',
+        },
+        {
             icon: 'sort',
             amount: count.sortingRequest,
             title: 'Sorting Request',

@@ -41,9 +41,10 @@ export default function DialogBox() {
                 } else if (response.status === 202) {
                 
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
+                        position: 'top-center',
+                        icon: 'success',
                         text: response?.data?.message,
+                        confirmButtonText: 'Ok',
                     })
                     navigate(-1)
                 } else {
@@ -152,11 +153,11 @@ export default function DialogBox() {
                 }
                 let res = await axiosCharging.post('/charge-in', obj)
                 if (res.status == 200) {
-                  
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res?.data?.message,
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
                     })
                     setLoading(false)
                     navigate('/charging/tray')

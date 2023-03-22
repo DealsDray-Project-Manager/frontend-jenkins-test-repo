@@ -166,6 +166,7 @@ const PaginationTable = () => {
             )
             if (res.status == 200) {
                 setValidateState(true)
+               
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
@@ -173,6 +174,7 @@ const PaginationTable = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)
+                        setErr({})
                     }
                 })
             } else {

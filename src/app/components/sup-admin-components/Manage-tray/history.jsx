@@ -137,7 +137,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'Tray Audit'}
+                title={'Tray Edit History'}
                 data={mastersEditHistory}
                 columns={columns}
                 options={{

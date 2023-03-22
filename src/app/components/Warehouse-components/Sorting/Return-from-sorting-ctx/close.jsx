@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { styled, alpha } from '@mui/material/styles'
 import {
     Box,
     Button,
-    Dialog,
-    DialogContent,
-    DialogActions,
-    DialogTitle,
-    IconButton,
     TextField,
     Paper,
     Table,
@@ -17,29 +11,12 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Select,
-    FormLabel,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
+    Container,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
-import PropTypes from 'prop-types'
-import jwt_decode from 'jwt-decode'
-import CloseIcon from '@mui/icons-material/Close'
-
-
-import {
-    axiosWarehouseIn,
-    axiosRDL_oneAgent,
-    axiosAuditAgent,
-} from '../../../../axios'
-
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -48,25 +25,19 @@ export default function DialogBox() {
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
+    const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
-    const [refresh, setRefresh] = useState(false)
-    
-    let admin = localStorage.getItem('prexo-authentication')
-    let user_name1
-    if (admin) {
-        let { user_name } = jwt_decode(admin)
-        user_name1 = user_name
-    }
-    
 
-   
-
+    /************************************************************/
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Issued to RDL-FLS'
+                    '/charging-done-recieved/' +
+                        trayId +
+                        '/' +
+                        'Received From Sorting'
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -74,7 +45,7 @@ export default function DialogBox() {
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title: response?.data?.message,
+                        title: 'Please check Details',
                         confirmButtonText: 'Ok',
                     })
                     navigate(-1)
@@ -90,71 +61,69 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
-
-    const handelUic = async (uicCode) => {
-        try {
-            if (uicCode.length == 11) {
-                let res = await axiosAuditAgent.post(
-                    '/bqcReport/' + uicCode + '/' + trayId
+    /************************************************************************** */
+    const addActualitem = async (obj) => {
+        if (trayData?.items.length < trayData?.actual_items?.length) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All Items Are Verified',
+                confirmButtonText: 'Ok',
+            })
+        } else {
+            try {
+                let objData = {
+                    trayId: trayId,
+                    item: obj,
+                }
+                setTextDisable(true)
+                let res = await axiosWarehouseIn.post(
+                    '/sorting-done-put-item',
+                    objData
                 )
-                if (res.status === 200) {
-                    // setReportData(res.data.data)
-                    navigate(
-                        '/rdL-fls/rdl-fls-request/approve/information-display',
-                        {
-                            state: {
-                                reportData: res.data.data,
-                                trayId: trayId,
-                                uic: uicCode,
-                                ctxTray: trayData?.otherTray,
-                                whtTrayId: trayId,
-                            },
-                        }
-                    )
-                } else {
+                if (res?.status == 200) {
+                    setRefresh((refresh) => !refresh)
+                    setTextDisable(false)
                     setUic('')
+                } else {
+                    setTextDisable(false)
+
                     Swal.fire({
+                        position: 'top-center',
                         icon: 'error',
-                        title: 'Oops...',
-                        text: res?.data?.message,
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
                     })
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
         }
     }
-   
     /************************************************************************** */
-    const handelIssue = async (e, sortId) => {
+    const handelIssue = async (e) => {
+        e.preventDefault()
         try {
             setLoading(true)
-            let obj = {
-                trayId: trayId,
-                description: description,
-                sortId: trayData?.sort_id,
-            }
-            let res = await axiosRDL_oneAgent.post('/rdl-fls/closeRdlFlsWhtTray', obj)
+            trayData.description = description
+            let res = await axiosWarehouseIn.post(
+                '/wht-tray-close-from-sorting',
+                trayData
+            )
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Succesfully Closed',
-                    confirmButtonText: 'Ok',
-                })
-                setLoading(false)
-                navigate('/wareshouse/wht/rdl-fls-request')
-            } else {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setLoading(false)
+                navigate('/wareshouse/sorting/return-from-sorting')
             }
         } catch (error) {
             Swal.fire({
@@ -165,34 +134,73 @@ export default function DialogBox() {
             })
         }
     }
+    const handelUic = async (e) => {
+        if (e.target.value.length === 11) {
+            try {
+                let obj = {
+                    uic: e.target.value,
+                    trayId: trayId,
+                }
+                setTextDisable(true)
+                let res = await axiosWarehouseIn.post(
+                    '/check-uic-sorting-done',
+                    obj
+                )
+                if (res?.status == 200) {
+                    addActualitem(res.data.data)
+                } else {
+                    setUic('')
+                    setTextDisable(false)
 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+    }
+    /***************************************************************************************** */
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{}}>
+                <h5>Expected</h5>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                    }}
+                >
                     <Box
                         sx={{
-                            float: 'left',
-                            ml: 2,
-                        }}
-                    >
-                        <h5>Items</h5>
-                    </Box>
-                    <Box
-                        sx={{
-                            float: 'right',
-                            mr: 2,
+                            m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                        <h5 style={{marginLeft:"10px"}}>Total</h5>
+                            <h5>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    trayData?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                                {trayData?.items?.length}/{trayData?.limit}
+                            </p>
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Valid</h5>
+                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
+                                {trayData?.items?.length}
                             </p>
                         </Box>
                     </Box>
@@ -209,8 +217,9 @@ export default function DialogBox() {
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+                                <TableCell>IMEI</TableCell>
+                                <TableCell>Brand Name</TableCell>
+                                <TableCell>Model Name</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -219,6 +228,7 @@ export default function DialogBox() {
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
+                                    <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -229,55 +239,59 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
-
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{}}>
+                <h5>ACTUAL</h5>
+                <TextField
+                    sx={{ mt: 1 }}
+                    id="outlined-password-input"
+                    type="text"
+                    inputRef={(input) => input && input.focus()}
+                    disabled={textDisable}
+                    name="doorsteps_diagnostics"
+                    label="Please Enter UIC"
+                    value={uic}
+                    // onChange={(e) => setAwbn(e.target.value)}
+                    onChange={(e) => {
+                        setUic(e.target.value)
+                        handelUic(e)
+                    }}
+                    inputProps={{
+                        style: {
+                            width: 'auto',
+                        },
+                    }}
+                />
+
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                    }}
+                >
                     <Box
                         sx={{
-                            float: 'left',
-                            ml: 2,
-                        }}
-                    >
-                        <h5>Added Items</h5>
-                        <TextField
-                            sx={{ mt: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            disabled={textDisable}
-                            name="doorsteps_diagnostics"
-                            inputRef={(input) => input && input.focus()}
-                            label="SCAN UIC"
-                            value={uic}
-                            onChange={(e) => {
-                                setUic(e.target.value)
-                                handelUic(e.target.value)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
-                    </Box>
-                    <Box
-                        sx={{
-                            float: 'right',
-                            mr: 2,
+                            m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:"10px"}}>Total</h5>
+                            <h5>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {
-                                    trayData.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                                {trayData?.actual_items?.length}/
+                                {trayData?.limit}
+                            </p>
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            m: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Valid</h5>
+                            <p style={{ marginLeft: '19px', fontSize: '24px' }}>
+                                {trayData?.actual_items?.length}
                             </p>
                         </Box>
                     </Box>
@@ -294,8 +308,9 @@ export default function DialogBox() {
                                 <TableCell>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+                                <TableCell>IMEI</TableCell>
+                                <TableCell>Brand Name</TableCell>
+                                <TableCell>Model Name</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -305,6 +320,7 @@ export default function DialogBox() {
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
+                                    <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -315,7 +331,6 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
-
     return (
         <>
             <Box
@@ -330,15 +345,9 @@ export default function DialogBox() {
                         float: 'left',
                     }}
                 >
-                    <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
+                    <h4 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        Assigned Date -{' '}
-                        {new Date(trayData?.requested_date).toLocaleString(
-                            'en-GB',
-                            {
-                                hour12: true,
-                            }
-                        )}
+                        AGENT NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -346,6 +355,14 @@ export default function DialogBox() {
                         float: 'right',
                     }}
                 >
+                    <h4 style={{ marginRight: '13px' }}>
+                        Closed On --{' '}
+                        {new Date(
+                            trayData?.closed_time_sorting_agent
+                        ).toLocaleString('en-GB', {
+                            hour12: true,
+                        })}
+                    </h4>
                     <h4 style={{ marginRight: '13px' }}>
                         Brand -- {trayData?.brand}
                     </h4>
@@ -371,16 +388,15 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
+
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true ||
-                            trayData?.actual_items?.length !==
-                                trayData?.items?.length ||
-                            description == ''
-                                ? true
-                                : false
+                            trayData?.items?.length !==
+                                trayData?.actual_items?.length ||
+                            description == '' ||
+                            loading
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -389,7 +405,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Close
+                        Tray Close
                     </Button>
                 </Box>
             </div>

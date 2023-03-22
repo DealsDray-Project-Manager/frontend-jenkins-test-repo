@@ -88,8 +88,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-       
-       
+
         {
             name: 'rdl_fls_report',
             label: 'RDL Status',
@@ -112,11 +111,61 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List',
+            label: 'Part List Count',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
-                    return value?.part_list
+                    return value?.part_list_count
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_1
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_2
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_3
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_4
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_5
                 },
             },
         },
@@ -130,7 +179,6 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        
     ]
 
     return (
@@ -151,8 +199,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

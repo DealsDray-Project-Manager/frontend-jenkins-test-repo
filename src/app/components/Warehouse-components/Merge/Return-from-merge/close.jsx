@@ -175,6 +175,7 @@ export default function DialogBox() {
                     length: length,
                     limit: limit,
                     status: status,
+                    
                 }
                 if(type == "MMT"){
                     obj.fromTray=tray[0].from_merge

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosSortingAgent } from '../../../../../axios'
 import { Button } from '@mui/material'
 import Swal from 'sweetalert2'
 
@@ -21,43 +21,38 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-
+    const [tray, setTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/whtTray/' + location + '/' + 'all-wht-tray'
+        try {
+            let token = localStorage.getItem('prexo-authentication')
+            if (token) {
+                const { user_name, location } = jwt_decode(token)
+                const fetchData = async () => {
+                    let res = await axiosSortingAgent.post(
+                        '/sorting/ctx/assignedTray/' + user_name
                     )
-                    if (response.status === 200) {
-                        setIsLoading(false)
-                        setWhtTray(response.data.data)
+                    if (res.status == 200) {
+                        setTray(res.data.data)
                     }
-                } else {
-                    navigate('/')
                 }
-            } catch (error) {
-                setIsLoading(false)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
+                fetchData()
+            } else {
+                navigate('/')
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
-        fetchData()
     }, [])
 
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
+    const handelApprove = (e, id) => {
+        e.preventDefault()
+        navigate('/sorting/ctx/request/start-sort/' + id)
     }
 
     const columns = [
@@ -79,23 +74,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
+            name: 'sort_id',
+            label: 'Status',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'actual_items',
-            label: 'acutual_items',
+            name: 'issued_user_name',
+            label: 'Agent Name',
             options: {
                 filter: true,
-                display: false,
             },
         },
         {
             name: 'limit',
-            label: 'limit',
+            label: 'Tray Id',
             options: {
                 filter: true,
                 display: false,
@@ -106,64 +100,29 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value.length == 0
-                            ? tableMeta.rowData[3].length
-                            : value.length) +
-                        '/' +
-                        tableMeta.rowData[4]
-                    )
-                },
-            },
-        },
 
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[4],
+            },
+        },
         {
-            name: 'warehouse',
-            label: 'Warehouse',
+            name: 'issued_user_name',
+            label: 'Sorting Agent',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'to_merge',
+            label: 'To Tray',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name',
-            label: 'Tray Name',
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'brand',
-            label: 'Brand',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: 'Model',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'display',
-            label: 'Tray Display',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: 'Status',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'assigned_date',
+            label: 'Assigned Date',
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -174,22 +133,22 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: 'Action',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={() => handelViewItem(value)}
+                            onClick={(e) => handelApprove(e, value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            View
+                            Start Merge
                         </Button>
                     )
                 },
@@ -201,29 +160,19 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'WHT-Tray' },
-                    ]}
+                    routeSegments={[{ name: 'Tray-Merge', path: '/' }]}
                 />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={whtTray}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

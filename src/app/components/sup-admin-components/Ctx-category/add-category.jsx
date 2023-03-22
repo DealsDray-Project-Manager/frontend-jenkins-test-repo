@@ -13,7 +13,6 @@ const TextFieldCustOm = styled(TextField)(() => ({
     marginBottom: '16px',
 }))
 
-
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -40,6 +39,7 @@ const MemberEditorDialog = ({
     }, [])
 
     const schema = Yup.object().shape({
+        category_type: Yup.string().required('Required*').nullable(),
         code: Yup.string()
             .transform((value) => (value ? value.toUpperCase() : value))
             .matches(/^[A-Z]{3}.*/, 'Please enter valid code')
@@ -62,14 +62,14 @@ const MemberEditorDialog = ({
             .required('Required*')
 
             .nullable(),
-            series_end: Yup.number()
+        series_end: Yup.number()
             .required('Series End is required')
             .when('sereis_start', (sereis_start, schema) => {
-              return schema.test(
-                'greaterThan',
-                'Series End must be greater than Series Start',
-                (series_end) => series_end > sereis_start
-              );
+                return schema.test(
+                    'greaterThan',
+                    'Series End must be greater than Series Start',
+                    (series_end) => series_end > sereis_start
+                )
             }),
     })
 
@@ -167,10 +167,25 @@ const MemberEditorDialog = ({
                 <Grid sx={{ mb: '16px' }} container spacing={4}>
                     <Grid item sm={12} xs={1}>
                         <TextFieldCustOm
+                            label="Category Type"
+                            type="text"
+                            select
+                            name="category_type"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            inputProps={{ maxLength: 3 }}
+                            defaultValue={getValues('category_type')}
+                            {...register('category_type')}
+                            error={errors?.category_type ? true : false}
+                            helperText={errors?.category_type?.message}
+                        >
+                            <MenuItem value={'CT'}>CT</MenuItem>
+                            <MenuItem value={'ST'}>ST</MenuItem>
+                        </TextFieldCustOm>
+                        <TextFieldCustOm
                             label="Code"
                             type="text"
                             name="code"
-                            
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('code')}
                             onKeyPress={(event) => {
                                 if (!/[A-Za-z+]/.test(event.key)) {
@@ -183,8 +198,9 @@ const MemberEditorDialog = ({
                                 errors?.Code ? errors.code?.message : ''
                             }
                             onBlur={(event) => {
-                                event.target.value = event.target.value.toUpperCase();
-                              }}
+                                event.target.value =
+                                    event.target.value.toUpperCase()
+                            }}
                         />
                         <TextFieldCustOm
                             label="Float Number"
@@ -204,10 +220,7 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Series Start"
                             type="number"
-                            disabled={
-                               
-                                Object.keys(editFetchData).length !== 0
-                            }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             name="sereis_start"
                             inputProps={{ maxLength: 5 }}
                             onKeyPress={(event) => {
@@ -224,10 +237,7 @@ const MemberEditorDialog = ({
                             label="Series End"
                             type="number"
                             name="series_end"
-                            disabled={
-                               
-                                Object.keys(editFetchData).length !== 0
-                            }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             inputProps={{ maxLength: 5 }}
                             defaultValue={getValues('series_end')}
                             onKeyPress={(event) => {

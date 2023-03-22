@@ -74,6 +74,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [mmtTray, setMmtTray] = useState([])
     const [open, setOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
     const [toMmtTray, setToMmtTray] = useState([])
     const [mergreData, setMergeData] = useState({
@@ -85,6 +86,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let token = localStorage.getItem('prexo-authentication')
                 if (token) {
                     const { location } = jwt_decode(token)
@@ -92,12 +94,14 @@ const SimpleMuiTable = () => {
                         '/getClosedMmtTray/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setMmtTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -312,7 +316,7 @@ const SimpleMuiTable = () => {
                                         tableMeta?.rowData[3].length
                                     )
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'green' }}
                             >
                                 Merge
                             </Button>
@@ -431,6 +435,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

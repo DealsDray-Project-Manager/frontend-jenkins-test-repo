@@ -12,13 +12,14 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+
 import { useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
-import { axiosSortingAgent, axiosWarehouseIn } from '../../../../axios'
+import { axiosSortingAgent, axiosWarehouseIn } from '../../../../../axios'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -28,7 +29,6 @@ export default function DialogBox() {
     const [awbn, setAwbn] = useState('')
     const [open, setOpen] = useState(false)
     const [description, setDescription] = useState([])
-    const [itemDetails, setItemDetails] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
@@ -107,7 +107,6 @@ export default function DialogBox() {
             }
         }
     }
-
     /************************************************************************** */
     const addActualitem = async (data) => {
         try {

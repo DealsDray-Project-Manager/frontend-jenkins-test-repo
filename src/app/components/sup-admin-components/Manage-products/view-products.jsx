@@ -26,6 +26,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [productList, setProductList] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const [shouldOpenProductEditDialog, setShouldOpenProductEditDialog] =
@@ -34,8 +35,10 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/getAllProducts')
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setProductList(res.data.data)
                 }
             } catch (error) {
@@ -47,7 +50,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchBrand()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const editProductData = async (prdodutId) => {
@@ -193,12 +199,8 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-
                                     ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[2] +
-
-                                  
-                                      tableMeta.rowData[1] +
                                       '.jpg'
                                     : value
                             }
@@ -336,6 +338,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

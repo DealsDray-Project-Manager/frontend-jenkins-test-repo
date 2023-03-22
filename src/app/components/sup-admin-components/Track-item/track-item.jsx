@@ -47,9 +47,8 @@ const TrackItem = () => {
         if (admin) {
             if (inputSearch !== '') {
                 let { location } = jwt_decode(admin)
-                const search=async()=>{
+                const search = async () => {
                     let obj = {
-                     
                         searchData: inputSearch,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -61,7 +60,6 @@ const TrackItem = () => {
                     if (res.status == 200) {
                         setItem(res.data.data)
                         setDisplayText('')
-                      
                     } else {
                         setItem(res.data.data)
                         setDisplayText('Sorry no data found')
@@ -224,11 +222,18 @@ const TrackItem = () => {
                         <TableCell>
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
+                        <TableCell>CTX Tray Id</TableCell>
                         <TableCell>RDL FLS Agent name</TableCell>
                         <TableCell>Tray Issued to RDL FLS Date</TableCell>
                         <TableCell>Tray Closed By RDL FLS Date</TableCell>
                         <TableCell>Tray Received From RDL FLS Date</TableCell>
                         <TableCell>RDL FLS Done Closed By Warehouse</TableCell>
+                        <TableCell>CTX Tray Transfer to Sales Date</TableCell>
+                        <TableCell>
+                            CTX Tray Received From Processing and Close By WH
+                            Date
+                        </TableCell>
+                        <TableCell>STX Tray Id</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -494,7 +499,7 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.audit_user_name}
+                                {data?.delivery.audit_user_name}
                             </TableCell>
                             <TableCell>
                                 {data?.delivery.audit_done_date != undefined
@@ -506,8 +511,7 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.audit_done_recieved !=
-                                undefined
+                                {data?.delivery.audit_done_recieved != undefined
                                     ? new Date(
                                           data?.delivery.audit_done_recieved
                                       ).toLocaleString('en-GB', {
@@ -516,14 +520,15 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery?.audit_done_close != undefined
+                                {data?.delivery.audit_done_close != undefined
                                     ? new Date(
-                                          data?.delivery?.audit_done_close
+                                          data?.delivery.audit_done_close
                                       ).toLocaleString('en-GB', {
                                           hour12: true,
                                       })
                                     : ''}
                             </TableCell>
+                            <TableCell>{data?.delivery.ctx_tray_id}</TableCell>
                             <TableCell>
                                 {data?.delivery?.rdl_fls_one_user_name}
                             </TableCell>
@@ -546,7 +551,8 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.rdl_fls_done_recieved_date != undefined
+                                {data?.delivery.rdl_fls_done_recieved_date !=
+                                undefined
                                     ? new Date(
                                           data?.delivery.rdl_fls_done_recieved_date
                                       ).toLocaleString('en-GB', {
@@ -555,7 +561,8 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>
-                                {data?.delivery.rdl_fls_done_closed_wh != undefined
+                                {data?.delivery.rdl_fls_done_closed_wh !=
+                                undefined
                                     ? new Date(
                                           data?.delivery.rdl_fls_done_closed_wh
                                       ).toLocaleString('en-GB', {
@@ -563,12 +570,33 @@ const TrackItem = () => {
                                       })
                                     : ''}
                             </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    .ctx_tray_transferTo_sales_date != undefined
+                                    ? new Date(
+                                          data?.delivery.ctx_tray_transferTo_sales_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.ctx_tray_receive_and_close_wh !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery.ctx_tray_receive_and_close_wh
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>{data?.delivery.stx_tray_id}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </ProductTable>
         )
-    }, [item, data])
+    }, [item, data, displayText])
 
     return (
         <Container>

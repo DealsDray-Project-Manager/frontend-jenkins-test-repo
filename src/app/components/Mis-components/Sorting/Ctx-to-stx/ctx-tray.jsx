@@ -63,18 +63,19 @@ const BootstrapDialogTitle = (props) => {
         </DialogTitle>
     )
 }
+
 BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
 
-const SimpleMuiTable = () => {
+const CtxToStxPage = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [whtTray, setWhtTray] = useState([])
+    const [tray, setTray] = useState([])
     const [sortingAgent, setSortingAgent] = useState([])
-    const [toWhtTray, setToWhatTray] = useState([])
-    const [open, setOpen] = useState(false)
+    const [toStxTray, setStxTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [open, setOpen] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -90,11 +91,11 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/wht-tray/' + 'wht-merge/' + location
+                        '/ctxTray/' + 'Ready to Transfer to STX/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
-                        setWhtTray(response.data.data)
+                        setTray(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -145,7 +146,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     /* OPEN DIALOG BOX */
-    const handelMerge = async (
+    const handelSorting = async (
         e,
         model,
         brand,
@@ -169,10 +170,13 @@ const SimpleMuiTable = () => {
                     type: type,
                 }
 
-                let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
+                let res = await axiosMisUser.post(
+                    '/sorting/ctxToStx/stxTray',
+                    obj
+                )
                 if (res.status === 200) {
                     setOpen(true)
-                    setToWhatTray(res.data.data)
+                    setStxTray(res.data.data)
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -200,12 +204,13 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         navigate('/wareshouse/wht/tray/item/' + id)
     }
+
     /* REQUEST SEND TO WAREHOUSE */
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
             let res = await axiosMisUser.post(
-                '/TrayMergeRequestSend',
+                '/sorting/ctxToStx/request/sendToWh',
                 mergreData
             )
             if (res.status === 200) {
@@ -248,13 +253,6 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'name',
             label: 'Tray Display Name',
             options: {
@@ -276,7 +274,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[3],
             },
         },
         {
@@ -314,17 +312,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'created_at',
-            label: 'Creation Date',
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+
         {
             name: 'code',
             label: 'Action',
@@ -352,19 +340,19 @@ const SimpleMuiTable = () => {
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
-                                    handelMerge(
+                                    handelSorting(
                                         e,
-                                        tableMeta.rowData[9],
                                         tableMeta.rowData[8],
+                                        tableMeta.rowData[7],
                                         value,
                                         tableMeta.rowData[5]?.length,
                                         tableMeta.rowData[10],
-                                        tableMeta.rowData[6]
+                                        tableMeta.rowData[5]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
                             >
-                                Merge
+                                Sorting
                             </Button>
                         </>
                     )
@@ -394,7 +382,7 @@ const SimpleMuiTable = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            To WHT Tray
+                            To CTX Tray
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -402,7 +390,7 @@ const SimpleMuiTable = () => {
                             fullWidth
                             sx={{ mt: 2 }}
                         >
-                            {toWhtTray.map((data) => (
+                            {toStxTray.map((data) => (
                                 <MenuItem
                                     onClick={(e) => {
                                         setMergeData((p) => ({
@@ -466,14 +454,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Merge', path: '/' },
-                        { name: 'Wht' },
+                        { name: 'Sorting', path: '/' },
+                        { name: 'CTX to  STX' },
                     ]}
                 />
             </div>
+
             <MUIDataTable
-                title={'Wht Tray'}
-                data={whtTray}
+                title={'CTX Tray'}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -518,4 +507,4 @@ const SimpleMuiTable = () => {
     )
 }
 
-export default SimpleMuiTable
+export default CtxToStxPage

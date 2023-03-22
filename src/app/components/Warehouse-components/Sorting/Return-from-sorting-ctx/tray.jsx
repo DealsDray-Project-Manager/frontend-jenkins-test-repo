@@ -3,20 +3,21 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import PropTypes from 'prop-types'
-import CloseIcon from '@mui/icons-material/Close'
-import Swal from 'sweetalert2'
+import { axiosWarehouseIn } from '../../../../../axios'
 import {
+    Button,
     Dialog,
     DialogTitle,
     IconButton,
     DialogContent,
     DialogActions,
     TextField,
-    Button,
 } from '@mui/material'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import Checkbox from '@mui/material/Checkbox'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -66,85 +67,30 @@ BootstrapDialogTitle.propTypes = {
 }
 
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [bot, setBot] = useState([])
-    const [trayId, setTrayId] = useState('')
+    const [tray, setTray] = useState([])
     const [counts, setCounts] = useState('')
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
     const [open, setOpen] = React.useState(false)
+    const [trayId, setTrayId] = useState('')
+    const [refresh, setRefresh] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
+        try {
+            const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let botTray = await axiosWarehouseIn.post(
-                        '/closeBotTray/' + location
+                    let res = await axiosWarehouseIn.post(
+                        '/returnFromsorting/ctxToStx/tray/' + location
                     )
-                    if (botTray.status == 200) {
-                        setBot(botTray.data.data)
+                    if (res.status == 200) {
+                        setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
             }
-        }
-        fetchData()
-        return () => setIsAlive(false)
-    }, [isAlive])
-
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/tray/item/' + id)
-    }
-    const handelViewDetailTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/bot-done/tray-close/' + id)
-    }
-    const handelViewSummery = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/bag/bag-close-requests/summery/' + id)
-    }
-
-    const handelTrayReceived = async () => {
-        setLoading(true)
-        try {
-            let obj = {
-                trayId: trayId,
-                count: counts,
-            }
-            let res = await axiosWarehouseIn.post('/receivedTray', obj)
-            if (res.status == 200) {
-                setLoading(false)
-
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-                setOpen(false)
-                setIsAlive((isAlive) => !isAlive)
-            } else {
-                setLoading(false)
-                setOpen(false)
-
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-            }
+            fetchData()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -153,10 +99,54 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }
+    }, [refresh])
 
+    const handelTrayReceived = async () => {
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+            }
+            let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOpen(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
     const handleClose = () => {
         setOpen(false)
+    }
+
+    const handelViewTray = (e, code) => {
+        e.preventDefault()
+        navigate('/wareshouse/wht/tray/item/' + code)
+    }
+    const handelViewDetailTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/sorting/return-from-sorting/close/' + id)
     }
 
     const columns = [
@@ -178,16 +168,24 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
-            label: 'Bag Id',
+            name: 'type_taxanomy',
+            label: 'Tray Type',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value[0]?.bag_id,
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'limit',
+            label: 'Tray',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+
+        {
+            name: 'issued_user_name',
+            label: 'Sorting Agent',
             options: {
                 filter: true,
             },
@@ -199,19 +197,9 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+
         {
-            name: 'status_change_time',
-            label: 'Assigned Date',
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'closed_time_bot',
+            name: 'closed_time_sorting_agent',
             label: 'Closed Date',
             options: {
                 filter: true,
@@ -222,14 +210,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'issued_user_name',
-            label: 'Agent Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,
@@ -237,67 +218,36 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                disabled={value === 'Closed By Bot'}
-                                style={{ backgroundColor: '#21b6ae' }}
-                                onClick={(e) => {
-                                    handelViewSummery(
-                                        e,
-                                        tableMeta.rowData[2]?.[0]?.bag_id
-                                    )
-                                }}
-                            >
-                                Summery
-                            </Button>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                disabled={value === 'Closed By Bot'}
-                                style={{ backgroundColor: '#206CE2' }}
-                                onClick={(e) => {
-                                    handelViewTray(e, tableMeta.rowData[1])
-                                }}
-                            >
-                                View
-                            </Button>
-
-                            {value !== 'Received From BOT' ? (
+                            {tableMeta.rowData[5] !=
+                            'Received From Sorting Agent After Ctx to Stx' ? (
                                 <Button
                                     sx={{
                                         m: 1,
                                     }}
-                                    disabled={loading}
                                     variant="contained"
                                     style={{ backgroundColor: 'green' }}
                                     onClick={(e) => {
                                         setOpen(true)
-                                        setTrayId(tableMeta.rowData[1])
+                                        setTrayId(value)
                                     }}
                                 >
-                                    RECEIVE
+                                    RECEIVED
                                 </Button>
                             ) : (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'red' }}
-                                    onClick={(e) => {
-                                        handelViewDetailTray(
-                                            e,
-                                            tableMeta.rowData[1]
-                                        )
-                                    }}
-                                >
-                                    Close
-                                </Button>
+                                <>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
                             )}
                         </>
                     )
@@ -318,7 +268,7 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    Please verify the count of - {trayId}
+                    RECEIVED
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -343,7 +293,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        disabled={counts === '' ? true : false}
+                        disabled={counts === ''}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -356,15 +306,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Bag', path: '/' },
-                        { name: 'Bag-Close-Request' },
+                        { name: 'Sorting', path: '/' },
+                        { name: 'Return-From-Sorting' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
                 title={'Requests'}
-                data={bot}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

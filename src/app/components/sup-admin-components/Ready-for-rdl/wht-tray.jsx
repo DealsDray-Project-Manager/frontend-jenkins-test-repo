@@ -56,9 +56,12 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 ischeck: isCheck,
-                type:"Ready to RDL"
+                type: 'Ready to RDL',
             }
-            let res = await axiosSuperAdminPrexo.post('/forceFullReadySend', obj)
+            let res = await axiosSuperAdminPrexo.post(
+                '/forceFullReadySend',
+                obj
+            )
             setIsCheck([])
             if (res.status === 200) {
                 Swal.fire({
@@ -84,7 +87,7 @@ const SimpleMuiTable = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }
@@ -237,7 +240,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For RDL', path: '/' }]}
+                    routeSegments={[{ name: 'Ready For RDL-FLS', path: '/' }]}
                 />
             </div>
             <Button

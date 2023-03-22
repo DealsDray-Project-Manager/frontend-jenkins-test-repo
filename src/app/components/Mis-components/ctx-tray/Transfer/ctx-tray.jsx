@@ -31,6 +31,7 @@ const SimpleMuiTable = () => {
     const [isCheck, setIsCheck] = useState([])
     const [ctxTrayList, setCtxTrayList] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [selectLoaction, setSelectLocation] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
@@ -39,16 +40,19 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/ctxTray/' + 'Ready to Transfer to Sales/' + location
                     )
                     if (res.status === 200) {
+                        setIsLoading(false)
                         setCtxTrayList(res.data.data)
                       
                     }
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -93,7 +97,6 @@ const SimpleMuiTable = () => {
     const handelViewItem = (id) => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
-
     const columns = [
         {
             name: 'code',
@@ -260,6 +263,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

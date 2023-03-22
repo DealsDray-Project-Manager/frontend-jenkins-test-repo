@@ -97,6 +97,7 @@ const PickupPage = () => {
     const [refresh, setRefresh] = useState(false)
     const [state, setState] = useState({})
     const [isCheck, setIsCheck] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -115,6 +116,7 @@ const PickupPage = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     const { location } = jwt_decode(admin)
                     setDisplayText('Loading...')
                     let response = await axiosMisUser.post(
@@ -122,10 +124,11 @@ const PickupPage = () => {
                     )
                     if (response.status === 200) {
                         setDisplayText('')
+                        setIsLoading(false)
                         setItem(response.data.data)
                     } else {
                         setItem(response.data.data)
-
+                        setIsLoading(false)
                         setDisplayText(response.data.message)
                     }
                 } else {
@@ -201,8 +204,8 @@ const PickupPage = () => {
             const admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 const { location } = jwt_decode(admin)
-
                 setIsCheck([])
+                setIsLoading(true)
                 setDisplayText('Loading...')
                 const res = await axiosMisUser.post(
                     '/pickup/sortItem/' +
@@ -216,10 +219,11 @@ const PickupPage = () => {
                 )
                 if (res.status == 200) {
                     setDisplayText('')
+                    setIsLoading(false)
                     setItem(res.data.data)
                 } else {
                     setItem(res.data.data)
-
+                    setIsLoading(false)
                     setDisplayText(res.data.message)
                 }
             }
@@ -894,6 +898,13 @@ const PickupPage = () => {
                     print: false,
                     showFirstButton: 'true',
                     showLastButton: 'true',
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -937,6 +948,13 @@ const PickupPage = () => {
                     print: false,
                     showFirstButton: 'true',
                     showLastButton: 'true',
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -978,6 +996,13 @@ const PickupPage = () => {
                     responsive: 'standared',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
 
                     showFirstButton: 'true',
                     showLastButton: 'true',

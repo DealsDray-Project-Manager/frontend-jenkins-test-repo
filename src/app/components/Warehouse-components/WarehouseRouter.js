@@ -182,6 +182,15 @@ const CtxTrayReceiveFromProcessing = Loadable(
 const CtxTrayReceiveApprove = Loadable(
     lazy(() => import('./Ctx-tray/ctx-receive/approve'))
 )
+const SortingCtxToStxRequest = Loadable(
+    lazy(() => import('./Sorting/sorting-request-ctx/request'))
+)
+const SortingCtxFromAndToviewAndIssue = Loadable(
+    lazy(() => import('./Sorting/sorting-request-ctx/approve'))
+)
+const SortingDoneCtxtoStxTray = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-ctx/tray'))
+)
 
 const WarehoueRouter = [
     {
@@ -333,6 +342,14 @@ const WarehoueRouter = [
         element: <SortingRequest />,
     },
     {
+        path: '/wareshouse/sorting/ctx/request',
+        element: <SortingCtxToStxRequest />,
+    },
+    {
+        path: '/wareshouse/sorting/ctx/request/approve/:trayId',
+        element: <SortingCtxFromAndToviewAndIssue />,
+    },
+    {
         path: '/wareshouse/sorting/request/approve/:trayId',
         element: <SortingRequestDtaildView />,
     },
@@ -343,6 +360,10 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/sorting/return-from-sorting',
         element: <ReturnFromSorting />,
+    },
+    {
+        path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting',
+        element: <SortingDoneCtxtoStxTray />,
     },
     {
         path: '/wareshouse/sorting/return-from-sorting/close/:trayId',

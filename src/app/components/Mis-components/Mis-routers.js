@@ -87,6 +87,10 @@ const CtxTrayTransfer = Loadable(
 const CtxTrayReceiveFromProcessing = Loadable(
     lazy(() => import('./ctx-tray/Receive/request'))
 )
+const CtxToStxAssignToSorting=Loadable(
+    lazy(() => import('./Sorting/Ctx-to-stx/ctx-tray'))
+)
+
 const dataTableRoutes = [
     {
         path: '/mis/dashboard',
@@ -171,6 +175,10 @@ const dataTableRoutes = [
     {
         path: '/mis/sorting/bot-to-wht',
         element: <SortingBotTowht />,
+    },
+    {
+        path: '/mis/sorting/ctx-to-stx',
+        element: <CtxToStxAssignToSorting />,
     },
     {
         path: '/mis/sorting/bot-to-wht/assign-for-sorting',

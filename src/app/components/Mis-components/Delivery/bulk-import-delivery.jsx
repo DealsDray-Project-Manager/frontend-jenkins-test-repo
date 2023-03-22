@@ -88,10 +88,9 @@ const PaginationTable = () => {
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title: "Please Select File",
+                title: 'Please Select File',
                 confirmButtonText: 'Ok',
             })
-           
         } else {
             setLoading(true)
             readExcel(exFile)
@@ -161,14 +160,16 @@ const PaginationTable = () => {
                 if (data?.base_discount !== undefined) {
                     data.base_discount = data.base_discount.toString()
                 }
-                if(data?.partner_purchase_price !== undefined){
-                    data.partner_purchase_price = data.partner_purchase_price.toString() 
+                if (data?.partner_purchase_price !== undefined) {
+                    data.partner_purchase_price =
+                        data.partner_purchase_price.toString()
                 }
-                if(data?.diagnostics_discount !== undefined){
-                    data.diagnostics_discount=data.diagnostics_discount.toString()
+                if (data?.diagnostics_discount !== undefined) {
+                    data.diagnostics_discount =
+                        data.diagnostics_discount.toString()
                 }
-                if(data?.storage_discount !== undefined){
-                    data.storage_discount =data.storage_discount.toString() 
+                if (data?.storage_discount !== undefined) {
+                    data.storage_discount = data.storage_discount.toString()
                 }
 
                 if (
@@ -262,7 +263,6 @@ const PaginationTable = () => {
 
             let res = await axiosMisUser.post('/importDelivery', obj)
             if (res.status == 200) {
-                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -272,7 +272,6 @@ const PaginationTable = () => {
                 setLoading(false)
                 navigate('/mis/delivery')
             } else {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -292,11 +291,10 @@ const PaginationTable = () => {
     const handelValidate = async () => {
         try {
             if (deliveryData == '') {
-              
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Select The Date",
+                    title: 'Please Select The Date',
                     confirmButtonText: 'Ok',
                 })
             } else {
@@ -314,22 +312,22 @@ const PaginationTable = () => {
                         obj
                     )
                     if (res.status == 200) {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
                             title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
+                        setErr({})
                         setLoading(false)
                         setValidate(true)
                     } else {
                         setErr(res.data.data)
-                        
+
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
-                            title: "Please Check Errors",
+                            title: 'Please Check Errors',
                             confirmButtonText: 'Ok',
                         })
                         setLoading(false)

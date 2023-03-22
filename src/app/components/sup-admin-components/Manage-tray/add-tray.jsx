@@ -47,8 +47,10 @@ const MemberEditorDialog = ({
                 }
             }
             fetchCpc()
-            const fetchCategory=async()=>{
-                let categorys=await axiosSuperAdminPrexo.get('/getCtxTrayCategory')
+            const fetchCategory = async () => {
+                let categorys = await axiosSuperAdminPrexo.get(
+                    '/getCtxTrayCategory'
+                )
                 setCategorys(categorys.data)
             }
 
@@ -76,10 +78,13 @@ const MemberEditorDialog = ({
     const fetchTypeWiseId = async (e, type) => {
         e.preventDefault()
         try {
-            let res = await axiosSuperAdminPrexo.post('/trayIdGenrate/' + type)
+            let obj = {
+                type: type,
+            }
+            let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
             if (res.status == 200) {
                 setTrayCount(type + res.data.data)
-                
+
                 if (type == 'BOT' && res.data.data > '2251') {
                     handleClose()
                     Swal.fire({
@@ -113,8 +118,7 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } 
-                else if (type == 'PMT' && res.data.data > '8151') {
+                } else if (type == 'PMT' && res.data.data > '8151') {
                     handleClose()
                     Swal.fire({
                         icon: 'error',
@@ -125,8 +129,8 @@ const MemberEditorDialog = ({
                             handleClose()
                         }
                     })
-                } 
-                
+                }
+
                 // else if (type == 'CTA' && res.data.data > '1999') {
                 //     handleClose()
                 //     Swal.fire({
@@ -172,18 +176,17 @@ const MemberEditorDialog = ({
                 //         }
                 //     })
                 // }
-            }
-            else{
+            } else {
                 handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res.data.message,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handleClose()
+                    }
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -313,6 +316,7 @@ const MemberEditorDialog = ({
     }
     const handelEdit = async (data) => {
         try {
+            setLoading(true)
             let response = await axiosSuperAdminPrexo.post('/editMaster', data)
             if (response.status == 200) {
                 handleClose()
@@ -324,11 +328,13 @@ const MemberEditorDialog = ({
                     confirmButtonText: 'Ok',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        setLoading(false)
                         setIsAlive((isAlive) => !isAlive)
                     }
                 })
             } else {
                 handleClose()
+                setLoading(false)
                 setEditFetchData({})
                 Swal.fire({
                     position: 'top-center',
@@ -466,10 +472,7 @@ const MemberEditorDialog = ({
                             name="cpc"
                             defaultValue={getValues('type_taxanomy')}
                             {...register('type_taxanomy')}
-                            disabled={
-                                
-                                Object.keys(editFetchData).length !== 0
-                            }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.type_taxanomy ? true : false}
                             helperText={errors.type_taxanomy?.message}
                         >
@@ -505,19 +508,16 @@ const MemberEditorDialog = ({
                             >
                                 WHT
                             </MenuItem>
-                            {
-                                categorys?.map((item)=>(
-                                    <MenuItem
-                                value={item?.code}
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e,item?.code)
-                                }}
-                            >
-                               {item?.code}
-                            </MenuItem>
-                                ))
-                            }
-                           
+                            {categorys?.map((item) => (
+                                <MenuItem
+                                    value={item?.code}
+                                    onClick={(e) => {
+                                        fetchTypeWiseId(e, item?.code)
+                                    }}
+                                >
+                                    {item?.code}
+                                </MenuItem>
+                            ))}
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') !== 'BOT' &&
                         getValues('type_taxanomy') !== 'PMT' &&

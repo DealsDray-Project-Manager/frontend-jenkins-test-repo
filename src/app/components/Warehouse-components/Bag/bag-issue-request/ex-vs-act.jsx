@@ -93,11 +93,10 @@ const SimpleMuiTable = () => {
                             pmtTray: res.data.pmtTray,
                         })
                     } else {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
-                            title:res?.data?.message,
+                            title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
                         navigate(-1)
@@ -126,11 +125,10 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setReadyForAssign(res.data.data)
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                     navigate(-1)
@@ -163,19 +161,18 @@ const SimpleMuiTable = () => {
                 setBagData(response.data.data)
                 setUic(response.data.data[0]?.uic === 'true')
                 setSleaves(response.data.data[0]?.sleaves === 'true')
-           
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:response?.data?.message,
+                    title: response?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             } else if (response.status == 202) {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:response?.data?.status,
+                    title: response?.data?.status,
                     confirmButtonText: 'Ok',
                 })
                 navigate(-1)
@@ -204,21 +201,21 @@ const SimpleMuiTable = () => {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setAwbn('')
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 } else if (res.status == 203) {
                     setTextBoxDis(false)
                     setAwbn('')
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
-                        title:'This item Does Not Exist In This Bag',
+                        title: 'This item Does Not Exist In This Bag',
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -244,11 +241,10 @@ const SimpleMuiTable = () => {
                 }).length >=
             bagData[0].limit
         ) {
-        
             Swal.fire({
                 position: 'top-center',
                 icon: 'error',
-                title:"bag Is Full",
+                title: 'bag Is Full',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -271,11 +267,10 @@ const SimpleMuiTable = () => {
                     setTextBoxDis(false)
                     getitem()
                 } else {
-           
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -295,25 +290,22 @@ const SimpleMuiTable = () => {
         try {
             setLoading(true)
             if (uic == false) {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Confirm UIC",
+                    title: 'Please Confirm UIC',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
             } else if (sleaves == false) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Confirm Sleeves",
+                    title: 'Please Confirm Sleeves',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
             } else if (readyForAssign !== 'User is free' && type == 'Issued') {
-                
                 alert(readyForAssign)
                 setLoading(false)
             } else if (
@@ -321,11 +313,10 @@ const SimpleMuiTable = () => {
                 (mmtTray == null && type == 'Issued') ||
                 (botTray == '' && type == 'Issued')
             ) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Assign Tray",
+                    title: 'Please Assign Tray',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -341,21 +332,19 @@ const SimpleMuiTable = () => {
 
                 let res = await axiosWarehouseIn.post('/issueToBot', obj)
                 if (res.status == 200) {
-                 
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
                     navigate('/wareshouse/bag/bag-issue-request')
                 } else {
-             
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -378,20 +367,18 @@ const SimpleMuiTable = () => {
             }
             let data = await axiosWarehouseIn.post('/actualBagItem', obj)
             if (data.status == 200) {
-             
-                 Swal.fire({
+                Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:data?.data?.message,
+                    title: data?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 getitem()
             } else {
-          
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:data?.data?.message,
+                    title: data?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             }
@@ -417,35 +404,31 @@ const SimpleMuiTable = () => {
                         '/checkBotTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title:res?.data?.message,
+                            title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
                         setBotTray(res.data.data)
                     } else {
-                   
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
-                            title:res?.data?.message,
+                            title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
                     }
                 }
             } else {
-        
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Enter Tray ID",
+                    title: 'Please Enter Tray ID',
                     confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {
-           
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -466,11 +449,10 @@ const SimpleMuiTable = () => {
                         '/checkMmtTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                       
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title:res?.data?.message,
+                            title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
                         setMmtTray(res.data.data)
@@ -481,10 +463,8 @@ const SimpleMuiTable = () => {
                             title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
-                        
                     }
                 } else {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
@@ -494,7 +474,6 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-        
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -515,7 +494,6 @@ const SimpleMuiTable = () => {
                         '/checkPmtTray/' + trayId + '/' + location
                     )
                     if (res.status == 200) {
-                   
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
@@ -524,7 +502,6 @@ const SimpleMuiTable = () => {
                         })
                         setPmtTray(res.data.data)
                     } else {
-                       
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -534,16 +511,14 @@ const SimpleMuiTable = () => {
                     }
                 }
             } else {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: "Please Enter Tray ID",
+                    title: 'Please Enter Tray ID',
                     confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {
-   
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -988,7 +963,7 @@ const SimpleMuiTable = () => {
                                     }
                                 }}
                             >
-                                Handeover to Agent
+                                Handover to Agent
                             </Button>
                         </Box>
                     ) : (

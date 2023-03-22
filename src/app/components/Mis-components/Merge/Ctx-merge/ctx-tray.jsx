@@ -74,6 +74,7 @@ const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
@@ -87,6 +88,7 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/ctxTray/' +
@@ -94,12 +96,14 @@ const SimpleMuiTable = () => {
                             location
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -350,7 +354,6 @@ const SimpleMuiTable = () => {
                                     m: 1,
                                 }}
                                 variant="contained"
-                                
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
@@ -362,7 +365,7 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[6]
                                     )
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'green' }}
                             >
                                 Merge
                             </Button>
@@ -481,6 +484,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

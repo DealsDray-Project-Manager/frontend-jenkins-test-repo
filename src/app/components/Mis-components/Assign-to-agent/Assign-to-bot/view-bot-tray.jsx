@@ -27,6 +27,7 @@ const SimpleMuiTable = () => {
     const [bagList, setBotBag] = useState([])
     const navigate = useNavigate()
     const [botUsers, setBotUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const [bagId, setBagId] = useState('')
 
@@ -34,23 +35,29 @@ const SimpleMuiTable = () => {
         try {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
+                setIsLoading(true)
                 let { location } = jwt_decode(user)
                 const fetchData = async () => {
                     let res = await axiosMisUser.post('/getStockin/' + location)
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setBotBag(res.data.data)
                     }
                 }
                 fetchData()
             }
         } catch (error) {
+            setIsLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -84,7 +91,7 @@ const SimpleMuiTable = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }
@@ -256,8 +263,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

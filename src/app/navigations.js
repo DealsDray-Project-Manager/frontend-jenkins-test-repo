@@ -97,7 +97,7 @@ export const navigations = [
                 path: '/sup-admin/warehouse',
             },
             {
-                name: 'CTX Tray Category',
+                name: 'CTX and STX Tray Category',
                 // icon: 'category',
                 path: '/sup-admin/Category',
             },
@@ -304,8 +304,13 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'Bot to Wht',
+                name: 'BOT to WHT',
                 path: '/mis/sorting/bot-to-wht',
+                iconText: 'VP',
+            },
+            {
+                name: 'CTX to STX',
+                path: '/mis/sorting/ctx-to-stx',
                 iconText: 'VP',
             },
         ],
@@ -493,7 +498,7 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'Sorting Request',
+                name: 'Sorting Request (BOT)',
                 path: '/wareshouse/sorting/request',
                 iconText: 'VP',
             },
@@ -503,8 +508,19 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Return From Sorting',
+                name: 'Sorting Done (WHT)',
                 path: '/wareshouse/sorting/return-from-sorting',
+                iconText: 'VP',
+            },
+            {
+                name: 'Sorting Request (CTX)',
+                path: '/wareshouse/sorting/ctx/request',
+                iconText: 'VP',
+            },
+
+            {
+                name: 'Sorting Done (CTX/STX)',
+                path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting',
                 iconText: 'VP',
             },
         ],
@@ -602,7 +618,6 @@ export const navigations = [
         ],
         auth: authRoles.Warehouse,
     },
- 
 
     {
         name: 'Bag',
@@ -619,9 +634,21 @@ export const navigations = [
     {
         name: 'Sorting Request',
         icon: 'sort',
-        path: '/sorting/request',
+        children: [
+            {
+                name: 'BOT to WHT',
+                path: '/sorting/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'CTX to STX',
+                path: '/sorting/ctx/request',
+                iconText: 'VP',
+            },
+        ],
         auth: authRoles.sorting,
     },
+
     {
         name: 'Tray Merge',
         icon: 'merge_type',

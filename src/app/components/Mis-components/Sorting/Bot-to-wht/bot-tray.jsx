@@ -27,6 +27,7 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const navigate = useNavigate()
     const [sortDate, setSortDate] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const [sortData, setSortData] = useState(false)
     const [yesterdayDate, setYesterDayDate] = useState('')
     const [isCheck, setIsCheck] = useState([])
@@ -36,6 +37,7 @@ const SimpleMuiTable = () => {
         setYesterDayDate(date.setDate(date.getDate() - 1))
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
+            setIsLoading(true)
             const { location } = jwt_decode(admin)
             const fetchData = async () => {
                 try {
@@ -43,9 +45,11 @@ const SimpleMuiTable = () => {
                         '/wh-closed-bot-tray/' + location
                     )
                     if (res.status === 200) {
+                        setIsLoading(false)
                         setItem(res.data.data)
                     }
                 } catch (error) {
+                    setIsLoading(false)
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -58,12 +62,16 @@ const SimpleMuiTable = () => {
         } else {
             navigate('/')
         }
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handelSort = async (e) => {
         e.preventDefault()
         try {
+            setIsLoading(true)
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 const { location } = jwt_decode(admin)
@@ -73,11 +81,13 @@ const SimpleMuiTable = () => {
                 }
                 let res = await axiosMisUser.post('/wht-bot-sort', obj)
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setSortData(true)
                     setItem(res.data.data)
                 }
             }
         } catch (error) {
+            setIsLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -287,6 +297,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

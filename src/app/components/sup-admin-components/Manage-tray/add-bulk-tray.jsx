@@ -81,10 +81,11 @@ const PaginationTable = () => {
     }, [pagination.page, pagination.item])
     useEffect(() => {
         try {
+            let obj = {
+                type: 'tray-master',
+            }
             const fetchData = async () => {
-                let res = await axiosSuperAdminPrexo.post(
-                    '/trayIdGenrate/' + 'tray-master'
-                )
+                let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
                 if (res.status == 200) {
                     setCountOfTray(res.data.data)
                 }
@@ -144,6 +145,7 @@ const PaginationTable = () => {
         let obj = {
             ...countOfTray,
         }
+       
 
         try {
             for (let x of pagination.item) {
@@ -161,10 +163,7 @@ const PaginationTable = () => {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
                 } else {
-                
-                    x.tray_id =
-                        x.tray_category +
-                        (countOfTray[x.tray_category] + obj[x.tray_category])
+                    x.tray_id = x.tray_category + obj[x.tray_category]
                     obj[x.tray_category] = Number(obj[x.tray_category] + 1)
                 }
                 // else if (x.tray_category == 'CTA') {
@@ -181,14 +180,7 @@ const PaginationTable = () => {
                 //     count8++
                 // }
             }
-            setCountOfTray((p) => ({
-                ...p,
-                BOT: p.BOT + count1,
-                MMT: p.MMT + count2,
-                PMT: p.PMT + count3,
-                WHT: p.WHT + count4,
-                ...obj,
-            }))
+          
 
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
@@ -197,6 +189,15 @@ const PaginationTable = () => {
             )
             if (res.status == 200) {
                 setLoading(false)
+                setErr({})
+                setCountOfTray((p) => ({
+                    ...p,
+                    BOT: p.BOT + count1,
+                    MMT: p.MMT + count2,
+                    PMT: p.PMT + count3,
+                    WHT: p.WHT + count4,
+                    ...obj,
+                }))
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
@@ -237,6 +238,7 @@ const PaginationTable = () => {
                 allCount: countOfTray,
                 item: pagination.item,
             }
+            console.log(obj);
             let res = await axiosSuperAdminPrexo.post('/createBulkTray', obj)
             if (res.status == 200) {
                 Swal.fire({

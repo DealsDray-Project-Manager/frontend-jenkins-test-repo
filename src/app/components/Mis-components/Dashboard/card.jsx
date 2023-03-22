@@ -114,7 +114,7 @@ const StatCard3 = () => {
             title: 'Assign To Audit',
             path: '/mis/assign-to-agent/audit',
         },
-        
+
         {
             icon: 'art_track',
             amount: count.rdl,
@@ -134,11 +134,12 @@ const StatCard3 = () => {
             path: '/mis/sorting/bot-to-wht',
         },
         {
-            icon: 'merge_type',
-            amount: count.whtMerge,
-            title: 'WHT Merge',
-            path: '/mis/merge/wht',
+            icon: 'sort',
+            amount: count.ctxToStxSorting,
+            title: 'CTX To STX',
+            path: '/mis/sorting/ctx-to-stx',
         },
+
         {
             icon: 'merge_type',
             amount: count.mmtMerge,
@@ -147,9 +148,27 @@ const StatCard3 = () => {
         },
         {
             icon: 'merge_type',
+            amount: count.whtMerge,
+            title: 'WHT Merge',
+            path: '/mis/merge/wht',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.ctxMerge,
+            title: 'CTX Merge',
+            path: '/mis/merge/ctx',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.readyToTransfer,
             title: 'Transfer CTX',
             path: '/mis/ctx/transfer',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.receiveCtx,
+            title: 'Receive CTX',
+            path: '/mis/ctx/receive',
         },
         {
             icon: 'art_track',

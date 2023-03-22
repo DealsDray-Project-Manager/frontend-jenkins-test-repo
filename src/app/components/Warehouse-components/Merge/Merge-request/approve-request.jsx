@@ -55,31 +55,6 @@ export default function StickyHeadTable({ props }) {
         }
         fetchData()
     }, [])
-    useEffect(() => {
-        const userStatusApiCall = async () => {
-            try {
-                let res = await axiosWarehouseIn.post(
-                    '/sortingAgnetStatus/' +
-                        mmtTray[0]?.issued_user_name +
-                        '/' +
-                        mmtTray?.[0]?.code
-                )
-                if (res.status === 200) {
-                    setUserAgent(res.data.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-        if (mmtTray[0]?.issued_user_name !== undefined) {
-            userStatusApiCall()
-        }
-    }, [mmtTray])
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
@@ -96,61 +71,58 @@ export default function StickyHeadTable({ props }) {
                     mmtTray?.[0]?.code
             )
             if (res.status === 200) {
-                if (res.data.data == 'User is free') {
-                    setLoading(true)
-                    let flag = false
-                    for (let x of mmtTray) {
-                        if (x.items.length !== x.actual_items.length) {
-                            flag = true
-                            break
-                        }
+                setLoading(true)
+                let flag = false
+                for (let x of mmtTray) {
+                    if (x.items.length !== x.actual_items.length) {
+                        flag = true
+                        break
                     }
-                    if (flag == false) {
-                        let obj = {
-                            fromTray: mmtTray[0].code,
-                            toTray: mmtTray[1].code,
-                            username: mmtTray[0]?.issued_user_name,
-                        }
-                        let res = await axiosWarehouseIn.post(
-                            '/mmtTraySendToSorting',
-                            obj
-                        )
-                        if (res.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: res?.data?.message,
-                                confirmButtonText: 'Ok',
-                            })
-                            setLoading(false)
-                            navigate('/wareshouse/merge/request')
-                        } else {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'error',
-                                title: res?.data?.message,
-                                confirmButtonText: 'Ok',
-                            })
-                        }
-                    } else {
-                        setLoading(false)
-
+                }
+                if (flag == false) {
+                    let obj = {
+                        fromTray: mmtTray[0].code,
+                        toTray: mmtTray[1].code,
+                        username: mmtTray[0]?.issued_user_name,
+                    }
+                    let res = await axiosWarehouseIn.post(
+                        '/mmtTraySendToSorting',
+                        obj
+                    )
+                    if (res.status == 200) {
                         Swal.fire({
                             position: 'top-center',
-                            icon: 'warning',
-                            title: 'Please Issue All Tray',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        setLoading(false)
+                        navigate('/wareshouse/merge/request')
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
                             confirmButtonText: 'Ok',
                         })
                     }
                 } else {
+                    setLoading(false)
+
                     Swal.fire({
                         position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.data,
+                        icon: 'warning',
+                        title: 'Please Issue All Tray',
                         confirmButtonText: 'Ok',
                     })
                 }
             } else {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.data,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
             Swal.fire({

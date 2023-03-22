@@ -182,7 +182,26 @@ const StatCard3 = () => {
             title: 'Return From Pickup',
             path: '/wareshouse/wht/pickup/return-from-pickup',
         },
+        {
+            icon: 'shopping_cart',
+            amount: count.allCtxTray,
+            title: 'CTX Tray',
+            path: '/wareshouse/ctx/all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.ctxTransferRequest,
+            title: 'CTX Transfer Request',
+            path: '/wareshouse/ctx/transfer/request',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.ctxTransferRequest,
+            title: 'CTX Transfer Receive',
+            path: '/wareshouse/ctx/receive/request',
+        },
     ]
+
     const { palette } = useTheme()
     const textMuted = palette.text.secondary
 

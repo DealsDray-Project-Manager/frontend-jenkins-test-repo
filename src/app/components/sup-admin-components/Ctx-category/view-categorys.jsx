@@ -23,26 +23,34 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [ctxCategorylist, setctxCategorylist] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
-    useEffect(async () => {
-        try {
-            const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
-            if (res.status === 200) {
-                setctxCategorylist(res?.data)
+    useEffect(() => {
+        const fetchCtxTray = async () => {
+            try {
+                setIsLoading(true)
+                const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
+                if (res.status === 200) {
+                    setIsLoading(false)
+                    setctxCategorylist(res?.data)
+                }
+            } catch (error) {
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
         }
-        return () => setIsAlive(false)
+        fetchCtxTray()
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
-
-   
 
     const handleDialogClose = () => {
         setEditFetchData({})
@@ -89,7 +97,6 @@ const SimpleMuiTable = () => {
         }
     }
     const handelDelete = (code) => {
-       
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Delete Location!',
@@ -152,6 +159,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'category_type', // field name in the row object
+            label: 'Category Type', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'code', // field name in the row object
             label: 'Code', // column title that will be shown in table
             options: {
@@ -186,6 +200,18 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
 
         {
             name: 'code',
@@ -199,7 +225,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editCtxcategory(tableMeta.rowData[1])
+                                        editCtxcategory(tableMeta.rowData[2])
                                     }}
                                     color="primary"
                                 >
@@ -209,7 +235,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(tableMeta.rowData[1])
+                                        handelDelete(tableMeta.rowData[2])
                                     }}
                                     color="error"
                                 >
@@ -227,7 +253,9 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'CTX-Category', path: '/' }]}
+                    routeSegments={[
+                        { name: 'CTX-and-STX-Category', path: '/' },
+                    ]}
                 />
             </div>
             <Button
@@ -247,6 +275,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

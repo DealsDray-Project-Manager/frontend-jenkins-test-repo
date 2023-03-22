@@ -23,7 +23,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
-    const [userAgent, setUserAgent] = useState('')
+
     const { trayId } = useParams()
     const navigate = useNavigate()
 
@@ -47,28 +47,6 @@ const SimpleMuiTable = () => {
         }
         fetchData()
     }, [])
-    useEffect(() => {
-        const userStatusApiCall = async () => {
-            try {
-                let res = await axiosWarehouseIn.post(
-                    '/sortingAgnetStatus/' + botTray[0]?.issued_user_name + "/" +  botTray[0]?.code
-                )
-                if (res.status === 200) {
-                    setUserAgent(res.data.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-        if (botTray[0]?.issued_user_name !== undefined) {
-            userStatusApiCall()
-        }
-    }, [botTray])
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
@@ -77,9 +55,13 @@ const SimpleMuiTable = () => {
 
     const handelIssue = async (e, type) => {
         try {
-            if (userAgent !== 'User is free') {
-                alert(userAgent)
-            } else {
+            let userStatus = await axiosWarehouseIn.post(
+                '/sortingAgnetStatus/' +
+                    botTray[0]?.issued_user_name +
+                    '/' +
+                    botTray[0]?.code
+            )
+            if (userStatus.status == 200) {
                 setLoading(true)
                 let flag = false
                 for (let x of botTray) {
@@ -99,7 +81,6 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status == 200) {
-                      
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
@@ -110,7 +91,7 @@ const SimpleMuiTable = () => {
                         navigate('/wareshouse/sorting/request')
                     } else {
                         setLoading(false)
-                      
+
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -120,14 +101,21 @@ const SimpleMuiTable = () => {
                     }
                 } else {
                     setLoading(false)
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
-                        title: "Please Issue All Tray",
+                        title: 'Please Issue All Tray',
                         confirmButtonText: 'Ok',
                     })
                 }
+            } else {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: userStatus?.data?.data,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -279,8 +267,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -332,7 +320,7 @@ const SimpleMuiTable = () => {
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
-                        disabled={loading || userAgent == ''}
+                        disabled={loading}
                         style={{ backgroundColor: 'primery' }}
                         onClick={(e) => {
                             handelIssue(e, 'Assigned to sorting agent')

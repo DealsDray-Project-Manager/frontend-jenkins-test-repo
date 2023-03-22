@@ -209,11 +209,10 @@ export default function DialogBox() {
     }
     const onSubmit = async (value) => {
         if (trayData.actual_items.length <= trayData?.items?.length) {
-           
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:'All Items Scanned',
+                text: 'All Items Scanned',
             })
         } else {
             setAddButDis(true)
@@ -266,7 +265,6 @@ export default function DialogBox() {
 
                 let res = await axiosBqc.post('/bqc-done', obj)
                 if (res.status == 200) {
-                
                     setLoading(false)
                     Swal.fire({
                         icon: 'success',

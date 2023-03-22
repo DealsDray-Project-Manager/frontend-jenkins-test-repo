@@ -77,20 +77,12 @@ export default function DialogBox() {
     const [addButDis, setAddButDis] = useState(false)
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [open, setOpen] = React.useState(false)
+    const [partListCount, setPartListCount] = useState(0)
 
     const schema = Yup.object().shape({
-        description: Yup.string()
-            .when('selected_status', (selected_status, schema) => {
-                if (
-                    selected_status == 'Battery Boosted' ||
-                    selected_status == 'Charge jack Replaced & Boosted' ||
-                    selected_status == 'Battery Damage' ||
-                    selected_status == 'Repair Required'
-                ) {
-                    return schema.required('Required')
-                }
-            })
-            .nullable(),
+        selected_status: Yup.string().required('Required*').nullable(),
+
+        description: Yup.string().required('Required*').nullable(),
 
         model_reg: Yup.string()
             .when('selected_status', (selected_status, schema) => {
@@ -109,9 +101,52 @@ export default function DialogBox() {
                 }
             })
             .nullable(),
-        part_list: Yup.string()
+
+        part_list_count: Yup.string()
             .when('selected_status', (selected_status, schema) => {
                 if (selected_status == 'Repair Required') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_1: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '0') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_1: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '0') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_2: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '1') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_3: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '2') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_4: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '3') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
+        part_list_5: Yup.string()
+            .when('part_list_count', (part_list_count, schema) => {
+                if (part_list_count > '4') {
                     return schema.required('Required')
                 }
             })
@@ -149,9 +184,25 @@ export default function DialogBox() {
             ) {
                 values.color = ''
             }
-            if (values.selected_status == 'Dead') {
-                values.description = ''
+            if (values.part_list_count == '1') {
+                values.part_list_2 = ''
+                values.part_list_3 = ''
+                values.part_list_4 = ''
+                values.part_list_5 = ''
             }
+            if (values.part_list_count == '2') {
+                values.part_list_3 = ''
+                values.part_list_4 = ''
+                values.part_list_5 = ''
+            }
+            if (values.part_list_count == '3') {
+                values.part_list_4 = ''
+                values.part_list_5 = ''
+            }
+            if (values.part_list_count == '4') {
+                values.part_list_5 = ''
+            }
+
             let objData = {
                 trayId: trayId,
                 rdl_fls_report: values,
@@ -319,16 +370,137 @@ export default function DialogBox() {
                         {selectedStatus == 'Repair Required' ? (
                             <>
                                 <TextField
-                                    defaultValue={getValues('part_list')}
-                                    label=" Part List"
+                                    defaultValue={getValues('part_list_count')}
+                                    label=" Part List Count"
                                     variant="outlined"
                                     type="text"
-                                    {...register('part_list')}
-                                    error={errors?.part_list ? true : false}
-                                    helperText={errors?.part_list?.message}
+                                    select
+                                    {...register('part_list_count')}
+                                    error={
+                                        errors?.part_list_count ? true : false
+                                    }
+                                    helperText={
+                                        errors?.part_list_count?.message
+                                    }
                                     fullWidth
                                     sx={{ mt: 2 }}
-                                />
+                                >
+                                    <MenuItem
+                                        value="1"
+                                        onClick={() => setPartListCount('1')}
+                                    >
+                                        1
+                                    </MenuItem>
+                                    <MenuItem
+                                        value="2"
+                                        onClick={() => setPartListCount('2')}
+                                    >
+                                        2
+                                    </MenuItem>
+                                    <MenuItem
+                                        value="3"
+                                        onClick={() => setPartListCount('3')}
+                                    >
+                                        3
+                                    </MenuItem>
+                                    <MenuItem
+                                        value="4"
+                                        onClick={() => setPartListCount('4')}
+                                    >
+                                        4
+                                    </MenuItem>
+                                    <MenuItem
+                                        value="5"
+                                        onClick={() => setPartListCount('5')}
+                                    >
+                                        5
+                                    </MenuItem>
+                                </TextField>
+                                {partListCount > 0 ? (
+                                    <TextField
+                                        defaultValue={getValues('part_list_1')}
+                                        label=" Part List 1"
+                                        variant="outlined"
+                                        type="text"
+                                        {...register('part_list_1')}
+                                        error={
+                                            errors?.part_list_1 ? true : false
+                                        }
+                                        helperText={
+                                            errors?.part_list_1?.message
+                                        }
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                    />
+                                ) : null}
+                                {partListCount > '1' ? (
+                                    <TextField
+                                        defaultValue={getValues('part_list_2')}
+                                        label=" Part List 2"
+                                        variant="outlined"
+                                        type="text"
+                                        {...register('part_list_2')}
+                                        error={
+                                            errors?.part_list_2 ? true : false
+                                        }
+                                        helperText={
+                                            errors?.part_list_2?.message
+                                        }
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                    />
+                                ) : null}
+                                {partListCount > '2' ? (
+                                    <TextField
+                                        defaultValue={getValues('part_list_3')}
+                                        label=" Part List 3"
+                                        variant="outlined"
+                                        type="text"
+                                        {...register('part_list_3')}
+                                        error={
+                                            errors?.part_list_3 ? true : false
+                                        }
+                                        helperText={
+                                            errors?.part_list_3?.message
+                                        }
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                    />
+                                ) : null}
+                                {partListCount > '3' ? (
+                                    <TextField
+                                        defaultValue={getValues('part_list_4')}
+                                        label=" Part List 4"
+                                        variant="outlined"
+                                        type="text"
+                                        {...register('part_list_4')}
+                                        error={
+                                            errors?.part_list_4 ? true : false
+                                        }
+                                        helperText={
+                                            errors?.part_list_4?.message
+                                        }
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                    />
+                                ) : null}
+                                {partListCount > '4' ? (
+                                    <TextField
+                                        defaultValue={getValues('part_list_5')}
+                                        label=" Part List 5"
+                                        variant="outlined"
+                                        type="text"
+                                        {...register('part_list_5')}
+                                        error={
+                                            errors?.part_list_5 ? true : false
+                                        }
+                                        helperText={
+                                            errors?.part_list_5?.message
+                                        }
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                    />
+                                ) : null}
                                 <TextField
                                     defaultValue={getValues('color')}
                                     label="Color"
@@ -344,24 +516,17 @@ export default function DialogBox() {
                         ) : (
                             ''
                         )}
-                        {selectedStatus == 'Battery Boosted' ||
-                        selectedStatus == 'Charge jack Replaced & Boosted' ||
-                        selectedStatus == 'Battery Damage' ||
-                        selectedStatus == 'Repair Required' ? (
-                            <TextField
-                                defaultValue={getValues('description')}
-                                label="Description"
-                                variant="outlined"
-                                type="text"
-                                {...register('description')}
-                                error={errors.description ? true : false}
-                                helperText={errors.description?.message}
-                                fullWidth
-                                sx={{ mt: 2 }}
-                            />
-                        ) : (
-                            ''
-                        )}
+                        <TextField
+                            defaultValue={getValues('description')}
+                            label="Description"
+                            variant="outlined"
+                            type="text"
+                            {...register('description')}
+                            error={errors.description ? true : false}
+                            helperText={errors.description?.message}
+                            fullWidth
+                            sx={{ mt: 2 }}
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button

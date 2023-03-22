@@ -14,10 +14,12 @@ import { axiosWarehouseIn } from '../../../../../axios'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function StickyHeadTable({ props }) {
-    const [tray, setTray] = useState([])
+    const [mmtTray, setMmtTray] = useState([])
     const [loading, setLoading] = useState(false)
+    const [userAgent, setUserAgent] = useState('')
     const navigate = useNavigate()
     const { trayId } = useParams()
     useEffect(() => {
@@ -27,18 +29,28 @@ export default function StickyHeadTable({ props }) {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/pickup/request/approve/' + location + '/' + trayId
+                        '/viewTrayFromAndTo/' + location + '/' + trayId
                     )
                     if (response.status === 200) {
-                        setTray(response.data.data)
+                        setMmtTray(response.data.data)
                     } else {
-                        alert(response.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -46,23 +58,22 @@ export default function StickyHeadTable({ props }) {
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
-        navigate(
-            '/wareshouse/wht/pickup/request/approve/item-verifying/' + code
-        )
+        navigate('/wareshouse/request/approve/item-verifiying/' + code)
     }
+
     /******************************************************************************* */
     const handelIssue = async (e, type) => {
         try {
-            let userStatus = await axiosWarehouseIn.post(
+            let res = await axiosWarehouseIn.post(
                 '/sortingAgnetStatus/' +
-                    tray?.[0]?.issued_user_name +
+                    mmtTray[0]?.issued_user_name +
                     '/' +
-                    tray?.[0]?.to_tray_for_pickup
+                    mmtTray?.[0]?.code
             )
-            if (userStatus.status === 200) {
+            if (res.status === 200) {
                 setLoading(true)
                 let flag = false
-                for (let x of tray) {
+                for (let x of mmtTray) {
                     if (x.items.length !== x.actual_items.length) {
                         flag = true
                         break
@@ -70,32 +81,56 @@ export default function StickyHeadTable({ props }) {
                 }
                 if (flag == false) {
                     let obj = {
-                        fromTray: tray[0].code,
-                        toTray: tray[1].code,
-                        username: tray[0]?.issued_user_name,
+                        fromTray: mmtTray[0].code,
+                        toTray: mmtTray[1].code,
+                        username: mmtTray[0]?.issued_user_name,
                     }
-
                     let res = await axiosWarehouseIn.post(
-                        '/pickup/issueToAgent',
+                        '/mmtTraySendToSorting',
                         obj
                     )
-
                     if (res.status == 200) {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setLoading(false)
-                        navigate('/wareshouse/wht/pickup/request')
+                        navigate('/wareshouse/merge/request')
                     } else {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     setLoading(false)
-                    alert('Please Issue all Tray')
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Issue All Tray',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } else {
-                alert(userStatus.data.data)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.data,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -103,7 +138,8 @@ export default function StickyHeadTable({ props }) {
         <>
             <Box
                 sx={{
-                    m: 3,
+                    mb: 3,
+                    pr: 4,
                 }}
             >
                 <Box
@@ -113,18 +149,16 @@ export default function StickyHeadTable({ props }) {
                 >
                     <h4>
                         Assigned Date -{' '}
-                        {new Date(tray[0]?.requested_date).toLocaleString(
+                        {new Date(mmtTray[0]?.requested_date).toLocaleString(
                             'en-GB',
                             {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit',
+                                hour12: true,
                             }
                         )}
                     </h4>
-                    <h4>Agent Name- {tray[0]?.issued_user_name}</h4>
+                    <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
                 </Box>
-                <Box sx={{}}>
+                <Box sx={{ m: 1 }}>
                     <Paper sx={{ width: '100%', overflow: 'auto' }}>
                         <TableContainer>
                             <Table
@@ -143,7 +177,7 @@ export default function StickyHeadTable({ props }) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {tray.map((data, index) => (
+                                    {mmtTray.map((data, index) => (
                                         <TableRow
                                             hover
                                             role="checkbox"
@@ -158,32 +192,19 @@ export default function StickyHeadTable({ props }) {
                                                 {data.items.length}/{data.limit}
                                             </TableCell>
                                             <TableCell>
-                                                {data.items.length !== 0 &&
-                                                data?.sort_id ==
-                                                    'Pickup Request sent to Warehouse'
-                                                    ? 'Not Issued'
-                                                    : data.items.length !== 0 &&
-                                                      data?.sort_id !==
-                                                          'Pickup Request sent to Warehouse'
-                                                    ? 'Issued'
+                                                {data.items.length !==
+                                                data?.actual_items?.length
+                                                    ? 'Not Scanned'
                                                     : 'Scanned'}
                                             </TableCell>
                                             <TableCell>
                                                 <Button
                                                     variant="contained"
                                                     disabled={
-                                                        data.items.length !==
-                                                            0 &&
-                                                        data?.sort_id ==
-                                                            'Pickup Request sent to Warehouse'
-                                                            ? false
-                                                            : data.items
-                                                                  .length !==
-                                                                  0 &&
-                                                              data?.sort_id !==
-                                                                  'Pickup Request sent to Warehouse'
-                                                            ? 'Issued'
-                                                            : 'Scanned'
+                                                        data.items.length ===
+                                                        data.actual_items.length
+                                                            ? true
+                                                            : false
                                                     }
                                                     onClick={(e) =>
                                                         handelExvsAt(
@@ -200,7 +221,7 @@ export default function StickyHeadTable({ props }) {
                                                     {data.items.length ===
                                                     data.actual_items.length
                                                         ? 'Scanned'
-                                                        : 'Issue'}
+                                                        : 'Scan'}
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
@@ -221,7 +242,7 @@ export default function StickyHeadTable({ props }) {
                                 handelIssue(e, 'Assigned to sorting agent')
                             }}
                         >
-                            Assign To Agent
+                            Issue To Agent
                         </Button>
                     </Box>
                 </div>

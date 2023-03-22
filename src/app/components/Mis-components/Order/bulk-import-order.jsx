@@ -160,7 +160,7 @@ const PaginationTable = () => {
                 if (res.status == 200) {
                     setValidate(true)
                     setLoading(false)
-           
+                    setErr({})
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',

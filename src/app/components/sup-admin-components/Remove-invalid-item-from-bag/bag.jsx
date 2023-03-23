@@ -24,17 +24,21 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [bagList, setBagList] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post(
                     '/getInvalidItemPresentBag'
                 )
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setBagList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -43,7 +47,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchBrand()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handelViewItem = (bagId) => {
@@ -173,8 +180,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

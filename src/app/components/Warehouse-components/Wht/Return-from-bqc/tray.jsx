@@ -68,6 +68,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const navigate = useNavigate()
@@ -75,6 +76,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
@@ -82,12 +84,14 @@ const SimpleMuiTable = () => {
                         '/return-from-bqc-wht/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -346,6 +350,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

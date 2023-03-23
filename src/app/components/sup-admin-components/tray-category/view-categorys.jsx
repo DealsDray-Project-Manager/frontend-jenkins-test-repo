@@ -158,13 +158,7 @@ const SimpleMuiTable = () => {
                     dataIndex.rowIndex + 1,
             },
         },
-        {
-            name: 'category_type', // field name in the row object
-            label: 'Category Type', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'code', // field name in the row object
             label: 'Code', // column title that will be shown in table
@@ -225,7 +219,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editCtxcategory(tableMeta.rowData[2])
+                                        editCtxcategory(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
@@ -235,7 +229,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(tableMeta.rowData[2])
+                                        handelDelete(tableMeta.rowData[1])
                                     }}
                                     color="error"
                                 >
@@ -253,9 +247,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'CTX-and-STX-Category', path: '/' },
-                    ]}
+                    routeSegments={[{ name: 'Tray Category', path: '/' }]}
                 />
             </div>
             <Button

@@ -23,15 +23,19 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let res = await axiosBot.post('/trayItem/' + trayId)
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setTrayData(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -166,8 +170,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

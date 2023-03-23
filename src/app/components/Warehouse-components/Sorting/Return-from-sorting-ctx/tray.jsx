@@ -16,7 +16,6 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import Checkbox from '@mui/material/Checkbox'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -71,34 +70,38 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/returnFromsorting/ctxToStx/tray/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [refresh])
 
     const handelTrayReceived = async () => {
@@ -140,13 +143,11 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, code) => {
-        e.preventDefault()
-        navigate('/wareshouse/wht/tray/item/' + code)
-    }
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/return-from-sorting/close/' + id)
+        navigate(
+            '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/' + id
+        )
     }
 
     const columns = [
@@ -321,6 +322,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

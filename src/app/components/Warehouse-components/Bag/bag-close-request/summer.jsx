@@ -23,28 +23,32 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [bot, setBot] = useState([])
     const navigate = useNavigate()
-
+    const [isLoading, setIsLoading] = useState(false)
     const { bagId } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(false)
+
                 let botTray = await axiosWarehouseIn.post(
                     '/summeryBotTrayBag/' + bagId
                 )
                 if (botTray.status == 200) {
+                    setIsLoading(false)
                     setBot(botTray.data.data)
                 } else {
-                
+                    setIsLoading(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:botTray?.data?.message,
+                        title: botTray?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                     navigate(-1)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -133,8 +137,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

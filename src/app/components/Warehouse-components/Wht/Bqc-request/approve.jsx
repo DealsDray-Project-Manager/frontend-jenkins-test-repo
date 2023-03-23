@@ -15,7 +15,7 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import jwt_decode from 'jwt-decode'
 
 import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
@@ -33,20 +33,27 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for charging'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: response?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Send for charging/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
                 Swal.fire({
@@ -75,7 +82,7 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -96,11 +103,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All items Scanned",
+                title: 'All items Scanned',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -144,7 +150,6 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status == 200) {
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -159,7 +164,6 @@ export default function DialogBox() {
                         navigate('/wareshouse/wht/charging-request')
                     }
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -169,11 +173,11 @@ export default function DialogBox() {
                 }
             } else {
                 setLoading(false)
-                
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:"Please Verify Actual Data",
+                    title: 'Please Verify Actual Data',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -186,8 +190,6 @@ export default function DialogBox() {
             })
         }
     }
-
- 
 
     const tableExpected = useMemo(() => {
         return (
@@ -355,7 +357,6 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                  
                 </Box>
                 <Box
                     sx={{
@@ -369,7 +370,6 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
-               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>

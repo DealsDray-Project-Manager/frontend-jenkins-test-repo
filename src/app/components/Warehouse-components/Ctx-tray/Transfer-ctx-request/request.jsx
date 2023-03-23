@@ -22,33 +22,38 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Sales Transfer Request sent to Warehouse/' + location
+                        '/ctxTray/' +
+                            'Transfer Request sent to Warehouse/' +
+                            location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [])
 
     const handelDetailPage = (e, trayId) => {
@@ -164,6 +169,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

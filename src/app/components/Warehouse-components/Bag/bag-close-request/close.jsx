@@ -42,11 +42,10 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setEmployeeData(response.data.data)
                 } else {
-         
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:response?.data?.message,
+                        title: response?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                     navigate(-1)
@@ -71,11 +70,10 @@ export default function DialogBox() {
                 if (res.status === 200) {
                     setBagStatus(res.data.status)
                 } else {
-             
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -109,11 +107,11 @@ export default function DialogBox() {
                 //   dataTableFun()
             } else if (response.status == 201) {
                 setEmployeeData(response.data.data)
-   
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:response?.data?.message,
+                    title: response?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             }
@@ -140,11 +138,11 @@ export default function DialogBox() {
                     addActualitem(res.data.data)
                 } else if (res.status == 202) {
                     setTextDisable(false)
-               
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -170,11 +168,10 @@ export default function DialogBox() {
                 }).length >=
             employeeData[0].limit
         ) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'error',
-                title: "Bag Is Full",
+                title: 'Bag Is Full',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -198,11 +195,10 @@ export default function DialogBox() {
                     setTextDisable(false)
                     getitem()
                 } else {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:res?.data?.message,
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -225,11 +221,10 @@ export default function DialogBox() {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 if (description == '') {
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
-                        title:"Please Add Description",
+                        title: 'Please Add Description',
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
@@ -237,11 +232,10 @@ export default function DialogBox() {
                     employeeData[0]?.type_taxanomy == 'BOT' &&
                     bagReuse == false
                 ) {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
-                        title:"Please Confirm Bag Release",
+                        title: 'Please Confirm Bag Release',
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
@@ -250,11 +244,10 @@ export default function DialogBox() {
                         return item.status == 'Duplicate'
                     })?.length != 0
                 ) {
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:"Please Remove Duplicate Items",
+                        title: 'Please Remove Duplicate Items',
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
@@ -271,21 +264,19 @@ export default function DialogBox() {
                     if (employeeData?.[0]?.type_taxanomy != 'BOT') {
                         let res = await axiosWarehouseIn.post('/trayclose', obj)
                         if (res.status == 200) {
-                        
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title:res?.data?.message,
+                                title: res?.data?.message,
                                 confirmButtonText: 'Ok',
                             })
                             setLoading(false)
                             navigate('/wareshouse/pmt-mmt/tray-close-request')
                         } else {
-                          
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'error',
-                                title:res?.data?.message,
+                                title: res?.data?.message,
                                 confirmButtonText: 'Ok',
                             })
                         }
@@ -295,31 +286,28 @@ export default function DialogBox() {
                             obj
                         )
                         if (res.status == 200) {
-                         
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title:res?.data?.message,
+                                title: res?.data?.message,
                                 confirmButtonText: 'Ok',
                             })
                             setLoading(false)
                             navigate('/wareshouse/bag/bag-close-requests')
                         } else {
-                           
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'error',
-                                title:res?.data?.message,
+                                title: res?.data?.message,
                                 confirmButtonText: 'Ok',
                             })
                         }
                     }
                 } else {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:'Please verify Actual Data',
+                        title: 'Please verify Actual Data',
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -342,20 +330,18 @@ export default function DialogBox() {
             }
             let data = await axiosWarehouseIn.post('/actualBagItem', obj)
             if (data.status == 200) {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:data?.data?.message,
+                    title: data?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 getitem()
             } else {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:data?.data?.message,
+                    title: data?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             }

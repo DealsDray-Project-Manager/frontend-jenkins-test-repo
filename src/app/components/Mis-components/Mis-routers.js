@@ -90,6 +90,9 @@ const CtxTrayReceiveFromProcessing = Loadable(
 const CtxToStxAssignToSorting=Loadable(
     lazy(() => import('./Sorting/Ctx-to-stx/ctx-tray'))
 )
+const StxMerging=Loadable(
+    lazy(() => import('./Merge/Stx-merging/tray'))
+)
 
 const dataTableRoutes = [
     {
@@ -211,6 +214,10 @@ const dataTableRoutes = [
     {
         path: '/mis/merge/ctx',
         element: <CtxMerge />,
+    },
+    {
+        path: '/mis/merge/stx',
+        element: <StxMerging />,
     },
     {
         path: '/mis/orders/bulk-import',

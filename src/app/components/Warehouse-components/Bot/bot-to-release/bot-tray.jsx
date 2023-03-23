@@ -24,6 +24,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -31,6 +32,7 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/tray-for-release/' +
@@ -41,12 +43,14 @@ const SimpleMuiTable = () => {
                             'BOT'
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setBotTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -66,7 +70,6 @@ const SimpleMuiTable = () => {
             )
             if (res.status === 200) {
                 setLoading(false)
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -210,8 +213,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

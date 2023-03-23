@@ -33,6 +33,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
     const [selectLoaction, setSelectLocation] = useState([])
+    const [userCpcType, setUserCpcType] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -41,14 +42,14 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
-                    let { location } = jwt_decode(admin)
+                    let { location, cpc_type } = jwt_decode(admin)
+                    setUserCpcType(cpc_type)
                     let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Ready to Transfer to Sales/' + location
+                        '/ctxTray/' + 'Ready to Transfer/' + location
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
                         setCtxTrayList(res.data.data)
-                      
                     }
                 }
             } catch (error) {
@@ -74,7 +75,7 @@ const SimpleMuiTable = () => {
 
     const handelGetSalesLocation = async () => {
         try {
-            const res = await axiosMisUser.post('/ctx/getSalesLocation')
+            const res = await axiosMisUser.post('/ctx/getTransferLocation/' + userCpcType)
             if (res.status == 200) {
                 setSelectLocation(res.data.data)
                 handleDialogOpen()
@@ -281,13 +282,14 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-             {shouldOpenEditorDialog && (
+            {shouldOpenEditorDialog && (
                 <SelectSalesLocationDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
                     setIsAlive={setIsAlive}
                     selectLoaction={selectLoaction}
                     isCheck={isCheck}
+                    userCpcType={userCpcType}
                 />
             )}
         </Container>

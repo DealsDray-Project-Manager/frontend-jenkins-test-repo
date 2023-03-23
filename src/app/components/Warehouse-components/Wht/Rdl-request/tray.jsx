@@ -22,6 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [RDLRequest, setRDLRequest] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,11 +30,13 @@ const SimpleMuiTable = () => {
             const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/request-for-RDL-fls/' + 'Send for RDL-FLS/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setRDLRequest(res.data.data)
                     }
                 } else {
@@ -42,6 +45,7 @@ const SimpleMuiTable = () => {
             }
             fetchData()
         } catch (error) {
+            setIsLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -123,11 +127,11 @@ const SimpleMuiTable = () => {
             label: 'Request sent Date',
             options: {
                 filter: true,
-                sort:false,
+                sort: false,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
-                    }), 
+                    }),
             },
         },
 
@@ -136,8 +140,8 @@ const SimpleMuiTable = () => {
             label: 'Quantity',
             options: {
                 filter: true,
-                customBodyRender: (items,tableMeta) =>
-                items?.length + '/' + tableMeta.rowData[5],
+                customBodyRender: (items, tableMeta) =>
+                    items?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
@@ -182,8 +186,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

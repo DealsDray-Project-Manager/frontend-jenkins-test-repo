@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+
 import {
     Box,
     Button,
@@ -17,6 +18,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
+
 import { useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -121,7 +123,8 @@ export default function DialogBox() {
                     setItemDetails(res.data.data)
                     if (
                         res.data.data.pickup_toTray == undefined ||
-                        res.data.data.pickup_toTray == '' || res.data.data.pickup_toTray == null
+                        res.data.data.pickup_toTray == '' ||
+                        res.data.data.pickup_toTray == null
                     ) {
                         addActualitemTop(res.data.data)
                     } else {
@@ -137,7 +140,7 @@ export default function DialogBox() {
             }
         }
     }
-    
+
     const addActualitemTop = async (dataItem) => {
         try {
             setLoading(true)
@@ -168,7 +171,7 @@ export default function DialogBox() {
         try {
             if (e.keyCode !== 32) {
                 setLoading(true)
-
+                handleClose()
                 let obj = {
                     fromTray: trayId,
                     toTray: tray[1].code,
@@ -181,7 +184,6 @@ export default function DialogBox() {
                 )
                 if (res?.status === 200) {
                     alert(res.data.message)
-                    handleClose()
                     setAwbn('')
                     setLoading(false)
                     setRefresh((refresh) => !refresh)
@@ -342,7 +344,8 @@ export default function DialogBox() {
                         }}
                     >
                         {itemDetails?.pickup_toTray == '' ||
-                        itemDetails?.pickup_toTray == undefined || itemDetails?.pickup_toTray == null ? (
+                        itemDetails?.pickup_toTray == undefined ||
+                        itemDetails?.pickup_toTray == null ? (
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
                                     <h4>MUIC:-{itemDetails?.muic}</h4>

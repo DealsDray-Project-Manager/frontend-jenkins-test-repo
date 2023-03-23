@@ -23,17 +23,20 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [chargingRequest, setChargingRequest] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         try {
             const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/request-for-assign/' + 'send_for_bqc/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setChargingRequest(res.data.data)
                     }
                 } else {
@@ -42,6 +45,7 @@ const SimpleMuiTable = () => {
             }
             fetchData()
         } catch (error) {
+            setIsLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -163,8 +167,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -145,7 +145,6 @@ const PaginationTable = () => {
         let obj = {
             ...countOfTray,
         }
-       
 
         try {
             for (let x of pagination.item) {
@@ -163,8 +162,9 @@ const PaginationTable = () => {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
                 } else {
-                    x.tray_id = x.tray_category + obj[x.tray_category]
-                    obj[x.tray_category] = Number(obj[x.tray_category] + 1)
+                    x.tray_id =
+                        x.tray_category + x.tray_grade + obj[x.tray_grade]
+                    obj[x.tray_grade] = Number(obj[x.tray_grade] + 1)
                 }
                 // else if (x.tray_category == 'CTA') {
                 //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
@@ -180,7 +180,6 @@ const PaginationTable = () => {
                 //     count8++
                 // }
             }
-          
 
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
@@ -238,7 +237,7 @@ const PaginationTable = () => {
                 allCount: countOfTray,
                 item: pagination.item,
             }
-            console.log(obj);
+            console.log(obj)
             let res = await axiosSuperAdminPrexo.post('/createBulkTray', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -415,6 +414,7 @@ const PaginationTable = () => {
                                         <TableCell>CPC</TableCell>
                                         <TableCell>Warehouse</TableCell>
                                         <TableCell>Tray Category</TableCell>
+                                        <TableCell>Tray Grade</TableCell>
                                         <TableCell>Tray Brand</TableCell>
                                         <TableCell>Tray Model</TableCell>
                                         <TableCell>Tray Name</TableCell>
@@ -433,7 +433,12 @@ const PaginationTable = () => {
                                                     <TextField
                                                         id="outlined-password-input"
                                                         type="text"
-                                                        value={data.tray_id}
+                                                        value={
+                                                            data.tray_id ==
+                                                            'NaN'
+                                                                ? ''
+                                                                : data.tray_id
+                                                        }
                                                     />
                                                     {err?.tray_id?.includes(
                                                         data.tray_id
@@ -518,7 +523,6 @@ const PaginationTable = () => {
                                                     ''
                                                 )}
                                             </TableCell>
-
                                             <TableCell>
                                                 <TextField
                                                     onChange={updateFieldChanged(
@@ -600,6 +604,39 @@ const PaginationTable = () => {
                                                 ) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Tray Category not Exists
+                                                    </p>
+                                                ) : null}
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    onChange={updateFieldChanged(
+                                                        data.id
+                                                    )}
+                                                    id="outlined-password-input"
+                                                    type="text"
+                                                    name="tray_grade"
+                                                    value={data?.tray_grade?.toString()}
+                                                />
+                                                {err?.grade?.includes(
+                                                    data.tray_grade?.toString()
+                                                ) ? (
+                                                    <ClearIcon
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                ) : Object.keys(err).length !=
+                                                  0 ? (
+                                                    <DoneIcon
+                                                        style={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                {err?.grade?.includes(
+                                                    data?.tray_grade?.toString()
+                                                ) ? (
+                                                    <p style={{ color: 'red' }}>
+                                                        Tray Grade not Exists In
+                                                        Category
                                                     </p>
                                                 ) : null}
                                             </TableCell>
@@ -869,6 +906,9 @@ const PaginationTable = () => {
                                                         undefined) ||
                                                 (Object.keys(err).length != 0 &&
                                                     data.tray_display == '') ||
+                                                err?.grade?.includes(
+                                                    data?.tray_grade?.toString()
+                                                ) ||
                                                 err?.warehouse_does_not_exist?.includes(
                                                     data.tray_id
                                                 ) ||

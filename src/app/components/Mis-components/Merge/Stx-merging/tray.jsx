@@ -2,6 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+
 import {
     Button,
     Dialog,
@@ -14,6 +15,7 @@ import {
     Select,
     MenuItem,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -33,6 +35,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -41,6 +44,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -69,11 +73,11 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 }
 
-const CtxToStxPage = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [sortingAgent, setSortingAgent] = useState([])
-    const [toStxTray, setStxTray] = useState([])
+    const [toWhtTray, setToWhatTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [mergreData, setMergeData] = useState({
@@ -91,7 +95,7 @@ const CtxToStxPage = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Ready to Transfer to STX/' + location
+                        '/stxTray/' + 'Inuse/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -146,7 +150,7 @@ const CtxToStxPage = () => {
     }, [isAlive])
 
     /* OPEN DIALOG BOX */
-    const handelSorting = async (
+    const handelMerge = async (
         e,
         model,
         brand,
@@ -168,14 +172,13 @@ const CtxToStxPage = () => {
                     itemCount: itemCount,
                     status: status,
                     type: type,
+                    sortId: 'Inuse',
                 }
-                let res = await axiosMisUser.post(
-                    '/sorting/ctxToStx/stxTray',
-                    obj
-                )
+
+                let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
                 if (res.status === 200) {
                     setOpen(true)
-                    setStxTray(res.data.data)
+                    setToWhatTray(res.data.data)
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -203,13 +206,12 @@ const CtxToStxPage = () => {
         e.preventDefault()
         navigate('/wareshouse/wht/tray/item/' + id)
     }
-
     /* REQUEST SEND TO WAREHOUSE */
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
             let res = await axiosMisUser.post(
-                '/sorting/ctxToStx/request/sendToWh',
+                '/TrayMergeRequestSend',
                 mergreData
             )
             if (res.status === 200) {
@@ -252,15 +254,15 @@ const CtxToStxPage = () => {
         },
 
         {
-            name: 'name',
-            label: 'Tray Display Name',
+            name: 'warehouse',
+            label: 'Warehouse',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'tray_grade',
-            label: 'Tray Grade',
+            name: 'name',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
@@ -318,7 +320,17 @@ const CtxToStxPage = () => {
                 filter: true,
             },
         },
-
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
         {
             name: 'code',
             label: 'Action',
@@ -346,19 +358,19 @@ const CtxToStxPage = () => {
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
-                                    handelSorting(
+                                    handelMerge(
                                         e,
                                         tableMeta.rowData[9],
                                         tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length,
-                                        tableMeta.rowData[11],
-                                        tableMeta.rowData[3]
+                                        tableMeta.rowData[5]?.length,
+                                        tableMeta.rowData[10],
+                                        tableMeta.rowData[6]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
                             >
-                                Sorting
+                                Merge
                             </Button>
                         </>
                     )
@@ -396,7 +408,7 @@ const CtxToStxPage = () => {
                             fullWidth
                             sx={{ mt: 2 }}
                         >
-                            {toStxTray.map((data) => (
+                            {toWhtTray.map((data) => (
                                 <MenuItem
                                     onClick={(e) => {
                                         setMergeData((p) => ({
@@ -460,14 +472,14 @@ const CtxToStxPage = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/' },
-                        { name: 'CTX to  STX' },
+                        { name: 'Merge', path: '/' },
+                        { name: 'Ctx' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'CTX Tray'}
+                title={'STX Tray'}
                 data={tray}
                 columns={columns}
                 options={{
@@ -513,4 +525,4 @@ const CtxToStxPage = () => {
     )
 }
 
-export default CtxToStxPage
+export default SimpleMuiTable

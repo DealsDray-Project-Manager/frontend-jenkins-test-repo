@@ -42,13 +42,12 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTray(response.data.data)
                 } else {
-                 
-                     Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title:'Please check',
-                    confirmButtonText: 'Ok',
-                })
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Please check',
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
@@ -82,7 +81,7 @@ export default function DialogBox() {
                     title: response?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-               
+
                 navigate(-1)
             }
         } catch (error) {
@@ -108,7 +107,7 @@ export default function DialogBox() {
                     addActualitem(res.data.data)
                 } else {
                     setTextDisable(false)
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -145,7 +144,6 @@ export default function DialogBox() {
                 setTextDisable(false)
                 getitem()
             } else {
-              
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -175,18 +173,16 @@ export default function DialogBox() {
                     length: length,
                     limit: limit,
                     status: status,
-                    
                 }
-                if(type == "MMT"){
-                    obj.fromTray=tray[0].from_merge
+                if (type == 'MMT') {
+                    obj.fromTray = tray[0].from_merge
                 }
-              
+
                 let res = await axiosWarehouseIn.post(
                     '/mergeDoneMmttrayClose',
                     obj
                 )
                 if (res.status === 200) {
-                 
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -197,7 +193,7 @@ export default function DialogBox() {
                     navigate('/wareshouse/merge/return-from-merge')
                 } else {
                     setLoading(false)
-                  
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -228,7 +224,7 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                <h5>Expected</h5>
+                    <h5>Expected</h5>
 
                     <Box
                         sx={{
@@ -236,12 +232,10 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4 style={{marginLeft:"7px"}}>Total</h4>
-                            <p style={{  fontSize: '22px' }}>
+                            <h4 style={{ marginLeft: '7px' }}>Total</h4>
+                            <p style={{ fontSize: '22px' }}>
                                 {
-                                    tray[0]?.items?.filter(function (
-                                        item
-                                    ) {
+                                    tray[0]?.items?.filter(function (item) {
                                         return item.status != 'Duplicate'
                                     }).length
                                 }
@@ -311,27 +305,26 @@ export default function DialogBox() {
                     }}
                 >
                     <Box>
-
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ m: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    disabled={textDisable}
-                    name="doorsteps_diagnostics"
-                    label="SCAN UIC"
-                    value={awbn}
-                    onChange={(e) => {
-                        setAwbn(e.target.value)
-                        handelAwbn(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ m: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            name="doorsteps_diagnostics"
+                            label="SCAN UIC"
+                            value={awbn}
+                            onChange={(e) => {
+                                setAwbn(e.target.value)
+                                handelAwbn(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
                     </Box>
 
                     <Box
@@ -340,14 +333,14 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4 style={{marginLeft:"7px"}}>Total</h4>
-                            <p style={{  fontSize: '24px' }}>
+                            <h4 style={{ marginLeft: '7px' }}>Total</h4>
+                            <p style={{ fontSize: '24px' }}>
                                 {
-                                    tray[0]?.actual_items?.filter(
-                                        function (item) {
-                                            return item.status != 'Duplicate'
-                                        }
-                                    ).length
+                                    tray[0]?.actual_items?.filter(function (
+                                        item
+                                    ) {
+                                        return item.status != 'Duplicate'
+                                    }).length
                                 }
                                 /{tray[0]?.limit}
                             </p>
@@ -373,37 +366,31 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {tray[0]?.actual_items?.map(
-                                (data, index) => (
-                                    <TableRow
-                                        hover
-                                        role="checkbox"
-                                        tabIndex={-1}
+                            {tray[0]?.actual_items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell>{data?.order_id}</TableCell>
+                                    <TableCell>
+                                        {new Date(
+                                            data?.order_date
+                                        ).toLocaleString('en-GB', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                        })}
+                                    </TableCell>
+                                    <TableCell
+                                        style={
+                                            data.status == 'Valid'
+                                                ? { color: 'green' }
+                                                : { color: 'red' }
+                                        }
                                     >
-                                        <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{data?.uic}</TableCell>
-                                        <TableCell>{data?.order_id}</TableCell>
-                                        <TableCell>
-                                            {new Date(
-                                                data?.order_date
-                                            ).toLocaleString('en-GB', {
-                                                year: 'numeric',
-                                                month: '2-digit',
-                                                day: '2-digit',
-                                            })}
-                                        </TableCell>
-                                        <TableCell
-                                            style={
-                                                data.status == 'Valid'
-                                                    ? { color: 'green' }
-                                                    : { color: 'red' }
-                                            }
-                                        >
-                                            {data.status}
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            )}
+                                        {data.status}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -476,12 +463,9 @@ export default function DialogBox() {
                                 }}
                                 {...label}
                             />
-                            <label>
-                                {tray[0]?.from_merge} - Release
-                            </label>
+                            <label>{tray[0]?.from_merge} - Release</label>
                         </>
                     ) : null}
-
 
                     <Button
                         sx={{ m: 3, mb: 9 }}
@@ -490,9 +474,10 @@ export default function DialogBox() {
                         disabled={
                             loading == true ||
                             description == '' ||
-                            bagReuse == false  && tray?.[0]?.type_taxanomy == 'MMT' ||
+                            (bagReuse == false &&
+                                tray?.[0]?.type_taxanomy == 'MMT') ||
                             tray[0]?.actual_items?.length !==
-                            tray[0]?.items?.length
+                                tray[0]?.items?.length
                                 ? true
                                 : false
                         }

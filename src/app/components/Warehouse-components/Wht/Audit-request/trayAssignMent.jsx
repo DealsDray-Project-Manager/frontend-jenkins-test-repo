@@ -115,7 +115,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.cta == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.cta, 'CTA')
+                                        handelTrayId(trayId.cta, 'A')
                                     }}
                                 >
                                     <SearchIcon />
@@ -144,7 +144,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctb == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctb, 'CTB')
+                                        handelTrayId(trayId.ctb, 'B')
                                     }}
                                 >
                                     <SearchIcon />
@@ -173,7 +173,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctc == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctc, 'CTC')
+                                        handelTrayId(trayId.ctc, 'C')
                                     }}
                                 >
                                     <SearchIcon />
@@ -202,7 +202,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctd == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctd, 'CTD')
+                                        handelTrayId(trayId.ctd, 'D')
                                     }}
                                 >
                                     <SearchIcon />

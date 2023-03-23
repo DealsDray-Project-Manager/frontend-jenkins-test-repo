@@ -11,7 +11,6 @@ import {
     TableHead,
     TableRow,
     Grid,
-    Container,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -24,12 +23,14 @@ export default function DialogBox() {
     const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-    /**************************************************************************** */
+
+    /*********************************************************** */
     const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
 
     /************************************************************/
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -37,7 +38,7 @@ export default function DialogBox() {
                     '/charging-done-recieved/' +
                         trayId +
                         '/' +
-                        'Received From Sorting'
+                        'Received From Sorting Agent After Ctx to Stx'
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -110,10 +111,16 @@ export default function DialogBox() {
         e.preventDefault()
         try {
             setLoading(true)
-            trayData.description = description
+            let obj = {
+                trayId: trayData.code,
+                itemCount: trayData.items.length,
+                limit: trayData.limit,
+                type: trayData.type_taxanomy,
+                description: description,
+            }
             let res = await axiosWarehouseIn.post(
-                '/wht-tray-close-from-sorting',
-                trayData
+                '/sorting/returnFromSortingCtxStx/close',
+                obj
             )
             if (res.status == 200) {
                 Swal.fire({
@@ -124,6 +131,13 @@ export default function DialogBox() {
                 })
                 setLoading(false)
                 navigate('/wareshouse/sorting/return-from-sorting')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res?.data?.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -169,38 +183,27 @@ export default function DialogBox() {
             }
         }
     }
+
     /***************************************************************************************** */
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>Expected</h5>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
+                    <h4>Expected</h4>
                     <Box
                         sx={{
                             m: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.items?.length}/{trayData?.limit}
-                            </p>
-                        </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
-                                {trayData?.items?.length}
                             </p>
                         </Box>
                     </Box>
@@ -239,61 +242,47 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ mt: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    disabled={textDisable}
-                    name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
-                    value={uic}
-                    // onChange={(e) => setAwbn(e.target.value)}
-                    onChange={(e) => {
-                        setUic(e.target.value)
-                        handelUic(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-
+                <h4>ACTUAL</h4>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
+                    <TextField
+                        sx={{ mt: 1, ml: 2 }}
+                        id="outlined-password-input"
+                        type="text"
+                        inputRef={(input) => input && input.focus()}
+                        disabled={textDisable}
+                        name="doorsteps_diagnostics"
+                        label="Please Enter UIC"
+                        value={uic}
+                        // onChange={(e) => setAwbn(e.target.value)}
+                        onChange={(e) => {
+                            setUic(e.target.value)
+                            handelUic(e)
+                        }}
+                        inputProps={{
+                            style: {
+                                width: 'auto',
+                            },
+                        }}
+                    />
+
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {trayData?.actual_items?.length}/
-                                {trayData?.limit}
-                            </p>
-                        </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p style={{ marginLeft: '19px', fontSize: '24px' }}>
-                                {trayData?.actual_items?.length}
-                            </p>
-                        </Box>
+                        <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                        <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            {trayData?.actual_items?.length}/{trayData?.limit}
+                        </p>
                     </Box>
                 </Box>
                 <TableContainer>
@@ -331,6 +320,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
         <>
             <Box

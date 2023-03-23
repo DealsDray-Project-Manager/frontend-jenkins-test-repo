@@ -23,17 +23,20 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         try {
             let token = localStorage.getItem('prexo-authentication')
             if (token) {
+                setIsLoading(true)
                 const { location } = jwt_decode(token)
                 const fetchData = async () => {
                     let res = await axiosWarehouseIn.post(
                         '/mmtMergeRequest/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 }
@@ -42,6 +45,7 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
+            setIsLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -167,8 +171,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

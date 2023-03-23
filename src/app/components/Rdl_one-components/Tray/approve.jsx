@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { styled, alpha } from '@mui/material/styles'
 import {
     Box,
     Button,
-    Dialog,
-    DialogContent,
-    DialogActions,
-    DialogTitle,
-    IconButton,
     TextField,
     Paper,
     Table,
@@ -17,29 +11,18 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Select,
-    FormLabel,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
+    
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import PropTypes from 'prop-types'
 import jwt_decode from 'jwt-decode'
-import CloseIcon from '@mui/icons-material/Close'
-
 
 import {
     axiosWarehouseIn,
     axiosRDL_oneAgent,
     axiosAuditAgent,
 } from '../../../../axios'
-
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -51,33 +34,38 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-    
+
     let admin = localStorage.getItem('prexo-authentication')
     let user_name1
     if (admin) {
         let { user_name } = jwt_decode(admin)
         user_name1 = user_name
     }
-    
-
-   
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Issued to RDL-FLS'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: response?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Issued to RDL-FLS/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
                 Swal.fire({
@@ -128,7 +116,7 @@ export default function DialogBox() {
             })
         }
     }
-   
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -138,7 +126,10 @@ export default function DialogBox() {
                 description: description,
                 sortId: trayData?.sort_id,
             }
-            let res = await axiosRDL_oneAgent.post('/rdl-fls/closeRdlFlsWhtTray', obj)
+            let res = await axiosRDL_oneAgent.post(
+                '/rdl-fls/closeRdlFlsWhtTray',
+                obj
+            )
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -185,7 +176,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                        <h5 style={{marginLeft:"10px"}}>Total</h5>
+                            <h5 style={{ marginLeft: '10px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {
                                     trayData?.items?.filter(function (item) {
@@ -268,7 +259,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:"10px"}}>Total</h5>
+                            <h5 style={{ marginLeft: '10px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (

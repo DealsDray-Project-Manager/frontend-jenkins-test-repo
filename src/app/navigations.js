@@ -97,7 +97,7 @@ export const navigations = [
                 path: '/sup-admin/warehouse',
             },
             {
-                name: 'CTX and STX Tray Category',
+                name: 'Tray Category',
                 // icon: 'category',
                 path: '/sup-admin/Category',
             },
@@ -331,8 +331,13 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'CTX Merge',
+                name: 'CTX',
                 path: '/mis/merge/ctx',
+                iconText: 'NP',
+            },
+            {
+                name: 'STX',
+                path: '/mis/merge/stx',
                 iconText: 'NP',
             },
             {
@@ -567,8 +572,20 @@ export const navigations = [
                 path: '/wareshouse/ctx/transfer/request',
             },
             {
-                name: 'Receive From Processing',
+                name: 'Receive Request',
                 path: '/wareshouse/ctx/receive/request',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+    },
+    {
+        name: 'STX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'STX Tray',
+                path: '/wareshouse/stx/all',
                 iconText: 'VP',
             },
         ],

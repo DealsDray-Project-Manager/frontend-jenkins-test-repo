@@ -3,10 +3,9 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
 import { Button } from '@mui/material'
-import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,37 +25,31 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Received From Processing/' + location
+                    let response = await axiosWarehouseIn.post(
+                        '/stxTray/' + 'all' + '/' + location
                     )
-                    if (res.status == 200) {
+                    if (response.status === 200) {
                         setIsLoading(false)
-                        setTray(res.data.data)
+                        setTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                alert(error)
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [])
 
-    const handelDetailPage = (e, trayId) => {
-        e.preventDefault()
-        navigate('/wareshouse/ctx/receive/request/approve/' + trayId)
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/tray/view-item/' + id)
     }
 
     const columns = [
@@ -77,14 +70,61 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'type_taxanomy',
+            label: 'Tray Category',
             options: {
                 filter: true,
             },
         },
+        {
+            name: 'actual_items',
+            label: 'acutual_items',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Quantity',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        (value.length == 0
+                            ? tableMeta.rowData[3].length
+                            : value.length) +
+                        '/' +
+                        tableMeta.rowData[4]
+                    )
+                },
+            },
+        },
+
+        {
+            name: 'issued_user_name',
+            label: 'Agent Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: 'Tray Name',
+            options: {
+                filter: true,
+            },
+        },
+
         {
             name: 'brand',
             label: 'Brand',
@@ -100,60 +140,68 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'limit',
-            label: 'limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-
-        {
-            name: 'items',
-            label: 'Quantity',
+            name: 'display',
+            label: 'Tray Display',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
+            },
+        },
+        {
+            name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
             name: 'code',
-            label: 'Action',
+            label: 'Actions',
             options: {
-                filter: true,
-                customBodyRender: (value) => {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
+                            onClick={() => handelViewItem(value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Approve
+                            View
                         </Button>
                     )
                 },
             },
         },
     ]
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
                         { name: 'CTX', path: '/' },
-                        { name: 'Receive' },
+                        { name: 'CTX-Tray' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
+                title={'Tray'}
                 data={tray}
                 columns={columns}
                 options={{
@@ -161,6 +209,8 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
                     textLabels: {
                         body: {
                             noMatch: isLoading

@@ -16,6 +16,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import Swal from 'sweetalert2'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -33,31 +35,36 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Issued to Charging'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else if (response.status === 202) {
-                
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        text: response?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate(-1)
-                } else {
-                    navigate('/bag-issue-request')
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Issued to Charging/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else if (response.status === 202) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            text: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    } else {
+                        navigate('/bag-issue-request')
+                    }
                 }
             } catch (error) {
-              
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: error,
                 })
-
             }
         }
         fetchData()
@@ -77,7 +84,7 @@ export default function DialogBox() {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setUic('')
-                 
+
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -85,7 +92,6 @@ export default function DialogBox() {
                     })
                 }
             } catch (error) {
-              
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -97,7 +103,6 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.limit <= trayData?.actual_items?.length) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
@@ -122,13 +127,11 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
-             
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: error,
                 })
-                
             }
         }
     }
@@ -136,11 +139,10 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         try {
             if (description == '') {
-           
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:'Please Add Decription',
+                    title: 'Please Add Decription',
                     confirmButtonText: 'Ok',
                 })
             } else if (
@@ -162,7 +164,6 @@ export default function DialogBox() {
                     setLoading(false)
                     navigate('/charging/tray')
                 } else {
-                  
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -170,7 +171,6 @@ export default function DialogBox() {
                     })
                 }
             } else {
-              
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -179,7 +179,7 @@ export default function DialogBox() {
             }
         } catch (error) {
             setLoading(false)
-           
+
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

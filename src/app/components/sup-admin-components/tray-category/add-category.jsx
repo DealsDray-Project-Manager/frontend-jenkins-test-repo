@@ -39,11 +39,8 @@ const MemberEditorDialog = ({
     }, [])
 
     const schema = Yup.object().shape({
-        category_type: Yup.string().required('Required*').nullable(),
         code: Yup.string()
             .transform((value) => (value ? value.toUpperCase() : value))
-            .matches(/^[A-Z]{3}.*/, 'Please enter valid code')
-            .max(40)
             .required('Required*')
             .nullable(),
         description: Yup.string()
@@ -167,21 +164,6 @@ const MemberEditorDialog = ({
                 <Grid sx={{ mb: '16px' }} container spacing={4}>
                     <Grid item sm={12} xs={1}>
                         <TextFieldCustOm
-                            label="Category Type"
-                            type="text"
-                            select
-                            name="category_type"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            inputProps={{ maxLength: 3 }}
-                            defaultValue={getValues('category_type')}
-                            {...register('category_type')}
-                            error={errors?.category_type ? true : false}
-                            helperText={errors?.category_type?.message}
-                        >
-                            <MenuItem value={'CT'}>CT</MenuItem>
-                            <MenuItem value={'ST'}>ST</MenuItem>
-                        </TextFieldCustOm>
-                        <TextFieldCustOm
                             label="Code"
                             type="text"
                             name="code"
@@ -195,7 +177,7 @@ const MemberEditorDialog = ({
                             defaultValue={getValues('code')}
                             error={errors?.code ? true : false}
                             helperText={
-                                errors?.Code ? errors.code?.message : ''
+                                errors?.code ? errors.code?.message : ''
                             }
                             onBlur={(event) => {
                                 event.target.value =

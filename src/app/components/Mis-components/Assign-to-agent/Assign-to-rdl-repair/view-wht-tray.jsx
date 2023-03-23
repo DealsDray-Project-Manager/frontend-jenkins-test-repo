@@ -24,17 +24,25 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const [whtTrayItem, setWhtTrayItem] = useState([])
-    
+
     const { trayId } = useParams()
 
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
-                )
-                if (res.status === 200) {
-                    setWhtTrayItem(res.data?.data?.items)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    const res = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'all-wht-tray/' +
+                            location
+                    )
+                    if (res.status === 200) {
+                        setWhtTrayItem(res.data?.data?.items)
+                    }
                 }
             } catch (error) {
                 Swal.fire({
@@ -47,11 +55,6 @@ const SimpleMuiTable = () => {
         fetchWht()
         return () => setIsAlive(false)
     }, [isAlive])
-
-
-   
-
-   
 
     const columns = [
         {
@@ -133,8 +136,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -146,13 +149,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-
-
-           
-
-
-
-
         </Container>
     )
 }

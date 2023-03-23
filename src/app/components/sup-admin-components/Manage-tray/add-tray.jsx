@@ -47,14 +47,6 @@ const MemberEditorDialog = ({
                 }
             }
             fetchCpc()
-            const fetchCategory = async () => {
-                let categorys = await axiosSuperAdminPrexo.get(
-                    '/getCtxTrayCategory'
-                )
-                setCategorys(categorys.data)
-            }
-
-            fetchCategory()
 
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
@@ -81,112 +73,125 @@ const MemberEditorDialog = ({
             let obj = {
                 type: type,
             }
-            let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
-            if (res.status == 200) {
-                setTrayCount(type + res.data.data)
+            if (type == 'CT' || type == 'ST') {
+                setTrayCount('')
+                reset({
+                    tray_grade: null,
+                })
+                let categorys = await axiosSuperAdminPrexo.get(
+                    '/getCtxTrayCategory'
+                )
+                if (categorys.status == 200) {
+                    setCategorys(categorys.data)
+                }
+            } else {
+                let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
+                if (res.status == 200) {
+                    setTrayCount(type + res.data.data)
 
-                if (type == 'BOT' && res.data.data > '2251') {
+                    if (type == 'BOT' && res.data.data > '2251') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'BOT Tray Maximum ID NO 2251',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    } else if (type == 'MMT' && res.data.data > '8051') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'MMT Tray Maximum ID NO 8051',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    } else if (type == 'WHT' && res.data.data > '1501') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'WHT Tray Maximum ID NO  1501',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    } else if (type == 'PMT' && res.data.data > '8151') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'PMT Tray Maximum ID NO  8151',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    }
+
+                    // else if (type == 'CTA' && res.data.data > '1999') {
+                    //     handleClose()
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Oops...',
+                    //         text: 'cta Tray Maximum ID NO  1999',
+                    //     }).then((result) => {
+                    //         if (result.isConfirmed) {
+                    //             handleClose()
+                    //         }
+                    //     })
+                    // } else if (type == 'CTB' && res.data.data > '3999') {
+                    //     handleClose()
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Oops...',
+                    //         text: 'CTB Tray Maximum ID NO  2999',
+                    //     }).then((result) => {
+                    //         if (result.isConfirmed) {
+                    //             handleClose()
+                    //         }
+                    //     })
+                    // } else if (type == 'CTC' && res.data.data > '3999') {
+                    //     handleClose()
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Oops...',
+                    //         text: 'CTC Tray Maximum ID NO  3999',
+                    //     }).then((result) => {
+                    //         if (result.isConfirmed) {
+                    //             handleClose()
+                    //         }
+                    //     })
+                    // } else if (type == 'CTD' && res.data.data > '4999') {
+                    //     handleClose()
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Oops...',
+                    //         text: 'CTD Tray Maximum ID NO  4999',
+                    //     }).then((result) => {
+                    //         if (result.isConfirmed) {
+                    //             handleClose()
+                    //         }
+                    //     })
+                    // }
+                } else {
                     handleClose()
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'BOT Tray Maximum ID NO 2251',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                } else if (type == 'MMT' && res.data.data > '8051') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'MMT Tray Maximum ID NO 8051',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                } else if (type == 'WHT' && res.data.data > '1501') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'WHT Tray Maximum ID NO  1501',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            handleClose()
-                        }
-                    })
-                } else if (type == 'PMT' && res.data.data > '8151') {
-                    handleClose()
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'PMT Tray Maximum ID NO  8151',
+                        text: res.data.message,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             handleClose()
                         }
                     })
                 }
-
-                // else if (type == 'CTA' && res.data.data > '1999') {
-                //     handleClose()
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: 'cta Tray Maximum ID NO  1999',
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             handleClose()
-                //         }
-                //     })
-                // } else if (type == 'CTB' && res.data.data > '3999') {
-                //     handleClose()
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: 'CTB Tray Maximum ID NO  2999',
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             handleClose()
-                //         }
-                //     })
-                // } else if (type == 'CTC' && res.data.data > '3999') {
-                //     handleClose()
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: 'CTC Tray Maximum ID NO  3999',
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             handleClose()
-                //         }
-                //     })
-                // } else if (type == 'CTD' && res.data.data > '4999') {
-                //     handleClose()
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: 'CTD Tray Maximum ID NO  4999',
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             handleClose()
-                //         }
-                //     })
-                // }
-            } else {
-                handleClose()
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.message,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        handleClose()
-                    }
-                })
             }
         } catch (error) {
             Swal.fire({
@@ -218,6 +223,7 @@ const MemberEditorDialog = ({
             .max(100)
             .nullable(),
         type_taxanomy: Yup.string().required('Required*').nullable(),
+        tray_grade: Yup.string().required('Required*').nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
         limit: Yup.number('Must be number')
             .required('Required*')
@@ -273,7 +279,7 @@ const MemberEditorDialog = ({
         data.prefix = 'tray-master'
         data.sort_id = 'Open'
         data.created_at = Date.now()
-        data.code = trayCount
+        data.code = data.type_taxanomy + trayCount
         try {
             let response = await axiosSuperAdminPrexo.post(
                 '/createMasters',
@@ -508,17 +514,50 @@ const MemberEditorDialog = ({
                             >
                                 WHT
                             </MenuItem>
-                            {categorys?.map((item) => (
-                                <MenuItem
-                                    value={item?.code}
-                                    onClick={(e) => {
-                                        fetchTypeWiseId(e, item?.code)
-                                    }}
-                                >
-                                    {item?.code}
-                                </MenuItem>
-                            ))}
+                            <MenuItem
+                                value="CT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'CT')
+                                }}
+                            >
+                                CT
+                            </MenuItem>
+                            <MenuItem
+                                value="ST"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'ST')
+                                }}
+                            >
+                                ST
+                            </MenuItem>
                         </TextFieldCustOm>
+                        {getValues('type_taxanomy') == 'CT' ||
+                        getValues('type_taxanomy') == 'ST' ? (
+                            <TextFieldCustOm
+                                label="Tray Grade"
+                                select
+                                type="text"
+                                name="tray_grade"
+                                defaultValue={getValues('tray_grade')}
+                                {...register('tray_grade')}
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                error={errors.tray_grade ? true : false}
+                                helperText={errors.tray_grade?.message}
+                            >
+                                {categorys?.map((item) => (
+                                    <MenuItem
+                                        value={item?.code}
+                                        onClick={(e) => {
+                                            fetchTypeWiseId(e, item?.code)
+                                        }}
+                                    >
+                                        {item?.code}
+                                    </MenuItem>
+                                ))}
+                            </TextFieldCustOm>
+                        ) : null}
                         {getValues('type_taxanomy') !== 'BOT' &&
                         getValues('type_taxanomy') !== 'PMT' &&
                         getValues('type_taxanomy') !== 'MMT' ? (

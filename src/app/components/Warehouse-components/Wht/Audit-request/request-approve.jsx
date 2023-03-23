@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import TrayAssignDialogBox from './trayAssignMent'
 import Swal from 'sweetalert2'
-
+import jwt_decode from 'jwt-decode'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
@@ -46,21 +46,28 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for Audit'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                  
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: response?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Send for Audit/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
                 Swal.fire({
@@ -74,15 +81,24 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-    
     useEffect(() => {
         const userStatusApiCall = async () => {
             try {
                 let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
+                    '/auditUserStatusChecking/' +
+                        trayData.issued_user_name +
+                        '/' +
+                        trayData.brand +
+                        '/' +
+                        trayData.model
                 )
                 let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
+                    '/fetchAssignedTrayForAudit/' +
+                        trayData.issued_user_name +
+                        '/' +
+                        trayData.brand +
+                        '/' +
+                        trayData.model
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
@@ -126,7 +142,7 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                    
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -147,11 +163,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title: "All Items Scanned ",
+                title: 'All Items Scanned ',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -180,7 +195,7 @@ export default function DialogBox() {
             }
         }
     }
-     /************************************************************************** */
+    /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
             if (userAgent !== 'User is free') {
@@ -191,11 +206,10 @@ export default function DialogBox() {
                 otherTrayAssign.CTC == '' ||
                 otherTrayAssign.CTD == ''
             ) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: "Please Assign other tray",
+                    title: 'Please Assign other tray',
                     confirmButtonText: 'Ok',
                 })
                 handleDialogOpen()
@@ -212,7 +226,6 @@ export default function DialogBox() {
                         obj
                     )
                     if (res.status == 200) {
-                      
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
@@ -221,7 +234,6 @@ export default function DialogBox() {
                         })
                         navigate('/wareshouse/wht/audit-request')
                     } else {
-               
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -231,11 +243,11 @@ export default function DialogBox() {
                     }
                 } else {
                     setLoading(false)
-                    
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title:"Please verify Actual data",
+                        title: 'Please verify Actual data',
                         confirmButtonText: 'Ok',
                     })
                 }
@@ -407,7 +419,6 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
-
 
     return (
         <>

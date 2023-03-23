@@ -74,6 +74,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [auditUsers, setAuditUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     const navigate = useNavigate()
@@ -81,6 +82,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
@@ -88,12 +90,14 @@ const SimpleMuiTable = () => {
                         '/retunrFromAudit/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -112,11 +116,10 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         if (counts === '') {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title: "Please Confirm Counts",
+                title: 'Please Confirm Counts',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -130,7 +133,6 @@ const SimpleMuiTable = () => {
                     obj
                 )
                 if (res.status == 200) {
-                 
                     setOpen(false)
                     Swal.fire({
                         position: 'top-center',
@@ -411,6 +413,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

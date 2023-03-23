@@ -196,7 +196,7 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
-            amount: count.ctxTransferRequest,
+            amount: count.ctxReceiveRequest,
             title: 'CTX Transfer Receive',
             path: '/wareshouse/ctx/receive/request',
         },

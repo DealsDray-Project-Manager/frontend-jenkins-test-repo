@@ -167,6 +167,7 @@ const SimpleMuiTable = () => {
                     itemCount: itemCount,
                     status: status,
                     type: type,
+                    sortId: 'Audit Done Closed By Warehouse',
                 }
 
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)

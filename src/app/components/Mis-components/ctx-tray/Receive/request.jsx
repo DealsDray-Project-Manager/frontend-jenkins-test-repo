@@ -26,6 +26,7 @@ const SimpleMuiTable = () => {
     const [isCheck, setIsCheck] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [ctxTrayList, setCtxTrayList] = useState([])
+    const [userCpcType, setUserCpcType] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -34,8 +35,8 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-
+                    let { location, cpc_type } = jwt_decode(admin)
+                    setUserCpcType(cpc_type)
                     let res = await axiosWarehouseIn.post(
                         '/ctxTray/' + 'Transferred to Sales/' + location
                     )
@@ -69,8 +70,12 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 ischeck: isCheck,
-                sortId: 'Received From Processing',
                 page: 'Mis-ctx-receive',
+            }
+            if (userCpcType == 'Sales') {
+                obj.sortId = 'Received From Processing'
+            } else {
+                obj.sortId = 'Received From Sales'
             }
             let res = await axiosWarehouseIn.post(
                 '/ctx/transferRequest/approve',

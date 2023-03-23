@@ -171,32 +171,38 @@ export default function DialogBox() {
     let admin = localStorage.getItem('prexo-authentication')
     let user_name1
     if (admin) {
-        let { user_name } = jwt_decode(admin)
+        let { user_name, cpc_type } = jwt_decode(admin)
         user_name1 = user_name
     }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Charging Station IN'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                    //   dataTableFun()
-                } else if (response.status === 202) {
-                   
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: response?.data?.message,
-                    })
-                    navigate(-1)
-                } else {
-                    navigate('/bag-issue-request')
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Charging Station IN/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                        //   dataTableFun()
+                    } else if (response.status === 202) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response?.data?.message,
+                        })
+                        navigate(-1)
+                    } else {
+                        navigate('/bag-issue-request')
+                    }
                 }
             } catch (error) {
-                
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -234,10 +240,8 @@ export default function DialogBox() {
                         title: 'Oops...',
                         text: res?.data?.message,
                     })
-                   
                 }
             } catch (error) {
-               
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -250,11 +254,10 @@ export default function DialogBox() {
         values.charging_person = user_name1
 
         if (trayData.limit <= trayData?.actual_items?.length) {
-        
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title: "All Items Scanned",
+                title: 'All Items Scanned',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -295,7 +298,6 @@ export default function DialogBox() {
                     handleClose()
                 }
             } catch (error) {
-             
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -309,11 +311,10 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         try {
             if (description == '') {
-              
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:"Please Add Description",
+                    title: 'Please Add Description',
                     confirmButtonText: 'Ok',
                 })
             } else if (
@@ -327,7 +328,6 @@ export default function DialogBox() {
 
                 let res = await axiosCharging.post('/charging-done', obj)
                 if (res.status == 200) {
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -339,7 +339,6 @@ export default function DialogBox() {
                     navigate('/charging/tray')
                 }
             } else {
-            
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -348,13 +347,12 @@ export default function DialogBox() {
             }
         } catch (error) {
             setlLoading(false)
-            
+
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: error,
             })
-            
         }
     }
     const handleClickOpen = () => {
@@ -789,7 +787,6 @@ export default function DialogBox() {
                                             'Recharging Station IN'
                                         }
                                         {...register('boady_part_missing')}
-
                                         onClick={(e) => {
                                             if (
                                                 trayData?.sort_id ==
@@ -804,10 +801,10 @@ export default function DialogBox() {
                                         label="YES"
                                     />
                                     <FormControlLabel
-                                    disabled={
-                                        trayData.sort_id ==
-                                        'Recharging Station IN'
-                                    }
+                                        disabled={
+                                            trayData.sort_id ==
+                                            'Recharging Station IN'
+                                        }
                                         {...register('boady_part_missing')}
                                         value="NO"
                                         onClick={(e) => {

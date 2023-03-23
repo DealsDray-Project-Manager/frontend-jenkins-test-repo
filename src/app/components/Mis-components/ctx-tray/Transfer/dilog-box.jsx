@@ -22,6 +22,7 @@ const MemberEditorDialog = ({
     setIsAlive,
     selectLoaction,
     isCheck,
+    userCpcType,
 }) => {
     const [sales, setSales] = useState('')
     const [loading, setLoading] = useState(false)
@@ -32,8 +33,9 @@ const MemberEditorDialog = ({
             let obj = {
                 tray: isCheck,
                 sales: sales,
-                sort_id: 'Sales Transfer Request sent to Warehouse',
+                sort_id: 'Transfer Request sent to Warehouse',
             }
+
             let res = await axiosMisUser.post('/ctx/transferRequestSend', obj)
             if (res.status == 200) {
                 setLoading(false)
@@ -67,9 +69,9 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select Sales Location</H4>
+                <H4 sx={{ mb: '20px' }}>Select Location</H4>
                 <TextFieldCustOm
-                    label="Sales Location"
+                    label="Location"
                     fullWidth
                     select
                     name="sales_location"

@@ -21,7 +21,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [botTray, setBotTray] = useState([])
     const navigate = useNavigate()
 
@@ -30,14 +30,16 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosMisUser.post(
                         '/view-sorting-item/' + location + '/' + 'warehouse'
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setBotTray(response.data.data)
                     } else {
-                       
+                        setIsLoading(false)
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -49,6 +51,7 @@ const SimpleMuiTable = () => {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -196,8 +199,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

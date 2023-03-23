@@ -12,7 +12,7 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
-
+import jwt_decode from 'jwt-decode'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -34,22 +34,27 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' +
-                        trayId +
-                        '/' +
-                        'Received From Processing'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: response?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Received From Processing/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
                 Swal.fire({

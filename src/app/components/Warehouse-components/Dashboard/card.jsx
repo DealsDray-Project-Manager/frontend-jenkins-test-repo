@@ -5,6 +5,7 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 import { axiosWarehouseIn } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
@@ -23,7 +24,12 @@ const StatCard3 = () => {
                         setCount(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
@@ -123,6 +129,18 @@ const StatCard3 = () => {
             path: '/wareshouse/wht/return-from-audit',
         },
         {
+            icon: 'shopping_cart',
+            amount: count.rdlFlsRequest,
+            title: 'RDL-FLS Requests',
+            path: '/wareshouse/wht/rdl-fls-request',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.returnFromRdlFls,
+            title: 'Return from RDL-FLS',
+            path: '/wareshouse/wht/return-from-rdl-fls',
+        },
+        {
             icon: 'sort',
             amount: count.sortingRequest,
             title: 'Sorting Request',
@@ -164,7 +182,26 @@ const StatCard3 = () => {
             title: 'Return From Pickup',
             path: '/wareshouse/wht/pickup/return-from-pickup',
         },
+        {
+            icon: 'shopping_cart',
+            amount: count.allCtxTray,
+            title: 'CTX Tray',
+            path: '/wareshouse/ctx/all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.ctxTransferRequest,
+            title: 'CTX Transfer Request',
+            path: '/wareshouse/ctx/transfer/request',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.ctxReceiveRequest,
+            title: 'CTX Transfer Receive',
+            path: '/wareshouse/ctx/receive/request',
+        },
     ]
+
     const { palette } = useTheme()
     const textMuted = palette.text.secondary
 

@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import AssignTrayDialogBox from './assign-tray'
+import Swal from 'sweetalert2'
 
 import {
     Button,
@@ -73,6 +74,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [auditUsers, setAuditUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     const navigate = useNavigate()
@@ -80,6 +82,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
@@ -87,13 +90,20 @@ const SimpleMuiTable = () => {
                         '/retunrFromAudit/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -106,7 +116,12 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         if (counts === '') {
-            alert('Please confirm counts')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: 'Please Confirm Counts',
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let obj = {
@@ -118,14 +133,31 @@ const SimpleMuiTable = () => {
                     obj
                 )
                 if (res.status == 200) {
-                    alert(res.data.message)
                     setOpen(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setIsAlive((isAlive) => !isAlive)
                 } else {
-                    alert(res.data.message)
+                    setOpen(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                setOpen(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -162,7 +194,12 @@ const SimpleMuiTable = () => {
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -376,6 +413,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

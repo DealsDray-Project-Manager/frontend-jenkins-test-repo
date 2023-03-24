@@ -2,6 +2,7 @@ import React from 'react'
 import StatCard3 from './card'
 import { H3 } from 'app/components/Typography'
 import { styled } from '@mui/system'
+import Swal from 'sweetalert2'
 
 const AnalyticsRoot = styled('div')(({ theme }) => ({
     margin: '30px',

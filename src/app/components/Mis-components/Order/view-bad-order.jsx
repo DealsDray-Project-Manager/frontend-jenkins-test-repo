@@ -21,6 +21,7 @@ import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -59,7 +60,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosMisUser.post(
                         '/getBadOrders/' + location
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         setDisplayText('')
                         setItem(res.data.data)
                     }
@@ -69,7 +70,12 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [refresh])
 
@@ -125,7 +131,7 @@ const SimpleMuiTable = () => {
                 setDisplayText('Searching...')
 
                 let { location } = jwt_decode(admin)
-                if (e.target.value == '') {
+                if (e.target.value === '') {
                     setRefresh((refresh) => !refresh)
                 } else {
                     let obj = {
@@ -146,7 +152,12 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     return (
@@ -190,7 +201,7 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             searchOrders(e)
                         }}
-                        disabled={search.type == '' ? true : false}
+                        disabled={search.type === '' ? true : false}
                         label="Search"
                         variant="outlined"
                         sx={{ ml: 2, mb: 1 }}

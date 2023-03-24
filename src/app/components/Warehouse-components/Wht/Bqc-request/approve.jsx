@@ -14,7 +14,8 @@ import {
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-
+import Swal from 'sweetalert2'
+import jwt_decode from 'jwt-decode'
 
 import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
@@ -32,17 +33,35 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for charging'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                    alert(response.data.message)
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Send for charging/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -63,17 +82,33 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                    alert(res.data.message)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-            alert('All Items Scanned')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All items Scanned',
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let objData = {
@@ -91,7 +126,12 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -110,7 +150,12 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status == 200) {
-                    alert(res.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     if (trayData?.sort_id == 'Send for BQC') {
                         setLoading(false)
                         navigate('/wareshouse/wht/bqc-request')
@@ -119,18 +164,32 @@ export default function DialogBox() {
                         navigate('/wareshouse/wht/charging-request')
                     }
                 } else {
-                    alert(res.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } else {
                 setLoading(false)
-                alert('Please Verify Actual Data')
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please Verify Actual Data',
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
-
- 
 
     const tableExpected = useMemo(() => {
         return (
@@ -298,7 +357,6 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '13px' }}>
                         AGENT NAME - {trayData?.issued_user_name}
                     </h4>
-                  
                 </Box>
                 <Box
                     sx={{
@@ -312,7 +370,6 @@ export default function DialogBox() {
                         Model -- {trayData?.model}
                     </h4>
                 </Box>
-               
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>

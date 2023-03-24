@@ -33,6 +33,18 @@ const AssignToAudit = Loadable(
 const AssignToCharging = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
 )
+const AssignToRdl = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/wht-tray'))
+)
+const AssignToRdltrayView = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/view-wht-tray'))
+)
+const AssignToRdltwo = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/wht-tray'))
+)
+const AssignToRdltwoview = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))
+)
 const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
 const UicDownloaded = Loadable(
     lazy(() => import('./Uic-manage/uic-downloaded'))
@@ -61,9 +73,26 @@ const MergeWht = Loadable(lazy(() => import('./Merge/Wht-merge/wht-tray')))
 const TrackItem = Loadable(lazy(() => import('./Track/item-track')))
 const SearchImei = Loadable(lazy(() => import('./Wht-utility/search')))
 const Pickup = Loadable(lazy(() => import('./Merge/Pickup/pickup')))
-const WhtutilityBotTray =Loadable(lazy(() => import('./Wht-utility/bot-tray')))
-const WhtUtilityBotTrayResticker=Loadable(lazy(() => import('./Wht-utility/bot-tray-resticker')))
-const WhtUtilityBotTrayClose=Loadable(lazy(() => import('./Wht-utility/bot-tray-close')))
+const WhtutilityBotTray = Loadable(lazy(() => import('./Wht-utility/bot-tray')))
+const WhtUtilityBotTrayResticker = Loadable(
+    lazy(() => import('./Wht-utility/bot-tray-resticker'))
+)
+const WhtUtilityBotTrayClose = Loadable(
+    lazy(() => import('./Wht-utility/bot-tray-close'))
+)
+const CtxMerge = Loadable(lazy(() => import('./Merge/Ctx-merge/ctx-tray')))
+const CtxTrayTransfer = Loadable(
+    lazy(() => import('./ctx-tray/Transfer/ctx-tray'))
+)
+const CtxTrayReceiveFromProcessing = Loadable(
+    lazy(() => import('./ctx-tray/Receive/request'))
+)
+const CtxToStxAssignToSorting=Loadable(
+    lazy(() => import('./Sorting/Ctx-to-stx/ctx-tray'))
+)
+const StxMerging=Loadable(
+    lazy(() => import('./Merge/Stx-merging/tray'))
+)
 
 const dataTableRoutes = [
     {
@@ -131,8 +160,28 @@ const dataTableRoutes = [
         element: <AssignToAudit />,
     },
     {
+        path: '/mis/assign-to-agent/rdl-fls',
+        element: <AssignToRdl />,
+    },
+    {
+        path: '/mis/assign-to-agent/rdl-fls/view-item/:trayId',
+        element: <AssignToRdltrayView />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl-repair',
+        element: <AssignToRdltwo />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl-repair/view-item/:trayId',
+        element: <AssignToRdltwoview />,
+    },
+    {
         path: '/mis/sorting/bot-to-wht',
         element: <SortingBotTowht />,
+    },
+    {
+        path: '/mis/sorting/ctx-to-stx',
+        element: <CtxToStxAssignToSorting />,
     },
     {
         path: '/mis/sorting/bot-to-wht/assign-for-sorting',
@@ -163,6 +212,14 @@ const dataTableRoutes = [
         element: <MergeWht />,
     },
     {
+        path: '/mis/merge/ctx',
+        element: <CtxMerge />,
+    },
+    {
+        path: '/mis/merge/stx',
+        element: <StxMerging />,
+    },
+    {
         path: '/mis/orders/bulk-import',
         element: <BulkImportOrder />,
     },
@@ -173,6 +230,14 @@ const dataTableRoutes = [
     {
         path: '/mis/track/item',
         element: <TrackItem />,
+    },
+    {
+        path: '/mis/ctx/transfer',
+        element: <CtxTrayTransfer />,
+    },
+    {
+        path: '/mis/ctx/receive',
+        element: <CtxTrayReceiveFromProcessing />,
     },
     {
         path: '/warehouse/wht-utility/import-data',

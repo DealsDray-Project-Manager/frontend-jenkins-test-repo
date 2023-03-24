@@ -26,17 +26,21 @@ const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/getUsers')
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setUserList(res.data.data.user)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -45,7 +49,10 @@ const UserTable = () => {
             }
         }
         fetchUser()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -65,7 +72,11 @@ const UserTable = () => {
                 handleDialogOpen()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -98,7 +109,11 @@ const UserTable = () => {
                         )
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -128,7 +143,12 @@ const UserTable = () => {
                         )
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         })
@@ -205,6 +225,13 @@ const UserTable = () => {
         {
             name: 'cpc',
             label: 'CPC',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'cpc_type',
+            label: 'CPC Type',
             options: {
                 filter: true,
             },
@@ -322,8 +349,15 @@ const UserTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

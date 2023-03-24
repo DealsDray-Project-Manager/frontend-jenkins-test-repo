@@ -16,6 +16,7 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -27,6 +28,7 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
+    
     /************************************************************/
     useEffect(() => {
         const fetchData = async () => {
@@ -40,11 +42,21 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                    alert(response.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Please check Details',
+                        confirmButtonText: 'Ok',
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -52,7 +64,12 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
-            alert('All Items are Verified')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All Items Are Verified',
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let objData = {
@@ -70,10 +87,21 @@ export default function DialogBox() {
                     setUic('')
                 } else {
                     setTextDisable(false)
-                    alert(res.data.message)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -82,23 +110,28 @@ export default function DialogBox() {
         e.preventDefault()
         try {
             setLoading(true)
-            if (description == '') {
-                alert('Please Add Description')
+            trayData.description = description
+            let res = await axiosWarehouseIn.post(
+                '/wht-tray-close-from-sorting',
+                trayData
+            )
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
-            } else {
-                trayData.description = description
-                let res = await axiosWarehouseIn.post(
-                    '/wht-tray-close-from-sorting',
-                    trayData
-                )
-                if (res.status == 200) {
-                    alert(res.data.message)
-                    setLoading(false)
-                    navigate('/wareshouse/sorting/return-from-sorting')
-                }
+                navigate('/wareshouse/sorting/return-from-sorting')
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelUic = async (e) => {
@@ -118,10 +151,21 @@ export default function DialogBox() {
                 } else {
                     setUic('')
                     setTextDisable(false)
-                    alert(res.data.message)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -232,7 +276,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 >Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData?.actual_items?.length}/
                                 {trayData?.limit}
@@ -351,9 +395,8 @@ export default function DialogBox() {
                         disabled={
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
-                            loading == false
-                                ? false
-                                : true
+                            description == '' ||
+                            loading
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

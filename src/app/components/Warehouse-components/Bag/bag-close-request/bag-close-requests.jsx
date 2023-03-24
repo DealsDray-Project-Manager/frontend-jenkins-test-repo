@@ -7,6 +7,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+import Swal from 'sweetalert2'
 import {
     Dialog,
     DialogTitle,
@@ -69,6 +70,7 @@ const SimpleMuiTable = () => {
     const [bot, setBot] = useState([])
     const [trayId, setTrayId] = useState('')
     const [counts, setCounts] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = React.useState(false)
@@ -76,6 +78,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
@@ -83,17 +86,27 @@ const SimpleMuiTable = () => {
                         '/closeBotTray/' + location
                     )
                     if (botTray.status == 200) {
+                        setIsLoading(false)
                         setBot(botTray.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handelViewTray = (e, id) => {
@@ -119,15 +132,33 @@ const SimpleMuiTable = () => {
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setOpen(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                setOpen(false)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -347,6 +378,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -22,17 +22,20 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [ctxTray, setCtxTray] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/ctxTray/' + 'all' + '/' + location
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setCtxTray(response.data.data)
                     }
                 } else {
@@ -46,7 +49,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewItem = (id) => {
-        navigate('/wareshouse/ctx/view-item/' + id)
+        navigate('/wareshouse/tray/view-item/' + id)
     }
 
     const columns = [
@@ -208,6 +211,13 @@ const SimpleMuiTable = () => {
                     print: false,
                     showFirstButton: 'true',
                     showLastButton: 'true',
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

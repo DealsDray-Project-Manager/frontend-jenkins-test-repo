@@ -11,6 +11,7 @@ import { H4 } from 'app/components/Typography'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -30,7 +31,7 @@ const MemberEditorDialog = ({
     otherTrayAssign,
     trayIdNotChangeAble,
     brand,
-    model
+    model,
 }) => {
     const [err, setErr] = useState({
         CTA: '',
@@ -56,11 +57,20 @@ const MemberEditorDialog = ({
                         '/' +
                         trayType +
                         '/' +
-                        location  +
-                        "/" + brand +  "/" + model
+                        location +
+                        '/' +
+                        brand +
+                        '/' +
+                        model
                 )
                 if (res.status == 200) {
-                    alert(res.data.message)
+                    // Swal.fire({
+                    //     position: 'top',
+                    //     icon: 'success',
+                    //     title: res?.data?.message,
+                    //     confirmButtonText: 'Ok',
+                    // })
+                    alert(res?.data?.message)
                     setOtherTrayAssign((otherTrayAssign) => ({
                         ...otherTrayAssign,
                         [trayType]: res.data.trayId,
@@ -68,10 +78,18 @@ const MemberEditorDialog = ({
                     setErr((err) => ({ ...err, [trayType]: '' }))
                 } else {
                     setErr((err) => ({ ...err, [trayType]: res.data.message }))
+                    alert(res?.data?.message)
+
+                    // alert(res?.data?.message)
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -88,7 +106,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTA !== ''}
-                    value={trayId.cta || otherTrayAssign.CTA}
+                    value={trayId.cta || otherTrayAssign.A}
                     error={err.CTA !== ''}
                     helperText={err.CTA}
                     InputProps={{
@@ -97,7 +115,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.cta == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.cta, 'CTA')
+                                        handelTrayId(trayId.cta, 'A')
                                     }}
                                 >
                                     <SearchIcon />
@@ -117,7 +135,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTB !== ''}
-                    value={trayId.ctb || otherTrayAssign.CTB}
+                    value={trayId.ctb || otherTrayAssign.B}
                     error={err.CTB !== ''}
                     helperText={err.CTB}
                     InputProps={{
@@ -126,7 +144,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctb == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctb, 'CTB')
+                                        handelTrayId(trayId.ctb, 'B')
                                     }}
                                 >
                                     <SearchIcon />
@@ -146,7 +164,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTC !== ''}
-                    value={trayId.ctc || otherTrayAssign.CTC}
+                    value={trayId.ctc || otherTrayAssign.C}
                     error={err.CTC !== ''}
                     helperText={err.CTC}
                     InputProps={{
@@ -155,7 +173,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctc == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctc, 'CTC')
+                                        handelTrayId(trayId.ctc, 'C')
                                     }}
                                 >
                                     <SearchIcon />
@@ -175,7 +193,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTD !== ''}
-                    value={trayId.ctd || otherTrayAssign.CTD}
+                    value={trayId.ctd || otherTrayAssign.D}
                     error={err.CTD !== ''}
                     helperText={err.CTD}
                     InputProps={{
@@ -184,7 +202,7 @@ const MemberEditorDialog = ({
                                 <IconButton
                                     disabled={trayId.ctd == ''}
                                     onClick={(e) => {
-                                        handelTrayId(trayId.ctd, 'CTD')
+                                        handelTrayId(trayId.ctd, 'D')
                                     }}
                                 >
                                     <SearchIcon />

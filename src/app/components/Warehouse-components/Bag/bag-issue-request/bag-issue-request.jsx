@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -22,6 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setRequests] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,26 +31,36 @@ const SimpleMuiTable = () => {
         if (admin) {
             const fetchData = async () => {
                 try {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/getRequests/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setRequests(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    setIsLoading(false)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()
         } else {
             navigate('/')
         }
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handelDetailPage = (e, bagId) => {
-      
         navigate('/wareshouse/bag/bag-issue-request/approve/' + bagId)
     }
 
@@ -168,8 +180,31 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

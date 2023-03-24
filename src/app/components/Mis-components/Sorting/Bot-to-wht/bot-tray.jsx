@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import moment from 'moment'
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,6 +27,7 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const navigate = useNavigate()
     const [sortDate, setSortDate] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const [sortData, setSortData] = useState(false)
     const [yesterdayDate, setYesterDayDate] = useState('')
     const [isCheck, setIsCheck] = useState([])
@@ -35,29 +37,41 @@ const SimpleMuiTable = () => {
         setYesterDayDate(date.setDate(date.getDate() - 1))
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
+            setIsLoading(true)
             const { location } = jwt_decode(admin)
             const fetchData = async () => {
                 try {
                     let res = await axiosMisUser.post(
                         '/wh-closed-bot-tray/' + location
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
+                        setIsLoading(false)
                         setItem(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    setIsLoading(false)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
             fetchData()
         } else {
             navigate('/')
         }
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handelSort = async (e) => {
         e.preventDefault()
         try {
+            setIsLoading(true)
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 const { location } = jwt_decode(admin)
@@ -66,13 +80,20 @@ const SimpleMuiTable = () => {
                     location: location,
                 }
                 let res = await axiosMisUser.post('/wht-bot-sort', obj)
-                if (res.status == 200) {
+                if (res.status === 200) {
+                    setIsLoading(false)
                     setSortData(true)
                     setItem(res.data.data)
                 }
             }
         } catch (error) {
-            alert(error)
+            setIsLoading(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handleClick = (e) => {
@@ -198,7 +219,7 @@ const SimpleMuiTable = () => {
                     <h3>
                         Date:-{' '}
                         {new Date(
-                            sortDate != '' && sortData == true
+                            sortDate != '' && sortData === true
                                 ? sortDate
                                 : yesterdayDate
                         ).toLocaleString('en-GB', {
@@ -276,6 +297,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

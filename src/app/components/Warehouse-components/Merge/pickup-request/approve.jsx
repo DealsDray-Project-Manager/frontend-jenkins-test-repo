@@ -18,7 +18,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 export default function StickyHeadTable({ props }) {
     const [tray, setTray] = useState([])
     const [loading, setLoading] = useState(false)
-    const [userAgent, setUserAgent] = useState('')
     const navigate = useNavigate()
     const { trayId } = useParams()
     useEffect(() => {
@@ -44,23 +43,6 @@ export default function StickyHeadTable({ props }) {
         }
         fetchData()
     }, [])
-    // useEffect(() => {
-    //     const userStatusApiCall = async () => {
-    //         try {
-    //             let res = await axiosWarehouseIn.post(
-    //                 '/sortingAgnetStatus/' + tray[0]?.issued_user_name
-    //             )
-    //             if (res.status === 200) {
-    //                 setUserAgent(res.data.data)
-    //             }
-    //         } catch (error) {
-    //             alert(error)
-    //         }
-    //     }
-    //     if (tray[0]?.issued_user_name !== undefined) {
-    //         userStatusApiCall()
-    //     }
-    // }, [tray])
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
@@ -72,44 +54,45 @@ export default function StickyHeadTable({ props }) {
     const handelIssue = async (e, type) => {
         try {
             let userStatus = await axiosWarehouseIn.post(
-                '/sortingAgnetStatus/' + tray?.[0]?.issued_user_name + "/" + tray?.[0]?.to_tray_for_pickup
+                '/sortingAgnetStatus/' +
+                    tray?.[0]?.issued_user_name +
+                    '/' +
+                    tray?.[0]?.to_tray_for_pickup
             )
             if (userStatus.status === 200) {
-                if (userStatus.data.data !== 'User is free') {
-                    alert(userStatus.data.data)
-                } else {
-                    setLoading(true)
-                    let flag = false
-                    for (let x of tray) {
-                        if (x.items.length !== x.actual_items.length) {
-                            flag = true
-                            break
-                        }
-                    }
-                    if (flag == false) {
-                        let obj = {
-                            fromTray: tray[0].code,
-                            toTray: tray[1].code,
-                            username: tray[0]?.issued_user_name,
-                        }
-
-                        let res = await axiosWarehouseIn.post(
-                            '/pickup/issueToAgent',
-                            obj
-                        )
-                       
-                        if (res.status == 200) {
-                            alert(res.data.message)
-                            setLoading(false)
-                            navigate('/wareshouse/wht/pickup/request')
-                        } else {
-                            alert(res.data.message)
-                        }
-                    } else {
-                        setLoading(false)
-                        alert('Please Issue all Tray')
+                setLoading(true)
+                let flag = false
+                for (let x of tray) {
+                    if (x.items.length !== x.actual_items.length) {
+                        flag = true
+                        break
                     }
                 }
+                if (flag == false) {
+                    let obj = {
+                        fromTray: tray[0].code,
+                        toTray: tray[1].code,
+                        username: tray[0]?.issued_user_name,
+                    }
+
+                    let res = await axiosWarehouseIn.post(
+                        '/pickup/issueToAgent',
+                        obj
+                    )
+
+                    if (res.status == 200) {
+                        alert(res.data.message)
+                        setLoading(false)
+                        navigate('/wareshouse/wht/pickup/request')
+                    } else {
+                        alert(res.data.message)
+                    }
+                } else {
+                    setLoading(false)
+                    alert('Please Issue all Tray')
+                }
+            } else {
+                alert(userStatus.data.data)
             }
         } catch (error) {
             alert(error)
@@ -179,24 +162,29 @@ export default function StickyHeadTable({ props }) {
                                                 data?.sort_id ==
                                                     'Pickup Request sent to Warehouse'
                                                     ? 'Not Issued'
-                                                    :data.items.length !== 0 &&
-                                                    data?.sort_id !==
-                                                        'Pickup Request sent to Warehouse'
+                                                    : data.items.length !== 0 &&
+                                                      data?.sort_id !==
+                                                          'Pickup Request sent to Warehouse'
                                                     ? 'Issued'
                                                     : 'Scanned'}
                                             </TableCell>
                                             <TableCell>
                                                 <Button
                                                     variant="contained"
-                                                    disabled= {data.items.length !== 0  &&
+                                                    disabled={
+                                                        data.items.length !==
+                                                            0 &&
                                                         data?.sort_id ==
                                                             'Pickup Request sent to Warehouse'
                                                             ? false
-                                                            :data.items.length !== 0 &&
-                                                            data?.sort_id !==
-                                                                'Pickup Request sent to Warehouse'
+                                                            : data.items
+                                                                  .length !==
+                                                                  0 &&
+                                                              data?.sort_id !==
+                                                                  'Pickup Request sent to Warehouse'
                                                             ? 'Issued'
-                                                            : 'Scanned'}
+                                                            : 'Scanned'
+                                                    }
                                                     onClick={(e) =>
                                                         handelExvsAt(
                                                             e,

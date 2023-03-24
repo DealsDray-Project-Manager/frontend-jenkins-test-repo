@@ -18,6 +18,12 @@ const PickupToTray=Loadable(
 const PickupViewItem= Loadable(
     lazy(() => import('./pickup/view-item'))
 )
+const CtxtoStxSortingRequest= Loadable(
+    lazy(() => import('./Sorting-request/ctx-to-stx/sort-request'))
+)
+const StartCtxToStx = Loadable(
+    lazy(() => import('./Sorting-request/ctx-to-stx/start-sort'))
+)
 
 const SortingRouter = [
     {
@@ -27,6 +33,14 @@ const SortingRouter = [
     {
         path: '/sorting/request',
         element: <SortingRequest />,
+    },
+    {
+        path: '/sorting/ctx/request',
+        element: <CtxtoStxSortingRequest />,
+    },
+    {
+        path: '/sorting/ctx/request/start-sort/:trayId',
+        element: <StartCtxToStx />,
     },
     {
         path: '/sorting/request/start-sorting/:trayId',

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { axiosBot } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -18,6 +19,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const [isAlive, setIsAlive] = useState(true)
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -25,17 +27,129 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let res = await axiosBot.post('/trayItem/' + trayId)
                 if (res.status == 200) {
+                    setIsLoading(false)
                     setTrayData(res.data.data?.items)
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
+
+
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'uic',
+            label: 'UIC',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'imei',
+            label: 'IMEI',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'bag_id',
+            label: 'Bag Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'body_damage',
+            label: 'Body Damage',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'body_damage_des',
+            label: 'Body Damage Description',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'item_recieved',
+            label: 'Item Received In Packet',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model_brand',
+            label: 'Mismatched Model Brand Name',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'stickerOne',
+            label: 'Other Info 1',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'stickerTwo',
+            label: 'Other Info 2',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'stickerThree',
+            label: 'Other Info 3',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'stickerFour',
+            label: 'Other Info 4',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'added_time',
+            label: 'Added Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -57,6 +171,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download:false,
                     print:false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -72,104 +193,6 @@ const SimpleMuiTable = () => {
     )
 }
 
-const columns = [
-    {
-        name: 'index',
-        label: 'Record No',
-        options: {
-            filter: false,
-            sort: false,
-            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
-        },
-    },
-    {
-        name: 'uic',
-        label: 'UIC',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'imei',
-        label: 'IMEI',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'bag_id',
-        label: 'Bag Id',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'body_damage',
-        label: 'Body Damage',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'body_damage_des',
-        label: 'Body Damage Description',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'item_recieved',
-        label: 'Item Received In Packet',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'model_brand',
-        label: 'Mismatched Model Brand Name',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerOne',
-        label: 'Other Info 1',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerTwo',
-        label: 'Other Info 2',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerThree',
-        label: 'Other Info 3',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerFour',
-        label: 'Other Info 4',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'added_time',
-        label: 'Added Date',
-        options: {
-            filter: true,
-            customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
-        },
-    },
-]
+
 
 export default SimpleMuiTable

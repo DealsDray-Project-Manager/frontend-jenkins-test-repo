@@ -14,8 +14,10 @@ import {
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
-
+import Swal from 'sweetalert2'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -33,19 +35,36 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Issued to Charging'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else if (response.status === 202) {
-                    alert(response.data.message)
-                    navigate(-1)
-                } else {
-                    navigate('/bag-issue-request')
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Issued to Charging/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else if (response.status === 202) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            text: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    } else {
+                        navigate('/bag-issue-request')
+                    }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -65,17 +84,31 @@ export default function DialogBox() {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setUic('')
-                    alert(res.data.message)
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
     }
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.limit <= trayData?.actual_items?.length) {
-            alert('All Items Scanned')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All Items Scanned',
+                confirmButtonText: 'Ok',
+            })
         } else {
             resDataUic.remark = description
             try {
@@ -94,7 +127,11 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
     }
@@ -102,7 +139,12 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         try {
             if (description == '') {
-                alert('Please Add Description')
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please Add Decription',
+                    confirmButtonText: 'Ok',
+                })
             } else if (
                 trayData?.actual_items?.length == trayData?.items?.length
             ) {
@@ -113,18 +155,36 @@ export default function DialogBox() {
                 }
                 let res = await axiosCharging.post('/charge-in', obj)
                 if (res.status == 200) {
-                    alert(res.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     navigate('/charging/tray')
                 } else {
-                    alert(res.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
                 }
             } else {
-                alert('Please Verify Actual Data')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Verify Actual Data',
+                })
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const tableActual = useMemo(() => {

@@ -24,16 +24,20 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [warehouseList, setWarehouseList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchLocation = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/getWarehouse')
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setWarehouseList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -42,7 +46,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchLocation()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(true)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -61,7 +68,11 @@ const SimpleMuiTable = () => {
                 handleDialogOpen()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     const handelDelete = (id) => {
@@ -91,10 +102,18 @@ const SimpleMuiTable = () => {
                             }
                         })
                     } else {
-                        alert(response.data.message)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response?.data?.message,
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -232,8 +251,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

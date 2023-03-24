@@ -4,6 +4,7 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -45,17 +46,34 @@ const MemberEditorDialog = ({
                 )
                 if (res.status === 200) {
                     setLoading(false)
-                    alert(res.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     navigate('/mis/sorting/bot-to-wht')
                 } else if (res.status == 202) {
-                    alert(res.data.message)
+                   
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     setLoading(false)
                     handleClose()
                     setSortingAgentName('')
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -85,7 +103,7 @@ const MemberEditorDialog = ({
                     <Button
                         variant="contained"
                         p
-                        disabled={loading || sortingAgentName == ''}
+                        disabled={loading || sortingAgentName === ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

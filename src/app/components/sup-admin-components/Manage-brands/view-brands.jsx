@@ -27,11 +27,13 @@ const BrandTable = () => {
     const [brandList, setBrandList] = useState([])
     const navigate = useNavigate()
     const [brandCount, setBrandCount] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/getBrands')
                 if (res.status === 200) {
                     setBrandList(res.data.data)
@@ -40,9 +42,11 @@ const BrandTable = () => {
                     '/getBrandIdHighest'
                 )
                 if (countBrand.status == 200) {
+                    setIsLoading(false)
                     setBrandCount(countBrand.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -51,7 +55,10 @@ const BrandTable = () => {
             }
         }
         fetchBrand()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -213,9 +220,7 @@ const BrandTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Brands', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Brands', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -241,8 +246,15 @@ const BrandTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -97,33 +97,34 @@ export default function DialogBox() {
     const handelIssue = async (e, type) => {
         try {
             let userStatus = await axiosWarehouseIn.post(
-                '/sortingAgnetStatus/' + trayData?.issued_user_name + "/" + trayData?.to_tray_for_pickup
+                '/sortingAgnetStatus/' +
+                    trayData?.issued_user_name +
+                    '/' +
+                    trayData?.to_tray_for_pickup
             )
             if (userStatus.status === 200) {
-                if (userStatus.data.data !== 'User is free') {
-                    alert(userStatus.data.data)
-                } else {
-                    setLoading(true)
+                setLoading(true)
 
-                    let obj = {
-                        fromTray: trayData.code,
-                        toTray: trayData.to_tray_for_pickup,
-                        username: trayData.issued_user_name,
-                    }
-
-                    let res = await axiosWarehouseIn.post(
-                        '/pickup/issueToAgent',
-                        obj
-                    )
-                
-                    if (res.status == 200) {
-                        alert(res.data.message)
-                        setLoading(false)
-                        navigate('/wareshouse/wht/pickup/request')
-                    } else {
-                        alert(res.data.message)
-                    }
+                let obj = {
+                    fromTray: trayData.code,
+                    toTray: trayData.to_tray_for_pickup,
+                    username: trayData.issued_user_name,
                 }
+
+                let res = await axiosWarehouseIn.post(
+                    '/pickup/issueToAgent',
+                    obj
+                )
+
+                if (res.status == 200) {
+                    alert(res.data.message)
+                    setLoading(false)
+                    navigate('/wareshouse/wht/pickup/request')
+                } else {
+                    alert(res.data.message)
+                }
+            } else {
+                alert(userStatus.data.data)
             }
         } catch (error) {
             alert(error)

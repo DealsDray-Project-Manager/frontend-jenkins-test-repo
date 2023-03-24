@@ -129,18 +129,72 @@ const ReadyForAudit = Loadable(
 const ReadyForAuditAction = Loadable(
     lazy(() => import('./Wht/Ready-for-audit/action'))
 )
+const ReadyForRDL = Loadable(lazy(() => import('./Wht/Rdl-request/tray')))
+
+const ReadyForRDLApprove = Loadable(
+    lazy(() => import('./Wht/Rdl-request/approve'))
+)
+
+const ReturnFormRDL = Loadable(
+    lazy(() => import('./Wht/Return-from-rdl-fls/tray'))
+)
+
+const ReturnFormRDLClose = Loadable(
+    lazy(() => import('./Wht/Return-from-rdl-fls/close'))
+)
+
+const ReturnFormRDLviewitems = Loadable(
+    lazy(() => import('./Wht/Return-from-rdl-fls/view'))
+)
+
 const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
 const OtherTrayReturnFromAuditClose = Loadable(
     lazy(() => import('./Wht/Return-from-audit/close-tray'))
 )
-const CtxTray =Loadable(lazy(()=> import('./Ctx-tray/ctx-tray-view/tray')))
-const CtxTrayItem =Loadable(lazy(()=>import('./Ctx-tray/ctx-tray-view/view-item')))
-const PickupRequest =Loadable(lazy(()=>import('./Merge/pickup-request/wht-tray')))
-const PickupRequestApprove =Loadable(lazy(()=>import('./Merge/pickup-request/approve')))
-const PickupRequestApproveExvsActPage =Loadable(lazy(()=>import('./Merge/pickup-request/ex-vs-act')))
-const PickupDoneClosedBySorting =Loadable(lazy(()=>import('./Merge/return-from-pickup/return-from-pickup')))
-const PickupDoneClose = Loadable(lazy(()=>import('./Merge/return-from-pickup/close')))
-
+const CtxTray = Loadable(lazy(() => import('./Ctx-tray/ctx-tray-view/tray')))
+const CtxTrayItem = Loadable(
+    lazy(() => import('./Ctx-tray/ctx-tray-view/view-item'))
+)
+const PickupRequest = Loadable(
+    lazy(() => import('./Merge/pickup-request/wht-tray'))
+)
+const PickupRequestApprove = Loadable(
+    lazy(() => import('./Merge/pickup-request/approve'))
+)
+const PickupRequestApproveExvsActPage = Loadable(
+    lazy(() => import('./Merge/pickup-request/ex-vs-act'))
+)
+const PickupDoneClosedBySorting = Loadable(
+    lazy(() => import('./Merge/return-from-pickup/return-from-pickup'))
+)
+const PickupDoneClose = Loadable(
+    lazy(() => import('./Merge/return-from-pickup/close'))
+)
+const CtxTransferRequest = Loadable(
+    lazy(() => import('./Ctx-tray/Transfer-ctx-request/request'))
+)
+const CtxTransferApprove = Loadable(
+    lazy(() => import('./Ctx-tray/Transfer-ctx-request/approve'))
+)
+const CtxTrayReceiveFromProcessing = Loadable(
+    lazy(() => import('./Ctx-tray/ctx-receive/request'))
+)
+const CtxTrayReceiveApprove = Loadable(
+    lazy(() => import('./Ctx-tray/ctx-receive/approve'))
+)
+const SortingCtxToStxRequest = Loadable(
+    lazy(() => import('./Sorting/sorting-request-ctx/request'))
+)
+const SortingCtxFromAndToviewAndIssue = Loadable(
+    lazy(() => import('./Sorting/sorting-request-ctx/approve'))
+)
+const SortingDoneCtxtoStxTray = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-ctx/tray'))
+)
+const SortingDoneCtxOrStxTrayClose = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
+)
+const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 
 const WarehoueRouter = [
     {
@@ -228,6 +282,30 @@ const WarehoueRouter = [
         element: <WhtReturnFromCharging />,
     },
     {
+        path: '/wareshouse/wht/rdl-fls-request',
+        element: <ReadyForRDL />,
+    },
+    {
+        path: '/wareshouse/wht/rdl-fls-request/approve/:trayId',
+        element: <ReadyForRDLApprove />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-rdl-fls',
+        element: <ReturnFormRDL />,
+    },
+    // {
+    //     path: '/wareshouse/wht/Return-From-RDL/approve/:trayId',
+    //     element: <ReturnFormRDLApprove />,
+    // },ReturnFormRDLviewitems
+    {
+        path: '/wareshouse/wht/return-from-rdl-fls/close/:trayId',
+        element: <ReturnFormRDLClose />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-rdl-fls/view/:trayId',
+        element: <ReturnFormRDLviewitems />,
+    },
+    {
         path: '/wareshouse/wht/return-from-charging/view-item/:trayId',
         element: <WhtReturnFromChargingViewItem />,
     },
@@ -268,6 +346,14 @@ const WarehoueRouter = [
         element: <SortingRequest />,
     },
     {
+        path: '/wareshouse/sorting/ctx/request',
+        element: <SortingCtxToStxRequest />,
+    },
+    {
+        path: '/wareshouse/sorting/ctx/request/approve/:trayId',
+        element: <SortingCtxFromAndToviewAndIssue />,
+    },
+    {
         path: '/wareshouse/sorting/request/approve/:trayId',
         element: <SortingRequestDtaildView />,
     },
@@ -278,6 +364,14 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/sorting/return-from-sorting',
         element: <ReturnFromSorting />,
+    },
+    {
+        path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',
+        element: <SortingDoneCtxOrStxTrayClose />,
+    },
+    {
+        path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting',
+        element: <SortingDoneCtxtoStxTray />,
     },
     {
         path: '/wareshouse/sorting/return-from-sorting/close/:trayId',
@@ -353,7 +447,27 @@ const WarehoueRouter = [
         element: <CtxTray />,
     },
     {
-        path: '/wareshouse/ctx/view-item/:trayId',
+        path: '/wareshouse/stx/all',
+        element: <AllStxTray />,
+    },
+    {
+        path: '/wareshouse/ctx/transfer/request',
+        element: <CtxTransferRequest />,
+    },
+    {
+        path: '/wareshouse/ctx/transfer/request/approve/:trayId',
+        element: <CtxTransferApprove />,
+    },
+    {
+        path: '/wareshouse/ctx/receive/request',
+        element: <CtxTrayReceiveFromProcessing />,
+    },
+    {
+        path: '/wareshouse/ctx/receive/request/approve/:trayId',
+        element: <CtxTrayReceiveApprove />,
+    },
+    {
+        path: '/wareshouse/tray/view-item/:trayId',
         element: <CtxTrayItem />,
     },
     {

@@ -166,6 +166,7 @@ const AddBulkProduct = () => {
                     showConfirmButton: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        setErr({})
                         setValidateState(true)
                         setLoading(false)
                     }

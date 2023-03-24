@@ -23,17 +23,21 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [whtTrayList, setWhtTrayList] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchWht = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/auditDoneWht')
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setWhtTrayList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -42,7 +46,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchWht()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleClick = (e) => {
@@ -56,8 +63,12 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 ischeck: isCheck,
+                type: 'Ready to RDL',
             }
-            let res = await axiosSuperAdminPrexo.post('/sendToRdl', obj)
+            let res = await axiosSuperAdminPrexo.post(
+                '/forceFullReadySend',
+                obj
+            )
             setIsCheck([])
             if (res.status === 200) {
                 Swal.fire({
@@ -72,10 +83,19 @@ const SimpleMuiTable = () => {
                     }
                 })
             } else if (res.status == 202) {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -227,7 +247,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For RDL', path: '/' }]}
+                    routeSegments={[{ name: 'Ready For RDL-FLS', path: '/' }]}
                 />
             </div>
             <Button
@@ -239,7 +259,7 @@ const SimpleMuiTable = () => {
                     handelReadyForRdl(e)
                 }}
             >
-                Ready For RDL
+                Ready For RDL-FLS
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}
@@ -250,6 +270,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

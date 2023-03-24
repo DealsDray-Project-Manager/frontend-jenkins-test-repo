@@ -179,6 +179,7 @@ const AddBulkBrand = () => {
             )
             if (res.status == 200) {
                 setValidateState(true)
+                setErr({})
                 setLoading(false)
                 Swal.fire({
                     icon: 'success',

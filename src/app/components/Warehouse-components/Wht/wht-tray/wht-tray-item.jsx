@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -24,18 +26,31 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
-                )
-                if (response.status === 200) {
-                    if (response.data.data?.items?.length == 0) {
-                        setWhtTray(response.data.data.actual_items)
-                    } else {
-                        setWhtTray(response.data.data.items)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'all-wht-tray/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        if (response.data.data?.items?.length == 0) {
+                            setWhtTray(response.data.data.actual_items)
+                        } else {
+                            setWhtTray(response.data.data.items)
+                        }
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -122,8 +137,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

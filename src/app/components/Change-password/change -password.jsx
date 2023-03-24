@@ -10,6 +10,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import jwt_decode from 'jwt-decode'
 import InputAdornment from '@mui/material/InputAdornment'
 import { axiosSuperAdminPrexo } from '../../../axios'
+import Swal from 'sweetalert2'
 
 const FlexBox = styled(Box)(() => ({
     display: 'flex',
@@ -94,7 +95,13 @@ const Login = () => {
                     state
                 )
                 if (response.status == 200) {
-                    alert(response.data.message)
+                 
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: response?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                     if (user_type == 'MIS') {
                         navigate('/mis/dashboard')
                     } else if (user_type == 'Warehouse') {
@@ -109,11 +116,20 @@ const Login = () => {
                         navigate('/sorting/dashboard')
                     }
                 } else if (response.status == 202) {
-                    alert(response.data.message)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response?.data?.message,
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+          
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 

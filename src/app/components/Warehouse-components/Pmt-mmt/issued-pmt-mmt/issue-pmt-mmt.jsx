@@ -6,6 +6,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { Button } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,6 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [trayData, setTrayData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,21 +30,30 @@ const SimpleMuiTable = () => {
             try {
                 let token = localStorage.getItem('prexo-authentication')
                 if (token) {
+                    setIsLoading(true)
                     const { location } = jwt_decode(token)
                     let res = await axiosWarehouseIn.post(
                         '/inuse-mmt-pmt/' + location + '/' + 'Issued'
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
+
                         setTrayData(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
         }
+        fetchData()
     }, [])
 
     const handelViewTray = (e, id) => {
@@ -154,8 +165,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

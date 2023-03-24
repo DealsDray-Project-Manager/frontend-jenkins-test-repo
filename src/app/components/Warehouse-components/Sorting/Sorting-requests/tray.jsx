@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import { Button } from '@mui/material'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,7 +21,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [botTray, setBotTray] = useState([])
     const navigate = useNavigate()
 
@@ -29,20 +30,34 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosMisUser.post(
                         '/view-sorting-item/' + location + '/' + 'warehouse'
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setBotTray(response.data.data)
                     } else {
-                        alert(response.data.message)
+                        setIsLoading(false)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -184,8 +199,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

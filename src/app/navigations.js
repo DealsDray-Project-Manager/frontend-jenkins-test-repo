@@ -49,6 +49,24 @@ export const navigations = [
         icon: '',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
+    {
+        name: 'Dashboard',
+        path: '/rdl-fls/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/sales/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.Sales_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/pricing/dashboard',
+        icon: 'dashboard',
+        auth: authRoles.pricing_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
     // {
     //     name: 'Analytics',
     //     path: '/dashboard/analytics',
@@ -59,49 +77,54 @@ export const navigations = [
         label: 'Pages',
         type: 'label',
     },
+    {
+        name: 'Masters',
+        icon: 'fiber_manual_record',
+        children: [
+            {
+                name: 'Users',
+                // icon: 'people',
+                path: '/sup-admin/users',
+            },
+            {
+                name: 'Locations',
+                // icon: 'location_on_outlined',
+                path: '/sup-admin/location',
+            },
+            {
+                name: 'Warehouses',
+                // icon: 'home',
+                path: '/sup-admin/warehouse',
+            },
+            {
+                name: 'Tray Category',
+                // icon: 'category',
+                path: '/sup-admin/Category',
+            },
+            {
+                name: 'Brands',
+                // icon: 'branding_watermark',
+                path: '/sup-admin/brands',
+            },
+            {
+                name: 'Products',
+                // icon: 'shopping_cart',
+                path: '/sup-admin/products',
+            },
+            {
+                name: 'Bags',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/bag',
+            },
+            {
+                name: 'Trays',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/tray',
+            },
+        ],
+        auth: authRoles.admin,
+    },
 
-    {
-        name: 'Users',
-        icon: 'people',
-        path: '/sup-admin/users',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Locations',
-        icon: 'location_on_outlined',
-        path: '/sup-admin/location',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Warehouses',
-        icon: 'home',
-        path: '/sup-admin/warehouse',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Brands',
-        icon: 'branding_watermark',
-        path: '/sup-admin/brands',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Products',
-        icon: 'shopping_cart',
-        path: '/sup-admin/products',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Bags',
-        icon: 'add_shopping_cart',
-        path: '/sup-admin/bag',
-        auth: authRoles.admin,
-    },
-    {
-        name: 'Trays',
-        icon: 'add_shopping_cart',
-        path: '/sup-admin/tray',
-        auth: authRoles.admin,
-    },
     {
         name: 'Ready For Charging',
         icon: 'battery_charging_full',
@@ -122,14 +145,20 @@ export const navigations = [
 
     {
         name: 'Remove invalid item',
-        icon: 'leak_remove',
+        icon: 'remove',
         path: '/sup-admin/remove-invalid-item',
         auth: authRoles.admin,
     },
     {
-        name: 'Ready for RDL',
+        name: 'Ready for RDL-FLS',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
+        auth: authRoles.admin,
+    },
+    {
+        name: 'Ready for Transfer CTX',
+        icon: 'transform',
+        path: '/sup-admin/ready-for-transfer',
         auth: authRoles.admin,
     },
     {
@@ -257,6 +286,16 @@ export const navigations = [
                 path: '/mis/assign-to-agent/audit',
                 iconText: 'NP',
             },
+            {
+                name: 'Assign to RDL-Fls',
+                path: '/mis/assign-to-agent/Rdl-fls',
+                iconText: 'NP',
+            },
+            {
+                name: 'Assign to RDL-Repair',
+                path: '/mis/assign-to-agent/Rdl-repair',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
     },
@@ -265,8 +304,13 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'Bot to Wht',
+                name: 'BOT to WHT',
                 path: '/mis/sorting/bot-to-wht',
+                iconText: 'VP',
+            },
+            {
+                name: 'CTX to STX',
+                path: '/mis/sorting/ctx-to-stx',
                 iconText: 'VP',
             },
         ],
@@ -287,9 +331,36 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
+                name: 'CTX',
+                path: '/mis/merge/ctx',
+                iconText: 'NP',
+            },
+            {
+                name: 'STX',
+                path: '/mis/merge/stx',
+                iconText: 'NP',
+            },
+            {
                 name: 'Pickup',
                 path: '/mis/merge/pickup',
                 iconText: 'NP',
+            },
+        ],
+        auth: authRoles.Mis,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Transfer',
+                path: '/mis/ctx/transfer',
+                iconText: 'VP',
+            },
+            {
+                name: 'Receive',
+                path: '/mis/ctx/receive',
+                iconText: 'VP',
             },
         ],
         auth: authRoles.Mis,
@@ -306,7 +377,7 @@ export const navigations = [
         ],
         auth: authRoles.Mis,
     },
-   
+
     {
         name: 'Bag',
         icon: 'class',
@@ -414,6 +485,16 @@ export const navigations = [
                 path: '/wareshouse/wht/ready-for-audit',
                 iconText: 'VP',
             },
+            {
+                name: 'RDL-FLS Request',
+                path: '/wareshouse/wht/rdl-fls-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From RDL-FLS',
+                path: '/wareshouse/wht/return-from-rdl-fls',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
     },
@@ -422,7 +503,7 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'Sorting Request',
+                name: 'Sorting Request (BOT)',
                 path: '/wareshouse/sorting/request',
                 iconText: 'VP',
             },
@@ -432,8 +513,19 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Return From Sorting',
+                name: 'Sorting Done (WHT)',
                 path: '/wareshouse/sorting/return-from-sorting',
+                iconText: 'VP',
+            },
+            {
+                name: 'Sorting Request (CTX)',
+                path: '/wareshouse/sorting/ctx/request',
+                iconText: 'VP',
+            },
+
+            {
+                name: 'Sorting Done (CTX/STX)',
+                path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting',
                 iconText: 'VP',
             },
         ],
@@ -461,6 +553,39 @@ export const navigations = [
             {
                 name: 'Return From Pickup',
                 path: '/wareshouse/wht/pickup/return-from-pickup',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'CTX Tray',
+                path: '/wareshouse/ctx/all',
+                iconText: 'VP',
+            },
+            {
+                name: 'Transfer Request',
+                path: '/wareshouse/ctx/transfer/request',
+            },
+            {
+                name: 'Receive Request',
+                path: '/wareshouse/ctx/receive/request',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+    },
+    {
+        name: 'STX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'STX Tray',
+                path: '/wareshouse/stx/all',
                 iconText: 'VP',
             },
         ],
@@ -510,13 +635,7 @@ export const navigations = [
         ],
         auth: authRoles.Warehouse,
     },
-    {
-        name: 'CTX',
-        icon: 'shopping_cart',
-        path: '/wareshouse/ctx/all',
-        auth: authRoles.Warehouse,
-    },
-  
+
     {
         name: 'Bag',
         icon: 'class',
@@ -532,9 +651,21 @@ export const navigations = [
     {
         name: 'Sorting Request',
         icon: 'sort',
-        path: '/sorting/request',
+        children: [
+            {
+                name: 'BOT to WHT',
+                path: '/sorting/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'CTX to STX',
+                path: '/sorting/ctx/request',
+                iconText: 'VP',
+            },
+        ],
         auth: authRoles.sorting,
     },
+
     {
         name: 'Tray Merge',
         icon: 'merge_type',
@@ -582,6 +713,25 @@ export const navigations = [
         icon: 'settings_system_daydream',
         path: '/audit/assigned-tray',
         auth: authRoles.audit,
+    },
+
+    {
+        name: 'RDL FLS Requests',
+        icon: 'class',
+        path: '/rdl-fls/tray',
+        auth: authRoles.RDL_FLS,
+    },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.Sales_Agent,
+    },
+    {
+        name: 'Dummy Panel',
+        icon: 'class',
+        path: '',
+        auth: authRoles.pricing_Agent,
     },
 
     // {

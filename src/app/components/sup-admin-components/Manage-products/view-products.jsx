@@ -209,6 +209,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
+        
         {
             name: 'vendor_sku_id',
             label: 'SKU ID',

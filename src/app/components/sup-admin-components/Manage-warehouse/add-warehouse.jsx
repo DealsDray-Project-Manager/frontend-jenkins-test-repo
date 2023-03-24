@@ -37,7 +37,11 @@ const MemberEditorDialog = ({
                     setLocationDrop(res.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
@@ -126,7 +130,11 @@ const MemberEditorDialog = ({
             }
         } catch (error) {
             setLoading(false)
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -149,10 +157,20 @@ const MemberEditorDialog = ({
             } else {
                 setEditFetchData({})
                 handleClose()
-                alert(response.data.message)
+               
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title:'Please check',
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     return (

@@ -12,6 +12,7 @@ import { H4 } from 'app/components/Typography'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
+import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -55,15 +56,32 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
             let res = await axiosWarehouseIn.post('/oneTrayAssigToAudit', state)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelTrayId = async () => {
@@ -81,7 +99,12 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 setErr(res.data.message)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     return (
@@ -114,10 +137,10 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                     name="tray_type"
                     onChange={handleChange}
                 >
-                    <MenuItem value={'CTA'}>CTA</MenuItem>
-                    <MenuItem value={'CTB'}>CTB</MenuItem>
-                    <MenuItem value={'CTC'}>CTC</MenuItem>
-                    <MenuItem value={'CTD'}>CTD</MenuItem>
+                    <MenuItem value={'A'}>CTA</MenuItem>
+                    <MenuItem value={'B'}>CTB</MenuItem>
+                    <MenuItem value={'C'}>CTC</MenuItem>
+                    <MenuItem value={'D'}>CTD</MenuItem>
                 </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Tray Id"

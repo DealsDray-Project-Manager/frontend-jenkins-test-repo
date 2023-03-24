@@ -19,6 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -51,11 +52,21 @@ const SimpleMuiTable = () => {
                 if (res.status == 200) {
                     setItem(res.data.data)
                 } else if (res.status == 202) {
-                    alert(res.data.message)
+                  
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text:res?.data?.message,
+                    })
                     navigate(-1)
                 }
             } catch (error) {
-                alert(error)
+           
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
             }
         }
         fetchData()
@@ -85,7 +96,11 @@ const SimpleMuiTable = () => {
     const handelUicGen = (e) => {
         e.preventDefault()
         if (isCheck.length == 0) {
-            alert('Please Select Atleast One Delivered Data')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:'Please Select Atleast One Delivered Data',
+            })
         } else {
             setLoading(true)
             let token = localStorage.getItem('prexo-authentication')
@@ -99,7 +114,12 @@ const SimpleMuiTable = () => {
                             item?.[0]?.delivery?.[isCheck[i]].uic_status !=
                             'Pending'
                         ) {
-                            alert('Already UIC Created')
+                          
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text:'Already UIC Created',
+                            })
 
                             break
                         }
@@ -115,15 +135,31 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                                alert(res.data.message)
+                               
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text:res?.data?.message,
+                                })
                             }
                         } catch (error) {
-                            alert(error)
+                         
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text:error,
+                            })
                         }
                         count++
                     }
                     if (count == isCheck.length) {
-                        alert('Successfully Generated')
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Successfully Generated',
+                            confirmButtonText: 'Ok',
+                        })
+                       
                         setLoading(false)
                         setIsCheck([])
                         setIsAlive((isAlive) => !isAlive)
@@ -140,7 +176,12 @@ const SimpleMuiTable = () => {
 
     const exportToCSV = (fileName) => {
         if (isCheck.length == 0) {
-            alert('Please Select Atleast One Data')
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text:'Please Select Atleast One Data',
+            })
         } else {
             let arr = []
             let status = false
@@ -149,7 +190,11 @@ const SimpleMuiTable = () => {
                     if (
                         item?.[0]?.delivery?.[isCheck[i]].uic_code == undefined
                     ) {
-                        alert('Please Generate UIC')
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text:'Please Generate UIC',
+                        })
                         status = true
                         break
                     } else {
@@ -160,10 +205,20 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                                alert(res.data.message)
+                               
+                                Swal.fire({
+                                    position: 'top-center',
+                                    icon: 'error',
+                                    title: res?.data?.message,
+                                    confirmButtonText: 'Ok',
+                                })
                             }
                         } catch (error) {
-                            alert(error)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text:error,
+                            })
                         }
                         let obj = {
                             UIC: item?.[0]?.delivery?.[isCheck[i]]?.uic_code

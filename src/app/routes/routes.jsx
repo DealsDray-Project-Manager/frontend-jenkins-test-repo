@@ -33,6 +33,10 @@ import BqcRoutes from "../components/Bqc-components/BqcRoutes"
 import Login from "../Login/loginRouter"
 import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
 import AuditRouter from "app/components/Audit-components/AuditRouter"
+import RDL_one from "app/components/Rdl_one-components/Rdl-fls-routers"
+import PricingRoutes from "app/components/Pricing-components/Pricing_routers"
+import SalesRoutes from "app/components/Sales-components/Sales_routes"
+
 
 export const AllPages = () => {
     const all_routes = [
@@ -69,11 +73,16 @@ export const AllPages = () => {
                 ...SortingRoutes,
                 ...ChargingRoutes,
                 ...BqcRoutes,
-                ...AuditRouter
+                ...AuditRouter,
+                ...RDL_one,
+                ...PricingRoutes,
+                ...SalesRoutes
             ],
         },
+
+          
         ...Login,
-        ...ChangePasswordRouter,
+        ...ChangePasswordRouter, 
         {
             path: '/',
             element: <Navigate to="/login" />,

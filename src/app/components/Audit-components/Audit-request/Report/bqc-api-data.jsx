@@ -25,7 +25,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={BqcSowftwareReport?.mandatory_test}>
-                        <TableCell sx={{ pl: 2 }}>IMEI Verification</TableCell>
+                        <TableCell sx={{ pl: 2 }}>IMEI Verification :</TableCell>
                         {imei?.match(/[0-9]/g).join('') ==
                             BqcSowftwareReport?.mobile_imei ||
                         imei?.match(/[0-9]/g).join('') ==
@@ -43,7 +43,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                     </TableRow>
 
                     <TableRow key={BqcSowftwareReport?.mandatory_test}>
-                        <TableCell sx={{ pl: 2 }}>Mandatory Test</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Mandatory Test :</TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.mandatory_test}
                         </TableCell>
@@ -51,7 +51,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
 
                     <TableRow key={BqcSowftwareReport?.hardware_test_summary}>
                         <TableCell sx={{ pl: 2 }}>
-                            Hardware Test Summary
+                            Hardware Test Summary :
                         </TableCell>
                         <TableCell>
                             {BqcSowftwareReport?.hardware_test_summary}
@@ -59,20 +59,20 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                     </TableRow>
 
                     <TableRow key={BqcSowftwareReport?.frp}>
-                        <TableCell sx={{ pl: 2 }}>FRP</TableCell>
+                        <TableCell sx={{ pl: 2 }}>FRP :</TableCell>
                         <TableCell>{BqcSowftwareReport?.frp}</TableCell>
                     </TableRow>
                     {BqcSowftwareReport?.operating_system_name?.toLowerCase() ==
                     'android' ? (
                         <TableRow key={BqcSowftwareReport?.device_color_one}>
-                            <TableCell sx={{ pl: 2 }}>Device Color</TableCell>
+                            <TableCell sx={{ pl: 2 }}>Device Color :</TableCell>
                             <TableCell>
                                 {BqcSowftwareReport?.device_color_one}
                             </TableCell>
                         </TableRow>
                     ) : (
                         <TableRow key={BqcSowftwareReport?.device_color}>
-                            <TableCell sx={{ pl: 2 }}>Device Color</TableCell>
+                            <TableCell sx={{ pl: 2 }}>Device Color :</TableCell>
                             <TableCell>
                                 {BqcSowftwareReport?.device_color}
                             </TableCell>
@@ -80,13 +80,13 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                     )}
                     {grade == 'A' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test :</H6>
                             <Divider />
                             {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.crackedlens}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Cracked Lens
+                                        Cracked Lens :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.crackedlens}
@@ -101,7 +101,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Headphone Jack 3.5 mm
+                                        PQ Headphone Jack 3.5 mm :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -116,7 +116,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Cracked
+                                        PQ Screen Cracked :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screencracked}
@@ -129,7 +129,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Missing Parts
+                                        PQ Missing Parts :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_missingparts}
@@ -143,7 +143,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratch Chrome Side
+                                        PQ Scratch Chrome Side :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -157,7 +157,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Dentdevice Body
+                                        PQ Dentdevice Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_dentdevicebody}
@@ -171,7 +171,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Display
+                                        PQ Scratches Display :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -188,7 +188,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Back Panel
+                                        PQ Scratches Back Panel :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -202,7 +202,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Crack Device Body
+                                        PQ Crack Device Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_crackdevicebody}
@@ -217,7 +217,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Benton device Body
+                                        PQ Benton device Body :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -232,7 +232,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Battery Bulging
+                                        PQ Battery Bulging :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_batterybulging}
@@ -245,7 +245,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Type
+                                        PQ Screen Type :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screen_type}
@@ -257,7 +257,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
-                                        Power Key
+                                        Power Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.powerkey}
@@ -268,7 +268,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key
+                                        Volume Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volumekey}
@@ -279,7 +279,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key
+                                        Silent Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silentkey}
@@ -290,7 +290,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key
+                                        Home Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.homekey}
@@ -301,7 +301,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        SIM Tray
+                                        SIM Tray :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.simtray}
@@ -314,7 +314,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Charging Jack
+                                        Charging Jack :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.chargingjack}
@@ -325,7 +325,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Finger Print
+                                        Finger Print :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fingerprint}
@@ -336,7 +336,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Flash Light
+                                        Flash Light :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.flashlight}
@@ -344,7 +344,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Automated Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Automated Failed Test :</H6>
                             <Divider />
 
                             {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
@@ -353,7 +353,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Test
+                                        Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.front_camera_test}
@@ -366,7 +366,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.back_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Back Camera Test
+                                        Back Camera Test  :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.back_camera_test}
@@ -381,7 +381,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Test
+                                        Carrier Signel Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -398,7 +398,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Sim 2 Test
+                                        Carrier Signel Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -415,7 +415,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Microphone Test
+                                        Speaker Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -428,7 +428,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        WI-Fi Test
+                                        WI-Fi Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.wi_fi_test}
@@ -441,7 +441,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Focus Test
+                                        Auto Focus Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_focus_test}
@@ -454,7 +454,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.bluetooth_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Bluetooth Test
+                                        Bluetooth Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.bluetooth_test}
@@ -465,7 +465,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Video Test
+                                        Video Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.video_test}
@@ -476,7 +476,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Agps Test
+                                        Agps Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.agps_test}
@@ -484,13 +484,13 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test :</H6>
                             <Divider />
                             {BqcSowftwareReport?.touch_test?.toLowerCase() ==
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Touch Test
+                                        Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.touch_test}
@@ -503,7 +503,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Test
+                                        Live Call Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.live_call_test}
@@ -518,7 +518,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Sim 2 Test
+                                        Live Call Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -533,7 +533,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.fm_radio_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        FM Radio Test
+                                        FM Radio Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fm_radio_test}
@@ -544,7 +544,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.screen_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Test
+                                        Screen Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_test}
@@ -557,7 +557,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Microphone Test
+                                        Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.microphone_test}
@@ -570,7 +570,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Received Test
+                                        Received Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.receiver_test}
@@ -583,7 +583,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -596,7 +596,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -609,7 +609,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Vibration Test
+                                        Vibration Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.vibration_test}
@@ -622,7 +622,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Camera Flash Test
+                                        Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.camera_flash_test}
@@ -639,7 +639,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 >
                                     <TableCell sx={{ pl: 2 }}>
                                         Blancco Data Blancco Hardware Report
-                                        Hardware Tests Auto Fingerprint
+                                        Hardware Tests Auto Fingerprint :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -656,7 +656,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Flash Test
+                                        Front Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -671,7 +671,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Rotation Test
+                                        Auto Rotation Test  :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_rotation_test}
@@ -684,7 +684,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.multi_touch_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Multi Touch Test
+                                        Multi Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.multi_touch_test}
@@ -697,7 +697,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.infrared_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Infrared Test
+                                        Infrared Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.infrared_test}
@@ -710,7 +710,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -723,7 +723,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Test
+                                        Headset Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -738,7 +738,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Microphone Test
+                                        Headset Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -753,7 +753,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Test
+                                        Headset Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -768,7 +768,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Microphone Test
+                                        Headset Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -778,7 +778,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test :</H6>
                             <Divider />
 
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
@@ -787,7 +787,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -803,7 +803,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Battery Charging Test
+                                        Battery Charging Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -818,7 +818,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key Test
+                                        Home Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.home_key_test}
@@ -833,7 +833,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Lock Key Test
+                                        Screen Lock Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -848,7 +848,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key Test
+                                        Volume Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volume_keys_test}
@@ -863,7 +863,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Recent Menu Key Test
+                                        Recent Menu Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -880,7 +880,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Front Camera Test
+                                        Assisted Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -897,7 +897,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Assisted Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -912,7 +912,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.proximity_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Proximity Test
+                                        Proximity Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.proximity_test}
@@ -925,7 +925,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.compass_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Compass Test
+                                        Compass Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.compass_test}
@@ -936,7 +936,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Light Test
+                                        Light Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.light_test}
@@ -949,7 +949,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key Test
+                                        Silent Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silent_key_test}
@@ -962,7 +962,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Touch Test
+                                        Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -976,7 +976,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Touch Test
+                                        Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -990,7 +990,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Face ID Test
+                                        Face ID Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.face_id_test}
@@ -1006,7 +1006,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.crackedlens}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Cracked Lens
+                                        Cracked Lens :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.crackedlens}
@@ -1022,7 +1022,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Headphone Jack 3.5 mm
+                                        PQ Headphone Jack 3.5 mm :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1037,7 +1037,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Cracked
+                                        PQ Screen Cracked :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screencracked}
@@ -1050,7 +1050,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Missing Parts
+                                        PQ Missing Parts :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_missingparts}
@@ -1064,7 +1064,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratch Chrome Side
+                                        PQ Scratch Chrome Side :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1078,7 +1078,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Dentdevice Body
+                                        PQ Dentdevice Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_dentdevicebody}
@@ -1092,7 +1092,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Display
+                                        PQ Scratches Display :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1109,7 +1109,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Back Panel
+                                        PQ Scratches Back Panel :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1124,7 +1124,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Crack Device Body
+                                        PQ Crack Device Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_crackdevicebody}
@@ -1139,7 +1139,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Bent on device Body
+                                        PQ Bent on device Body :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1154,7 +1154,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Battery Bulging
+                                        PQ Battery Bulging :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_batterybulging}
@@ -1167,7 +1167,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Type
+                                        PQ Screen Type :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screen_type}
@@ -1179,7 +1179,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
-                                        Power Key
+                                        Power Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.powerkey}
@@ -1190,7 +1190,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key
+                                        Volume Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volumekey}
@@ -1201,7 +1201,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key
+                                        Silent Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silentkey}
@@ -1212,7 +1212,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key
+                                        Home Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.homekey}
@@ -1223,7 +1223,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        SIM Tray
+                                        SIM Tray :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.simtray}
@@ -1236,7 +1236,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Charging Jack
+                                        Charging Jack :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.chargingjack}
@@ -1247,7 +1247,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Finger Print
+                                        Finger Print :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fingerprint}
@@ -1258,7 +1258,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Flash Light
+                                        Flash Light :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.flashlight}
@@ -1274,7 +1274,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Test
+                                        Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.front_camera_test}
@@ -1287,7 +1287,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.back_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Back Camera Test
+                                        Back Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.back_camera_test}
@@ -1302,7 +1302,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Test
+                                        Carrier Signel Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1319,7 +1319,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Sim 2 Test
+                                        Carrier Signel Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1336,7 +1336,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Microphone Test
+                                        Speaker Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1349,7 +1349,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        WI-Fi Test
+                                        WI-Fi Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.wi_fi_test}
@@ -1362,7 +1362,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Focus Test
+                                        Auto Focus Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_focus_test}
@@ -1375,7 +1375,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.bluetooth_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Bluetooth Test
+                                        Bluetooth Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.bluetooth_test}
@@ -1386,7 +1386,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Video Test
+                                        Video Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.video_test}
@@ -1397,7 +1397,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Agps Test
+                                        Agps Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.agps_test}
@@ -1405,7 +1405,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Manual Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Manual Failed Test </H6>
                             <Divider />
 
                             {BqcSowftwareReport?.touch_test?.toLowerCase() ==
@@ -1425,7 +1425,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Test
+                                        Live Call Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.live_call_test}
@@ -1438,7 +1438,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.fm_radio_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        FM Radio Test
+                                        FM Radio Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fm_radio_test}
@@ -1449,7 +1449,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.screen_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Test
+                                        Screen Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_test}
@@ -1464,7 +1464,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Sim 2 Test
+                                        Live Call Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1480,7 +1480,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Microphone Test
+                                        Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.microphone_test}
@@ -1493,7 +1493,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Received Test
+                                        Received Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.receiver_test}
@@ -1506,7 +1506,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -1519,7 +1519,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -1532,7 +1532,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Vibration Test
+                                        Vibration Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.vibration_test}
@@ -1545,7 +1545,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Camera Flash Test
+                                        Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.camera_flash_test}
@@ -1561,7 +1561,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 >
                                     <TableCell sx={{ pl: 2 }}>
                                         Blancco Data Blancco Hardware Report
-                                        Hardware Tests Auto Fingerprint
+                                        Hardware Tests Auto Fingerprint :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1578,7 +1578,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Flash Test
+                                        Front Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1593,7 +1593,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Rotation Test
+                                        Auto Rotation Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_rotation_test}
@@ -1606,7 +1606,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.multi_touch_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Multi Touch Test
+                                        Multi Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.multi_touch_test}
@@ -1619,7 +1619,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.infrared_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Infrared Test
+                                        Infrared Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.infrared_test}
@@ -1632,7 +1632,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -1645,7 +1645,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Test
+                                        Headset Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -1660,7 +1660,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Microphone Test
+                                        Headset Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1679,7 +1679,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -1694,7 +1694,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Battery Charging Test
+                                        Battery Charging Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1709,7 +1709,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key Test
+                                        Home Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.home_key_test}
@@ -1724,7 +1724,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Lock Key Test
+                                        Screen Lock Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1739,7 +1739,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key Test
+                                        Volume Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volume_keys_test}
@@ -1754,7 +1754,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Recent Menu Key Test
+                                        Recent Menu Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1771,7 +1771,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Front Camera Test
+                                        Assisted Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1788,7 +1788,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Assisted Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1803,7 +1803,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.proximity_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Proximity Test
+                                        Proximity Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.proximity_test}
@@ -1816,7 +1816,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.compass_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Compass Test
+                                        Compass Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.compass_test}
@@ -1827,7 +1827,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Light Test
+                                        Light Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.light_test}
@@ -1840,7 +1840,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key Test
+                                        Silent Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silent_key_test}
@@ -1853,7 +1853,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Face ID Test
+                                        Face ID Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.face_id_test}
@@ -1869,7 +1869,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.crackedlens}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Cracked Lens
+                                        Cracked Lens :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.crackedlens}
@@ -1884,7 +1884,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Headphone Jack 3.5 mm
+                                        PQ Headphone Jack 3.5 mm :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1899,7 +1899,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Cracked
+                                        PQ Screen Cracked :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screencracked}
@@ -1912,7 +1912,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Missing Parts
+                                        PQ Missing Parts :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_missingparts}
@@ -1926,7 +1926,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratch Chrome Side
+                                        PQ Scratch Chrome Side :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1940,7 +1940,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Dentdevice Body
+                                        PQ Dentdevice Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_dentdevicebody}
@@ -1954,8 +1954,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Display
-                                    </TableCell>
+                                        PQ Scratches Display :
+                                    </TableCell> 
                                     <TableCell>
                                         {
                                             BqcSowftwareReport?.pq_scratchesdisplay
@@ -1971,7 +1971,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Back Panel
+                                        PQ Scratches Back Panel :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -1985,7 +1985,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Crack Device Body
+                                        PQ Crack Device Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_crackdevicebody}
@@ -2000,7 +2000,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Benton device Body
+                                        PQ Benton device Body :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2015,7 +2015,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Battery Bulging
+                                        PQ Battery Bulging :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_batterybulging}
@@ -2028,7 +2028,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Type
+                                        PQ Screen Type :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screen_type}
@@ -2040,7 +2040,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
-                                        Power Key
+                                        Power Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.powerkey}
@@ -2051,7 +2051,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key
+                                        Volume Key :
                                     </TableCell>
 
                                     <TableCell>
@@ -2063,7 +2063,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key
+                                        Silent Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silentkey}
@@ -2074,7 +2074,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key
+                                        Home Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.homekey}
@@ -2085,7 +2085,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        SIM Tray
+                                        SIM Tray :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.simtray}
@@ -2098,7 +2098,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Charging Jack
+                                        Charging Jack :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.chargingjack}
@@ -2109,7 +2109,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Finger Print
+                                        Finger Print :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fingerprint}
@@ -2120,7 +2120,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Flash Light
+                                        Flash Light :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.flashlight}
@@ -2131,7 +2131,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Video Test
+                                        Video Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.video_test}
@@ -2147,7 +2147,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Test
+                                        Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.front_camera_test}
@@ -2160,7 +2160,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.back_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Back Camera Test
+                                        Back Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.back_camera_test}
@@ -2175,7 +2175,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Test
+                                        Carrier Signel Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2192,7 +2192,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Sim 2 Test
+                                        Carrier Signel Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2209,7 +2209,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Microphone Test
+                                        Speaker Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2222,7 +2222,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        WI-Fi Test
+                                        WI-Fi Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.wi_fi_test}
@@ -2235,7 +2235,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Focus Test
+                                        Auto Focus Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_focus_test}
@@ -2248,7 +2248,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.bluetooth_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Bluetooth Test
+                                        Bluetooth Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.bluetooth_test}
@@ -2259,7 +2259,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Agps Test
+                                        Agps Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.agps_test}
@@ -2273,7 +2273,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Touch Test
+                                        Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.touch_test}
@@ -2286,7 +2286,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.fm_radio_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        FM Radio Test
+                                        FM Radio Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fm_radio_test}
@@ -2297,7 +2297,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.screen_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Test
+                                        Screen Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_test}
@@ -2310,7 +2310,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Test
+                                        Live Call Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.live_call_test}
@@ -2325,7 +2325,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Sim 2 Test
+                                        Live Call Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2340,7 +2340,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Microphone Test
+                                        Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.microphone_test}
@@ -2353,7 +2353,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Received Test
+                                        Received Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.receiver_test}
@@ -2366,7 +2366,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -2379,7 +2379,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -2392,7 +2392,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Vibration Test
+                                        Vibration Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.vibration_test}
@@ -2405,7 +2405,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Camera Flash Test
+                                        Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.camera_flash_test}
@@ -2422,7 +2422,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 >
                                     <TableCell sx={{ pl: 2 }}>
                                         Blancco Data Blancco Hardware Report
-                                        Hardware Tests Auto Fingerprint
+                                        Hardware Tests Auto Fingerprint :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2439,7 +2439,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Flash Test
+                                        Front Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2454,7 +2454,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Rotation Test
+                                        Auto Rotation Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_rotation_test}
@@ -2467,7 +2467,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.multi_touch_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Multi Touch Test
+                                        Multi Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.multi_touch_test}
@@ -2480,7 +2480,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.infrared_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Infrared Test
+                                        Infrared Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.infrared_test}
@@ -2493,7 +2493,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -2506,7 +2506,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Test
+                                        Headset Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -2521,7 +2521,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Microphone Test
+                                        Headset Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2540,7 +2540,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -2555,7 +2555,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Battery Charging Test
+                                        Battery Charging Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2570,7 +2570,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key Test
+                                        Home Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.home_key_test}
@@ -2585,7 +2585,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Lock Key Test
+                                        Screen Lock Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2600,7 +2600,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key Test
+                                        Volume Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volume_keys_test}
@@ -2615,7 +2615,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Recent Menu Key Test
+                                        Recent Menu Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2632,7 +2632,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Front Camera Test
+                                        Assisted Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2649,7 +2649,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Assisted Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2664,7 +2664,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.proximity_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Proximity Test
+                                        Proximity Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.proximity_test}
@@ -2677,7 +2677,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.compass_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Compass Test
+                                        Compass Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.compass_test}
@@ -2688,7 +2688,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Light Test
+                                        Light Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.light_test}
@@ -2702,7 +2702,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key Test
+                                        Silent Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silent_key_test}
@@ -2715,7 +2715,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Face ID Test
+                                        Face ID Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.face_id_test}
@@ -2731,7 +2731,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.crackedlens}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Cracked Lens
+                                        Cracked Lens :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.crackedlens}
@@ -2746,7 +2746,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Headphone Jack 3.5 mm
+                                        PQ Headphone Jack 3.5 mm :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2761,7 +2761,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screencracked}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Cracked
+                                        PQ Screen Cracked :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screencracked}
@@ -2774,7 +2774,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_missingparts}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Missing Parts
+                                        PQ Missing Parts :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_missingparts}
@@ -2788,7 +2788,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratch Chrome Side
+                                        PQ Scratch Chrome Side :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2802,7 +2802,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_dentdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Dentdevice Body
+                                        PQ Dentdevice Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_dentdevicebody}
@@ -2816,7 +2816,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Display
+                                        PQ Scratches Display :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2833,7 +2833,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Scratches Back Panel
+                                        PQ Scratches Back Panel :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2847,7 +2847,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_crackdevicebody}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Crack Device Body
+                                        PQ Crack Device Body :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_crackdevicebody}
@@ -2862,7 +2862,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Benton device Body
+                                        PQ Benton device Body :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -2877,7 +2877,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_batterybulging}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Battery Bulging
+                                        PQ Battery Bulging :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_batterybulging}
@@ -2890,7 +2890,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.pq_screen_type}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        PQ Screen Type
+                                        PQ Screen Type :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.pq_screen_type}
@@ -2902,7 +2902,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow key={BqcSowftwareReport?.powerkey}>
                                     <TableCell sx={{ pl: 2 }}>
                                         {' '}
-                                        Power Key
+                                        Power Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.powerkey}
@@ -2913,7 +2913,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.volumekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key
+                                        Volume Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volumekey}
@@ -2924,7 +2924,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.silentkey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key
+                                        Silent Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silentkey}
@@ -2935,7 +2935,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.homekey}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key
+                                        Home Key :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.homekey}
@@ -2946,7 +2946,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.simtray}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        SIM Tray
+                                        SIM Tray :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.simtray}
@@ -2959,7 +2959,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.chargingjack}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Charging Jack
+                                        Charging Jack :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.chargingjack}
@@ -2970,7 +2970,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.fingerprint}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Finger Print
+                                        Finger Print :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fingerprint}
@@ -2981,7 +2981,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.flashlight}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Flash Light
+                                        Flash Light :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.flashlight}
@@ -2997,7 +2997,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.front_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Test
+                                        Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.front_camera_test}
@@ -3010,7 +3010,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.back_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Back Camera Test
+                                        Back Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.back_camera_test}
@@ -3025,7 +3025,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Test
+                                        Carrier Signel Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3042,7 +3042,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Carrier Signel Sim 2 Test
+                                        Carrier Signel Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3059,7 +3059,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Microphone Test
+                                        Speaker Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3072,7 +3072,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.wi_fi_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        WI-Fi Test
+                                        WI-Fi Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.wi_fi_test}
@@ -3085,7 +3085,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_focus_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Focus Test
+                                        Auto Focus Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_focus_test}
@@ -3098,7 +3098,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.bluetooth_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Bluetooth Test
+                                        Bluetooth Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.bluetooth_test}
@@ -3109,7 +3109,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.video_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Video Test
+                                        Video Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.video_test}
@@ -3120,7 +3120,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.agps_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Agps Test
+                                        Agps Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.agps_test}
@@ -3134,7 +3134,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.touch_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Touch Test
+                                        Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.touch_test}
@@ -3147,7 +3147,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.fm_radio_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        FM Radio Test
+                                        FM Radio Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.fm_radio_test}
@@ -3158,7 +3158,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.screen_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Test
+                                        Screen Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_test}
@@ -3171,7 +3171,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.live_call_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Test
+                                        Live Call Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.live_call_test}
@@ -3186,7 +3186,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Live Call Sim 2 Test
+                                        Live Call Sim 2 Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3201,7 +3201,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -3214,7 +3214,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.receiver_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Received Test
+                                        Received Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.receiver_test}
@@ -3227,7 +3227,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -3240,7 +3240,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.speaker_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Speaker Test
+                                        Speaker Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.speaker_test}
@@ -3253,7 +3253,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.vibration_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Vibration Test
+                                        Vibration Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.vibration_test}
@@ -3266,7 +3266,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.camera_flash_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Camera Flash Test
+                                        Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.camera_flash_test}
@@ -3282,7 +3282,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 >
                                     <TableCell sx={{ pl: 2 }}>
                                         Blancco Data Blancco Hardware Report
-                                        Hardware Tests Auto Fingerprint
+                                        Hardware Tests Auto Fingerprint :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3299,7 +3299,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Front Camera Flash Test
+                                        Front Camera Flash Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3313,8 +3313,8 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
-                                    <TableCell sx={{ pl: 2 }}>
-                                        Auto Rotation Test
+                                    <TableCell sx={{ pl: 2 }}> 
+                                        Auto Rotation Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_rotation_test}
@@ -3328,7 +3328,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.multi_touch_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Multi Touch Test
+                                        Multi Touch Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.multi_touch_test}
@@ -3341,7 +3341,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.infrared_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Infrared Test
+                                        Infrared Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.infrared_test}
@@ -3354,7 +3354,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.screen_damage_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Damage Test
+                                        Screen Damage Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.screen_damage_test}
@@ -3367,7 +3367,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.headset_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Test
+                                        Headset Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.headset_test}
@@ -3382,7 +3382,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Headset Microphone Test
+                                        Headset Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3392,7 +3392,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test</H6>
+                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test </H6>
                             <Divider />
 
                             {BqcSowftwareReport?.battery_charging_test?.toLowerCase() ==
@@ -3403,7 +3403,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Battery Charging Test
+                                        Battery Charging Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3418,7 +3418,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.microphone_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Microphone Test
+                                        Microphone Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.microphone_test}
@@ -3431,7 +3431,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.home_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Home Key Test
+                                        Home Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.home_key_test}
@@ -3446,7 +3446,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Screen Lock Key Test
+                                        Screen Lock Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3461,7 +3461,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.volume_keys_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Volume Key Test
+                                        Volume Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.volume_keys_test}
@@ -3476,7 +3476,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Recent Menu Key Test
+                                        Recent Menu Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3493,7 +3493,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Front Camera Test
+                                        Assisted Front Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3510,7 +3510,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     }
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Assisted Camera Test
+                                        Assisted Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {
@@ -3526,7 +3526,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.proximity_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Proximity Test
+                                        Proximity Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.proximity_test}
@@ -3539,7 +3539,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.compass_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Compass Test
+                                        Compass Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.compass_test}
@@ -3550,7 +3550,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             'failed' ? (
                                 <TableRow key={BqcSowftwareReport?.light_test}>
                                     <TableCell sx={{ pl: 2 }}>
-                                        Light Test
+                                        Light Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.light_test}
@@ -3563,7 +3563,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.silent_key_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Silent Key Test
+                                        Silent Key Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.silent_key_test}
@@ -3576,7 +3576,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.face_id_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Face ID Test
+                                        Face ID Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.face_id_test}

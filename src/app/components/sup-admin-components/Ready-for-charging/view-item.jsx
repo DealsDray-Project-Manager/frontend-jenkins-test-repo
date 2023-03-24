@@ -5,6 +5,8 @@ import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
 import { axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -28,11 +30,15 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                const res = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray'
-                )
-                if (res.status === 200) {
-                    setWhtTrayItem(res.data?.data?.items)
+                let admin = localStorage.getItem('prexo-authentication')
+                if(admin){
+                    let { location } = jwt_decode(admin)
+                    const res = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray/' + location
+                    )
+                    if (res.status === 200) {
+                        setWhtTrayItem(res.data?.data?.items)
+                    }
                 }
             } catch (error) {
                 Swal.fire({

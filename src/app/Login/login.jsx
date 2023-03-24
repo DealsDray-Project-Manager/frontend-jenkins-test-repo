@@ -86,6 +86,12 @@ const Login = () => {
                 navigate('/sorting/dashboard')
             } else if (user_type == 'Audit') {
                 navigate('/audit/dashboard')
+            } else if (user_type == 'RDL-FLS') {
+                navigate('/rdl-fls/dashboard')
+            } else if (user_type == 'Sales Agent') {
+                navigate('/sales/dashboard')
+            } else if (user_type == 'Pricing Agent') {
+                navigate('/pricing/dashboard')
             }
         } else {
             navigate('/')
@@ -123,6 +129,12 @@ const Login = () => {
                     navigate('/sorting/dashboard')
                 } else if (response.data.data?.user_type == 'Audit') {
                     navigate('/audit/dashboard')
+                } else if (response.data.data?.user_type == 'RDL-FLS') {
+                    navigate('/rdl-fls/dashboard')
+                } else if (response.data.data?.user_type == 'Sales Agent') {
+                    navigate('/sales/dashboard')
+                } else if (response.data.data?.user_type == 'Pricing Agent') {
+                    navigate('/pricing/dashboard')
                 }
             } else {
                 setLoading(false)
@@ -130,7 +142,7 @@ const Login = () => {
             }
         } catch (e) {
             setLoading(false)
-            console.log(e)
+
             setMessage(e.message)
         }
     }

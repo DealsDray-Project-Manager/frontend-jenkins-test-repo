@@ -5,10 +5,11 @@ import { Grid, Card, IconButton, Icon } from '@mui/material'
 import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const StatCard3 = () => {
     const [count, setCount] = useState({})
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,7 +24,12 @@ const StatCard3 = () => {
                         setCount(res.data.data)
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
                 }
             }
         }
@@ -34,7 +40,7 @@ const StatCard3 = () => {
             icon: 'reorder',
             amount: count.orders,
             title: 'Orders',
-            path:"/mis/orders"
+            path: '/mis/orders',
         },
         {
             icon: 'reorder',
@@ -101,20 +107,44 @@ const StatCard3 = () => {
             amount: count.bqc,
             title: 'Assign To BQC',
             path: '/mis/assign-to-agent/bqc',
-
         },
         {
             icon: 'assignment',
             amount: count.audit,
             title: 'Assign To Audit',
             path: '/mis/assign-to-agent/audit',
+        },
 
+        {
+            icon: 'art_track',
+            amount: count.rdl,
+            title: 'Assign To RDL-FLS',
+            path: '/mis/assign-to-agent/Rdl-fls',
+        },
+        {
+            icon: 'art_track',
+            amount: count.rdl_two,
+            title: 'Assign To RDL-Repair',
+            path: '/mis/assign-to-agent/Rdl-repair',
         },
         {
             icon: 'sort',
             amount: count.botToWht,
             title: 'BOT To WHT',
             path: '/mis/sorting/bot-to-wht',
+        },
+        {
+            icon: 'sort',
+            amount: count.ctxToStxSorting,
+            title: 'CTX To STX',
+            path: '/mis/sorting/ctx-to-stx',
+        },
+
+        {
+            icon: 'merge_type',
+            amount: count.mmtMerge,
+            title: 'MMT Merge',
+            path: '/mis/merge/mmt',
         },
         {
             icon: 'merge_type',
@@ -124,9 +154,21 @@ const StatCard3 = () => {
         },
         {
             icon: 'merge_type',
-            amount: count.mmtMerge,
-            title: 'MMT Merge',
-            path: '/mis/merge/mmt',
+            amount: count.ctxMerge,
+            title: 'CTX Merge',
+            path: '/mis/merge/ctx',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToTransfer,
+            title: 'Transfer CTX',
+            path: '/mis/ctx/transfer',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.receiveCtx,
+            title: 'Receive CTX',
+            path: '/mis/ctx/receive',
         },
         {
             icon: 'art_track',
@@ -143,7 +185,12 @@ const StatCard3 = () => {
             <Grid container spacing={3}>
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
-                        <Card style={{cursor:"pointer"}} onClick={((e)=> navigate(item.path))} elevation={3} sx={{ p: '20px', display: 'flex' }}>
+                        <Card
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => navigate(item.path)}
+                            elevation={3}
+                            sx={{ p: '20px', display: 'flex' }}
+                        >
                             <div>
                                 <IconButton
                                     size="small"

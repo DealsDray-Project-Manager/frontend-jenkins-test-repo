@@ -6,6 +6,7 @@ import { Button, Checkbox } from '@mui/material'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -24,6 +25,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -31,22 +33,33 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/wht-tray/' + 'Ready to Audit/' + location
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setWhtTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleClick = (e) => {
@@ -63,26 +76,26 @@ const SimpleMuiTable = () => {
     }
 
     const columns = [
-        {
-            name: 'code',
-            label: 'Select',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, dataIndex) => {
-                    return (
-                        <Checkbox
-                            onClick={(e) => {
-                                handleClick(e)
-                            }}
-                            id={value}
-                            key={value}
-                            checked={isCheck.includes(value)}
-                        />
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'code',
+        //     label: 'Select',
+        //     options: {
+        //         filter: true,
+        //         sort: true,
+        //         customBodyRender: (value, dataIndex) => {
+        //             return (
+        //                 <Checkbox
+        //                     onClick={(e) => {
+        //                         handleClick(e)
+        //                     }}
+        //                     id={value}
+        //                     key={value}
+        //                     checked={isCheck.includes(value)}
+        //                 />
+        //             )
+        //         },
+        //     },
+        // },
         {
             name: 'index',
             label: 'Record No',
@@ -158,7 +171,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[9],
+                    value.length + '/' + tableMeta.rowData[8],
             },
         },
         {
@@ -217,8 +230,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

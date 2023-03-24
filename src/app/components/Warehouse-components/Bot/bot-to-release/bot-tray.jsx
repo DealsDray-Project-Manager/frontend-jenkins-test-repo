@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Button } from '@mui/material'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -23,6 +24,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -30,6 +32,7 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/tray-for-release/' +
@@ -40,13 +43,20 @@ const SimpleMuiTable = () => {
                             'BOT'
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setBotTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -60,11 +70,21 @@ const SimpleMuiTable = () => {
             )
             if (res.status === 200) {
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -193,8 +213,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

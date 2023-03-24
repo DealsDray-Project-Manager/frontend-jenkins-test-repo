@@ -3,6 +3,7 @@ import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -35,16 +36,29 @@ const MemberEditorDialog = ({
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {
-                handleClose()
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setIsAlive((isAlive) => !isAlive)
+                handleClose()
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     return (

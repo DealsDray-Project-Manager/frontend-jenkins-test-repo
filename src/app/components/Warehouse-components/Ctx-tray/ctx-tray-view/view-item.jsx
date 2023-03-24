@@ -40,7 +40,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewItem = (id) => {
-        navigate('/wareshouse/ctx/view-item/' + id)
+        navigate('/wareshouse/tray/view-item/' + id)
     }
 
     const columns = [
@@ -131,7 +131,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'CTX Tray', path: '/' },
+                        { name: 'Tray', path: '/' },
                         { name: 'Tray-Item' },
                     ]}
                 />

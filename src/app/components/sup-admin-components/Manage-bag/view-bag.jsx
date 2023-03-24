@@ -25,20 +25,24 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [bagList, setBagList] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 let obj = {
                     master_type: 'bag-master',
                 }
                 const res = await axiosSuperAdminPrexo.post('/getMasters', obj)
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setBagList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -47,7 +51,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchBrand()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -299,8 +306,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

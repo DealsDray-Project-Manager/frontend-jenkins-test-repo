@@ -23,17 +23,21 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [locationList, setLocatiolList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchLocation = async () => {
             try {
+                setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/getLocation')
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setLocatiolList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -42,7 +46,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchLocation()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(true)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -138,6 +145,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'location_type',
+            label: 'Location Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'address',
             label: 'Address',
             options: {
@@ -211,9 +225,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Location', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Location', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -230,8 +242,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

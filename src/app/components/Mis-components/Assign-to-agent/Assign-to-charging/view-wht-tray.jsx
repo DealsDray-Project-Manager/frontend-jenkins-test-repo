@@ -7,6 +7,7 @@ import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,12 +27,14 @@ const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [chargingUsers, setChargingUsers] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
@@ -39,17 +42,26 @@ const SimpleMuiTable = () => {
                         '/wht-tray/' + 'Closed/' + location
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setWhtTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
-        return () => setIsAlive(false)
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
     }, [isAlive])
 
     const handleClick = (e) => {
@@ -85,7 +97,11 @@ const SimpleMuiTable = () => {
                     }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -121,7 +137,7 @@ const SimpleMuiTable = () => {
             label: 'Record No',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -174,7 +190,7 @@ const SimpleMuiTable = () => {
             label: 'Limit',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 display: false,
             },
         },
@@ -195,13 +211,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
+
         {
             name: 'created_at',
             label: 'Creation Date',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -213,7 +229,7 @@ const SimpleMuiTable = () => {
             label: 'Action',
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 customBodyRender: (value) => {
                     return (
                         <Button
@@ -259,8 +275,15 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -52,6 +52,12 @@ const StatCard3 = () => {
         },
         {
             icon: 'branding_watermark',
+            amount: count.ctxCategory,
+            title: 'Category',
+            link: '/sup-admin/category',
+        },
+        {
+            icon: 'branding_watermark',
             amount: count.brand,
             title: 'Brands',
             link: '/sup-admin/brands',
@@ -87,7 +93,19 @@ const StatCard3 = () => {
             link: '/sup-admin/ready-for-charging/bqc-tray',
         },
         {
-            icon: 'leak_remove',
+            icon: 'low_priority',
+            amount: count.readyForRdl,
+            title: 'Ready For RDL-FLS',
+            link: '/sup-admin/ready-for-rdl',
+        },
+        {
+            icon: 'transform',
+            amount: count.readyForTransferSales,
+            title: 'Ready For Transfer-Sales',
+            link: '/sup-admin/ready-for-transfer',
+        },
+        {
+            icon: 'remove',
             amount: count.removeInvalidItem,
             title: 'Remove invalid item',
             link: '/sup-admin/remove-invalid-item',

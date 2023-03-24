@@ -56,12 +56,12 @@ const BqcUserReportPage = ({ BOt }) => {
                         <TableCell>{BOt?.stickerFour}</TableCell>
                     </TableRow> */}
                     <TableRow key={BOt?.body_damage}>
-                        <TableCell sx={{ pl: 2 }}>Any body Damage</TableCell>
+                        <TableCell sx={{ pl: 2 }}>Any body Damage :</TableCell>
                         <TableCell>{BOt?.body_damage}</TableCell>
                     </TableRow>
                     <TableRow key={BOt?.body_damage_des}>
                         <TableCell sx={{ pl: 2 }}>
-                            Details of Damage parts
+                            Details of Damage parts :
                         </TableCell>
                         <TableCell>{BOt?.body_damage_des}</TableCell>
                     </TableRow>

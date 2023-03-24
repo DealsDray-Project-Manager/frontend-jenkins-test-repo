@@ -2,8 +2,10 @@ import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+
 import {
-    MenuItem,
     TableCell,
     TableHead,
     Table,
@@ -14,9 +16,11 @@ import {
     TextField,
     Box,
     Typography,
+    Button,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,6 +43,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
+    const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
@@ -49,41 +54,63 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
-            setDisplayText('Loading...')
             const { location } = jwt_decode(admin)
-            const fetchData = async () => {
-                try {
+            setDisplayText('Loading...')
+            if (inputSearch !== '') {
+                const pageSearch = async () => {
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: inputSearch,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
                     let res = await axiosMisUser.post(
-                        '/getDeliveredOrders/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
+                        '/search-mis-track-item',
+                        obj
                     )
                     if (res.status == 200) {
                         setDisplayText('')
-                        setCount(res.data.count)
+                        // setRowsPerPage(10)
+                        // setPage(0)
                         setItem(res.data.data)
+                    } else {
+                        setItem(res.data.data)
+                        setDisplayText('Sorry no data found')
                     }
-                } catch (error) {
-                    alert(error)
                 }
+                pageSearch()
+            } else {
+                const fetchData = async () => {
+                    try {
+                        let res = await axiosMisUser.post(
+                            '/getDeliveredOrders/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setCount(res.data.count)
+                            setItem(res.data.data)
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            confirmButtonText: 'Ok',
+                            text: error,
+                        })
+                    }
+                }
+                fetchData()
             }
-            fetchData()
         } else {
             navigate('/')
         }
     }, [refresh, page])
-
-    useEffect(() => {
-        setData((_) =>
-            item.map((d, index) => {
-                d.id = page * rowsPerPage + index + 1
-                return d
-            })
-        )
-    }, [page, item, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -116,6 +143,7 @@ const SimpleMuiTable = () => {
     }))
 
     const searchTrackItem = async (e) => {
+        setInputSearch(e.target.value)
         e.preventDefault()
         try {
             let admin = localStorage.getItem('prexo-authentication')
@@ -125,19 +153,21 @@ const SimpleMuiTable = () => {
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
                 } else {
+                    setRowsPerPage(100)
+                    setPage(0)
                     let obj = {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
                     let res = await axiosMisUser.post(
                         '/search-mis-track-item',
                         obj
                     )
                     if (res.status == 200) {
-                        setRowsPerPage(10)
                         setDisplayText('')
-                        setPage(0)
                         setItem(res.data.data)
                     } else {
                         setItem(res.data.data)
@@ -146,10 +176,37 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
+    const download = (e) => {
+        let arr = []
+        for (let x of item) {
+            delete x?.delivery?._id
+            delete x?.delivery?.bqc_report
+            delete x?.delivery?.charging
+            delete x?.delivery?.bot_report
+            delete x?.delivery?.audit_report
+            x.delivery['uic_code'] = x.delivery?.uic_code?.code
+            arr.push(x.delivery)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
 
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Item-track' + fileExtension)
+    }
+    console.log('item', item)
+    console.log('data', data)
     const tableData = useMemo(() => {
         return (
             <ProductTable>
@@ -211,6 +268,18 @@ const SimpleMuiTable = () => {
                         <TableCell>
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
+                        <TableCell>CTX Tray Id</TableCell>
+                        <TableCell>RDL FLS Agent name</TableCell>
+                        <TableCell>Tray Issued to RDL FLS Date</TableCell>
+                        <TableCell>Tray Closed By RDL FLS Date</TableCell>
+                        <TableCell>Tray Received From RDL FLS Date</TableCell>
+                        <TableCell>RDL FLS Done Closed By Warehouse</TableCell>
+                        <TableCell>CTX Tray Transfer to Sales Date</TableCell>
+                        <TableCell>
+                            CTX Tray Received From Processing and Close By WH
+                            Date
+                        </TableCell>
+                        <TableCell>STX Tray Id</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -505,6 +574,69 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
+                            <TableCell>{data?.delivery.ctx_tray_id}</TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_fls_one_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_issued_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_issued_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_closed_date != undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_closed_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_done_recieved_date !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_recieved_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.rdl_fls_done_closed_wh !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery.rdl_fls_done_closed_wh
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    .ctx_tray_transferTo_sales_date != undefined
+                                    ? new Date(
+                                          data?.delivery.ctx_tray_transferTo_sales_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery.ctx_tray_receive_and_close_wh !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery.ctx_tray_receive_and_close_wh
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>{data?.delivery.stx_tray_id}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -529,7 +661,7 @@ const SimpleMuiTable = () => {
                 }}
             >
                 <Box>
-                    <TextField
+                    {/* <TextField
                         select
                         label="Select"
                         variant="outlined"
@@ -541,17 +673,27 @@ const SimpleMuiTable = () => {
                         <MenuItem value="order_id">Order Id</MenuItem>
                         <MenuItem value="uic">UIC</MenuItem>
                         <MenuItem value="tracking_id">Tracking ID</MenuItem>
-                    </TextField>
+                    </TextField> */}
                     <TextField
                         onChange={(e) => {
                             searchTrackItem(e)
                         }}
-                        disabled={search.type == '' ? true : false}
+                        // disabled={search.type == '' ? true : false}
                         label="Search"
                         variant="outlined"
-                        sx={{ ml: 2, mb: 1 }}
+                        sx={{ mb: 1 }}
                     />
                 </Box>
+                <Button
+                    sx={{ mb: 2 }}
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => {
+                        download(e)
+                    }}
+                >
+                    Download XLSX
+                </Button>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

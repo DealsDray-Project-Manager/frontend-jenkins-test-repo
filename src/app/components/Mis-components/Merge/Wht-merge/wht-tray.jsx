@@ -19,6 +19,7 @@ import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -73,6 +74,7 @@ const SimpleMuiTable = () => {
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
     const [open, setOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -85,18 +87,26 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/wht-tray/' + 'wht-merge/' + location
                     )
                     if (response.status === 200) {
+                        setIsLoading(false)
                         setWhtTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
@@ -114,18 +124,36 @@ const SimpleMuiTable = () => {
                     if (res.status === 200) {
                         setSortingAgent(res.data.data)
                     } else {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 }
                 fetchData()
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [isAlive])
 
     /* OPEN DIALOG BOX */
-    const handelMerge = async (e, model, brand, trayId, itemCount, status) => {
+    const handelMerge = async (
+        e,
+        model,
+        brand,
+        trayId,
+        itemCount,
+        status,
+        type
+    ) => {
         e.preventDefault()
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -138,6 +166,8 @@ const SimpleMuiTable = () => {
                     fromTray: trayId,
                     itemCount: itemCount,
                     status: status,
+                    type: type,
+                    sortId: 'Audit Done Closed By Warehouse',
                 }
 
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
@@ -145,12 +175,22 @@ const SimpleMuiTable = () => {
                     setOpen(true)
                     setToWhatTray(res.data.data)
                 } else {
-                    alert(res.data.message)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
                 setMergeData((p) => ({ ...p, fromTray: trayId }))
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handleClose = () => {
@@ -170,12 +210,22 @@ const SimpleMuiTable = () => {
                 mergreData
             )
             if (res.status === 200) {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 handleClose()
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -309,10 +359,11 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[8],
                                         value,
                                         tableMeta.rowData[5]?.length,
-                                        tableMeta.rowData[10]
+                                        tableMeta.rowData[10],
+                                        tableMeta.rowData[6]
                                     )
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'green' }}
                             >
                                 Merge
                             </Button>
@@ -421,14 +472,6 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                // onClick={() => setShouldOpenEditorDialog(true)}
-            >
-                Assign
-            </Button>
             <MUIDataTable
                 title={'Wht Tray'}
                 data={whtTray}
@@ -438,6 +481,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

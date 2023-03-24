@@ -31,6 +31,9 @@ const MemberEditorDialog = ({
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
 
+
+    
+
     useEffect(() => {
         try {
             const fetchCpc = async () => {
@@ -179,6 +182,8 @@ const MemberEditorDialog = ({
         }
     }
 
+   
+
     const handelEdit = async (data) => {
         try {
             let response = await axiosSuperAdminPrexo.post('/editMaster', data)
@@ -246,6 +251,7 @@ const MemberEditorDialog = ({
                             {...register('name')}
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name.message : ''}
+                          
                         />
 
                         <TextFieldCustOm
@@ -350,7 +356,10 @@ const MemberEditorDialog = ({
                     <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() => handleClose()}
+                        onClick={() =>
+                             handleClose()
+                            //  dataa()
+                        }
                     >
                         Cancel
                     </Button>

@@ -81,10 +81,11 @@ const PaginationTable = () => {
     }, [pagination.page, pagination.item])
     useEffect(() => {
         try {
+            let obj = {
+                type: 'tray-master',
+            }
             const fetchData = async () => {
-                let res = await axiosSuperAdminPrexo.post(
-                    '/trayIdGenrate/' + 'tray-master'
-                )
+                let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
                 if (res.status == 200) {
                     setCountOfTray(res.data.data)
                 }
@@ -141,10 +142,9 @@ const PaginationTable = () => {
         let count2 = 0
         let count3 = 0
         let count4 = 0
-        let count5 = 0
-        let count6 = 0
-        let count7 = 0
-        let count8 = 0
+        let obj = {
+            ...countOfTray,
+        }
 
         try {
             for (let x of pagination.item) {
@@ -161,31 +161,25 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'WHT') {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
-                } else if (x.tray_category == 'CTA') {
-                    x.tray_id = 'CTA' + (countOfTray.CTA + count5)
-                    count5++
-                } else if (x.tray_category == 'CTB') {
-                    x.tray_id = 'CTB' + (countOfTray.CTB + count6)
-                    count6++
-                } else if (x.tray_category == 'CTC') {
-                    x.tray_id = 'CTC' + (countOfTray.CTC + count7)
-                    count7++
-                } else if (x.tray_category == 'CTD') {
-                    x.tray_id = 'CTD' + (countOfTray.CTD + count8)
-                    count8++
+                } else {
+                    x.tray_id =
+                        x.tray_category + x.tray_grade + obj[x.tray_grade]
+                    obj[x.tray_grade] = Number(obj[x.tray_grade] + 1)
                 }
+                // else if (x.tray_category == 'CTA') {
+                //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
+                //     count5++
+                // } else if (x.tray_category == 'CTB') {
+                //     x.tray_id = 'CTB' + (countOfTray.CTB + count6)
+                //     count6++
+                // } else if (x.tray_category == 'CTC') {
+                //     x.tray_id = 'CTC' + (countOfTray.CTC + count7)
+                //     count7++
+                // } else if (x.tray_category == 'CTD') {
+                //     x.tray_id = 'CTD' + (countOfTray.CTD + count8)
+                //     count8++
+                // }
             }
-            setCountOfTray((p) => ({
-                ...p,
-                BOT: p.BOT + count1,
-                MMT: p.MMT + count2,
-                PMT: p.PMT + count3,
-                WHT: p.WHT + count4,
-                CTA: p.CTA + count5,
-                CTB: p.CTB + count6,
-                CTC: p.CTC + count7,
-                CTD: p.CTD + count8,
-            }))
 
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
@@ -194,6 +188,15 @@ const PaginationTable = () => {
             )
             if (res.status == 200) {
                 setLoading(false)
+                setErr({})
+                setCountOfTray((p) => ({
+                    ...p,
+                    BOT: p.BOT + count1,
+                    MMT: p.MMT + count2,
+                    PMT: p.PMT + count3,
+                    WHT: p.WHT + count4,
+                    ...obj,
+                }))
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
@@ -225,6 +228,7 @@ const PaginationTable = () => {
             }
         }
     }
+
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
@@ -233,6 +237,7 @@ const PaginationTable = () => {
                 allCount: countOfTray,
                 item: pagination.item,
             }
+            console.log(obj)
             let res = await axiosSuperAdminPrexo.post('/createBulkTray', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -409,6 +414,7 @@ const PaginationTable = () => {
                                         <TableCell>CPC</TableCell>
                                         <TableCell>Warehouse</TableCell>
                                         <TableCell>Tray Category</TableCell>
+                                        <TableCell>Tray Grade</TableCell>
                                         <TableCell>Tray Brand</TableCell>
                                         <TableCell>Tray Model</TableCell>
                                         <TableCell>Tray Name</TableCell>
@@ -427,7 +433,12 @@ const PaginationTable = () => {
                                                     <TextField
                                                         id="outlined-password-input"
                                                         type="text"
-                                                        value={data.tray_id}
+                                                        value={
+                                                            data.tray_id ==
+                                                            'NaN'
+                                                                ? ''
+                                                                : data.tray_id
+                                                        }
                                                     />
                                                     {err?.tray_id?.includes(
                                                         data.tray_id
@@ -512,7 +523,6 @@ const PaginationTable = () => {
                                                     ''
                                                 )}
                                             </TableCell>
-
                                             <TableCell>
                                                 <TextField
                                                     onChange={updateFieldChanged(
@@ -573,8 +583,62 @@ const PaginationTable = () => {
                                                     id="outlined-password-input"
                                                     type="text"
                                                     name="tray_category"
-                                                    value={data.tray_category?.toString()}
+                                                    value={data?.tray_category?.toString()}
                                                 />
+                                                {err?.category?.includes(
+                                                    data.tray_category?.toString()
+                                                ) ? (
+                                                    <ClearIcon
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                ) : Object.keys(err).length !=
+                                                  0 ? (
+                                                    <DoneIcon
+                                                        style={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                {err?.category?.includes(
+                                                    data?.tray_category?.toString()
+                                                ) ? (
+                                                    <p style={{ color: 'red' }}>
+                                                        Tray Category not Exists
+                                                    </p>
+                                                ) : null}
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    onChange={updateFieldChanged(
+                                                        data.id
+                                                    )}
+                                                    id="outlined-password-input"
+                                                    type="text"
+                                                    name="tray_grade"
+                                                    value={data?.tray_grade?.toString()}
+                                                />
+                                                {err?.grade?.includes(
+                                                    data.tray_grade?.toString()
+                                                ) ? (
+                                                    <ClearIcon
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                ) : Object.keys(err).length !=
+                                                  0 ? (
+                                                    <DoneIcon
+                                                        style={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                {err?.grade?.includes(
+                                                    data?.tray_grade?.toString()
+                                                ) ? (
+                                                    <p style={{ color: 'red' }}>
+                                                        Tray Grade not Exists In
+                                                        Category
+                                                    </p>
+                                                ) : null}
                                             </TableCell>
                                             <TableCell>
                                                 <TextField
@@ -588,10 +652,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                ) || Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined  ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -605,10 +669,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.brand?.includes(
                                                     data.tray_brand
-                                                )  ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined ?  (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Brand name not exists
                                                     </p>
@@ -626,10 +690,10 @@ const PaginationTable = () => {
                                                 />
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                ) ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.tray_model ==
-                                                    undefined ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_model ==
+                                                        undefined) ? (
                                                     <ClearIcon
                                                         style={{ color: 'red' }}
                                                     />
@@ -643,10 +707,10 @@ const PaginationTable = () => {
                                                 ) : null}
                                                 {err?.model?.includes(
                                                     data.tray_model
-                                                )  ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.tray_model ==
-                                                    undefined ? (
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_model ==
+                                                        undefined) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Model name not exists
                                                     </p>
@@ -807,18 +871,21 @@ const PaginationTable = () => {
                                                 (Object.keys(err).length != 0 &&
                                                     data.tray_id ==
                                                         undefined) ||
+                                                err?.category?.includes(
+                                                    data?.tray_category?.toString()
+                                                ) ||
                                                 err?.model?.includes(
                                                     data.tray_model
                                                 ) ||
                                                 err?.model?.includes(
                                                     data.tray_brand
-                                                ) ||  Object.keys(err).length !=
-                                                0 &&
-                                                data.brand ==
-                                                    undefined ||  Object.keys(err).length !=
-                                                    0 &&
+                                                ) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.tray_brand ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
                                                     data.tray_model ==
-                                                        undefined  ||
+                                                        undefined) ||
                                                 err?.tray_id?.includes(
                                                     data.tray_id
                                                 ) ||
@@ -839,6 +906,9 @@ const PaginationTable = () => {
                                                         undefined) ||
                                                 (Object.keys(err).length != 0 &&
                                                     data.tray_display == '') ||
+                                                err?.grade?.includes(
+                                                    data?.tray_grade?.toString()
+                                                ) ||
                                                 err?.warehouse_does_not_exist?.includes(
                                                     data.tray_id
                                                 ) ||

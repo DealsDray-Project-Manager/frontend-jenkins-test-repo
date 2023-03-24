@@ -40,27 +40,48 @@ const MemberEditorDialog = ({
             let res = await axiosMisUser.post('/issueRequestSend', obj)
             if (res.status == 200) {
                 setLoading(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setBotName('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-                alert(res.data.message)
+                handleClose()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
                 setBotName('')
                 handleClose()
-                navigate('/mis/assign-to-agent/bot/uic-genaration/' + res.data.bagId)
+                navigate(
+                    '/mis/assign-to-agent/bot/uic-genaration/' + res.data.bagId
+                )
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
     return (
-        <Dialog fullWidth
-        maxWidth="xs" onClose={handleClose} open={open}>
+        <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Select Bot User</H4>
-                <TextFieldCustOm label="Username" fullWidth select name="username">
+                <TextFieldCustOm
+                    label="Username"
+                    fullWidth
+                    select
+                    name="username"
+                >
                     {botUsers.map((data) => (
                         <MenuItem
                             key={data.user_name}
@@ -82,7 +103,6 @@ const MemberEditorDialog = ({
                         }}
                         color="primary"
                         type="submit"
-                        
                     >
                         Assign
                     </Button>

@@ -21,7 +21,7 @@ import {
     DialogContent,
     DialogActions,
     MenuItem,
-    Grid
+    Grid,
 } from '@mui/material'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -219,7 +219,6 @@ function Search() {
                 '/whtUtility/bagAndBotTray/' + tempDelivery?.[0]?.partner_shop
             )
             if (res.status == 200) {
-                console.log(res.data)
                 setBotUsers(res.data.botUsers)
                 setBag(res.data.bag)
                 setBotTray(res.data.tray)
@@ -233,14 +232,11 @@ function Search() {
         }
     }
 
- 
-
     const tempOrderSearchData = useMemo(() => {
         return (
             <TempOrderStyle>
                 <TableHead>
                     <TableRow>
-                   
                         <TableCell>Delivery Status</TableCell>
                         <TableCell>Order Imported TimeStamp</TableCell>
                         <TableCell>Order ID</TableCell>
@@ -271,7 +267,6 @@ function Search() {
                     ) : null}
                     {tempOrders?.map((data, index) => (
                         <TableRow>
-                           
                             <TableCell
                                 style={
                                     data?.delivery_status == 'Pending'
@@ -345,7 +340,6 @@ function Search() {
             <OrderTable>
                 <TableHead>
                     <TableRow>
-                       
                         <TableCell>Delivery Status</TableCell>
                         <TableCell>Order Imported TimeStamp</TableCell>
                         <TableCell>Order ID</TableCell>
@@ -399,7 +393,6 @@ function Search() {
                     ) : null}
                     {orderData?.map((data, index) => (
                         <TableRow>
-                         
                             <TableCell
                                 style={
                                     data?.delivery_status == 'Pending'
@@ -578,7 +571,6 @@ function Search() {
                     ) : null}
                     {deliveryData?.map((data, index) => (
                         <TableRow>
-                           
                             <TableCell
                                 style={
                                     data?.result?.length != 0
@@ -688,7 +680,6 @@ function Search() {
             <TempOrderStyle>
                 <TableHead>
                     <TableRow>
-                        
                         <TableCell>Old UIC</TableCell>
                         <TableCell>Temp Delivery Imported Date</TableCell>
                         <TableCell>UIC</TableCell>
@@ -719,7 +710,6 @@ function Search() {
                     ) : null}
                     {tempDelivery?.map((data, index) => (
                         <TableRow>
-                          
                             <TableCell>{data?.old_uic}</TableCell>
                             <TableCell>
                                 {new Date(data?.created_at).toLocaleString(
@@ -785,7 +775,6 @@ function Search() {
             </TempOrderStyle>
         )
     }, [tempDelivery])
-    
 
     return (
         <Container>
@@ -906,15 +895,15 @@ function Search() {
                     </Button>
                 </Box>
             </Box>
-            
+
             {show !== false ? (
                 <>
-                <Box
+                    <Box
                         sx={{
                             display: 'flex',
                             alignItems: 'flex-start',
                             flexDirection: 'column',
-                            mb:2,
+                            mb: 2,
                             bgcolor: 'background.paper',
                             borderRadius: 1,
                         }}
@@ -922,21 +911,23 @@ function Search() {
                         <Grid container spacing={1}>
                             <Grid item xs={6}>
                                 <h3 style={{ marginLeft: '11px' }}>
-                                    AWBN:-{tempDelivery?.[0]?.products[0]?.vendor_sku_id}
+                                    AWBN:-{tempDelivery?.[0]?.tracking_id}
                                 </h3>
                                 <h3 style={{ marginLeft: '11px' }}>
-                                    NEW UIC :- {tempDelivery?.[0]?.uic_code?.code}
+                                    NEW UIC :-{' '}
+                                    {tempDelivery?.[0]?.uic_code?.code}
                                 </h3>
                                 <h3 style={{ marginLeft: '11px' }}>
-                                    BRAND :- {tempOrders?.[0]?.products[0]?.brand_name}
+                                    BRAND :-{' '}
+                                    {tempOrders?.[0]?.products[0]?.brand_name}
                                 </h3>
                                 <h3 style={{ marginLeft: '11px' }}>
-                                    MODEL :- {tempOrders?.[0]?.products[0]?.model_name}
+                                    MODEL :-{' '}
+                                    {tempOrders?.[0]?.products[0]?.model_name}
                                 </h3>
                                 <h3 style={{ marginLeft: '11px' }}>
                                     MUIC :- {tempOrders?.[0]?.products[0]?.muic}
                                 </h3>
-                              
                             </Grid>
                             <Grid item xs={6}>
                                 <img
@@ -944,11 +935,14 @@ function Search() {
                                     width="400px"
                                     alt="No product image"
                                     src={
-                                        tempDelivery?.[0]?.products[0]?.image == undefined
-                                            ? 'http://prexo-v7-2-uat-api.dealsdray.com/product/image/' +
-                                            tempDelivery?.[0]?.products[0]?.vendor_sku_id +
+                                        tempDelivery?.[0]?.products[0]?.image ==
+                                        undefined
+                                            ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
+                                              tempDelivery?.[0]?.products[0]
+                                                  ?.vendor_sku_id +
                                               '.jpg'
-                                            : tempDelivery?.[0]?.products[0]?.image
+                                            : tempDelivery?.[0]?.products[0]
+                                                  ?.image
                                     }
                                 />
                             </Grid>

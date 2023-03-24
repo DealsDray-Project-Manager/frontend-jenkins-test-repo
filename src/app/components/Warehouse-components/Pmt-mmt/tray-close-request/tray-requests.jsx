@@ -25,6 +25,7 @@ import { useForm } from 'react-hook-form'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -83,6 +84,7 @@ const SimpleMuiTable = () => {
     const [botUsers, setBotUsers] = useState([])
     const [trayId, setTrayId] = useState('')
     const [userTray, setUserTray] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const [trayStatus, setTrayStatus] = useState('')
     const [trayIdCheck, setTrayIdCheck] = useState('')
     const [loadingAssign, setLoadingAssign] = useState(false)
@@ -99,15 +101,31 @@ const SimpleMuiTable = () => {
             let res = await axiosWarehouseIn.post('/assignNewTray', values)
             if (res.status === 200) {
                 setLoadingAssign(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setAssignNewTray(false)
                 setUserTray('')
                 setTrayStatus('')
             } else {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const {
@@ -131,19 +149,26 @@ const SimpleMuiTable = () => {
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     useEffect(() => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setIsLoading(true)
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
                     let res = await axiosWarehouseIn.post(
                         '/trayCloseRequest/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTrayData(res.data.data)
                     }
                 }
@@ -152,7 +177,13 @@ const SimpleMuiTable = () => {
                 navigate('/')
             }
         } catch (error) {
-            alert(error)
+            setIsLoading(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }, [isAlive])
     const handleClose = () => {
@@ -179,22 +210,44 @@ const SimpleMuiTable = () => {
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
                 setLoadinRecieved(false)
-                alert(res.data.message)
+
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setOpen(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setLoadinRecieved(false)
-                alert(res.data.message)
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
             setLoadinRecieved(false)
         }
     }
     // CHECK TRAY
     const handelBotTrayCheck = async (username, trayType) => {
         if (username === '') {
-            alert('Please select user')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: 'Please Select User',
+                confirmButtonText: 'Ok',
+            })
             reset({
                 user_name: null,
             })
@@ -211,7 +264,12 @@ const SimpleMuiTable = () => {
                     setUserTray(res.data.message)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
@@ -225,9 +283,19 @@ const SimpleMuiTable = () => {
                     getValues('user_name') === '' ||
                     getValues('tray_type') === ''
                 ) {
-                    alert('Please select user and tray type')
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Select User and Tray Type',
+                        confirmButtonText: 'Ok',
+                    })
                 } else if (trayIdCheck == '') {
-                    alert('Please add tray id')
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Add Tray ID',
+                        confirmButtonText: 'Ok',
+                    })
                 } else {
                     if (getValues('tray_type') == 'MMT') {
                         let res = await axiosWarehouseIn.post(
@@ -236,7 +304,12 @@ const SimpleMuiTable = () => {
                         if (res.status == 200) {
                             setTrayStatus(res.data.status)
                         } else {
-                            alert(res.data.message)
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title: res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     } else if (getValues('tray_type') == 'PMT') {
                         let res = await axiosWarehouseIn.post(
@@ -245,7 +318,12 @@ const SimpleMuiTable = () => {
                         if (res.status == 200) {
                             setTrayStatus(res.data.status)
                         } else {
-                            alert(res.data.message)
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title: res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     } else {
                         let res = await axiosWarehouseIn.post(
@@ -254,13 +332,23 @@ const SimpleMuiTable = () => {
                         if (res.status == 200) {
                             setTrayStatus(res.data.status)
                         } else {
-                            alert(res.data.message)
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title: res?.data?.message,
+                                confirmButtonText: 'Ok',
+                            })
                         }
                     }
                 }
             }
         } catch (error) {
-            alert(error.response.data.message)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error?.response?.data?.message,
+            })
         }
     }
 
@@ -631,8 +719,31 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

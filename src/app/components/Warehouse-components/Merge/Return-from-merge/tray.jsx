@@ -16,6 +16,7 @@ import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -71,34 +72,42 @@ const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
     const [refresh, setRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
                         '/returnFromMerging/' + location
                     )
                     if (res.status == 200) {
+                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            alert(error)
         }
+        fetchData()
     }, [refresh])
 
     const handleClose = () => {
         setOpen(false)
     }
-    
 
     const handelTrayReceived = async () => {
         try {
@@ -109,18 +118,33 @@ const SimpleMuiTable = () => {
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setOpen(false)
                 setRefresh((refresh) => !refresh)
             } else {
-                alert(res.data.message)
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            setOpen(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
-
-    
 
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
@@ -293,6 +317,13 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

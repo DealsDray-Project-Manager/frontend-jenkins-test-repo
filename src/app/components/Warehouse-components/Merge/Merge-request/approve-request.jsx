@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
     Paper,
     Table,
@@ -14,6 +14,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function StickyHeadTable({ props }) {
     const [mmtTray, setMmtTray] = useState([])
@@ -33,34 +34,27 @@ export default function StickyHeadTable({ props }) {
                     if (response.status === 200) {
                         setMmtTray(response.data.data)
                     } else {
-                        alert(response.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
     }, [])
-    useEffect(() => {
-        const userStatusApiCall = async () => {
-            try {
-                let res = await axiosWarehouseIn.post(
-                    '/sortingAgnetStatus/' + mmtTray[0]?.issued_user_name + "/" + mmtTray?.[0]?.code 
-                )
-                if (res.status === 200) {
-                    setUserAgent(res.data.data)
-                }
-            } catch (error) {
-                alert(error)
-            }
-        }
-        if (mmtTray[0]?.issued_user_name !== undefined) {
-            userStatusApiCall()
-        }
-    }, [mmtTray])
 
     const handelExvsAt = (e, code) => {
         e.preventDefault()
@@ -70,9 +64,13 @@ export default function StickyHeadTable({ props }) {
     /******************************************************************************* */
     const handelIssue = async (e, type) => {
         try {
-            if (userAgent !== 'User is free') {
-                alert(userAgent)
-            } else {
+            let res = await axiosWarehouseIn.post(
+                '/sortingAgnetStatus/' +
+                    mmtTray[0]?.issued_user_name +
+                    '/' +
+                    mmtTray?.[0]?.code
+            )
+            if (res.status === 200) {
                 setLoading(true)
                 let flag = false
                 for (let x of mmtTray) {
@@ -92,19 +90,47 @@ export default function StickyHeadTable({ props }) {
                         obj
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         setLoading(false)
                         navigate('/wareshouse/merge/request')
                     } else {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     setLoading(false)
-                    alert('Please Issue all Tray')
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'warning',
+                        title: 'Please Issue All Tray',
+                        confirmButtonText: 'Ok',
+                    })
                 }
+            } else {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.data,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -232,56 +258,3 @@ export default function StickyHeadTable({ props }) {
         </>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

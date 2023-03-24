@@ -15,7 +15,8 @@ import {
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import TrayAssignDialogBox from './trayAssignMent'
-
+import Swal from 'sweetalert2'
+import jwt_decode from 'jwt-decode'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
 export default function DialogBox() {
@@ -31,10 +32,10 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
     const [otherTrayAssign, setOtherTrayAssign] = useState({
-        CTA: '',
-        CTB: '',
-        CTC: '',
-        CTD: '',
+        A: '',
+        B: '',
+        C: '',
+        D: '',
         WHT: '',
     })
 
@@ -45,38 +46,66 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await axiosWarehouseIn.post(
-                    '/getWhtTrayItem/' + trayId + '/' + 'Send for Audit'
-                )
-                if (response.status === 200) {
-                    setTrayData(response.data.data)
-                } else {
-                    alert(response.data.message)
-                    navigate(-1)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Send for Audit/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+
+                        navigate(-1)
+                    }
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
     }, [refresh])
 
-    
     useEffect(() => {
         const userStatusApiCall = async () => {
             try {
                 let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
+                    '/auditUserStatusChecking/' +
+                        trayData.issued_user_name +
+                        '/' +
+                        trayData.brand +
+                        '/' +
+                        trayData.model
                 )
                 let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit/' + trayData.issued_user_name + "/" + trayData.brand + "/" + trayData.model
+                    '/fetchAssignedTrayForAudit/' +
+                        trayData.issued_user_name +
+                        '/' +
+                        trayData.brand +
+                        '/' +
+                        trayData.model
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
-                        CTA: trayFetch.data.data.CTA,
-                        CTB: trayFetch.data.data.CTB,
-                        CTC: trayFetch.data.data.CTC,
-                        CTD: trayFetch.data.data.CTD,
+                        A: trayFetch.data.data.CTA,
+                        B: trayFetch.data.data.CTB,
+                        C: trayFetch.data.data.CTC,
+                        D: trayFetch.data.data.CTD,
                         WHT: trayId,
                     })
                     setTrayIdNotChangeAble(trayFetch.data.data)
@@ -85,7 +114,12 @@ export default function DialogBox() {
                     setUserAgent(res.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         if (trayData.issued_user_name !== undefined) {
@@ -108,17 +142,33 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                    alert(res.data.message)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData.items.length < trayData?.actual_items?.length) {
-            alert('All Items Scanned')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All Items Scanned ',
+                confirmButtonText: 'Ok',
+            })
         } else {
             try {
                 let objData = {
@@ -136,22 +186,32 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
     }
-     /************************************************************************** */
+    /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
             if (userAgent !== 'User is free') {
                 alert(userAgent)
             } else if (
-                otherTrayAssign.CTA == '' ||
-                otherTrayAssign.CTB == '' ||
-                otherTrayAssign.CTC == '' ||
-                otherTrayAssign.CTD == ''
+                otherTrayAssign.A == '' ||
+                otherTrayAssign.B == '' ||
+                otherTrayAssign.C == '' ||
+                otherTrayAssign.D == ''
             ) {
-                alert('Please assign other tray')
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: 'Please Assign other tray',
+                    confirmButtonText: 'Ok',
+                })
                 handleDialogOpen()
             } else {
                 if (trayData?.actual_items?.length == trayData?.items?.length) {
@@ -166,18 +226,39 @@ export default function DialogBox() {
                         obj
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                         navigate('/wareshouse/wht/audit-request')
                     } else {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     setLoading(false)
-                    alert('Please Verify Actual Data')
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Please verify Actual data',
+                        confirmButtonText: 'Ok',
+                    })
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -338,7 +419,6 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
-
 
     return (
         <>

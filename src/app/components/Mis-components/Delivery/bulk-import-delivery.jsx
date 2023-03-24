@@ -18,6 +18,7 @@ import * as XLSX from 'xlsx'
 import { axiosMisUser } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -84,7 +85,12 @@ const PaginationTable = () => {
 
     const importExcel = () => {
         if (exFile == null) {
-            alert('Please Select File')
+            Swal.fire({
+                position: 'top-center',
+                icon: 'warning',
+                title: 'Please Select File',
+                confirmButtonText: 'Ok',
+            })
         } else {
             setLoading(true)
             readExcel(exFile)
@@ -154,14 +160,16 @@ const PaginationTable = () => {
                 if (data?.base_discount !== undefined) {
                     data.base_discount = data.base_discount.toString()
                 }
-                if(data?.partner_purchase_price !== undefined){
-                    data.partner_purchase_price = data.partner_purchase_price.toString() 
+                if (data?.partner_purchase_price !== undefined) {
+                    data.partner_purchase_price =
+                        data.partner_purchase_price.toString()
                 }
-                if(data?.diagnostics_discount !== undefined){
-                    data.diagnostics_discount=data.diagnostics_discount.toString()
+                if (data?.diagnostics_discount !== undefined) {
+                    data.diagnostics_discount =
+                        data.diagnostics_discount.toString()
                 }
-                if(data?.storage_discount !== undefined){
-                    data.storage_discount =data.storage_discount.toString() 
+                if (data?.storage_discount !== undefined) {
+                    data.storage_discount = data.storage_discount.toString()
                 }
 
                 if (
@@ -255,20 +263,40 @@ const PaginationTable = () => {
 
             let res = await axiosMisUser.post('/importDelivery', obj)
             if (res.status == 200) {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
                 setLoading(false)
                 navigate('/mis/delivery')
             } else {
-                alert(res.data.message)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     const handelValidate = async () => {
         try {
             if (deliveryData == '') {
-                alert('Please Select The Date')
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'warning',
+                    title: 'Please Select The Date',
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 setLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
@@ -284,19 +312,36 @@ const PaginationTable = () => {
                         obj
                     )
                     if (res.status == 200) {
-                        alert(res.data.message)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        setErr({})
                         setLoading(false)
                         setValidate(true)
                     } else {
                         setErr(res.data.data)
-                        alert('Please Check Errors')
+
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: 'Please Check Errors',
+                            confirmButtonText: 'Ok',
+                        })
                         setLoading(false)
                         setValidate(true)
                     }
                 }
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
     // ----------------------------------------------------------------------------------------------------------------------------

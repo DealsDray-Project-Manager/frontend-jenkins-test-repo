@@ -1,7 +1,7 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-tray'
-import React, { useState, useEffect,useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { Button, Box, IconButton, Icon } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -26,20 +26,24 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayList, setTrayList] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
+                setIsLoading(true)
                 let obj = {
                     master_type: 'tray-master',
                 }
                 const res = await axiosSuperAdminPrexo.post('/getMasters', obj)
                 if (res.status === 200) {
+                    setIsLoading(false)
                     setTrayList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -91,13 +95,25 @@ const SimpleMuiTable = () => {
                                 }
                             })
                         } else {
-                            alert(response.data.message)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response?.data?.message,
+                            })
                         }
                     } else {
-                        alert("You Can't Delete This Tray")
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "You Can't Delete This Tray",
+                        })
                     }
                 } catch (error) {
-                    alert(error)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
                 }
             }
         })
@@ -112,10 +128,18 @@ const SimpleMuiTable = () => {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
             } else if (response.status === 202) {
-                alert("You Can't Edit This Tray")
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "You Can't Edit This Tray",
+                })
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 
@@ -280,30 +304,37 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const trayData=useMemo(()=>{
+    const trayData = useMemo(() => {
         return (
             <MUIDataTable
-            title={'All Tray'}
-            data={trayList}
-            columns={columns}
-            options={{
-                filterType: 'textField',
-                responsive: 'simple',
-                download: false,
-                print: false,
-                selectableRows: 'none', // set checkbox for each row
-                // search: false, // set search option
-                // filter: false, // set data filter option
-                // download: false, // set download option
-                // print: false, // set print option
-                // pagination: true, //set pagination option
-                // viewColumns: false, // set column option
-                elevation: 0,
-                rowsPerPageOptions: [10, 20, 40, 80, 100],
-            }}
-        />
+                title={'All Tray'}
+                data={trayList}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
         )
-    },[trayList])
+    }, [trayList, isLoading])
 
     return (
         <Container>
@@ -326,7 +357,7 @@ const SimpleMuiTable = () => {
             >
                 Add Bulk Tray
             </Button>
-           {trayData}
+            {trayData}
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

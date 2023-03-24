@@ -53,9 +53,9 @@ const ExpandableMuiTable = () => {
                     expandableRowsOnClick: true,
                     renderExpandableRow: (rowData, { dataIndex }) => {
                         const colSpan = rowData.length + 1
-                        console.log(rowData)
+
                         return (
-                            <TableRow sx={{"& .MuiCheckbox-root": {mr: 5}}}>
+                            <TableRow sx={{ '& .MuiCheckbox-root': { mr: 5 } }}>
                                 <TableCell colSpan={colSpan}>
                                     <Paragraph sx={{ mx: 2, my: 1 }}>
                                         {rowData[0]} has ${rowData[3]} in his

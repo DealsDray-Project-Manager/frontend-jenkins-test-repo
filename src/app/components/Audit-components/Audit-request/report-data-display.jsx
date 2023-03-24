@@ -25,7 +25,6 @@ import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
 import Swal from 'sweetalert2'
 
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -125,7 +124,7 @@ export default function DialogBox() {
                         }
                     } else if (res.data.status == 4) {
                         setAddButDis(false)
-                        alert(res.data.message) 
+                        alert(res.data.message)
                     } else {
                         alert(res.data.message)
                     }
@@ -164,7 +163,6 @@ export default function DialogBox() {
         try {
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -173,7 +171,6 @@ export default function DialogBox() {
                 })
                 navigate(-1)
             } else {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -194,7 +191,7 @@ export default function DialogBox() {
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
-                <Grid item sx={{  boxShadow: 1 }} lg={12} md={12} xs={12}>
+                <Grid item sx={{ boxShadow: 1 }} lg={12} md={12} xs={12}>
                     <BqcApiReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
@@ -224,7 +221,7 @@ export default function DialogBox() {
                         BqcUserReport={reportData?.delivery?.bqc_report}
                     />
                 </Grid>
-                <Grid sx={{  boxShadow: 1 }} item lg={12} md={12} xs={12}>
+                <Grid sx={{ boxShadow: 1 }} item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
@@ -285,10 +282,10 @@ export default function DialogBox() {
                             >
                                 {reportData?.delivery?.bqc_software_report
                                     ?.final_grade == 'A' ? (
-                                    <MenuItem value="CTA">
+                                    <MenuItem value="A">
                                         CTA - (
                                         {ctxTray?.map((trayData) =>
-                                            trayData.type_taxanomy == 'CTA' &&
+                                            trayData.tray_grade == 'A' &&
                                             trayData.sort_id ==
                                                 'Issued to Audit'
                                                 ? trayData?.code
@@ -298,10 +295,10 @@ export default function DialogBox() {
                                     </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'B' ? (
-                                    <MenuItem value="CTB">
+                                    <MenuItem value="B">
                                         CTB - (
                                         {ctxTray?.map((trayData) =>
-                                            trayData.type_taxanomy == 'CTB' &&
+                                            trayData.tray_grade == 'B' &&
                                             trayData.sort_id ==
                                                 'Issued to Audit'
                                                 ? trayData?.code
@@ -311,10 +308,10 @@ export default function DialogBox() {
                                     </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'C' ? (
-                                    <MenuItem value="CTC">
+                                    <MenuItem value="C">
                                         CTC - (
                                         {ctxTray?.map((trayData) =>
-                                            trayData.type_taxanomy == 'CTC' &&
+                                            trayData.tray_grade == 'C' &&
                                             trayData.sort_id ==
                                                 'Issued to Audit'
                                                 ? trayData?.code
@@ -324,10 +321,10 @@ export default function DialogBox() {
                                     </MenuItem>
                                 ) : reportData?.delivery?.bqc_software_report
                                       ?.final_grade == 'D' ? (
-                                    <MenuItem value="CTD">
+                                    <MenuItem value="D">
                                         CTD - (
                                         {ctxTray?.map((trayData) =>
-                                            trayData.type_taxanomy == 'CTD' &&
+                                            trayData.tray_grade == 'D' &&
                                             trayData.sort_id ==
                                                 'Issued to Audit'
                                                 ? trayData?.code
@@ -539,59 +536,60 @@ export default function DialogBox() {
                     </Box>
                     <Box>
                         {
-                        // (reportData?.delivery?.bqc_report?.bqc_status ==
-                        //     'Device not to be checked for BQC' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                        reportData?.delivery?.bqc_software_report ==
-                            undefined ||
-                        // (reportData?.delivery?.bqc_report?.bqc_status ==
-                        //     'BQC Incomplete' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                        // (reportData?.delivery?.charging?.battery_status ==
-                        //     'Charge failed' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                        // (reportData?.delivery?.charging?.battery_status ==
-                        //     'No-battery' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                        // (reportData?.delivery?.charging?.battery_status ==
-                        //     'Heat Problem' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                        // (reportData?.delivery?.charging?.lock_status ==
-                        //     'Software Issue' &&
-                        //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                        //         'failed') ||
-                                reportData?.delivery?.bqc_software_report
+                            // (reportData?.delivery?.bqc_report?.bqc_status ==
+                            //     'Device not to be checked for BQC' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            reportData?.delivery?.bqc_software_report ==
+                                undefined ||
+                            // (reportData?.delivery?.bqc_report?.bqc_status ==
+                            //     'BQC Incomplete' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            // (reportData?.delivery?.charging?.battery_status ==
+                            //     'Charge failed' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            // (reportData?.delivery?.charging?.battery_status ==
+                            //     'No-battery' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            // (reportData?.delivery?.charging?.battery_status ==
+                            //     'Heat Problem' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            // (reportData?.delivery?.charging?.lock_status ==
+                            //     'Software Issue' &&
+                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
+                            //         'failed') ||
+                            reportData?.delivery?.bqc_software_report
                                 ?.final_grade == undefined ? (
-                            <Button
-                                sx={{ mr: 2 }}
-                                onClick={(e) =>
-                                    handelAdd(
-                                        e,
-                                        'Device not to be checked for BQC'
-                                    )
-                                }
-                                disabled={butDis}
-                                variant="contained"
-                                color="primary"
-                            >
-                                ADD to WHT
-                            </Button>
-                        ) : (
-                            <Button
-                                sx={{ mr: 2 }}
-                                disabled={butDis}
-                                onClick={(e) => handleOpen()}
-                                variant="contained"
-                                color="primary"
-                            >
-                                ADD
-                            </Button>
-                        )}
+                                <Button
+                                    sx={{ mr: 2 }}
+                                    onClick={(e) =>
+                                        handelAdd(
+                                            e,
+                                            'Device not to be checked for BQC'
+                                        )
+                                    }
+                                    disabled={butDis}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    ADD to WHT
+                                </Button>
+                            ) : (
+                                <Button
+                                    sx={{ mr: 2 }}
+                                    disabled={butDis}
+                                    onClick={(e) => handleOpen()}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    ADD
+                                </Button>
+                            )
+                        }
                     </Box>
                 </Box>
                 {gridData}

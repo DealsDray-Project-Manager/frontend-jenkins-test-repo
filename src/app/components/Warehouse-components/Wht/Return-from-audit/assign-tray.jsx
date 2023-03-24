@@ -56,7 +56,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
             let res = await axiosWarehouseIn.post('/oneTrayAssigToAudit', state)
             if (res.status == 200) {
                 setLoading(false)
-              
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -67,7 +67,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 handleClose()
             } else {
                 setLoading(false)
-       
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -137,10 +137,10 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                     name="tray_type"
                     onChange={handleChange}
                 >
-                    <MenuItem value={'CTA'}>CTA</MenuItem>
-                    <MenuItem value={'CTB'}>CTB</MenuItem>
-                    <MenuItem value={'CTC'}>CTC</MenuItem>
-                    <MenuItem value={'CTD'}>CTD</MenuItem>
+                    <MenuItem value={'A'}>CTA</MenuItem>
+                    <MenuItem value={'B'}>CTB</MenuItem>
+                    <MenuItem value={'C'}>CTC</MenuItem>
+                    <MenuItem value={'D'}>CTD</MenuItem>
                 </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Tray Id"

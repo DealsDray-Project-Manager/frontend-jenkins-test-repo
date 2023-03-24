@@ -32,10 +32,10 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
     const [otherTrayAssign, setOtherTrayAssign] = useState({
-        CTA: '',
-        CTB: '',
-        CTC: '',
-        CTD: '',
+        A: '',
+        B: '',
+        C: '',
+        D: '',
         WHT: '',
     })
 
@@ -102,10 +102,10 @@ export default function DialogBox() {
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
-                        CTA: trayFetch.data.data.CTA,
-                        CTB: trayFetch.data.data.CTB,
-                        CTC: trayFetch.data.data.CTC,
-                        CTD: trayFetch.data.data.CTD,
+                        A: trayFetch.data.data.CTA,
+                        B: trayFetch.data.data.CTB,
+                        C: trayFetch.data.data.CTC,
+                        D: trayFetch.data.data.CTD,
                         WHT: trayId,
                     })
                     setTrayIdNotChangeAble(trayFetch.data.data)
@@ -201,10 +201,10 @@ export default function DialogBox() {
             if (userAgent !== 'User is free') {
                 alert(userAgent)
             } else if (
-                otherTrayAssign.CTA == '' ||
-                otherTrayAssign.CTB == '' ||
-                otherTrayAssign.CTC == '' ||
-                otherTrayAssign.CTD == ''
+                otherTrayAssign.A == '' ||
+                otherTrayAssign.B == '' ||
+                otherTrayAssign.C == '' ||
+                otherTrayAssign.D == ''
             ) {
                 Swal.fire({
                     position: 'top-center',

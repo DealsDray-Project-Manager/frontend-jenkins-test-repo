@@ -106,7 +106,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTA !== ''}
-                    value={trayId.cta || otherTrayAssign.CTA}
+                    value={trayId.cta || otherTrayAssign.A}
                     error={err.CTA !== ''}
                     helperText={err.CTA}
                     InputProps={{
@@ -135,7 +135,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTB !== ''}
-                    value={trayId.ctb || otherTrayAssign.CTB}
+                    value={trayId.ctb || otherTrayAssign.B}
                     error={err.CTB !== ''}
                     helperText={err.CTB}
                     InputProps={{
@@ -164,7 +164,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTC !== ''}
-                    value={trayId.ctc || otherTrayAssign.CTC}
+                    value={trayId.ctc || otherTrayAssign.C}
                     error={err.CTC !== ''}
                     helperText={err.CTC}
                     InputProps={{
@@ -193,7 +193,7 @@ const MemberEditorDialog = ({
                         }))
                     }}
                     disabled={trayIdNotChangeAble.CTD !== ''}
-                    value={trayId.ctd || otherTrayAssign.CTD}
+                    value={trayId.ctd || otherTrayAssign.D}
                     error={err.CTD !== ''}
                     helperText={err.CTD}
                     InputProps={{

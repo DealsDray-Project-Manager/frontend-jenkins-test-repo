@@ -388,7 +388,7 @@ const CtxToStxPage = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            To CTX Tray
+                            To STX Tray
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"

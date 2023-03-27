@@ -155,7 +155,8 @@ const SimpleMuiTable = () => {
         trayId,
         itemCount,
         status,
-        type
+        type,
+        grade
     ) => {
         e.preventDefault()
         try {
@@ -170,7 +171,8 @@ const SimpleMuiTable = () => {
                     itemCount: itemCount,
                     status: status,
                     type: type,
-                    sortId:"Audit Done Closed By Warehouse"
+                    sortId: 'Audit Done Closed By Warehouse',
+                    grade: grade,
                 }
 
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
@@ -284,8 +286,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'type_taxanomy',
+            name: 'tray_grade',
             label: 'Tray Type',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'type_taxanomy',
+            label: 'Tray Grade',
             options: {
                 filter: true,
             },
@@ -358,11 +367,12 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
+                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
-                                        tableMeta.rowData[8],
                                         value,
                                         tableMeta.rowData[5]?.length,
-                                        tableMeta.rowData[10],
+                                        tableMeta.rowData[11],
+                                        tableMeta.rowData[7],
                                         tableMeta.rowData[6]
                                     )
                                 }}

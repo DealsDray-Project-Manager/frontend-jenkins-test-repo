@@ -102,10 +102,10 @@ export default function DialogBox() {
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
-                        A: trayFetch.data.data.CTA,
-                        B: trayFetch.data.data.CTB,
-                        C: trayFetch.data.data.CTC,
-                        D: trayFetch.data.data.CTD,
+                        A: trayFetch.data.data.A,
+                        B: trayFetch.data.data.B,
+                        C: trayFetch.data.data.C,
+                        D: trayFetch.data.data.D,
                         WHT: trayId,
                     })
                     setTrayIdNotChangeAble(trayFetch.data.data)

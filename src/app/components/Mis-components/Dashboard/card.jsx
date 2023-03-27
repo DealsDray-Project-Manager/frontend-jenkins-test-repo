@@ -35,6 +35,7 @@ const StatCard3 = () => {
         }
         fetchData()
     }, [])
+    
     const statList = [
         {
             icon: 'reorder',
@@ -157,6 +158,12 @@ const StatCard3 = () => {
             amount: count.ctxMerge,
             title: 'CTX Merge',
             path: '/mis/merge/ctx',
+        },
+        {
+            icon: 'merge_type',
+            amount: count.stxMerge,
+            title: 'STX Merge',
+            path: '/mis/merge/stx',
         },
         {
             icon: 'shopping_cart',

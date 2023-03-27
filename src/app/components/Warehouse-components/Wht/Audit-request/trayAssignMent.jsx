@@ -105,7 +105,7 @@ const MemberEditorDialog = ({
                             cta: e.target.value,
                         }))
                     }}
-                    disabled={trayIdNotChangeAble.CTA !== ''}
+                    disabled={trayIdNotChangeAble.A !== ''}
                     value={trayId.cta || otherTrayAssign.A}
                     error={err.CTA !== ''}
                     helperText={err.CTA}
@@ -134,7 +134,7 @@ const MemberEditorDialog = ({
                             ctb: e.target.value,
                         }))
                     }}
-                    disabled={trayIdNotChangeAble.CTB !== ''}
+                    disabled={trayIdNotChangeAble.B !== ''}
                     value={trayId.ctb || otherTrayAssign.B}
                     error={err.CTB !== ''}
                     helperText={err.CTB}
@@ -163,7 +163,7 @@ const MemberEditorDialog = ({
                             ctc: e.target.value,
                         }))
                     }}
-                    disabled={trayIdNotChangeAble.CTC !== ''}
+                    disabled={trayIdNotChangeAble.C !== ''}
                     value={trayId.ctc || otherTrayAssign.C}
                     error={err.CTC !== ''}
                     helperText={err.CTC}
@@ -192,7 +192,7 @@ const MemberEditorDialog = ({
                             ctd: e.target.value,
                         }))
                     }}
-                    disabled={trayIdNotChangeAble.CTD !== ''}
+                    disabled={trayIdNotChangeAble.D !== ''}
                     value={trayId.ctd || otherTrayAssign.D}
                     error={err.CTD !== ''}
                     helperText={err.CTD}

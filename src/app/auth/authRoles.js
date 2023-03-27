@@ -9,7 +9,8 @@ export const authRoles = {
     audit:["Audit"],
     RDL_FLS:["RDL-FLS"],
     Sales_Agent:["Sales Agent"],
-    pricing_Agent:["Pricing Agent"]
+    pricing_Agent:["Pricing Agent"],
+    reporting:["Reporting"]
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

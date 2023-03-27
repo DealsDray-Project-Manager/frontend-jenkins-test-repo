@@ -722,6 +722,18 @@ export const navigations = [
         auth: authRoles.RDL_FLS,
     },
     {
+        name: 'Not Delivered Orders',
+        icon: 'reorder',
+        path: '/reporting/not-delivered-orders',
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Delivered Orders',
+        icon: 'reorder',
+        path: '/reporting/delivered-orders',
+        auth: authRoles.reporting,
+    },
+    {
         name: 'Dummy Panel',
         icon: 'class',
         path: '',

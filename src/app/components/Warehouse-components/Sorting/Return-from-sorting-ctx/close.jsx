@@ -23,7 +23,6 @@ export default function DialogBox() {
     const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-
     /*********************************************************** */
     const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')

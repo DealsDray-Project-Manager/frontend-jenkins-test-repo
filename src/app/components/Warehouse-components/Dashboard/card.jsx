@@ -190,6 +190,12 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
+            amount: count.allStxtray,
+            title: 'STX Tray',
+            path: '/wareshouse/stx/all',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.ctxTransferRequest,
             title: 'CTX Transfer Request',
             path: '/wareshouse/ctx/transfer/request',

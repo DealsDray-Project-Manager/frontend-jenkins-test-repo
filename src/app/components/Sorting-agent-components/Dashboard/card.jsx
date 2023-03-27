@@ -38,8 +38,14 @@ const StatCard3 = () => {
         {
             icon: 'sort',
             amount: count.sorting,
-            title: 'Sorting Requests',
+            title: 'Sorting Requests BOT-WHT',
             path: '/sorting/request',
+        },
+        {
+            icon: 'sort',
+            amount: count.ctxtoStxSorting,
+            title: 'Sorting Requests CTX-STX',
+            path: '/sorting/ctx/request',
         },
         {
             icon: 'merge_type',

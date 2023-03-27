@@ -130,7 +130,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/sorting/return-from-sorting')
+                navigate('/wareshouse/sorting/ctx-to-stx/return-from-sorting')
             } else {
                 Swal.fire({
                     icon: 'error',

@@ -53,6 +53,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleDialogClose = () => {
+        setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
 
@@ -60,9 +61,13 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editWarehouse = async (empId) => {
+    const editWarehouse = async (empId,type) => {
         try {
-            let response = await axiosSuperAdminPrexo.get('/getInfra/' + empId)
+            let obj={
+                empId:empId,
+                type:type
+            }
+            let response = await axiosSuperAdminPrexo.post('/getInfra',obj)
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
@@ -75,7 +80,7 @@ const SimpleMuiTable = () => {
             })
         }
     }
-    const handelDelete = (id) => {
+    const handelDelete = (id,type) => {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Delete Location!',
@@ -87,8 +92,12 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                    let obj={
+                        empId:id,
+                        type:type
+                    }
                     let response = await axiosSuperAdminPrexo.post(
-                        '/deleteInfra/' + id
+                        '/deleteInfra',obj
                     )
                     if (response.status == 200) {
                         Swal.fire({
@@ -194,6 +203,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy',
+            label: 'Type',
+            
+            options: {
+                filter: true,
+                display:false
+            },
+        },
+        {
             name: 'code',
             label: 'Actions',
             options: {
@@ -205,7 +223,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editWarehouse(value)
+                                        editWarehouse(value,tableMeta.rowData[10])
                                     }}
                                     color="primary"
                                 >
@@ -215,7 +233,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(value)
+                                        handelDelete(value,tableMeta.rowData[10])
                                     }}
                                     color="error"
                                 >

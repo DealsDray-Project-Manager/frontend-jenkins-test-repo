@@ -78,8 +78,12 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.get(
-                        '/getOneMaster/' + masterId
+                    let obj = {
+                        masterId: masterId,
+                    }
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/getOneMaster',
+                        obj
                     )
                     if (res.status == 200) {
                         let response = await axiosSuperAdminPrexo.post(
@@ -123,9 +127,10 @@ const SimpleMuiTable = () => {
 
     const editbag = async (masterId) => {
         try {
-            let response = await axiosSuperAdminPrexo.get(
-                '/getOneMaster/' + masterId
-            )
+            let obj = {
+                masterId: masterId,
+            }
+            let response = await axiosSuperAdminPrexo.post('/getOneMaster', obj)
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()

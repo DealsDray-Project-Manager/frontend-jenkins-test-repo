@@ -199,7 +199,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
+                                    ? 'http://prexo-v8-testing-adminapi.dealsdray.com/product/image/' +
                                       tableMeta.rowData[2] +
                                       '.jpg'
                                     : value

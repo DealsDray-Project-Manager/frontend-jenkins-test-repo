@@ -53,6 +53,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleDialogClose = () => {
+        setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
 
@@ -62,7 +63,7 @@ const SimpleMuiTable = () => {
 
     const editLocation = async (empId) => {
         try {
-            let response = await axiosSuperAdminPrexo.get('/getInfra/' + empId)
+            let response = await axiosSuperAdminPrexo.post('/getInfra/' + empId)
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
@@ -187,6 +188,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy',
+            label: 'Type',
+            
+            options: {
+                filter: true,
+                display:false
+            },
+        },
+        {
             name: 'code',
             label: 'Actions',
             options: {
@@ -198,7 +208,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editLocation(value)
+                                        editLocation(value,tableMeta.rowData[9])
                                     }}
                                     color="primary"
                                 >
@@ -208,7 +218,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(value)
+                                        handelDelete(value,tableMeta.rowData[9])
                                     }}
                                     color="error"
                                 >

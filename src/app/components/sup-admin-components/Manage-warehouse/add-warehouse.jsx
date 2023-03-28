@@ -31,6 +31,17 @@ const MemberEditorDialog = ({
 
     useEffect(() => {
         const fetchData = async () => {
+           
+            if (Object.keys(editFetchData).length !== 0) {
+                reset({ ...editFetchData })
+                open()
+            }
+        }
+        fetchData()
+    }, [])
+
+    useEffect(()=>{
+        const fetchData=async()=>{
             try {
                 let res = await axiosSuperAdminPrexo.post('/getLocation')
                 if (res.status == 200) {
@@ -42,14 +53,10 @@ const MemberEditorDialog = ({
                     title: 'Oops...',
                     text: error,
                 })
-            }
-            if (Object.keys(editFetchData).length !== 0) {
-                reset({ ...editFetchData })
-                open()
-            }
+        }
         }
         fetchData()
-    }, [])
+    },[])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -96,6 +103,7 @@ const MemberEditorDialog = ({
         handleSubmit,
         formState: { errors },
         reset,
+        getValues,
     } = useForm({
         resolver: yupResolver(schema),
     })
@@ -137,6 +145,7 @@ const MemberEditorDialog = ({
             })
         }
     }
+   
 
     const handelEdit = async (data) => {
         try {
@@ -157,7 +166,6 @@ const MemberEditorDialog = ({
             } else {
                 setEditFetchData({})
                 handleClose()
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -195,11 +203,14 @@ const MemberEditorDialog = ({
                             {...register('parent_id')}
                             error={errors.parent_id ? true : false}
                             helperText={errors.parent_id?.message}
+                            defaultValue={getValues("parent_id")}
                         >
                             {locationDrop.map((data) => (
                                 <MenuItem value={data.name}>
                                     {data.name}
                                 </MenuItem>
+
+                                
                             ))}
                         </TextFieldCustOm>
 
@@ -260,6 +271,7 @@ const MemberEditorDialog = ({
                             {...register('warehouse_type')}
                             error={errors.warehouse_type ? true : false}
                             helperText={errors.warehouse_type?.message}
+                            defaultValue={getValues("warehouse_type")}
                         >
                             <MenuItem value="STW">STW</MenuItem>
                             <MenuItem value="PRC">PRC</MenuItem>

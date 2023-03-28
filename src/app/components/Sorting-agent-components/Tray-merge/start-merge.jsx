@@ -372,8 +372,9 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            tray?.[0]?.actual_items?.length !== 0 &&
-                            tray?.[0]?.type_taxanomy == 'MMT'
+                            tray.length == 0 ||
+                            (tray?.[0]?.actual_items?.length !== 0 &&
+                                tray?.[0]?.type_taxanomy == 'MMT')
                                 ? true
                                 : loading2 == true
                                 ? true

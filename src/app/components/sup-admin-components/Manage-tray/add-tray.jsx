@@ -35,8 +35,8 @@ const MemberEditorDialog = ({
     const [categorys, setCategorys] = useState([])
 
     useEffect(() => {
-        try {
-            const fetchCpc = async () => {
+        const fetchCpc = async () => {
+            try {
                 let res = await axiosSuperAdminPrexo.post('/getBrands')
                 if (res.status == 200) {
                     setAllBrand(res.data.data)
@@ -45,28 +45,36 @@ const MemberEditorDialog = ({
                 if (response.status == 200) {
                     setCpc(response.data.data.data)
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
-            fetchCpc()
-
-            if (Object.keys(editFetchData).length !== 0) {
-                reset({ ...editFetchData })
-                fetchModel(editFetchData.brand)
-                let arr = []
-                let obj = {
-                    name: editFetchData.warehouse,
-                }
-                arr.push(obj)
-                setWarehouse(arr)
-                open()
+        }
+        fetchCpc()
+    }, [])
+    useEffect(() => {
+        if (Object.keys(editFetchData).length !== 0) {
+            reset({ ...editFetchData })
+            fetchModel(editFetchData.brand)
+            let arr = []
+            let obj = {
+                name: editFetchData.warehouse,
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
+            let objOne = {
+                code: editFetchData.tray_grade,
+            }
+            let arrOne = []
+            arrOne.push(objOne)
+            setCategorys(arrOne)
+            arr.push(obj)
+            setWarehouse(arr)
+            open()
         }
     }, [])
+
     const fetchTypeWiseId = async (e, type) => {
         e.preventDefault()
         try {
@@ -433,10 +441,7 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             defaultValue={getValues('cpc')}
-                            disabled={
-                                getValues('type_taxanomy') == 'WHT' &&
-                                Object.keys(editFetchData).length !== 0
-                            }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >

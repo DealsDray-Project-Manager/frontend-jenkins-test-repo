@@ -61,7 +61,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
-    
+
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {

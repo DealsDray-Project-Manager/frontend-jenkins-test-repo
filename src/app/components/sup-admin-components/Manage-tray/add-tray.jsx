@@ -231,7 +231,13 @@ const MemberEditorDialog = ({
             .max(100)
             .nullable(),
         type_taxanomy: Yup.string().required('Required*').nullable(),
-        tray_grade: Yup.string().required('Required*').nullable(),
+        tray_grade: Yup.string()
+            .when('type_taxanomy', (type_taxanomy, schema) => {
+                if (type_taxanomy == 'CT' || type_taxanomy == 'ST') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
         limit: Yup.number('Must be number')
             .required('Required*')

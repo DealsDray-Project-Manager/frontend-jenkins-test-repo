@@ -46,3 +46,8 @@ export const axiospricingAgent = axios.create({
     baseURL: 'http://localhost:8000/api/v7/pricing-agent',
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
+
+export const axiosReportingAgent = axios.create({
+    baseURL: 'http://localhost:8000/api/v7/reporting-agent',
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})

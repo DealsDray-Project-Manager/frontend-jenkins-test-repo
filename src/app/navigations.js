@@ -51,6 +51,12 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/reporting/dashboard',
+        icon: '',
+        auth: authRoles.reporting, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/rdl-fls/dashboard',
         icon: 'dashboard',
         auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
@@ -721,18 +727,59 @@ export const navigations = [
         path: '/rdl-fls/tray',
         auth: authRoles.RDL_FLS,
     },
+
     {
-        name: 'Not Delivered Orders',
+        name: 'Orders',
         icon: 'reorder',
-        path: '/reporting/not-delivered-orders',
+        children: [
+            {
+                name: 'All Orders',
+
+                path: '/reporting/all-orders',
+            },
+            {
+                name: 'Delivered Orders',
+
+                path: '/reporting/delivered-orders',
+            },
+            {
+                name: 'Not Delivered Orders',
+
+                path: '/reporting/not-delivered-orders',
+            },
+        ],
         auth: authRoles.reporting,
     },
     {
-        name: 'Delivered Orders',
+        name: 'Delivery',
         icon: 'reorder',
-        path: '/reporting/delivered-orders',
+        children: [
+            {
+                name: 'Processing Units',
+
+                path: '/reporting/units/processing',
+            },
+            {
+                name: 'Ready for Sales Units',
+
+                path: '/reporting/units/ready-for-sales',
+            },
+        ],
         auth: authRoles.reporting,
     },
+    {
+        name: 'Bag',
+        icon: 'class',
+        children: [
+            {
+                name: 'Closed Bag',
+                path: '/reporting/units/processing',
+            },
+           
+        ],
+        auth: authRoles.reporting,
+    },
+
     {
         name: 'Dummy Panel',
         icon: 'class',

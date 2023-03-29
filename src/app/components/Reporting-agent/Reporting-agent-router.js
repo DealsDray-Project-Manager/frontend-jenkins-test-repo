@@ -6,6 +6,13 @@ const DeliveredOrders = Loadable(lazy(() => import('./Order/delivered-orders')))
 const NotDeliverdOrders = Loadable(
     lazy(() => import('./Order/not-delivered-orders'))
 )
+const AllOrders = Loadable(lazy(() => import('./Order/all-orders')))
+const ProcessingUnits = Loadable(
+    lazy(() => import('./Delivery/processing-units'))
+)
+const ReadyForSalesUnits = Loadable(
+    lazy(() => import('./Delivery/ready-for-sale'))
+)
 
 const ReportingRouter = [
     {
@@ -19,6 +26,18 @@ const ReportingRouter = [
     {
         path: '/reporting/delivered-orders',
         element: <DeliveredOrders />,
+    },
+    {
+        path: '/reporting/all-orders',
+        element: <AllOrders />,
+    },
+    {
+        path: '/reporting/units/processing',
+        element: <ProcessingUnits />,
+    },
+    {
+        path: '/reporting/units/ready-for-sales',
+        element: <ReadyForSalesUnits />,
     },
 ]
 

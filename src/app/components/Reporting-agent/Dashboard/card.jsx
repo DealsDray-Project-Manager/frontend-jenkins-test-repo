@@ -3,7 +3,7 @@ import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon, RepairIcon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
-import { axiosMisUser } from '../../../../axios'
+import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -17,8 +17,8 @@ const StatCard3 = () => {
             if (user) {
                 let { location } = jwt_decode(user)
                 try {
-                    let res = await axiosMisUser.post(
-                        '/dashboardData/' + location
+                    let res = await axiosReportingAgent.post(
+                        '/dashboard/' + location
                     )
                     if (res.status === 200) {
                         setCount(res.data.data)
@@ -39,15 +39,33 @@ const StatCard3 = () => {
     const statList = [
         {
             icon: 'reorder',
-            amount: count.delivered,
+            amount: count.allOrders,
+            title: 'All Orders',
+            path: '/reporting/not-delivered-orders',
+        },
+        {
+            icon: 'reorder',
+            amount: count.deliveredOrder,
             title: 'Delivered Orders',
             path: '/reporting/delivered-orders',
         },
         {
             icon: 'reorder',
-            amount: count.notDelivered,
+            amount: count.notDeliveredOrders,
             title: 'Not Delivered Orders',
             path: '/reporting/not-delivered-orders',
+        },
+        {
+            icon: 'reorder',
+            amount: count.processingUnits,
+            title: 'Processing Units',
+            path: '/reporting/units/processing',
+        },
+        {
+            icon: 'reorder',
+            amount: count.readyForSale,
+            title: 'Ready for Sales',
+            path: '/reporting/units/ready-for-sales',
         },
     ]
     const { palette } = useTheme()

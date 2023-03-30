@@ -705,7 +705,7 @@ export default function DialogBox() {
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
 
-                                            ? 'http://prexo-v8-testing-adminapi.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
                                         
 
                                               awabnDetails?.[0]?.products

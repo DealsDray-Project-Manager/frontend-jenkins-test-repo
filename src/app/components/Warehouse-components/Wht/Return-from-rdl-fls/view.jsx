@@ -131,7 +131,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 1',
+            label: 'Part List 2',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -141,7 +141,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 1',
+            label: 'Part List 3',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -151,7 +151,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 1',
+            label: 'Part List 4',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -161,7 +161,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 1',
+            label: 'Part List 5',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -170,6 +170,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rdl_fls_report',
+            label: 'Color',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.color
+                },
+            },
+        },
+        {
+
             name: 'rdl_fls_report',
             label: 'Description',
             options: {

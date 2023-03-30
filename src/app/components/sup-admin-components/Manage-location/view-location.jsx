@@ -61,9 +61,13 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editLocation = async (empId) => {
+    const editLocation = async (empId,type) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/getInfra/' + empId)
+            let obj={
+                empId:empId,
+                type:type
+            }
+            let response = await axiosSuperAdminPrexo.post('/getInfra',obj)
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
@@ -76,7 +80,7 @@ const SimpleMuiTable = () => {
             })
         }
     }
-    const handelDelete = (id) => {
+    const handelDelete = (id,type) => {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Delete Location!',
@@ -88,8 +92,12 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                    let obj={
+                        empId:id,
+                        type:type
+                    }
                     let response = await axiosSuperAdminPrexo.post(
-                        '/deleteInfra/' + id
+                        '/deleteInfra',obj 
                     )
                     if (response.status == 200) {
                         Swal.fire({

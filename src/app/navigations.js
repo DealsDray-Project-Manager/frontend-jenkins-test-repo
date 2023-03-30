@@ -5,66 +5,77 @@ export const navigations = [
         name: 'Dashboard',
         path: '/sup-admin/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.admin, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/mis/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.Mis, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/warehouse/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.Warehouse, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/bot/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.bot, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/sorting/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.sorting, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/charging/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.charging, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/audit/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.audit, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/bqc/dashboard',
         icon: '',
+        sales: 'all',
         auth: authRoles.bqc, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/rdl-fls/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/sales/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.Sales_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
         path: '/pricing/dashboard',
         icon: 'dashboard',
+        sales: 'all',
         auth: authRoles.pricing_Agent, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     // {
@@ -112,6 +123,16 @@ export const navigations = [
                 path: '/sup-admin/products',
             },
             {
+                name: 'Part List',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/view-part-list',
+            },
+            {
+                name: 'Color List',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/view-color-list',
+            },
+            {
                 name: 'Bags',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/bag',
@@ -123,6 +144,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.admin,
+        sales: false,
     },
 
     {
@@ -141,6 +163,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.admin,
+        sales: false,
     },
 
     {
@@ -148,24 +171,28 @@ export const navigations = [
         icon: 'remove',
         path: '/sup-admin/remove-invalid-item',
         auth: authRoles.admin,
+        sales: false,
     },
     {
         name: 'Ready for RDL-FLS',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
         auth: authRoles.admin,
+        sales: false,
     },
     {
         name: 'Ready for Transfer CTX',
         icon: 'transform',
         path: '/sup-admin/ready-for-transfer',
         auth: authRoles.admin,
+        sales: false,
     },
     {
         name: 'Track item',
         icon: 'art_track',
         path: '/sup-admin/track-item',
         auth: authRoles.admin,
+        sales: false,
     },
     {
         name: 'Report',
@@ -178,6 +205,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.admin,
+        sales: false,
     },
     {
         name: 'Order',
@@ -195,6 +223,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
     },
     {
         name: 'Delivery',
@@ -212,6 +241,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
     },
     {
         name: 'Recon Sheet',
@@ -234,6 +264,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
     },
     {
         name: 'UIC Manage',
@@ -261,7 +292,9 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
     },
+
     {
         name: 'Assign to Agent',
         icon: 'assignment',
@@ -298,6 +331,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
     },
     {
         name: 'Sorting',
@@ -308,6 +342,15 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
+           
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
+        name: 'Sorting',
+        icon: 'sort',
+        children: [
             {
                 name: 'CTX to STX',
                 path: '/mis/sorting/ctx-to-stx',
@@ -315,6 +358,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: true,
     },
     {
         name: 'Merge',
@@ -335,11 +379,7 @@ export const navigations = [
                 path: '/mis/merge/ctx',
                 iconText: 'NP',
             },
-            {
-                name: 'STX',
-                path: '/mis/merge/stx',
-                iconText: 'NP',
-            },
+
             {
                 name: 'Pickup',
                 path: '/mis/merge/pickup',
@@ -347,6 +387,20 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: false,
+    },
+    {
+        name: 'Merge',
+        icon: 'merge_type',
+        children: [
+            {
+                name: 'STX',
+                path: '/mis/merge/stx',
+                iconText: 'NP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: true,
     },
     {
         name: 'CTX',
@@ -364,6 +418,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: 'all',
     },
     {
         name: 'Track',
@@ -376,6 +431,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
+        sales: 'all',
     },
 
     {
@@ -399,6 +455,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
     {
         name: 'PMT And MMT',
@@ -416,6 +473,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
     {
         name: 'BOT',
@@ -428,6 +486,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
     {
         name: 'WHT',
@@ -497,6 +556,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
     {
         name: 'Sorting',
@@ -517,6 +577,14 @@ export const navigations = [
                 path: '/wareshouse/sorting/return-from-sorting',
                 iconText: 'VP',
             },
+        ],
+        auth: authRoles.Warehouse,
+        sales: false,
+    },
+    {
+        name: 'Sorting',
+        icon: 'sort',
+        children: [
             {
                 name: 'Sorting Request (CTX)',
                 path: '/wareshouse/sorting/ctx/request',
@@ -530,6 +598,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: true,
     },
     {
         name: 'Merge',
@@ -557,6 +626,25 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
+    },
+    {
+        name: 'Merge',
+        icon: 'merge_type',
+        children: [
+            {
+                name: 'Merge Request',
+                path: '/wareshouse/merge/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Merge',
+                path: '/wareshouse/merge/return-from-merge',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+        sales: true,
     },
     {
         name: 'CTX',
@@ -578,6 +666,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: 'all',
     },
     {
         name: 'STX',
@@ -590,6 +679,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: true,
     },
     {
         name: 'Report',
@@ -617,6 +707,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
     {
         name: 'WHT Utility',
@@ -634,6 +725,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Warehouse,
+        sales: false,
     },
 
     {
@@ -641,12 +733,14 @@ export const navigations = [
         icon: 'class',
         path: '/bot/bag',
         auth: authRoles.bot,
+        sales: false,
     },
     {
         name: 'Tray',
         icon: 'shopping_cart',
         path: '/bot/tray',
         auth: authRoles.bot,
+        sales: false,
     },
     {
         name: 'Sorting Request',
@@ -664,6 +758,20 @@ export const navigations = [
             },
         ],
         auth: authRoles.sorting,
+        sales: false,
+    },
+    {
+        name: 'Sorting Request',
+        icon: 'sort',
+        children: [
+            {
+                name: 'CTX to STX',
+                path: '/sorting/ctx/request',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.sorting,
+        sales: true,
     },
 
     {
@@ -671,6 +779,7 @@ export const navigations = [
         icon: 'merge_type',
         path: '/sorting/merge',
         auth: authRoles.sorting,
+        sales: 'all',
     },
     {
         name: 'Pickup',
@@ -688,6 +797,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.sorting,
+        sales: false,
     },
 
     {
@@ -695,24 +805,28 @@ export const navigations = [
         icon: 'battery_charging_full',
         path: '/charging/tray',
         auth: authRoles.charging,
+        sales: false,
     },
     {
         name: 'Bqc Request',
         icon: '',
         path: '/bqc/tray',
         auth: authRoles.bqc,
+        sales: false,
     },
     {
         name: 'Audit Request',
         icon: 'settings_system_daydream',
         path: '/audit/audit-request',
         auth: authRoles.audit,
+        sales: false,
     },
     {
         name: 'Assigned Tray',
         icon: 'settings_system_daydream',
         path: '/audit/assigned-tray',
         auth: authRoles.audit,
+        sales: false,
     },
 
     {
@@ -720,406 +834,43 @@ export const navigations = [
         icon: 'class',
         path: '/rdl-fls/tray',
         auth: authRoles.RDL_FLS,
+        sales: false,
     },
     {
         name: 'Dummy Panel',
         icon: 'class',
         path: '',
         auth: authRoles.Sales_Agent,
+        sales: true,
     },
     {
         name: 'Dummy Panel',
         icon: 'class',
         path: '',
         auth: authRoles.pricing_Agent,
+        sales: true,
     },
-
-    // {
-    //     name: 'Orders',
-    //     icon: 'folder',
-    //     children: [
-    //         {
-    //             name: 'Order List',
-    //             path: '/pages/order-list',
-    //             iconText: 'OL',
-    //         },
-    //         {
-    //             name: 'View Order',
-    //             path: '/invoice/fdskfjdsuoiucrwevbgd',
-    //             iconText: 'VO',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Help Center',
-    //     icon: 'help',
-    //     children: [
-    //         {
-    //             name: 'FAQ 1',
-    //             path: '/pages/faq-1',
-    //             iconText: 'F1',
-    //         },
-    //         {
-    //             name: 'FAQ 2',
-    //             path: '/pages/faq-2',
-    //             iconText: 'F2',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Pricing',
-    //     icon: 'money',
-
-    //     children: [
-    //         {
-    //             name: 'Pricing 1',
-    //             iconText: 'P1',
-    //             path: '/others/pricing-1',
-    //         },
-    //         {
-    //             name: 'Pricing 2',
-    //             iconText: 'P2',
-    //             path: '/others/pricing-2',
-    //         },
-    //         {
-    //             name: 'Pricing 3',
-    //             iconText: 'P3',
-    //             path: '/others/pricing-3',
-    //         },
-    //         {
-    //             name: 'Pricing 4',
-    //             iconText: 'P4',
-    //             path: '/others/pricing-4',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'User List',
-    //     icon: 'people',
-    //     children: [
-    //         {
-    //             name: 'User List 1',
-    //             path: '/pages/user-list-1',
-    //             iconText: 'U1',
-    //         },
-    //         {
-    //             name: 'User List 2',
-    //             path: '/pages/user-list-2',
-    //             iconText: 'U2',
-    //         },
-    //         {
-    //             name: 'User List 3',
-    //             path: '/pages/user-list-3',
-    //             iconText: 'U3',
-    //         },
-    //         {
-    //             name: 'User List 4',
-    //             path: '/pages/user-list-4',
-    //             iconText: 'U3',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Forms',
-    //     icon: 'description',
-
-    //     children: [
-    //         {
-    //             name: 'Order Form',
-    //             path: '/forms/order-form',
-    //             iconText: 'OF',
-    //         },
-    //         {
-    //             name: 'Invoice Form',
-    //             path: '/forms/invoice-form',
-    //             iconText: 'IF',
-    //         },
-    //         {
-    //             name: 'Property Listing Form',
-    //             path: '/forms/property-listing-form',
-    //             iconText: 'PF',
-    //         },
-    //         {
-    //             name: 'Basic',
-    //             path: '/forms/basic',
-    //             iconText: 'B',
-    //         },
-    //         {
-    //             name: 'Upload',
-    //             path: '/forms/upload',
-    //             iconText: 'U',
-    //         },
-    //         {
-    //             name: 'Wizard',
-    //             path: '/forms/wizard',
-    //             iconText: 'W',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Matx List',
-    //     icon: 'list',
-
-    //     children: [
-    //         {
-    //             name: 'List',
-    //             path: '/matx-list',
-    //             iconText: 'L',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Session/Auth',
-    //     icon: 'security',
-    //     children: [
-    //         {
-    //             name: 'Sign in',
-    //             iconText: 'SI',
-    //             path: '/session/signin',
-    //         },
-    //         {
-    //             name: 'Sign up',
-    //             iconText: 'SU',
-    //             path: '/session/signup',
-    //         },
-    //         {
-    //             name: 'Forgot Password',
-    //             iconText: 'FP',
-    //             path: '/session/forgot-password',
-    //         },
-    //         {
-    //             name: 'Error',
-    //             iconText: '404',
-    //             path: '/session/404',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Left Sidebar Card',
-    //     path: '/page-layouts/Left-sidebar-card',
-    //     icon: 'vertical_split',
-    // },
-    // {
-    //     name: 'User Profile',
-    //     path: '/page-layouts/user-profile',
-    //     icon: 'person',
-    // },
-
-    // {
-    //     label: 'Apps',
-    //     type: 'label',
-    // },
-    // {
-    //     name: 'Ecommerce',
-    //     icon: 'shopping_basket',
-
-    //     children: [
-    //         {
-    //             name: 'Shop',
-    //             path: '/ecommerce/shop',
-    //             iconText: 'S',
-    //         },
-    //         {
-    //             name: 'Cart',
-    //             path: '/ecommerce/cart',
-    //             iconText: 'C',
-    //         },
-    //         {
-    //             name: 'Checkout',
-    //             path: '/ecommerce/checkout',
-    //             iconText: 'CO',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Scrum Board',
-    //     icon: 'group_work',
-    //     path: '/scrum-board/c5d7498bbcb84d81fc7454448871ac6a6e',
-    // },
-    // {
-    //     name: 'Invoice Builder',
-    //     icon: 'receipt',
-    //     path: '/invoice/list',
-    // },
-    // {
-    //     name: 'Calendar',
-    //     icon: 'date_range',
-    //     path: '/calendar',
-    // },
-    // {
-    //     name: 'Chat',
-    //     icon: 'chat',
-    //     path: '/chat',
-    // },
-    // {
-    //     name: 'Inbox',
-    //     icon: 'inbox',
-    //     path: '/inbox',
-    // },
-    // {
-    //     name: 'Todo',
-    //     icon: 'center_focus_strong',
-    //     path: '/todo/list',
-    // },
-    // {
-    //     label: 'Tables',
-    //     type: 'label',
-    // },
-    // {
-    //     name: 'CRUD Table',
-    //     icon: 'format_list_bulleted',
-    //     path: '/crud-table',
-    // },
-    // {
-    //     name: 'Data Table',
-    //     icon: 'table_view',
-
-    //     children: [
-    //         {
-    //             name: 'Simple Mui Table',
-    //             path: '/data-table/simple-mui-table',
-    //             iconText: 'T1',
-    //         },
-    //         {
-    //             name: 'Expandable Mui Table',
-    //             path: '/data-table/expandable-mui-table',
-    //             iconText: 'T2',
-    //         },
-    //     ],
-    // },
-    // {
-    //     label: 'Components',
-    //     type: 'label',
-    // },
-    // {
-    //     name: 'Components',
-    //     icon: 'favorite',
-    //     badge: { value: '30+', color: 'secondary' },
-    //     children: [
-    //         {
-    //             name: 'Auto Complete',
-    //             path: '/material/autocomplete',
-    //             iconText: 'A',
-    //         },
-    //         {
-    //             name: 'Buttons',
-    //             path: '/material/buttons',
-    //             iconText: 'B',
-    //         },
-    //         {
-    //             name: 'Checkbox',
-    //             path: '/material/checkbox',
-    //             iconText: 'C',
-    //         },
-    //         {
-    //             name: 'Dialog',
-    //             path: '/material/dialog',
-    //             iconText: 'D',
-    //         },
-    //         {
-    //             name: 'Drag and Drop',
-    //             iconText: 'D',
-    //             path: '/others/drag-and-drop',
-    //         },
-    //         {
-    //             name: 'Expansion Panel',
-    //             path: '/material/expansion-panel',
-    //             iconText: 'E',
-    //         },
-    //         {
-    //             name: 'Form',
-    //             path: '/material/form',
-    //             iconText: 'F',
-    //         },
-    //         {
-    //             name: 'Icons',
-    //             path: '/material/icons',
-    //             iconText: 'I',
-    //         },
-    //         {
-    //             name: 'Menu',
-    //             path: '/material/menu',
-    //             iconText: 'M',
-    //         },
-    //         {
-    //             name: 'Progress',
-    //             path: '/material/progress',
-    //             iconText: 'P',
-    //         },
-    //         {
-    //             name: 'Radio',
-    //             path: '/material/radio',
-    //             iconText: 'R',
-    //         },
-    //         {
-    //             name: 'Switch',
-    //             path: '/material/switch',
-    //             iconText: 'S',
-    //         },
-    //         {
-    //             name: 'Slider',
-    //             path: '/material/slider',
-    //             iconText: 'S',
-    //         },
-    //         {
-    //             name: 'Snackbar',
-    //             path: '/material/snackbar',
-    //             iconText: 'S',
-    //         },
-    //         {
-    //             name: 'Table',
-    //             path: '/material/table',
-    //             iconText: 'T',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Map',
-    //     icon: 'add_location',
-    //     path: '/map',
-    // },
-    // {
-    //     label: 'Charts',
-    //     type: 'label',
-    // },
-    // {
-    //     name: 'Charts',
-    //     icon: 'trending_up',
-
-    //     children: [
-    //         {
-    //             name: 'Echarts',
-    //             path: '/charts/echarts',
-    //             iconText: 'E',
-    //         },
-    //         {
-    //             name: 'Recharts',
-    //             path: '/charts/recharts',
-    //             iconText: 'R',
-    //         },
-    //         {
-    //             name: 'Apex Charts',
-    //             path: '/charts/apex-charts',
-    //             iconText: 'A',
-    //         },
-    //     ],
-    // },
-    // {
-    //     name: 'Documentation',
-    //     icon: 'launch',
-    //     type: 'extLink',
-    //     path: 'http://demos.ui-lib.com/matx-react-doc/',
-    // },
 ]
-export const getfilteredNavigations = (navList = [], role) => {
+export const getfilteredNavigations = (navList = [], role, cpc_type) => {
+    console.log(cpc_type)
     return navList.reduce((array, nav) => {
         if (nav.auth) {
             if (nav.auth.includes(role)) {
-                array.push(nav)
+                if (cpc_type == 'Sales') {
+                    if (nav.sales == true || nav.sales == 'all') {
+                        array.push(nav)
+                    }
+                } else if (nav.sales == false || nav.sales == 'all') {
+                    array.push(nav)
+                }
             }
         } else {
             if (nav.children) {
-                nav.children = getfilteredNavigations(nav.children, role)
+                nav.children = getfilteredNavigations(
+                    nav.children,
+                    role,
+                    cpc_type
+                )
                 array.push(nav)
             } else {
                 array.push(nav)

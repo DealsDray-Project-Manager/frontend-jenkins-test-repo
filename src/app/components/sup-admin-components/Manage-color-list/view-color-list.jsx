@@ -2,11 +2,9 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import EditProdutDilog from './edit-product'
-import AddEditorDialog from './add-products'
-import { useNavigate } from 'react-router-dom'
-import { Button, Box, IconButton, Icon } from '@mui/material'
+import MemberEditorDialog from './add-color'
 import Swal from 'sweetalert2'
+import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -22,26 +20,26 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [productList, setProductList] = useState([])
-    const navigate = useNavigate()
-    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
+    const [partList, setPartList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-    const [shouldOpenProductEditDialog, setShouldOpenProductEditDialog] =
-        useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/getAllProducts')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'color-list'
+                )
                 if (res.status === 200) {
+                    setPartList(res.data.data)
                     setIsLoading(false)
-                    setProductList(res.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -56,15 +54,24 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const editProductData = async (prdodutId) => {
+    const handleDialogClose = () => {
+        setEditFetchData({})
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = (state) => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const editMaster = async (id) => {
         try {
-            let response = await axiosSuperAdminPrexo.get(
-                '/getEditProduct/' + prdodutId
+            let response = await axiosSuperAdminPrexo.post(
+                '/partAndColor/oneData/' + id + '/color-list'
             )
-            if (response.status === 200) {
+            if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
-            } else if (response.status == 202) {
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -80,50 +87,10 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const editImage = async (productId) => {
-        try {
-            let res = await axiosSuperAdminPrexo.post(
-                '/getImageEditProdt/' + productId
-            )
-            if (res.status == 200) {
-                setEditFetchData(res.data.data)
-                handleDialogOpenForProductEdit()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.message,
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
-
-    const handleDialogClose = () => {
-        setEditFetchData({})
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-    const handleDialogCloseForProductEdit = () => {
-        setShouldOpenProductEditDialog(false)
-    }
-
-    const handleDialogOpenForProductEdit = () => {
-        setShouldOpenProductEditDialog(true)
-    }
-
-    const handelDelete = (prdodutId) => {
+    const handelDelete = (id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Product!',
+            text: 'You Want to Delete!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -132,18 +99,18 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.get(
-                        '/getEditProduct/' + prdodutId
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/partAndColor/oneData/' + id + '/color-list'
                     )
-                    if (res.status === 200) {
+                    if (res.status == 200) {
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deleteProduct/' + prdodutId
+                            '/partAndColor/delete/' + id
                         )
-                        if (response.status === 200) {
+                        if (response.status == 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Product has been Deleted',
+                                title: 'Your Part has been Deleted.',
                                 confirmButtonText: 'Ok',
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -154,14 +121,14 @@ const SimpleMuiTable = () => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: "You Can't Delete This Product",
+                                text: "This Color You Can't Delete",
                             })
                         }
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "You Can't Delete This Product",
+                            text: "This Color You Can't Delete",
                         })
                     }
                 } catch (error) {
@@ -187,60 +154,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'image', // field name in the row object
-            label: 'Image', // column title that will be shown in table
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <img
-                            height="80px"
-                            width="80px"
-                            src={
-                                value == undefined
-                                    ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
-                                      tableMeta.rowData[2] +
-                                      '.jpg'
-                                    : value
-                            }
-                        />
-                    )
-                },
-            },
-        },
-        
-        {
-            name: 'vendor_sku_id',
-            label: 'SKU ID',
+            name: 'name', // field name in the row object
+            label: 'Color Name', // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand_name',
-            label: 'Brand',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model_name',
-            label: 'Model',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'vendor_name',
-            label: 'Vendor Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'muic',
-            label: 'MUIC',
+            name: 'description',
+            label: 'Description',
             options: {
                 filter: true,
             },
@@ -249,31 +171,27 @@ const SimpleMuiTable = () => {
             name: 'created_at',
             label: 'Creation Date',
             options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
         },
         {
-            name: 'status',
+            name: '_id',
             label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value) => {
                     return (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
+                        <>
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editProductData(tableMeta.rowData[6])
+                                        editMaster(value)
                                     }}
                                     color="primary"
                                 >
@@ -282,25 +200,15 @@ const SimpleMuiTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={() => {
-                                        handelDelete(tableMeta.rowData[6])
+                                    onClick={(e) => {
+                                        handelDelete(value)
                                     }}
                                     color="error"
                                 >
                                     delete
                                 </Icon>
                             </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        editImage(tableMeta.rowData[6])
-                                    }}
-                                    color="primary"
-                                >
-                                    image
-                                </Icon>
-                            </IconButton>
-                        </Box>
+                        </>
                     )
                 },
             },
@@ -311,28 +219,21 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Products', path: '/pages' }]}
+                    routeSegments={[{ name: 'Color-list', path: '/' }]}
                 />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => handleDialogOpen()}
+                onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Product
+                Add New Color
             </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate('/sup-admin/products/bulk-product')}
-            >
-                Add Bulk Products
-            </Button>
+
             <MUIDataTable
-                title={'All Products'}
-                data={productList}
+                title={'All Colors'}
+                data={partList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -358,18 +259,9 @@ const SimpleMuiTable = () => {
                 }}
             />
             {shouldOpenEditorDialog && (
-                <AddEditorDialog
+                <MemberEditorDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    editFetchData={editFetchData}
-                    setEditFetchData={setEditFetchData}
-                />
-            )}
-            {shouldOpenProductEditDialog && (
-                <EditProdutDilog
-                    handleClose={handleDialogCloseForProductEdit}
-                    open={handleDialogOpenForProductEdit}
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
@@ -379,4 +271,4 @@ const SimpleMuiTable = () => {
     )
 }
 
-export default SimpleMuiTable
+export default PartTable

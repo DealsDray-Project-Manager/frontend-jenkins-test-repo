@@ -145,8 +145,6 @@ const MemberEditorDialog = ({
             })
         }
     }
-   
-
     const handelEdit = async (data) => {
         try {
             let response = await axiosSuperAdminPrexo.post('/editInfra', data)

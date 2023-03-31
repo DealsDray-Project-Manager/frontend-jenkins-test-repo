@@ -163,8 +163,8 @@ const PaginationTable = () => {
                     count4++
                 } else {
                     x.tray_id =
-                        x.tray_category + x.tray_grade + obj[x.tray_grade]
-                    obj[x.tray_grade] = Number(obj[x.tray_grade] + 1)
+                        x.tray_category + x.tray_grade + obj[x.tray_category + x.tray_grade]
+                    obj[x.tray_category + x.tray_grade] = Number(obj[x.tray_category + x.tray_grade] + 1)
                 }
                 // else if (x.tray_category == 'CTA') {
                 //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
@@ -237,7 +237,6 @@ const PaginationTable = () => {
                 allCount: countOfTray,
                 item: pagination.item,
             }
-            console.log(obj)
             let res = await axiosSuperAdminPrexo.post('/createBulkTray', obj)
             if (res.status == 200) {
                 Swal.fire({

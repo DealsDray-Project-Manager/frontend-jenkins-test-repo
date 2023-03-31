@@ -73,9 +73,9 @@ const SimpleMuiTable = () => {
                 page: 'Mis-ctx-receive',
             }
             if (userCpcType == 'Sales') {
-                obj.sortId = 'Received From Processing'
+                obj.sortId = 'Accepted From Processing'
             } else {
-                obj.sortId = 'Received From Sales'
+                obj.sortId = 'Accepted From Sales'
             }
             let res = await axiosWarehouseIn.post(
                 '/ctx/transferRequest/approve',
@@ -271,7 +271,7 @@ const SimpleMuiTable = () => {
                     handelReceive(e)
                 }}
             >
-                Receive
+                Accept
             </Button>
             <MUIDataTable
                 title={'CTX Tray'}

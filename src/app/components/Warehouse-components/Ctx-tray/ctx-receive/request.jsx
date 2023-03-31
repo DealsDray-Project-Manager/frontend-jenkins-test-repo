@@ -5,8 +5,18 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    DialogActions,
+    TextField,
+} from '@mui/material'
 import Swal from 'sweetalert2'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,9 +30,48 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
+    const [isAlive, setIsAlive] = useState(true)
     const navigate = useNavigate()
+    const [counts, setCounts] = useState('')
+    const [open, setOpen] = React.useState(false)
+    const [trayId, setTrayId] = useState('')
+
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -33,7 +82,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Received From Processing/' + location
+                        '/ctxTray/' + 'Accepted From Processing/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -52,12 +101,52 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }, [])
+    }, [isAlive])
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
         navigate('/wareshouse/ctx/receive/request/approve/' + trayId)
     }
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handelTrayReceived = async () => {
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+                page:"Ctx-transfer-receive"
+            }
+            let res = await axiosWarehouseIn.post('/ctx-transfer/receive', obj)
+            if (res.status == 200) {
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setIsAlive((isAlive) => !isAlive)
+            } else {
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
 
     const columns = [
         {
@@ -110,32 +199,42 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
-            },
-        },
-        {
             name: 'code',
             label: 'Action',
             options: {
-                filter: true,
-                customBodyRender: (value) => {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Approve
-                        </Button>
+                        <>
+                            {tableMeta.rowData[2] == 'Accepted From Processing' || tableMeta.rowData[2] == 'Accepted From Sales' ? (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        setTrayId(value)
+                                    }}
+                                >
+                                    RECEIVE
+                                </Button>
+                            ) : (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    onClick={(e) => handelDetailPage(e, value)}
+                                    style={{ backgroundColor: 'red' }}
+                                    component="span"
+                                >
+                                    Close
+                                </Button>
+                            )}
+                        </>
                     )
                 },
             },
@@ -143,6 +242,51 @@ const SimpleMuiTable = () => {
     ]
     return (
         <Container>
+            <BootstrapDialog
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth
+                maxWidth="xs"
+            >
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                >
+                    Please verify the count of - {trayId}
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        disabled={counts === ''}
+                        variant="contained"
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            handelTrayReceived(e)
+                        }}
+                    >
+                        RECEIVED
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[

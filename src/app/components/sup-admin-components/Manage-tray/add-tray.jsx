@@ -31,6 +31,7 @@ const MemberEditorDialog = ({
     const [allBrand, setAllBrand] = useState([])
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
+    const [trayType, setTrayType] = useState('')
     const [allModel, setAllModel] = useState([])
     const [categorys, setCategorys] = useState([])
 
@@ -75,17 +76,19 @@ const MemberEditorDialog = ({
         }
     }, [])
 
-    const fetchTypeWiseId = async (e, type) => {
+    const fetchTypeWiseId = async (e, type, position) => {
         e.preventDefault()
         try {
             let obj = {
                 type: type,
             }
+           
             if (type == 'CT' || type == 'ST') {
                 setTrayCount('')
                 reset({
                     tray_grade: null,
                 })
+
                 let categorys = await axiosSuperAdminPrexo.get(
                     '/getCtxTrayCategory'
                 )
@@ -93,9 +96,10 @@ const MemberEditorDialog = ({
                     setCategorys(categorys.data)
                 }
             } else {
+                obj.type_taxanomy = getValues("type_taxanomy")
                 let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
                 if (res.status == 200) {
-                    setTrayCount(type + res.data.data)
+                    setTrayCount( type + res.data.data)
 
                     if (type == 'BOT' && res.data.data > '2251') {
                         handleClose()
@@ -142,7 +146,6 @@ const MemberEditorDialog = ({
                             }
                         })
                     }
-
                     // else if (type == 'CTA' && res.data.data > '1999') {
                     //     handleClose()
                     //     Swal.fire({
@@ -231,7 +234,13 @@ const MemberEditorDialog = ({
             .max(100)
             .nullable(),
         type_taxanomy: Yup.string().required('Required*').nullable(),
-        tray_grade: Yup.string().required('Required*').nullable(),
+        tray_grade: Yup.string()
+            .when('type_taxanomy', (type_taxanomy, schema) => {
+                if (type_taxanomy == 'CT' || type_taxanomy == 'ST') {
+                    return schema.required('Required')
+                }
+            })
+            .nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
         limit: Yup.number('Must be number')
             .required('Required*')
@@ -490,7 +499,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="BOT"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'BOT')
+                                    fetchTypeWiseId(e, 'BOT', 'top')
                                 }}
                             >
                                 BOT
@@ -498,7 +507,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="PMT"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'PMT')
+                                    fetchTypeWiseId(e, 'PMT', 'top')
                                 }}
                             >
                                 PMT
@@ -506,7 +515,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="MMT"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'MMT')
+                                    fetchTypeWiseId(e, 'MMT', 'top')
                                 }}
                             >
                                 MMT
@@ -514,7 +523,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="WHT"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'WHT')
+                                    fetchTypeWiseId(e, 'WHT', 'top')
                                 }}
                             >
                                 WHT
@@ -522,7 +531,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="CT"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CT')
+                                    fetchTypeWiseId(e, 'CT', 'below')
                                 }}
                             >
                                 CT
@@ -530,7 +539,7 @@ const MemberEditorDialog = ({
                             <MenuItem
                                 value="ST"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'ST')
+                                    fetchTypeWiseId(e, 'ST', 'below')
                                 }}
                             >
                                 ST

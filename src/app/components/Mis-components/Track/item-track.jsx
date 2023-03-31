@@ -205,8 +205,7 @@ const SimpleMuiTable = () => {
         const data = new Blob([excelBuffer], { type: fileType })
         FileSaver.saveAs(data, 'Item-track' + fileExtension)
     }
-    console.log('item', item)
-    console.log('data', data)
+   
     const tableData = useMemo(() => {
         return (
             <ProductTable>

@@ -239,6 +239,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'tray_grade',
+            label: 'Grade',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'created_at',
             label: 'Creation Date',
             options: {

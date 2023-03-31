@@ -23,6 +23,7 @@ import {
     MenuItem,
     Grid,
 } from '@mui/material'
+
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -75,6 +76,7 @@ const OrderTable = styled(Table)(() => ({
         paddingLeft: '16px !important',
     },
 }))
+
 const TempOrderStyle = styled(Table)(() => ({
     minWidth: 750,
     width: 2200,
@@ -101,6 +103,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -123,6 +126,7 @@ const BootstrapDialogTitle = (props) => {
         </DialogTitle>
     )
 }
+
 BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
@@ -937,7 +941,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v8-uat-adminapi.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

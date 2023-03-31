@@ -29,7 +29,6 @@ const SideNavMobile = styled('div')(({ theme }) => ({
 const Sidenav = ({ children }) => {
     const { settings, updateSettings } = useSettings()
     const { user } = useAuth();
-    console.log(user.cpc_type);
     const filteredNavigations = getfilteredNavigations(navigations, user.role,user.cpc_type)
     const updateSidebarMode = (sidebarSettings) => {
         let activeLayoutSettingsName = settings.activeLayout + 'Settings'

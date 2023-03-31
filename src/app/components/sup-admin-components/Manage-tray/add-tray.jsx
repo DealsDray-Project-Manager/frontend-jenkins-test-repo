@@ -99,7 +99,7 @@ const MemberEditorDialog = ({
                 obj.type_taxanomy = getValues("type_taxanomy")
                 let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
                 if (res.status == 200) {
-                    setTrayCount(type + res.data.data)
+                    setTrayCount( type + res.data.data)
 
                     if (type == 'BOT' && res.data.data > '2251') {
                         handleClose()

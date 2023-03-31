@@ -852,7 +852,6 @@ export const navigations = [
     },
 ]
 export const getfilteredNavigations = (navList = [], role, cpc_type) => {
-    console.log(cpc_type)
     return navList.reduce((array, nav) => {
         if (nav.auth) {
             if (nav.auth.includes(role)) {

@@ -61,6 +61,7 @@ export const navigations = [
         name: 'Dashboard',
         path: '/reporting/dashboard',
         icon: '',
+        sales: 'all',
         auth: authRoles.reporting, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
@@ -348,7 +349,6 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
-           
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -863,6 +863,7 @@ export const navigations = [
                 path: '/reporting/not-delivered-orders',
             },
         ],
+        sales: "all",
         auth: authRoles.reporting,
     },
     {
@@ -880,6 +881,7 @@ export const navigations = [
                 path: '/reporting/units/ready-for-sales',
             },
         ],
+        sales: "all",
         auth: authRoles.reporting,
     },
     {
@@ -888,10 +890,10 @@ export const navigations = [
         children: [
             {
                 name: 'Closed Bag',
-                path: '/reporting/units/processing',
+                path: '/reporting/bags/closed',
             },
-           
         ],
+        sales: "all",
         auth: authRoles.reporting,
     },
 

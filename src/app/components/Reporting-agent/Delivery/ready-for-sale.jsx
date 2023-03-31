@@ -8,17 +8,12 @@ import {
     TableRow,
     TableCell,
     TablePagination,
-    Button,
     Card,
-    MenuItem,
-    Box,
-    TextField,
-    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
+import { axiosReportingAgent } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -103,7 +98,7 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 5750,
+        width: 4000,
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -123,7 +118,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Processing', path: '/' },
+                        { name: 'Ready for Sales', path: '/' },
                         { name: 'Units', path: '/' },
                     ]}
                 />
@@ -135,9 +130,9 @@ const SimpleMuiTable = () => {
                         <TableRow>
                             <TableCell>Record.NO</TableCell>
 
+                            <TableCell>UIC Code</TableCell>
                             <TableCell>UIC Generated Admin</TableCell>
                             <TableCell>UIC Generated Time</TableCell>
-                            <TableCell>UIC Code</TableCell>
                             <TableCell>UIC Downloaded Time</TableCell>
                             <TableCell>Actual Delivery Date</TableCell>
                             <TableCell>Order ID</TableCell>
@@ -163,6 +158,7 @@ const SimpleMuiTable = () => {
                             <TableRow tabIndex={-1}>
                                 <TableCell>{data.id}</TableCell>
 
+                                <TableCell>{data?.uic_code?.code}</TableCell>
                                 <TableCell>{data.uic_code?.user}</TableCell>
                                 <TableCell>
                                     {' '}
@@ -174,7 +170,6 @@ const SimpleMuiTable = () => {
                                               hour12: true,
                                           })}
                                 </TableCell>
-                                <TableCell>{data?.uic_code?.code}</TableCell>
                                 <TableCell>
                                     {data?.download_time == undefined
                                         ? ''
@@ -199,9 +194,6 @@ const SimpleMuiTable = () => {
                                 </TableCell>
                                 <TableCell>
                                     {data?.tracking_id?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data?.item_id?.toString()}
                                 </TableCell>
                                 <TableCell>
                                     {data?.item_id?.toString()}

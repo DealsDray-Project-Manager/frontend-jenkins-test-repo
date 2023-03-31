@@ -41,7 +41,7 @@ const StatCard3 = () => {
             icon: 'reorder',
             amount: count.allOrders,
             title: 'All Orders',
-            path: '/reporting/not-delivered-orders',
+            path: '/reporting/all-orders',
         },
         {
             icon: 'reorder',

@@ -13,6 +13,9 @@ const ProcessingUnits = Loadable(
 const ReadyForSalesUnits = Loadable(
     lazy(() => import('./Delivery/ready-for-sale'))
 )
+const ClosedBag = Loadable(
+    lazy(() => import('./Bags/closed-bags'))
+)
 
 const ReportingRouter = [
     {
@@ -38,6 +41,10 @@ const ReportingRouter = [
     {
         path: '/reporting/units/ready-for-sales',
         element: <ReadyForSalesUnits />,
+    },
+    {
+        path: '/reporting/bags/closed',
+        element: <ClosedBag />,
     },
 ]
 

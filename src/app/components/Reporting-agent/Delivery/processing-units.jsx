@@ -58,7 +58,14 @@ const SimpleMuiTable = () => {
                     let { location } = jwt_decode(user)
 
                     let res = await axiosReportingAgent.post(
-                        '/units/' + location + '/' + page + '/' + rowsPerPage + "/" + "Processing-units"
+                        '/units/' +
+                            location +
+                            '/' +
+                            page +
+                            '/' +
+                            rowsPerPage +
+                            '/' +
+                            'Processing-units'
                     )
                     if (res.status == 200) {
                         setDisplayText('')
@@ -96,7 +103,7 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 5750,
+        width: 4000,
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -128,9 +135,9 @@ const SimpleMuiTable = () => {
                         <TableRow>
                             <TableCell>Record.NO</TableCell>
 
+                            <TableCell>UIC Code</TableCell>
                             <TableCell>UIC Generated Admin</TableCell>
                             <TableCell>UIC Generated Time</TableCell>
-                            <TableCell>UIC Code</TableCell>
                             <TableCell>UIC Downloaded Time</TableCell>
                             <TableCell>Actual Delivery Date</TableCell>
                             <TableCell>Order ID</TableCell>
@@ -156,6 +163,7 @@ const SimpleMuiTable = () => {
                             <TableRow tabIndex={-1}>
                                 <TableCell>{data.id}</TableCell>
 
+                                    <TableCell>{data?.uic_code?.code}</TableCell>
                                 <TableCell>{data.uic_code?.user}</TableCell>
                                 <TableCell>
                                     {' '}
@@ -167,7 +175,6 @@ const SimpleMuiTable = () => {
                                               hour12: true,
                                           })}
                                 </TableCell>
-                                <TableCell>{data?.uic_code?.code}</TableCell>
                                 <TableCell>
                                     {data?.download_time == undefined
                                         ? ''
@@ -196,9 +203,7 @@ const SimpleMuiTable = () => {
                                 <TableCell>
                                     {data?.item_id?.toString()}
                                 </TableCell>
-                                <TableCell>
-                                    {data?.item_id?.toString()}
-                                </TableCell>
+                               
 
                                 <TableCell>{data.imei?.toString()}</TableCell>
                                 <TableCell>

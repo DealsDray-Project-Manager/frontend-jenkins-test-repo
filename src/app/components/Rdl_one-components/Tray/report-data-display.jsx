@@ -75,15 +75,38 @@ export default function DialogBox() {
     const { state } = useLocation()
     const [selectedStatus, setSelectedStatus] = useState('')
     const [addButDis, setAddButDis] = useState(false)
+    const [partList, setPartList] = useState([])
+    const [colorList, setColorList] = useState([])
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [open, setOpen] = React.useState(false)
     const [partListCount, setPartListCount] = useState(0)
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let fetchPart = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'part-list'
+                )
+                if (fetchPart.status == 200) {
+                    setPartList(fetchPart.data.data)
+                }
+
+                let colorList = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'color-list'
+                )
+                if (colorList.status == 200) {
+                    setColorList(colorList.data.data)
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    },[])
+
     const schema = Yup.object().shape({
         selected_status: Yup.string().required('Required*').nullable(),
-
         description: Yup.string().required('Required*').nullable(),
-
         model_reg: Yup.string()
             .when('selected_status', (selected_status, schema) => {
                 if (selected_status == 'Battery Damage') {
@@ -333,6 +356,30 @@ export default function DialogBox() {
                                 Repair Required
                             </MenuItem>
                             <MenuItem
+                                value="Accept Auditor Feedback"
+                                onClick={() =>
+                                    setSelectedStatus('Accept Auditor Feedback')
+                                }
+                            >
+                                Accept Auditor Feedback
+                            </MenuItem>
+                            <MenuItem
+                                value="Unlocked"
+                                onClick={() => setSelectedStatus('Unlocked')}
+                            >
+                                Unlocked
+                            </MenuItem>
+                            <MenuItem
+                                value="Issue Resolved Through Software"
+                                onClick={() =>
+                                    setSelectedStatus(
+                                        'Issue Resolved Through Software'
+                                    )
+                                }
+                            >
+                                Issue Resolved Through Software
+                            </MenuItem>
+                            <MenuItem
                                 value="Dead"
                                 onClick={() => setSelectedStatus('Dead')}
                             >
@@ -356,13 +403,20 @@ export default function DialogBox() {
                                     defaultValue={getValues('color')}
                                     label="Color"
                                     variant="outlined"
+                                    select
                                     type="text"
                                     {...register('color')}
                                     error={errors?.color ? true : false}
                                     helperText={errors?.color?.message}
                                     fullWidth
                                     sx={{ mt: 2 }}
-                                />
+                                >
+                                    {colorList.map((data) => (
+                                        <MenuItem value={data.name}>
+                                            {data.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </>
                         ) : (
                             ''
@@ -422,6 +476,7 @@ export default function DialogBox() {
                                         label=" Part List 1"
                                         variant="outlined"
                                         type="text"
+                                        select
                                         {...register('part_list_1')}
                                         error={
                                             errors?.part_list_1 ? true : false
@@ -431,7 +486,13 @@ export default function DialogBox() {
                                         }
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                    />
+                                    >
+                                        {partList.map((data) => (
+                                            <MenuItem value={data.name}>
+                                                {data.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 ) : null}
                                 {partListCount > '1' ? (
                                     <TextField
@@ -439,6 +500,7 @@ export default function DialogBox() {
                                         label=" Part List 2"
                                         variant="outlined"
                                         type="text"
+                                        select
                                         {...register('part_list_2')}
                                         error={
                                             errors?.part_list_2 ? true : false
@@ -448,7 +510,13 @@ export default function DialogBox() {
                                         }
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                    />
+                                    >
+                                        {partList.map((data) => (
+                                            <MenuItem value={data.name}>
+                                                {data.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 ) : null}
                                 {partListCount > '2' ? (
                                     <TextField
@@ -456,6 +524,7 @@ export default function DialogBox() {
                                         label=" Part List 3"
                                         variant="outlined"
                                         type="text"
+                                        select
                                         {...register('part_list_3')}
                                         error={
                                             errors?.part_list_3 ? true : false
@@ -465,7 +534,13 @@ export default function DialogBox() {
                                         }
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                    />
+                                    >
+                                        {partList.map((data) => (
+                                            <MenuItem value={data.name}>
+                                                {data.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 ) : null}
                                 {partListCount > '3' ? (
                                     <TextField
@@ -473,6 +548,7 @@ export default function DialogBox() {
                                         label=" Part List 4"
                                         variant="outlined"
                                         type="text"
+                                        select
                                         {...register('part_list_4')}
                                         error={
                                             errors?.part_list_4 ? true : false
@@ -482,7 +558,13 @@ export default function DialogBox() {
                                         }
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                    />
+                                    >
+                                        {partList.map((data) => (
+                                            <MenuItem value={data.name}>
+                                                {data.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 ) : null}
                                 {partListCount > '4' ? (
                                     <TextField
@@ -490,6 +572,7 @@ export default function DialogBox() {
                                         label=" Part List 5"
                                         variant="outlined"
                                         type="text"
+                                        select
                                         {...register('part_list_5')}
                                         error={
                                             errors?.part_list_5 ? true : false
@@ -499,19 +582,32 @@ export default function DialogBox() {
                                         }
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                    />
+                                    >
+                                        {partList.map((data) => (
+                                            <MenuItem value={data.name}>
+                                                {data.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 ) : null}
                                 <TextField
                                     defaultValue={getValues('color')}
                                     label="Color"
                                     variant="outlined"
+                                    select
                                     type="text"
                                     {...register('color')}
                                     error={errors?.color ? true : false}
                                     helperText={errors?.color?.message}
                                     fullWidth
                                     sx={{ mt: 2 }}
-                                />
+                                >
+                                    {colorList.map((data) => (
+                                        <MenuItem value={data.name}>
+                                            {data.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </>
                         ) : (
                             ''

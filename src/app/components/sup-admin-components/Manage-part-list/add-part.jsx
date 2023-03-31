@@ -19,7 +19,7 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const AddBrandAndEditDialog = ({
+const AddPartOrColorAndEditDialog = ({
     open,
     handleClose,
     setIsAlive,
@@ -37,7 +37,12 @@ const AddBrandAndEditDialog = ({
     }, [])
 
     const schema = Yup.object().shape({
-        brand_name: Yup.string()
+        name: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
+        description: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
@@ -56,8 +61,9 @@ const AddBrandAndEditDialog = ({
     const onSubmit = async (data) => {
         try {
             setLoading(true)
+            data.type ="part-list"
             let response = await axiosSuperAdminPrexo.post(
-                '/createBrands',
+                '/partAndColor/create',
                 data
             )
             if (response.status == 200) {
@@ -95,7 +101,7 @@ const AddBrandAndEditDialog = ({
 
     const handelEdit = async (data) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/editBrand', data)
+            let response = await axiosSuperAdminPrexo.post('/partAndColor/edit', data)
             if (response.status == 200) {
                 setEditFetchData({})
                 handleClose()
@@ -128,26 +134,27 @@ const AddBrandAndEditDialog = ({
     return (
         <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Add Brand</H4>
+                <H4 sx={{ mb: '20px' }}>Add Part</H4>
 
-                <TextFieldCustOm
-                    label="Brand Id"
-                    type="text"
-                    name="brand_id"
-                    value={
-                        getValues('brand_id') == null
-                            ? 'brand-0' + brandCount
-                            : getValues('brand_id')
-                    }
-                    {...register('brand_id')}
-                />
                 <TextFieldCustOm
                     label="Name"
                     type="text"
-                    name="brand_name"
-                    {...register('brand_name')}
+                    name="name"
+                    {...register('name')}
                     error={errors.name ? true : false}
-                    helperText={errors.name ? errors.name?.message : ''}
+                    helperText={
+                        errors.name ? errors.name?.message : ''
+                    }
+                />
+                <TextFieldCustOm
+                    label="Description"
+                    type="text"
+                    name="description"
+                    {...register('description')}
+                    error={errors.description ? true : false}
+                    helperText={
+                        errors.description ? errors.description?.message : ''
+                    }
                 />
 
                 <FormHandlerBox>
@@ -177,4 +184,4 @@ const AddBrandAndEditDialog = ({
     )
 }
 
-export default AddBrandAndEditDialog
+export default AddPartOrColorAndEditDialog

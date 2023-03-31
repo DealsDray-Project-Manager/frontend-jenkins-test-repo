@@ -64,6 +64,18 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
+            amount: count.partList,
+            title: 'Part List',
+            link: '/sup-admin/view-part-list',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.colorList,
+            title: 'Color List',
+            link: '/sup-admin/view-color-list',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.products,
             title: 'Products',
             link: '/sup-admin/products',

@@ -1,9 +1,9 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-location'
 import React, { useState, useEffect } from 'react'
-import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
+import MemberEditorDialog from './add-color'
+import Swal from 'sweetalert2'
 import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -20,21 +20,23 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const SimpleMuiTable = () => {
+const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [locationList, setLocatiolList] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
+    const [partList, setPartList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchLocation = async () => {
+        const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/getLocation')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'color-list'
+                )
                 if (res.status === 200) {
+                    setPartList(res.data.data)
                     setIsLoading(false)
-                    setLocatiolList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -45,10 +47,10 @@ const SimpleMuiTable = () => {
                 })
             }
         }
-        fetchLocation()
+        fetchBrand()
         return () => {
             setIsAlive(false)
-            setIsLoading(true)
+            setIsLoading(false)
         }
     }, [isAlive])
 
@@ -57,20 +59,24 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = () => {
+    const handleDialogOpen = (state) => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editLocation = async (empId,type) => {
+    const editMaster = async (id) => {
         try {
-            let obj={
-                empId:empId,
-                type:type
-            }
-            let response = await axiosSuperAdminPrexo.post('/getInfra',obj)
+            let response = await axiosSuperAdminPrexo.post(
+                '/partAndColor/oneData/' + id + '/color-list'
+            )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -80,10 +86,11 @@ const SimpleMuiTable = () => {
             })
         }
     }
-    const handelDelete = (id,type) => {
+
+    const handelDelete = (id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Location!',
+            text: 'You Want to Delete!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -92,29 +99,36 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let obj={
-                        empId:id,
-                        type:type
-                    }
-                    let response = await axiosSuperAdminPrexo.post(
-                        '/deleteInfra',obj 
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/partAndColor/oneData/' + id + '/color-list'
                     )
-                    if (response.status == 200) {
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: 'Location has been Deleted',
-                            confirmButtonText: 'Ok',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                setIsAlive((isAlive) => !isAlive)
-                            }
-                        })
+                    if (res.status == 200) {
+                        let response = await axiosSuperAdminPrexo.post(
+                            '/partAndColor/delete/' + id
+                        )
+                        if (response.status == 200) {
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'success',
+                                title: 'Your Part has been Deleted.',
+                                confirmButtonText: 'Ok',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    setIsAlive((isAlive) => !isAlive)
+                                }
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "This Color You Can't Delete",
+                            })
+                        }
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: response.data.message,
+                            text: "This Color You Can't Delete",
                         })
                     }
                 } catch (error) {
@@ -141,82 +155,43 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: 'Color Name', // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'code',
-            label: 'Code',
+            name: 'description',
+            label: 'Description',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'location_type',
-            label: 'Location Type',
+            name: 'created_at',
+            label: 'Creation Date',
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
-            name: 'address',
-            label: 'Address',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'city',
-            label: 'City',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'state',
-            label: 'State',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'country',
-            label: 'Country',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'pincode',
-            label: 'Pincode',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Type',
-            
-            options: {
-                filter: true,
-                display:false
-            },
-        },
-        {
-            name: 'code',
+            name: '_id',
             label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value, tableMeta, updateValue) => {
+                customBodyRender: (value) => {
                     return (
                         <>
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editLocation(value,tableMeta.rowData[9])
+                                        editMaster(value)
                                     }}
                                     color="primary"
                                 >
@@ -226,7 +201,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(value,tableMeta.rowData[9])
+                                        handelDelete(value)
                                     }}
                                     color="error"
                                 >
@@ -243,19 +218,22 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Location', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Color-list', path: '/' }]}
+                />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
+                onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Location
+                Add New Color
             </Button>
+
             <MUIDataTable
-                title={'All Location'}
-                data={locationList}
+                title={'All Colors'}
+                data={partList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -293,4 +271,4 @@ const SimpleMuiTable = () => {
     )
 }
 
-export default SimpleMuiTable
+export default PartTable

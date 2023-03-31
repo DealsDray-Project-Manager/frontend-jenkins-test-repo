@@ -704,10 +704,7 @@ export default function DialogBox() {
                                     src={
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
-
                                             ? 'http://prexo-v8-uat-adminapi.dealsdray.com/product/image/' +
-                                        
-
                                               awabnDetails?.[0]?.products
                                                   .vendor_sku_id +
                                               '.jpg'
@@ -940,6 +937,7 @@ export default function DialogBox() {
                 >
                     ADD TO MMT
                 </BootstrapDialogTitle>
+                
                 <DialogContent dividers>
                     <Box
                         sx={{

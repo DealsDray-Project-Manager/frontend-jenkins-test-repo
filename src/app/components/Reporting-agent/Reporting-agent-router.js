@@ -13,8 +13,23 @@ const ProcessingUnits = Loadable(
 const ReadyForSalesUnits = Loadable(
     lazy(() => import('./Delivery/ready-for-sale'))
 )
-const ClosedBag = Loadable(
-    lazy(() => import('./Bags/closed-bags'))
+const ClosedBag = Loadable(lazy(() => import('./Bags/closed-bags')))
+const BotTraySortingPending = Loadable(
+    lazy(() => import('./Bot-tray/sorting-pending'))
+)
+const MmtTray = Loadable(lazy(() => import('./Mmt-tray/tray')))
+const PmtTray = Loadable(lazy(() => import('./Pmt-tray/tray')))
+const InuseWhtTray = Loadable(lazy(() => import('./Wht-tray/in-use-tray')))
+const WhtReadyForMerge = Loadable(
+    lazy(() => import('./Wht-tray/ready-for-merge'))
+)
+const ReadyForCharging = Loadable(
+    lazy(() => import('./Wht-tray/ready-for-charge'))
+)
+const ReadyToBqc = Loadable(lazy(() => import('./Wht-tray/ready-for-bqc')))
+const ReadyToAudit = Loadable(lazy(() => import('./Wht-tray/ready-for-audit')))
+const ReadyToRdlFls = Loadable(
+    lazy(() => import('./Wht-tray/ready-for-rdl-fls'))
 )
 
 const ReportingRouter = [
@@ -45,6 +60,42 @@ const ReportingRouter = [
     {
         path: '/reporting/bags/closed',
         element: <ClosedBag />,
+    },
+    {
+        path: '/reporting/bot-tray/sorting-pending',
+        element: <BotTraySortingPending />,
+    },
+    {
+        path: '/reporting/mmt-tray',
+        element: <MmtTray />,
+    },
+    {
+        path: '/reporting/pmt-tray',
+        element: <PmtTray />,
+    },
+    {
+        path: '/reporting/wht/inuse',
+        element: <InuseWhtTray />,
+    },
+    {
+        path: '/reporting/wht/ready-for-merge',
+        element: <WhtReadyForMerge />,
+    },
+    {
+        path: '/reporting/wht/ready-for-charge',
+        element: <ReadyForCharging />,
+    },
+    {
+        path: '/reporting/wht/ready-for-bqc',
+        element: <ReadyToBqc />,
+    },
+    {
+        path: '/reporting/wht/ready-for-audit',
+        element: <ReadyToAudit />,
+    },
+    {
+        path: '/reporting/wht/ready-for-rdl-fls',
+        element: <ReadyToRdlFls />,
     },
 ]
 

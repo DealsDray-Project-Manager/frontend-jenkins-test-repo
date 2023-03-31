@@ -863,7 +863,7 @@ export const navigations = [
                 path: '/reporting/not-delivered-orders',
             },
         ],
-        sales: "all",
+        sales: 'all',
         auth: authRoles.reporting,
     },
     {
@@ -881,7 +881,7 @@ export const navigations = [
                 path: '/reporting/units/ready-for-sales',
             },
         ],
-        sales: "all",
+        sales: 'all',
         auth: authRoles.reporting,
     },
     {
@@ -893,10 +893,68 @@ export const navigations = [
                 path: '/reporting/bags/closed',
             },
         ],
-        sales: "all",
+        sales: 'all',
         auth: authRoles.reporting,
     },
 
+    {
+        name: 'Bot-Tray',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Soring Pending',
+                path: '/reporting/bot-tray/sorting-pending',
+            },
+        ],
+        sales: 'all',
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'MMT Tray',
+        icon: 'shopping_cart',
+        path: '/reporting/mmt-tray',
+        sales: 'all',
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'PMT Tray',
+        icon: 'shopping_cart',
+        path: '/reporting/pmt-tray',
+        sales: 'all',
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'WHT',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'In-use',
+                path: '/reporting/wht/inuse',
+            },
+            {
+                name: 'Ready for Merge',
+                path: '/reporting/wht/ready-for-merge',
+            },
+            {
+                name: 'Ready for Charge',
+                path: '/reporting/wht/ready-for-charge',
+            },
+            {
+                name: 'Ready for Bqc',
+                path: '/reporting/wht/ready-for-bqc',
+            },
+            {
+                name: 'Ready for Audit',
+                path: '/reporting/wht/ready-for-audit',
+            },
+            {
+                name: 'Ready for Rdl-fls',
+                path: '/reporting/wht/ready-for-rdl-fls',
+            },
+        ],
+        sales: 'all',
+        auth: authRoles.reporting,
+    },
     {
         name: 'Dummy Panel',
         icon: 'class',

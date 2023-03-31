@@ -67,6 +67,66 @@ const StatCard3 = () => {
             title: 'Ready for Sales',
             path: '/reporting/units/ready-for-sales',
         },
+        {
+            icon: 'class',
+            amount: count.closedBag,
+            title: 'Bag Ready to Bot',
+            path: '/reporting/bags/closed',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.sortingPendingBot,
+            title: 'Bot Tray Ready to Sorting',
+            path: '/reporting/bot-tray/sorting-pending',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.mmtTray,
+            title: 'MMT Tray',
+            path: '/reporting/mmt-tray',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.pmtTray,
+            title: 'PMT Tray',
+            path: '/reporting/pmt-tray',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.inuseWht,
+            title: 'Inuse Wht',
+            path: '/reporting/wht/inuse',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToMerge,
+            title: 'Wht Ready to Merge',
+            path: '/reporting/wht/ready-for-merge',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToCharge,
+            title: 'Ready to Charge',
+            path: '/reporting/wht/ready-for-charge',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToBqc,
+            title: 'Ready for Bqc',
+            path: '/reporting/wht/ready-for-bqc',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToAudit,
+            title: 'Ready for Audit',
+            path: '/reporting/wht/ready-for-audit',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.readyToRdlFls,
+            title: 'Ready for Rdl-fls',
+            path: '/reporting/wht/ready-for-rdl-fls',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const baseURL = 'http://localhost:8000'
-// const baseURL = 'http://prexo-v8-adminapi.dealsdray.com'
+// const baseURL = 'http://prexo-v8-testing-adminapi.dealsdray.com'
 
 
 

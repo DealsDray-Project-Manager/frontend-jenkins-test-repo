@@ -110,7 +110,7 @@ const PartTable = () => {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Part has been Deleted.',
+                                title: 'Your Color has been Deleted.',
                                 confirmButtonText: 'Ok',
                             }).then((result) => {
                                 if (result.isConfirmed) {

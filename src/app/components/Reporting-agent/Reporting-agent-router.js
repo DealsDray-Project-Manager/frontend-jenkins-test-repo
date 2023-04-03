@@ -37,6 +37,21 @@ const InMergingMmt = Loadable(
 const InMergingWht = Loadable(
     lazy(() => import('./Wht-tray/in-merging'))
 )
+const ChargingInProgress = Loadable(
+    lazy(() => import('./Wht-tray/charge-in-progress'))
+)
+const BqcInprogress = Loadable(
+    lazy(() => import('./Wht-tray/bqc-in-progress'))
+)
+const AuditInProgress = Loadable(
+    lazy(() => import('./Wht-tray/audit-in-progress'))
+)
+const RdlFlsInprogress = Loadable(
+    lazy(() => import('./Wht-tray/rdl-fls-in-progress'))
+)
+const TrackItemDeliveryReport = Loadable(
+    lazy(() => import('./Track-item/delivery'))
+)
 
 const ReportingRouter = [
     {
@@ -110,6 +125,30 @@ const ReportingRouter = [
     {
         path: '/reporting/wht/in-merging',
         element: <InMergingWht />,
+    },
+    {
+        path: '/reporting/wht/in-charging',
+        element: <ChargingInProgress />,
+    },
+    {
+        path: '/reporting/wht/in-bqc',
+        element: <BqcInprogress />,
+    },
+    {
+        path: '/reporting/wht/in-audit',
+        element: <AuditInProgress />,
+    },
+    {
+        path: '/reporting/wht/in-rdl-fls',
+        element: <RdlFlsInprogress />,
+    },
+    {
+        path: '/reporting/wht/in-rdl-fls',
+        element: <RdlFlsInprogress />,
+    },
+    {
+        path: '/reporting/delivery/item',
+        element: <TrackItemDeliveryReport />,
     },
 ]
 

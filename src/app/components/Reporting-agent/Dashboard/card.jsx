@@ -87,6 +87,12 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
+            amount: count.inMergingMmt,
+            title: 'In Merging MMT',
+            path: '/reporting/mmt/in-merging',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.pmtTray,
             title: 'PMT Tray',
             path: '/reporting/pmt-tray',
@@ -105,9 +111,21 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
+            amount: count.inMergingWht,
+            title: 'In Merging Wht',
+            path: '/reporting/wht/ready-for-merge',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.readyToCharge,
             title: 'Ready to Charge',
             path: '/reporting/wht/ready-for-charge',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.InCharging,
+            title: 'In Charging Wht',
+            path: '/reporting/wht/in-charging',
         },
         {
             icon: 'shopping_cart',
@@ -117,15 +135,33 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
+            amount: count.inBqc,
+            title: 'In Bqc Wht',
+            path: '/reporting/wht/in-bqc',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.readyToAudit,
             title: 'Ready for Audit',
             path: '/reporting/wht/ready-for-audit',
         },
         {
             icon: 'shopping_cart',
+            amount: count.inAudit,
+            title: 'In Audit Wht',
+            path: '/reporting/wht/in-audit',
+        },
+        {
+            icon: 'shopping_cart',
             amount: count.readyToRdlFls,
             title: 'Ready for Rdl-fls',
             path: '/reporting/wht/ready-for-rdl-fls',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.inRdlFls,
+            title: 'In RDL-Fls Wht',
+            path: '/reporting/wht/in-rdl-fls',
         },
     ]
     const { palette } = useTheme()

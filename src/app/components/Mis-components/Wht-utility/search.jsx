@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import { axiosMisUser } from '../../../../axios'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+
 import {
     Button,
     TableCell,
@@ -339,6 +340,7 @@ function Search() {
             </TempOrderStyle>
         )
     }, [tempOrders])
+
     const OrderSearchData = useMemo(() => {
         return (
             <OrderTable>
@@ -941,7 +943,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v8-1-dev-api.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

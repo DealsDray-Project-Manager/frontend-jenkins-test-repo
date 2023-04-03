@@ -871,6 +871,11 @@ export const navigations = [
         icon: 'reorder',
         children: [
             {
+                name: 'All Delivered Items',
+
+                path: '/reporting/delivery/item',
+            },
+            {
                 name: 'Processing Units',
 
                 path: '/reporting/units/processing',
@@ -925,12 +930,11 @@ export const navigations = [
                 sales: 'all',
                 auth: authRoles.reporting,
             },
-          
         ],
         sales: 'all',
         auth: authRoles.reporting,
     },
-   
+
     {
         name: 'PMT ',
         icon: 'shopping_cart',
@@ -959,16 +963,32 @@ export const navigations = [
                 path: '/reporting/wht/ready-for-charge',
             },
             {
+                name: 'In Charging',
+                path: '/reporting/wht/in-charging',
+            },
+            {
                 name: 'Ready for Bqc',
                 path: '/reporting/wht/ready-for-bqc',
+            },
+            {
+                name: 'In Bqc',
+                path: '/reporting/wht/in-bqc',
             },
             {
                 name: 'Ready for Audit',
                 path: '/reporting/wht/ready-for-audit',
             },
             {
+                name: 'In Audit',
+                path: '/reporting/wht/in-audit',
+            },
+            {
                 name: 'Ready for Rdl-fls',
                 path: '/reporting/wht/ready-for-rdl-fls',
+            },
+            {
+                name: 'In RDL-FLS',
+                path: '/reporting/wht/in-rdl-fls',
             },
         ],
         sales: 'all',

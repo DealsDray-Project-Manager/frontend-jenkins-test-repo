@@ -910,14 +910,29 @@ export const navigations = [
         auth: authRoles.reporting,
     },
     {
-        name: 'MMT Tray',
+        name: 'MMT',
         icon: 'shopping_cart',
-        path: '/reporting/mmt-tray',
+        children: [
+            {
+                name: 'Closed Tray',
+                path: '/reporting/mmt-tray',
+                sales: 'all',
+                auth: authRoles.reporting,
+            },
+            {
+                name: 'In Merging',
+                path: '/reporting/mmt/in-merging',
+                sales: 'all',
+                auth: authRoles.reporting,
+            },
+          
+        ],
         sales: 'all',
         auth: authRoles.reporting,
     },
+   
     {
-        name: 'PMT Tray',
+        name: 'PMT ',
         icon: 'shopping_cart',
         path: '/reporting/pmt-tray',
         sales: 'all',
@@ -934,6 +949,10 @@ export const navigations = [
             {
                 name: 'Ready for Merge',
                 path: '/reporting/wht/ready-for-merge',
+            },
+            {
+                name: 'In Merging',
+                path: '/reporting/wht/in-merging',
             },
             {
                 name: 'Ready for Charge',

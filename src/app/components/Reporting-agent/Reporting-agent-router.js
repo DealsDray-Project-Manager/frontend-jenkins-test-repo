@@ -31,6 +31,12 @@ const ReadyToAudit = Loadable(lazy(() => import('./Wht-tray/ready-for-audit')))
 const ReadyToRdlFls = Loadable(
     lazy(() => import('./Wht-tray/ready-for-rdl-fls'))
 )
+const InMergingMmt = Loadable(
+    lazy(() => import('./Mmt-tray/in-merging'))
+)
+const InMergingWht = Loadable(
+    lazy(() => import('./Wht-tray/in-merging'))
+)
 
 const ReportingRouter = [
     {
@@ -96,6 +102,14 @@ const ReportingRouter = [
     {
         path: '/reporting/wht/ready-for-rdl-fls',
         element: <ReadyToRdlFls />,
+    },
+    {
+        path: '/reporting/mmt/in-merging',
+        element: <InMergingMmt />,
+    },
+    {
+        path: '/reporting/wht/in-merging',
+        element: <InMergingWht />,
     },
 ]
 

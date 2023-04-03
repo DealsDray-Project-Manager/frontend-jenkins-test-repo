@@ -182,8 +182,8 @@ export default function DialogBox() {
     }
 
     /************************************************************************** */
-    const onSubmit = async (e,value) => {
-       
+    const onSubmit = async (value) => {
+          console.log(value);
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 const { user_name } = jwt_decode(admin)
@@ -197,6 +197,7 @@ export default function DialogBox() {
                     }
                     obj.stage = stateData.stage
                     if (stateData.stage == 'Shift to Sales Bin') {
+                        console.log(value.grade);
                         obj.grade = value.grade
                         obj.description = value.description
                     }

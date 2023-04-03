@@ -19,6 +19,7 @@ import {
     Button,
     MenuItem,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
@@ -36,9 +37,26 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: 6050,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(100)
+    const [rowsPerPage, setRowsPerPage] = React.useState(50)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
@@ -48,16 +66,11 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0)
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
-    const [state, setState] = useState({})
-    
-    const [search, setSearch] = useState({
-        type: '',
-        searchData: '',
-        location: '',
-    })
+    const [filterData, setFilterData] = useState({})
+
     const handleChangeSort = ({ target: { name, value } }) => {
-        setState({
-            ...state,
+        setFilterData({
+            ...filterData,
             [name]: value,
         })
     }
@@ -71,7 +84,7 @@ const SimpleMuiTable = () => {
                 const pageSearch = async () => {
                     let obj = {
                         location: location,
-                        type: search.type,
+
                         searchData: inputSearch,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -145,7 +158,6 @@ const SimpleMuiTable = () => {
     /* Fetch model */
     const fetchModel = async (brandName) => {
         try {
-            alert()
             let res = await axiosSuperAdminPrexo.post(
                 '/get-product-model/' + brandName
             )
@@ -165,23 +177,6 @@ const SimpleMuiTable = () => {
         setPage(newPage)
     }
 
-    const ProductTable = styled(Table)(() => ({
-        minWidth: 750,
-        width: 6050,
-        whiteSpace: 'pre',
-        '& thead': {
-            '& th:first-of-type': {
-                paddingLeft: 16,
-            },
-        },
-        '& td': {
-            borderBottom: 'none',
-        },
-        '& td:first-of-type': {
-            paddingLeft: '16px !important',
-        },
-    }))
-
     const searchTrackItem = async (e) => {
         setInputSearch(e.target.value)
         e.preventDefault()
@@ -197,7 +192,7 @@ const SimpleMuiTable = () => {
                     setPage(0)
                     let obj = {
                         location: location,
-                        type: search.type,
+
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -687,10 +682,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Track', path: '/' },
-                        { name: 'Track-Item' },
-                    ]}
+                    routeSegments={[{ name: 'All Delivered Item', path: '/' }]}
                 />
             </div>
             <Box
@@ -700,30 +692,46 @@ const SimpleMuiTable = () => {
                 }}
             >
                 <Box>
-                    {/* <TextField
-                        select
-                        label="Select"
-                        variant="outlined"
-                        sx={{ mb: 1, width: '140px' }}
+                    <TextField
                         onChange={(e) => {
-                            setSearch((p) => ({ ...p, type: e.target.value }))
+                            searchTrackItem(e)
                         }}
-                    >
-                        <MenuItem value="order_id">Order Id</MenuItem>
-                        <MenuItem value="uic">UIC</MenuItem>
-                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
-                    </TextField> */}
+                        // disabled={search.type == '' ? true : false}
+                        label="Search..."
+                        variant="outlined"
+                        sx={{ mb: 1 }}
+                    />
+                </Box>
+
+                <Box>
+                    <TextField
+                        type="date"
+                        label="From Date"
+                        variant="outlined"
+                        sx={{ mb: 1 }}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        type="date"
+                        label="To Date"
+                        variant="outlined"
+                        sx={{ mb: 1, ml: 3 }}
+                        InputLabelProps={{ shrink: true }}
+                    />
                     <TextField
                         select
                         label="Select Brand"
                         variant="outlined"
-                        sx={{  width: 150 }}
+                        sx={{ width: 150, ml: 3 }}
                         name="brand"
-                    
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
                     >
                         {brand.map((brandData) => (
                             <MenuItem
                                 value={brandData.brand_name}
+                                key={brandData.brand_name}
                                 onClick={(e) => {
                                     fetchModel(brandData.brand_name)
                                 }}
@@ -737,27 +745,33 @@ const SimpleMuiTable = () => {
                         label="Select Model"
                         variant="outlined"
                         name="model"
+                        disabled={filterData.brand == undefined}
                         onChange={(e) => {
                             handleChangeSort(e)
                         }}
                         sx={{ ml: 2, width: 150 }}
                     >
                         {model.map((modelData) => (
-                            <MenuItem value={modelData.model_name}>
+                            <MenuItem
+                                key={modelData.model_name}
+                                value={modelData.model_name}
+                            >
                                 {modelData.model_name}
                             </MenuItem>
                         ))}
                     </TextField>
-                    <TextField
-                        onChange={(e) => {
-                            searchTrackItem(e)
-                        }}
-                        // disabled={search.type == '' ? true : false}
-                        label="Search..."
-                        variant="outlined"
-                        sx={{ml:3, mb: 1 }}
-                    />
+                    <Button
+                    sx={{ ml:2,mb: 2 }}
+                    variant="contained"
+                    color="green"
+                    onClick={(e) => {
+                        download(e)
+                    }}
+                >
+                    Download XLSX
+                </Button>
                 </Box>
+
                 {/* <Button
                     sx={{ mb: 2 }}
                     variant="contained"

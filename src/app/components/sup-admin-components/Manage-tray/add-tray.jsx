@@ -82,7 +82,7 @@ const MemberEditorDialog = ({
             let obj = {
                 type: type,
             }
-           
+
             if (type == 'CT' || type == 'ST') {
                 setTrayCount('')
                 reset({
@@ -96,10 +96,10 @@ const MemberEditorDialog = ({
                     setCategorys(categorys.data)
                 }
             } else {
-                obj.type_taxanomy = getValues("type_taxanomy")
+                obj.type_taxanomy = getValues('type_taxanomy')
                 let res = await axiosSuperAdminPrexo.post('/trayIdGenrate', obj)
                 if (res.status == 200) {
-                    setTrayCount( type + res.data.data)
+                    setTrayCount(type + res.data.data)
 
                     if (type == 'BOT' && res.data.data > '2251') {
                         handleClose()
@@ -296,7 +296,11 @@ const MemberEditorDialog = ({
         data.prefix = 'tray-master'
         data.sort_id = 'Open'
         data.created_at = Date.now()
-        data.code = data.type_taxanomy + trayCount
+        if (data.type_taxanomy == 'CT' || data.type_taxanomy == 'ST') {
+            data.code = data.type_taxanomy + trayCount
+        } else {
+            data.code = trayCount
+        }
         try {
             let response = await axiosSuperAdminPrexo.post(
                 '/createMasters',

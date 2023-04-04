@@ -201,6 +201,7 @@ function Search() {
     }
     const onsubmit = async (value) => {
         try {
+            handleClose()
             let obj = {
                 utilty: tempDelivery[0],
                 extra: value,
@@ -208,7 +209,6 @@ function Search() {
             let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
             if (res.status == 200) {
                 alert(res.data.message)
-                handleClose()
                 window.location.reload(true)
             } else {
                 alert(res.data.message)

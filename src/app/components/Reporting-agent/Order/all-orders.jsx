@@ -1,6 +1,7 @@
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+
 import {
     Table,
     TableHead,
@@ -8,17 +9,17 @@ import {
     TableRow,
     TableCell,
     TablePagination,
-    Button,
     Card,
     MenuItem,
     Box,
     TextField,
     Typography,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-import { axiosMisUser } from '../../../../axios'
+import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,6 +41,7 @@ const SimpleMuiTable = () => {
     const [orderCount, setOrderCount] = useState(0)
     const [data, setData] = useState([])
     const [item, setItem] = useState([])
+    const [lastOrderDate, setLastOrderDate] = useState('')
     const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
         type: '',
@@ -62,8 +64,8 @@ const SimpleMuiTable = () => {
                     if (orderCount.status === 200) {
                         setOrderCount(orderCount.data.data)
                     }
-                    let res = await axiosMisUser.post(
-                        '/getOrders/' +
+                    let res = await axiosReportingAgent.post(
+                        '/getOrders/orderDateWise/' +
                             location +
                             '/' +
                             page +
@@ -98,6 +100,26 @@ const SimpleMuiTable = () => {
             })
         )
     }, [page, item, rowsPerPage])
+
+    useEffect(() => {
+        const fetchLastOrderDate = async () => {
+            try {
+                let user = localStorage.getItem('prexo-authentication')
+                if (user) {
+                    let { location } = jwt_decode(user)
+                    let res = await axiosReportingAgent.post(
+                        '/order/lastOrderDate/' + location
+                    )
+                    if (res.status == 200) {
+                        setLastOrderDate(res.data.data)
+                    }
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchLastOrderDate()
+    }, [])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)

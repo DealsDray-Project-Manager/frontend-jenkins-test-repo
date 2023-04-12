@@ -27,16 +27,16 @@ import SuperAdminRoutes from '../components/sup-admin-components/sup-admin-route
 import MisRoutes from '../components/Mis-components/Mis-routers'
 import WarehouseRoutes from '../components/Warehouse-components/WarehouseRouter'
 import BotRoutes from '../components/Bot-components/BotRoutes'
-import SortingRoutes from "../components/Sorting-agent-components/SortingRoutes"
-import ChargingRoutes from "../components/Charging-components/ChargingRoutes"
-import BqcRoutes from "../components/Bqc-components/BqcRoutes"
-import Login from "../Login/loginRouter"
+import SortingRoutes from '../components/Sorting-agent-components/SortingRoutes'
+import ChargingRoutes from '../components/Charging-components/ChargingRoutes'
+import BqcRoutes from '../components/Bqc-components/BqcRoutes'
+import Login from '../Login/loginRouter'
 import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
-import AuditRouter from "app/components/Audit-components/AuditRouter"
-import RDL_one from "app/components/Rdl_one-components/Rdl-fls-routers"
-import PricingRoutes from "app/components/Pricing-components/Pricing_routers"
-import SalesRoutes from "app/components/Sales-components/Sales_routes"
-
+import AuditRouter from 'app/components/Audit-components/AuditRouter'
+import RDL_one from 'app/components/Rdl_one-components/Rdl-fls-routers'
+import PricingRoutes from 'app/components/Pricing-components/Pricing_routers'
+import SalesRoutes from 'app/components/Sales-components/Sales_routes'
+import ReportingAgent from 'app/components/Reporting-agent/Reporting-agent-router'
 
 export const AllPages = () => {
     const all_routes = [
@@ -76,13 +76,13 @@ export const AllPages = () => {
                 ...AuditRouter,
                 ...RDL_one,
                 ...PricingRoutes,
-                ...SalesRoutes
+                ...SalesRoutes,
+                ...ReportingAgent,
             ],
         },
 
-          
         ...Login,
-        ...ChangePasswordRouter, 
+        ...ChangePasswordRouter,
         {
             path: '/',
             element: <Navigate to="/login" />,

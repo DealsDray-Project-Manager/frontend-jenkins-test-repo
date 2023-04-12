@@ -326,6 +326,7 @@ const MemberEditorDialog = ({
                                 helperText={errors.user_type?.message}
                             >
                                 <MenuItem value="MIS">MIS</MenuItem>
+                                <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Processing' ? (
@@ -341,18 +342,19 @@ const MemberEditorDialog = ({
                                 error={errors.user_type ? true : false}
                                 helperText={errors.user_type?.message}
                             >
-                                <MenuItem value="MIS">MIS</MenuItem>
-                                <MenuItem value="Warehouse">Warehouse</MenuItem>
+                                <MenuItem value="Audit">Audit</MenuItem>
                                 <MenuItem value="Bag Opening">
                                     Bag Opening
                                 </MenuItem>
-                                <MenuItem value="Charging">Charging</MenuItem>
                                 <MenuItem value="BQC">BQC</MenuItem>
-                                <MenuItem value="Audit">Audit</MenuItem>
+                                <MenuItem value="Charging">Charging</MenuItem>
+                                <MenuItem value="MIS">MIS</MenuItem>
+                                <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
+                                <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sorting Agent">
                                     Sorting Agent
                                 </MenuItem>
-                                <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
+                                <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Sales' ? (
                             <TextFieldCustOm
@@ -368,16 +370,17 @@ const MemberEditorDialog = ({
                                 helperText={errors.user_type?.message}
                             >
                                 <MenuItem value="MIS">MIS</MenuItem>
-                                <MenuItem value="Warehouse">Warehouse</MenuItem>
+                                <MenuItem value="Pricing Agent">
+                                    Pricing Agent
+                                </MenuItem>
+                                <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sales Agent">
                                     Sales Agent
                                 </MenuItem>
                                 <MenuItem value="Sorting Agent">
                                     Sorting Agent
                                 </MenuItem>
-                                <MenuItem value="Pricing Agent">
-                                    Pricing Agent
-                                </MenuItem>
+                                <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm

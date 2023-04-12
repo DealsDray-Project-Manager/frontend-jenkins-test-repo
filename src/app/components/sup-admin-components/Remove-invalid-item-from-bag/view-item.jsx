@@ -37,7 +37,7 @@ const SimpleMuiTable = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text:res?.data?.message,
+                        text: res?.data?.message,
                     })
                 }
             } catch (error) {
@@ -54,37 +54,34 @@ const SimpleMuiTable = () => {
 
     const handelDelete = async (id, awbn, state) => {
         try {
-          let obj = {
-            id: id,
-            bagId: bagId,
-            awbn: awbn,
-            state: state,
-          };
-          let data = await axiosWarehouseIn.post("/stockin", obj);
-          if (data.status == 200) {
-             Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text:data?.data?.message,
-                    })
-            setIsAlive((isAlive)=> !isAlive)
-          }
-          else{
-           
+            let obj = {
+                id: id,
+                bagId: bagId,
+                awbn: awbn,
+                state: state,
+            }
+            let data = await axiosWarehouseIn.post('/stockin', obj)
+            if (data.status == 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: data?.data?.message,
+                })
+                setIsAlive((isAlive) => !isAlive)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data?.data?.message,
+                })
+            }
+        } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:data?.data?.message,
+                text: error,
             })
-          }
-        } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error,
-        })
         }
-      };
+    }
 
     const columns = [
         {
@@ -109,7 +106,7 @@ const SimpleMuiTable = () => {
             label: 'obj id', // column title that will be shown in table
             options: {
                 filter: true,
-                display:false
+                display: false,
             },
         },
         {
@@ -126,9 +123,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
-                        year: "numeric",
-                              month: "2-digit",
-                              day: "2-digit",
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
                     }),
             },
         },
@@ -137,7 +134,6 @@ const SimpleMuiTable = () => {
             label: 'Status',
             options: {
                 filter: true,
-               
             },
         },
         {
@@ -153,14 +149,14 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             onClick={() => {
-                                if (window.confirm("You want to Remove?")) {
-                                  handelDelete(
-                                    tableMeta.rowData[2],
-                                    tableMeta.rowData[1],
-                                    value,
-                                  );
+                                if (window.confirm('You want to Remove?')) {
+                                    handelDelete(
+                                        tableMeta.rowData[2],
+                                        tableMeta.rowData[1],
+                                        value
+                                    )
                                 }
-                              }}
+                            }}
                             style={{ backgroundColor: 'red' }}
                             component="span"
                         >
@@ -190,8 +186,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

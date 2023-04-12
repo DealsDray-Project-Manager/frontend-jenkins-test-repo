@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
-// import jwt from "jsonwebtoken" 
+// import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
@@ -93,13 +93,12 @@ export default function DialogBox() {
                     if (response.status === 200) {
                         setTray(response.data.data)
                     } else {
-                
-                         Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: 'Please check',
-                    confirmButtonText: 'Ok',
-                })
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: 'Please check',
+                            confirmButtonText: 'Ok',
+                        })
                     }
                 } else {
                     navigate('/')
@@ -108,7 +107,7 @@ export default function DialogBox() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -137,7 +136,7 @@ export default function DialogBox() {
                     setOpen(true)
                 } else {
                     setAwbn('')
-                 
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -151,7 +150,7 @@ export default function DialogBox() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -176,7 +175,7 @@ export default function DialogBox() {
                 } else {
                     setAwbn('')
                     setTextDisable(false)
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -189,7 +188,7 @@ export default function DialogBox() {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }
@@ -198,11 +197,10 @@ export default function DialogBox() {
         e.preventDefault()
         try {
             if (description == '') {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: "Please Add Description",
+                    title: 'Please Add Description',
                     confirmButtonText: 'Ok',
                 })
             } else {
@@ -216,7 +214,6 @@ export default function DialogBox() {
                     obj
                 )
                 if (res.status === 200) {
-             
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -226,7 +223,6 @@ export default function DialogBox() {
                     setLoading2(false)
                     navigate('/sorting/request')
                 } else {
-            
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -239,7 +235,7 @@ export default function DialogBox() {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

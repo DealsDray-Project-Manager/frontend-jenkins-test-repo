@@ -92,6 +92,8 @@ const Login = () => {
                 navigate('/sales/dashboard')
             } else if (user_type == 'Pricing Agent') {
                 navigate('/pricing/dashboard')
+            } else if (user_type == 'Reporting') {
+                navigate('/reporting/dashboard')
             }
         } else {
             navigate('/')
@@ -135,6 +137,8 @@ const Login = () => {
                     navigate('/sales/dashboard')
                 } else if (response.data.data?.user_type == 'Pricing Agent') {
                     navigate('/pricing/dashboard')
+                } else if (response.data.data?.user_type == 'Reporting') {
+                    navigate('/reporting/dashboard')
                 }
             } else {
                 setLoading(false)

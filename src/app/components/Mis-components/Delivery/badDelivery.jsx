@@ -39,9 +39,10 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
     const [item, setItem] = useState([])
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [data, setData] = useState([])
     const navigate = useNavigate()
+    const [count, setCount] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
@@ -57,11 +58,19 @@ const SimpleMuiTable = () => {
                 setDisplayText('Loading...')
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let res = await axiosMisUser.post(
-                        '/getBadDelivery/' + location
-                    )
+                    let obj = {
+                        location: location,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
+                    let res = await axiosMisUser.post('/getBadDelivery', obj)
                     if (res.status == 200) {
                         setDisplayText('')
+                        setCount(res.data.count)
+                        setItem(res.data.data)
+                    } else {
+                        setCount(res.data.count)
+                        setDisplayText('Sorry no data found')
                         setItem(res.data.data)
                     }
                 }
@@ -77,16 +86,14 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }, [refresh])
+    }, [refresh, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
-            item
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((d, index) => {
-                    d.id = page * rowsPerPage + index + 1
-                    return d
-                })
+            item.map((d, index) => {
+                d.id = page * rowsPerPage + index + 1
+                return d
+            })
         )
     }, [page, item, rowsPerPage])
 
@@ -138,10 +145,9 @@ const SimpleMuiTable = () => {
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',
-                        title: "Please Add Input",
+                        title: 'Please Add Input',
                         confirmButtonText: 'Ok',
                     })
-                   
                 } else {
                     let obj = {
                         location: location,

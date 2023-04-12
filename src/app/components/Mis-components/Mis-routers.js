@@ -94,6 +94,7 @@ const StxMerging=Loadable(
     lazy(() => import('./Merge/Stx-merging/tray'))
 )
 
+
 const dataTableRoutes = [
     {
         path: '/mis/dashboard',

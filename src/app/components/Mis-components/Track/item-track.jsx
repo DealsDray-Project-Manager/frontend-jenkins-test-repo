@@ -18,6 +18,7 @@ import {
     Typography,
     Button,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
 import Swal from 'sweetalert2'
@@ -40,6 +41,7 @@ const SimpleMuiTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
+    const [dataForDownload,setDataForDownload]=useState([])
     const navigate = useNavigate()
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
@@ -64,6 +66,7 @@ const SimpleMuiTable = () => {
                         searchData: inputSearch,
                         page: page,
                         rowsPerPage: rowsPerPage,
+                        type:"only-limited-data"
                     }
                     let res = await axiosMisUser.post(
                         '/search-mis-track-item',
@@ -71,11 +74,12 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setDisplayText('')
-                        // setRowsPerPage(10)
-                        // setPage(0)
+                        
                         setItem(res.data.data)
+                        setCount(res.data.count)
                     } else {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -161,6 +165,7 @@ const SimpleMuiTable = () => {
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
+                        type:"only-limited-data"
                     }
                     let res = await axiosMisUser.post(
                         '/search-mis-track-item',
@@ -168,9 +173,11 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setDisplayText('')
+                        setCount(res.data.count)
                         setItem(res.data.data)
                     } else {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -186,14 +193,28 @@ const SimpleMuiTable = () => {
     }
     const download = (e) => {
         let arr = []
-        for (let x of item) {
-            delete x?.delivery?._id
-            delete x?.delivery?.bqc_report
-            delete x?.delivery?.charging
-            delete x?.delivery?.bot_report
-            delete x?.delivery?.audit_report
-            x.delivery['uic_code'] = x.delivery?.uic_code?.code
-            arr.push(x.delivery)
+        for (let x of dataForDownload) {
+            let obj = {
+                'Order Id': x?.delivery?.order_id,
+                'SKU Id': x?.delivery?.item_id,
+                'Tracking Id': x?.delivery?.tracking_id,
+                IMEI: x?.delivery?.imei,
+                'Bot Remarks': x?.delivery?.bot_report?.body_damage_des,
+                'Tray Id': x?.delivery?.tray_id,
+                UIC: x?.delivery?.uic_code?.code,
+                'Purchase Price': x?.delivery?.partner_purchase_price,
+                'Tray Location': x?.delivery?.tray_location,
+                'Order Date': new Date(x?.delivery?.order_date).toLocaleString(
+                    'en-GB',
+                    {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }
+                ),
+            }
+
+            arr.push(obj)
         }
         const fileExtension = '.xlsx'
         const fileType =
@@ -205,7 +226,7 @@ const SimpleMuiTable = () => {
         const data = new Blob([excelBuffer], { type: fileType })
         FileSaver.saveAs(data, 'Item-track' + fileExtension)
     }
-   
+
     const tableData = useMemo(() => {
         return (
             <ProductTable>
@@ -681,18 +702,9 @@ const SimpleMuiTable = () => {
                         label="Search"
                         variant="outlined"
                         sx={{ mb: 1 }}
-                    />
+                    />  
                 </Box>
-                <Button
-                    sx={{ mb: 2 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                        download(e)
-                    }}
-                >
-                    Download XLSX
-                </Button>
+               
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import { axiosMisUser } from '../../../../axios'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+
 import {
     Button,
     TableCell,
@@ -41,6 +42,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+
 const DeiveryTable = styled(Table)(() => ({
     minWidth: 750,
     width: 5000,
@@ -59,6 +61,7 @@ const DeiveryTable = styled(Table)(() => ({
     },
 }))
 
+
 const OrderTable = styled(Table)(() => ({
     minWidth: 750,
     width: 8000,
@@ -76,6 +79,7 @@ const OrderTable = styled(Table)(() => ({
         paddingLeft: '16px !important',
     },
 }))
+
 
 const TempOrderStyle = styled(Table)(() => ({
     minWidth: 750,
@@ -339,6 +343,7 @@ function Search() {
             </TempOrderStyle>
         )
     }, [tempOrders])
+
     const OrderSearchData = useMemo(() => {
         return (
             <OrderTable>
@@ -941,7 +946,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'http://prexo-v8-dev-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v8-1-uat-adminapi.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

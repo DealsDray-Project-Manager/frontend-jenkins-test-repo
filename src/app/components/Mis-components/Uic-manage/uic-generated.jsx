@@ -16,7 +16,7 @@ import {
     Box,
     MenuItem,
     TextField,
-    Button
+    Button,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
@@ -57,16 +57,44 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let obj = {
-                        status: 'Created',
-                        location: location,
-                        page: page,
-                        size: rowsPerPage,
-                    }
-                    let res = await axiosMisUser.post('/uicGeneratedRecon', obj)
-                    if (res.status == 200) {
-                        setItem(res.data.data)
-                        setDeliveryCount(res.data.count)
+                    if (search.searchData !== '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData:search.searchData,
+                            uic_status: 'Created',
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+
+                        let res = await axiosMisUser.post('/searchUicPage', obj)
+                       
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        } else {
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'success',
+                                title: 'No Data Found',
+                                confirmButtonText: 'Ok',
+                            })
+                        }
+                    } else {
+                        let obj = {
+                            status: 'Created',
+                            location: location,
+                            page: page,
+                            size: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post(
+                            '/uicGeneratedRecon',
+                            obj
+                        )
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
                     }
                 }
                 fetchData()
@@ -134,11 +162,10 @@ const SimpleMuiTable = () => {
 
     const exportToCSV = (fileName) => {
         if (isCheck.length == 0) {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title:"Please Select Atleast One Data",
+                title: 'Please Select Atleast One Data',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -147,11 +174,10 @@ const SimpleMuiTable = () => {
             let changeStatus = async () => {
                 for (let i = 0; i < isCheck.length; i++) {
                     if (item[isCheck[i]].uic_code == undefined) {
-                    
                         Swal.fire({
                             position: 'top-center',
                             icon: 'warning',
-                            title: "Please Generate UIC",
+                            title: 'Please Generate UIC',
                             confirmButtonText: 'Ok',
                         })
                         status = true
@@ -163,7 +189,6 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                           
                                 Swal.fire({
                                     position: 'top-center',
                                     icon: 'error',
@@ -214,6 +239,7 @@ const SimpleMuiTable = () => {
     const searchOrders = async (e) => {
         e.preventDefault()
         try {
+            setSearch((p) => ({ ...p, searchData: e.target.value }))
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 let { location } = jwt_decode(admin)
@@ -228,19 +254,21 @@ const SimpleMuiTable = () => {
                         type: search.type,
                         searchData: e.target.value,
                         uic_status: 'Created',
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
 
                     let res = await axiosMisUser.post('/searchUicPage', obj)
                     setRowsPerPage(10)
                     setPage(0)
-                    if (res.status == 200 && res.data.data?.length !== 0) {
+                    if (res.status == 200) {
                         setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
                     } else {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title: "No Data Found",
+                            title: 'No Data Found',
                             confirmButtonText: 'Ok',
                         })
                     }
@@ -552,33 +580,33 @@ const SimpleMuiTable = () => {
                     justifyContent: 'space-between',
                 }}
             >
-            <Box>
-                <TextField
-                    select
-                    label="Select"
-                    variant="outlined"
-                    sx={{ mb: 1, width: '140px' }}
-                    onChange={(e) => {
-                        setSearch((p) => ({ ...p, type: e.target.value }))
-                    }}
-                >
-                    <MenuItem value="order_id">Order Id</MenuItem>
-                    <MenuItem value="uic">UIC</MenuItem>
-                    <MenuItem value="imei">IMEI</MenuItem>
-                    <MenuItem value="tracking_id">Tracking ID</MenuItem>
-                    <MenuItem value="item_id">Item ID</MenuItem>
-                </TextField>
-                <TextField
-                    onChange={(e) => {
-                        searchOrders(e)
-                    }}
-                    disabled={search.type == '' ? true : false}
-                    label="Search"
-                    variant="outlined"
-                    sx={{ ml: 2, mb: 1 }}
-                />
-                 </Box>
-                 <Box>
+                <Box>
+                    <TextField
+                        select
+                        label="Select"
+                        variant="outlined"
+                        sx={{ mb: 1, width: '140px' }}
+                        onChange={(e) => {
+                            setSearch((p) => ({ ...p, type: e.target.value }))
+                        }}
+                    >
+                        <MenuItem value="order_id">Order Id</MenuItem>
+                        <MenuItem value="uic">UIC</MenuItem>
+                        <MenuItem value="imei">IMEI</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="item_id">Item ID</MenuItem>
+                    </TextField>
+                    <TextField
+                        onChange={(e) => {
+                            searchOrders(e)
+                        }}
+                        disabled={search.type == '' ? true : false}
+                        label="Search"
+                        variant="outlined"
+                        sx={{ ml: 2, mb: 1 }}
+                    />
+                </Box>
+                <Box>
                     <Button
                         variant="contained"
                         sx={{ m: 1 }}

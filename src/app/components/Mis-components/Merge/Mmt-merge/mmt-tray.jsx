@@ -125,7 +125,6 @@ const SimpleMuiTable = () => {
                     if (res.status === 200) {
                         setSortingAgent(res.data.data)
                     } else {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -169,7 +168,6 @@ const SimpleMuiTable = () => {
                     setOpen(true)
                     setToMmtTray(res.data.data)
                 } else {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -197,7 +195,6 @@ const SimpleMuiTable = () => {
                 mergreData
             )
             if (res.status === 200) {
-             
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',

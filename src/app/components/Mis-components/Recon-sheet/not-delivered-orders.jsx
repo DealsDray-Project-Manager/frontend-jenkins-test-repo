@@ -51,17 +51,36 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let res = await axiosMisUser.post(
-                        '/notDeliveredOrders/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
-                    )
-                    if (res.status === 200) {
-                        setItem(res.data.data)
-                        setDeliveryCount(res.data.count)
+                    if (search.searchData != '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData: search.searchData,
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post('/ordersSearch', obj)
+
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        } else {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
+                    } else {
+                        let res = await axiosMisUser.post(
+                            '/notDeliveredOrders/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status === 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
                     }
                 }
                 fetchData()
@@ -121,12 +140,18 @@ const SimpleMuiTable = () => {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
                     let res = await axiosMisUser.post('/ordersSearch', obj)
                     setRowsPerPage(10)
                     setPage(0)
-                    if (res.status === 200) {
+                    if (res.status == 200) {
                         setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
+                    } else {
+                        setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
                     }
                 }
             }
@@ -364,6 +389,39 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <TextField
+                        select
+                        label="Select"
+                        variant="outlined"
+                        sx={{ mb: 1, width: '140px' }}
+                        onChange={(e) => {
+                            setSearch((p) => ({ ...p, type: e.target.value }))
+                        }}
+                    >
+                        <MenuItem value="order_id">Order Id</MenuItem>
+
+                        <MenuItem value="imei">IMEI</MenuItem>
+                        <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                        <MenuItem value="item_id">Item ID</MenuItem>
+                    </TextField>
+                    <TextField
+                        onChange={(e) => {
+                            searchOrders(e)
+                        }}
+                        disabled={search.type === '' ? true : false}
+                        label="Search"
+                        variant="outlined"
+                        sx={{ ml: 2, mb: 1 }}
+                    />
+                </Box>
+            </Box>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}
@@ -377,7 +435,6 @@ const SimpleMuiTable = () => {
                 page={page}
                 showFirstButton="true"
                 showLastButton="true"
-               
                 backIconButtonProps={{
                     'aria-label': 'Previous Page',
                 }}

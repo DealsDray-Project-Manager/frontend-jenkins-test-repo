@@ -59,6 +59,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/reporting/dashboard',
+        icon: '',
+        sales: 'all',
+        auth: authRoles.reporting, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/rdl-fls/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -342,7 +349,6 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
-           
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -751,11 +757,6 @@ export const navigations = [
                 path: '/sorting/request',
                 iconText: 'VP',
             },
-            {
-                name: 'CTX to STX',
-                path: '/sorting/ctx/request',
-                iconText: 'VP',
-            },
         ],
         auth: authRoles.sorting,
         sales: false,
@@ -835,6 +836,199 @@ export const navigations = [
         path: '/rdl-fls/tray',
         auth: authRoles.RDL_FLS,
         sales: false,
+    },
+
+    {
+        name: 'Orders',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Total Order Placed',
+
+                path: '/reporting/all-orders',
+            },
+           
+            {
+                name: 'Not Delivered Packets',
+
+                path: '/reporting/not-delivered-orders',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Delivery',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Delivered Packets',
+
+                path: '/reporting/delivered-orders',
+            },
+            {
+                name: 'Total Packet Delivered',
+
+                path: '/reporting/delivery/item',
+            },
+            {
+                name: 'Units Available In Processing',
+
+                path: '/reporting/units/processing',
+            },
+            {
+                name: 'Units Ready for Sale',
+
+                path: '/reporting/units/ready-for-sales',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Delivery',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Units Ready for Sale',
+
+                path: '/reporting/units/ready-for-sales',
+            },
+        ],
+        sales: true,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Bag',
+        icon: 'class',
+        children: [
+            {
+                name: 'Closed Bag',
+                path: '/reporting/bags/closed',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+
+    {
+        name: 'Bot-Tray',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Soring Pending',
+                path: '/reporting/bot-tray/sorting-pending',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Model Missmatch',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Closed Tray',
+                path: '/reporting/mmt-tray',
+                sales: 'all',
+                auth: authRoles.reporting,
+            },
+            {
+                name: 'Merging In Progress',
+                path: '/reporting/mmt/in-merging',
+                sales: 'all',
+                auth: authRoles.reporting,
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+
+    {
+        name: 'Product Missmatch Tray',
+        icon: 'shopping_cart',
+        path: '/reporting/pmt-tray',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'WHT',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'In-use',
+                path: '/reporting/wht/inuse',
+            },
+            {
+                name: 'Merge Pending',
+                path: '/reporting/wht/ready-for-merge',
+            },
+            {
+                name: 'Merging In Progress',
+                path: '/reporting/wht/in-merging',
+            },
+            {
+                name: 'Charge Pending',
+                path: '/reporting/wht/ready-for-charge',
+            },
+            {
+                name: 'Recharge Pending',
+                path: '/reporting/wht/recharge',
+            },
+            {
+                name: 'Charging In Progress',
+                path: '/reporting/wht/in-charging',
+            },
+            {
+                name: 'Bqc Pending',
+                path: '/reporting/wht/ready-for-bqc',
+            },
+            {
+                name: 'Bqc In Progress',
+                path: '/reporting/wht/in-bqc',
+            },
+            {
+                name: 'Audit Pending',
+                path: '/reporting/wht/ready-for-audit',
+            },
+            {
+                name: 'Audit In Progress',
+                path: '/reporting/wht/in-audit',
+            },
+            {
+                name: 'Rdl 1 Pending',
+                path: '/reporting/wht/ready-for-rdl-fls',
+            },
+            {
+                name: 'RDL 1 In Progress',
+                path: '/reporting/wht/in-rdl-fls',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Sale Bucket Transfer Pending',
+                path: '/reporting/ctx/transfer-pending-to-sales',
+            },
+            {
+                name: 'Sale Bucket In Progress',
+                path: '/reporting/ctx/transfer-to-sales/in-progress',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Month Wise Purchase',
+        icon: 'shopping_cart',
+        path: '/reporting/month-wise-purchase-details',
+        sales: false,
+        auth: authRoles.reporting,
     },
     {
         name: 'Dummy Panel',

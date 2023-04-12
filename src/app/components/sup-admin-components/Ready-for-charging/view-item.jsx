@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                 if(admin){
                     let { location } = jwt_decode(admin)
                     const res = await axiosWarehouseIn.post(
-                        '/getWhtTrayItem/' + trayId + '/' + 'all-wht-tray/' + location
+                        '/getWhtTrayItem/' + trayId + '/' + 'super-admin/' + location
                     )
                     if (res.status === 200) {
                         setWhtTrayItem(res.data?.data?.items)
@@ -128,13 +128,13 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Ready For Charging', path: '/' },
+                     
                         { name: 'View-Item' },
                     ]}
                 />
             </div>
             <MUIDataTable
-                title={'WHT Tray Item'}
+                title={'Tray Item'}
                 data={whtTrayItem}
                 columns={columns}
                 options={{

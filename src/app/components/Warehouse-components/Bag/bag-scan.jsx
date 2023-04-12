@@ -8,6 +8,7 @@ import {
     TextField,
     Checkbox,
 } from '@mui/material'
+
 import React, { useState } from 'react'
 import { Box, styled } from '@mui/system'
 import { SimpleCard, Breadcrumb } from 'app/components'
@@ -71,7 +72,6 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/checkBagId', obj)
                 if (res.status == 200) {
-              
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -82,7 +82,7 @@ const PaginationTable = () => {
                     setbagSuccess(true)
                 } else {
                     setbagSuccess(false)
-                 
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -111,7 +111,7 @@ const PaginationTable = () => {
                 //   dataTableFun()
             } else if (response.status == 201) {
                 setBagData(response.data.data)
-               
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -131,7 +131,6 @@ const PaginationTable = () => {
     const handelAwbn = async (e) => {
         if (e.target.value.length >= 12) {
             if (bagId == '') {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
@@ -167,7 +166,7 @@ const PaginationTable = () => {
                             }
                         } else {
                             SetDisAwbText(false)
-                           
+
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'error',
@@ -189,7 +188,6 @@ const PaginationTable = () => {
     }
     const handelSubmitStock = async (awbn, status) => {
         if (bagId == '') {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
@@ -202,14 +200,12 @@ const PaginationTable = () => {
                     return item.status != 'Duplicate'
                 }).length == bagData[0]?.limit
             ) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
                     title: 'Bag Is Full',
                     confirmButtonText: 'Ok',
                 })
-
             } else {
                 try {
                     let obj = {
@@ -230,7 +226,7 @@ const PaginationTable = () => {
                         getitem()
                     } else {
                         SetDisAwbText(false)
-                     
+
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -271,11 +267,10 @@ const PaginationTable = () => {
                     return item.status == 'Duplicate'
                 }).length != 0
             ) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: 'Please Remove uplicate Items',
+                    title: 'Please Remove Duplicate Items',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -284,7 +279,6 @@ const PaginationTable = () => {
                     return item.status == 'Invalid'
                 }).length != 0
             ) {
-                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
@@ -301,7 +295,6 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
-                    
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -311,7 +304,6 @@ const PaginationTable = () => {
                     setLoading(false)
                     window.location.reload(false)
                 } else {
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -328,11 +320,10 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
-                        title:"Bag going to Pre-closure",
+                        title: 'Bag going to Pre-closure',
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
@@ -358,11 +349,10 @@ const PaginationTable = () => {
             }
             let data = await axiosWarehouseIn.post('/stockin', obj)
             if (data.status == 200) {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:data?.data?.message,
+                    title: data?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 getitem()

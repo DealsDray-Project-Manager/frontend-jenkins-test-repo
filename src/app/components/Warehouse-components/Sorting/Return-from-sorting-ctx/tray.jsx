@@ -70,6 +70,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
+    const [receiveButDis, setReceiveButDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
@@ -110,6 +111,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
             }
+            setReceiveButDis(true)
             let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -118,9 +120,11 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setReceiveButDis(false)
                 setOpen(false)
                 setRefresh((refresh) => !refresh)
             } else {
+                setReceiveButDis(false)
                 setOpen(false)
                 Swal.fire({
                     position: 'top-center',
@@ -225,6 +229,7 @@ const SimpleMuiTable = () => {
                                     sx={{
                                         m: 1,
                                     }}
+                                    disabled={receiveButDis}
                                     variant="contained"
                                     style={{ backgroundColor: 'green' }}
                                     onClick={(e) => {

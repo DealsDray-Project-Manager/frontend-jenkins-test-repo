@@ -8,6 +8,7 @@ import { axiosWarehouseIn } from '../../../../axios'
 import { Button } from '@mui/material'
 import Swal from 'sweetalert2'
 
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -20,6 +21,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
     const navigate = useNavigate()
@@ -58,7 +60,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
+        navigate('/reporting/tray/item/' + id)
     }
 
     const columns = [
@@ -79,34 +81,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'cpc',
-            label: 'Location',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: 'Tray Display Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'Tray Limit',
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
             label: 'Brand',
@@ -123,11 +98,12 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
         },
+
         {
             name: 'sort_id',
             label: 'Status',
@@ -136,8 +112,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'closed_time_wharehouse',
+            label: 'Closed By Warehouse',
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -146,6 +122,7 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
+
         {
             name: 'code',
             label: 'Actions',

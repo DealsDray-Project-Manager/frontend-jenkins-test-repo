@@ -1,11 +1,11 @@
-import jwt_decode from 'jwt-decode'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
-import { axiosReportingAgent } from '../../../../axios'
 import { Button } from '@mui/material'
+import { axiosReportingAgent } from '../../../../axios'
+import jwt_decode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,25 +20,26 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
-    const [trayData, setTrayData] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isAlive, setIsAlive] = useState(true)
+    const [whtTray, setWhtTray] = useState([])
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let token = localStorage.getItem('prexo-authentication')
-                if (token) {
-                    setIsLoading(true)
-                    const { location } = jwt_decode(token)
-                    let res = await axiosReportingAgent.post(
-                        '/tray/' + 'Open/' + 'MMT/' + location
+                setIsLoading(true)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosReportingAgent.post(
+                        '/tray/' + 'Ready to Transfer to Sales/' + 'CT/' + location
                     )
-                    if (res.status == 200) {
+                    if (response.status === 200) {
                         setIsLoading(false)
-
-                        setTrayData(res.data.data)
+                        setWhtTray(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -48,17 +49,19 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
         }
         fetchData()
-    }, [])
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
+    }, [isAlive])
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/pmt-mmt/issued/view-item/' + id)
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/wht/tray/item/' + id)
     }
 
     const columns = [
@@ -80,25 +83,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'limit',
-            label: 'Tray Id',
+            name: 'brand',
+            label: 'Brand',
             options: {
                 filter: true,
-                display: false,
             },
         },
         {
-            name: 'items',
-            label: 'Quantity',
+            name: 'model',
+            label: 'Model',
             options: {
-                filter: false,
-                customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
+                filter: true,
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'name',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
@@ -110,24 +110,39 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
+        {
+            name: 'closed_time_wharehouse',
+            label: 'Closed By Warehouse',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    const date = new Date(value)
+                    if (isNaN(date.getTime())) {
+                        return ''
+                    } else {
+                        return date.toLocaleString('en-GB', {
+                            hour12: true,
+                        })
+                    }
+                },
+            },
+        },
         {
             name: 'code',
-            label: 'Action',
+            label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                            style={{ backgroundColor: 'primery' }}
+                            onClick={() => handelViewItem(value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
                         >
                             View
                         </Button>
@@ -140,12 +155,17 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'MMT Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Ctx', path: '/' },
+                        { name: 'Transfer Pending To Sales' },
+                    ]}
+                />
             </div>
 
             <MUIDataTable
-                title={'Tray'}
-                data={trayData}
+                title={'CTX'}
+                data={whtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

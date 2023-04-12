@@ -102,7 +102,7 @@ export default function DialogBox() {
             }
         }
         fetchData()
-    },[])
+    }, [])
 
     const schema = Yup.object().shape({
         selected_status: Yup.string().required('Required*').nullable(),
@@ -238,7 +238,7 @@ export default function DialogBox() {
             )
             if (res.status == 200) {
                 setAddButDis(false)
-                navigate(-1)
+                navigate('/rdL-fls/tray/approve/' + trayId)
             } else {
                 setAddButDis(false)
                 alert(res.data.data)

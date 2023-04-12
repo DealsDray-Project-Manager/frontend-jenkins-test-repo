@@ -128,13 +128,13 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                     
+                        { name: 'Ready For Charging', path: '/' },
                         { name: 'View-Item' },
                     ]}
                 />
             </div>
             <MUIDataTable
-                title={'Tray Item'}
+                title={'WHT Tray Item'}
                 data={whtTrayItem}
                 columns={columns}
                 options={{

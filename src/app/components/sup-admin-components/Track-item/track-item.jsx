@@ -59,9 +59,11 @@ const TrackItem = () => {
                     )
                     if (res.status == 200) {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('')
                     } else {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -143,10 +145,12 @@ const TrackItem = () => {
                     if (res.status == 200) {
                         setItem(res.data.data)
                         setDisplayText('')
+                        setCount(res.data.count)
                         setRowsPerPage(100)
                         setPage(0)
                     } else {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }

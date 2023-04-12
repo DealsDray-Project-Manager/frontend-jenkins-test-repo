@@ -1,5 +1,5 @@
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import {
     Table,
@@ -9,6 +9,10 @@ import {
     TableCell,
     TablePagination,
     Card,
+    Typography,
+    Box,
+    TextField,
+    MenuItem,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -41,7 +45,6 @@ const SimpleMuiTable = () => {
         searchData: '',
         location: '',
     })
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -51,21 +54,49 @@ const SimpleMuiTable = () => {
                 let user = localStorage.getItem('prexo-authentication')
                 if (user) {
                     let { location } = jwt_decode(user)
+                    if (search.searchData !== '') {
+                        setDisplayText('Searching')
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData:search.searchData,
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosReportingAgent.post(
+                            '/search/sales',
+                            obj
+                        )
+                        if (res.status == 200) {
+                            setOrderCount(res.data.count)
 
-                    let res = await axiosReportingAgent.post(
-                        '/units/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage +
-                            '/' +
-                            'Ready-for-sale'
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setOrderCount(res.data.count)
-                        setItem(res.data.data)
+                            setDisplayText('')
+                            setItem(res.data.data)
+                        } else {
+                            setDisplayText('Sorry no data found')
+                            setItem(res.data.data)
+                            setOrderCount(res.data.count)
+                        }
+                    } else {
+                        let res = await axiosReportingAgent.post(
+                            '/units/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage +
+                                '/' +
+                                'Ready-for-sale'
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setOrderCount(res.data.count)
+                            setItem(res.data.data)
+                        } else {
+                            setDisplayText('Sorry no data found')
+                            setOrderCount(res.data.count)
+                            setItem(res.data.data)
+                        }
                     }
                 } else {
                     localStorage.removeItem('prexo-authentication')
@@ -112,6 +143,136 @@ const SimpleMuiTable = () => {
             paddingLeft: '16px !important',
         },
     }))
+    const searchDelivery = async (e) => {
+        e.preventDefault()
+        setSearch((p) => ({ ...p, searchData: e.target.value }))
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setIsAlive((isAlive) => !isAlive)
+                } else {
+                    setDisplayText('Searching')
+                    let obj = {
+                        location: location,
+                        type: search.type,
+                        searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
+                    let res = await axiosReportingAgent.post(
+                        '/search/sales',
+                        obj
+                    )
+                    if (res.status == 200) {
+                        setRowsPerPage(100)
+                        setOrderCount(res.data.count)
+                        setPage(0)
+                        setDisplayText('')
+                        setItem(res.data.data)
+                    } else {
+                        setDisplayText('Sorry no data found')
+                        setItem(res.data.data)
+                        setOrderCount(res.data.count)
+                    }
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
+    const tableData = useMemo(() => {
+        return (
+            <ProductTable>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Record.NO</TableCell>
+
+                        <TableCell>UIC Code</TableCell>
+
+                        <TableCell>Actual Delivery Date</TableCell>
+                        <TableCell>Order ID</TableCell>
+
+                        <TableCell>Tracking ID</TableCell>
+                        <TableCell>Item ID</TableCell>
+
+                        <TableCell>IMEI</TableCell>
+                        <TableCell>Partner Purchase Price</TableCell>
+                        <TableCell>Partner Shop</TableCell>
+                        <TableCell>Base Discount</TableCell>
+                        <TableCell>Diganostic Discount</TableCell>
+                        <TableCell>Storage Discount</TableCell>
+                        <TableCell>Buyback Category</TableCell>
+                        <TableCell>Doorstep Diganostic</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {displayText !== '' ? (
+                        <TableCell
+                            colSpan={8}
+                            align="center"
+                            sx={{ verticalAlign: 'top' }}
+                        >
+                            <Typography variant="p" gutterBottom>
+                                {displayText}
+                            </Typography>
+                        </TableCell>
+                    ) : null}
+                    {data.map((data, index) => (
+                        <TableRow tabIndex={-1}>
+                            <TableCell>{data.id}</TableCell>
+                            <TableCell>{data?.uic_code?.code}</TableCell>
+                            <TableCell>
+                                {new Date(data?.delivery_date).toLocaleString(
+                                    'en-GB',
+                                    {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    }
+                                )}
+                            </TableCell>
+                            <TableCell>{data.order_id?.toString()}</TableCell>
+                            <TableCell>
+                                {data?.tracking_id?.toString()}
+                            </TableCell>
+                            <TableCell>{data?.item_id?.toString()}</TableCell>
+
+                            <TableCell>{data.imei?.toString()}</TableCell>
+                            <TableCell>
+                                {data.partner_purchase_price?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.partner_shop?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.base_discount?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.diagnostics_discount?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.storage_disscount?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.buyback_category?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data.doorsteps_diagnostics?.toString()}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </ProductTable>
+        )
+    }, [data, displayText])
 
     return (
         <Container>
@@ -123,108 +284,35 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Box sx={{ mb: 1 }}>
+                <TextField
+                    select
+                    label="Select"
+                    variant="outlined"
+                    sx={{ width: '140px' }}
+                    onChange={(e) => {
+                        setSearch((p) => ({ ...p, type: e.target.value }))
+                    }}
+                >
+                    <MenuItem value="order_id">Order Id</MenuItem>
+                    <MenuItem value="UIC">UIC</MenuItem>
+                    <MenuItem value="imei">IMEI</MenuItem>
+                    <MenuItem value="tracking_id">Tracking ID</MenuItem>
+                    <MenuItem value="item_id">Item ID</MenuItem>
+                </TextField>
+                <TextField
+                    onChange={(e) => {
+                        searchDelivery(e)
+                    }}
+                    disabled={search.type === '' ? true : false}
+                    label="Search"
+                    variant="outlined"
+                    sx={{ ml: 2 }}
+                />
+            </Box>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-                <ProductTable>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Record.NO</TableCell>
-
-                            <TableCell>UIC Code</TableCell>
-                            <TableCell>UIC Generated Admin</TableCell>
-                            <TableCell>UIC Generated Time</TableCell>
-                            <TableCell>UIC Downloaded Time</TableCell>
-                            <TableCell>Actual Delivery Date</TableCell>
-                            <TableCell>Order ID</TableCell>
-                            {/* <TableCell>Order Date</TableCell> */}
-                            {/* <TableCell>Order TimeStamp</TableCell>
-                            <TableCell>Order Status</TableCell> */}
-                            {/* <TableCell>Partner ID</TableCell> */}
-                            <TableCell>Tracking ID</TableCell>
-                            <TableCell>Item ID</TableCell>
-
-                            <TableCell>IMEI</TableCell>
-                            <TableCell>Partner Purchase Price</TableCell>
-                            <TableCell>Partner Shop</TableCell>
-                            <TableCell>Base Discount</TableCell>
-                            <TableCell>Diganostic Discount</TableCell>
-                            <TableCell>Storage Discount</TableCell>
-                            <TableCell>Buyback Category</TableCell>
-                            <TableCell>Doorstep Diganostic</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.map((data, index) => (
-                            <TableRow tabIndex={-1}>
-                                <TableCell>{data.id}</TableCell>
-
-                                <TableCell>{data?.uic_code?.code}</TableCell>
-                                <TableCell>{data.uic_code?.user}</TableCell>
-                                <TableCell>
-                                    {' '}
-                                    {data.uic_code?.created_at == undefined
-                                        ? ''
-                                        : new Date(
-                                              data.uic_code?.created_at
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
-                                </TableCell>
-                                <TableCell>
-                                    {data?.download_time == undefined
-                                        ? ''
-                                        : new Date(
-                                              data?.download_time
-                                          ).toLocaleString('en-GB', {
-                                              hour12: true,
-                                          })}
-                                </TableCell>
-
-                                <TableCell>
-                                    {new Date(
-                                        data?.delivery_date
-                                    ).toLocaleString('en-GB', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                    })}
-                                </TableCell>
-                                <TableCell>
-                                    {data.order_id?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data?.tracking_id?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data?.item_id?.toString()}
-                                </TableCell>
-
-                                <TableCell>{data.imei?.toString()}</TableCell>
-                                <TableCell>
-                                    {data.partner_purchase_price?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.partner_shop?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.base_discount?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.diagnostics_discount?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.storage_disscount?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.buyback_category?.toString()}
-                                </TableCell>
-                                <TableCell>
-                                    {data.doorsteps_diagnostics?.toString()}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </ProductTable>
+                {tableData}
             </Card>
             <TablePagination
                 sx={{ px: 2 }}

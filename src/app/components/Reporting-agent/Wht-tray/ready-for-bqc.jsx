@@ -75,24 +75,9 @@ const SimpleMuiTable = () => {
                     dataIndex.rowIndex + 1,
             },
         },
-
         {
             name: 'code',
             label: 'Tray Id',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: 'Status',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
             options: {
                 filter: true,
             },
@@ -113,57 +98,42 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name',
-            label: 'Tray Name',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
-            },
-        },
-        {
-            name: 'display',
-            label: 'Tray Display',
+            name: 'sort_id',
+            label: 'Status',
             options: {
                 filter: true,
             },
         },
-
         {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'closed_time_wharehouse',
+            label: 'Closed By Warehouse',
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                filter: true,
+                customBodyRender: (value) => {
+                    const date = new Date(value)
+                    if (isNaN(date.getTime())) {
+                        return ''
+                    } else {
+                        return date.toLocaleString('en-GB', {
+                            hour12: true,
+                        })
+                    }
+                },
             },
         },
         {
             name: 'code',
-            label: 'Action',
+            label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{

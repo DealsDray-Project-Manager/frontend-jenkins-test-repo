@@ -757,11 +757,6 @@ export const navigations = [
                 path: '/sorting/request',
                 iconText: 'VP',
             },
-            {
-                name: 'CTX to STX',
-                path: '/sorting/ctx/request',
-                iconText: 'VP',
-            },
         ],
         auth: authRoles.sorting,
         sales: false,
@@ -848,22 +843,18 @@ export const navigations = [
         icon: 'reorder',
         children: [
             {
-                name: 'All Orders',
+                name: 'Total Order Placed',
 
                 path: '/reporting/all-orders',
             },
+           
             {
-                name: 'Delivered Orders',
-
-                path: '/reporting/delivered-orders',
-            },
-            {
-                name: 'Not Delivered Orders',
+                name: 'Not Delivered Packets',
 
                 path: '/reporting/not-delivered-orders',
             },
         ],
-        sales: 'all',
+        sales: false,
         auth: authRoles.reporting,
     },
     {
@@ -871,22 +862,40 @@ export const navigations = [
         icon: 'reorder',
         children: [
             {
-                name: 'All Delivered Items',
+                name: 'Delivered Packets',
+
+                path: '/reporting/delivered-orders',
+            },
+            {
+                name: 'Total Packet Delivered',
 
                 path: '/reporting/delivery/item',
             },
             {
-                name: 'Processing Units',
+                name: 'Units Available In Processing',
 
                 path: '/reporting/units/processing',
             },
             {
-                name: 'Ready for Sales Units',
+                name: 'Units Ready for Sale',
 
                 path: '/reporting/units/ready-for-sales',
             },
         ],
-        sales: 'all',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Delivery',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Units Ready for Sale',
+
+                path: '/reporting/units/ready-for-sales',
+            },
+        ],
+        sales: true,
         auth: authRoles.reporting,
     },
     {
@@ -898,7 +907,7 @@ export const navigations = [
                 path: '/reporting/bags/closed',
             },
         ],
-        sales: 'all',
+        sales: false,
         auth: authRoles.reporting,
     },
 
@@ -911,11 +920,11 @@ export const navigations = [
                 path: '/reporting/bot-tray/sorting-pending',
             },
         ],
-        sales: 'all',
+        sales: false,
         auth: authRoles.reporting,
     },
     {
-        name: 'MMT',
+        name: 'Model Missmatch',
         icon: 'shopping_cart',
         children: [
             {
@@ -925,21 +934,21 @@ export const navigations = [
                 auth: authRoles.reporting,
             },
             {
-                name: 'In Merging',
+                name: 'Merging In Progress',
                 path: '/reporting/mmt/in-merging',
                 sales: 'all',
                 auth: authRoles.reporting,
             },
         ],
-        sales: 'all',
+        sales: false,
         auth: authRoles.reporting,
     },
 
     {
-        name: 'PMT ',
+        name: 'Product Missmatch Tray',
         icon: 'shopping_cart',
         path: '/reporting/pmt-tray',
-        sales: 'all',
+        sales: false,
         auth: authRoles.reporting,
     },
     {
@@ -951,47 +960,74 @@ export const navigations = [
                 path: '/reporting/wht/inuse',
             },
             {
-                name: 'Ready for Merge',
+                name: 'Merge Pending',
                 path: '/reporting/wht/ready-for-merge',
             },
             {
-                name: 'In Merging',
+                name: 'Merging In Progress',
                 path: '/reporting/wht/in-merging',
             },
             {
-                name: 'Ready for Charge',
+                name: 'Charge Pending',
                 path: '/reporting/wht/ready-for-charge',
             },
             {
-                name: 'In Charging',
+                name: 'Recharge Pending',
+                path: '/reporting/wht/recharge',
+            },
+            {
+                name: 'Charging In Progress',
                 path: '/reporting/wht/in-charging',
             },
             {
-                name: 'Ready for Bqc',
+                name: 'Bqc Pending',
                 path: '/reporting/wht/ready-for-bqc',
             },
             {
-                name: 'In Bqc',
+                name: 'Bqc In Progress',
                 path: '/reporting/wht/in-bqc',
             },
             {
-                name: 'Ready for Audit',
+                name: 'Audit Pending',
                 path: '/reporting/wht/ready-for-audit',
             },
             {
-                name: 'In Audit',
+                name: 'Audit In Progress',
                 path: '/reporting/wht/in-audit',
             },
             {
-                name: 'Ready for Rdl-fls',
+                name: 'Rdl 1 Pending',
                 path: '/reporting/wht/ready-for-rdl-fls',
             },
             {
-                name: 'In RDL-FLS',
+                name: 'RDL 1 In Progress',
                 path: '/reporting/wht/in-rdl-fls',
             },
         ],
-        sales: 'all',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'CTX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Sale Bucket Transfer Pending',
+                path: '/reporting/ctx/transfer-pending-to-sales',
+            },
+            {
+                name: 'Sale Bucket In Progress',
+                path: '/reporting/ctx/transfer-to-sales/in-progress',
+            },
+        ],
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Month Wise Purchase',
+        icon: 'shopping_cart',
+        path: '/reporting/month-wise-purchase-details',
+        sales: false,
         auth: authRoles.reporting,
     },
     {

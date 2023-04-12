@@ -2,6 +2,7 @@ import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
+
 import {
     Button,
     TableCell,
@@ -16,6 +17,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
 import Swal from 'sweetalert2'
@@ -56,23 +58,49 @@ const SimpleMuiTable = () => {
                 setDisplayText('Loading...')
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let deliveryCountRes = await axiosMisUser.post(
-                        '/getDeliveryCount/' + location
-                    )
-                    if (deliveryCountRes.status === 200) {
-                        setDeliveryCount(deliveryCountRes.data.data)
-                    }
-                    let res = await axiosMisUser.post(
-                        '/getAllDelivery/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setItem(res.data.data)
+                    if (search.searchData !== '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData: search.searchData,
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post(
+                            '/searchDelivery',
+                            obj
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setDeliveryCount(res.data.count)
+
+                            setItem(res.data.data)
+                        } else {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                            setDisplayText('Sorry no data found')
+                        }
+                    } else {
+                        let deliveryCountRes = await axiosMisUser.post(
+                            '/getDeliveryCount/' + location
+                        )
+                        if (deliveryCountRes.status === 200) {
+                            console.log(deliveryCountRes)
+                            setDeliveryCount(deliveryCountRes.data.data)
+                        }
+                        let res = await axiosMisUser.post(
+                            '/getAllDelivery/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            console.log(res)
+                            setItem(res.data.data)
+                        }
                     }
                 }
                 fetchData()
@@ -121,7 +149,7 @@ const SimpleMuiTable = () => {
 
     const searchDelivery = async (e) => {
         e.preventDefault()
-
+        setSearch((p) => ({ ...p, searchData: e.target.value }))
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
@@ -135,17 +163,19 @@ const SimpleMuiTable = () => {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
                     let res = await axiosMisUser.post('/searchDelivery', obj)
                     if (res.status == 200) {
-                        setRowsPerPage(10)
+                        setRowsPerPage(100)
                         setDisplayText('')
-
+                        setDeliveryCount(res.data.count)
                         setPage(0)
-
                         setItem(res.data.data)
                     } else {
                         setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }

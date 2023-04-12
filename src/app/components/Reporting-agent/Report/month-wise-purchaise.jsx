@@ -2,7 +2,8 @@ import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { H1, H3, H4 } from 'app/components/Typography'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 import moment from 'moment'
 
 import {
@@ -21,11 +22,7 @@ import {
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
-import {
-    axiosMisUser,
-    axiosReportingAgent,
-    axiosSuperAdminPrexo,
-} from '../../../../axios'
+import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -41,40 +38,26 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: 3000,
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: 'none',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
-    const [location, setLocation] = useState('')
+    const [dataForDownload, setDataForDownload] = useState([])
     const navigate = useNavigate()
-    const [refresh, setRefresh] = useState(false)
-    const [brand, setbrand] = useState([])
-    const [model, setModel] = useState([])
     const [stateForFilterUn, setFilterUn] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [location, setLocation] = useState('')
     const [count, setCount] = useState(0)
-    const [avgPrice, setAvgPrice] = useState('')
+    const [searchType,setSearchType]=useState("")
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
-    const [filterData, setFilterData] = useState({})
+    const [filterData, setFilterData] = useState({
+        fromDate: '',
+        toDate: '',
+    })
 
+  
     const handleChangeSort = ({ target: { name, value } }) => {
         setFilterData({
             ...filterData,
@@ -105,9 +88,11 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         // setRowsPerPage(10)
                         // setPage(0)
+                        setCount(res.data.count)
                         setItem(res.data.data)
                     } else {
                         setItem(res.data.data)
+                        setCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -147,16 +132,6 @@ const SimpleMuiTable = () => {
     }, [refresh, page])
 
     useEffect(() => {
-        const FetchModel = async () => {
-            let res = await axiosSuperAdminPrexo.post('/getBrands')
-            if (res.status == 200) {
-                setbrand(res.data.data)
-            }
-        }
-        FetchModel()
-    }, [])
-
-    useEffect(() => {
         setData((_) =>
             item.map((d, index) => {
                 d.id = page * rowsPerPage + index + 1
@@ -165,57 +140,30 @@ const SimpleMuiTable = () => {
         )
     }, [page, item, rowsPerPage])
 
-    /* Fetch model */
-    const fetchModel = async (brandName) => {
-        try {
-            let res = await axiosSuperAdminPrexo.post(
-                '/get-product-model/' + brandName
-            )
-            if (res.status == 200) {
-                setModel(res.data.data)
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
     }
 
-    const dataFilter = async () => {
-        try {
-            filterData.location = location
-            filterData.page = page
-            filterData.size = rowsPerPage
-            filterData.totalCount = count
-            setDisplayText('Please wait...')
-            setFilterUn(true)
-            const res = await axiosReportingAgent.post(
-                '/delivered/item/filter',
-                filterData
-            )
-            if (res.status === 200) {
-                setDisplayText('')
-                setCount(res.data.count)
-                setAvgPrice(res.data.avgPrice)
-                setItem(res.data.data)
-            } else {
-                setAvgPrice(res.data.avgPrice)
-                setItem(res.data.data)
-                setCount(res.data.count)
-                setDisplayText('Sorry no data found')
-            }
-        } catch (error) {
-            alert(error)
-        }
-    }
+    const ProductTable = styled(Table)(() => ({
+        minWidth: 750,
+        width: 2000,
+        whiteSpace: 'pre',
+        '& thead': {
+            '& th:first-of-type': {
+                paddingLeft: 16,
+            },
+        },
+        '& td': {
+            borderBottom: 'none',
+        },
+        '& td:first-of-type': {
+            paddingLeft: '16px !important',
+        },
+    }))
 
     const searchTrackItem = async (e) => {
         setInputSearch(e.target.value)
+
         e.preventDefault()
         try {
             let admin = localStorage.getItem('prexo-authentication')
@@ -238,8 +186,10 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status == 200) {
+                        console.log(res.data)
                         setDisplayText('')
                         setCount(res.data.count)
+                        setDataForDownload(res.data.allMatchedResult)
                         setItem(res.data.data)
                     } else {
                         setItem(res.data.data)
@@ -257,6 +207,74 @@ const SimpleMuiTable = () => {
             })
         }
     }
+    const download = (e) => {
+        let arr = []
+        for (let x of dataForDownload) {
+            let obj = {
+                'Order Id': x?.order_id,
+                'SKU Name': x?.item_id,
+                'Tracking Id': x?.tracking_id,
+                IMEI: x?.imei,
+                'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
+                'Tray Id': x?.tray_id,
+                'Wht Tray Id': x?.wht_tray,
+                'Ctx Tray Id': x?.ctx_tray_id,
+                'Stx Tray Id': x?.stx_tray_id,
+                UIC: x?.uic_code?.code,
+                'Purchase Price': x?.partner_purchase_price,
+                'Tray Location': x?.tray_location,
+                
+            }
+
+            if(x?.order_date !== undefined && x?.order_date !== null ){
+                obj["Order Date"]= new Date(x?.order_date).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })
+            }
+            else{
+                obj["Order Date"]=""
+            }
+
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Month Wise Purchase Details' + fileExtension)
+    }
+    const dataFilter = async () => {
+        try {
+            filterData.location = location
+            filterData.page = page
+            filterData.type =searchType
+            filterData.size = rowsPerPage
+            setDisplayText('Please wait...')
+            setFilterUn(true)
+            const res = await axiosReportingAgent.post(
+                '/monthWiseReport/item/filter',
+                filterData
+            )
+            if (res.status === 200) {
+                setDisplayText('')
+                setCount(res.data.count)
+                setDataForDownload(res.data.forXlsx)
+                setItem(res.data.data)
+            } else {
+                setItem(res.data.data)
+                setDataForDownload(res.data.forXlsx)
+                setDisplayText('Sorry no data found')
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const tableData = useMemo(() => {
         return (
@@ -265,21 +283,19 @@ const SimpleMuiTable = () => {
                     <TableRow>
                         <TableCell>Record.NO</TableCell>
                         <TableCell>Actual Delivered Date</TableCell>
-                        <TableCell>Tracking ID</TableCell>
                         <TableCell>Order ID</TableCell>
-                        <TableCell>Uic Status</TableCell>
-                        <TableCell>UIC</TableCell>
+                        <TableCell>Tracking ID</TableCell>
                         <TableCell>IMEI</TableCell>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>Bag ID</TableCell>
-                        <TableCell>Bot Tray ID</TableCell>
+                        <TableCell>SKU Name</TableCell>
+                        <TableCell>Received Units Remarks (BOT)</TableCell>
+                        <TableCell>UIC</TableCell>
+                        <TableCell>Price</TableCell>
                         <TableCell>Tray Type</TableCell>
-                        <TableCell>Tray Status</TableCell>
-                        <TableCell>Tray Location</TableCell>
-                        <TableCell>WHT Tray</TableCell>
-                        <TableCell>CTX Tray Id</TableCell>
-                        <TableCell>STX Tray Id</TableCell>
-                        <TableCell>Partner Purchase Price</TableCell>
+                        <TableCell>Tray ID</TableCell>
+                        <TableCell>Wht Tray ID</TableCell>
+                        <TableCell>Ctx Tray ID</TableCell>
+                        <TableCell>Stx Tray ID</TableCell>
+                        <TableCell>Order Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -307,32 +323,34 @@ const SimpleMuiTable = () => {
                                     }
                                 )}
                             </TableCell>
-                            <TableCell>{data.tracking_id}</TableCell>
-                            <TableCell>{data.order_id}</TableCell>
-                            <TableCell
-                                style={
-                                    data.uic_status == 'Printed'
-                                        ? { color: 'green' }
-                                        : data.uic_status == 'Created'
-                                        ? { color: 'orange' }
-                                        : { color: 'red' }
-                                }
-                            >
-                                {data.uic_status}
+                            <TableCell>{data?.order_id}</TableCell>
+                            <TableCell>{data?.tracking_id}</TableCell>
+                            <TableCell>{data?.imei}</TableCell>
+                            <TableCell>{data?.item_id}</TableCell>
+                            <TableCell>
+                                {data?.bot_report?.body_damage_des}
                             </TableCell>
-                            <TableCell>{data.uic_code?.code}</TableCell>
-                            <TableCell>{data.imei}</TableCell>
-                            <TableCell>{data.item_id}</TableCell>
-                            <TableCell>{data.bag_id}</TableCell>
-                            <TableCell>{data.tray_id}</TableCell>
+                            <TableCell>{data?.uic_code?.code}</TableCell>
+                            <TableCell>
+                                {data?.partner_purchase_price}
+                            </TableCell>
                             <TableCell>{data.tray_type}</TableCell>
-                            <TableCell>{data.tray_status}</TableCell>
-                            <TableCell>{data.tray_location}</TableCell>
-                            <TableCell>{data.wht_tray}</TableCell>
+                            <TableCell>{data.tray_id}</TableCell>
+                            <TableCell>{data?.wht_tray}</TableCell>
                             <TableCell>{data?.ctx_tray_id}</TableCell>
                             <TableCell>{data?.stx_tray_id}</TableCell>
                             <TableCell>
-                                {data.partner_purchase_price?.toString()}
+                                {' '}
+                                {data?.order_date == null
+                                    ? ''
+                                    : new Date(data?.order_date).toLocaleString(
+                                          'en-GB',
+                                          {
+                                              year: 'numeric',
+                                              month: '2-digit',
+                                              day: '2-digit',
+                                          }
+                                      )}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -345,17 +363,13 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'All Delivered Item', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Month Wise Purchase Details', path: '/' },
+                    ]}
                 />
             </div>
-            {avgPrice !== '' ? (
-                <Box>
-                    <H3>Average Price : ₹{avgPrice?.toFixed(1)}</H3>
-                </Box>
-            ) : null}
             <Box
                 sx={{
-                    mt: 2,
                     display: 'flex',
                     justifyContent: 'space-between',
                 }}
@@ -366,23 +380,34 @@ const SimpleMuiTable = () => {
                             searchTrackItem(e)
                         }}
                         // disabled={search.type == '' ? true : false}
-                        label="Search..."
+                        label="Search"
                         variant="outlined"
                         sx={{ mb: 1 }}
                     />
                 </Box>
-
                 <Box>
+                <TextField
+                        type="text"
+                        select
+                        label="Select Type"
+                        variant="outlined"
+                        name="searchType"
+                        sx={{ width: '140px' }}
+                    >
+                        <MenuItem  value="Order Date" onClick={(e)=>{setSearchType("Order Date")}}>Order Date</MenuItem>
+                        <MenuItem value="Delivery Date" onClick={(e)=>{setSearchType("Delivery Date")}}>Delivery Date</MenuItem>
+                        </TextField>
                     <TextField
                         type="date"
+                        disabled={searchType == ""}
                         label="From Date"
                         variant="outlined"
                         inputProps={{ max: moment().format('YYYY-MM-DD') }}
                         onChange={(e) => {
                             handleChangeSort(e)
                         }}
+                        sx={{ ml: 3 }}
                         name="fromDate"
-                        sx={{ mb: 1 }}
                         InputLabelProps={{ shrink: true }}
                     />
                     <TextField
@@ -393,68 +418,19 @@ const SimpleMuiTable = () => {
                             min: filterData?.fromDate,
                             max: moment().format('YYYY-MM-DD'),
                         }}
-                        disabled={filterData.fromDate == undefined}
+                        disabled={filterData.fromDate == ''}
                         variant="outlined"
                         onChange={(e) => {
                             handleChangeSort(e)
                         }}
-                        sx={{ mb: 1, ml: 3 }}
+                        sx={{ ml: 3 }}
                         InputLabelProps={{ shrink: true }}
                     />
-                    <TextField
-                        select
-                        label="Select Brand"
-                        variant="outlined"
-                        sx={{ width: 150, ml: 3 }}
-                        name="brand"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                    >
-                        {brand.map((brandData) => (
-                            <MenuItem
-                                value={brandData.brand_name}
-                                key={brandData.brand_name}
-                                onClick={(e) => {
-                                    fetchModel(brandData.brand_name)
-                                }}
-                            >
-                                {brandData.brand_name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        select
-                        label="Select Model"
-                        variant="outlined"
-                        name="model"
-                        disabled={filterData.brand == undefined}
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        sx={{ ml: 2, width: 150 }}
-                    >
-                        {model.map((modelData) => (
-                            <MenuItem
-                                key={modelData.model_name}
-                                value={modelData.model_name}
-                            >
-                                {modelData.model_name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
                     <Button
                         sx={{ ml: 2, mt: 1 }}
                         variant="contained"
                         disabled={
-                            (filterData?.fromDate == undefined &&
-                                filterData?.toDate == undefined &&
-                                filterData?.brand == undefined &&
-                                filterData?.model == undefined) ||
-                            (filterData?.fromDate !== undefined &&
-                                filterData?.toDate == undefined) ||
-                            (filterData.brand != undefined &&
-                                filterData.model == undefined)
+                            filterData.fromDate == '' || filterData.toDate == ''
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -463,18 +439,21 @@ const SimpleMuiTable = () => {
                     >
                         Filter
                     </Button>
-                </Box>
 
-                {/* <Button
-                    sx={{ mb: 2 }}
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                        download(e)
-                    }}
-                >
-                    Download XLSX
-                </Button> */}
+                    <Button
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        color="primary"
+                        disabled={
+                            inputSearch == '' && stateForFilterUn == false
+                        }
+                        onClick={(e) => {
+                            download(e)
+                        }}
+                    >
+                        Download XLSX
+                    </Button>
+                </Box>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

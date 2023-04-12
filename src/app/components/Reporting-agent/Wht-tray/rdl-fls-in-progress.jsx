@@ -76,24 +76,9 @@ const SimpleMuiTable = () => {
                     dataIndex.rowIndex + 1,
             },
         },
-
         {
             name: 'code',
             label: 'Tray Id',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: 'Status',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
             options: {
                 filter: true,
             },
@@ -113,49 +98,42 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            label: 'Tray Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
-            },
-        },
-        {
             name: 'display',
-            label: 'Tray Display',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
         },
 
         {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'sort_id',
+            label: 'Status',
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                filter: true,
+            },
+        },
+        {
+            name: 'assigned_date',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    const date = new Date(value)
+                    if (isNaN(date.getTime())) {
+                        return ''
+                    } else {
+                        return date.toLocaleString('en-GB', {
+                            hour12: true,
+                        })
+                    }
+                },
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Assigned To',
+            options: {
+                filter: true,
             },
         },
         {
@@ -171,9 +149,10 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={() => handelViewItem(value)}
+                            onClick={(e) => {
+                                handelViewItem(value)
+                            }}
                             style={{ backgroundColor: 'green' }}
-                            component="span"
                         >
                             View
                         </Button>

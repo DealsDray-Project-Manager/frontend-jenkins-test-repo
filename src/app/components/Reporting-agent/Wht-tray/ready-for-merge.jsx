@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
+        navigate('/reporting/tray/item/' + id)
     }
 
     const columns = [
@@ -80,34 +80,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'cpc',
-            label: 'Location',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: 'Tray Display Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'Tray Limit',
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'brand',
             label: 'Brand',
             options: {
@@ -123,7 +95,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
@@ -136,14 +108,20 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'closed_time_wharehouse',
+            label: 'Closed By Warehouse',
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                customBodyRender: (value) => {
+                    const date = new Date(value);
+                    if (isNaN(date.getTime())) {
+                        return '';
+                    } else {
+                        return date.toLocaleString('en-GB', {
+                            hour12: true,
+                        });
+                    }
+                }
             },
         },
         {

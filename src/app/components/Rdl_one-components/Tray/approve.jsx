@@ -11,7 +11,6 @@ import {
     TableHead,
     TableRow,
     Grid,
-    
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -138,7 +137,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/wht/rdl-fls-request')
+                navigate('/rdL-fls/tray')
             } else {
                 Swal.fire({
                     position: 'top-center',

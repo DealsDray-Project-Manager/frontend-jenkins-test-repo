@@ -118,12 +118,14 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
                     }),
             },
         },
         {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,

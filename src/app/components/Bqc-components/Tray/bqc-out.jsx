@@ -275,7 +275,12 @@ export default function DialogBox() {
                             navigate('/bqc/tray')
                         }
                     })
-                    // navigate("/view-assigned-tray-bqc");
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res.data.message,
+                    })
                 }
             } else {
                 Swal.fire({
@@ -293,6 +298,7 @@ export default function DialogBox() {
             })
         }
     }
+    
     const handleClickOpen = () => {
         setBqcStatus('')
         setIncompleteRes('')

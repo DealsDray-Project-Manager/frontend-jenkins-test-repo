@@ -51,17 +51,40 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let res = await axiosMisUser.post(
-                        '/getDeliveredOrders/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
-                    )
-                    if (res.status === 200) {
-                        setItem(res.data.data)
-                        setDeliveryCount(res.data.count)
+                    if (search.searchData != '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData: search.searchData,
+                            status: 'Delivered',
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post(
+                            '/searchDeliveredOrders',
+                            obj
+                        )
+                      
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        } else {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
+                    } else {
+                        let res = await axiosMisUser.post(
+                            '/getDeliveredOrders/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status === 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
                     }
                 }
                 fetchData()
@@ -113,6 +136,7 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
+                setSearch((p) => ({ ...p, searchData: e.target.value }))
                 let { location } = jwt_decode(admin)
                 if (e.target.value === '') {
                     setIsAlive((isAlive) => !isAlive)
@@ -121,13 +145,22 @@ const SimpleMuiTable = () => {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
-                        status:"Delivered"
+                        status: 'Delivered',
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
-                    let res = await axiosMisUser.post('/searchDeliveredOrders', obj)
-                    setRowsPerPage(10)
+                    let res = await axiosMisUser.post(
+                        '/searchDeliveredOrders',
+                        obj
+                    )
+                    setRowsPerPage(100)
                     setPage(0)
-                    if (res.status === 200) {
+                    if (res.status == 200) {
                         setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
+                    } else {
+                        setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
                     }
                 }
             }
@@ -353,7 +386,7 @@ const SimpleMuiTable = () => {
                 </TableBody>
             </ProductTable>
         )
-    }, [data, item])
+    }, [data])
 
     return (
         <Container>
@@ -382,11 +415,10 @@ const SimpleMuiTable = () => {
                         }}
                     >
                         <MenuItem value="order_id">Order Id</MenuItem>
-                        
+
                         <MenuItem value="imei">IMEI</MenuItem>
                         <MenuItem value="tracking_id">Tracking ID</MenuItem>
                         <MenuItem value="item_id">Item ID</MenuItem>
-                      
                     </TextField>
                     <TextField
                         onChange={(e) => {

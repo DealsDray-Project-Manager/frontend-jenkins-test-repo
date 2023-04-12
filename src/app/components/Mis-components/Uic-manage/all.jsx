@@ -57,17 +57,43 @@ const SimpleMuiTable = () => {
             if (admin) {
                 let { location } = jwt_decode(admin)
                 const fetchData = async () => {
-                    let res = await axiosMisUser.post(
-                        '/uicPageData/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
-                    )
-                    if (res.status == 200) {
-                        setItem(res.data.data)
-                        setDeliveryCount(res.data.count)
+                    if (search.searchData != '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData: search.searchData,
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post(
+                            '/searchUicPageAllPage',
+                            obj
+                        )
+                       
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        } else {
+                            Swal.fire({
+                                position: 'top-center',
+                                icon: 'error',
+                                title: 'No Data Found',
+                                confirmButtonText: 'Ok',
+                            })
+                        }
+                    } else {
+                        let res = await axiosMisUser.post(
+                            '/uicPageData/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setDeliveryCount(res.data.count)
+                        }
                     }
                 }
                 fetchData()
@@ -135,11 +161,10 @@ const SimpleMuiTable = () => {
 
     const exportToCSV = (fileName) => {
         if (isCheck.length == 0) {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title: "Please Select Atleast One Data",
+                title: 'Please Select Atleast One Data',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -151,10 +176,10 @@ const SimpleMuiTable = () => {
                         Swal.fire({
                             position: 'top-center',
                             icon: 'warning',
-                            title:"Please Generate UIC",
+                            title: 'Please Generate UIC',
                             confirmButtonText: 'Ok',
                         })
-                       
+
                         status = true
                         break
                     } else {
@@ -164,7 +189,6 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                               
                                 Swal.fire({
                                     position: 'top-center',
                                     icon: 'error',
@@ -215,11 +239,10 @@ const SimpleMuiTable = () => {
     const handelUicGen = (e) => {
         e.preventDefault()
         if (isCheck.length == 0) {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title: "Please Select Atleast One Delivered Data",
+                title: 'Please Select Atleast One Delivered Data',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -231,11 +254,10 @@ const SimpleMuiTable = () => {
                     let count = 0
                     for (let i = 0; i < isCheck.length; i++) {
                         if (item[isCheck[i]].uic_status != 'Pending') {
-                           
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'warning',
-                                title: "Already UIC Created",
+                                title: 'Already UIC Created',
                                 confirmButtonText: 'Ok',
                             })
 
@@ -253,7 +275,6 @@ const SimpleMuiTable = () => {
                             )
                             if (res.status == 200) {
                             } else {
-                              
                                 Swal.fire({
                                     position: 'top-center',
                                     icon: 'error',
@@ -272,11 +293,10 @@ const SimpleMuiTable = () => {
                         count++
                     }
                     if (count == isCheck.length) {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title:"Sucessfully Generated",
+                            title: 'Sucessfully Generated',
                             confirmButtonText: 'Ok',
                         })
                         setIsCheck([])
@@ -291,6 +311,8 @@ const SimpleMuiTable = () => {
     const searchOrders = async (e) => {
         e.preventDefault()
         try {
+            setSearch((p) => ({ ...p, searchData: e.target.value }))
+
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 let { location } = jwt_decode(admin)
@@ -304,18 +326,23 @@ const SimpleMuiTable = () => {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
-                    let res = await axiosMisUser.post('/searchUicPageAllPage', obj)
+                    let res = await axiosMisUser.post(
+                        '/searchUicPageAllPage',
+                        obj
+                    )
                     setRowsPerPage(10)
                     setPage(0)
-                    if (res.status == 200 && res.data.data?.length !== 0) {
+                    if (res.status == 200) {
                         setItem(res.data.data)
+                        setDeliveryCount(res.data.count)
                     } else {
-                     
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
-                            title: "No Data Found",
+                            title: 'No Data Found',
                             confirmButtonText: 'Ok',
                         })
                     }

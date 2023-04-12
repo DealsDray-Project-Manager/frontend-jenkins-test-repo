@@ -20,6 +20,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
     const [trayData, setTrayData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -56,9 +57,8 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/pmt-mmt/issued/view-item/' + id)
+    const handelViewItem = (id) => {
+        navigate('/reporting/tray/item/' + id)
     }
 
     const columns = [
@@ -80,32 +80,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'limit',
-            label: 'Tray Id',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: false,
-                customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'brand',
+            label: 'Brand',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'display',
+            label: 'Tray Display Name',
             options: {
                 filter: true,
             },
@@ -113,6 +103,37 @@ const SimpleMuiTable = () => {
 
         {
             name: 'sort_id',
+            label: 'Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'assigned_date',
+            label: 'Assigned Date',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    const date = new Date(value)
+                    if (isNaN(date.getTime())) {
+                        return ''
+                    } else {
+                        return date.toLocaleString('en-GB', {
+                            hour12: true,
+                        })
+                    }
+                },
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: 'Assigned To',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,
@@ -125,7 +146,7 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             onClick={(e) => {
-                                handelViewTray(e, value)
+                                handelViewItem(value)
                             }}
                             style={{ backgroundColor: 'primery' }}
                         >

@@ -157,7 +157,7 @@ export default function DialogBox() {
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
-                    navigate('/wareshouse/wht/rdl-fls-request')
+                    navigate('/wareshouse/wht/return-from-rdl-fls')
                 } else {
                     Swal.fire({
                         position: 'top-center',

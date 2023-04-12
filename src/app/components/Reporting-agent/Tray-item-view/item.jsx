@@ -1,12 +1,13 @@
-import jwt_decode from 'jwt-decode'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
-import { axiosReportingAgent } from '../../../../axios'
-import { Button } from '@mui/material'
+import { H1, H3, H4 } from 'app/components/Typography'
+import { axiosWarehouseIn } from '../../../../axios'
+import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import jwt_decode from 'jwt-decode'
+import { Box } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,31 +21,35 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
-    const [trayData, setTrayData] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate()
+    const [whtTray, setWhtTray] = useState([])
+    const [data, setData] = useState({})
+    const { trayId } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let token = localStorage.getItem('prexo-authentication')
-                if (token) {
-                    setIsLoading(true)
-                    const { location } = jwt_decode(token)
-                    let res = await axiosReportingAgent.post(
-                        '/tray/' + 'Open/' + 'MMT/' + location
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'all-wht-tray/' +
+                            location
                     )
-                    if (res.status == 200) {
-                        setIsLoading(false)
-
-                        setTrayData(res.data.data)
+                    if (response.status === 200) {
+                        setData(response.data.data)
+                        if (response.data.data?.items?.length == 0) {
+                            setWhtTray(response.data.data.actual_items)
+                        } else {
+                            setWhtTray(response.data.data.items)
+                        }
                     }
-                } else {
-                    navigate('/')
                 }
             } catch (error) {
-                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -55,11 +60,6 @@ const SimpleMuiTable = () => {
         }
         fetchData()
     }, [])
-
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/pmt-mmt/issued/view-item/' + id)
-    }
 
     const columns = [
         {
@@ -73,66 +73,24 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: 'Tray Id',
+            name: 'uic',
+            label: 'UIC',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'limit',
-            label: 'Tray Id',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: false,
-                customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
+            name: 'brand_name',
+            label: 'Brand',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'model_name',
+            label: 'Model',
             options: {
                 filter: true,
-            },
-        },
-
-        {
-            name: 'code',
-            label: 'Action',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                            style={{ backgroundColor: 'primery' }}
-                        >
-                            View
-                        </Button>
-                    )
-                },
             },
         },
     ]
@@ -140,25 +98,27 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'MMT Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'WHT-Tray-Item' },
+                    ]}
+                />
             </div>
+            <Box>
+                <H3>Tray Status : {data?.sort_id}</H3>
+                <H3>Tray Display Name :{data?.display}</H3>
+            </Box>
 
             <MUIDataTable
                 title={'Tray'}
-                data={trayData}
+                data={whtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -56,8 +56,7 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
+    const handelViewTray = (id) => {
         navigate('/wareshouse/pmt-mmt/issued/view-item/' + id)
     }
 
@@ -112,7 +111,7 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,
@@ -125,7 +124,7 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             onClick={(e) => {
-                                handelViewTray(e, value)
+                                handelViewTray(value)
                             }}
                             style={{ backgroundColor: 'primery' }}
                         >

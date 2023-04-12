@@ -260,10 +260,10 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                disabled={isCheck.length === 0}
-                onClick={(e) => {
-                    handelReadyForRdl(e)
-                }}
+                disabled
+                // onClick={(e) => {
+                //     handelReadyForRdl(e)
+                // }}
             >
                 Assign For RDL
             </Button>

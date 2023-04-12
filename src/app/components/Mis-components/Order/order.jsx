@@ -54,25 +54,46 @@ const SimpleMuiTable = () => {
         const fetchOrder = async () => {
             try {
                 let user = localStorage.getItem('prexo-authentication')
+                console.log(search.searchData)
                 if (user) {
                     let { location } = jwt_decode(user)
-                    let orderCount = await axiosMisUser.post(
-                        '/getOrdersCount/' + location
-                    )
-                    if (orderCount.status === 200) {
-                        setOrderCount(orderCount.data.data)
-                    }
-                    let res = await axiosMisUser.post(
-                        '/getOrders/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setItem(res.data.data)
+                    if (search.searchData != '') {
+                        let obj = {
+                            location: location,
+                            type: search.type,
+                            searchData: search.searchData,
+                            page: page,
+                            rowsPerPage: rowsPerPage,
+                        }
+                        let res = await axiosMisUser.post('/ordersSearch', obj)
+                        if (res.status == 200) {
+                            setItem(res.data.data)
+                            setOrderCount(res.data.count)
+                            setDisplayText('')
+                        } else {
+                            setItem(res.data.data)
+                            setOrderCount(res.data.count)
+                            setDisplayText('Sorry no data found')
+                        }
+                    } else {
+                        let orderCount = await axiosMisUser.post(
+                            '/getOrdersCount/' + location
+                        )
+                        if (orderCount.status === 200) {
+                            setOrderCount(orderCount.data.data)
+                        }
+                        let res = await axiosMisUser.post(
+                            '/getOrders/' +
+                                location +
+                                '/' +
+                                page +
+                                '/' +
+                                rowsPerPage
+                        )
+                        if (res.status == 200) {
+                            setDisplayText('')
+                            setItem(res.data.data)
+                        }
                     }
                 } else {
                     localStorage.removeItem('prexo-authentication')
@@ -106,6 +127,8 @@ const SimpleMuiTable = () => {
     const searchOrders = async (e) => {
         e.preventDefault()
         try {
+            setSearch((p) => ({ ...p, searchData: e.target.value }))
+
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 setDisplayText('Searching...')
@@ -117,15 +140,19 @@ const SimpleMuiTable = () => {
                         location: location,
                         type: search.type,
                         searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
                     }
                     let res = await axiosMisUser.post('/ordersSearch', obj)
-                    setRowsPerPage(10)
+                    setRowsPerPage(100)
                     setPage(0)
                     if (res.status == 200) {
                         setItem(res.data.data)
+                        setOrderCount(res.data.count)
                         setDisplayText('')
                     } else {
                         setItem(res.data.data)
+                        setOrderCount(res.data.count)
                         setDisplayText('Sorry no data found')
                     }
                 }

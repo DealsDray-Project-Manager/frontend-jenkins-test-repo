@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'sort_id',
+            name: 'code',
             label: 'Action',
             options: {
                 filter: false,

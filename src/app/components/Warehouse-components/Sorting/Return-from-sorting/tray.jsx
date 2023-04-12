@@ -16,7 +16,6 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import Checkbox from '@mui/material/Checkbox'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -73,6 +72,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const [receiveButDis,setReceiveButDis]=useState(false)
 
     useEffect(() => {
         try {
@@ -107,6 +107,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
             }
+            setReceiveButDis(true)
             let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -115,10 +116,12 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setReceiveButDis(false)
                 setOpen(false)
                 setRefresh((refresh) => !refresh)
             } else {
                 setOpen(false)
+                setReceiveButDis(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -224,6 +227,7 @@ const SimpleMuiTable = () => {
                                         m: 1,
                                     }}
                                     variant="contained"
+                                    disabled={receiveButDis}
                                     style={{ backgroundColor: 'green' }}
                                     onClick={(e) => {
                                         setOpen(true)

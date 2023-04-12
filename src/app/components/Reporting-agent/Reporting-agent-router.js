@@ -52,6 +52,21 @@ const RdlFlsInprogress = Loadable(
 const TrackItemDeliveryReport = Loadable(
     lazy(() => import('./Track-item/delivery'))
 )
+const WhtRecharging = Loadable(
+    lazy(() => import('./Wht-tray/read-for-recharge'))
+)
+const WhtTrayItem = Loadable(
+    lazy(() => import('./Tray-item-view/item'))
+)
+const ReportMonthWisePurchaise = Loadable(
+    lazy(() => import('./Report/month-wise-purchaise'))
+)
+const CtxTrayTransferPendingToSales = Loadable(
+    lazy(() => import('./Ctx/transfer-pending-to-sales'))
+)
+const CtxTransferToSaleProgress = Loadable(
+    lazy(() => import('./Ctx/transfer-inprogress-to-sale'))
+)
 
 const ReportingRouter = [
     {
@@ -149,6 +164,26 @@ const ReportingRouter = [
     {
         path: '/reporting/delivery/item',
         element: <TrackItemDeliveryReport />,
+    },
+    {
+        path: '/reporting/wht/recharge',
+        element: <WhtRecharging />,
+    },
+    {
+        path: '/reporting/tray/item/:trayId',
+        element: <WhtTrayItem />,
+    },
+    {
+        path: '/reporting/month-wise-purchase-details',
+        element: <ReportMonthWisePurchaise />,
+    },
+    {
+        path: '/reporting/ctx/transfer-pending-to-sales',
+        element: <CtxTrayTransferPendingToSales />,
+    },
+    {
+        path: '/reporting/ctx/transfer-to-sales/in-progress',
+        element: <CtxTransferToSaleProgress />,
     },
 ]
 

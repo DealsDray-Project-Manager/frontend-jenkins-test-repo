@@ -71,6 +71,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -80,7 +81,11 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post('/request-for-RDL_one_returnrdl-fls/' + 'Closed by RDL-FLS/' + location)
+                    let res = await axiosWarehouseIn.post(
+                        '/request-for-RDL_one_returnrdl-fls/' +
+                            'Closed by RDL-FLS/' +
+                            location
+                    )
                     if (res.status == 200) {
                         setIsLoading(false)
                         setTray(res?.data?.data)
@@ -108,6 +113,7 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
@@ -115,7 +121,7 @@ const SimpleMuiTable = () => {
             let res = await axiosWarehouseIn.post('/recieved-from-RDL_one', obj)
             if (res.status == 200) {
                 setOpen(!open)
-                
+                setReceiveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -124,7 +130,7 @@ const SimpleMuiTable = () => {
                 })
                 setIsAlive((isAlive) => !isAlive)
             } else {
-            
+                setReceiveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -320,7 +326,7 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === ''}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

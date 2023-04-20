@@ -71,6 +71,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
+    const [recceiveBut,setRecieveBut]=useState(false)
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -111,6 +112,7 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         try {
+            setRecieveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
@@ -125,9 +127,11 @@ const SimpleMuiTable = () => {
                     confirmButtonText: 'Ok',
                 })
                 setOpen(false)
+                setRecieveBut(false)
                 setRefresh((refresh) => !refresh)
             } else {
                 setOpen(false)
+                setRecieveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -219,7 +223,13 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return tableMeta.rowData[5] != 'Received From Merging' &&
                         tableMeta.rowData[5] !=
-                            'Audit Done Received From Merging' ? (
+                            'Audit Done Received From Merging' &&
+                        tableMeta.rowData[5] !=
+                            'Ready to RDL-Repair Received From Merging' &&
+                        tableMeta.rowData[5] !=
+                            'Ready to Audit Received From Merging' &&
+                        tableMeta.rowData[5] !=
+                            'Ready to BQC Received From Merging' ? (
                         <Button
                             sx={{
                                 m: 1,
@@ -289,7 +299,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        disabled={counts === ''}
+                        disabled={counts === '' || recceiveBut}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)

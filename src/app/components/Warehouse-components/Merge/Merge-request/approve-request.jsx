@@ -250,7 +250,7 @@ export default function StickyHeadTable({ props }) {
                                 handelIssue(e, 'Assigned to sorting agent')
                             }}
                         >
-                            Assign To Agent
+                            Issue To Agent
                         </Button>
                     </Box>
                 </div>

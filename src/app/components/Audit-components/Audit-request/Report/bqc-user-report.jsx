@@ -32,7 +32,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 }))
 
-const BqcUserReportPage = ({ BqcUserReport }) => {
+const BqcUserReportPage = ({ BqcUserReport, BqcAgentName, BqcDoneDate }) => {
     return (
         <Card elevation={3}>
             <H4 sx={{ p: 2 }}>BQC User Report</H4>
@@ -44,7 +44,9 @@ const BqcUserReportPage = ({ BqcUserReport }) => {
                         <TableCell>{BqcUserReport?.bqc_status}</TableCell>
                     </TableRow>
                     <TableRow key={BqcUserReport?.blancoo_qc_status}>
-                        <TableCell sx={{ pl: 2 }}>Blancco QC Status :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Blancco QC Status :
+                        </TableCell>
                         <TableCell>
                             {BqcUserReport?.blancoo_qc_status}
                         </TableCell>
@@ -71,6 +73,20 @@ const BqcUserReportPage = ({ BqcUserReport }) => {
                         </TableCell>
                         <TableCell>
                             {BqcUserReport?.factory_reset_status}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow key={BqcAgentName}>
+                        <TableCell sx={{ pl: 2 }}>
+                            BQC Operator Name :
+                        </TableCell>
+                        <TableCell>{BqcAgentName}</TableCell>
+                    </TableRow>
+                    <TableRow key={BqcDoneDate}>
+                        <TableCell sx={{ pl: 2 }}>BQC Done Date :</TableCell>
+                        <TableCell>
+                            {new Date(BqcDoneDate).toLocaleString('en-GB', {
+                                hour12: true,
+                            })}
                         </TableCell>
                     </TableRow>
                 </TableBody>

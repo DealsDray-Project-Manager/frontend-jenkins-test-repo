@@ -99,7 +99,7 @@ const SimpleMuiTable = () => {
     const handelDelete = (code) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Location!',
+            text: 'You want to Delete Category!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -109,8 +109,7 @@ const SimpleMuiTable = () => {
             if (result.isConfirmed) {
                 try {
                     let response = await axiosSuperAdminPrexo.post(
-                        '/deleteCtxcategory/',
-                        { code }
+                        '/deleteCtxcategory/' + code
                     )
                     if (response.status == 200) {
                         Swal.fire({

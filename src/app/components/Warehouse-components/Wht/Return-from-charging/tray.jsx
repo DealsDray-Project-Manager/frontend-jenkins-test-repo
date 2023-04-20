@@ -65,11 +65,11 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 }
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
+    const [receiveBut, setReceiveBut] = useState(false)
     const [refresh, setRefresh] = useState(refresh)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -111,6 +111,7 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
@@ -124,9 +125,11 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setReceiveBut(false)
                 setOpen(false)
                 setRefresh((refresh) => !refresh)
             } else {
+                setReceiveBut(false)
                 setOpen(false)
                 Swal.fire({
                     position: 'top-center',
@@ -324,7 +327,7 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === ''}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

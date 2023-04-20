@@ -334,6 +334,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
         <>
             <Box

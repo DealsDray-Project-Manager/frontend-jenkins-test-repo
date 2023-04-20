@@ -22,7 +22,7 @@ const MemberEditorDialog = ({
     sortingUsers,
     whtTray,
     isCheck,
-    value
+    value,
 }) => {
     const [sortingUserName, setSortingUsername] = useState('')
     const [whtTrayCode, setWhtTrayCode] = useState('')
@@ -36,7 +36,7 @@ const MemberEditorDialog = ({
                 user_name: sortingUserName,
                 sort_id: 'Send for Pickup',
                 toTray: whtTrayCode,
-                value:value
+                value: value,
             }
             let res = await axiosMisUser.post('/pickup/requestSendToWh', obj)
             if (res.status == 200) {
@@ -89,7 +89,7 @@ const MemberEditorDialog = ({
                                 setWhtTrayCode(data.code)
                             }}
                         >
-                            {data.code}
+                            {data.code} - ({data?.items?.length}) - Status:{data?.sort_id}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>

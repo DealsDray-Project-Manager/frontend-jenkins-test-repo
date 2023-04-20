@@ -111,7 +111,7 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[4],
+                    value.length + '/' + tableMeta.rowData[5],
             },
         },
         {

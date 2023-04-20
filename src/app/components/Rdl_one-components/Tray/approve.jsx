@@ -95,6 +95,7 @@ export default function DialogBox() {
                                 uic: uicCode,
                                 ctxTray: trayData?.otherTray,
                                 whtTrayId: trayId,
+                                
                             },
                         }
                     )

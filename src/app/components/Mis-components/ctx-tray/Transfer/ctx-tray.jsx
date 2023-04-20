@@ -192,7 +192,7 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: false,
+                filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[8],
@@ -270,6 +270,22 @@ const SimpleMuiTable = () => {
                                 ? 'Loading...'
                                 : 'Sorry, there is no matching data to display',
                         },
+                    },
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
                     },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option

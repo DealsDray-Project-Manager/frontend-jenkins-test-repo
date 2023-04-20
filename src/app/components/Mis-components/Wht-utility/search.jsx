@@ -146,6 +146,7 @@ function Search() {
     const [open, setOpen] = React.useState(false)
     const [botTray, setBotTray] = useState([])
     const [bag, setBag] = useState([])
+    const [butDiss,setButDiss]=useState(false)
     const [botUsers, setBotUsers] = useState([])
 
     const schema = Yup.object().shape({
@@ -184,14 +185,17 @@ function Search() {
     /*----------------IMPORT ORDER------------------------*/
     const importOrder = async () => {
         try {
+            setButDiss(true)
             let res = await axiosMisUser.post(
                 '/whtutility/importOrder',
                 tempOrders[0]
             )
             if (res.status == 200) {
                 alert(res.data.message)
+                setButDiss(false)
                 searchOldUic()
             } else {
+                setButDiss(false)
                 alert(res.data.message)
             }
         } catch (error) {
@@ -204,6 +208,7 @@ function Search() {
     }
     const onsubmit = async (value) => {
         try {
+            setButDiss(true)
             handleClose()
             let obj = {
                 utilty: tempDelivery[0],
@@ -212,8 +217,10 @@ function Search() {
             let res = await axiosMisUser.post('/whtUtility/addDelivery', obj)
             if (res.status == 200) {
                 alert(res.data.message)
+                setButDiss(false)
                 window.location.reload(true)
             } else {
+                setButDiss(false)
                 alert(res.data.message)
             }
         } catch (error) {
@@ -946,7 +953,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'http://prexo-v8-1-uat-adminapi.dealsdray.com/product/image/' +
+                                            ? 'https://prexo-v8-2-uat-api.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'
@@ -993,6 +1000,7 @@ function Search() {
                                 sx={{
                                     mt: 1,
                                 }}
+                                disabled={butDiss}
                                 variant="contained"
                                 onClick={(e) => {
                                     importOrder()
@@ -1042,6 +1050,7 @@ function Search() {
                                 sx={{
                                     mb: 1,
                                 }}
+                                disabled={butDiss}
                                 variant="contained"
                                 onClick={(e) => {
                                     handleOpen()

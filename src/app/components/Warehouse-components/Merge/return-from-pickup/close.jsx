@@ -101,7 +101,7 @@ export default function DialogBox() {
                 let obj = {
                     trayId: trayId,
                     stage: tray[0].pickup_type,
-                    length:length
+                    length: length,
                 }
                 if (tray?.[0]?.to_tray_for_pickup == null) {
                     obj.stage = stage
@@ -142,7 +142,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ paddingLeft: '18px', }}>Total</h5>
+                            <h5 style={{ paddingLeft: '18px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {
                                     tray[0]?.items?.filter(function (item) {
@@ -221,7 +221,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ paddingLeft: '18px', }}>Total</h5>
+                            <h5 style={{ paddingLeft: '18px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     tray[0]?.actual_items?.filter(function (
@@ -330,6 +330,9 @@ export default function DialogBox() {
                             <MenuItem value="Recharge">Recharge</MenuItem>
                             <MenuItem value="Charge Done">Re-BQC</MenuItem>
                             <MenuItem value="BQC Done">Re-Audit</MenuItem>
+                            <MenuItem value="Ready to RDL-Repair">
+                                RDL FLS Done
+                            </MenuItem>
                         </TextField>
                     ) : null}
 
@@ -365,4 +368,3 @@ export default function DialogBox() {
         </>
     )
 }
-

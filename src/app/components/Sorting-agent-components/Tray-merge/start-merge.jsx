@@ -111,6 +111,7 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (data) => {
         try {
+            handleClose()
             setLoading(true)
             let obj = {
                 fromTray: trayId,
@@ -122,7 +123,6 @@ export default function DialogBox() {
             if (res?.status === 200) {
                 setRefresh((refresh) => !refresh)
                 setAwbn('')
-                handleClose()
                 setLoading(false)
             } else {
                 Swal.fire({

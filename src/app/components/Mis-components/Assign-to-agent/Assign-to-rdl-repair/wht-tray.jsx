@@ -6,7 +6,7 @@ import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
-// import AssignDialogBox from './user-dailog'
+import AssignDialogBox from './user-dailog'
 import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
@@ -69,7 +69,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/get-RDL_one-users/' + 'RDL-FLS/' + location
+                        '/assignToAgent/rdl-fls/users/' + 'RDL-2/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)
@@ -85,6 +85,12 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
+    }
+
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setRDLUsers([])
+        setShouldOpenEditorDialog(false)
     }
 
     const handleDialogOpen = () => {
@@ -189,7 +195,7 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: false,
+                filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[8],
@@ -261,11 +267,11 @@ const SimpleMuiTable = () => {
                 variant="contained"
                 color="primary"
                 disabled
-                // onClick={(e) => {
-                //     handelReadyForRdl(e)
-                // }}
+                onClick={(e) => {
+                    handelReadyForRdl(e)
+                }}
             >
-                Assign For RDL
+                Assign For RDL-2
             </Button>
             <MUIDataTable
                 title={'WHT Tray'}
@@ -283,6 +289,22 @@ const SimpleMuiTable = () => {
                                 : 'Sorry, there is no matching data to display',
                         },
                     },
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -295,7 +317,7 @@ const SimpleMuiTable = () => {
                 }}
             />
 
-            {/* {shouldOpenEditorDialog && (
+            {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
@@ -303,7 +325,7 @@ const SimpleMuiTable = () => {
                     RDLUsers={RDLUsers}
                     isCheckk={isCheck}
                 />
-            )} */}
+            )}
         </Container>
     )
 }

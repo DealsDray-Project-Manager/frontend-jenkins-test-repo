@@ -71,6 +71,7 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
+    const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -110,6 +111,7 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
@@ -123,9 +125,11 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setReceiveBut(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 setOpen(false)
+                setReceiveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -134,7 +138,6 @@ const SimpleMuiTable = () => {
                 })
             }
         } catch (error) {
-
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -321,7 +324,7 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === ''}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

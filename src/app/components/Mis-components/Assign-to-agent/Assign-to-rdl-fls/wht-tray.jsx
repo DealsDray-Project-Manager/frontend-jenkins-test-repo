@@ -195,7 +195,7 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: 'Quantity',
             options: {
-                filter: false,
+                filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
                     value.length + '/' + tableMeta.rowData[8],

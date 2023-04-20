@@ -37,6 +37,8 @@ import RDL_one from 'app/components/Rdl_one-components/Rdl-fls-routers'
 import PricingRoutes from 'app/components/Pricing-components/Pricing_routers'
 import SalesRoutes from 'app/components/Sales-components/Sales_routes'
 import ReportingAgent from 'app/components/Reporting-agent/Reporting-agent-router'
+import Rdl2Routers from 'app/components/Rdl-2-panel/Rdl-2-router'
+import RmWarehouse from 'app/components/Rm-warehouse/Rm-warehouse'
 
 export const AllPages = () => {
     const all_routes = [
@@ -78,6 +80,8 @@ export const AllPages = () => {
                 ...PricingRoutes,
                 ...SalesRoutes,
                 ...ReportingAgent,
+                ...Rdl2Routers,
+                ...RmWarehouse,
             ],
         },
 

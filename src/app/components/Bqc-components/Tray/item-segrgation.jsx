@@ -142,8 +142,16 @@ export default function DialogBox() {
                 )
                 if (res?.status == 200) {
                     setResDataUic(res.data.data)
-                    handleClickOpen()
-                    // addActualitem(res.data.data);
+                    navigate(
+                        '/bqc/tray/item-verify/prompt',
+                        {
+                            state: {
+                                resDataUic: res.data.data,
+                                trayData: trayData,
+                                trayId:trayId
+                            },
+                        }
+                    )
                 } else if (res.status === 202) {
                     setUic('')
                     setTextBoxDis(false)
@@ -170,11 +178,10 @@ export default function DialogBox() {
                 trayData.limit <=
                 trayData?.temp_array?.length + trayData?.actual_items?.length
             ) {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:'All Items Scaanned',
+                    title: 'All Items Scaanned',
                     confirmButtonText: 'Ok',
                 })
             } else {
@@ -203,14 +210,12 @@ export default function DialogBox() {
                         })
                     }
                 } catch (error) {
-                   
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         confirmButtonText: 'Ok',
                         text: error,
                     })
-                    
                 }
             }
         }
@@ -339,7 +344,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.temp_array, textBoxDis])
-    
+
     return (
         <>
             <BootstrapDialog

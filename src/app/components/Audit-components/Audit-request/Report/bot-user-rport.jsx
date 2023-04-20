@@ -32,29 +32,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 }))
 
-const BqcUserReportPage = ({ BOt }) => {
+const BqcUserReportPage = ({ BOt, botUsername, BotDoneDate }) => {
     return (
-        <Card elevation={3} sx={{mt:2}}>
+        <Card elevation={3} sx={{ mt: 2 }}>
             <H4 sx={{ p: 2 }}>BOT User Report</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
-                    {/* <TableRow key={BOt?.stickerOne}>
-                        <TableCell sx={{ pl: 2 }}>Sticker One</TableCell>
-                        <TableCell>{BOt?.stickerOne}</TableCell>
-                    </TableRow>
-                    <TableRow key={BOt?.stickerTwo}>
-                        <TableCell sx={{ pl: 2 }}>Sticker Two</TableCell>
-                        <TableCell>{BOt?.stickerTwo}</TableCell>
-                    </TableRow>
-                    <TableRow key={BOt?.stickerThree}>
-                        <TableCell sx={{ pl: 2 }}>Sticker Three</TableCell>
-                        <TableCell>{BOt?.stickerThree}</TableCell>
-                    </TableRow>
-                    <TableRow key={BOt?.stickerFour}>
-                        <TableCell sx={{ pl: 2 }}>Sticker Four</TableCell>
-                        <TableCell>{BOt?.stickerFour}</TableCell>
-                    </TableRow> */}
                     <TableRow key={BOt?.body_damage}>
                         <TableCell sx={{ pl: 2 }}>Any body Damage :</TableCell>
                         <TableCell>{BOt?.body_damage}</TableCell>
@@ -64,6 +48,18 @@ const BqcUserReportPage = ({ BOt }) => {
                             Details of Damage parts :
                         </TableCell>
                         <TableCell>{BOt?.body_damage_des}</TableCell>
+                    </TableRow>
+                    <TableRow key={botUsername}>
+                        <TableCell sx={{ pl: 2 }}>Bot Username :</TableCell>
+                        <TableCell>{botUsername}</TableCell>
+                    </TableRow>
+                    <TableRow key={BotDoneDate}>
+                        <TableCell sx={{ pl: 2 }}>Bot Done Date :</TableCell>
+                        <TableCell>
+                            {new Date(BotDoneDate).toLocaleString('en-GB', {
+                                hour12: true,
+                            })}
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

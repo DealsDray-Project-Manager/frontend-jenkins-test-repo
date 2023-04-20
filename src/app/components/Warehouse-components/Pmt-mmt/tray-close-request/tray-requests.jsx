@@ -534,7 +534,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        disabled={counts === '' ? true : false}
+                        disabled={counts === '' || laodingRecieved}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)

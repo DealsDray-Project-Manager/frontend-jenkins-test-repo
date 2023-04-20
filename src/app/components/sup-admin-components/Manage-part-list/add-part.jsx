@@ -61,7 +61,7 @@ const AddPartOrColorAndEditDialog = ({
     const onSubmit = async (data) => {
         try {
             setLoading(true)
-            data.type ="part-list"
+            data.type = 'part-list'
             let response = await axiosSuperAdminPrexo.post(
                 '/partAndColor/create',
                 data
@@ -101,7 +101,10 @@ const AddPartOrColorAndEditDialog = ({
 
     const handelEdit = async (data) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/partAndColor/edit', data)
+            let response = await axiosSuperAdminPrexo.post(
+                '/partAndColor/edit',
+                data
+            )
             if (response.status == 200) {
                 setEditFetchData({})
                 handleClose()
@@ -142,9 +145,7 @@ const AddPartOrColorAndEditDialog = ({
                     name="name"
                     {...register('name')}
                     error={errors.name ? true : false}
-                    helperText={
-                        errors.name ? errors.name?.message : ''
-                    }
+                    helperText={errors.name ? errors.name?.message : ''}
                 />
                 <TextFieldCustOm
                     label="Description"

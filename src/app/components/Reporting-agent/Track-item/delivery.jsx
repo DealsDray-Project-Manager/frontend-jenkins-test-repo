@@ -3,6 +3,8 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { H1, H3, H4 } from 'app/components/Typography'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 import moment from 'moment'
 
 import {
@@ -73,6 +75,7 @@ const SimpleMuiTable = () => {
     const [avgPrice, setAvgPrice] = useState('')
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
+    const [dataForDownload, setDataForDownload] = useState([])
     const [filterData, setFilterData] = useState({})
 
     const handleChangeSort = ({ target: { name, value } }) => {
@@ -201,17 +204,59 @@ const SimpleMuiTable = () => {
             if (res.status === 200) {
                 setDisplayText('')
                 setCount(res.data.count)
+                setDataForDownload(res.data.forXlsxDownload)
                 setAvgPrice(res.data.avgPrice)
                 setItem(res.data.data)
             } else {
                 setAvgPrice(res.data.avgPrice)
                 setItem(res.data.data)
                 setCount(res.data.count)
+                setDataForDownload(res.data.forXlsxDownload)
                 setDisplayText('Sorry no data found')
             }
         } catch (error) {
             alert(error)
         }
+    }
+    const download = (e) => {
+        let arr = []
+        for (let x of dataForDownload) {
+            let obj = {
+                'Actual Delivered Date': new Date(
+                    x?.delivery_date
+                ).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                }),
+                UIC: x?.uic_code?.code,
+                'Tracking ID': x?.tracking_id,
+                'Order ID': x?.order_id,
+                'Uic Status': x?.uic_status,
+                IMEI: x?.imei,
+                'Item ID': x?.item_id,
+                'Bag ID': x?.bag_id,
+                'Bot Tray ID': x?.tray_id,
+                'Tray Type': x?.tray_type,
+                'Tray Status': x?.tray_status,
+                'Tray Location': x?.tray_location,
+                'WHT Tray': x?.wht_tray,
+                'CTX Tray Id': x?.ctx_tray_id,
+                'STX Tray Id': x?.stx_tray_id,
+                'Partner Purchase Price': x?.partner_purchase_price,
+            }
+
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Month Wise Purchase Details' + fileExtension)
     }
 
     const searchTrackItem = async (e) => {
@@ -241,9 +286,11 @@ const SimpleMuiTable = () => {
                         setDisplayText('')
                         setCount(res.data.count)
                         setItem(res.data.data)
+                        setDataForDownload(res.data.allMatchedResult)
                     } else {
                         setItem(res.data.data)
                         setCount(res.data.count)
+                        setDataForDownload(res.data.allMatchedResult)
                         setDisplayText('Sorry no data found')
                     }
                 }
@@ -465,16 +512,17 @@ const SimpleMuiTable = () => {
                     </Button>
                 </Box>
 
-                {/* <Button
+                <Button
                     sx={{ mb: 2 }}
                     variant="contained"
                     color="primary"
+                    disabled={dataForDownload.length == 0}
                     onClick={(e) => {
                         download(e)
                     }}
                 >
                     Download XLSX
-                </Button> */}
+                </Button>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

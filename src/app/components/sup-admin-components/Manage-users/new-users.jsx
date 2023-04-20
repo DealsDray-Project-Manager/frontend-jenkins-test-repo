@@ -350,6 +350,10 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Charging">Charging</MenuItem>
                                 <MenuItem value="MIS">MIS</MenuItem>
                                 <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
+                                <MenuItem value="RDL-2">RDL-2</MenuItem>
+                                {/* <MenuItem value="RM Warehouse">
+                                    RM Warehouse
+                                </MenuItem> */}
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sorting Agent">
                                     Sorting Agent

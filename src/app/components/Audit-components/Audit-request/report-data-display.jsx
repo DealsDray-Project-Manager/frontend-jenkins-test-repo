@@ -205,7 +205,11 @@ export default function DialogBox() {
                 </Grid>
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
                     <AmazonDetails Order={reportData?.order} />
-                    <Botuser BOt={reportData?.delivery?.bot_report} />
+                    <Botuser
+                        BOt={reportData?.delivery?.bot_report}
+                        botUsername={reportData?.delivery?.agent_name}
+                        BotDoneDate={reportData?.delivery?.tray_closed_by_bot}
+                    />
                 </Grid>
 
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
@@ -219,6 +223,8 @@ export default function DialogBox() {
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
+                        BqcAgentName={reportData?.delivery?.agent_name_bqc}
+                        BqcDoneDate={reportData?.delivery?.bqc_out_date}
                     />
                 </Grid>
                 <Grid sx={{ boxShadow: 1 }} item lg={12} md={12} xs={12}>

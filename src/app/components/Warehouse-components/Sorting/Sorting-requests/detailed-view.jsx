@@ -64,6 +64,7 @@ const SimpleMuiTable = () => {
             if (userStatus.status == 200) {
                 setLoading(true)
                 let flag = false
+
                 for (let x of botTray) {
                     if (x.items.length !== x.actual_items.length) {
                         flag = true

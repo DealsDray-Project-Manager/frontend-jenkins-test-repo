@@ -2,10 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+
 import { axiosWarehouseIn } from '../../../../../axios'
-import { useParams } from 'react-router-dom'
-import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,100 +21,172 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [isCheck, setIsCheck] = useState([])
-    const [whtTrayItem, setWhtTrayItem] = useState([])
-
+    const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
 
     useEffect(() => {
-        const fetchWht = async () => {
+        const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    const res = await axiosWarehouseIn.post(
-                        '/getWhtTrayItem/' +
-                            trayId +
-                            '/' +
-                            'all-wht-tray/' +
-                            location
-                    )
-                    if (res.status === 200) {
-                        setWhtTrayItem(res.data?.data?.items)
-                    }
+                let res = await axiosWarehouseIn.post('/trayItem/' + trayId)
+                if (res.status === 200) {
+                    setTrayData(res.data.data)
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
+                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
         }
-        fetchWht()
-        return () => setIsAlive(false)
-    }, [isAlive])
+        fetchData()
+    }, [])
 
     const columns = [
         {
             name: 'index',
             label: 'Record No',
             options: {
-                filter: true,
-                sort: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
-            name: 'uic', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            name: 'imei',
+            label: 'IMEI',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'muic',
-            label: 'MUIC',
+            name: 'uic',
+            label: 'UIC',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand_name',
+            name: 'sort_id',
             label: 'Brand',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return trayData.brand
+                },
             },
         },
         {
-            name: 'model_name',
+            name: 'sort_id',
             label: 'Model',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return trayData.model
+                },
+            },
+        },
+
+        {
+            name: 'rdl_fls_report',
+            label: 'RDL Status',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.selected_status
+                },
             },
         },
         {
-            name: 'tracking_id',
-            label: 'Tracking Id',
+            name: 'rdl_fls_report',
+            label: 'Model Required',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return value?.model_reg
+                },
             },
         },
         {
-            name: 'tray_id',
-            label: 'Bot Tray',
+            name: 'rdl_fls_report',
+            label: 'Part List Count',
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_count
+                },
             },
         },
         {
-            name: 'bot_agent',
-            label: 'Bot Agent',
+            name: 'rdl_fls_report',
+            label: 'Part List 1',
             options: {
                 filter: true,
-                display: false,
+                customBodyRender: (value) => {
+                    return value?.part_list_1
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 2',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_2
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 3',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_3
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 4',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_4
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Part List 5',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.part_list_5
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Color',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.color
+                },
+            },
+        },
+        {
+            name: 'rdl_fls_report',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return value?.description
+                },
             },
         },
     ]
@@ -124,14 +196,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign To RDL', path: '/' },
-                        { name: 'View-Item' },
+                        { name: 'WHT', path: '/' },
+                        { name: 'Items' },
                     ]}
                 />
             </div>
+
             <MUIDataTable
-                title={'WHT Tray Item'}
-                data={whtTrayItem}
+                title={'Tray'}
+                data={trayData.items}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -145,6 +218,22 @@ const SimpleMuiTable = () => {
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}

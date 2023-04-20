@@ -70,6 +70,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
+    const [receiveBut, setReceiveBut] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -104,6 +105,7 @@ const SimpleMuiTable = () => {
 
     const handelTrayReceived = async () => {
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
@@ -113,8 +115,10 @@ const SimpleMuiTable = () => {
             if (res.status == 200) {
                 alert(res.data.message)
                 setOpen(false)
+                setReceiveBut(false)
                 setRefresh((refresh) => !refresh)
             } else {
+                setReceiveBut(false)
                 alert(res.data.message)
             }
         } catch (error) {
@@ -264,7 +268,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        disabled={counts === ''}
+                        disabled={counts === '' || receiveBut}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -85,11 +85,26 @@ const ProductTableThere = styled(Table)(() => ({
         paddingLeft: '16px !important',
     },
 }))
+const ProductTableRdlOne = styled(Table)(() => ({
+    minWidth: 750,
+    width: 4000,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
 
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
 
-    const [displayText, setDisplayText] = useState('')
     const [value, setValue] = React.useState('Charge Done')
     const [item, setItem] = useState([])
     const [brand, setbrand] = useState([])
@@ -106,30 +121,38 @@ const PickupPage = () => {
     /*--------------------------------------------------------------*/
 
     const handleChange = (event, newValue) => {
-        setIsCheck([])
+        setIsLoading(true)
         setItem([])
+        setIsCheck([])
         setValue(newValue)
     }
+    // const valueRef = useRef(value)
+
     /*---------------------------USEEFFECT-----------------------------------*/
     useEffect(() => {
         const fetchData = async () => {
             try {
+               
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
                     const { location } = jwt_decode(admin)
-                    setDisplayText('Loading...')
+                    console.log(value)
                     let response = await axiosMisUser.post(
                         '/pickup/items/' + value + '/' + location
                     )
                     if (response.status === 200) {
-                        setDisplayText('')
                         setIsLoading(false)
                         setItem(response.data.data)
+                        // if (response.data.type == valueRef.current) {
+                        //     console.log("----------------");
+                        //     console.log(value);
+                        // } else {
+                        //     fetchData()
+                        // }
                     } else {
                         setItem(response.data.data)
                         setIsLoading(false)
-                        setDisplayText(response.data.message)
                     }
                 } else {
                     navigate('/')
@@ -206,7 +229,6 @@ const PickupPage = () => {
                 const { location } = jwt_decode(admin)
                 setIsCheck([])
                 setIsLoading(true)
-                setDisplayText('Loading...')
                 const res = await axiosMisUser.post(
                     '/pickup/sortItem/' +
                         state?.brand +
@@ -218,13 +240,11 @@ const PickupPage = () => {
                         location
                 )
                 if (res.status == 200) {
-                    setDisplayText('')
                     setIsLoading(false)
                     setItem(res.data.data)
                 } else {
                     setItem(res.data.data)
                     setIsLoading(false)
-                    setDisplayText(res.data.message)
                 }
             }
         } catch (error) {
@@ -410,8 +430,15 @@ const PickupPage = () => {
             label: 'Display Condition',
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.charging?.display_condition || '',
+                customBodyRender: (value, dataIndex) => {
+                    const displayCondition = value?.charging?.display_condition
+                    if (!displayCondition) {
+                        // check if displayCondition is empty or null
+                        return null // return null to prevent the checkbox from showing
+                    } else {
+                        return displayCondition // return the display condition value
+                    }
+                },
             },
         },
         {
@@ -882,6 +909,333 @@ const PickupPage = () => {
             },
         },
     ]
+    const columnsForRdlOne = [
+        {
+            name: 'items',
+            label: 'Select',
+            options: {
+                filter: false,
+                sort: false,
+                setCellProps: () => ({ style: { width: '100px' } }),
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value.uic}
+                            key={value.uic}
+                            checked={isCheck.includes(value.uic)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+
+        {
+            name: 'items', // field name in the row object
+            label: 'UIC', // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.uic || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Order Id',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.order_id || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'IMEI',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.imei || '',
+            },
+        },
+
+        {
+            name: 'brand',
+            label: 'Brand',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: 'Model',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'MUIC',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value.muic || '',
+            },
+        },
+        {
+            name: 'code',
+            label: 'Tray Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'items',
+            label: 'Battery Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.battery_status || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charge Percentage',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charge_percentage || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.body_condition || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Display Condition',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.display_condition || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Lock Status',
+            options: {
+                filter: true,
+                setCellProps: () => ({ style: { width: '100px' } }),
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.lock_status || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Charging Jack',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.charging_jack_type || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Body Part Missing',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging?.boady_part_missing || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Blancoo QC Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.blancoo_qc_status || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Factory Reset Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.factory_reset_status || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC Incomplete Reason',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.bqc_incomplete_reason || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Technical Issue',
+            options: {
+                filter: true,
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.technical_issue || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'BQC User Remark',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.other || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Orginal Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.orgGrade || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Audit Recomendad Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.grade || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Stage',
+            options: {
+                filter: true,
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.stage || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Reason',
+            options: {
+                filter: true,
+                FileList: (value) => value?.audit_report?.reason,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.reason || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'Description',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.description || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Status',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.selected_status || '',
+            },
+        },
+
+        {
+            name: 'items',
+            label: 'RDL 1 Added Model',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.model_reg || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Color',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.color || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part List Count',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_count || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part One',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_1 || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part Two',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_2 || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part Three',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_3 || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part Four',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_4 || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Added Part Five',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.part_list_5 || '',
+            },
+        },
+    ]
 
     /*--------------------------------------------------------------*/
 
@@ -892,12 +1246,13 @@ const PickupPage = () => {
                 data={item}
                 columns={columnsOne}
                 options={{
-                    filterType: 'dropdown',
+                    filterType: 'multiselect',
                     responsive: 'standared',
                     download: false,
                     print: false,
                     showFirstButton: 'true',
                     showLastButton: 'true',
+
                     textLabels: {
                         body: {
                             noMatch: isLoading
@@ -942,10 +1297,11 @@ const PickupPage = () => {
                 data={item}
                 columns={columnsTwo}
                 options={{
-                    filterType: 'dropdown',
+                    filterType: 'multiselect',
                     responsive: 'standared',
                     download: false,
                     print: false,
+
                     showFirstButton: 'true',
                     showLastButton: 'true',
                     textLabels: {
@@ -992,7 +1348,7 @@ const PickupPage = () => {
                 data={item}
                 columns={columnsThree}
                 options={{
-                    filterType: 'dropdown',
+                    filterType: 'multiselect',
                     responsive: 'standared',
                     download: false,
                     print: false,
@@ -1036,6 +1392,57 @@ const PickupPage = () => {
         )
     }, [item, columnsThree])
 
+    const tableDataForRdl1 = useMemo(() => {
+        return (
+            <MUIDataTable
+                title={'UNITS'}
+                data={item}
+                columns={columnsForRdlOne}
+                options={{
+                    filterType: 'multiselect',
+                    responsive: 'standared',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+
+                    showFirstButton: 'true',
+                    showLastButton: 'true',
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
+        )
+    }, [item, columnsForRdlOne])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -1059,6 +1466,10 @@ const PickupPage = () => {
                             />
                             <Tab label="BQC Done Unit's" value="BQC Done" />
                             <Tab label="Audit Done Unit's" value="Audit Done" />
+                            <Tab
+                                label="RDL 1 Done Unit's"
+                                value="Ready to RDL-Repair"
+                            />
                         </TabList>
                     </Box>
                     <Box
@@ -1170,6 +1581,16 @@ const PickupPage = () => {
                             <ProductTableThere>
                                 {tableDataThree}
                             </ProductTableThere>
+                        </Card>
+                    </TabPanel>
+                    <TabPanel value="Ready to RDL-Repair">
+                        <Card
+                            sx={{ maxHeight: '100%', overflow: 'auto' }}
+                            elevation={6}
+                        >
+                            <ProductTableRdlOne>
+                                {tableDataForRdl1}
+                            </ProductTableRdlOne>
                         </Card>
                     </TabPanel>
                 </TabContext>

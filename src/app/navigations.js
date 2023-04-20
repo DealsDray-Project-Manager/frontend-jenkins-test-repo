@@ -17,6 +17,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/rm-warehouse/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.RMWAREHOUSE, 
+    },
+    {
+        name: 'Dashboard',
         path: '/warehouse/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -60,7 +67,7 @@ export const navigations = [
     {
         name: 'Dashboard',
         path: '/reporting/dashboard',
-        icon: '',
+        icon: 'dashboard',
         sales: 'all',
         auth: authRoles.reporting, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
@@ -70,6 +77,13 @@ export const navigations = [
         icon: 'dashboard',
         sales: 'all',
         auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/rdl-two/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.RDL_2, 
     },
     {
         name: 'Dashboard',
@@ -130,15 +144,16 @@ export const navigations = [
                 path: '/sup-admin/products',
             },
             {
-                name: 'Part List',
-                // icon: 'add_shopping_cart',
-                path: '/sup-admin/view-part-list',
-            },
-            {
                 name: 'Color List',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/view-color-list',
             },
+            {
+                name: 'Part List',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/view-part-list',
+            },
+
             {
                 name: 'Bags',
                 // icon: 'add_shopping_cart',
@@ -560,6 +575,11 @@ export const navigations = [
                 path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
+            {
+                name: 'RDL-2 Request',
+                path: '/wareshouse/wht/rdl2-request',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: false,
@@ -847,7 +867,7 @@ export const navigations = [
 
                 path: '/reporting/all-orders',
             },
-           
+
             {
                 name: 'Not Delivered Packets',
 
@@ -1029,6 +1049,27 @@ export const navigations = [
         path: '/reporting/month-wise-purchase-details',
         sales: false,
         auth: authRoles.reporting,
+    },
+    {
+        name: 'RDL 2 Requests',
+        icon: 'class',
+        path: '/rdl-two/tray',
+        auth: authRoles.RDL_2,
+        sales: false,
+    },
+    {
+        name: 'Part List',
+        icon: 'class',
+        path: '/rm-warehouse/part-list',
+        auth: authRoles.RMWAREHOUSE,
+        sales: false,
+    },
+    {
+        name: 'Color List',
+        icon: 'class',
+        path: '/rm-warehouse/color-list',
+        auth: authRoles.RMWAREHOUSE,
+        sales: false,
     },
     {
         name: 'Dummy Panel',

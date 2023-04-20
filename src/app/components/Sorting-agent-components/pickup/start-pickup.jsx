@@ -170,8 +170,8 @@ export default function DialogBox() {
     const addActualitem = async (e) => {
         try {
             if (e.keyCode !== 32) {
-                setLoading(true)
                 handleClose()
+                setLoading(true)
                 let obj = {
                     fromTray: trayId,
                     toTray: tray[1].code,

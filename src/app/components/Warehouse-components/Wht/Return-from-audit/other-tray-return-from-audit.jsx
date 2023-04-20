@@ -74,6 +74,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [auditUsers, setAuditUsers] = useState([])
+    const [receiveBut, setReceiveBut] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
@@ -115,50 +116,41 @@ const SimpleMuiTable = () => {
     }
 
     const handelTrayReceived = async () => {
-        if (counts === '') {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'warning',
-                title: 'Please Confirm Counts',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            try {
-                let obj = {
-                    trayId: trayId,
-                    counts: counts,
-                }
-                let res = await axiosWarehouseIn.post(
-                    '/recievedFromOtherTray',
-                    obj
-                )
-                if (res.status == 200) {
-                    setOpen(false)
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setIsAlive((isAlive) => !isAlive)
-                } else {
-                    setOpen(false)
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
-            } catch (error) {
+        setReceiveBut(true)
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+            }
+            let res = await axiosWarehouseIn.post('/recievedFromOtherTray', obj)
+            if (res.status == 200) {
                 setOpen(false)
+                setReceiveBut(false)
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
-                    text: error,
+                })
+                setIsAlive((isAlive) => !isAlive)
+            } else {
+                setOpen(false)
+                setReceiveBut(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
                 })
             }
+        } catch (error) {
+            setOpen(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
     }
 
@@ -374,7 +366,7 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === ''}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

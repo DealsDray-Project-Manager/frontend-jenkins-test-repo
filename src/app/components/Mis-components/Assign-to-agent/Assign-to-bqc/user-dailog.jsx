@@ -39,28 +39,28 @@ const MemberEditorDialog = ({
                 setLoading(false)
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'Success',
+                    icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-            
+
                 setBqcUserName('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-             
+
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:res?.data?.message,
+                    text: res?.data?.message,
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

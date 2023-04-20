@@ -195,6 +195,9 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
+const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
+const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
+
 
 const WarehoueRouter = [
     {
@@ -489,6 +492,14 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/pickup/return-from-pickup/close/:trayId',
         element: <PickupDoneClose />,
+    },
+    {
+        path: '/wareshouse/wht/rdl2-request',
+        element: <RDL2Request />,
+    },
+    {
+        path: '/wareshouse/wht/rdl2-request/approve/:trayId',
+        element: <RDL2RequestApprove />,
     },
 ]
 

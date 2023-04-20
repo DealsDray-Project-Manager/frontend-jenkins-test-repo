@@ -49,7 +49,7 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const [location, setLocation] = useState('')
     const [count, setCount] = useState(0)
-    const [searchType,setSearchType]=useState("")
+    const [searchType, setSearchType] = useState('')
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
     const [filterData, setFilterData] = useState({
@@ -57,7 +57,6 @@ const SimpleMuiTable = () => {
         toDate: '',
     })
 
-  
     const handleChangeSort = ({ target: { name, value } }) => {
         setFilterData({
             ...filterData,
@@ -223,18 +222,20 @@ const SimpleMuiTable = () => {
                 UIC: x?.uic_code?.code,
                 'Purchase Price': x?.partner_purchase_price,
                 'Tray Location': x?.tray_location,
-                
+                'Bag Open Date': x?.assign_to_agent,
             }
 
-            if(x?.order_date !== undefined && x?.order_date !== null ){
-                obj["Order Date"]= new Date(x?.order_date).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            }
-            else{
-                obj["Order Date"]=""
+            if (x?.order_date !== undefined && x?.order_date !== null) {
+                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
+                    'en-GB',
+                    {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }
+                )
+            } else {
+                obj['Order Date'] = ''
             }
 
             arr.push(obj)
@@ -253,7 +254,7 @@ const SimpleMuiTable = () => {
         try {
             filterData.location = location
             filterData.page = page
-            filterData.type =searchType
+            filterData.type = searchType
             filterData.size = rowsPerPage
             setDisplayText('Please wait...')
             setFilterUn(true)
@@ -290,6 +291,7 @@ const SimpleMuiTable = () => {
                         <TableCell>Received Units Remarks (BOT)</TableCell>
                         <TableCell>UIC</TableCell>
                         <TableCell>Price</TableCell>
+                        <TableCell>Bag Open Date</TableCell>
                         <TableCell>Tray Type</TableCell>
                         <TableCell>Tray ID</TableCell>
                         <TableCell>Wht Tray ID</TableCell>
@@ -333,6 +335,18 @@ const SimpleMuiTable = () => {
                             <TableCell>{data?.uic_code?.code}</TableCell>
                             <TableCell>
                                 {data?.partner_purchase_price}
+                            </TableCell>
+                            <TableCell>
+                                {' '}
+                                {data?.assign_to_agent == null
+                                    ? ''
+                                    : new Date(
+                                          data?.assign_to_agent
+                                      ).toLocaleString('en-GB', {
+                                          year: 'numeric',
+                                          month: '2-digit',
+                                          day: '2-digit',
+                                      })}
                             </TableCell>
                             <TableCell>{data.tray_type}</TableCell>
                             <TableCell>{data.tray_id}</TableCell>
@@ -386,7 +400,7 @@ const SimpleMuiTable = () => {
                     />
                 </Box>
                 <Box>
-                <TextField
+                    <TextField
                         type="text"
                         select
                         label="Select Type"
@@ -394,12 +408,26 @@ const SimpleMuiTable = () => {
                         name="searchType"
                         sx={{ width: '140px' }}
                     >
-                        <MenuItem  value="Order Date" onClick={(e)=>{setSearchType("Order Date")}}>Order Date</MenuItem>
-                        <MenuItem value="Delivery Date" onClick={(e)=>{setSearchType("Delivery Date")}}>Delivery Date</MenuItem>
-                        </TextField>
+                        <MenuItem
+                            value="Order Date"
+                            onClick={(e) => {
+                                setSearchType('Order Date')
+                            }}
+                        >
+                            Order Date
+                        </MenuItem>
+                        <MenuItem
+                            value="Delivery Date"
+                            onClick={(e) => {
+                                setSearchType('Delivery Date')
+                            }}
+                        >
+                            Delivery Date
+                        </MenuItem>
+                    </TextField>
                     <TextField
                         type="date"
-                        disabled={searchType == ""}
+                        disabled={searchType == ''}
                         label="From Date"
                         variant="outlined"
                         inputProps={{ max: moment().format('YYYY-MM-DD') }}

@@ -41,7 +41,6 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -65,11 +64,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All Items Are Verified",
+                title: 'All Items Are Verified',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -89,7 +87,7 @@ export default function DialogBox() {
                     setUic('')
                 } else {
                     setTextDisable(false)
-               
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -113,11 +111,10 @@ export default function DialogBox() {
         try {
             setLoading(true)
             if (description == '') {
-                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"please Add Description",
+                    title: 'please Add Description',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -132,7 +129,6 @@ export default function DialogBox() {
                 }
                 let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
                 if (res.status == 200) {
-            
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -143,7 +139,7 @@ export default function DialogBox() {
                     navigate('/wareshouse/wht/return-from-audit')
                 } else {
                     setLoading(false)
-                 
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -179,7 +175,7 @@ export default function DialogBox() {
                 } else {
                     setUic('')
                     setTextDisable(false)
-                  
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',

@@ -74,6 +74,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [mmtTray, setMmtTray] = useState([])
     const [open, setOpen] = useState(false)
+    const [submitDis, setSubmitDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
     const [toMmtTray, setToMmtTray] = useState([])
@@ -148,6 +149,12 @@ const SimpleMuiTable = () => {
 
     const handleClose = () => {
         setOpen(false)
+        setSubmitDis(false)
+        setMergeData((p) => ({
+            fromTray: '',
+            toTray: '',
+            sort_agent: '',
+        }))
     }
     /* OPEN DIALOG BOX */
     const handelMerge = async (e, trayId, itemsCount) => {
@@ -190,6 +197,7 @@ const SimpleMuiTable = () => {
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
+            setSubmitDis(true)
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData
@@ -402,6 +410,7 @@ const SimpleMuiTable = () => {
                         type="submit"
                         variant="contained"
                         disabled={
+                            submitDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }

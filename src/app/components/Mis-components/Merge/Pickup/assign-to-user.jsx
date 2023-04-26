@@ -89,7 +89,8 @@ const MemberEditorDialog = ({
                                 setWhtTrayCode(data.code)
                             }}
                         >
-                            {data.code} - ({data?.items?.length}) - Status:{data?.sort_id}
+                            {data.code} - ({data?.items?.length}) - Status:
+                            {data?.sort_id}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>

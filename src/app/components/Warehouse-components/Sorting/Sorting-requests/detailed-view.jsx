@@ -55,6 +55,7 @@ const SimpleMuiTable = () => {
 
     const handelIssue = async (e, type) => {
         try {
+            setLoading(true)
             let userStatus = await axiosWarehouseIn.post(
                 '/sortingAgnetStatus/' +
                     botTray[0]?.issued_user_name +
@@ -62,7 +63,6 @@ const SimpleMuiTable = () => {
                     botTray[0]?.code
             )
             if (userStatus.status == 200) {
-                setLoading(true)
                 let flag = false
 
                 for (let x of botTray) {
@@ -92,7 +92,6 @@ const SimpleMuiTable = () => {
                         navigate('/wareshouse/sorting/request')
                     } else {
                         setLoading(false)
-
                         Swal.fire({
                             position: 'top-center',
                             icon: 'error',
@@ -102,7 +101,6 @@ const SimpleMuiTable = () => {
                     }
                 } else {
                     setLoading(false)
-
                     Swal.fire({
                         position: 'top-center',
                         icon: 'warning',

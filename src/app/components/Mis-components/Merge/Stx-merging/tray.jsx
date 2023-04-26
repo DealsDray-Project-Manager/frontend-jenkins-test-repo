@@ -79,6 +79,7 @@ const SimpleMuiTable = () => {
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [submitDis, setSubmitDis] = useState(false)
     const [open, setOpen] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
@@ -202,6 +203,12 @@ const SimpleMuiTable = () => {
     }
     const handleClose = () => {
         setOpen(false)
+        setSubmitDis(false)
+        setMergeData((p) => ({
+            fromTray: '',
+            toTray: '',
+            sort_agent: '',
+        }))
     }
     /******************************************************************************* */
     const handelViewTray = (e, id) => {
@@ -467,6 +474,7 @@ const SimpleMuiTable = () => {
                         type="submit"
                         variant="contained"
                         disabled={
+                            submitDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }

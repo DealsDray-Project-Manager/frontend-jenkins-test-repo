@@ -25,6 +25,7 @@ const SimpleMuiTable = () => {
     const [isCheck, setIsCheck] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [whtTrayList, setWhtTrayList] = useState([])
+    const [submitButDis, setSubmitButDis] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -61,6 +62,7 @@ const SimpleMuiTable = () => {
     }
     const handelReadyForRdl = async () => {
         try {
+            setSubmitButDis(true)
             let obj = {
                 ischeck: isCheck,
                 type: 'Ready to RDL',
@@ -79,10 +81,12 @@ const SimpleMuiTable = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsCheck([])
+                        setSubmitButDis(false)
                         setIsAlive((isAlive) => !isAlive)
                     }
                 })
             } else if (res.status == 202) {
+                setSubmitButDis(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -254,7 +258,7 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                disabled={isCheck.length === 0}
+                disabled={submitButDis || isCheck.length === 0}
                 onClick={(e) => {
                     handelReadyForRdl(e)
                 }}

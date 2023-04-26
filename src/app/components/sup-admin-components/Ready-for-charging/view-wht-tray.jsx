@@ -25,6 +25,7 @@ const SimpleMuiTable = () => {
     const [isCheck, setIsCheck] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [whtTrayList, setWhtTrayList] = useState([])
+    const [submitButDis, setSubmitDis] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -62,6 +63,7 @@ const SimpleMuiTable = () => {
 
     const handelReadyForCharging = async () => {
         try {
+            setSubmitDis(true)
             let obj = {
                 ischeck: isCheck,
                 status: 'Closed',
@@ -80,10 +82,12 @@ const SimpleMuiTable = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsCheck([])
+                        setSubmitDis(false)
                         setIsAlive((isAlive) => !isAlive)
                     }
                 })
             } else if (res.status == 202) {
+                setSubmitDis(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -254,7 +258,7 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                disabled={isCheck.length === 0}
+                disabled={submitButDis || isCheck.length === 0}
                 onClick={(e) => {
                     handelReadyForCharging(e)
                 }}

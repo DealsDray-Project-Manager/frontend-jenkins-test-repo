@@ -66,6 +66,7 @@ export default function StickyHeadTable({ props }) {
     /******************************************************************************* */
     const handelIssue = async (e, type) => {
         try {
+            setLoading(true)
             let res = await axiosWarehouseIn.post(
                 '/sortingAgnetStatus/' +
                     mmtTray[0]?.issued_user_name +
@@ -73,7 +74,6 @@ export default function StickyHeadTable({ props }) {
                     mmtTray?.[0]?.code
             )
             if (res.status === 200) {
-                setLoading(true)
                 let flag = false
                 for (let x of mmtTray) {
                     if (x.items.length !== x.actual_items.length) {

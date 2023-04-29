@@ -71,6 +71,7 @@ BootstrapDialogTitle.propTypes = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
+    const [submitDis, setSubmitDis] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
     const [open, setOpen] = useState(false)
@@ -195,6 +196,12 @@ const SimpleMuiTable = () => {
     }
     const handleClose = () => {
         setOpen(false)
+        setSubmitDis(false)
+        setMergeData((p) => ({
+            fromTray: '',
+            toTray: '',
+            sort_agent: '',
+        }))
     }
     /******************************************************************************* */
     const handelViewTray = (e, id) => {
@@ -205,6 +212,7 @@ const SimpleMuiTable = () => {
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
+            setSubmitDis(true)
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData
@@ -220,6 +228,7 @@ const SimpleMuiTable = () => {
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
+            setSubmitDis(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -452,6 +461,7 @@ const SimpleMuiTable = () => {
                         type="submit"
                         variant="contained"
                         disabled={
+                            submitDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }

@@ -23,6 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [bagItemList, setBagItemList] = useState([])
+    const [handelSumitDis, setSubmitButDis] = useState(false)
     const { bagId } = useParams()
 
     useEffect(() => {
@@ -54,6 +55,7 @@ const SimpleMuiTable = () => {
 
     const handelDelete = async (id, awbn, state) => {
         try {
+            setSubmitButDis(true)
             let obj = {
                 id: id,
                 bagId: bagId,
@@ -66,8 +68,10 @@ const SimpleMuiTable = () => {
                     icon: 'success',
                     title: data?.data?.message,
                 })
+                setSubmitButDis(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
+                setSubmitButDis(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -147,6 +151,7 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
+                            disabled={handelSumitDis}
                             variant="contained"
                             onClick={() => {
                                 if (window.confirm('You want to Remove?')) {

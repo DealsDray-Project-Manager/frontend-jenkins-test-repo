@@ -956,7 +956,11 @@ export default function DialogBox() {
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
-                        disabled={loading}
+                        disabled={
+                            loading ||
+                            trayData?.actual_items?.length !==
+                                trayData?.items?.length
+                        }
                         style={{ backgroundColor: 'green' }}
                         onClick={() => {
                             if (window.confirm('You Want send to warehouse?')) {

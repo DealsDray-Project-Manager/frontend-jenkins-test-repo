@@ -104,7 +104,7 @@ export default function DialogBox() {
                     length: length,
                 }
                 if (tray?.[0]?.to_tray_for_pickup == null) {
-                    obj.stage = stage
+                    obj.stage = tray[0]?.pickup_next_stage
                 }
 
                 let res = await axiosWarehouseIn.post('/pickupDone/close', obj)
@@ -319,7 +319,7 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
-                    {tray?.[0]?.to_tray_for_pickup == null ? (
+                    {/* {tray?.[0]?.to_tray_for_pickup == null ? (
                         <TextField
                             label="Select Next Stage"
                             select
@@ -334,15 +334,13 @@ export default function DialogBox() {
                                 RDL FLS Done
                             </MenuItem>
                         </TextField>
-                    ) : null}
+                    ) : null} */}
 
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
                         disabled={
-                            (tray?.[0]?.to_tray_for_pickup == null &&
-                                stage == '') ||
                             loading == true ||
                             description == '' ||
                             tray[0]?.actual_items?.length !==

@@ -953,7 +953,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'https://prexo-v8-2-uat-api.dealsdray.com/product/image/' +
+                                            ? 'http://prexo-v8-2-dev-api.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

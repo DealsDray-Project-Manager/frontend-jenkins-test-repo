@@ -84,15 +84,15 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let fetchPart = await axiosSuperAdminPrexo.post(
-                    '/partAndColor/view/' + 'part-list'
-                )
-                if (fetchPart.status == 200) {
-                    setPartList(fetchPart.data.data)
-                }
+                // let fetchPart = await axiosSuperAdminPrexo.post(
+                //     '/partAndColor/view/' + 'part-list'
+                // )
+                // if (fetchPart.status == 200) {
+                //     setPartList(fetchPart.data.data)
+                // }
 
                 let colorList = await axiosSuperAdminPrexo.post(
-                    '/partAndColor/view/' + 'color-list'
+                    '/muic/listColor/' + reportData?.muic
                 )
                 if (colorList.status == 200) {
                     setColorList(colorList.data.data)
@@ -191,6 +191,20 @@ export default function DialogBox() {
     const handleOpen = () => {
         setOpen(true)
     }
+    const getPartList = async (color) => {
+        try {
+            let obj = {
+                color: color,
+                muic: reportData?.muic,
+            }
+            const res = await axiosSuperAdminPrexo.post('/partlist/muic', obj)
+            if (res.status == 200) {
+                setPartList(res.data.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const onSubmit = async (values) => {
         try {
@@ -225,8 +239,7 @@ export default function DialogBox() {
             if (values.part_list_count == '4') {
                 values.part_list_5 = ''
             }
-            values.username=username
-            
+
             let objData = {
                 trayId: trayId,
                 rdl_fls_report: values,
@@ -271,7 +284,11 @@ export default function DialogBox() {
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
                     <AmazonDetails Order={reportData?.order} />
-                    <Botuser BOt={reportData?.delivery?.bot_report} />
+                    <Botuser
+                        BOt={reportData?.delivery?.bot_report}
+                        botUsername={reportData?.delivery?.agent_name}
+                        BotDoneDate={reportData?.delivery?.tray_closed_by_bot}
+                    />
                 </Grid>
 
                 <Grid item lg={4} md={6} xs={12}>
@@ -285,6 +302,8 @@ export default function DialogBox() {
                 <Grid item lg={4} md={6} xs={12}>
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
+                        BqcAgentName={reportData?.delivery?.agent_name_bqc}
+                        BqcDoneDate={reportData?.delivery?.bqc_out_date}
                     />
                 </Grid>
                 {/* <Grid item lg={12} md={12} xs={12}>
@@ -424,6 +443,29 @@ export default function DialogBox() {
                         )}
                         {selectedStatus == 'Repair Required' ? (
                             <>
+                                <TextField
+                                    defaultValue={getValues('color')}
+                                    label="Color"
+                                    variant="outlined"
+                                    select
+                                    type="text"
+                                    {...register('color')}
+                                    error={errors?.color ? true : false}
+                                    helperText={errors?.color?.message}
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                >
+                                    {colorList.map((data) => (
+                                        <MenuItem
+                                            onClick={(e) =>
+                                                getPartList(data.name)
+                                            }
+                                            value={data.name}
+                                        >
+                                            {data.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                                 <TextField
                                     defaultValue={getValues('part_list_count')}
                                     label=" Part List Count"
@@ -591,24 +633,6 @@ export default function DialogBox() {
                                         ))}
                                     </TextField>
                                 ) : null}
-                                <TextField
-                                    defaultValue={getValues('color')}
-                                    label="Color"
-                                    variant="outlined"
-                                    select
-                                    type="text"
-                                    {...register('color')}
-                                    error={errors?.color ? true : false}
-                                    helperText={errors?.color?.message}
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                >
-                                    {colorList.map((data) => (
-                                        <MenuItem value={data.name}>
-                                            {data.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
                             </>
                         ) : (
                             ''

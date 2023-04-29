@@ -2,6 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+
 import {
     Button,
     Dialog,
@@ -14,6 +15,7 @@ import {
     Select,
     MenuItem,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -76,6 +78,7 @@ const CtxToStxPage = () => {
     const [toStxTray, setStxTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const [submitButDis, setSubmitButDis] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -197,6 +200,12 @@ const CtxToStxPage = () => {
     }
     const handleClose = () => {
         setOpen(false)
+        setSubmitButDis(false)
+        setMergeData((p) => ({
+            fromTray: '',
+            toTray: '',
+            sort_agent: '',
+        }))
     }
     /******************************************************************************* */
     const handelViewTray = (e, id) => {
@@ -208,6 +217,7 @@ const CtxToStxPage = () => {
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
+            setSubmitButDis(true)
             let res = await axiosMisUser.post(
                 '/sorting/ctxToStx/request/sendToWh',
                 mergreData
@@ -223,6 +233,7 @@ const CtxToStxPage = () => {
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
+            setSubmitButDis(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -445,6 +456,7 @@ const CtxToStxPage = () => {
                         type="submit"
                         variant="contained"
                         disabled={
+                            submitButDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }

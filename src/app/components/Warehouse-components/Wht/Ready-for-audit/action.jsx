@@ -18,7 +18,6 @@ import {
     Dialog,
     DialogTitle,
     IconButton,
-    
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -93,7 +92,6 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-               
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -163,7 +161,7 @@ export default function DialogBox() {
                 } else {
                     setTextDisable(false)
                     setUic('')
-                  
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -184,64 +182,60 @@ export default function DialogBox() {
 
     /************************************************************************** */
     const onSubmit = async (value) => {
-          console.log(value);
-            let admin = localStorage.getItem('prexo-authentication')
-            if (admin) {
-                const { user_name } = jwt_decode(admin)
-                try {
-                    setAddButDis(true)
-                    let obj = {
-                        uic: uic,
-                        trayId: trayId,
-                        item: itemDataVer,
-                        username: user_name,
-                    }
-                    obj.stage = stateData.stage
-                    if (stateData.stage == 'Shift to Sales Bin') {
-                        console.log(value.grade);
-                        obj.grade = value.grade
-                        obj.description = value.description
-                    }
-                    let res = await axiosWarehouseIn.post(
-                        '/readyForAudit/itemSegrigation',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        handleClose()
-                        setAddButDis(false)
-                        setUic('')
-                        
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: res?.data?.message,
-                            confirmButtonText: 'Ok',
-                        })
+        setAddButDis(true)
+        let admin = localStorage.getItem('prexo-authentication')
+        if (admin) {
+            const { user_name } = jwt_decode(admin)
+            try {
+                let obj = {
+                    uic: uic,
+                    trayId: trayId,
+                    item: itemDataVer,
+                    username: user_name,
+                }
+                obj.stage = stateData.stage
+                if (stateData.stage == 'Shift to Sales Bin') {
+                    obj.grade = value.grade
+                    obj.description = value.description
+                }
+                let res = await axiosWarehouseIn.post(
+                    '/readyForAudit/itemSegrigation',
+                    obj
+                )
+                if (res.status == 200) {
+                    handleClose()
+                    setAddButDis(false)
+                    setUic('')
 
-                        setRefresh((refresh) => !refresh)
-                    } else {
-                        handleClose()
-                        setUic('')
-                        setAddButDis(false)
-
-                       
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'error',
-                            title: res?.data?.message,
-                            confirmButtonText: 'Ok',
-                        })
-                    }
-                } catch (error) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
                         confirmButtonText: 'Ok',
-                        text: error,
+                    })
+
+                    setRefresh((refresh) => !refresh)
+                } else {
+                    handleClose()
+                    setUic('')
+                    setAddButDis(false)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
                     })
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-        
+        }
     }
 
     const handleChange = ({ target: { name, value } }) => {
@@ -258,7 +252,7 @@ export default function DialogBox() {
     }
     const handleClose = () => {
         setOpen(false)
-      
+
         setStateData({})
     }
     const handleOpen = () => {
@@ -273,14 +267,13 @@ export default function DialogBox() {
             let obj = {
                 trayId: trayId,
                 sortId: trayData?.sort_id,
-                temp_array: trayData?.temp_array?.length,
+                temp_array: trayData?.actual_items?.length,
             }
             let res = await axiosWarehouseIn.post(
                 '/readyForAudit/closeTray',
                 obj
             )
             if (res.status == 200) {
-                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -289,7 +282,6 @@ export default function DialogBox() {
                 })
                 navigate('/wareshouse/wht/ready-for-audit')
             } else {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -482,7 +474,6 @@ export default function DialogBox() {
                                 sx={{
                                     mb: 2,
                                 }}
-                              
                                 name="grade"
                             >
                                 <MenuItem value="A">A</MenuItem>
@@ -509,10 +500,7 @@ export default function DialogBox() {
                 <DialogActions>
                     <Button
                         sx={{ ml: 2 }}
-                        disabled={
-                           
-                            addButDis
-                        }
+                        disabled={addButDis}
                         onClick={handleSubmit(onSubmit)}
                         variant="contained"
                         color="primary"
@@ -543,7 +531,6 @@ export default function DialogBox() {
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
                         inputRef={(input) => input && input.focus()}
-
                         autoFocus
                         value={uic}
                         onChange={(e) => {

@@ -394,7 +394,12 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' ? true : false
+                            trayData?.actual_items?.length !==
+                                trayData?.items?.length ||
+                            loading == true ||
+                            description == ''
+                                ? true
+                                : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

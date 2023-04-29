@@ -193,7 +193,7 @@ const MemberEditorDialog = ({
     return (
         <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Update Member</H4>
+                <H4 sx={{ mb: '20px' }}>Add</H4>
                 <img
                     src={productImage.preview}
                     height="60px"

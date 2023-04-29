@@ -49,6 +49,8 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const [location, setLocation] = useState('')
     const [count, setCount] = useState(0)
+    const [sortColumn, setSortColumn] = useState(null)
+    const [sortDirection, setSortDirection] = useState('asc')
     const [searchType, setSearchType] = useState('')
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
@@ -96,7 +98,11 @@ const SimpleMuiTable = () => {
                     }
                 }
                 pageSearch()
-            } else if (stateForFilterUn == true) {
+            }
+            else if(sortColumn !== null ){
+                sort(sortColumn)
+            }
+             else if (stateForFilterUn == true) {
                 dataFilter()
             } else {
                 const fetchData = async () => {
@@ -143,6 +149,43 @@ const SimpleMuiTable = () => {
         setPage(newPage)
     }
 
+    const handleSort = (column) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+            sort(column)
+        } else {
+            setSortColumn(column)
+            setSortDirection('asc')
+            sort(column)
+        }
+    }
+
+    const sort = async (column) => {
+        try {
+            setDisplayText('Please Wait...')
+            let obj = {
+                location: location,
+                page: page,
+                size: rowsPerPage,
+                type: column,
+            }
+            if (sortDirection == 'asc') {
+                obj['sortFormate'] = 1
+            } else {
+                obj['sortFormate'] = -1
+            }
+            const res = await axiosReportingAgent.post('/report/sort', obj)
+            if (res.status == 200) {
+                setDisplayText('')
+                setItem(res.data.data)
+            } else {
+                setItem(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
         width: 2000,
@@ -185,7 +228,6 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status == 200) {
-                        console.log(res.data)
                         setDisplayText('')
                         setCount(res.data.count)
                         setDataForDownload(res.data.allMatchedResult)
@@ -211,20 +253,23 @@ const SimpleMuiTable = () => {
         for (let x of dataForDownload) {
             let obj = {
                 'Order Id': x?.order_id,
-                'SKU Name': x?.item_id,
                 'Tracking Id': x?.tracking_id,
+                'Model Name': x.old_item_details,
                 IMEI: x?.imei,
+                'SKU Name': x?.item_id,
                 'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
-                'Tray Id': x?.tray_id,
-                'Wht Tray Id': x?.wht_tray,
-                'Ctx Tray Id': x?.ctx_tray_id,
-                'Stx Tray Id': x?.stx_tray_id,
-                UIC: x?.uic_code?.code,
-                'Purchase Price': x?.partner_purchase_price,
-                'Tray Location': x?.tray_location,
-                'Bag Open Date': x?.assign_to_agent,
-            }
 
+                UIC: x?.uic_code?.code,
+                Price: x?.partner_purchase_price,
+                Location: x?.tray_location,
+            }
+            if (x.tray_type == 'MMT') {
+                obj['Type'] = 'Model MisMatch MMT'
+            } else if (x.tray_type == 'PMT') {
+                obj['Type'] = 'Product MisMatch MMT'
+            } else {
+                obj['Type'] = 'Model Verified BOT'
+            }
             if (x?.order_date !== undefined && x?.order_date !== null) {
                 obj['Order Date'] = new Date(x?.order_date).toLocaleString(
                     'en-GB',
@@ -236,6 +281,32 @@ const SimpleMuiTable = () => {
                 )
             } else {
                 obj['Order Date'] = ''
+            }
+
+            if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
+                obj['Delivery Date'] = new Date(
+                    x?.delivery_date
+                ).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })
+            } else {
+                obj['Delivery Date'] = ''
+            }
+            if (
+                x?.assign_to_agent !== undefined &&
+                x?.assign_to_agent !== null
+            ) {
+                obj['Packet Open Date'] = new Date(
+                    x?.assign_to_agent
+                ).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })
+            } else {
+                obj['Packet Open Date'] = ''
             }
 
             arr.push(obj)
@@ -283,21 +354,162 @@ const SimpleMuiTable = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Record.NO</TableCell>
-                        <TableCell>Actual Delivered Date</TableCell>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>SKU Name</TableCell>
-                        <TableCell>Received Units Remarks (BOT)</TableCell>
-                        <TableCell>UIC</TableCell>
-                        <TableCell>Price</TableCell>
-                        <TableCell>Bag Open Date</TableCell>
-                        <TableCell>Tray Type</TableCell>
-                        <TableCell>Tray ID</TableCell>
-                        <TableCell>Wht Tray ID</TableCell>
-                        <TableCell>Ctx Tray ID</TableCell>
-                        <TableCell>Stx Tray ID</TableCell>
-                        <TableCell>Order Date</TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('order_id')}
+                        >
+                            Order ID{' '}
+                            {sortColumn === 'order_id' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'order_id' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('tracking_id')}
+                        >
+                            Tracking ID{' '}
+                            {sortColumn === 'tracking_id' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'tracking_id' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('model_name')}
+                        >
+                            Model Name{' '}
+                            {sortColumn === 'model_name' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'model_name' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('imei')}
+                        >
+                            IMEI{' '}
+                            {sortColumn === 'imei' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'imei' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('sku_name')}
+                        >
+                            SKU Name{' '}
+                            {sortColumn === 'sku_name' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'sku_name' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('bot_remark')}
+                        >
+                            Received Units Remarks (BOT){' '}
+                            {sortColumn === 'bot_remark' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'bot_remark' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('type')}
+                        >
+                            Type{' '}
+                            {sortColumn === 'type' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'type' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('uic')}
+                        >
+                            UIC{' '}
+                            {sortColumn === 'uic' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'uic' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('price')}
+                        >
+                            Price{' '}
+                            {sortColumn === 'price' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'price' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('order_date')}
+                        >
+                            Order Date{' '}
+                            {sortColumn === 'order_date' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'order_date' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('location')}
+                        >
+                            Location{' '}
+                            {sortColumn === 'location' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'location' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('delivery_date')}
+                        >
+                            Delivery Date{' '}
+                            {sortColumn === 'delivery_date' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'delivery_date' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
+                        <TableCell
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSort('packet_open_date')}
+                        >
+                            Packet Open Date{' '}
+                            {sortColumn === 'packet_open_date' &&
+                                sortDirection === 'asc' &&
+                                '↑'}
+                            {sortColumn === 'packet_open_date' &&
+                                sortDirection === 'desc' &&
+                                '↓'}
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -315,44 +527,27 @@ const SimpleMuiTable = () => {
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
-                            <TableCell>
-                                {new Date(data?.delivery_date).toLocaleString(
-                                    'en-GB',
-                                    {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                    }
-                                )}
-                            </TableCell>
                             <TableCell>{data?.order_id}</TableCell>
                             <TableCell>{data?.tracking_id}</TableCell>
+                            <TableCell>{data?.old_item_details}</TableCell>
                             <TableCell>{data?.imei}</TableCell>
                             <TableCell>{data?.item_id}</TableCell>
                             <TableCell>
                                 {data?.bot_report?.body_damage_des}
                             </TableCell>
+
+                            {data.tray_type == 'MMT' ? (
+                                <TableCell>Model MisMatch MMT</TableCell>
+                            ) : data.tray_type == 'PMT' ? (
+                                <TableCell>Product MisMatch MMT</TableCell>
+                            ) : (
+                                <TableCell>Model Verified BOT</TableCell>
+                            )}
+
                             <TableCell>{data?.uic_code?.code}</TableCell>
                             <TableCell>
                                 {data?.partner_purchase_price}
                             </TableCell>
-                            <TableCell>
-                                {' '}
-                                {data?.assign_to_agent == null
-                                    ? ''
-                                    : new Date(
-                                          data?.assign_to_agent
-                                      ).toLocaleString('en-GB', {
-                                          year: 'numeric',
-                                          month: '2-digit',
-                                          day: '2-digit',
-                                      })}
-                            </TableCell>
-                            <TableCell>{data.tray_type}</TableCell>
-                            <TableCell>{data.tray_id}</TableCell>
-                            <TableCell>{data?.wht_tray}</TableCell>
-                            <TableCell>{data?.ctx_tray_id}</TableCell>
-                            <TableCell>{data?.stx_tray_id}</TableCell>
                             <TableCell>
                                 {' '}
                                 {data?.order_date == null
@@ -366,12 +561,36 @@ const SimpleMuiTable = () => {
                                           }
                                       )}
                             </TableCell>
+
+                            <TableCell>{data.partner_shop}</TableCell>
+                            <TableCell>
+                                {new Date(data?.delivery_date).toLocaleString(
+                                    'en-GB',
+                                    {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                    }
+                                )}
+                            </TableCell>
+                            <TableCell>
+                                {' '}
+                                {data?.assign_to_agent == null
+                                    ? ''
+                                    : new Date(
+                                          data?.assign_to_agent
+                                      ).toLocaleString('en-GB', {
+                                          year: 'numeric',
+                                          month: '2-digit',
+                                          day: '2-digit',
+                                      })}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </ProductTable>
         )
-    }, [item, data, displayText])
+    }, [item, data, displayText, sortDirection, sortColumn])
 
     return (
         <Container>

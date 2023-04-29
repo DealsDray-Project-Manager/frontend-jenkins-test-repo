@@ -212,6 +212,9 @@ export default function DialogBox() {
                     toTrayLimit: tray?.[1]?.limit,
                     allItem: tray[0]?.temp_array,
                 }
+                if (tray?.[1]?.temp_array?.length == tray?.[1]?.items?.length) {
+                    obj['type'] = 'To Tray Need To Close'
+                }
 
                 let res = await axiosSortingAgent.post('/pickup/closeTray', obj)
                 if (res.status === 200) {

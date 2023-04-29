@@ -31,9 +31,6 @@ const MemberEditorDialog = ({
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
 
-
-    
-
     useEffect(() => {
         try {
             const fetchCpc = async () => {
@@ -59,7 +56,7 @@ const MemberEditorDialog = ({
 
     async function getCpcData(data, cpc) {
         try {
-            if (cpc == 'Gurgaon_122016' || cpc== "Gurgaon_122003") {
+            if (cpc == 'Gurgaon_122016' || cpc == 'Gurgaon_122003') {
                 let res = await axiosSuperAdminPrexo.post(
                     '/getMasterHighest/' + cpc
                 )
@@ -182,8 +179,6 @@ const MemberEditorDialog = ({
         }
     }
 
-   
-
     const handelEdit = async (data) => {
         try {
             let response = await axiosSuperAdminPrexo.post('/editMaster', data)
@@ -222,7 +217,6 @@ const MemberEditorDialog = ({
         }
     }
 
-   
     return (
         <Dialog onClose={handleClose} open={open}>
             <Box p={3}>
@@ -251,7 +245,6 @@ const MemberEditorDialog = ({
                             {...register('name')}
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name.message : ''}
-                          
                         />
 
                         <TextFieldCustOm
@@ -356,8 +349,8 @@ const MemberEditorDialog = ({
                     <Button
                         variant="outlined"
                         color="secondary"
-                        onClick={() =>
-                             handleClose()
+                        onClick={
+                            () => handleClose()
                             //  dataa()
                         }
                     >

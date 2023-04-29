@@ -23,6 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayData, setTrayData] = useState([])
+    const [submitButDis, setSubmitButDis] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -59,6 +60,7 @@ const SimpleMuiTable = () => {
     const handelClose = async (e, id) => {
         e.preventDefault()
         try {
+            setSubmitButDis(true)
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
                 Swal.fire({
@@ -67,8 +69,10 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setSubmitButDis(false)
                 setIsAlive((isAlive) => !isAlive)
             } else {
+                setSubmitButDis(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -170,6 +174,7 @@ const SimpleMuiTable = () => {
                                 sx={{
                                     m: 1,
                                 }}
+                                disabled={submitButDis}
                                 variant="contained"
                                 onClick={(e) => {
                                     if (window.confirm('You want to Close?')) {

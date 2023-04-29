@@ -937,7 +937,7 @@ export default function DialogBox() {
                 >
                     ADD TO MMT
                 </BootstrapDialogTitle>
-                
+
                 <DialogContent dividers>
                     <Box
                         sx={{
@@ -1254,6 +1254,9 @@ export default function DialogBox() {
                                 variant="contained"
                                 loadingPosition="end"
                                 loading={loading}
+                                disabled={
+                                    bagData[0]?.actual_items?.length !== count
+                                }
                                 style={{ backgroundColor: 'red' }}
                                 component="span"
                                 onClick={(e) => {

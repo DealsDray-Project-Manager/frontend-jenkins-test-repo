@@ -85,7 +85,6 @@ const SimpleMuiTable = () => {
                             '/getDeliveryCount/' + location
                         )
                         if (deliveryCountRes.status === 200) {
-                            console.log(deliveryCountRes)
                             setDeliveryCount(deliveryCountRes.data.data)
                         }
                         let res = await axiosMisUser.post(
@@ -98,7 +97,6 @@ const SimpleMuiTable = () => {
                         )
                         if (res.status == 200) {
                             setDisplayText('')
-                            console.log(res)
                             setItem(res.data.data)
                         }
                     }

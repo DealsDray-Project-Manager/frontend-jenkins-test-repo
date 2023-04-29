@@ -26,6 +26,7 @@ const MemberEditorDialog = ({
 }) => {
     const [sortingUserName, setSortingUsername] = useState('')
     const [whtTrayCode, setWhtTrayCode] = useState('')
+    const [nextStage, setNextStage] = useState('')
     const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
@@ -37,6 +38,7 @@ const MemberEditorDialog = ({
                 sort_id: 'Send for Pickup',
                 toTray: whtTrayCode,
                 value: value,
+                nextStage: nextStage,
             }
             let res = await axiosMisUser.post('/pickup/requestSendToWh', obj)
             if (res.status == 200) {
@@ -94,13 +96,45 @@ const MemberEditorDialog = ({
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
+                {value !== 'Ready to RDL-Repair' ? (
+                    <TextFieldCustOm
+                        label="Select Next Stage"
+                        fullWidth
+                        select
+                        name="stage"
+                        onChange={(e) => {
+                            setNextStage(e.target.value)
+                        }}
+                    >
+                        <MenuItem value="Recharge">Recharge</MenuItem>
+                        <MenuItem value="Charge Done">Re-BQC</MenuItem>
+                        <MenuItem value="BQC Done">Re-Audit</MenuItem>
+                    </TextFieldCustOm>
+                ) : (
+                    <TextFieldCustOm
+                        label="Select Next Stage"
+                        fullWidth
+                        select
+                        name="stage"
+                        onChange={(e) => {
+                            setNextStage(e.target.value)
+                        }}
+                    >
+                        <MenuItem value="Recharge">Recharge</MenuItem>
+                        <MenuItem value="Ready to RDL-Repair">
+                            RDL FLS Done
+                        </MenuItem>
+                    </TextFieldCustOm>
+                )}
+
                 <FormHandlerBox>
                     <Button
                         variant="contained"
                         disabled={
                             loading ||
                             sortingUserName == '' ||
-                            whtTrayCode == ''
+                            whtTrayCode == '' ||
+                            nextStage == ''
                         }
                         onClick={(e) => {
                             handelSendRequestConfirm()

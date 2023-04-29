@@ -58,11 +58,13 @@ const PaginationTable = () => {
     const [uic, setUic] = useState(false)
     const [sleaves, setSleaves] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [goButDis, setGoButDis] = useState(false)
     const [disAwbnText, SetDisAwbText] = useState(false)
     const navigate = useNavigate()
 
     const handelCheckBagId = async (e) => {
         try {
+            setGoButDis(true)
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
                 let { location } = jwt_decode(admin)
@@ -72,6 +74,7 @@ const PaginationTable = () => {
                 }
                 let res = await axiosWarehouseIn.post('/checkBagId', obj)
                 if (res.status == 200) {
+                    setGoButDis(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -81,8 +84,8 @@ const PaginationTable = () => {
                     getitem()
                     setbagSuccess(true)
                 } else {
+                    setGoButDis(false)
                     setbagSuccess(false)
-
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -403,7 +406,7 @@ const PaginationTable = () => {
                             variant="contained"
                             color="primary"
                             size="small"
-                            disabled={bagId == ''}
+                            disabled={bagId == '' || goButDis}
                             onClick={handelCheckBagId}
                         >
                             GO

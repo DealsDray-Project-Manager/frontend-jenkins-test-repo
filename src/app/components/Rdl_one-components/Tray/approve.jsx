@@ -92,6 +92,7 @@ export default function DialogBox() {
                             state: {
                                 reportData: res.data.data,
                                 trayId: trayId,
+                                username: user_name1,
                                 uic: uicCode,
                                 ctxTray: trayData?.otherTray,
                                 whtTrayId: trayId,

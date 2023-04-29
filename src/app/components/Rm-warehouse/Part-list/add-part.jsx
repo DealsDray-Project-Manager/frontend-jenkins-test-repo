@@ -33,7 +33,6 @@ const AddPartOrColorAndEditDialog = ({
     const [colorData, setColorData] = useState([])
 
     useEffect(() => {
-        console.log(editFetchData)
         if (Object.keys(editFetchData).length !== 0) {
             setPartId(editFetchData.part_code)
             let arr = [

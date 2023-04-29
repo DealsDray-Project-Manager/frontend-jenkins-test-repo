@@ -54,7 +54,6 @@ const SimpleMuiTable = () => {
         const fetchOrder = async () => {
             try {
                 let user = localStorage.getItem('prexo-authentication')
-                console.log(search.searchData)
                 if (user) {
                     let { location } = jwt_decode(user)
                     if (search.searchData != '') {

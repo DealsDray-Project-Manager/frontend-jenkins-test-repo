@@ -37,7 +37,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 1500,
+    width: 2000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -54,7 +54,7 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: 1500,
+    width: 3000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -71,7 +71,7 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: 2000,
+    width: 4000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -87,7 +87,7 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: 4000,
+    width: 5000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -112,11 +112,10 @@ const PickupPage = () => {
     const [refresh, setRefresh] = useState(false)
     const [state, setState] = useState({})
     const [isCheck, setIsCheck] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-
     const navigate = useNavigate()
     /*--------------------------------------------------------------*/
 
@@ -132,12 +131,10 @@ const PickupPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-               
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
                     const { location } = jwt_decode(admin)
-                    console.log(value)
                     let response = await axiosMisUser.post(
                         '/pickup/items/' + value + '/' + location
                     )
@@ -183,7 +180,6 @@ const PickupPage = () => {
         }
     }
     /*-----------------FETCH MODEL BASED ON THE BRAND---------------*/
-
     /* Fetch model */
     const fetchModel = async (brandName) => {
         try {
@@ -347,7 +343,7 @@ const PickupPage = () => {
 
             options: {
                 filter: true,
-
+                sort: true,
                 customBodyRender: (value, dataIndex) => value.uic,
             },
         },
@@ -356,6 +352,7 @@ const PickupPage = () => {
             label: 'Order Id',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) => value.order_id,
             },
         },
@@ -364,6 +361,7 @@ const PickupPage = () => {
             label: 'IMEI',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -373,6 +371,7 @@ const PickupPage = () => {
             label: 'Brand',
             options: {
                 filter: true,
+                sort: true,
             },
         },
         {
@@ -380,6 +379,7 @@ const PickupPage = () => {
             label: 'Model',
             options: {
                 filter: true,
+                sort: true,
             },
         },
         {
@@ -387,6 +387,7 @@ const PickupPage = () => {
             label: 'MUIC',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
@@ -395,6 +396,7 @@ const PickupPage = () => {
             label: 'Tray Id',
             options: {
                 filter: true,
+                sort: true,
             },
         },
         {
@@ -402,6 +404,7 @@ const PickupPage = () => {
             label: 'Battery Status',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.battery_status || '',
             },
@@ -411,7 +414,7 @@ const PickupPage = () => {
             label: 'Charge Percentage',
             options: {
                 filter: true,
-
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.charge_percentage || '',
             },
@@ -421,6 +424,7 @@ const PickupPage = () => {
             label: 'Body Condition',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -430,6 +434,7 @@ const PickupPage = () => {
             label: 'Display Condition',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) => {
                     const displayCondition = value?.charging?.display_condition
                     if (!displayCondition) {
@@ -446,6 +451,7 @@ const PickupPage = () => {
             label: 'Lock Status',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.lock_status || '',
             },
@@ -455,6 +461,7 @@ const PickupPage = () => {
             label: 'Charging Jack',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.charging_jack_type || '',
             },
@@ -464,6 +471,7 @@ const PickupPage = () => {
             label: 'Body Part Missing',
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.boady_part_missing || '',
             },
@@ -947,6 +955,7 @@ const PickupPage = () => {
             label: 'UIC', // column title that will be shown in table
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, dataIndex) => value.uic || '',
             },
         },
@@ -955,6 +964,7 @@ const PickupPage = () => {
             label: 'Order Id',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
@@ -963,6 +973,7 @@ const PickupPage = () => {
             label: 'IMEI',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -972,6 +983,7 @@ const PickupPage = () => {
             label: 'Brand',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
             },
         },
         {
@@ -979,6 +991,7 @@ const PickupPage = () => {
             label: 'Model',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
             },
         },
         {
@@ -986,6 +999,7 @@ const PickupPage = () => {
             label: 'MUIC',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
@@ -994,6 +1008,7 @@ const PickupPage = () => {
             label: 'Tray Id',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
             },
         },
         {
@@ -1001,6 +1016,7 @@ const PickupPage = () => {
             label: 'Battery Status',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.battery_status || '',
             },
@@ -1010,6 +1026,8 @@ const PickupPage = () => {
             label: 'Charge Percentage',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.charge_percentage || '',
             },
@@ -1019,6 +1037,8 @@ const PickupPage = () => {
             label: 'Body Condition',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -1028,6 +1048,8 @@ const PickupPage = () => {
             label: 'Display Condition',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.display_condition || '',
             },
@@ -1037,6 +1059,7 @@ const PickupPage = () => {
             label: 'Lock Status',
             options: {
                 filter: true,
+                sort: true,
                 setCellProps: () => ({ style: { width: '100px' } }),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.lock_status || '',
@@ -1047,6 +1070,8 @@ const PickupPage = () => {
             label: 'Charging Jack',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.charging_jack_type || '',
             },
@@ -1056,6 +1081,8 @@ const PickupPage = () => {
             label: 'Body Part Missing',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.boady_part_missing || '',
             },
@@ -1065,6 +1092,8 @@ const PickupPage = () => {
             label: 'Blancoo QC Status',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.blancoo_qc_status || '',
             },
@@ -1074,6 +1103,8 @@ const PickupPage = () => {
             label: 'Factory Reset Status',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.factory_reset_status || '',
             },
@@ -1083,6 +1114,8 @@ const PickupPage = () => {
             label: 'BQC Incomplete Reason',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.bqc_incomplete_reason || '',
             },
@@ -1092,6 +1125,7 @@ const PickupPage = () => {
             label: 'Technical Issue',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
 
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.technical_issue || '',
@@ -1102,6 +1136,8 @@ const PickupPage = () => {
             label: 'BQC User Remark',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.other || '',
             },
@@ -1111,6 +1147,8 @@ const PickupPage = () => {
             label: 'Orginal Grade',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.orgGrade || '',
             },
@@ -1120,6 +1158,8 @@ const PickupPage = () => {
             label: 'Audit Recomendad Grade',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.grade || '',
             },
@@ -1129,6 +1169,7 @@ const PickupPage = () => {
             label: 'Stage',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
 
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.stage || '',
@@ -1139,6 +1180,8 @@ const PickupPage = () => {
             label: 'Reason',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 FileList: (value) => value?.audit_report?.reason,
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.reason || '',
@@ -1149,8 +1192,20 @@ const PickupPage = () => {
             label: 'Description',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.description || '',
+            },
+        },
+        {
+            name: 'items',
+            label: 'RDL 1 Username',
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.username || '',
             },
         },
         {
@@ -1158,6 +1213,8 @@ const PickupPage = () => {
             label: 'RDL 1 Status',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.selected_status || '',
             },
@@ -1168,6 +1225,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Model',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.model_reg || '',
             },
@@ -1177,6 +1236,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Color',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.color || '',
             },
@@ -1186,6 +1247,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part List Count',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_count || '',
             },
@@ -1195,6 +1258,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part One',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_1 || '',
             },
@@ -1204,6 +1269,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part Two',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_2 || '',
             },
@@ -1213,6 +1280,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part Three',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_3 || '',
             },
@@ -1222,6 +1291,8 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part Four',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_4 || '',
             },
@@ -1231,12 +1302,36 @@ const PickupPage = () => {
             label: 'RDL 1 Added Part Five',
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.part_list_5 || '',
             },
         },
-    ]
+        {
+            name: 'closed_date_agent',
+            label: 'RDL 1 Done Date',
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'items',
+            label: 'Description',
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
 
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_fls_report?.description || '',
+            },
+        },
+    ]
     /*--------------------------------------------------------------*/
 
     const tableData = useMemo(() => {
@@ -1268,20 +1363,88 @@ const PickupPage = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        const columnProperties = {
+                            1: 'price',
+                            2: 'uic',
+                            3: 'order_id',
+                            4: 'imei',
+                            7: 'muic',
+                            9: 'charging.battery_status',
+                            10: 'charging.charge_percentage',
+                            11: 'charging.body_condition',
+                            12: 'charging.display_condition',
+                            13: 'charging.lock_status',
+                            14: 'charging.charging_jack_type',
+                            15: 'charging.boady_part_missing',
+                            // add more columns and properties here
+                        }
+                        const property = columnProperties[colIndex]
+
+                        if (property) {
+                            return data.sort((a, b) => {
+                                const aPropertyValue = getValueByProperty(
+                                    a.data[colIndex],
+                                    property
+                                )
+                                const bPropertyValue = getValueByProperty(
+                                    b.data[colIndex],
+                                    property
+                                )
+                                if (
+                                    typeof aPropertyValue === 'string' &&
+                                    typeof bPropertyValue === 'string'
+                                ) {
+                                    return (
+                                        (order === 'asc' ? 1 : -1) *
+                                        aPropertyValue.localeCompare(
+                                            bPropertyValue
+                                        )
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
+                                    (parseFloat(aPropertyValue) -
+                                        parseFloat(bPropertyValue)) *
+                                    (order === 'desc' ? -1 : 1)
+                                )
+                            })
+                        }
+
+                        return data.sort((a, b) => {
+                            const aValue = a.data[colIndex]
+                            const bValue = b.data[colIndex]
+                            if (aValue === bValue) {
+                                return 0
+                            }
+                            if (aValue === null || aValue === undefined) {
+                                return 1
+                            }
+                            if (bValue === null || bValue === undefined) {
+                                return -1
+                            }
+                            if (
+                                typeof aValue === 'string' &&
+                                typeof bValue === 'string'
+                            ) {
+                                return (
+                                    (order === 'asc' ? 1 : -1) *
+                                    aValue.localeCompare(bValue)
                                 )
                             }
                             return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
+                                (parseFloat(aValue) - parseFloat(bValue)) *
+                                (order === 'desc' ? -1 : 1)
                             )
                         })
+
+                        function getValueByProperty(data, property) {
+                            const properties = property.split('.')
+                            return (
+                                properties.reduce(
+                                    (obj, key) => obj[key],
+                                    data
+                                ) || ''
+                            )
+                        }
                     },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
@@ -1319,20 +1482,92 @@ const PickupPage = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        const columnProperties = {
+                            1: 'price',
+                            2: 'uic',
+                            3: 'order_id',
+                            4: 'imei',
+                            7: 'muic',
+                            9: 'charging.battery_status',
+                            10: 'charging.charge_percentage',
+                            11: 'charging.body_condition',
+                            12: 'charging.display_condition',
+                            13: 'charging.lock_status',
+                            14: 'charging.charging_jack_type',
+                            15: 'charging.boady_part_missing',
+                            16: 'bqc_report.blancoo_qc_status',
+                            17: 'bqc_report.factory_reset_status',
+                            18: 'bqc_report.bqc_incomplete_reason',
+                            19: 'bqc_report.technical_issue',
+                            20: 'bqc_report.other',
+                            // add more columns and properties here
+                        }
+                        const property = columnProperties[colIndex]
+
+                        if (property) {
+                            return data.sort((a, b) => {
+                                const aPropertyValue = getValueByProperty(
+                                    a.data[colIndex],
+                                    property
+                                )
+                                const bPropertyValue = getValueByProperty(
+                                    b.data[colIndex],
+                                    property
+                                )
+                                if (
+                                    typeof aPropertyValue === 'string' &&
+                                    typeof bPropertyValue === 'string'
+                                ) {
+                                    return (
+                                        (order === 'asc' ? 1 : -1) *
+                                        aPropertyValue.localeCompare(
+                                            bPropertyValue
+                                        )
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
+                                    (parseFloat(aPropertyValue) -
+                                        parseFloat(bPropertyValue)) *
+                                    (order === 'desc' ? -1 : 1)
+                                )
+                            })
+                        }
+
+                        return data.sort((a, b) => {
+                            const aValue = a.data[colIndex]
+                            const bValue = b.data[colIndex]
+                            if (aValue === bValue) {
+                                return 0
+                            }
+                            if (aValue === null || aValue === undefined) {
+                                return 1
+                            }
+                            if (bValue === null || bValue === undefined) {
+                                return -1
+                            }
+                            if (
+                                typeof aValue === 'string' &&
+                                typeof bValue === 'string'
+                            ) {
+                                return (
+                                    (order === 'asc' ? 1 : -1) *
+                                    aValue.localeCompare(bValue)
                                 )
                             }
                             return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
+                                (parseFloat(aValue) - parseFloat(bValue)) *
+                                (order === 'desc' ? -1 : 1)
                             )
                         })
+
+                        function getValueByProperty(data, property) {
+                            const properties = property.split('.')
+                            const value = properties.reduce(
+                                (obj, key) => obj?.[key],
+                                data
+                            )
+                            return value !== undefined ? value : ''
+                        }
                     },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
@@ -1370,20 +1605,97 @@ const PickupPage = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        const columnProperties = {
+                            1: 'price',
+                            2: 'uic',
+                            3: 'order_id',
+                            4: 'imei',
+                            7: 'muic',
+                            9: 'charging.battery_status',
+                            10: 'charging.charge_percentage',
+                            11: 'charging.body_condition',
+                            12: 'charging.display_condition',
+                            13: 'charging.lock_status',
+                            14: 'charging.charging_jack_type',
+                            15: 'charging.boady_part_missing',
+                            16: 'bqc_report.blancoo_qc_status',
+                            17: 'bqc_report.factory_reset_status',
+                            18: 'bqc_report.bqc_incomplete_reason',
+                            19: 'bqc_report.technical_issue',
+                            20: 'bqc_report.other',
+                            21: 'audit_report.orgGrade',
+                            22: 'audit_report.grade',
+                            23: 'audit_report.stage',
+                            24: 'audit_report.reason',
+                            25: 'audit_report.description',
+                            // add more columns and properties here
+                        }
+                        const property = columnProperties[colIndex]
+
+                        if (property) {
+                            return data.sort((a, b) => {
+                                const aPropertyValue = getValueByProperty(
+                                    a.data[colIndex],
+                                    property
+                                )
+                                const bPropertyValue = getValueByProperty(
+                                    b.data[colIndex],
+                                    property
+                                )
+                                if (
+                                    typeof aPropertyValue === 'string' &&
+                                    typeof bPropertyValue === 'string'
+                                ) {
+                                    return (
+                                        (order === 'asc' ? 1 : -1) *
+                                        aPropertyValue.localeCompare(
+                                            bPropertyValue
+                                        )
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
+                                    (parseFloat(aPropertyValue) -
+                                        parseFloat(bPropertyValue)) *
+                                    (order === 'desc' ? -1 : 1)
+                                )
+                            })
+                        }
+
+                        return data.sort((a, b) => {
+                            const aValue = a.data[colIndex]
+                            const bValue = b.data[colIndex]
+                            if (aValue === bValue) {
+                                return 0
+                            }
+                            if (aValue === null || aValue === undefined) {
+                                return 1
+                            }
+                            if (bValue === null || bValue === undefined) {
+                                return -1
+                            }
+                            if (
+                                typeof aValue === 'string' &&
+                                typeof bValue === 'string'
+                            ) {
+                                return (
+                                    (order === 'asc' ? 1 : -1) *
+                                    aValue.localeCompare(bValue)
                                 )
                             }
                             return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
+                                (parseFloat(aValue) - parseFloat(bValue)) *
+                                (order === 'desc' ? -1 : 1)
                             )
                         })
+
+                        function getValueByProperty(data, property) {
+                            const properties = property.split('.')
+                            const value = properties.reduce(
+                                (obj, key) => obj?.[key],
+                                data
+                            )
+                            return value !== undefined ? value : ''
+                        }
                     },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
@@ -1421,20 +1733,108 @@ const PickupPage = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        const columnProperties = {
+                            1: 'price',
+                            2: 'uic',
+                            3: 'order_id',
+                            4: 'imei',
+                            7: 'muic',
+                            9: 'charging.battery_status',
+                            10: 'charging.charge_percentage',
+                            11: 'charging.body_condition',
+                            12: 'charging.display_condition',
+                            13: 'charging.lock_status',
+                            14: 'charging.charging_jack_type',
+                            15: 'charging.boady_part_missing',
+                            16: 'bqc_report.blancoo_qc_status',
+                            17: 'bqc_report.factory_reset_status',
+                            18: 'bqc_report.bqc_incomplete_reason',
+                            19: 'bqc_report.technical_issue',
+                            20: 'bqc_report.other',
+                            21: 'audit_report.orgGrade',
+                            22: 'audit_report.grade',
+                            23: 'audit_report.stage',
+                            24: 'audit_report.reason',
+                            25: 'audit_report.description',
+                            26: 'rdl_fls_report.username',
+                            27: 'rdl_fls_report.selected_status',
+                            28: 'rdl_fls_report.model_reg',
+                            29: 'rdl_fls_report.color',
+                            30: 'rdl_fls_report.part_list_count',
+                            31: 'rdl_fls_report.part_list_1',
+                            32: 'rdl_fls_report.part_list_2',
+                            33: 'rdl_fls_report.part_list_3',
+                            34: 'rdl_fls_report.part_list_4',
+                            35: 'rdl_fls_report.part_list_5',
+                            37: 'rdl_fls_report.description',
+                            // add more columns and properties here
+                        }
+                        const property = columnProperties[colIndex]
+
+                        if (property) {
+                            return data.sort((a, b) => {
+                                const aPropertyValue = getValueByProperty(
+                                    a.data[colIndex],
+                                    property
+                                )
+                                const bPropertyValue = getValueByProperty(
+                                    b.data[colIndex],
+                                    property
+                                )
+                                if (
+                                    typeof aPropertyValue === 'string' &&
+                                    typeof bPropertyValue === 'string'
+                                ) {
+                                    return (
+                                        (order === 'asc' ? 1 : -1) *
+                                        aPropertyValue.localeCompare(
+                                            bPropertyValue
+                                        )
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
+                                    (parseFloat(aPropertyValue) -
+                                        parseFloat(bPropertyValue)) *
+                                    (order === 'desc' ? -1 : 1)
+                                )
+                            })
+                        }
+
+                        return data.sort((a, b) => {
+                            const aValue = a.data[colIndex]
+                            const bValue = b.data[colIndex]
+                            if (aValue === bValue) {
+                                return 0
+                            }
+                            if (aValue === null || aValue === undefined) {
+                                return 1
+                            }
+                            if (bValue === null || bValue === undefined) {
+                                return -1
+                            }
+                            if (
+                                typeof aValue === 'string' &&
+                                typeof bValue === 'string'
+                            ) {
+                                return (
+                                    (order === 'asc' ? 1 : -1) *
+                                    aValue.localeCompare(bValue)
                                 )
                             }
                             return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
+                                (parseFloat(aValue) - parseFloat(bValue)) *
+                                (order === 'desc' ? -1 : 1)
                             )
                         })
+
+                        function getValueByProperty(data, property) {
+                            const properties = property.split('.')
+                            const value = properties.reduce(
+                                (obj, key) => obj?.[key],
+                                data
+                            )
+                            return value !== undefined ? value : ''
+                        }
                     },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
@@ -1463,10 +1863,20 @@ const PickupPage = () => {
                             <Tab
                                 label="Charge Done Unit's"
                                 value="Charge Done"
+                                disabled={isLoading}
                             />
-                            <Tab label="BQC Done Unit's" value="BQC Done" />
-                            <Tab label="Audit Done Unit's" value="Audit Done" />
                             <Tab
+                                disabled={isLoading}
+                                label="BQC Done Unit's"
+                                value="BQC Done"
+                            />
+                            <Tab
+                                disabled={isLoading}
+                                label="Audit Done Unit's"
+                                value="Audit Done"
+                            />
+                            <Tab
+                                disabled={isLoading}
                                 label="RDL 1 Done Unit's"
                                 value="Ready to RDL-Repair"
                             />

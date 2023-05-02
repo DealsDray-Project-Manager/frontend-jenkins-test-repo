@@ -431,7 +431,7 @@ const PaginationTable = () => {
                             setDeliveryDate(e.target.value)
                         }}
                         inputProps={{
-                            max: moment().format('YYYY-MM-DD'),
+                            max: moment().format('DD/MM/YYYY'),
                         }}
                         variant="outlined"
                         type="date"

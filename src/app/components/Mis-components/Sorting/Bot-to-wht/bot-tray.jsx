@@ -238,18 +238,15 @@ const SimpleMuiTable = () => {
                 >
                     <TextField
                         id="filled-select-currency"
-                        type="date"
+                        type="Date"
                         onChange={(e) => {
                             setSortDate(e.target.value)
                         }}
                         inputProps={{
-                            max: moment().format('DD/MM/YYYY'),
-                        }}
-                        InputLabelProps={{
-                            shrink: true,
+                            max: moment().format('YYYY-MM-DD'),
                         }}
                         sx={{ mt: 1, mb: 1 }}
-                        helperText="Please select BOT closed Date"
+                        helperText="Please Select BOT closed Date"
                         variant="filled"
                     />
                     <Button

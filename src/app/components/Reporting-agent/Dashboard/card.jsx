@@ -263,6 +263,20 @@ const StatCard3 = () => {
             path: '/reporting/ctx/transfer-to-sales/in-progress',
             sales: false,
         },
+        {
+            icon: 'shopping_cart',
+            amount: count.monthWisePurchase,
+            title: 'Month Wise Purchase',
+            path: '/reporting/month-wise-purchase-details',
+            sales: false,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rdlOneDoneUnits,
+            title: 'RDL 1 Done Units',
+            path: '/reporting/rdl-one-done-units',
+            sales: false,
+        },
     ]
 
     const { palette } = useTheme()
@@ -277,7 +291,7 @@ const StatCard3 = () => {
                         navigate(item?.path)
                     }}
                     elevation={3}
-                    sx={{ p: '20px', display: 'flex' }}
+                    sx={{ p: '20px', display: 'flex', height: '170px' }}
                 >
                     <div>
                         <IconButton
@@ -294,13 +308,14 @@ const StatCard3 = () => {
                         <H3 sx={{ mt: '-4px', fontSize: '32px' }}>
                             {item?.amount}
                         </H3>
-                        <Paragraph sx={{ m: 0, color: textMuted }}>
+                        <Paragraph sx={{ mb: 1, color: textMuted }}>
                             {item?.title}
+                        </Paragraph>
 
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Total Order Placed' ? (
                                 <>
-                                    <br />
-                                    Last Order Date :
+                                    Last Order:
                                     {new Date(
                                         item?.lastOrderDate?.order_date
                                     ).toLocaleString('en-GB', {
@@ -310,11 +325,13 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title ==
                             'Total Units Available In Processing' ? (
                                 <>
-                                    <br />
-                                    Last Action Date :
+                                    Last Action:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {
@@ -324,12 +341,13 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
 
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Delivered Packets' ||
                             item?.title == 'Total Packet Delivered' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate?.delivery_date
                                     ).toLocaleString('en-GB', {
@@ -339,17 +357,18 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
 
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Delivered Packets' ? (
-                                <>
-                                    <br />
-                                    Tray Count :{item?.xxTray}
-                                </>
+                                <>Tray Count :{item?.xxTray}</>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Not Delivered Packets' ? (
                                 <>
-                                    <br />
-                                    Last Order Date :
+                                    Last Order:
                                     {new Date(
                                         item?.lastOrderDate?.order_date
                                     ).toLocaleString('en-GB', {
@@ -359,9 +378,11 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Total Units Ready for Sale' ? (
                                 <>
-                                    <br />
                                     Last Audit Done:
                                     {new Date(
                                         item?.lastOrderDate?.audit_done_close
@@ -372,24 +393,29 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
-                            <br />
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title !== 'Total Units Ready for Sale' &&
                             item?.title !== 'Not Delivered Packets' &&
                             item?.title !== 'Delivered Packets' &&
                             item?.title !== 'Total Order Placed' &&
                             item?.title !== 'Total Packet Delivered' &&
+                            item?.title !== 'RDL 1 Done Units' &&
+                            item?.title !== 'Month Wise Purchase' &&
+
                             item?.title !==
                                 'Total Units Available In Processing' ? (
                                 <>
-                                    <br />
                                     Units :{item.itemCount ? item.itemCount : 0}
                                 </>
                             ) : null}
-                            <br />
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Bag Ready to Bot' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {
@@ -399,10 +425,12 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Bot Sorting Pending' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {
@@ -412,10 +440,12 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Model Missmatch Tray' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {
@@ -425,11 +455,13 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title ==
                             'Model Missmatch Tray Merge In Progress' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {
@@ -439,10 +471,12 @@ const StatCard3 = () => {
                                     })}
                                 </>
                             ) : null}
+                        </Paragraph>
+
+                        <Paragraph sx={{ color: textMuted }}>
                             {item?.title == 'Product Missmatch Tray' ? (
                                 <>
-                                    <br />
-                                    Last Delivery Date :
+                                    Last Delivery:
                                     {new Date(
                                         item?.lastOrderDate
                                     ).toLocaleString('en-GB', {

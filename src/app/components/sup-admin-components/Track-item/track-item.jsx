@@ -13,6 +13,8 @@ import {
     TablePagination,
     TableFooter,
     Typography,
+    Box,
+    Button,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -40,6 +42,7 @@ const TrackItem = () => {
     const [displayText, setDisplayText] = useState('')
     const [inputSearch, setInputSearch] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const [elasticSearchButDis, setElasticSearchButDis] = useState(false)
     const [count, setCount] = useState(0)
 
     useEffect(() => {
@@ -102,6 +105,32 @@ const TrackItem = () => {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
+    }
+
+    const updateElasticSearch = async () => {
+        try {
+            setElasticSearchButDis(true)
+            const res = await axiosSuperAdminPrexo.post('/update/elasticSearch')
+            if (res.status == 200) {
+                setElasticSearchButDis(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res.data.message,
+                    confirmButtonText: 'Ok',
+                })
+            } else {
+                setElasticSearchButDis(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res.data.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const ProductTable = styled(Table)(() => ({
@@ -609,14 +638,35 @@ const TrackItem = () => {
                     routeSegments={[{ name: 'Track-Item', path: '/' }]}
                 />
             </div>
-            <TextField
-                onChange={(e) => {
-                    searchTrackItem(e)
+            <Box
+                sx={{
+                    mt: 2,
+                    display: 'flex',
+                    justifyContent: 'space-between',
                 }}
-                label="Search"
-                variant="outlined"
-                sx={{ mb: 2 }}
-            />
+            >
+                <TextField
+                    onChange={(e) => {
+                        searchTrackItem(e)
+                    }}
+                    label="Search"
+                    variant="outlined"
+                    sx={{ mb: 2 }}
+                />
+                {/* <Button
+                    sx={{ mb: 2 }}
+                    variant="contained"
+                    disabled={elasticSearchButDis}
+                    style={{ backgroundColor: 'green' }}
+                    onClick={(e) => {
+                        updateElasticSearch(e)
+                    }}
+                >
+                    {elasticSearchButDis == true
+                        ? 'Updating'
+                        : 'Update ElasticSearch'}
+                </Button> */}
+            </Box>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

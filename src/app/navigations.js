@@ -1047,6 +1047,13 @@ export const navigations = [
         name: 'Month Wise Purchase',
         icon: 'shopping_cart',
         path: '/reporting/month-wise-purchase-details',
+        sales: "all",
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Rdl 1 Done Units',
+        icon: 'art_track',
+        path: '/reporting/rdl-one-done-units',
         sales: false,
         auth: authRoles.reporting,
     },

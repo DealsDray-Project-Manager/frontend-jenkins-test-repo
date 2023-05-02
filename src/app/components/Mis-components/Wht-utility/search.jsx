@@ -42,7 +42,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
 const DeiveryTable = styled(Table)(() => ({
     minWidth: 750,
     width: 5000,
@@ -61,7 +60,6 @@ const DeiveryTable = styled(Table)(() => ({
     },
 }))
 
-
 const OrderTable = styled(Table)(() => ({
     minWidth: 750,
     width: 8000,
@@ -79,7 +77,6 @@ const OrderTable = styled(Table)(() => ({
         paddingLeft: '16px !important',
     },
 }))
-
 
 const TempOrderStyle = styled(Table)(() => ({
     minWidth: 750,
@@ -146,7 +143,7 @@ function Search() {
     const [open, setOpen] = React.useState(false)
     const [botTray, setBotTray] = useState([])
     const [bag, setBag] = useState([])
-    const [butDiss,setButDiss]=useState(false)
+    const [butDiss, setButDiss] = useState(false)
     const [botUsers, setBotUsers] = useState([])
 
     const schema = Yup.object().shape({
@@ -953,7 +950,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'http://prexo-v8-2-dev-api.dealsdray.com/product/image/' +
+                                            ? 'https://prexo-v8-2-uat-api.dealsdray.com/product/image/' +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

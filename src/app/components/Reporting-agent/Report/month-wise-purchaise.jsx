@@ -98,11 +98,9 @@ const SimpleMuiTable = () => {
                     }
                 }
                 pageSearch()
-            }
-            else if(sortColumn !== null ){
+            } else if (sortColumn !== null) {
                 sort(sortColumn)
-            }
-             else if (stateForFilterUn == true) {
+            } else if (stateForFilterUn == true) {
                 dataFilter()
             } else {
                 const fetchData = async () => {
@@ -254,14 +252,14 @@ const SimpleMuiTable = () => {
             let obj = {
                 'Order Id': x?.order_id,
                 'Tracking Id': x?.tracking_id,
-                'Model Name': x.old_item_details,
+                'Model Name': x?.old_item_details.replace(/:/g, ' ').toUpperCase(),
                 IMEI: x?.imei,
                 'SKU Name': x?.item_id,
                 'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
-
                 UIC: x?.uic_code?.code,
                 Price: x?.partner_purchase_price,
-                Location: x?.tray_location,
+                'Tray Location': x?.tray_location,
+                Location: x?.partner_shop,
             }
             if (x.tray_type == 'MMT') {
                 obj['Type'] = 'Model MisMatch MMT'
@@ -529,7 +527,7 @@ const SimpleMuiTable = () => {
                             <TableCell>{data.id}</TableCell>
                             <TableCell>{data?.order_id}</TableCell>
                             <TableCell>{data?.tracking_id}</TableCell>
-                            <TableCell>{data?.old_item_details}</TableCell>
+                            <TableCell>{data?.old_item_details.replace(/:/g, ' ').toUpperCase()}</TableCell>
                             <TableCell>{data?.imei}</TableCell>
                             <TableCell>{data?.item_id}</TableCell>
                             <TableCell>

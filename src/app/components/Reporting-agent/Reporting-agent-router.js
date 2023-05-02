@@ -31,18 +31,12 @@ const ReadyToAudit = Loadable(lazy(() => import('./Wht-tray/ready-for-audit')))
 const ReadyToRdlFls = Loadable(
     lazy(() => import('./Wht-tray/ready-for-rdl-fls'))
 )
-const InMergingMmt = Loadable(
-    lazy(() => import('./Mmt-tray/in-merging'))
-)
-const InMergingWht = Loadable(
-    lazy(() => import('./Wht-tray/in-merging'))
-)
+const InMergingMmt = Loadable(lazy(() => import('./Mmt-tray/in-merging')))
+const InMergingWht = Loadable(lazy(() => import('./Wht-tray/in-merging')))
 const ChargingInProgress = Loadable(
     lazy(() => import('./Wht-tray/charge-in-progress'))
 )
-const BqcInprogress = Loadable(
-    lazy(() => import('./Wht-tray/bqc-in-progress'))
-)
+const BqcInprogress = Loadable(lazy(() => import('./Wht-tray/bqc-in-progress')))
 const AuditInProgress = Loadable(
     lazy(() => import('./Wht-tray/audit-in-progress'))
 )
@@ -50,14 +44,12 @@ const RdlFlsInprogress = Loadable(
     lazy(() => import('./Wht-tray/rdl-fls-in-progress'))
 )
 const TrackItemDeliveryReport = Loadable(
-    lazy(() => import('./Track-item/delivery'))
+    lazy(() => import('./Report/delivery-report'))
 )
 const WhtRecharging = Loadable(
     lazy(() => import('./Wht-tray/read-for-recharge'))
 )
-const WhtTrayItem = Loadable(
-    lazy(() => import('./Tray-item-view/item'))
-)
+const WhtTrayItem = Loadable(lazy(() => import('./Tray-item-view/item')))
 const ReportMonthWisePurchaise = Loadable(
     lazy(() => import('./Report/month-wise-purchaise'))
 )
@@ -66,6 +58,9 @@ const CtxTrayTransferPendingToSales = Loadable(
 )
 const CtxTransferToSaleProgress = Loadable(
     lazy(() => import('./Ctx/transfer-inprogress-to-sale'))
+)
+const RdlOneDoneUnitsTrack = Loadable(
+    lazy(() => import('./Track-item/rdl-1-done-units'))
 )
 
 const ReportingRouter = [
@@ -184,6 +179,10 @@ const ReportingRouter = [
     {
         path: '/reporting/ctx/transfer-to-sales/in-progress',
         element: <CtxTransferToSaleProgress />,
+    },
+    {
+        path: '/reporting/rdl-one-done-units',
+        element: <RdlOneDoneUnitsTrack />,
     },
 ]
 

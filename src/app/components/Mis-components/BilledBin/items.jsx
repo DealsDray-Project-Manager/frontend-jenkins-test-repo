@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../axios'
 import { Button } from '@mui/material'
 import Swal from 'sweetalert2'
 
@@ -20,10 +20,12 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
+    const [item, setItem] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [userName, setUserName] = useState('')
+    const [butDisable, setButDisable] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -32,13 +34,14 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
-                    let { location } = jwt_decode(admin)
+                    let { location, user_name } = jwt_decode(admin)
+                    setUserName(user_name)
                     let response = await axiosWarehouseIn.post(
-                        '/whtTray/' + location + '/' + 'all-wht-tray'
+                        '/billedBin/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
-                        setWhtTray(response.data.data)
+                        setItem(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -54,10 +57,41 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
+    const handelMoviedToBillBin = async (id, uic) => {
+        try {
+            setButDisable(true)
+            let obj = {
+                trayId: id,
+                uic: uic,
+                username: userName,
+            }
+            const res = await axiosWarehouseIn.post('/movedToBilledBin', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setButDisable(false)
+                        setRefresh((refresh) => !refresh)
+                    }
+                })
+            } else {
+                setButDisable(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const columns = [
@@ -72,104 +106,59 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: 'Tray Id',
+            name: 'items',
+            label: 'UIC',
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'actual_items',
-            label: 'acutual_items',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'limit',
-            options: {
-                filter: true,
-                display: false,
+                customBodyRender: (value, dataIndex) => value?.uic || '',
             },
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: 'Imei',
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value.length == 0
-                            ? tableMeta.rowData[3].length
-                            : value.length) +
-                        '/' +
-                        tableMeta.rowData[4]
-                    )
-                },
-            },
-        },
-
-        {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
+                customBodyRender: (value, dataIndex) => value?.imei || '',
             },
         },
         {
-            name: 'name',
-            label: 'Tray Name',
+            name: 'items',
+            label: 'Muic',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.muic || '',
             },
         },
-
         {
-            name: 'brand',
+            name: 'items',
             label: 'Brand',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.brand_name || '',
             },
         },
         {
-            name: 'model',
+            name: 'items',
             label: 'Model',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.model_name || '',
             },
         },
+
         {
-            name: 'display',
-            label: 'Tray Display',
+            name: 'tray_grade',
+            label: 'Grade',
             options: {
                 filter: true,
             },
         },
+
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'code',
+            label: 'STX Tray Id',
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'created_at',
-            label: 'Creation Date',
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
@@ -185,11 +174,19 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={() => handelViewItem(value)}
+                            disabled={butDisable}
+                            onClick={() => {
+                                if (window.confirm('Item Need to Move?')) {
+                                    handelMoviedToBillBin(
+                                        value,
+                                        tableMeta.rowData[1]?.uic
+                                    )
+                                }
+                            }}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            View
+                            Moved to Billed Bin
                         </Button>
                     )
                 },
@@ -201,16 +198,13 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'WHT-Tray' },
-                    ]}
+                    routeSegments={[{ name: 'Billed Bin', path: '/' }]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Tray'}
-                data={whtTray}
+                title={'Items'}
+                data={item}
                 columns={columns}
                 options={{
                     filterType: 'textField',

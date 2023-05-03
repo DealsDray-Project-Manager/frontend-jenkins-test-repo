@@ -20,7 +20,7 @@ export const navigations = [
         path: '/rm-warehouse/dashboard',
         icon: 'dashboard',
         sales: 'all',
-        auth: authRoles.RMWAREHOUSE, 
+        auth: authRoles.RMWAREHOUSE,
     },
     {
         name: 'Dashboard',
@@ -83,7 +83,7 @@ export const navigations = [
         path: '/rdl-two/dashboard',
         icon: 'dashboard',
         sales: 'all',
-        auth: authRoles.RDL_2, 
+        auth: authRoles.RDL_2,
     },
     {
         name: 'Dashboard',
@@ -753,6 +753,26 @@ export const navigations = [
         auth: authRoles.Warehouse,
         sales: false,
     },
+    {
+        name: 'Billed Bin',
+        icon: 'class',
+        path: '/mis/billedbin',
+        auth: authRoles.Mis,
+        sales: true,
+    },
+    {
+        name: 'Report',
+        icon: 'search',
+        children: [
+            {
+                name: 'Billed Bin Report',
+                path: '/mis/report/billedBin',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: true,
+    },
 
     {
         name: 'Bag',
@@ -1047,7 +1067,7 @@ export const navigations = [
         name: 'Month Wise Purchase',
         icon: 'shopping_cart',
         path: '/reporting/month-wise-purchase-details',
-        sales: "all",
+        sales: 'all',
         auth: authRoles.reporting,
     },
     {

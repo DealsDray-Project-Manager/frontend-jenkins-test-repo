@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../axios'
 import { Button } from '@mui/material'
 import Swal from 'sweetalert2'
 
@@ -20,10 +20,10 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
+    const [item, setItem] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -34,11 +34,11 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/whtTray/' + location + '/' + 'all-wht-tray'
+                        '/billedBin/report/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
-                        setWhtTray(response.data.data)
+                        setItem(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -54,11 +54,9 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
-    }
+  
 
     const columns = [
         {
@@ -72,127 +70,81 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: 'Tray Id',
+            name: 'uic_code',
+            label: 'UIC',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value.code,
+            },
+        },
+        {
+            name: 'imei',
+            label: 'Imei',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
+            name: 'products',
+            label: 'Muic',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.[0]?.muic || '',
             },
         },
         {
-            name: 'actual_items',
-            label: 'acutual_items',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'limit',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'items',
-            label: 'Quantity',
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value.length == 0
-                            ? tableMeta.rowData[3].length
-                            : value.length) +
-                        '/' +
-                        tableMeta.rowData[4]
-                    )
-                },
-            },
-        },
-
-        {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: 'Tray Name',
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'brand',
+            name: 'products',
             label: 'Brand',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.[0]?.brand_name || '',
             },
         },
         {
-            name: 'model',
+            name: 'products',
             label: 'Model',
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.[0]?.model_name || '',
             },
         },
+
         {
-            name: 'display',
-            label: 'Tray Display',
+            name: 'bqc_software_report',
+            label: 'Grade',
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.final_grade || '',
+            },
+        },
+
+        {
+            name: 'stx_tray_id',
+            label: 'Moved From Stx',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: 'Status',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'created_at',
-            label: 'Creation Date',
+            name: 'item_moved_to_billed_bin_date',
+            label: 'Moved Date',
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                new Date(value).toLocaleString('en-GB', {
+                    hour12: true,
+                }),
             },
         },
         {
-            name: 'code',
-            label: 'Actions',
+            name: 'item_moved_to_billed_bin_done_username',
+            label: 'Moved By Agent',
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() => handelViewItem(value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
-                    )
-                },
+                filter: true,
+                
             },
         },
     ]
@@ -201,16 +153,14 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'WHT-Tray' },
-                    ]}
+                    routeSegments={[{ name: 'Report', path: '/' },
+                    { name: 'Billed Bin' },]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Tray'}
-                data={whtTray}
+                title={'Items'}
+                data={item}
                 columns={columns}
                 options={{
                     filterType: 'textField',

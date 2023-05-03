@@ -41,7 +41,7 @@ const SimpleMuiTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
-    const [dataForDownload,setDataForDownload]=useState([])
+    const [dataForDownload, setDataForDownload] = useState([])
     const navigate = useNavigate()
     const [refresh, setRefresh] = useState(false)
     const [count, setCount] = useState(0)
@@ -66,7 +66,7 @@ const SimpleMuiTable = () => {
                         searchData: inputSearch,
                         page: page,
                         rowsPerPage: rowsPerPage,
-                        type:"only-limited-data"
+                        type: 'only-limited-data',
                     }
                     let res = await axiosMisUser.post(
                         '/search-mis-track-item',
@@ -74,7 +74,7 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setDisplayText('')
-                        
+
                         setItem(res.data.data)
                         setCount(res.data.count)
                     } else {
@@ -165,7 +165,7 @@ const SimpleMuiTable = () => {
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
-                        type:"only-limited-data"
+                        type: 'only-limited-data',
                     }
                     let res = await axiosMisUser.post(
                         '/search-mis-track-item',
@@ -300,6 +300,7 @@ const SimpleMuiTable = () => {
                             Date
                         </TableCell>
                         <TableCell>STX Tray Id</TableCell>
+                        <TableCell>Item Moved to Billed Bin</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -657,6 +658,9 @@ const SimpleMuiTable = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>{data?.delivery.stx_tray_id}</TableCell>
+                            <TableCell>
+                                {data?.delivery.item_moved_to_billed_bin}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -702,9 +706,8 @@ const SimpleMuiTable = () => {
                         label="Search"
                         variant="outlined"
                         sx={{ mb: 1 }}
-                    />  
+                    />
                 </Box>
-               
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}

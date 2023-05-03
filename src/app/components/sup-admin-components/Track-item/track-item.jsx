@@ -267,6 +267,7 @@ const TrackItem = () => {
                             Date
                         </TableCell>
                         <TableCell>STX Tray Id</TableCell>
+                        <TableCell>Item Moved to Billed Bin</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -624,6 +625,7 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>{data?.delivery.stx_tray_id}</TableCell>
+                            <TableCell>{data?.delivery.item_moved_to_billed_bin}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

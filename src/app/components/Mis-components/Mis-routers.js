@@ -87,13 +87,13 @@ const CtxTrayTransfer = Loadable(
 const CtxTrayReceiveFromProcessing = Loadable(
     lazy(() => import('./ctx-tray/Receive/request'))
 )
-const CtxToStxAssignToSorting=Loadable(
+const CtxToStxAssignToSorting = Loadable(
     lazy(() => import('./Sorting/Ctx-to-stx/ctx-tray'))
 )
-const StxMerging=Loadable(
-    lazy(() => import('./Merge/Stx-merging/tray'))
-)
+const StxMerging = Loadable(lazy(() => import('./Merge/Stx-merging/tray')))
+const BilledBin = Loadable(lazy(() => import('./BilledBin/items')))
 
+const BilledBinReport = Loadable(lazy(() => import('./Report/billed-bin')))
 
 const dataTableRoutes = [
     {
@@ -255,6 +255,14 @@ const dataTableRoutes = [
     {
         path: '/warehouse/wht-utility/Bot-tray/close/:trayId',
         element: <WhtUtilityBotTrayClose />,
+    },
+    {
+        path: '/mis/billedbin',
+        element: <BilledBin />,
+    },
+    {
+        path: '/mis/report/billedBin',
+        element: <BilledBinReport />,
     },
 ]
 

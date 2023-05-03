@@ -197,6 +197,7 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
+const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
 
 
 const WarehoueRouter = [
@@ -501,6 +502,7 @@ const WarehoueRouter = [
         path: '/wareshouse/wht/rdl2-request/approve/:trayId',
         element: <RDL2RequestApprove />,
     },
+   
 ]
 
 export default WarehoueRouter

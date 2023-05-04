@@ -77,6 +77,8 @@ const SimpleMuiTable = () => {
                     icon: 'success',
                     title: res.data.message,
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsCheck([])

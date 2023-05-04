@@ -158,6 +158,8 @@ export default function DialogBox() {
                         icon: 'error',
                         title: 'Oops...',
                         text: response.data.message,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             navigate(-1)
@@ -270,6 +272,8 @@ export default function DialogBox() {
                         icon: 'success',
                         title: res?.data?.message,
                         showConfirmButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             navigate('/bqc/tray')

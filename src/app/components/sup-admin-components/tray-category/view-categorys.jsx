@@ -117,6 +117,8 @@ const SimpleMuiTable = () => {
                             icon: 'success',
                             title: 'Category has been Deleted',
                             confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 setIsAlive((isAlive) => !isAlive)
@@ -128,6 +130,8 @@ const SimpleMuiTable = () => {
                             icon: 'fail',
                             title: 'You Cannot Delete This Category',
                             confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 setIsAlive((isAlive) => !isAlive)

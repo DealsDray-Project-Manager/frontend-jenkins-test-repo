@@ -92,6 +92,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Added',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

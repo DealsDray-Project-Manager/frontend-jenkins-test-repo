@@ -132,6 +132,8 @@ const MemberEditorDialog = ({
                         icon: 'success',
                         title: 'Successfully Created',
                         confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             setIsAlive((isAlive) => !isAlive)
@@ -145,6 +147,8 @@ const MemberEditorDialog = ({
                         icon: 'error',
                         title: 'User exist,Please check username',
                         confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             setIsAlive((isAlive) => !isAlive)
@@ -192,6 +196,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

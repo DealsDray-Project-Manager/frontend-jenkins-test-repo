@@ -126,6 +126,8 @@ export default function DialogBox() {
                         icon: 'error',
                         title: 'Oops...',
                         text: error.response.data.message,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             navigate('/bot/bag')
@@ -215,6 +217,8 @@ export default function DialogBox() {
                         icon: 'success',
                         title: res.data.message,
                         showConfirmButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             navigate('/bot/bag')
@@ -478,7 +482,9 @@ export default function DialogBox() {
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
-                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)

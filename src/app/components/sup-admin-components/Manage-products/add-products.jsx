@@ -121,6 +121,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: response.data.message,
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -134,6 +136,8 @@ const MemberEditorDialog = ({
                     icon: 'error',
                     title: response.data.message,
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -160,6 +164,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Update Successfully',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

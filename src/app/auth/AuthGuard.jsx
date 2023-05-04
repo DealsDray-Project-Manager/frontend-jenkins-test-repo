@@ -58,6 +58,8 @@ const AuthGuard = ({ children }) => {
                                     icon: 'error',
                                     title: 'Oops...',
                                     text: res.data.message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         localStorage.removeItem(

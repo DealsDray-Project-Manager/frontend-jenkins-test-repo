@@ -201,6 +201,8 @@ const PaginationTable = () => {
                     icon: 'success',
                     title: res.data.message,
                     showConfirmButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setValidateState(true)
@@ -243,6 +245,9 @@ const PaginationTable = () => {
                     icon: 'success',
                     title: res.data.message,
                     showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)

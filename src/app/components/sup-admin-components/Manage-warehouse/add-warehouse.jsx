@@ -274,6 +274,7 @@ const MemberEditorDialog = ({
                             <MenuItem value="STW">STW</MenuItem>
                             <MenuItem value="PRC">PRC</MenuItem>
                             <MenuItem value="Sales">Sales</MenuItem>
+                            <MenuItem value="Rm Warehouse">Rm Warehouse</MenuItem>
                         </TextFieldCustOm>
 
                         <TextFieldCustOm

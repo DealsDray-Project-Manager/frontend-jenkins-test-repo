@@ -5,7 +5,7 @@ const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const TrayRDL_one = Loadable(lazy(() => import('./Tray/rdl-fls-request')))
 const TrayRDL_oneApprove = Loadable(lazy(() => import('./Tray/approve')))
 const ReportDataDisplay = Loadable(
-    lazy(() => import('./Tray/report-data-display'))
+    lazy(() => import('./Tray/temp-report-data-display'))
 )
 
 const RDLRouter = [

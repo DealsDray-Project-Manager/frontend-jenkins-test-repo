@@ -25,7 +25,6 @@ const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-
     useEffect(() => {
         const fetchData = async () => {
             try {

@@ -31,6 +31,7 @@
         "merge": "^2.1.1",
         "moment": "^2.29.1",
         "mui-datatables": "^4.0.0",
+        "mui-image": "^1.0.7",
         "notistack": "^2.0.3",
         "prop-types": "^15.7.2",
         "qwest": "^4.5.0",

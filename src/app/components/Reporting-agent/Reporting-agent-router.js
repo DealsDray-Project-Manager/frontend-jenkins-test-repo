@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
 import Loadable from '../Loadable/Loadable'
+import Search from './Track-item/search-and-display/search'
 
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const DeliveredOrders = Loadable(lazy(() => import('./Order/delivered-orders')))
@@ -62,12 +63,18 @@ const CtxTransferToSaleProgress = Loadable(
 const RdlOneDoneUnitsTrack = Loadable(
     lazy(() => import('./Track-item/rdl-1-done-units'))
 )
-
+const SearchAndDisplay=Loadable(
+    lazy(() => import('./Track-item/search-and-display/search'))
+)
+const SearchAndDisplay1=Loadable(
+    lazy(() => import('./Track-tray/search-and-display1/trayinformation'))
+)
 const ReportingRouter = [
     {
         path: '/reporting/dashboard',
         element: <Dashboard />,
     },
+
     {
         path: '/reporting/not-delivered-orders',
         element: <NotDeliverdOrders />,
@@ -184,6 +191,14 @@ const ReportingRouter = [
         path: '/reporting/rdl-one-done-units',
         element: <RdlOneDoneUnitsTrack />,
     },
+    {
+        path: '/reporting/track-item',
+        element: <SearchAndDisplay />,
+    },
+    {
+        path: '/reporting/track-tray',
+        element: <SearchAndDisplay1 />,
+    }
 ]
 
 export default ReportingRouter

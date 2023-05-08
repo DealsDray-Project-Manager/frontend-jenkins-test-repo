@@ -1043,6 +1043,7 @@ export const navigations = [
                 name: 'RDL 1 In Progress',
                 path: '/reporting/wht/in-rdl-fls',
             },
+
         ],
         sales: false,
         auth: authRoles.reporting,
@@ -1074,6 +1075,20 @@ export const navigations = [
         name: 'Rdl 1 Done Units',
         icon: 'art_track',
         path: '/reporting/rdl-one-done-units',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Track Items',
+        icon: '',
+        path: '/reporting/track-item',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Track Trays',
+        icon: '',
+        path: '/reporting/track-tray',
         sales: false,
         auth: authRoles.reporting,
     },

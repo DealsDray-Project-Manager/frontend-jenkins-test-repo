@@ -47,6 +47,10 @@ const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer =Loadable(lazy(() => import('./Ready-for-transfer/ctx-tray')))
 const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
+
+const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association')))
+// const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
+
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
 const SuperAdminRouter = [
     {
@@ -157,6 +161,14 @@ const SuperAdminRouter = [
         path: '/sup-admin/view-part-list',
         element: <PartList />,
     },
+    {
+        path: '/sup-admin/view-part-list/muic-association',
+        element: <Association />,
+    },
+    // {
+    //     path: '/sup-admin/view-part-list/muic-details',
+    //     element: <MUIC_details />,
+    // },
     {
         path: '/sup-admin/view-color-list',
         element: <ColorList />,

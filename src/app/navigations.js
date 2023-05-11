@@ -1071,6 +1071,22 @@ export const navigations = [
         auth: authRoles.reporting,
     },
     {
+        name: 'Track',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Item Track',
+                path: '/reporting/track-item',
+            },
+            {
+                name: 'Tray Track',
+                path: '/reporting/track-tray',
+            },
+        ],
+        sales: 'all',
+        auth: authRoles.reporting,
+    },
+    {
         name: 'Rdl 1 Done Units',
         icon: 'art_track',
         path: '/reporting/rdl-one-done-units',

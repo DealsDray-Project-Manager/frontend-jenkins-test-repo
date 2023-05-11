@@ -46,8 +46,10 @@ const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer =Loadable(lazy(() => import('./Ready-for-transfer/ctx-tray')))
-const PartList  =Loadable(lazy(() => import('./Manage-part-list/view-part')))
-const ColorList =Loadable(lazy(() => import('./Manage-color-list/view-color-list')))
+const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
+const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
+const BulkAddPart =Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
@@ -160,6 +162,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-color-list',
         element: <ColorList />,
+    },
+    {
+        path: '/sup-admin/view-list/bulk-add',
+        element: <BulkAddPart />,
     },
 ]
 

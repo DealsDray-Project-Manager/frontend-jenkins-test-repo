@@ -42,7 +42,7 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
-        muic: Yup.string().required('Required*').nullable(),
+
         description: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
@@ -75,6 +75,8 @@ const AddPartOrColorAndEditDialog = ({
                     icon: 'success',
                     title: 'Successfully Created',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -114,6 +116,8 @@ const AddPartOrColorAndEditDialog = ({
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -139,12 +143,12 @@ const AddPartOrColorAndEditDialog = ({
         <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Add Color</H4>
-                <TextFieldCustOm
+                {/* <TextFieldCustOm
                     label="MUIC"
                     type="text"
                     select
                     name="muic"
-                    defaultValue={getValues("muic")}
+                    defaultValue={getValues('muic')}
                     {...register('muic')}
                     error={errors.muic ? true : false}
                     helperText={errors.muic ? errors.muic?.message : ''}
@@ -154,7 +158,7 @@ const AddPartOrColorAndEditDialog = ({
                             {data?.muic}
                         </MenuItem>
                     ))}
-                </TextFieldCustOm>
+                </TextFieldCustOm> */}
                 <TextFieldCustOm
                     label="Name"
                     type="text"

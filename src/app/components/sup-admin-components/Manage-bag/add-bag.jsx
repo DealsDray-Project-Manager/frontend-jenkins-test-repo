@@ -150,6 +150,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Created',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -163,6 +165,8 @@ const MemberEditorDialog = ({
                     icon: 'error',
                     title: 'Bag Already Exists',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -190,6 +194,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

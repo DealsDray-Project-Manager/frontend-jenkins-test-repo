@@ -97,6 +97,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Added',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -133,6 +135,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Update Successfully',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

@@ -113,6 +113,8 @@ const PartTable = () => {
                                 icon: 'success',
                                 title: 'Your Part has been Deleted.',
                                 confirmButtonText: 'Ok',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     setIsAlive((isAlive) => !isAlive)

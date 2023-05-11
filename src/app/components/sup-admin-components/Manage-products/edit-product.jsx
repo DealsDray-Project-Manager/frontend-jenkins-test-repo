@@ -59,6 +59,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Update Successfully',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setEditFetchData({})

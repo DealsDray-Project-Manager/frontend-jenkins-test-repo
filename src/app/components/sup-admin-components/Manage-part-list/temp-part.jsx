@@ -2,10 +2,11 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import MemberEditorDialog from './add-part'
+import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
 import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -25,6 +26,7 @@ const PartTable = () => {
     const [editFetchData, setEditFetchData] = useState({})
     const [partList, setPartList] = useState([])
     const [muicData, setMuicData] = useState([])
+    const navigate = useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -63,12 +65,10 @@ const PartTable = () => {
 
     const handleDialogOpen = async (state) => {
         try {
-            const res = await axiosSuperAdminPrexo.post('/muic/view')
-            if (res.status === 200) {
-                setMuicData(res.data.data)
-            }
-            if(state == "ADD"){
-                const trayId = await axiosSuperAdminPrexo.post('/partList/idGen')
+            if (state == 'ADD') {
+                const trayId = await axiosSuperAdminPrexo.post(
+                    '/partList/idGen'
+                )
                 if (trayId.status == 200) {
                     setPartId(trayId.data.data)
                 }
@@ -128,6 +128,8 @@ const PartTable = () => {
                                 icon: 'success',
                                 title: 'Your Part has been Deleted.',
                                 confirmButtonText: 'Ok',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     setIsAlive((isAlive) => !isAlive)
@@ -171,18 +173,12 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-            label: 'Id', // column title that will be shown in table
+            label: 'Part Id', // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'muic', // field name in the row object
-            label: 'MUIC', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'color', // field name in the row object
             label: 'Color', // column title that will be shown in table
@@ -266,6 +262,14 @@ const PartTable = () => {
                 onClick={() => handleDialogOpen('ADD')}
             >
                 Add New Part
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/sup-admin/view-list/bulk-add')}
+            >
+                Add Bulk 
             </Button>
 
             <MUIDataTable

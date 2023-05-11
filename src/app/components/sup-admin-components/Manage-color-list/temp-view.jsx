@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import MemberEditorDialog from './add-color'
+import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
 import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -61,15 +61,6 @@ const PartTable = () => {
     }
 
     const handleDialogOpen = async () => {
-        try {
-            const res = await axiosSuperAdminPrexo.post('/muic/view')
-            if (res.status === 200) {
-                setMuicData(res.data.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-
         setShouldOpenEditorDialog(true)
     }
 
@@ -122,6 +113,8 @@ const PartTable = () => {
                                 icon: 'success',
                                 title: 'Your Color has been Deleted.',
                                 confirmButtonText: 'Ok',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     setIsAlive((isAlive) => !isAlive)
@@ -163,13 +156,13 @@ const PartTable = () => {
                     dataIndex.rowIndex + 1,
             },
         },
-        {
-            name: 'muic', // field name in the row object
-            label: 'MUIC', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'muic', // field name in the row object
+        //     label: 'MUIC', // column title that will be shown in table
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'name', // field name in the row object
             label: 'Color Name', // column title that will be shown in table

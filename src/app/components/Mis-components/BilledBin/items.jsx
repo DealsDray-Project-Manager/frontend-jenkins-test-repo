@@ -69,11 +69,14 @@ const SimpleMuiTable = () => {
             }
             const res = await axiosWarehouseIn.post('/movedToBilledBin', obj)
             if (res.status == 200) {
+                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setButDisable(false)

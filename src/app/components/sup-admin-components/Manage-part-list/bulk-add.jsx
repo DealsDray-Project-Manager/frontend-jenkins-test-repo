@@ -67,12 +67,12 @@ const StyledLoading = styled('div')(() => ({
     },
 }))
 
-const AddBulkBrand = () => {
+const AddBulkPart = () => {
     const navigate = useNavigate()
     const [validateState, setValidateState] = useState(false)
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState({})
-    const [brandCount, setBrandCount] = useState(0)
+    const [partCount, setPartId] = useState(0)
     const [item, setItem] = useState([])
     const [exFile, setExfile] = useState(null)
     const [pagination, setPagination] = useState({
@@ -86,7 +86,7 @@ const AddBulkBrand = () => {
             const fetchData = async () => {
                 let res = await axiosSuperAdminPrexo.post('/getBrandIdHighest')
                 if (res.status == 200) {
-                    setBrandCount(res.data.data)
+                    setPartId(res.data.partCount)
                 }
             }
             fetchData()
@@ -136,24 +136,28 @@ const AddBulkBrand = () => {
         setPagination((p) => ({
             ...p,
             page: 1,
-            item: data.map((d, index) => toLowerKeys(d, brandCount, index)),
+            item: data.map((d, index) => toLowerKeys(d, partCount, index)),
             totalPage: Math.ceil(data.length / p.size),
         }))
     }
     function toLowerKeys(obj, count, id) {
         return Object.keys(obj).reduce((accumulator, key) => {
-            accumulator.brand_id = 'brand-0' + (count + id)
+            let num = parseInt(count.substring(2)) + id
+            let updatedStr =
+                count.substring(0, 2) + num.toString().padStart(6, '0')
+            obj.PARTID = updatedStr
+            accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             return accumulator
         }, {})
     }
 
-    const updateFieldChanged = (brand_id) => (e) => {
+    const updateFieldChanged = (id) => (e) => {
         setValidateState(false)
         setPagination((p) => ({
             ...p,
             item: pagination.item.map((data, i) => {
-                if (data.brand_id === brand_id) {
+                if (data.code === id) {
                     return { ...data, [e.target.name]: e.target.value }
                 } else {
                     return data
@@ -162,11 +166,11 @@ const AddBulkBrand = () => {
         }))
     }
 
-    const handelDelete = (brand_id) => {
+    const handelDelete = (id) => {
         setValidateState(false)
         setPagination((p) => ({
             ...p,
-            item: pagination.item.filter((item) => item.brand_id != brand_id),
+            item: pagination.item.filter((item) => item.id != id),
         }))
     }
 
@@ -174,7 +178,7 @@ const AddBulkBrand = () => {
         try {
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
-                '/bulkValidationBrands',
+                '/bulkvalidationForPart',
                 pagination.item
             )
             if (res.status == 200) {
@@ -206,7 +210,7 @@ const AddBulkBrand = () => {
         try {
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
-                '/createBrands',
+                '/bulkAddPart',
                 pagination.item
             )
             if (res.status == 200) {
@@ -220,7 +224,7 @@ const AddBulkBrand = () => {
                     if (result.isConfirmed) {
                     }
                 })
-                navigate('/sup-admin/brands')
+                navigate('/sup-admin/view-part-list')
             } else {
                 setLoading(false)
                 Swal.fire({
@@ -239,17 +243,19 @@ const AddBulkBrand = () => {
         }
     }
 
+    console.log(item)
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Brands', path: '/' },
-                        { name: 'Bulk-Brand' },
+                        { name: 'Parts', path: '/' },
+                        { name: 'Bulk-Part' },
                     ]}
                 />
             </div>
-            <SimpleCard title="Bulk Brand">
+            <SimpleCard title="Bulk Part">
                 <Box
                     sx={{
                         display: 'flex',
@@ -263,7 +269,9 @@ const AddBulkBrand = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() => navigate('/sup-admin/brands')}
+                            onClick={() =>
+                                navigate('/sup-admin/view-part-list')
+                            }
                         >
                             Back to list
                         </Button>
@@ -273,7 +281,7 @@ const AddBulkBrand = () => {
                             color="primary"
                             href={
                                 process.env.PUBLIC_URL +
-                                '/bulk-brand-sheet-sample.xlsx'
+                                '/Bulk-add-part-sample-sheet.xlsx'
                             }
                             download
                         >
@@ -342,7 +350,8 @@ const AddBulkBrand = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>S.NO</TableCell>
-                                    <TableCell>Brand Name</TableCell>
+                                    <TableCell>Part Name</TableCell>
+                                    <TableCell>Description</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -352,15 +361,15 @@ const AddBulkBrand = () => {
                                         <TableCell>
                                             <TextField
                                                 onChange={updateFieldChanged(
-                                                    data.brand_id
+                                                    data.code
                                                 )}
                                                 id="outlined-password-input"
                                                 type="text"
-                                                name="brand_name"
-                                                value={data.brand_name?.toString()}
+                                                name="part_name"
+                                                value={data.part_name?.toString()}
                                             />
-                                            {err?.duplicate_brand_name?.includes(
-                                                data.brand_name
+                                            {err?.duplicate_part_name?.includes(
+                                                data.part_name
                                             ) ? (
                                                 <ClearIcon
                                                     style={{ color: 'red' }}
@@ -373,20 +382,31 @@ const AddBulkBrand = () => {
                                                 ''
                                             )}
 
-                                            {err?.duplicate_brand_name?.includes(
-                                                data.brand_name
+                                            {err?.duplicate_part_name?.includes(
+                                                data.part_name
                                             ) ? (
                                                 <p style={{ color: 'red' }}>
-                                                    Duplicate Brand Name
+                                                    Duplicate Part Name
                                                 </p>
                                             ) : (
                                                 ''
                                             )}
                                         </TableCell>
+                                        <TableCell>
+                                            <TextField
+                                                onChange={updateFieldChanged(
+                                                    data.code
+                                                )}
+                                                id="outlined-password-input"
+                                                type="text"
+                                                name="description"
+                                                value={data.description?.toString()}
+                                            />
+                                        </TableCell>
 
                                         <TableCell>
-                                            {err?.duplicate_brand_name?.includes(
-                                                data.brand_name
+                                            {err?.duplicate_part_name?.includes(
+                                                data.part_name
                                             ) == true ? (
                                                 <Button
                                                     sx={{
@@ -404,7 +424,7 @@ const AddBulkBrand = () => {
                                                             )
                                                         ) {
                                                             handelDelete(
-                                                                data.brand_id
+                                                                data.id
                                                             )
                                                         }
                                                     }}
@@ -480,4 +500,4 @@ const AddBulkBrand = () => {
     )
 }
 
-export default AddBulkBrand
+export default AddBulkPart

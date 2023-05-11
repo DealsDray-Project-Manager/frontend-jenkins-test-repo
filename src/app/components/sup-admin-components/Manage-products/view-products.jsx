@@ -145,6 +145,8 @@ const SimpleMuiTable = () => {
                                 icon: 'success',
                                 title: 'Your Product has been Deleted',
                                 confirmButtonText: 'Ok',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     setIsAlive((isAlive) => !isAlive)

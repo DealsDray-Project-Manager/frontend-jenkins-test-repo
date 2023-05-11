@@ -16,7 +16,7 @@ const FlexBox = styled(Box)(() => ({
     alignItems: 'center',
 }))
 
-const AuditReport = ({ AuditData }) => {
+const AuditReport = ({ AuditData, otherAuditFeedBack }) => {
     return (
         <Card>
             <H4 sx={{ p: 2 }}>Audit Report</H4>
@@ -24,7 +24,7 @@ const AuditReport = ({ AuditData }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={AuditData?.stage}>
-                        <TableCell sx={{ pl: 2 }}> Audit Status  :</TableCell>
+                        <TableCell sx={{ pl: 2 }}> Audit Status :</TableCell>
                         <TableCell>{AuditData?.stage}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.orgGrade}>
@@ -46,6 +46,18 @@ const AuditReport = ({ AuditData }) => {
                         <TableCell sx={{ pl: 2 }}> Description :</TableCell>
                         <TableCell>{AuditData?.description}</TableCell>
                     </TableRow>
+                    {AuditData?.stage == undefined ||
+                    AuditData?.stage == 'BQC Not Done' ? (
+                        <TableRow key={otherAuditFeedBack}>
+                            <TableCell sx={{ pl: 2 }}>
+                                {' '}
+                                Other Auditor Feedback and Status :
+                            </TableCell>
+                            <TableCell>
+                                {otherAuditFeedBack?.other_audtior_feedback}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
                 </TableBody>
             </Table>
         </Card>

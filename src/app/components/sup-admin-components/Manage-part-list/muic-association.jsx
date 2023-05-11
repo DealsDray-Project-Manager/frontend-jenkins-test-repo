@@ -85,7 +85,8 @@ const Association = () => {
 
    
     return ( 
-        <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
+        // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
+        <Grid>
                      <Box sx={{p:2, display:'flex'}}>
                          <Box sx={{marginLeft:"50px",marginTop:"30px"}}>
                          <Box sx={{p:2, display:'flex'}}>
@@ -135,7 +136,10 @@ const Association = () => {
             <br />
             <br />
            <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px"}}>
-            <Typography sx={{p:3, fontWeight:"bold"}}>MUIC Details</Typography>
+           <Box sx={{p:2, display:'flex', alignItems:"center"}}>
+           <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Details</Typography>
+            <Typography sx={{fontWeight:"bold", ml:45}}>You added 128 MUIC's</Typography>
+           </Box>
              <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
                 <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
           <TableHead sx={{background:"white"}}>
@@ -183,20 +187,23 @@ const Association = () => {
         </StyledTable>
             </Box>
             <br />
-            <br />
-           </Card>
-           <br />
+            
             <Button
                 variant="contained"
                 color="primary"
-                 sx={{ml:45,mt:1}} 
+                 sx={{ml:37,mb:2}} 
                 >
                 Submit
+                
             </Button>
+            </Card>
             <br />
             <br />
             <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px"}}>
-            <Typography sx={{p:3, fontWeight:"bold"}}>Old MUIC Details</Typography>
+            <Box sx={{p:2, display:'flex', alignItems:"center"}}>
+           <Typography sx={{p:2, fontWeight:"bold"}}>Old MUIC Details</Typography>
+            <Typography sx={{fontWeight:"bold", ml:40}}>120 Unique MUIC found</Typography>
+           </Box>
              <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
                 <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
           <TableHead sx={{background:"white"}}>
@@ -251,8 +258,8 @@ const Association = () => {
                          </Box>
                          
                      </Box>
-
-              </Card>
+                     </Grid>
+              // </Card>
      );
 }
  

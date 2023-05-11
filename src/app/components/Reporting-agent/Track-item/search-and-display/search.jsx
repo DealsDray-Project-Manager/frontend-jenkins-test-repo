@@ -9,6 +9,7 @@ import Orderdetails from "./orderdetails";
 import PMTdetails from "./pmtdetails";
 import WHTdetails from "./whtdetails";
 import Mobiledetails from './mobiledetails';
+import Chargingdetails from './charging';
 
 const Container = styled('div')(({ theme }) => ({
   margin: '40px',
@@ -63,7 +64,7 @@ const Search = () => {
            <PMTdetails/>
            <MMTdetails/>
            <WHTdetails/>
-           
+           {/* <Chargingdetails/> */}
           
 
           

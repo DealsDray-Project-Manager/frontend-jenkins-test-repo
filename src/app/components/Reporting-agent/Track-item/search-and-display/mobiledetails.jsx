@@ -3,7 +3,7 @@ import Mobile_1606 from "../search-and-display/images/Mobile_1606.jpg"
 import Image from 'mui-image'
 const Mobiledetails = () => {
     return ( 
-        <Card sx={{width:'920px',marginTop:"40px", border:'1px solid black'}}>
+        <Card sx={{marginTop:"40px", border:'1px solid black'}}>
             <Box sx={{p:1, display:'flex'}}>
                 <Box>
                 <Image src={Mobile_1606} alt="" width={200} height={200} style={{marginTop:"90px", marginLeft:"45px", marginBottom:"45px"}}/>

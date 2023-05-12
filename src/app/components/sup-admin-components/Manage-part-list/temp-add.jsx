@@ -27,7 +27,7 @@ const AddPartOrColorAndEditDialog = ({
     setEditFetchData,
     muicData,
     partId,
-    setPartId
+    setPartId,
 }) => {
     const [loading, setLoading] = useState(false)
     const [colorData, setColorData] = useState([])
@@ -36,13 +36,7 @@ const AddPartOrColorAndEditDialog = ({
         console.log(editFetchData)
         if (Object.keys(editFetchData).length !== 0) {
             setPartId(editFetchData.part_code)
-            let arr = [
-                {
-                    name: editFetchData?.color,
-                },
-            ]
 
-            setColorData(arr)
             reset({ ...editFetchData })
             open()
         }
@@ -50,8 +44,7 @@ const AddPartOrColorAndEditDialog = ({
 
     const schema = Yup.object().shape({
         part_code: Yup.string().required('Required*').nullable(),
-        muic: Yup.string().required('Required*').nullable(),
-        color: Yup.string().required('Required*').nullable(),
+
         name: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
@@ -73,18 +66,18 @@ const AddPartOrColorAndEditDialog = ({
         resolver: yupResolver(schema),
     })
 
-    const getColorList = async (muic) => {
-        try {
-            const res = await axiosSuperAdminPrexo.post(
-                '/muic/listColor/' + muic
-            )
-            if (res.status == 200) {
-                setColorData(res.data.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const getColorList = async (muic) => {
+    //     try {
+    //         const res = await axiosSuperAdminPrexo.post(
+    //             '/muic/listColor/' + muic
+    //         )
+    //         if (res.status == 200) {
+    //             setColorData(res.data.data)
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     const onSubmit = async (data) => {
         try {
@@ -181,7 +174,7 @@ const AddPartOrColorAndEditDialog = ({
                         errors.part_code ? errors.part_code?.message : ''
                     }
                 />
-                <TextFieldCustOm
+                {/* <TextFieldCustOm
                     label="MUIC"
                     type="text"
                     select
@@ -202,8 +195,8 @@ const AddPartOrColorAndEditDialog = ({
                             {data?.muic}
                         </MenuItem>
                     ))}
-                </TextFieldCustOm>
-                <TextFieldCustOm
+                </TextFieldCustOm> */}
+                {/* <TextFieldCustOm
                     label="Color"
                     type="text"
                     select
@@ -218,7 +211,7 @@ const AddPartOrColorAndEditDialog = ({
                             {data?.name}
                         </MenuItem>
                     ))}
-                </TextFieldCustOm>
+                </TextFieldCustOm> */}
 
                 <TextFieldCustOm
                     label="Name"

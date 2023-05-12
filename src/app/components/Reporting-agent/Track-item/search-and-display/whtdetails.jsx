@@ -1,7 +1,7 @@
 import { Box, Card, Divider, Stack, Typography } from "@mui/material";
 const WHTdetails = () => {
     return ( 
-        <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", border:'1px solid black'}}>
+        <Card sx={{marginTop:"40px",marginBottom:"40px", border:'1px solid black'}}>
            <br />
             <Typography sx={{margin: "0px 0px 15px 33px", fontSize: "20px", fontWeight:"bold"}}>WHT details</Typography>
             <Divider />

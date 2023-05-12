@@ -12,7 +12,7 @@ export const authRoles = {
     pricing_Agent: ['Pricing Agent'],
     reporting: ['Reporting'],
     RDL_2: ['RDL-2'],
-    RMWAREHOUSE: ['RM Warehouse'],
+    RMWAREHOUSE: ['RM User'],
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

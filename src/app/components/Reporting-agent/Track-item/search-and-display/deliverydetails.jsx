@@ -1,7 +1,7 @@
 import { Box, Card, Divider, Stack, Typography } from "@mui/material";
 const Deliverydetails = () => {
     return ( 
-        <Card sx={{width:'920px',marginTop:"40px",marginTop:"40px", border:'1px solid black'}}>
+        <Card sx={{marginTop:"40px",marginTop:"40px", border:'1px solid black'}}>
         <br />
          <Typography sx={{margin: "0px 0px 15px 33px", fontSize: "20px", fontWeight:"bold"}}>Delivery details</Typography>
          <Divider />

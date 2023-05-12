@@ -65,12 +65,10 @@ const PartTable = () => {
 
     const handleDialogOpen = async (state) => {
         try {
-            const res = await axiosSuperAdminPrexo.post('/muic/view')
-            if (res.status === 200) {
-                setMuicData(res.data.data)
-            }
-            if(state == "ADD"){
-                const trayId = await axiosSuperAdminPrexo.post('/partList/idGen')
+            if (state == 'ADD') {
+                const trayId = await axiosSuperAdminPrexo.post(
+                    '/partList/idGen'
+                )
                 if (trayId.status == 200) {
                     setPartId(trayId.data.data)
                 }
@@ -287,6 +285,38 @@ const PartTable = () => {
                 onClick={() => handleDialogOpen('ADD')}
             >
                 Add New Part
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/sup-admin/view-list/bulk-add')}
+            >
+                Add Bulk 
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/sup-admin/view-list/downloadsample')}
+            >
+                Download Sample File 
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/sup-admin/view-list/')}
+            >
+                Upload Spare 
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/sup-admin/view-list/')}
+            >
+                Manage Stock
             </Button>
 
             <MUIDataTable

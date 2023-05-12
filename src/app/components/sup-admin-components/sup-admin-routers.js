@@ -52,6 +52,8 @@ const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association
 // const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
 
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
+const BulkAddPart =Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
@@ -172,6 +174,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-color-list',
         element: <ColorList />,
+    },
+    {
+        path: '/sup-admin/view-list/bulk-add',
+        element: <BulkAddPart />,
     },
 ]
 

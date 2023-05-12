@@ -61,15 +61,6 @@ const PartTable = () => {
     }
 
     const handleDialogOpen = async () => {
-        try {
-            const res = await axiosSuperAdminPrexo.post('/muic/view')
-            if (res.status === 200) {
-                setMuicData(res.data.data)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-
         setShouldOpenEditorDialog(true)
     }
 
@@ -165,13 +156,13 @@ const PartTable = () => {
                     dataIndex.rowIndex + 1,
             },
         },
-        {
-            name: 'muic', // field name in the row object
-            label: 'MUIC', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'muic', // field name in the row object
+        //     label: 'MUIC', // column title that will be shown in table
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'name', // field name in the row object
             label: 'Color Name', // column title that will be shown in table

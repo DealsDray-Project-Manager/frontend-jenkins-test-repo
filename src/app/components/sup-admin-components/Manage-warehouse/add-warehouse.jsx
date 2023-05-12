@@ -28,10 +28,10 @@ const MemberEditorDialog = ({
 }) => {
     const [loading, setLoading] = useState(false)
     const [locationDrop, setLocationDrop] = useState([])
+    const [selectedCpc, setSelectedCpc] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
-           
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 open()
@@ -40,8 +40,8 @@ const MemberEditorDialog = ({
         fetchData()
     }, [])
 
-    useEffect(()=>{
-        const fetchData=async()=>{
+    useEffect(() => {
+        const fetchData = async () => {
             try {
                 let res = await axiosSuperAdminPrexo.post('/getLocation')
                 if (res.status == 200) {
@@ -53,10 +53,10 @@ const MemberEditorDialog = ({
                     title: 'Oops...',
                     text: error,
                 })
-        }
+            }
         }
         fetchData()
-    },[])
+    }, [])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -171,7 +171,7 @@ const MemberEditorDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title:'Please check',
+                    title: 'Please check',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -184,7 +184,7 @@ const MemberEditorDialog = ({
         }
     }
     return (
-        <Dialog  open={open}>
+        <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Add Warehouse</H4>
 
@@ -205,14 +205,17 @@ const MemberEditorDialog = ({
                             {...register('parent_id')}
                             error={errors.parent_id ? true : false}
                             helperText={errors.parent_id?.message}
-                            defaultValue={getValues("parent_id")}
+                            defaultValue={getValues('parent_id')}
                         >
                             {locationDrop.map((data) => (
-                                <MenuItem value={data.name}>
-                                    {data.name}
+                                <MenuItem
+                                    onClick={(e) => {
+                                        setSelectedCpc(data.location_type)
+                                    }}
+                                    value={data.code}
+                                >
+                                    {data.code}
                                 </MenuItem>
-
-                                
                             ))}
                         </TextFieldCustOm>
 
@@ -266,20 +269,38 @@ const MemberEditorDialog = ({
                             error={errors.code ? true : false}
                             helperText={errors.code ? errors.code?.message : ''}
                         />
-                        <TextFieldCustOm
-                            label="Warehouse Type"
-                            select
-                            name="warehouse_type"
-                            {...register('warehouse_type')}
-                            error={errors.warehouse_type ? true : false}
-                            helperText={errors.warehouse_type?.message}
-                            defaultValue={getValues("warehouse_type")}
-                        >
-                            <MenuItem value="STW">STW</MenuItem>
-                            <MenuItem value="PRC">PRC</MenuItem>
-                            <MenuItem value="Sales">Sales</MenuItem>
-                            <MenuItem value="Rm Warehouse">Rm Warehouse</MenuItem>
-                        </TextFieldCustOm>
+                        {selectedCpc == 'Processing' ? (
+                            <TextFieldCustOm
+                                label="Warehouse Type"
+                                select
+                                name="warehouse_type"
+                                {...register('warehouse_type')}
+                                error={errors.warehouse_type ? true : false}
+                                helperText={errors.warehouse_type?.message}
+                                defaultValue={getValues('warehouse_type')}
+                            >
+                                <MenuItem value="Dock">Dock</MenuItem>
+                                <MenuItem value="Processing">
+                                    Processing
+                                </MenuItem>
+                                <MenuItem value="Sales">Sales</MenuItem>
+                                <MenuItem value="PRC RMW">PRC RMW</MenuItem>
+                            </TextFieldCustOm>
+                        ) : (
+                            <TextFieldCustOm
+                                label="Warehouse Type"
+                                select
+                                name="warehouse_type"
+                                {...register('warehouse_type')}
+                                error={errors.warehouse_type ? true : false}
+                                helperText={errors.warehouse_type?.message}
+                                defaultValue={getValues('warehouse_type')}
+                            >
+                                <MenuItem value="STW">STW</MenuItem>
+                                <MenuItem value="PRC">PRC</MenuItem>
+                                <MenuItem value="Sales">Sales</MenuItem>
+                            </TextFieldCustOm>
+                        )}
 
                         <TextFieldCustOm
                             label="Country"

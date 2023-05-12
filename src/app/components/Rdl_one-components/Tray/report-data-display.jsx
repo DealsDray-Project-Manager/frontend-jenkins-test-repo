@@ -225,8 +225,8 @@ export default function DialogBox() {
             if (values.part_list_count == '4') {
                 values.part_list_5 = ''
             }
-            values.username=username
-            
+            values.username = username
+
             let objData = {
                 trayId: trayId,
                 rdl_fls_report: values,
@@ -255,6 +255,9 @@ export default function DialogBox() {
                 <Grid item lg={6} md={12} xs={12}>
                     <AuditReport
                         AuditData={reportData?.delivery?.audit_report}
+                        otherAuditFeedBack={
+                            reportData?.otherAudFeedBack
+                        }
                     />
                 </Grid>
                 <Grid item lg={6} md={12} xs={12}>

@@ -9047,6 +9047,11 @@
     "react-to-print" "^2.8.0"
     "tss-react" "^3.4.1"
 
+"mui-image@^1.0.7":
+  "integrity" "sha512-U79TWMKMfMC1ZiGnv/M+SaVJeUpubEjXOdy7w53RsvidUAMZ+4nW+QmDG9yg5fgWeYy6YJgLHyI9BHSDw76iIg=="
+  "resolved" "https://registry.npmjs.org/mui-image/-/mui-image-1.0.7.tgz"
+  "version" "1.0.7"
+
 "multicast-dns-service-types@^1.1.0":
   "integrity" "sha1-iZ8R2WhuXgXLkbNdXw5jt3PPyQE= sha512-cnAsSVxIDsYt0v7HmC0hWZFwwXSh+E6PgCrREDuN/EsjgLwA5XRmlMHhSiDPrt6HxY1gTivEa/Zh7GtODoLevQ=="
   "resolved" "https://registry.npmjs.org/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz"

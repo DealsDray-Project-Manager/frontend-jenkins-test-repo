@@ -16,10 +16,9 @@ const StyledTable = styled(Table)(({ theme }) => ({
 
 const Downloadsample = () => {
     return ( 
-        <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px"}}>
+        <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px", marginTop:"40px"}}>
         <Box sx={{p:2, display:'flex', alignItems:"center"}}>
        <Typography sx={{p:2, fontWeight:"bold"}}>Old MUIC Details</Typography>
-        <Typography sx={{fontWeight:"bold", ml:40}}>120 Unique MUIC found</Typography>
        </Box>
          <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
             <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>

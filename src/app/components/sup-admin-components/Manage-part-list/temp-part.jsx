@@ -25,8 +25,8 @@ const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [editFetchData, setEditFetchData] = useState({})
     const [partList, setPartList] = useState([])
-    let navigate=useNavigate()
     const [muicData, setMuicData] = useState([])
+    const navigate = useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -185,13 +185,13 @@ const PartTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'muic', // field name in the row object
-        //     label: 'MUIC', // column title that will be shown in table
-        //     options: {
-        //         filter: true,
-        //     },
-        // },
+        {
+            name: 'stock', // field name in the row object
+            label: 'Available stock', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'color', // field name in the row object
             label: 'Color', // column title that will be shown in table
@@ -360,6 +360,7 @@ const PartTable = () => {
             )}
         </Container>
     )
+
 }
 
 export default PartTable

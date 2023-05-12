@@ -63,12 +63,11 @@ const CtxTransferToSaleProgress = Loadable(
 const RdlOneDoneUnitsTrack = Loadable(
     lazy(() => import('./Track-item/rdl-1-done-units'))
 )
-const SearchAndDisplay=Loadable(
+const TrackItemsEach = Loadable(
     lazy(() => import('./Track-item/search-and-display/search'))
 )
-const SearchAndDisplay1=Loadable(
-    lazy(() => import('./Track-tray/search-and-display1/trayinformation'))
-)
+const TrackTray = Loadable(lazy(() => import('./Track-tray/trayinformation')))
+
 const ReportingRouter = [
     {
         path: '/reporting/dashboard',
@@ -193,12 +192,12 @@ const ReportingRouter = [
     },
     {
         path: '/reporting/track-item',
-        element: <SearchAndDisplay />,
+        element: <TrackItemsEach />,
     },
     {
         path: '/reporting/track-tray',
-        element: <SearchAndDisplay1 />,
-    }
+        element: <TrackTray />,
+    },
 ]
 
 export default ReportingRouter

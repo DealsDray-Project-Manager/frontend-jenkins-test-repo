@@ -1,3 +1,4 @@
+import MUIDataTable from 'mui-datatables'
 import { Box, Card, Container, Typography, Table,
     TableBody,
     TableCell,
@@ -9,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -86,16 +88,18 @@ const Association = () => {
    
     return ( 
         // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
-        <Grid>
-                     <Box sx={{p:2, display:'flex'}}>
-                         <Box sx={{marginLeft:"50px",marginTop:"30px"}}>
-                         <Box sx={{p:2, display:'flex'}}>
+        <Card>
+                     <Box sx={{p:1, display:'flex'}}>
+                         <Box sx={{marginLeft:"20px",marginTop:"10px", marginRight:"20px"}}>
+                         <Card>
+                         <Box sx={{p:3, display:'flex', justifyContent:"space-between"}}>
+                          
                                 <Box>
                                     <Typography sx={{fontSize:"16px", marginBottom:"15px"}} >Part No:  </Typography>
                                     <Typography sx={{fontSize:"16px", marginBottom:"15px"}}>Part Name: </Typography>
                                 </Box>
                             <TextFieldCustOm
-                                sx={{marginLeft:"510px", width:"150px"}}
+                                sx={{marginLeft:"820px", width:"150px"}}
                                 label="Color"
                                 select
                                 type="text"
@@ -114,7 +118,7 @@ const Association = () => {
                         <Box sx={{p:2, display:'flex'}}>
                             <Typography sx={{fontSize:"16px", marginTop:"13px", marginBottom:"15px"}}>MUIC:</Typography>
                             <textarea
-                                style={{marginLeft:"10px",width:"650px",height:"100px"}}
+                                style={{marginLeft:"5px",width:"100%",height:"100px"}}
                                 type="text" 
                                 label="MUIC No"
                                 // errorMessages={["this field is required"]}
@@ -126,28 +130,31 @@ const Association = () => {
                                 //             }}
                             />
                         </Box>
+                        <Box sx={{justifyContent:"center",alignItems:"center",display:"flex"}}>
                         <Button
                 variant="contained"
                 color="primary"
-                 sx={{ml:45,mt:1}} 
+                 sx={{margin:"auto",mt:1, mb:2}} 
                 >
                 Check
             </Button>
+                        </Box>
+            </Card>
             <br />
             <br />
-           <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px"}}>
-           <Box sx={{p:2, display:'flex', alignItems:"center"}}>
+           <Card sx={{border:'',marginRight:"", marginLeft:""}}>
+           <Box sx={{p:2, display:'flex', alignItems:"center" ,justifyContent:"space-between"}}>
            <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Details</Typography>
-            <Typography sx={{fontWeight:"bold", ml:45}}>You added 128 MUIC's</Typography>
+            <Typography sx={{fontWeight:"bold", ml:80}}>You added 128 MUIC's</Typography>
            </Box>
-             <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
+             <Box sx={{ border:"", width:"100%", marginLeft:"",marginRight:"",borderRadius:"8px",background:"white"}} overflow="auto">
                 <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
           <TableHead sx={{background:"white"}}>
-            <TableRow sx={{}}>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>MUIC</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Brand</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Model</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Color</TableCell>
+            <TableRow sx={{ }}>
+              <TableCell align="center">MUIC</TableCell>
+              <TableCell align="center">Brand</TableCell>
+              <TableCell align="center">Model</TableCell>
+              <TableCell align="center">Color</TableCell>
               <TableCell align="center" >Delete</TableCell>
             </TableRow>
           </TableHead>
@@ -155,12 +162,12 @@ const Association = () => {
           <TableBody>
             {products.map((phones, index) => (
               <TableRow key={index}>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.MUIC}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Brand}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Model}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Color}</TableCell>        
+                <TableCell align="center">{phones.MUIC}</TableCell>
+                <TableCell align="center">{phones.Brand}</TableCell>
+                <TableCell align="center">{phones.Model}</TableCell>
+                <TableCell align="center">{phones.Color}</TableCell>        
                 <TableCell>
-                <IconButton>
+                <IconButton sx={{ml:13}}>
                                 <Icon
                                 
                                     onClick={(e) => {
@@ -188,30 +195,31 @@ const Association = () => {
             </Box>
             <br />
             
-            <Button
+            <Box sx={{justifyContent:"center",alignItems:"center",display:"flex"}}>
+                        <Button
                 variant="contained"
                 color="primary"
-                 sx={{ml:37,mb:2}} 
+                 sx={{margin:"auto",mt:1, mb:2}} 
                 >
                 Submit
-                
             </Button>
+                        </Box>
             </Card>
             <br />
             <br />
-            <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px"}}>
-            <Box sx={{p:2, display:'flex', alignItems:"center"}}>
+            <Card sx={{marginRight:"", marginLeft:""}}>
+            <Box sx={{p:2, display:'flex', alignItems:"center",justifyContent:"space-between"}}>
            <Typography sx={{p:2, fontWeight:"bold"}}>Old MUIC Details</Typography>
-            <Typography sx={{fontWeight:"bold", ml:40}}>120 Unique MUIC found</Typography>
+            <Typography sx={{fontWeight:"bold", ml:80}}>120 Unique MUIC found</Typography>
            </Box>
-             <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
+             <Box sx={{  width:"100%", marginLeft:"",marginRight:"",borderRadius:"8px",background:"white"}} overflow="auto">
                 <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
           <TableHead sx={{background:"white"}}>
             <TableRow sx={{}}>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>MUIC</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Brand</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Model</TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}>Color</TableCell>
+              <TableCell align="center">MUIC</TableCell>
+              <TableCell align="center">Brand</TableCell>
+              <TableCell align="center">Model</TableCell>
+              <TableCell align="center">Color</TableCell>
               <TableCell align="center" >Delete</TableCell>
             </TableRow>
           </TableHead>
@@ -219,12 +227,12 @@ const Association = () => {
           <TableBody>
             {products.map((phones, index) => (
               <TableRow key={index}>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.MUIC}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Brand}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Model}</TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}>{phones.Color}</TableCell>        
+                <TableCell align="center">{phones.MUIC}</TableCell>
+                <TableCell align="center">{phones.Color}</TableCell>        
+                <TableCell align="center">{phones.Brand}</TableCell>
+                <TableCell align="center">{phones.Model}</TableCell>
                 <TableCell>
-                <IconButton>
+                <IconButton sx={{ml:13}}>
                                 <Icon
                                 
                                     onClick={(e) => {
@@ -258,7 +266,8 @@ const Association = () => {
                          </Box>
                          
                      </Box>
-                     </Grid>
+
+                     </Card>
               // </Card>
      );
 }

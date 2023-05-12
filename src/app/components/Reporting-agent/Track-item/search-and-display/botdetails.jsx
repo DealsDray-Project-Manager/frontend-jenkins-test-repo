@@ -4,7 +4,7 @@ const Botdetails = ({ BotTrayDetails }) => {
     return (
         <Card
             sx={{
-                width: '920px',
+                // width: '920px',
                 marginTop: '40px',
                 marginTop: '40px',
                 border: '1px solid black',

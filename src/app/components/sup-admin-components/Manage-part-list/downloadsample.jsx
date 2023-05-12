@@ -16,17 +16,17 @@ const StyledTable = styled(Table)(({ theme }) => ({
 
 const Downloadsample = () => {
     return ( 
-        <Card sx={{border:'1px solid black',marginRight:"50px", marginLeft:"50px", marginTop:"40px"}}>
+        <Card sx={{border:'1px solid black',marginRight:"290px", marginLeft:"50px", marginTop:"40px"}}>
         <Box sx={{p:2, display:'flex', alignItems:"center"}}>
-       <Typography sx={{p:2, fontWeight:"bold"}}>Old MUIC Details</Typography>
+       <Typography sx={{p:2, fontWeight:"bold"}}>Sample XLS File</Typography>
        </Box>
          <Box sx={{ border:"0.5px solid #78909c", width:"520px", marginLeft:"80px",marginRight:"50px",borderRadius:"8px",background:"white"}} overflow="auto">
             <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
       <TableHead sx={{background:"white"}}>
         <TableRow sx={{}}>
-          <TableCell align="center" sx={{borderRight:"1px solid black"}}>MUIC</TableCell>
-          <TableCell align="center" sx={{borderRight:"1px solid black"}}>Brand</TableCell>
-          <TableCell align="center" sx={{borderRight:"1px solid black"}}>Model</TableCell>
+          <TableCell align="center" sx={{borderRight:"1px solid black"}}>Part No</TableCell>
+          <TableCell align="center" sx={{borderRight:"1px solid black"}}>Part Name</TableCell>
+          <TableCell align="center" sx={{borderRight:"1px solid black"}}>Part Description</TableCell>
           <TableCell align="center">Color</TableCell>
         </TableRow>
       </TableHead>
@@ -38,9 +38,7 @@ const Downloadsample = () => {
             <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
             <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
             <TableCell align="center" ></TableCell>        
-            <TableCell>
-           
-            </TableCell>
+            
             {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
             <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
            

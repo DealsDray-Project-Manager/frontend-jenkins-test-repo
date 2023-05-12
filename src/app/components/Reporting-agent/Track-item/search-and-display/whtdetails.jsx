@@ -3,7 +3,7 @@ const WHTdetails = ({ WhtTrayDetails }) => {
     return (
         <Card
             sx={{
-                width: '920px',
+                // width: '920px',
                 marginTop: '40px',
                 marginBottom: '40px',
                 border: '1px solid black',

@@ -55,6 +55,11 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
+        color: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
     })
     const {
         register,
@@ -229,6 +234,16 @@ const AddPartOrColorAndEditDialog = ({
                     error={errors.description ? true : false}
                     helperText={
                         errors.description ? errors.description?.message : ''
+                    }
+                />
+                <TextFieldCustOm
+                    label="Color"
+                    type="text"
+                    name="color"
+                    {...register('color')}
+                    error={errors.color ? true : false}
+                    helperText={
+                        errors.color ? errors.color?.message : ''
                     }
                 />
 

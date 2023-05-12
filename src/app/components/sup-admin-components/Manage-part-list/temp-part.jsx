@@ -306,7 +306,7 @@ const PartTable = () => {
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="secondary"
-                onClick={() => navigate('/sup-admin/view-list/')}
+                onClick={() => navigate('/sup-admin/view-list/uploadspare')}
             >
                 Upload Spare 
             </Button>

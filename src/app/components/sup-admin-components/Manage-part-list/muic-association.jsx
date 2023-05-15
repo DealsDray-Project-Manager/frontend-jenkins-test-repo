@@ -1,4 +1,5 @@
 import MUIDataTable from 'mui-datatables'
+import { Breadcrumb } from 'app/components'
 import { Box, Card, Container, Typography, Table,
     TableBody,
     TableCell,
@@ -85,12 +86,34 @@ const Association = () => {
         })
     }
 
+    const Container = styled('div')(({ theme }) => ({
+      margin: '30px',
+      [theme.breakpoints.down('sm')]: {
+          margin: '16px',
+      },
+      '& .breadcrumb': {
+          marginBottom: '30px',
+          [theme.breakpoints.down('sm')]: {
+              marginBottom: '16px',
+          },
+      },
+  }))
    
     return ( 
         // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
+       
         <Card>
+        <Container>
+         <div className="breadcrumb">
+                <Breadcrumb
+                
+                    routeSegments={[{ name: 'MUIC-Association', path: '/' }]} 
+                    style={{marginLeft:"20px"}}
+                />
+            </div>
+       
                      <Box sx={{p:1, display:'flex'}}>
-                         <Box sx={{marginLeft:"20px",marginTop:"10px", marginRight:"20px"}}>
+                         <Box>
                          <Card>
                          <Box sx={{p:3, display:'flex', justifyContent:"space-between"}}>
                           
@@ -116,7 +139,7 @@ const Association = () => {
                         </Box>
                          <br />
                         <Box sx={{p:2, display:'flex'}}>
-                            <Typography sx={{fontSize:"16px", marginTop:"13px", marginBottom:"15px"}}>MUIC:</Typography>
+                            <Typography sx={{fontSize:"16px", marginBottom:"15px"}}>MUIC:</Typography>
                             <textarea
                                 style={{marginLeft:"5px",width:"100%",height:"100px"}}
                                 type="text" 
@@ -266,7 +289,7 @@ const Association = () => {
                          </Box>
                          
                      </Box>
-
+</Container>
                      </Card>
               // </Card>
      );

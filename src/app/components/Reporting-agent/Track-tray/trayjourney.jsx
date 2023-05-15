@@ -41,38 +41,7 @@ const Trayjourney = ({ TrayMovement }) => {
                             </TimelineContent>
                         </TimelineItem>
                     ) : null}
-                    {TrayMovement?.tray_close_by_bot !== undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineDot />
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Bot process done at -
-                                {new Date(
-                                    TrayMovement?.tray_close_by_bot
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.tray_received_from_bot != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Bot Done tray received from bot at{' '}
-                                {new Date(
-                                    TrayMovement?.tray_received_from_bot
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
+
                     {TrayMovement?.bot_done_tray_close_wh != undefined ? (
                         <TimelineItem>
                             <TimelineSeparator>
@@ -91,117 +60,56 @@ const Trayjourney = ({ TrayMovement }) => {
                         </TimelineItem>
                     ) : null}
 
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            MIS user assigned for sorting agent for bot to wht
-                            that request goes to warehouse on 22/04/2023 at 9:00
-                            Am
-                        </TimelineContent>
-                    </TimelineItem>
+                    {TrayMovement?.wh_issue_to_sorting != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Warehouse user issued to sorting at -{' '}
+                                {new Date(
+                                    TrayMovement?.wh_issue_to_sorting
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     {TrayMovement?.sorting_agent_close_bot_wht != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Sorting done item validated and closed by warehouse at -{' '}
+                                {new Date(
+                                    TrayMovement?.sorting_agent_close_bot_wht
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     {TrayMovement?.issue_to_merging != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Issued to merging at -{' '}
+                                {new Date(
+                                    TrayMovement?.issue_to_merging
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
 
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            warehouse user issuse bot and wht trays for sorting
-                            agent for sorting porpose on 22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            Sorting agent process the bot to wth on 22/04/2023
-                            at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            Sorting gent closes the sorting process on
-                            22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            warehouse user closes the process and stock in on
-                            22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            MIS user assigned the next process for charging
-                            agent that request goes to Warehouse on 22/04/2023
-                            at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            WareHouse user issuse the wht tray for charging
-                            agent on 22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            WareHouse user issuse the wht tray for charging
-                            agent on 22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            Charging is done that by charging agent on
-                            22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineConnector />
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            Warehouse user closes the charging process and stock
-                            in on 22/04/2023 at 9:00 Am
-                        </TimelineContent>
-                    </TimelineItem>
+                    
                 </Timeline>
             </Box>
         </div>

@@ -106,6 +106,7 @@ const MemberEditorDialog = ({
                             setNextStage(e.target.value)
                         }}
                     >
+                        <MenuItem value="Inuse">In Use</MenuItem>
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
@@ -121,6 +122,7 @@ const MemberEditorDialog = ({
                         }}
                     >
                         <MenuItem value="Recharge">Recharge</MenuItem>
+                        <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL-Repair">
                             RDL FLS Done
                         </MenuItem>

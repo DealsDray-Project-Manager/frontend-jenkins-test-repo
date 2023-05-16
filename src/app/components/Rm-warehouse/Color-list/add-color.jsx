@@ -75,6 +75,8 @@ const AddPartOrColorAndEditDialog = ({
                     icon: 'success',
                     title: 'Successfully Created',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -114,6 +116,8 @@ const AddPartOrColorAndEditDialog = ({
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)

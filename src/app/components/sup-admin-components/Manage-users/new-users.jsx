@@ -35,6 +35,9 @@ const MemberEditorDialog = ({
     const [cpc, setCpc] = useState([])
     const [cpcType, setCpcType] = useState([])
     const [selectedCpc, setSelectedCpc] = useState('')
+    const [location, setLocation] = useState('')
+    const [warehouse, setWarehouse] = useState([])
+    const [warehouseType, setWarehouseType] = useState('')
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -60,6 +63,7 @@ const MemberEditorDialog = ({
             open()
         }
     }, [])
+    
     const schema = Yup.object().shape({
         name: Yup.string()
             .max(40, 'Please Enter Below 40')
@@ -132,6 +136,8 @@ const MemberEditorDialog = ({
                         icon: 'success',
                         title: 'Successfully Created',
                         confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             setIsAlive((isAlive) => !isAlive)
@@ -145,6 +151,8 @@ const MemberEditorDialog = ({
                         icon: 'error',
                         title: 'User exist,Please check username',
                         confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             setIsAlive((isAlive) => !isAlive)
@@ -164,9 +172,28 @@ const MemberEditorDialog = ({
 
     const getLocationType = async (value) => {
         try {
+            setLocation(value)
             let res = await axiosSuperAdminPrexo.post('/location/type/' + value)
             if (res.status == 200) {
                 setCpcType(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const getlWarehouse = async (type) => {
+        try {
+            let obj = {
+                name: location,
+                type: type,
+            }
+            let res = await axiosSuperAdminPrexo.post(
+                'getWarehouseByLocation',
+                obj
+            )
+            if (res.status == 200) {
+                setWarehouse(res.data.data.warehouse)
             }
         } catch (error) {
             alert(error)
@@ -192,6 +219,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -296,6 +325,9 @@ const MemberEditorDialog = ({
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('cpc_type')}
                             value={getValues('cpc_type')}
+                            onChange={(e) => {
+                                getlWarehouse(e.target.value)
+                            }}
                             error={errors.cpc_type ? true : false}
                             helperText={errors.cpc_type?.message}
                         >
@@ -311,6 +343,44 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Warehouse"
+                            select
+                            name="warehouse"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('warehouse')}
+                            value={getValues('warehouse')}
+                            error={errors.warehouse ? true : false}
+                            helperText={errors.warehouse?.message}
+                        >
+                            {warehouse?.map((cpcData) => (
+                                <MenuItem
+                                    onClick={(e) => {
+                                        setWarehouseType(cpcData.warehouse_type)
+                                    }}
+                                    key={cpcData.code}
+                                    value={cpcData.code}
+                                >
+                                    {cpcData.code}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+                        {warehouseType == 'PRC RMW' ? (
+                            <TextFieldCustOm
+                                label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            >
+                                <MenuItem value="RM User">RM User</MenuItem>
+                            </TextFieldCustOm>
+                        ) : null}
 
                         {selectedCpc == 'Dock' ? (
                             <TextFieldCustOm
@@ -351,9 +421,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="MIS">MIS</MenuItem>
                                 <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
                                 <MenuItem value="RDL-2">RDL-2</MenuItem>
-                                {/* <MenuItem value="RM Warehouse">
-                                    RM Warehouse
-                                </MenuItem> */}
+
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sorting Agent">
                                     Sorting Agent

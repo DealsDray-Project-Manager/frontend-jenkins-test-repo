@@ -170,7 +170,9 @@ const PaginationTable = () => {
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
-                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)
@@ -183,6 +185,9 @@ const PaginationTable = () => {
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Please Check Errors',
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)
@@ -209,7 +214,9 @@ const PaginationTable = () => {
                 Swal.fire({
                     icon: 'success',
                     title: res.data.message,
-                    showConfirmButton: true,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setLoading(false)

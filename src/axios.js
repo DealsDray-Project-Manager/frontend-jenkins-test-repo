@@ -1,6 +1,8 @@
 import axios from 'axios'
+
 // const baseURL = 'http://localhost:8000'
 const baseURL = 'https://prexo-v8-2-uat-api.dealsdray.com'
+
 
 export const axiosSuperAdminPrexo = axios.create({
     baseURL: `${baseURL}/api/v7/superAdmin`,

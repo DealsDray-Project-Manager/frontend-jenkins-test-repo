@@ -109,6 +109,8 @@ export default function DialogBox() {
                             icon: 'error',
                             title: 'Oops...',
                             text: response.data.message,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 navigate(-1)

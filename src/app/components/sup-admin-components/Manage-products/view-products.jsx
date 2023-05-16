@@ -145,6 +145,8 @@ const SimpleMuiTable = () => {
                                 icon: 'success',
                                 title: 'Your Product has been Deleted',
                                 confirmButtonText: 'Ok',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     setIsAlive((isAlive) => !isAlive)
@@ -199,7 +201,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'https://prexo-v8-2-uat-api.dealsdray.com/product/image/' +
+                                    ? 'https://prexo-v8-3-dev-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[2] +
                                       '.jpg'
                                     : value

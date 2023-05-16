@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
 import Loadable from '../Loadable/Loadable'
+import Search from './Track-item/search-and-display/search'
 
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const DeliveredOrders = Loadable(lazy(() => import('./Order/delivered-orders')))
@@ -72,6 +73,7 @@ const ReportingRouter = [
         path: '/reporting/dashboard',
         element: <Dashboard />,
     },
+
     {
         path: '/reporting/not-delivered-orders',
         element: <NotDeliverdOrders />,

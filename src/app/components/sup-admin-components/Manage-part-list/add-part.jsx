@@ -47,6 +47,7 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
+        
     })
     const {
         register,
@@ -161,6 +162,7 @@ const AddPartOrColorAndEditDialog = ({
                         errors.description ? errors.description?.message : ''
                     }
                 />
+                
 
                 <FormHandlerBox>
                     <Button

@@ -26,7 +26,7 @@ const PartTable = () => {
     const [editFetchData, setEditFetchData] = useState({})
     const [partList, setPartList] = useState([])
     const [muicData, setMuicData] = useState([])
-    const navigate = useNavigate()
+    const navigate=useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -160,6 +160,13 @@ const PartTable = () => {
         })
     }
 
+   
+    const handledetails = async () => {
+       
+        navigate('/sup-admin/view-part-list/muic-association')
+    }
+
+
     const columns = [
         {
             name: 'index',
@@ -173,12 +180,18 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-            label: 'Part Id', // column title that will be shown in table
+            label: 'Part No', // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
-
+        {
+            name: 'stock', // field name in the row object
+            label: 'Available stock', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'color', // field name in the row object
             label: 'Color', // column title that will be shown in table
@@ -241,6 +254,16 @@ const PartTable = () => {
                                     delete
                                 </Icon>
                             </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        handledetails(value)
+                                    }}
+                                    color="default"
+                                >
+                                    details
+                                </Icon>
+                            </IconButton>
                         </>
                     )
                 },
@@ -271,9 +294,33 @@ const PartTable = () => {
             >
                 Add Bulk 
             </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="success"
+                onClick={() => navigate('/sup-admin/view-list/downloadsample')}
+            >
+                Download Sample File 
+            </Button>
+            {/* <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="error"
+                onClick={() => navigate('/sup-admin/view-list/uploadspare')}
+            >
+                Upload Spare 
+            </Button> */}
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="warning"
+                onClick={() => navigate('/sup-admin/view-list/managestock')}
+            >
+                Manage Stock
+            </Button>
 
             <MUIDataTable
-                title={'All Parts'}
+                title={'Spare Part List'}
                 data={partList}
                 columns={columns}
                 options={{
@@ -313,6 +360,7 @@ const PartTable = () => {
             )}
         </Container>
     )
+
 }
 
 export default PartTable

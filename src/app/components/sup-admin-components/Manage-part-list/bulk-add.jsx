@@ -6,7 +6,7 @@ import {
     TableRow,
     TableCell,
     Button,
-    TextField,
+    TextField, MenuItem,IconButton, Icon
 } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -17,6 +17,46 @@ import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
+
+
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
+
+
+const products = [
+    {
+      Part_Number: 'DP00987',
+      Part_Name: "Display",
+      Part_Description: "Display",
+      Part_Color: "-",
+      Technical_QC: "Yes",
+      Validation: "Pass"
+    },
+    {
+      Part_Number: 'DP00998',
+      Part_Name: "Back Panel",
+      Part_Description: "Back Panel",
+      Part_Color: "Green",
+      Technical_QC: "No",
+      Validation: "Error"    
+    }
+    // {
+    //   MUIC: "IK579",
+    //   Brand: "Apple",
+    //   Model:'iphone 11',
+    //   Color: "Gold"    
+    // },
+    // {
+    //   MUIC: "XU827",
+    //   Brand: "Apple",
+    //   Model:'iphone 11 pro',
+    //   Color: "Silver"
+    // }
+  ];
+
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -206,44 +246,44 @@ const AddBulkPart = () => {
             })
         }
     }
-    const handelSubmit = async (e) => {
-        try {
-            setLoading(true)
-            let res = await axiosSuperAdminPrexo.post(
-                '/bulkAddPart',
-                pagination.item
-            )
-            if (res.status == 200) {
-                Swal.fire({
-                    icon: 'success',
-                    title: res.data.message,
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                    }
-                })
-                navigate('/sup-admin/view-part-list')
-            } else {
-                setLoading(false)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.message,
-                })
-            }
-        } catch (error) {
-            setLoading(false)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.response.data.message,
-            })
-        }
-    }
+    // const handelSubmit = async (e) => {
+    //     try {
+    //         setLoading(true)
+    //         let res = await axiosSuperAdminPrexo.post(
+    //             '/bulkAddPart',
+    //             pagination.item
+    //         )
+    //         if (res.status == 200) {
+    //             Swal.fire({
+    //                 icon: 'success',
+    //                 title: res.data.message,
+    //                 confirmButtonText: 'Ok',
+    //                 allowOutsideClick: false,
+    //                 allowEscapeKey: false,
+    //             }).then((result) => {
+    //                 if (result.isConfirmed) {
+    //                 }
+    //             })
+    //             navigate('/sup-admin/view-part-list')
+    //         } else {
+    //             setLoading(false)
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: res.data.message,
+    //             })
+    //         }
+    //     } catch (error) {
+    //         setLoading(false)
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             text: error.response.data.message,
+    //         })
+    //     }
+    // }
 
-    console.log(item)
+    // console.log(item)
 
     return (
         <Container>
@@ -273,7 +313,7 @@ const AddBulkPart = () => {
                                 navigate('/sup-admin/view-part-list')
                             }
                         >
-                            Back to list
+                            Back to Spare Part list
                         </Button>
                         <Button
                             sx={{ mb: 2, ml: 2 }}
@@ -324,9 +364,7 @@ const AddBulkPart = () => {
                             disabled={loading}
                             sx={{ mt: 3, mb: 1 }}
                             style={{ backgroundColor: '#206CE2' }}
-                            onClick={(e) => {
-                                handelSubmit(e)
-                            }}
+                            onClick={() => navigate('/sup-admin/view-list/sparereporting')}
                         >
                             Submit
                         </Button>
@@ -345,13 +383,15 @@ const AddBulkPart = () => {
                     )}
                 </Box>
                 {item.length != 0 && loading !== true ? (
-                    <>
+                    
                         <StyledTable>
-                            <TableHead>
+                            {/* <TableHead>
                                 <TableRow>
-                                    <TableCell>S.NO</TableCell>
+                                    <TableCell>Part Number</TableCell>
                                     <TableCell>Part Name</TableCell>
-                                    <TableCell>Description</TableCell>
+                                    <TableCell>Part Description</TableCell>
+                                    <TableCell>Color</TableCell>
+                                    <TableCell>Technical QC</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -420,7 +460,7 @@ const AddBulkPart = () => {
                                                     onClick={() => {
                                                         if (
                                                             window.confirm(
-                                                                'You Want to Remove?'
+                                                                'Do You Want to Remove?'
                                                             )
                                                         ) {
                                                             handelDelete(
@@ -437,9 +477,59 @@ const AddBulkPart = () => {
                                         </TableCell>
                                     </TableRow>
                                 ))}
-                            </TableBody>
+                            </TableBody> */}
+
+
+<TableHead sx={{background:"white"}}>
+            <TableRow sx={{ }}>
+              <TableCell align="center">Part Number</TableCell>
+              <TableCell align="center">Part Name</TableCell>
+              <TableCell align="center">Part Description</TableCell>
+              <TableCell align="center">Part Color</TableCell>
+              <TableCell align="center">Technical QC</TableCell>
+              <TableCell align="center">Validation</TableCell>
+              <TableCell align="center" >Action</TableCell>
+            </TableRow>
+          </TableHead>
+  
+          <TableBody>
+            {products.map((phones, index) => (
+              <TableRow key={index}>
+                <TableCell align="center">{phones.Part_Number}</TableCell>
+                <TableCell align="center">{phones.Part_Name}</TableCell>
+                <TableCell align="center">{phones.Part_Description}</TableCell>
+                <TableCell align="center">{phones.Part_Color}</TableCell>        
+                <TableCell align="center">{phones.Technical_QC}</TableCell>        
+                <TableCell align="center">{phones.Validation}</TableCell>        
+                <TableCell>
+                <IconButton sx={{ml:9}}>
+                                <Icon
+                                
+                                    onClick={(e) => {
+                                        handelDelete()
+                                    }}
+                                    color="error"
+                                >
+                                    delete
+                                </Icon>
+                            </IconButton>
+                </TableCell>
+                {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
+                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
+               
+                {/* <TableCell align="right">
+                  <IconButton>
+                    <Icon color="error">close</Icon>
+                  </IconButton>
+                </TableCell> */}
+              </TableRow>
+         ) 
+            )} 
+          </TableBody>
+
+
                         </StyledTable>
-                    </>
+                    
                 ) : item.length != 0 ? (
                     <StyledLoading>
                         <Box position="relative">

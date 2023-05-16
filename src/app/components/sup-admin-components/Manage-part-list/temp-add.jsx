@@ -55,6 +55,11 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
+        color: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
     })
     const {
         register,
@@ -222,6 +227,21 @@ const AddPartOrColorAndEditDialog = ({
                     helperText={errors.name ? errors.name?.message : ''}
                 />
                 <TextFieldCustOm
+                    sx={{width:"100%"}}
+                    label="Color"
+                    select
+                    type="text"
+                    name="color"
+                    {...register('name')}
+                    error={errors.color ? true : false}
+                    helperText={errors.color?.message}                           
+                >
+                    <MenuItem value="red">Red</MenuItem>
+                    <MenuItem value="blue">Blue</MenuItem>
+                    <MenuItem value="green">Green</MenuItem>
+                    <MenuItem value="yellow">Yellow</MenuItem>                      
+                </TextFieldCustOm>  
+                <TextFieldCustOm
                     label="Description"
                     type="text"
                     name="description"
@@ -231,6 +251,7 @@ const AddPartOrColorAndEditDialog = ({
                         errors.description ? errors.description?.message : ''
                     }
                 />
+                
 
                 <FormHandlerBox>
                     <Button

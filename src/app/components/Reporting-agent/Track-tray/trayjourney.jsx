@@ -108,7 +108,278 @@ const Trayjourney = ({ TrayMovement }) => {
                             </TimelineContent>
                         </TimelineItem>
                     ) : null}
-
+                     {TrayMovement?.merging_done_close_sorting != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Merging done item validated and closed by warehouse at -{' '}
+                                {new Date(
+                                    TrayMovement?.merging_done_close_sorting
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    {TrayMovement?.issued_to_charging != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Issued to charging at -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_to_charging
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     {TrayMovement?.charging_done_close_wh != undefined && TrayMovement?.charging_done_close_wh !== null  ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Charge done item validated and closed by warehouse at -{' '}
+                                {new Date(
+                                    TrayMovement?.charging_done_close_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     {TrayMovement?.issued_to_recharging != undefined ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                Issued to recharging -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_to_recharging
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    { TrayMovement?.recharging_done_close_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                               Recharging done item validated and closed by warehouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.recharging_done_close_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                      { TrayMovement?.recharging_done_close_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                               Recharging done item validated and closed by warehouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.recharging_done_close_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     { TrayMovement?.issued_to_bqc_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                              Issued to bqc at -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_to_bqc_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                      { TrayMovement?.bqc_done_close_by_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                              Bqc done and item validated and closed by warehouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.bqc_done_close_by_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     { TrayMovement?.issue_to_audit_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                             Issue to audit at -{' '}
+                                {new Date(
+                                    TrayMovement?.issue_to_audit_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    { TrayMovement?.issue_to_audit_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                             Issue to audit at -{' '}
+                                {new Date(
+                                    TrayMovement?.issue_to_audit_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    { TrayMovement?.audit_done_close_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                            Audit done and item validated and close by warhouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.audit_done_close_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     { TrayMovement?.audit_done_close_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                            Audit done and item validated and close by warhouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.audit_done_close_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                      { TrayMovement?.issued_rdl_1_wh ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                            Issued to rdl 1 at  -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_rdl_1_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     { TrayMovement?.ctx_transfer_to_sales ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                           Ctx tray transfferd to sales at  -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_rdl_1_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    { TrayMovement?.ctx_transfer_to_sales ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                           Ctx tray transfferd to sales at  -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_rdl_1_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                    { TrayMovement?.ctx_transfer_to_sales ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                           Ctx tray transfferd to sales at  -{' '}
+                                {new Date(
+                                    TrayMovement?.issued_rdl_1_wh
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
+                     { TrayMovement?.ctx_transfer_to_processing ? (
+                        <TimelineItem>
+                            <TimelineSeparator>
+                                <TimelineConnector />
+                                <TimelineDot />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                           Ctx tray transfferd to processing warehouse at  -{' '}
+                                {new Date(
+                                    TrayMovement?.ctx_transfer_to_processing
+                                ).toLocaleString('en-GB', {
+                                    hour12: true,
+                                })}{' '}
+                            </TimelineContent>
+                        </TimelineItem>
+                    ) : null}
                     
                 </Timeline>
             </Box>

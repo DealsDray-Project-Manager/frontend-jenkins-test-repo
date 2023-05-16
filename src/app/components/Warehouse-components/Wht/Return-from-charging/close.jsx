@@ -126,6 +126,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     type: 'Ready to bqc',
+                    sort_id:trayData?.sort_id,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/close-wht-tray-ready-to-next',
@@ -428,7 +429,8 @@ export default function DialogBox() {
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             if (window.confirm('You Want to Close?')) {
-                                handelIssue(e)
+                                handelIssue(e,
+                                    )
                             }
                         }}
                     >

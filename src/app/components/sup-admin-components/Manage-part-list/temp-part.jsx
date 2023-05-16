@@ -27,7 +27,7 @@ const PartTable = () => {
     const [partList, setPartList] = useState([])
     let navigate=useNavigate()
     const [muicData, setMuicData] = useState([])
-    const navigate = useNavigate()
+   
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -181,16 +181,11 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-<<<<<<< HEAD
             label: 'Part No', // column title that will be shown in table
-=======
-            label: 'Part Id', // column title that will be shown in table
->>>>>>> 48a79c73e263980ac2c96f81ff3f7701c58ed89a
             options: {
                 filter: true,
             },
         },
-<<<<<<< HEAD
         // {
         //     name: 'muic', // field name in the row object
         //     label: 'MUIC', // column title that will be shown in table
@@ -198,9 +193,6 @@ const PartTable = () => {
         //         filter: true,
         //     },
         // },
-=======
-
->>>>>>> 48a79c73e263980ac2c96f81ff3f7701c58ed89a
         {
             name: 'color', // field name in the row object
             label: 'Color', // column title that will be shown in table

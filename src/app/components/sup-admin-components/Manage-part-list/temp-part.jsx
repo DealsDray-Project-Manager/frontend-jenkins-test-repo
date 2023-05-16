@@ -26,7 +26,7 @@ const PartTable = () => {
     const [editFetchData, setEditFetchData] = useState({})
     const [partList, setPartList] = useState([])
     const [muicData, setMuicData] = useState([])
-    const navigate = useNavigate()
+    const navigate=useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)

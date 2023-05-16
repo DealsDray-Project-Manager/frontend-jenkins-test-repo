@@ -35,7 +35,6 @@ const MemberEditorDialog = ({
                 sales: sales,
                 sort_id: 'Transfer Request sent to Warehouse',
             }
-
             let res = await axiosMisUser.post('/ctx/transferRequestSend', obj)
             if (res.status == 200) {
                 setLoading(false)

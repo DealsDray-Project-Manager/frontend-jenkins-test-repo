@@ -2,7 +2,8 @@ import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import CheckCircle from '@mui/icons-material/CheckCircle';
+
 const Sparereporting = () => {
     const Container = styled('div')(({ theme }) => ({
         margin: '30px',
@@ -56,7 +57,7 @@ const Sparereporting = () => {
                             variant="contained"
                             color="primary"
                              sx={{margin:"auto",mt:1, mb:2,mr:60}} 
-                             onClick={() => navigate('/sup-admin/view-list/validatespare')}
+                             onClick={() => navigate('/sup-admin/view-list/just')}
                         >
                             Previous
                         </Button> */}

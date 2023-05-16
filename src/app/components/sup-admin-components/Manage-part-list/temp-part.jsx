@@ -302,14 +302,14 @@ const PartTable = () => {
             >
                 Download Sample File 
             </Button>
-            <Button
+            {/* <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="error"
                 onClick={() => navigate('/sup-admin/view-list/uploadspare')}
             >
                 Upload Spare 
-            </Button>
+            </Button> */}
             <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"

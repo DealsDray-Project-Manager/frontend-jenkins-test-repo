@@ -273,7 +273,7 @@ const AddBulkPart = () => {
                                 navigate('/sup-admin/view-part-list')
                             }
                         >
-                            Back to list
+                            Back Spare Part list
                         </Button>
                         <Button
                             sx={{ mb: 2, ml: 2 }}

@@ -50,8 +50,10 @@ const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
 
 const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association')))
 // const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
-const Downloadsample=Loadable(lazy(()=>import('./Manage-part-list/downloadsample')))
 const Uploadspare=Loadable(lazy(()=>import('./Manage-part-list/uploadspare')))
+const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')))
+const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
+const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
 
 
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
@@ -170,13 +172,22 @@ const SuperAdminRouter = [
         path: '/sup-admin/view-part-list/muic-association',
         element: <Association />,
     },
-    {
-        path: '/sup-admin/view-list/downloadsample',
-        element: <Downloadsample />,
-    },
+
     {
         path: '/sup-admin/view-list/uploadspare',
         element: <Uploadspare />,
+    },
+    {
+        path: '/sup-admin/view-list/validatespare',
+        element: <Validatespare />,
+    },
+    {
+        path: '/sup-admin/view-list/sparereporting',
+        element: <Sparereporting />,
+    },
+    {
+        path: '/sup-admin/view-list/managestock',
+        element: <Managestock />,
     },
     {
         path: '/sup-admin/view-color-list',

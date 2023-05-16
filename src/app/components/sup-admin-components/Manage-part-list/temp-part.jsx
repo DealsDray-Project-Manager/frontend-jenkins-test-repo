@@ -297,7 +297,7 @@ const PartTable = () => {
             <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
-                color="secondary"
+                color="success"
                 onClick={() => navigate('/sup-admin/view-list/downloadsample')}
             >
                 Download Sample File 
@@ -305,7 +305,7 @@ const PartTable = () => {
             <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
-                color="secondary"
+                color="error"
                 onClick={() => navigate('/sup-admin/view-list/uploadspare')}
             >
                 Upload Spare 
@@ -313,14 +313,14 @@ const PartTable = () => {
             <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
-                color="secondary"
-                onClick={() => navigate('/sup-admin/view-list/')}
+                color="warning"
+                onClick={() => navigate('/sup-admin/view-list/managestock')}
             >
                 Manage Stock
             </Button>
 
             <MUIDataTable
-                title={'All Parts'}
+                title={'Spare Part List'}
                 data={partList}
                 columns={columns}
                 options={{

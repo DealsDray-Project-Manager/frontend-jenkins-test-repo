@@ -227,16 +227,6 @@ const AddPartOrColorAndEditDialog = ({
                     helperText={errors.name ? errors.name?.message : ''}
                 />
                 <TextFieldCustOm
-                    label="Description"
-                    type="text"
-                    name="description"
-                    {...register('description')}
-                    error={errors.description ? true : false}
-                    helperText={
-                        errors.description ? errors.description?.message : ''
-                    }
-                />
-                <TextFieldCustOm
                     label="Color"
                     type="text"
                     name="color"
@@ -246,6 +236,17 @@ const AddPartOrColorAndEditDialog = ({
                         errors.color ? errors.color?.message : ''
                     }
                 />
+                <TextFieldCustOm
+                    label="Description"
+                    type="text"
+                    name="description"
+                    {...register('description')}
+                    error={errors.description ? true : false}
+                    helperText={
+                        errors.description ? errors.description?.message : ''
+                    }
+                />
+                
 
                 <FormHandlerBox>
                     <Button

@@ -11,6 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+
 
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -58,6 +62,15 @@ const StyledTable = styled(Table)(({ theme }) => ({
 
 
 const Association = () => {
+
+  const [selectedValue, setSelectedValue] = useState('');
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+
+  };
+
+  const navigate = useNavigate()
     const {
         register,
         formState: { errors },
@@ -102,7 +115,7 @@ const Association = () => {
     return ( 
         // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
        
-        <Card>
+        <>
         <Container>
          <div className="breadcrumb">
                 <Breadcrumb
@@ -115,14 +128,27 @@ const Association = () => {
                      <Box sx={{p:1, display:'flex'}}>
                          <Box>
                          <Card>
+                         <Typography sx={{p:3,fontWeight:"bold", fontSize:"16px"}}>PART NUMBER: </Typography>
                          <Box sx={{p:3, display:'flex', justifyContent:"space-between"}}>
-                          
+                            
                                 <Box>
-                                    <Typography sx={{fontSize:"16px", marginBottom:"15px"}} >Part No:  </Typography>
-                                    <Typography sx={{fontSize:"16px", marginBottom:"15px"}}>Part Name: </Typography>
+                                    <Typography sx={{fontSize:"16px", marginBottom:"10px"}}>Part Name: </Typography>
+                                    <Box sx={{display:"flex"}}>
+                                    <Typography sx={{fontSize:"16px", marginBottom:"10px"}}>Technical QC: </Typography> 
+                                    <FormControl component="fieldset" sx={{ml:2}}>
+                                  
+                                      <RadioGroup value={selectedValue} onChange={handleChange} >
+                                        <FormControlLabel value="option1" control={<Radio />} label="Yes" />
+                                        <FormControlLabel value="option2" control={<Radio />} label="No" />
+                                      </RadioGroup>
+                                      
+                                    </FormControl>
+                                    </Box>
+                                    <Typography sx={{fontSize:"16px"}}>Description: </Typography> 
                                 </Box>
+                            <Box>
                             <TextFieldCustOm
-                                sx={{marginLeft:"820px", width:"150px"}}
+                                sx={{mr:50, width:"150px"}}
                                 label="Color"
                                 select
                                 type="text"
@@ -135,15 +161,15 @@ const Association = () => {
                                 <MenuItem value="blue">Blue</MenuItem>
                                 <MenuItem value="green">Green</MenuItem>
                                 <MenuItem value="yellow">Yellow</MenuItem>                      
-                            </TextFieldCustOm>                            
+                            </TextFieldCustOm>     
+                              </Box>                                              
                         </Box>
-                         <br />
-                        <Box sx={{p:2, display:'flex'}}>
-                            <Typography sx={{fontSize:"16px", marginBottom:"15px"}}>MUIC:</Typography>
+                        <Box sx={{p:3}}>
+                            <Typography sx={{fontSize:"16px", marginBottom:"15px"}}>Add MUIC in Bulk</Typography>
                             <textarea
                                 style={{marginLeft:"5px",width:"100%",height:"100px"}}
                                 type="text" 
-                                label="MUIC No"
+                                placeholder='Please add MUIC separated by Commas'
                                 // errorMessages={["this field is required"]}
                                 // inputProps={{
                                 //             style:{
@@ -153,13 +179,64 @@ const Association = () => {
                                 //             }}
                             />
                         </Box>
+                        <Box sx={{p:2, display:'flex', alignItems:"center" ,justifyContent:"space-between"}}>
+           <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Associated</Typography>
+            <Typography sx={{fontWeight:"bold", ml:80}}>Total - 134</Typography>
+           </Box>
+                        <Box sx={{ border:"", width:"100%", marginLeft:"",marginRight:"",borderRadius:"8px",background:"white"}} overflow="auto">
+                <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
+          <TableHead sx={{background:"white"}}>
+            <TableRow sx={{ }}>
+              <TableCell align="center">MUIC</TableCell>
+              <TableCell align="center">Brand</TableCell>
+              <TableCell align="center">Model</TableCell>
+              <TableCell align="center">Validation</TableCell>
+              <TableCell align="center" >Action</TableCell>
+            </TableRow>
+          </TableHead>
+  
+          <TableBody>
+            {products.map((phones, index) => (
+              <TableRow key={index}>
+                <TableCell align="center">{phones.MUIC}</TableCell>
+                <TableCell align="center">{phones.Brand}</TableCell>
+                <TableCell align="center">{phones.Model}</TableCell>
+                <TableCell align="center">{phones.Color}</TableCell>        
+                <TableCell>
+                <IconButton sx={{ml:13}}>
+                                <Icon
+                                
+                                    onClick={(e) => {
+                                        handelDelete()
+                                    }}
+                                    color="error"
+                                >
+                                    delete
+                                </Icon>
+                            </IconButton>
+                </TableCell>
+                {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
+                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
+               
+                {/* <TableCell align="right">
+                  <IconButton>
+                    <Icon color="error">close</Icon>
+                  </IconButton>
+                </TableCell> */}
+              </TableRow>
+         ) 
+            )} 
+          </TableBody>
+        </StyledTable>
+        <br />
+            </Box>
                         <Box sx={{justifyContent:"center",alignItems:"center",display:"flex"}}>
                         <Button
                 variant="contained"
                 color="primary"
                  sx={{margin:"auto",mt:1, mb:2}} 
                 >
-                Check
+                Validate MUIC
             </Button>
                         </Box>
             </Card>
@@ -167,8 +244,8 @@ const Association = () => {
             <br />
            <Card sx={{border:'',marginRight:"", marginLeft:""}}>
            <Box sx={{p:2, display:'flex', alignItems:"center" ,justifyContent:"space-between"}}>
-           <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Details</Typography>
-            <Typography sx={{fontWeight:"bold", ml:80}}>You added 128 MUIC's</Typography>
+           <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Validation</Typography>
+            <Typography sx={{fontWeight:"bold", ml:80}}>Total Added - 25 | Valid - 20 | Duplicates - 3 | Invalid - 2</Typography>
            </Box>
              <Box sx={{ border:"", width:"100%", marginLeft:"",marginRight:"",borderRadius:"8px",background:"white"}} overflow="auto">
                 <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
@@ -177,8 +254,8 @@ const Association = () => {
               <TableCell align="center">MUIC</TableCell>
               <TableCell align="center">Brand</TableCell>
               <TableCell align="center">Model</TableCell>
-              <TableCell align="center">Color</TableCell>
-              <TableCell align="center" >Delete</TableCell>
+              <TableCell align="center">Validation</TableCell>
+              <TableCell align="center" >Action</TableCell>
             </TableRow>
           </TableHead>
   
@@ -224,65 +301,31 @@ const Association = () => {
                 color="primary"
                  sx={{margin:"auto",mt:1, mb:2}} 
                 >
-                Submit
+                Associate MUIC
             </Button>
                         </Box>
             </Card>
             <br />
             <br />
             <Card sx={{marginRight:"", marginLeft:""}}>
-            <Box sx={{p:2, display:'flex', alignItems:"center",justifyContent:"space-between"}}>
-           <Typography sx={{p:2, fontWeight:"bold"}}>Old MUIC Details</Typography>
-            <Typography sx={{fontWeight:"bold", ml:80}}>120 Unique MUIC found</Typography>
+            <Box sx={{p:2,alignItems:"center"}}>
+           <Typography sx={{p:2, fontWeight:"bold"}}>MUIC Association Reporting</Typography>
            </Box>
-             <Box sx={{  width:"100%", marginLeft:"",marginRight:"",borderRadius:"8px",background:"white"}} overflow="auto">
-                <StyledTable sx={{borderRadius:"20px", margin:"auto"}}>
-          <TableHead sx={{background:"white"}}>
-            <TableRow sx={{}}>
-              <TableCell align="center">MUIC</TableCell>
-              <TableCell align="center">Brand</TableCell>
-              <TableCell align="center">Model</TableCell>
-              <TableCell align="center">Color</TableCell>
-              <TableCell align="center" >Delete</TableCell>
-            </TableRow>
-          </TableHead>
-  
-          <TableBody>
-            {products.map((phones, index) => (
-              <TableRow key={index}>
-                <TableCell align="center">{phones.MUIC}</TableCell>
-                <TableCell align="center">{phones.Color}</TableCell>        
-                <TableCell align="center">{phones.Brand}</TableCell>
-                <TableCell align="center">{phones.Model}</TableCell>
-                <TableCell>
-                <IconButton sx={{ml:13}}>
-                                <Icon
-                                
-                                    onClick={(e) => {
-                                        handelDelete()
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                </TableCell>
-                {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
-               
-                {/* <TableCell align="right">
-                  <IconButton>
-                    <Icon color="error">close</Icon>
-                  </IconButton>
-                </TableCell> */}
-              </TableRow>
-         ) 
-            )} 
-          </TableBody>
-        </StyledTable>
-            </Box>
+             <Box sx={{ml:4}}>
+                    <Typography sx={{fontSize:"16px"}}>MUIC Uploaded: 25 </Typography>
+                    <Typography sx={{fontSize:"16px"}}>Validate: 20 </Typography>
+                    <Typography sx={{fontSize:"16px"}}>Duplicate: 3 </Typography>
+                    <Typography sx={{fontSize:"16px"}}>Invalid: 2 </Typography>
+             </Box>
             <br />
-            <br />
+            <Button
+                            sx={{ mb: 2, ml:65 }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/sup-admin/view-part-list')}
+                        >
+                            Back to Spare Part list
+                        </Button>
            </Card>
            <br />
             <br />
@@ -290,9 +333,10 @@ const Association = () => {
                          
                      </Box>
 </Container>
-                     </Card>
+                     </>
               // </Card>
      );
 }
+
  
 export default Association;

@@ -1,9 +1,9 @@
-import { Box, Card, Divider, Stack, Typography } from '@mui/material'
+import { Box, Card, Divider, Stack, Typography, Grid } from '@mui/material'
 const Bagdetails = ({ BagDetails }) => {
     return (
         <Card
             sx={{
-                width: '920px',
+                // width: '920px',
                 marginTop: '40px',
                 marginTop: '40px',
                 border: '1px solid black',
@@ -24,7 +24,8 @@ const Bagdetails = ({ BagDetails }) => {
                 justifyContent="space-between"
                 sx={{ px: 2, py: 1, bgcolor: 'background.default' }}
             >
-                <Box sx={{ p: 2, display: 'flex' }}>
+                <Box sx={{ p: 2, display: 'flex', justifyContent:"space-between" }}>
+                    <Grid item xs={12} md={6}>
                     <Box>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
@@ -50,7 +51,10 @@ const Bagdetails = ({ BagDetails }) => {
                                 : ''}
                         </Typography>
                     </Box>
-                    <Box>
+                    </Grid>
+                   
+                    <Grid item xs={12} md={6}>
+                    <Box sx={{ marginLeft: '50px', fontSize: '16px' }}>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
@@ -81,6 +85,8 @@ const Bagdetails = ({ BagDetails }) => {
                                 : ''}
                         </Typography>
                     </Box>
+                    </Grid>
+                    
                 </Box>
             </Stack>
         </Card>

@@ -3,7 +3,7 @@ const PMTdetails = ({ PmtTrayDetails }) => {
     return (
         <Card
             sx={{
-                width: '920px',
+                // width: '920px',
                 marginTop: '40px',
                 marginTop: '40px',
                 border: '1px solid black',
@@ -24,7 +24,7 @@ const PMTdetails = ({ PmtTrayDetails }) => {
                 justifyContent="space-between"
                 sx={{ px: 2, py: 1, bgcolor: 'background.default' }}
             >
-                <Box sx={{ p: 2, display: 'flex' }}>
+                <Box sx={{ p: 2, display: 'flex',justifyContent:"space-between"  }}>
                     <Box>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}

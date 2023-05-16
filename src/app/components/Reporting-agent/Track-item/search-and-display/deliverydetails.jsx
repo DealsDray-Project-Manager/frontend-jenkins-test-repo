@@ -1,9 +1,9 @@
-import { Box, Card, Divider, Stack, Typography } from '@mui/material'
+import { Box, Card, Divider, Stack, Typography, Grid } from '@mui/material'
 const Deliverydetails = ({ Deliverydetails }) => {
     return (
         <Card
             sx={{
-                width: '920px',
+                // width: '920px',
                 marginTop: '40px',
                 marginTop: '40px',
                 border: '1px solid black',
@@ -25,7 +25,8 @@ const Deliverydetails = ({ Deliverydetails }) => {
                 sx={{ px: 2, py: 1, bgcolor: 'background.default' }}
             >
                 <Box sx={{ p: 2, display: 'flex' }}>
-                    <Box>
+                <Grid item xs={12} md={6}>
+                <Box>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
@@ -82,7 +83,10 @@ const Deliverydetails = ({ Deliverydetails }) => {
                             {Deliverydetails?.doorsteps_diagnostics}
                         </Typography>
                     </Box>
-                    <Box>
+                </Grid>
+                    
+                    <Grid item xs={12} md={6}>
+                    <Box sx={{ marginLeft: '50px', fontSize: '16px' }}>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
@@ -145,6 +149,8 @@ const Deliverydetails = ({ Deliverydetails }) => {
                         </Typography>
                        
                     </Box>
+                    </Grid>
+                    
                 </Box>
             </Stack>
         </Card>

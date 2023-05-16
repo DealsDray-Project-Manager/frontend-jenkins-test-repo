@@ -38,7 +38,7 @@ const ReadyForChargingBqc = Loadable(
 const RemoveInvalidItem = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/bag'))
 )
-const RemoveInvalidItemView = Loadable(
+const RemoveInvalidItemView = Loadable( 
     lazy(() => import('./Remove-invalid-item-from-bag/view-item'))
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
@@ -47,6 +47,15 @@ const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer =Loadable(lazy(() => import('./Ready-for-transfer/ctx-tray')))
 const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
+
+const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association')))
+// const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
+const Uploadspare=Loadable(lazy(()=>import('./Manage-part-list/uploadspare')))
+const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')))
+const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
+const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
+
+
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
 const BulkAddPart =Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
 
@@ -158,6 +167,27 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-part-list',
         element: <PartList />,
+    },
+    {
+        path: '/sup-admin/view-part-list/muic-association',
+        element: <Association />,
+    },
+
+    {
+        path: '/sup-admin/view-list/uploadspare',
+        element: <Uploadspare />,
+    },
+    {
+        path: '/sup-admin/view-list/validatespare',
+        element: <Validatespare />,
+    },
+    {
+        path: '/sup-admin/view-list/sparereporting',
+        element: <Sparereporting />,
+    },
+    {
+        path: '/sup-admin/view-list/managestock',
+        element: <Managestock />,
     },
     {
         path: '/sup-admin/view-color-list',

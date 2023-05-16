@@ -2,8 +2,9 @@ import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+// import CheckCircle from '@mui/icons-material/CheckCircle';
 
-const Sparereporting = () => {
+const Spare1 = () => {
     const Container = styled('div')(({ theme }) => ({
         margin: '30px',
         [theme.breakpoints.down('sm')]: {
@@ -31,14 +32,16 @@ const Sparereporting = () => {
             <Box sx={{ p: 1, display: 'flex' }}>
                 <Card sx={{ marginRight: "", marginLeft: "", width: "100%" }}>
 
+                    
                     <Box sx={{ p: 2, alignItems: "center" }}>
                         <Typography sx={{ ml:2, fontWeight: "bold" }}>Spare Parts Add Reporting</Typography>
                     </Box>
                     
+                    
 
                     <Box sx={{ ml: 4 }}>
-                        <Typography sx={{ fontSize: "16px" }}>Spare part Uploaded: 108 </Typography>
-                        <Typography sx={{ fontSize: "16px" }}>Upload successful: 98 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Spare part Uploaded: 25 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Upload successful: 19 </Typography>
                         <Typography sx={{ fontSize: "16px" }}>Bad Spare parts: 10 - View List </Typography>
                     </Box>
                     <br />
@@ -66,4 +69,4 @@ const Sparereporting = () => {
     );
 }
 
-export default Sparereporting;
+export default Spare1;

@@ -167,14 +167,14 @@ const Validatespare = () => {
                 >
                 Submit
             </Button>
-            <Button
+            {/* <Button
              variant="contained"
              color="primary"
               sx={{margin:"auto",mt:1, mb:2, mr:60}} 
               onClick={() => navigate('/sup-admin/view-list/uploadspare')}
             >
                 Previous
-            </Button>
+            </Button> */}
                         </Box>
             </Card>
             </Box>

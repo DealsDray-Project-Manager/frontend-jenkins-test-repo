@@ -227,15 +227,20 @@ const AddPartOrColorAndEditDialog = ({
                     helperText={errors.name ? errors.name?.message : ''}
                 />
                 <TextFieldCustOm
+                    sx={{width:"100%"}}
                     label="Color"
+                    select
                     type="text"
                     name="color"
-                    {...register('color')}
+                    {...register('name')}
                     error={errors.color ? true : false}
-                    helperText={
-                        errors.color ? errors.color?.message : ''
-                    }
-                />
+                    helperText={errors.color?.message}                           
+                >
+                    <MenuItem value="red">Red</MenuItem>
+                    <MenuItem value="blue">Blue</MenuItem>
+                    <MenuItem value="green">Green</MenuItem>
+                    <MenuItem value="yellow">Yellow</MenuItem>                      
+                </TextFieldCustOm>  
                 <TextFieldCustOm
                     label="Description"
                     type="text"

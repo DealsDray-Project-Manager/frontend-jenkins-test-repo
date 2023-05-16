@@ -2,6 +2,7 @@ import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 const Sparereporting = () => {
     const Container = styled('div')(({ theme }) => ({
         margin: '30px',
@@ -32,6 +33,10 @@ const Sparereporting = () => {
             <Box sx={{p:2,alignItems:"center"}}>
            <Typography sx={{p:2, fontWeight:"bold"}}>Spare Parts Add Reporting</Typography>
            </Box>
+           <Box>
+                
+            
+           </Box>
              <Box sx={{ml:4}}>
                     <Typography sx={{fontSize:"16px"}}>Spare part Uploaded: 108 </Typography>
                     <Typography sx={{fontSize:"16px"}}>Upload successful: 98 </Typography>
@@ -47,14 +52,14 @@ const Sparereporting = () => {
                         >
                             Back to spare part list 
                         </Button>
-                        <Button
+                        {/* <Button
                             variant="contained"
                             color="primary"
                              sx={{margin:"auto",mt:1, mb:2,mr:60}} 
                              onClick={() => navigate('/sup-admin/view-list/validatespare')}
                         >
                             Previous
-                        </Button>
+                        </Button> */}
            </Box>
            </Card>
            </Box>

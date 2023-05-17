@@ -302,6 +302,16 @@ const SimpleMuiTable = () => {
                                     image
                                 </Icon>
                             </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={() => {
+                                        editImage(tableMeta.rowData[6])
+                                    }}
+                                    color="default"
+                                >
+                                    details
+                                </Icon>
+                            </IconButton>
                         </Box>
                     )
                 },

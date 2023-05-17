@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -26,7 +26,7 @@ const PartTable = () => {
     const [editFetchData, setEditFetchData] = useState({})
     const [partList, setPartList] = useState([])
     const [muicData, setMuicData] = useState([])
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -103,45 +103,45 @@ const PartTable = () => {
         }
     }
 
-    const handelDelete = (id) => {
+    const handelActive = (id, type) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: `You Want to ${type}!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
+            confirmButtonText: `Yes, ${type} it!`,
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/part-list'
+                    // let res = await axiosSuperAdminPrexo.post(
+                    //     '/partAndColor/oneData/' + id + '/part-list'
+                    // )
+                    // if (res.status == 200) {
+                    // }
+                    let obj = {
+                        id: id,
+                        type: type,
+                        page: 'part-list',
+                    }
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/partAndColor/delete',
+                        obj
                     )
-                    if (res.status == 200) {
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/partAndColor/delete/' + id
-                        )
-                        if (response.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Part has been Deleted.',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "This Part You Can't Delete",
-                            })
-                        }
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: `Your Part has been ${type}.`,
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -149,6 +149,13 @@ const PartTable = () => {
                             text: "This Part You Can't Delete",
                         })
                     }
+                    //  else {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Oops...',
+                    //         text: "This Part You Can't Delete",
+                    //     })
+                    // }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -160,12 +167,9 @@ const PartTable = () => {
         })
     }
 
-   
     const handledetails = async () => {
-       
         navigate('/sup-admin/view-part-list/muic-association')
     }
-
 
     const columns = [
         {
@@ -186,7 +190,7 @@ const PartTable = () => {
             },
         },
         {
-            name: 'stock', // field name in the row object
+            name: 'avl_stock', // field name in the row object
             label: 'Available stock', // column title that will be shown in table
             options: {
                 filter: true,
@@ -202,6 +206,13 @@ const PartTable = () => {
         {
             name: 'name', // field name in the row object
             label: 'Part Name', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'technical_qc', // field name in the row object
+            label: 'Technical qc', // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -226,14 +237,58 @@ const PartTable = () => {
             },
         },
         {
+            name: 'status',
+            label: 'Status',
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    if (value == 'Active') {
+                        return (
+                            <div style={{ color: 'green', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <div style={{ color: 'red', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    }
+                },
+            },
+        },
+        {
             name: '_id',
             label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            {tableMeta.rowData[8] == 'Active' ? (
+                                <Radio
+                                    onClick={(e) => {
+                                        handelActive(value, 'Deactive')
+                                    }}
+                                    checked
+                                    style={{ color: 'green' }}
+                                />
+                            ) : (
+                                <Radio
+                                    onClick={(e) => {
+                                        handelActive(value, 'Active')
+                                    }}
+                                    checked
+                                    style={{ color: 'red' }}
+                                />
+                            )}
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
@@ -244,16 +299,7 @@ const PartTable = () => {
                                     edit
                                 </Icon>
                             </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        handelDelete(value)
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
+
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
@@ -264,7 +310,7 @@ const PartTable = () => {
                                     details
                                 </Icon>
                             </IconButton>
-                        </>
+                        </Box>
                     )
                 },
             },
@@ -292,7 +338,7 @@ const PartTable = () => {
                 color="secondary"
                 onClick={() => navigate('/sup-admin/view-list/bulk-add')}
             >
-                Add Bulk 
+                Add Bulk
             </Button>
             <Button
                 sx={{ mb: 2, ml: 2 }}
@@ -300,7 +346,7 @@ const PartTable = () => {
                 color="success"
                 onClick={() => navigate('/sup-admin/view-list/downloadsample')}
             >
-                Download Sample File 
+                Download Sample File
             </Button>
             {/* <Button
                 sx={{ mb: 2, ml: 2 }}
@@ -360,7 +406,6 @@ const PartTable = () => {
             )}
         </Container>
     )
-
 }
 
 export default PartTable

@@ -1,7 +1,7 @@
 import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 import CheckCircle from '@mui/icons-material/CheckCircle';
 
 const Sparereporting = () => {
@@ -19,6 +19,9 @@ const Sparereporting = () => {
     }))
      
     const navigate = useNavigate()
+    const { state } = useLocation()
+    const { validatedSuccess} = state
+
 
     return ( 
         <Container>
@@ -39,8 +42,8 @@ const Sparereporting = () => {
             
            </Box>
              <Box sx={{ml:4}}>
-                    <Typography sx={{fontSize:"16px"}}>Spare part Uploaded: 108 </Typography>
-                    <Typography sx={{fontSize:"16px"}}>Upload successful: 98 </Typography>
+                    <Typography sx={{fontSize:"16px"}}>Spare part Uploaded: {validatedSuccess} </Typography>
+                    <Typography sx={{fontSize:"16px"}}>Upload successfull: {validatedSuccess} </Typography>
                     <Typography sx={{fontSize:"16px"}}>Bad Spare parts: 10 - View List </Typography>
              </Box>
             <br />

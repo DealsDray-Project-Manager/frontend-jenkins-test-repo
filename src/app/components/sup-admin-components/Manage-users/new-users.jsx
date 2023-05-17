@@ -399,7 +399,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
-                        ) : selectedCpc == 'Processing' ? (
+                        ) : selectedCpc == 'Processing' && warehouseType != 'PRC RMW'  ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select

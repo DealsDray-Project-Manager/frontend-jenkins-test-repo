@@ -1,10 +1,10 @@
 import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
-import { useNavigate,useLocation } from 'react-router-dom'
-import CheckCircle from '@mui/icons-material/CheckCircle';
+import { useNavigate } from 'react-router-dom'
+// import CheckCircle from '@mui/icons-material/CheckCircle';
 
-const Sparereporting = () => {
+const Spare1 = () => {
     const Container = styled('div')(({ theme }) => ({
         margin: '30px',
         [theme.breakpoints.down('sm')]: {
@@ -19,9 +19,6 @@ const Sparereporting = () => {
     }))
 
     const navigate = useNavigate()
-    const { state } = useLocation()
-    const { validatedSuccess} = state
-
 
     return (
         <Container>
@@ -32,24 +29,25 @@ const Sparereporting = () => {
                     style={{ marginLeft: "20px" }}
                 />
             </div>
-            <Box sx={{p:1, display:'flex'}}>
-           <Card sx={{marginRight:"", marginLeft:"", width:"100%"}}>
-            <Box sx={{p:2,alignItems:"center"}}>
-           <Typography sx={{p:2, fontWeight:"bold"}}>Spare Parts Add Reporting</Typography>
-           </Box>
-           <Box>
-                
-            
-           </Box>
-             <Box sx={{ml:4}}>
-                    <Typography sx={{fontSize:"16px"}}>Spare part Uploaded: {validatedSuccess} </Typography>
-                    <Typography sx={{fontSize:"16px"}}>Upload successfull: {validatedSuccess} </Typography>
-                    <Typography sx={{fontSize:"16px"}}>Bad Spare parts: 10 - View List </Typography>
-             </Box>
-            <br />
-           <Box sx={{alignItems:"center",justifyContent:"center", display:"flex"}}>
-             <Button
-                            sx={{margin:"auto",mt:1, mb:2, ml:50 }}
+            <Box sx={{ p: 1, display: 'flex' }}>
+                <Card sx={{ marginRight: "", marginLeft: "", width: "100%" }}>
+
+                    
+                    <Box sx={{ p: 2, alignItems: "center" }}>
+                        <Typography sx={{ ml:2, fontWeight: "bold" }}>Spare Parts Add Reporting</Typography>
+                    </Box>
+                    
+                    
+
+                    <Box sx={{ ml: 4 }}>
+                        <Typography sx={{ fontSize: "16px" }}>Spare part Uploaded: 25 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Upload successful: 19 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Bad Spare parts: 10 - View List </Typography>
+                    </Box>
+                    <br />
+                    <Box sx={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
+                        <Button
+                            sx={{ margin: "auto", mt: 1, mb: 2, ml: 50 }}
                             variant="contained"
                             color="primary"
                             onClick={() => navigate('/sup-admin/view-part-list')}
@@ -71,4 +69,4 @@ const Sparereporting = () => {
     );
 }
 
-export default Sparereporting;
+export default Spare1;

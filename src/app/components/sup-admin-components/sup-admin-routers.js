@@ -53,6 +53,7 @@ const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association
 const Uploadspare=Loadable(lazy(()=>import('./Manage-part-list/uploadspare')))
 const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')))
 const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
+const Spare1=Loadable(lazy(()=>import('./Manage-part-list/sparereporting1')))
 const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
 
 
@@ -184,6 +185,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-list/sparereporting',
         element: <Sparereporting />,
+    },
+    {
+        path: '/sup-admin/view-list/sparereporting1',
+        element: <Spare1 />,
     },
     {
         path: '/sup-admin/view-list/managestock',

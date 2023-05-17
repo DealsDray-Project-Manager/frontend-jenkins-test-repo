@@ -28,20 +28,20 @@ const TextFieldCustOm = styled(TextField)(() => ({
 
 const products = [
     {
-      Part_Number: 'DP00987',
-      Part_Name: "Display",
-      Part_Description: "Display",
-      Part_Color: "-",
-      Technical_QC: "Yes",
-      Validation: "Pass"
+      part_number: 'DP00987',
+      part_name: "Display",
+      part_description: "Display",
+      part_color: "-",
+      technical_qc: "Yes",
+      validation: "Pass"
     },
     {
-      Part_Number: 'DP00998',
-      Part_Name: "Back Panel",
-      Part_Description: "Back Panel",
-      Part_Color: "Green",
-      Technical_QC: "No",
-      Validation: "Error"    
+      part_number: 'DP00998',
+      part_name: "Back Panel",
+      part_description: "Back Panel",
+      part_color: "Green",
+      technical_qc: "No",
+      validation: "Error"    
     }
     // {
     //   MUIC: "IK579",
@@ -126,6 +126,7 @@ const AddBulkPart = () => {
             const fetchData = async () => {
                 let res = await axiosSuperAdminPrexo.post('/getBrandIdHighest')
                 if (res.status == 200) {
+                    console.log(res);
                     setPartId(res.data.partCount)
                 }
             }
@@ -481,8 +482,7 @@ const AddBulkPart = () => {
 
 
 <TableHead sx={{background:"white"}}>
-            <TableRow sx={{ }}>
-              <TableCell align="center">Part Number</TableCell>
+<TableRow sx={{ }}>
               <TableCell align="center">Part Name</TableCell>
               <TableCell align="center">Part Description</TableCell>
               <TableCell align="center">Part Color</TableCell>
@@ -495,34 +495,33 @@ const AddBulkPart = () => {
           <TableBody>
             {products.map((phones, index) => (
               <TableRow key={index}>
-                <TableCell align="center">{phones.Part_Number}</TableCell>
-                <TableCell align="center">{phones.Part_Name}</TableCell>
-                <TableCell align="center">{phones.Part_Description}</TableCell>
-                <TableCell align="center">{phones.Part_Color}</TableCell>        
-                <TableCell align="center">{phones.Technical_QC}</TableCell>        
-                <TableCell align="center">{phones.Validation}</TableCell>        
-                <TableCell>
-                <IconButton sx={{ml:9}}>
-                                <Icon
-                                
-                                    onClick={(e) => {
-                                        handelDelete()
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                </TableCell>
-                {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
-               
-                {/* <TableCell align="right">
-                  <IconButton>
-                    <Icon color="error">close</Icon>
-                  </IconButton>
-                </TableCell> */}
-              </TableRow>
+              <TableCell align="center">{phones?.part_name}</TableCell>
+              <TableCell align="center">{phones?.part_description}</TableCell>
+              <TableCell align="center">{phones?.part_color}</TableCell>        
+              <TableCell align="center">{phones?.technical_qc}</TableCell>        
+              <TableCell align="center">{phones?.validation}</TableCell>        
+              <TableCell>
+              <IconButton sx={{ml:9}}>
+                              <Icon
+                              
+                                  onClick={(e) => {
+                                      handelDelete()
+                                  }}
+                                  color="error"
+                              >
+                                  delete
+                              </Icon>
+                          </IconButton>
+              </TableCell>
+              {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
+              <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
+             
+              {/* <TableCell align="right">
+                <IconButton>
+                  <Icon color="error">close</Icon>
+                </IconButton>
+              </TableCell> */}
+            </TableRow>
          ) 
             )} 
           </TableBody>

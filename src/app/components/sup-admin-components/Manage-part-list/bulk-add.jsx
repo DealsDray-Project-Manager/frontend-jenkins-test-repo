@@ -384,7 +384,12 @@ const AddBulkPart = () => {
                                             value={data.part_name?.toString()}
                                         />
                                         {err?.duplicate_part_name?.includes(
-                                            data.part_name
+                                            data.part_name ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name == '')
                                         ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
@@ -398,7 +403,12 @@ const AddBulkPart = () => {
                                         )}
 
                                         {err?.duplicate_part_name?.includes(
-                                            data.part_name
+                                            data.part_name ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name == '')
                                         ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Name
@@ -418,7 +428,12 @@ const AddBulkPart = () => {
                                             value={data.part_color?.toString()}
                                         />
                                         {err?.duplicate_color?.includes(
-                                            data.part_color
+                                            data.part_color ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color == '')
                                         ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
@@ -432,7 +447,12 @@ const AddBulkPart = () => {
                                         )}
 
                                         {err?.duplicate_color?.includes(
-                                            data.part_color
+                                            data.part_color ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color == '')
                                         ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Color does not exists
@@ -451,6 +471,38 @@ const AddBulkPart = () => {
                                             name="technical_qc"
                                             value={data.technical_qc?.toString()}
                                         />
+                                        {err?.err_technical_qc?.includes(
+                                            (Object.keys(err).length != 0 &&
+                                                data.technical_qc) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.technical_qc ==
+                                                        undefined) ||
+                                                data.technical_qc == ''
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+
+                                        {err?.err_technical_qc?.includes(
+                                            data.technical_qc
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == '') ? (
+                                            <p style={{ color: 'red' }}>
+                                                Only Y/N are accepteble
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
                                     </TableCell>
                                     <TableCell>
                                         <TextField
@@ -468,6 +520,21 @@ const AddBulkPart = () => {
                                         {err?.duplicate_part_name?.includes(
                                             data.part_name
                                         ) == true ||
+                                        err?.err_technical_qc?.includes(
+                                            data.technical_qc
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == '') ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_name == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_name == '') ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_color == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_color == '') ||
                                         err?.duplicate_color?.includes(
                                             data.part_color
                                         ) == true ? (

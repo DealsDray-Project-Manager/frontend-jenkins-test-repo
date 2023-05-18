@@ -167,8 +167,8 @@ const PartTable = () => {
         })
     }
 
-    const handledetails = async () => {
-        navigate('/sup-admin/view-part-list/muic-association')
+    const handledetails = async (id) => {
+        navigate('/sup-admin/view-part-list/muic-association/' + id)
     }
 
     const columns = [
@@ -303,7 +303,7 @@ const PartTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handledetails(value)
+                                        handledetails(tableMeta.rowData[1])
                                     }}
                                     color="default"
                                 >

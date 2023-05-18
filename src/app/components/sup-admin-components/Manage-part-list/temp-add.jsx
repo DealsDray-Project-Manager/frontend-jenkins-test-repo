@@ -71,6 +71,10 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
+        technical_qc:Yup.string()
+        .required('Required*')
+        .matches(/^[YN]$/, 'Please enter either Y or N')
+        .nullable()
     })
     const {
         register,
@@ -160,6 +164,7 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
+                handleClose()
                 Swal.fire({
                     icon: 'failed',
                     title: response.data.message,
@@ -220,6 +225,10 @@ const AddPartOrColorAndEditDialog = ({
                     type="text"
                     name="technical_qc"
                     {...register('technical_qc')}
+                    error={errors.technical_qc ? true : false}
+                    helperText={
+                        errors.technical_qc ? errors.technical_qc?.message : ''
+                    }
                 />
 
                 <TextFieldCustOm

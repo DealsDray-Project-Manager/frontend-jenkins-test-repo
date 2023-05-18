@@ -213,19 +213,19 @@ const MUIClist = () => {
                         <Typography>Model:</Typography>
                         <Typography>Vendor:</Typography>
                     </Box>
-                    <Box sx={{ml:100}}>
+                    <Box sx={{ml:79}}>
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={() => navigate('/sup-admin/products')}
                         //   sx={{ margin: "auto", mt: 1, mb: 2 }}
                         >
-                            Back
+                            Back to MUIC list
                         </Button>
                     </Box>
                 </Box>
                 </Box>
-                <Box sx={{ml:140, mb: 3,mt:3}}>
+                <Box sx={{ml:123, mb: 3,mt:3}}>
                     <Button
                         variant="contained"
                         color="primary"

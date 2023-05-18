@@ -6,7 +6,10 @@ import {
     TableRow,
     TableCell,
     Button,
-    TextField, MenuItem,IconButton, Icon
+    TextField,
+    MenuItem,
+    IconButton,
+    Icon,
 } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -18,45 +21,10 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
 
-
-
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
-
-
-const products = [
-    {
-      part_number: 'DP00987',
-      part_name: "Display",
-      part_description: "Display",
-      part_color: "-",
-      technical_qc: "Yes",
-      validation: "Pass"
-    },
-    {
-      part_number: 'DP00998',
-      part_name: "Back Panel",
-      part_description: "Back Panel",
-      part_color: "Green",
-      technical_qc: "No",
-      validation: "Error"    
-    }
-    // {
-    //   MUIC: "IK579",
-    //   Brand: "Apple",
-    //   Model:'iphone 11',
-    //   Color: "Gold"    
-    // },
-    // {
-    //   MUIC: "XU827",
-    //   Brand: "Apple",
-    //   Model:'iphone 11 pro',
-    //   Color: "Silver"
-    // }
-  ];
-
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -126,7 +94,7 @@ const AddBulkPart = () => {
             const fetchData = async () => {
                 let res = await axiosSuperAdminPrexo.post('/getBrandIdHighest')
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res)
                     setPartId(res.data.partCount)
                 }
             }
@@ -189,6 +157,7 @@ const AddBulkPart = () => {
             obj.PARTID = updatedStr
             accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
+            accumulator.type = 'part-list'
             return accumulator
         }, {})
     }
@@ -247,42 +216,46 @@ const AddBulkPart = () => {
             })
         }
     }
-    // const handelSubmit = async (e) => {
-    //     try {
-    //         setLoading(true)
-    //         let res = await axiosSuperAdminPrexo.post(
-    //             '/bulkAddPart',
-    //             pagination.item
-    //         )
-    //         if (res.status == 200) {
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: res.data.message,
-    //                 confirmButtonText: 'Ok',
-    //                 allowOutsideClick: false,
-    //                 allowEscapeKey: false,
-    //             }).then((result) => {
-    //                 if (result.isConfirmed) {
-    //                 }
-    //             })
-    //             navigate('/sup-admin/view-part-list')
-    //         } else {
-    //             setLoading(false)
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 text: res.data.message,
-    //             })
-    //         }
-    //     } catch (error) {
-    //         setLoading(false)
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             text: error.response.data.message,
-    //         })
-    //     }
-    // }
+    const handelSubmit = async (e) => {
+        try {
+            setLoading(true)
+            let res = await axiosSuperAdminPrexo.post(
+                '/bulkAddPart',
+                pagination.item
+            )
+            if (res.status == 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/sup-admin/view-list/sparereporting', {
+                            state: {
+                                validatedSuccess: res.data.addedCount,
+                            },
+                        })
+                    }
+                })
+            } else {
+                setLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            setLoading(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.message,
+            })
+        }
+    }
 
     // console.log(item)
 
@@ -365,7 +338,9 @@ const AddBulkPart = () => {
                             disabled={loading}
                             sx={{ mt: 3, mb: 1 }}
                             style={{ backgroundColor: '#206CE2' }}
-                            onClick={() => navigate('/sup-admin/view-list/sparereporting')}
+                            onClick={(e) => {
+                                handelSubmit()
+                            }}
                         >
                             Submit
                         </Button>
@@ -384,151 +359,214 @@ const AddBulkPart = () => {
                     )}
                 </Box>
                 {item.length != 0 && loading !== true ? (
-                    
-                        <StyledTable>
-                            {/* <TableHead>
-                                <TableRow>
-                                    <TableCell>Part Number</TableCell>
-                                    <TableCell>Part Name</TableCell>
-                                    <TableCell>Part Description</TableCell>
-                                    <TableCell>Color</TableCell>
-                                    <TableCell>Technical QC</TableCell>
+                    <StyledTable>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Part Number</TableCell>
+                                <TableCell>Part Name</TableCell>
+                                <TableCell>Color</TableCell>
+                                <TableCell>Technical QC</TableCell>
+                                <TableCell>Part Description</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {item.map((data) => (
+                                <TableRow tabIndex={-1}>
+                                    <TableCell>{data.id}</TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            onChange={updateFieldChanged(
+                                                data.code
+                                            )}
+                                            id="outlined-password-input"
+                                            type="text"
+                                            name="part_name"
+                                            value={data.part_name?.toString()}
+                                        />
+                                        {err?.duplicate_part_name?.includes(
+                                            data.part_name ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name == '')
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+
+                                        {err?.duplicate_part_name?.includes(
+                                            data.part_name ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_name == '')
+                                        ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Duplicate Part Name
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            onChange={updateFieldChanged(
+                                                data.code
+                                            )}
+                                            id="outlined-password-input"
+                                            type="text"
+                                            name="part_color"
+                                            value={data.part_color?.toString()}
+                                        />
+                                        {err?.duplicate_color?.includes(
+                                            data.part_color ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color == '')
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+
+                                        {err?.duplicate_color?.includes(
+                                            data.part_color ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color ==
+                                                        undefined) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.part_color == '')
+                                        ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Color does not exists
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            onChange={updateFieldChanged(
+                                                data.code
+                                            )}
+                                            id="outlined-password-input"
+                                            type="text"
+                                            name="technical_qc"
+                                            value={data.technical_qc?.toString()}
+                                        />
+                                        {err?.err_technical_qc?.includes(
+                                            (Object.keys(err).length != 0 &&
+                                                data.technical_qc) ||
+                                                (Object.keys(err).length != 0 &&
+                                                    data.technical_qc ==
+                                                        undefined) ||
+                                                data.technical_qc == ''
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+
+                                        {err?.err_technical_qc?.includes(
+                                            data.technical_qc
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == '') ? (
+                                            <p style={{ color: 'red' }}>
+                                                Only Y/N are accepteble
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            onChange={updateFieldChanged(
+                                                data.code
+                                            )}
+                                            id="outlined-password-input"
+                                            type="text"
+                                            name="description"
+                                            value={data.description?.toString()}
+                                        />
+                                    </TableCell>
+
+                                    <TableCell>
+                                        {err?.duplicate_part_name?.includes(
+                                            data.part_name
+                                        ) == true ||
+                                        err?.err_technical_qc?.includes(
+                                            data.technical_qc
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == '') ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_name == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_name == '') ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_color == undefined) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.part_color == '') ||
+                                        err?.duplicate_color?.includes(
+                                            data.part_color
+                                        ) == true ? (
+                                            <Button
+                                                sx={{
+                                                    ml: 2,
+                                                }}
+                                                variant="contained"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                }}
+                                                component="span"
+                                                onClick={() => {
+                                                    if (
+                                                        window.confirm(
+                                                            'Do You Want to Remove?'
+                                                        )
+                                                    ) {
+                                                        handelDelete(data.id)
+                                                    }
+                                                }}
+                                            >
+                                                Remove
+                                            </Button>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </TableCell>
                                 </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {item.map((data) => (
-                                    <TableRow tabIndex={-1}>
-                                        <TableCell>{data.id}</TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                onChange={updateFieldChanged(
-                                                    data.code
-                                                )}
-                                                id="outlined-password-input"
-                                                type="text"
-                                                name="part_name"
-                                                value={data.part_name?.toString()}
-                                            />
-                                            {err?.duplicate_part_name?.includes(
-                                                data.part_name
-                                            ) ? (
-                                                <ClearIcon
-                                                    style={{ color: 'red' }}
-                                                />
-                                            ) : Object.keys(err).length != 0 ? (
-                                                <DoneIcon
-                                                    style={{ color: 'green' }}
-                                                />
-                                            ) : (
-                                                ''
-                                            )}
-
-                                            {err?.duplicate_part_name?.includes(
-                                                data.part_name
-                                            ) ? (
-                                                <p style={{ color: 'red' }}>
-                                                    Duplicate Part Name
-                                                </p>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </TableCell>
-                                        <TableCell>
-                                            <TextField
-                                                onChange={updateFieldChanged(
-                                                    data.code
-                                                )}
-                                                id="outlined-password-input"
-                                                type="text"
-                                                name="description"
-                                                value={data.description?.toString()}
-                                            />
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {err?.duplicate_part_name?.includes(
-                                                data.part_name
-                                            ) == true ? (
-                                                <Button
-                                                    sx={{
-                                                        ml: 2,
-                                                    }}
-                                                    variant="contained"
-                                                    style={{
-                                                        backgroundColor: 'red',
-                                                    }}
-                                                    component="span"
-                                                    onClick={() => {
-                                                        if (
-                                                            window.confirm(
-                                                                'Do You Want to Remove?'
-                                                            )
-                                                        ) {
-                                                            handelDelete(
-                                                                data.id
-                                                            )
-                                                        }
-                                                    }}
-                                                >
-                                                    Remove
-                                                </Button>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody> */}
-
-
-<TableHead sx={{background:"white"}}>
-<TableRow sx={{ }}>
-              <TableCell align="center">Part Name</TableCell>
-              <TableCell align="center">Part Description</TableCell>
-              <TableCell align="center">Part Color</TableCell>
-              <TableCell align="center">Technical QC</TableCell>
-              <TableCell align="center">Validation</TableCell>
-              <TableCell align="center" >Action</TableCell>
-            </TableRow>
-          </TableHead>
-  
-          <TableBody>
-            {products.map((phones, index) => (
-              <TableRow key={index}>
-              <TableCell align="center">{phones?.part_name}</TableCell>
-              <TableCell align="center">{phones?.part_description}</TableCell>
-              <TableCell align="center">{phones?.part_color}</TableCell>        
-              <TableCell align="center">{phones?.technical_qc}</TableCell>        
-              <TableCell align="center">{phones?.validation}</TableCell>        
-              <TableCell>
-              <IconButton sx={{ml:9}}>
-                              <Icon
-                              
-                                  onClick={(e) => {
-                                      handelDelete()
-                                  }}
-                                  color="error"
-                              >
-                                  delete
-                              </Icon>
-                          </IconButton>
-              </TableCell>
-              {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
-              <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
-             
-              {/* <TableCell align="right">
-                <IconButton>
-                  <Icon color="error">close</Icon>
-                </IconButton>
-              </TableCell> */}
-            </TableRow>
-         ) 
-            )} 
-          </TableBody>
-
-
-                        </StyledTable>
-                    
+                            ))}
+                        </TableBody>
+                    </StyledTable>
                 ) : item.length != 0 ? (
                     <StyledLoading>
                         <Box position="relative">

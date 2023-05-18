@@ -33,10 +33,21 @@ const AddPartOrColorAndEditDialog = ({
     const [colorData, setColorData] = useState([])
 
     useEffect(() => {
-        console.log(editFetchData)
+        const fetchColorData = async () => {
+            try {
+                const res = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'color-list'
+                )
+                if (res.status === 200) {
+                    setColorData(res.data.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchColorData()
         if (Object.keys(editFetchData).length !== 0) {
             setPartId(editFetchData.part_code)
-
             reset({ ...editFetchData })
             open()
         }
@@ -60,6 +71,10 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
+        technical_qc:Yup.string()
+        .required('Required*')
+        .matches(/^[YN]$/, 'Please enter either Y or N')
+        .nullable()
     })
     const {
         register,
@@ -149,6 +164,7 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
+                handleClose()
                 Swal.fire({
                     icon: 'failed',
                     title: response.data.message,
@@ -168,6 +184,7 @@ const AddPartOrColorAndEditDialog = ({
         <Dialog open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Add Part</H4>
+
                 <TextFieldCustOm
                     label="Part Id"
                     type="text"
@@ -179,44 +196,6 @@ const AddPartOrColorAndEditDialog = ({
                         errors.part_code ? errors.part_code?.message : ''
                     }
                 />
-                {/* <TextFieldCustOm
-                    label="MUIC"
-                    type="text"
-                    select
-                    name="muic"
-                    defaultValue={getValues('muic')}
-                    {...register('muic')}
-                    error={errors.muic ? true : false}
-                    helperText={errors.muic ? errors.muic?.message : ''}
-                >
-                    {muicData?.map((data) => (
-                        <MenuItem
-                            onClick={(e) => {
-                                getColorList(data?.muic)
-                            }}
-                            key={data?.muic}
-                            value={data?.muic}
-                        >
-                            {data?.muic}
-                        </MenuItem>
-                    ))}
-                </TextFieldCustOm> */}
-                {/* <TextFieldCustOm
-                    label="Color"
-                    type="text"
-                    select
-                    name="color"
-                    defaultValue={getValues('color')}
-                    {...register('color')}
-                    error={errors.color ? true : false}
-                    helperText={errors.color ? errors.color?.message : ''}
-                >
-                    {colorData?.map((data) => (
-                        <MenuItem key={data?.name} value={data?.name}>
-                            {data?.name}
-                        </MenuItem>
-                    ))}
-                </TextFieldCustOm> */}
 
                 <TextFieldCustOm
                     label="Name"
@@ -226,21 +205,32 @@ const AddPartOrColorAndEditDialog = ({
                     error={errors.name ? true : false}
                     helperText={errors.name ? errors.name?.message : ''}
                 />
+
                 <TextFieldCustOm
-                    sx={{width:"100%"}}
                     label="Color"
-                    select
                     type="text"
+                    select
                     name="color"
-                    {...register('name')}
-                    error={errors.color ? true : false}
-                    helperText={errors.color?.message}                           
+                    defaultValue={getValues('color')}
+                    {...register('color')}
                 >
-                    <MenuItem value="red">Red</MenuItem>
-                    <MenuItem value="blue">Blue</MenuItem>
-                    <MenuItem value="green">Green</MenuItem>
-                    <MenuItem value="yellow">Yellow</MenuItem>                      
-                </TextFieldCustOm>  
+                    {colorData?.map((data) => (
+                        <MenuItem key={data?.name} value={data?.name}>
+                            {data?.name}
+                        </MenuItem>
+                    ))}
+                </TextFieldCustOm>
+                <TextFieldCustOm
+                    label="Technical qc"
+                    type="text"
+                    name="technical_qc"
+                    {...register('technical_qc')}
+                    error={errors.technical_qc ? true : false}
+                    helperText={
+                        errors.technical_qc ? errors.technical_qc?.message : ''
+                    }
+                />
+
                 <TextFieldCustOm
                     label="Description"
                     type="text"
@@ -251,7 +241,6 @@ const AddPartOrColorAndEditDialog = ({
                         errors.description ? errors.description?.message : ''
                     }
                 />
-                
 
                 <FormHandlerBox>
                     <Button

@@ -104,8 +104,13 @@ const PartTable = () => {
                         '/partAndColor/oneData/' + id + '/color-list'
                     )
                     if (res.status == 200) {
+                        let obj={
+                            id:id,
+                           
+                            page:"color-list"
+                        }
                         let response = await axiosSuperAdminPrexo.post(
-                            '/partAndColor/delete/' + id
+                            '/partAndColor/delete',obj
                         )
                         if (response.status == 200) {
                             Swal.fire({

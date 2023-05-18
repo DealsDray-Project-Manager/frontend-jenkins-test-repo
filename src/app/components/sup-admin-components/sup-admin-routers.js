@@ -55,10 +55,10 @@ const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')
 const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
 const Spare1=Loadable(lazy(()=>import('./Manage-part-list/sparereporting1')))
 const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
-
-
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
 const BulkAddPart =Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
+
+const SuccessPageOfMuicAssosication =Loadable(lazy(() => import('./Manage-part-list/success-page-muic-ass')))
 
 const SuperAdminRouter = [
     {
@@ -170,7 +170,7 @@ const SuperAdminRouter = [
         element: <PartList />,
     },
     {
-        path: '/sup-admin/view-part-list/muic-association',
+        path: '/sup-admin/view-part-list/muic-association/:partId',
         element: <Association />,
     },
 
@@ -201,6 +201,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-list/bulk-add',
         element: <BulkAddPart />,
+    },
+    {
+        path: '/sup-admin/view-part-list/muic-association/success',
+        element: <SuccessPageOfMuicAssosication />,
     },
 ]
 

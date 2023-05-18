@@ -1,347 +1,768 @@
+import React, { useEffect, useState, useMemo } from 'react'
 import MUIDataTable from 'mui-datatables'
+
 import { Breadcrumb } from 'app/components'
 import {
-  Box, Card, Container, Typography, Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { Dialog, Button, Grid, TextField, MenuItem, IconButton, Icon } from '@mui/material'
-import * as Yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
+    Box,
+    Card,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Button,
+    IconButton,
+    Icon,
+    FormControl,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+} from '@mui/material'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
-import React, { useState } from 'react';
-import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom'
+import { axiosSuperAdminPrexo } from '../../../../axios'
 
-
-
-const TextFieldCustOm = styled(TextField)(() => ({
-  width: '100%',
-  marginBottom: '16px',
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
 }))
 
 const StyledTable = styled(Table)(({ theme }) => ({
-  whiteSpace: "pre",
-  "& thead": {
-    "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-  },
-  "& tbody": {
-    "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-  },
-}));
-
-const products = [
-  {
-    MUIC: "OF694",
-    Brand: "10.or",
-    Model: '10.or E',
-    Color: "Black"
-  },
-  {
-    MUIC: "YW627",
-    Brand: "10.or",
-    Model: '10.or G',
-    Color: "White"
-  },
-  {
-    MUIC: "IK579",
-    Brand: "Apple",
-    Model: 'iphone 11',
-    Color: "Gold"
-  },
-  {
-    MUIC: "XU827",
-    Brand: "Apple",
-    Model: 'iphone 11 pro',
-    Color: "Silver"
-  }
-];
-
-
+    whiteSpace: 'pre',
+    '& thead': {
+        '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } },
+    },
+    '& tbody': {
+        '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } },
+    },
+}))
 
 const Association = () => {
-
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-
-  };
-
-  const navigate = useNavigate()
-  const {
-    register,
-    formState: { errors },
-
-  } = useForm({
-    resolver: yupResolver(schema),
-  })
-  const schema = Yup.object().shape({
-    name: Yup.string()
-      .max(40, 'Please Enter Below 40')
-      .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-      .max(40)
-      .required('Required*')
-      .nullable()
-  })
-
-  const handelDelete = (id, type) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to Delete Location!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete it!',
+    const [partData, setPartData] = useState({})
+    const { partId } = useParams()
+    const [submitLoad, setSubmitLoad] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [muicData, setMuicData] = useState('')
+    const [validationCount, setValidationCount] = useState({})
+    const [validateButLoad, setValidateButLoad] = useState('')
+    const [data, setData] = useState([])
+    const [isAlive, setIsAlive] = useState(false)
+    const navigate = useNavigate()
+    const [pagination, setPagination] = useState({
+        page: 1,
+        size: 10,
+        item: [],
     })
-  }
 
-  const Container = styled('div')(({ theme }) => ({
-    margin: '30px',
-    [theme.breakpoints.down('sm')]: {
-      margin: '16px',
-    },
-    '& .breadcrumb': {
-      marginBottom: '30px',
-      [theme.breakpoints.down('sm')]: {
-        marginBottom: '16px',
-      },
-    },
-  }))
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true)
+                let res = await axiosSuperAdminPrexo.post(
+                    '/partList/oneData/' + partId + '/' + 'part-list'
+                )
+                if (res.status == 200) {
+                    setIsLoading(false)
+                    setPartData(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [isAlive])
 
-  return (
-    // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
+    useEffect(() => {
+        setData((_) =>
+            pagination.item
+                .slice(
+                    (pagination.page - 1) * pagination.size,
+                    pagination.page * pagination.size
+                )
+                .map((d, index) => {
+                    d.id = (pagination.page - 1) * pagination.size + index + 1
+                    return d
+                })
+        )
+    }, [pagination.page, pagination.item])
 
-    <>
-      <Container>
-        <div className="breadcrumb">
-          <Breadcrumb
+    const handelDelete = (muic) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to Remove!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Remove it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const updatedString = muicData.replace(muic + ',', '')
+                setMuicData(updatedString)
+                setPagination((p) => ({
+                    ...p,
+                    item: pagination.item.filter((item) => item.muic != muic),
+                }))
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Your Muic has been Removed',
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                })
+            }
+        })
+    }
 
-            routeSegments={[{ name: 'MUIC-Association', path: '/' }]}
-            style={{ marginLeft: "20px" }}
-          />
-        </div>
+    // validate muic
+    const validateMuic = async () => {
+        try {
+            setValidateButLoad(true)
+            let obj = {
+                muic: muicData,
+                part_code: partData?.part_code,
+            }
+            let res = await axiosSuperAdminPrexo.post(
+                '/muicAssociation/bulkValidation',
+                obj
+            )
+            if (res.status == 200) {
+                setValidateButLoad(false)
+                setPagination((p) => ({
+                    ...p,
+                    totalPage: Math.ceil(res.data.data.length / p.size),
+                    item: res.data.data,
+                }))
+                setValidationCount(res.data.validateObj)
+                Swal.fire({
+                    icon: 'success',
+                    title: res.data.message,
+                })
+            } else {
+                setValidateButLoad(false)
+                setPagination((p) => ({
+                    ...p,
+                    item: res.data.data,
+                }))
+                setValidationCount(res.data.validateObj)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res.data.message,
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
-        <Box sx={{ p: 1, display: 'flex' }}>
-          <Box>
-            <Card sx={{mb:5}}>
-              <Typography sx={{ p: 3, fontWeight: "bold", fontSize: "16px" }}>PART NUMBER: </Typography>
-              <Box sx={{ p: 3, display: 'flex', justifyContent: "space-between" }}>
+    // HANDEL SUBMIT
+    const handelSubmit = async () => {
+        try {
+            setSubmitLoad(true)
+            let obj = {
+                part_code: partData?.part_code,
+                muic: pagination.item,
+            }
+            let res = await axiosSuperAdminPrexo.post(
+                '/muicAssociation/add',
+                obj
+            )
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setSubmitLoad(false)
+                        navigate(
+                            '/sup-admin/view-part-list/muic-association/success',
+                            {
+                                state: {
+                                    validatedSuccess: validationCount,
+                                },
+                            }
+                        )
+                    }
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
 
-                <Box>
-                  <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>Part Name: </Typography>
-                  <Box sx={{ display: "flex" }}>
-                    <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>Technical QC: </Typography>
-                    <FormControl component="fieldset" sx={{ ml: 2 }}>
-
-                      <RadioGroup value={selectedValue} onChange={handleChange} >
-                        <FormControlLabel value="option1" control={<Radio />} label="Yes" />
-                        <FormControlLabel value="option2" control={<Radio />} label="No" />
-                      </RadioGroup>
-
-                    </FormControl>
-                  </Box>
-                  <Typography sx={{ fontSize: "16px" }}>Description: </Typography>
-                </Box>
-                <Box>
-                  <TextFieldCustOm
-                    sx={{ mr: 50, width: "150px" }}
-                    label="Color"
-                    select
-                    type="text"
-                    name="color"
-                    {...register('name')}
-                    error={errors.color ? true : false}
-                    helperText={errors.color?.message}
-                  >
-                    <MenuItem value="red">Red</MenuItem>
-                    <MenuItem value="blue">Blue</MenuItem>
-                    <MenuItem value="green">Green</MenuItem>
-                    <MenuItem value="yellow">Yellow</MenuItem>
-                  </TextFieldCustOm>
-                </Box>
-              </Box>
-              <Box sx={{ p: 3 }}>
-                <Typography sx={{ fontSize: "16px", marginBottom: "15px" }}>Add MUIC in Bulk</Typography>
-                <textarea
-                  style={{ marginLeft: "5px", width: "100%", height: "100px" }}
-                  type="text"
-                  placeholder='Please add MUIC separated by Commas'
-                // errorMessages={["this field is required"]}
-                // inputProps={{
-                //             style:{
-                //                     width: "600px",
-                //                     marginBottom:"90px"
-                //                   }
-                //             }}
-                />
-              </Box>
-              <Box sx={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ margin: "auto", mt: 1, mb: 2 }}
-                >
-                  Validate MUIC
-                </Button>
-              </Box>
-              </Card>
-              <Card>
-              <Box sx={{ p: 2, display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
-                <Typography sx={{ p: 2, fontWeight: "bold" }}>MUIC Associated</Typography>
-                <Typography sx={{ fontWeight: "bold", ml: 80 }}>Total - 134</Typography>
-              </Box>
-              <Box sx={{ border: "", width: "100%", marginLeft: "", marginRight: "", borderRadius: "8px", background: "white" }} overflow="auto">
-                <StyledTable sx={{ borderRadius: "20px", margin: "auto" }}>
-                  <TableHead sx={{ background: "white" }}>
-                    <TableRow sx={{}}>
-                      <TableCell align="center">MUIC</TableCell>
-                      <TableCell align="center">Brand</TableCell>
-                      <TableCell align="center">Model</TableCell>
-                      <TableCell align="center">Validation</TableCell>
-                      <TableCell align="center" >Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {products.map((phones, index) => (
-                      <TableRow key={index}>
-                        <TableCell align="center">{phones.MUIC}</TableCell>
-                        <TableCell align="center">{phones.Brand}</TableCell>
-                        <TableCell align="center">{phones.Model}</TableCell>
-                        <TableCell align="center">{phones.Color}</TableCell>
-                        <TableCell>
-                          <IconButton sx={{ ml: 13 }}>
-                            <Icon
-
-                              onClick={(e) => {
-                                handelDelete()
-                              }}
-                              color="error"
-                            >
-                              delete
-                            </Icon>
-                          </IconButton>
-                        </TableCell>
-                        {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
-
-                        {/* <TableCell align="right">
-                  <IconButton>
-                    <Icon color="error">close</Icon>
-                  </IconButton>
-                </TableCell> */}
-                      </TableRow>
+    // HANDEL REMOVE FROM DB
+    const handelRemoveFromDb = (muic) => {
+        try {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You want to Remove!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove it!',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let obj = {
+                        muic: muic,
+                        part_code: partData?.part_code,
+                    }
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/muicAssociation/remove',
+                        obj
                     )
-                    )}
-                  </TableBody>
-                </StyledTable>
-                <br />
-              </Box>
+                    if (res.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Your Muic has been Removed',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            confirmButtonText: 'Ok',
+                            text: res.data.message,
+                        })
+                    }
+                }
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
 
-            </Card>
-            <br />
-            <br />
-            <Card sx={{ border: '', marginRight: "", marginLeft: "" }}>
-              <Box sx={{ p: 2, display: 'flex', alignItems: "center", justifyContent: "space-between" }}>
-                <Typography sx={{ p: 2, fontWeight: "bold" }}>MUIC Validation</Typography>
-                <Typography sx={{ fontWeight: "bold", ml: 80 }}>Total Added - 25 | Valid - 20 | Duplicates - 3 | Invalid - 2</Typography>
-              </Box>
-              <Box sx={{ border: "", width: "100%", marginLeft: "", marginRight: "", borderRadius: "8px", background: "white" }} overflow="auto">
-                <StyledTable sx={{ borderRadius: "20px", margin: "auto" }}>
-                  <TableHead sx={{ background: "white" }}>
-                    <TableRow sx={{}}>
-                      <TableCell align="center">MUIC</TableCell>
-                      <TableCell align="center">Brand</TableCell>
-                      <TableCell align="center">Model</TableCell>
-                      <TableCell align="center">Validation</TableCell>
-                      <TableCell align="center" >Action</TableCell>
-                    </TableRow>
-                  </TableHead>
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'muic', // field name in the row object
+            label: 'MUIC', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand', // field name in the row object
+            label: 'Brand', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model', // field name in the row object
+            label: 'Model', // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
 
-                  <TableBody>
-                    {products.map((phones, index) => (
-                      <TableRow key={index}>
-                        <TableCell align="center">{phones.MUIC}</TableCell>
-                        <TableCell align="center">{phones.Brand}</TableCell>
-                        <TableCell align="center">{phones.Model}</TableCell>
-                        <TableCell align="center">{phones.Color}</TableCell>
-                        <TableCell>
-                          <IconButton sx={{ ml: 13 }}>
-                            <Icon
-
-                              onClick={(e) => {
-                                handelDelete()
-                              }}
-                              color="error"
-                            >
-                              delete
-                            </Icon>
-                          </IconButton>
-                        </TableCell>
-                        {/* <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell>
-                <TableCell align="center" sx={{borderRight:"1px solid black"}}></TableCell> */}
-
-                        {/* <TableCell align="right">
-                  <IconButton>
-                    <Icon color="error">close</Icon>
-                  </IconButton>
-                </TableCell> */}
-                      </TableRow>
+        {
+            name: 'muic',
+            label: 'Actions',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                      handelRemoveFromDb(value)
+                                    }}
+                                    color="error"
+                                >
+                                    delete
+                                </Icon>
+                            </IconButton>
+                        </Box>
                     )
-                    )}
-                  </TableBody>
-                </StyledTable>
-              </Box>
-              <br />
+                },
+            },
+        },
+    ]
 
-              <Box sx={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ margin: "auto", mt: 1, mb: 2 }}
-                >
-                  Associate MUIC
-                </Button>
-              </Box>
-            </Card>
-            <br />
-            <br />
-            <Card sx={{ marginRight: "", marginLeft: "" }}>
-              <Box sx={{ p: 2, alignItems: "center" }}>
-                <Typography sx={{ p: 2, fontWeight: "bold" }}>MUIC Association Reporting</Typography>
-              </Box>
-              <Box sx={{ ml: 4 }}>
-                <Typography sx={{ fontSize: "16px" }}>MUIC Uploaded: 25 </Typography>
-                <Typography sx={{ fontSize: "16px" }}>Validate: 20 </Typography>
-                <Typography sx={{ fontSize: "16px" }}>Duplicate: 3 </Typography>
-                <Typography sx={{ fontSize: "16px" }}>Invalid: 2 </Typography>
-              </Box>
-              <br />
-              <Button
-                sx={{ mb: 2, ml: 55 }}
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/sup-admin/view-part-list')}
-              >
-                Back to Spare Part list
-              </Button>
-            </Card>
-            <br />
-            <br />
-          </Box>
+    return (
+        // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
 
-        </Box>
-      </Container>
-    </>
-    // </Card>
-  );
+        <>
+            <Container>
+                <div className="breadcrumb">
+                    <Breadcrumb
+                        routeSegments={[
+                            { name: 'MUIC-Association', path: '/' },
+                        ]}
+                        style={{ marginLeft: '20px' }}
+                    />
+                </div>
+
+                <Box sx={{ p: 1, display: 'flex' }}>
+                    <Box>
+                        <Card sx={{ mb: 5 }}>
+                            <Typography
+                                sx={{
+                                    p: 3,
+                                    fontWeight: 'bold',
+                                    fontSize: '16px',
+                                }}
+                            >
+                                PART NUMBER:{partData?.part_code}
+                            </Typography>
+                            <Box
+                                sx={{
+                                    p: 3,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Box>
+                                    <Typography
+                                        sx={{
+                                            fontSize: '16px',
+                                            marginBottom: '10px',
+                                        }}
+                                    >
+                                        Part Name:{partData?.name}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: '16px',
+                                            marginBottom: '10px',
+                                        }}
+                                    >
+                                        Part Color:{partData?.color}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex' }}>
+                                        <Typography
+                                            sx={{
+                                                fontSize: '16px',
+                                                marginBottom: '10px',
+                                            }}
+                                        >
+                                            Technical QC:{' '}
+                                        </Typography>
+                                        <FormControl
+                                            component="fieldset"
+                                            sx={{ ml: 2 }}
+                                        >
+                                            <RadioGroup>
+                                                <FormControlLabel
+                                                    value="option1"
+                                                    control={<Radio />}
+                                                    label="Yes"
+                                                    checked={
+                                                        partData?.technical_qc ==
+                                                        'Y'
+                                                            ? true
+                                                            : false
+                                                    }
+                                                />
+                                                <FormControlLabel
+                                                    value="option2"
+                                                    control={<Radio />}
+                                                    label="No"
+                                                    checked={
+                                                        partData?.technical_qc ==
+                                                        'N'
+                                                            ? true
+                                                            : false
+                                                    }
+                                                />
+                                            </RadioGroup>
+                                        </FormControl>
+                                    </Box>
+                                    <Typography sx={{ fontSize: '16px' }}>
+                                        Description:{partData?.description}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{ p: 3 }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: '16px',
+                                        marginBottom: '15px',
+                                    }}
+                                >
+                                    Add MUIC in Bulk
+                                </Typography>
+
+                                <textarea
+                                    style={{
+                                        marginLeft: '5px',
+                                        width: '100%',
+                                        height: '100px',
+                                    }}
+                                    onChange={(e) => {
+                                        setMuicData(e.target.value)
+                                    }}
+                                    value={muicData}
+                                    placeholder="Please add MUIC separated by Commas"
+                                ></textarea>
+                            </Box>
+                            <Box
+                                sx={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={validateButLoad || muicData == ''}
+                                    onClick={(e) => {
+                                        validateMuic()
+                                    }}
+                                    sx={{ margin: 'auto', mt: 1, mb: 2 }}
+                                >
+                                    {validateButLoad == true
+                                        ? 'Validating...'
+                                        : 'Validate MUIC'}
+                                </Button>
+                            </Box>
+                        </Card>
+                        <Card>
+                            <Box
+                                sx={{
+                                    p: 2,
+                                    display: 'flex',
+
+                                    justifyContent: 'flex-end',
+                                }}
+                            >
+                                <Typography sx={{ fontWeight: 'bold', ml: 80 }}>
+                                    Total - {partData?.muic_association?.length}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    border: '',
+                                    width: '100%',
+                                    marginLeft: '',
+                                    marginRight: '',
+                                    borderRadius: '8px',
+                                    background: 'white',
+                                }}
+                                overflow="auto"
+                            >
+                                <StyledTable
+                                    sx={{
+                                        borderRadius: '20px',
+                                        margin: 'auto',
+                                    }}
+                                >
+                                    <MUIDataTable
+                                        title={'MUIC Associated'}
+                                        data={partData?.muic_association}
+                                        columns={columns}
+                                        options={{
+                                            filterType: 'textField',
+                                            responsive: 'simple',
+                                            download: false,
+                                            print: false,
+                                            textLabels: {
+                                                body: {
+                                                    noMatch: isLoading
+                                                        ? 'Loading...'
+                                                        : 'Sorry, there is no matching data to display',
+                                                },
+                                            },
+                                            selectableRows: 'none', // set checkbox for each row
+                                            // search: false, // set search option
+                                            // filter: false, // set data filter option
+                                            // download: false, // set download option
+                                            // print: false, // set print option
+                                            // pagination: true, //set pagination option
+                                            // viewColumns: false, // set column option
+                                            elevation: 0,
+                                            rowsPerPageOptions: [
+                                                10, 20, 40, 80, 100,
+                                            ],
+                                        }}
+                                    />
+                                </StyledTable>
+                                <br />
+                            </Box>
+                        </Card>
+                        <br />
+                        <br />
+                        {pagination?.item?.length !== 0 ? (
+                            <Card
+                                sx={{
+                                    border: '',
+                                    marginRight: '',
+                                    marginLeft: '',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{ p: 2, fontWeight: 'bold' }}
+                                    >
+                                        MUIC Validation
+                                    </Typography>
+                                    <Typography
+                                        sx={{ fontWeight: 'bold', ml: 80 }}
+                                    >
+                                        Total Added - {validationCount?.total} |
+                                        Valid - {validationCount?.success} |
+                                        Duplicates -{validationCount?.duplicate}{' '}
+                                        | Invalid - {validationCount?.inValid} |
+                                        Already Added -{' '}
+                                        {validationCount?.AlreadyAdded}
+                                    </Typography>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        border: '',
+                                        width: '100%',
+                                        marginLeft: '',
+                                        marginRight: '',
+                                        borderRadius: '8px',
+                                        background: 'white',
+                                    }}
+                                    overflow="auto"
+                                >
+                                    <StyledTable
+                                        sx={{
+                                            borderRadius: '20px',
+                                            margin: 'auto',
+                                        }}
+                                    >
+                                        <TableHead sx={{ background: 'white' }}>
+                                            <TableRow sx={{}}>
+                                                <TableCell align="center">
+                                                    Sl No
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    MUIC
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    Brand
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    Model
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    Validation
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    Action
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+
+                                        <TableBody>
+                                            {data?.map((phones, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell align="center">
+                                                        {phones.id}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {phones.muic}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {phones.brand}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {phones.model}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        style={
+                                                            phones?.validationStatus ==
+                                                            'Success'
+                                                                ? {
+                                                                      color: 'green',
+                                                                  }
+                                                                : {
+                                                                      color: 'red',
+                                                                  }
+                                                        }
+                                                        align="center"
+                                                    >
+                                                        {
+                                                            phones.validationStatus
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <IconButton
+                                                            onClick={(e) => {
+                                                                handelDelete(
+                                                                    phones?.muic
+                                                                )
+                                                            }}
+                                                            sx={{ ml: 13 }}
+                                                        >
+                                                            <Icon color="error">
+                                                                delete
+                                                            </Icon>
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </StyledTable>
+                                    <Box
+                                        sx={{
+                                            float: 'right',
+                                        }}
+                                    >
+                                        {pagination.item.length &&
+                                        validateButLoad != true ? (
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'end',
+                                                    mt: 1,
+                                                    mr: 3,
+                                                    ml: 3,
+                                                }}
+                                            >
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{ m: 1 }}
+                                                    disabled={
+                                                        pagination.page === 1
+                                                    }
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#206CE2',
+                                                    }}
+                                                    onClick={(e) =>
+                                                        setPagination((p) => ({
+                                                            ...p,
+                                                            page: --p.page,
+                                                        }))
+                                                    }
+                                                >
+                                                    Previous
+                                                </Button>
+
+                                                <h6
+                                                    style={{
+                                                        marginTop: '19px',
+                                                    }}
+                                                >
+                                                    {pagination.page}/
+                                                    {pagination.totalPage}
+                                                </h6>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{ m: 1 }}
+                                                    disabled={
+                                                        pagination.page ===
+                                                        pagination.totalPage
+                                                    }
+                                                    style={{
+                                                        backgroundColor:
+                                                            '#206CE2',
+                                                    }}
+                                                    onClick={(e) =>
+                                                        setPagination((p) => ({
+                                                            ...p,
+                                                            page: ++p.page,
+                                                        }))
+                                                    }
+                                                >
+                                                    Next
+                                                </Button>
+                                            </Box>
+                                        ) : null}
+                                    </Box>
+                                </Box>
+                                <br />
+
+                                <Box
+                                    sx={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            handelSubmit(e)
+                                        }}
+                                        disabled={submitLoad}
+                                        sx={{ margin: 'auto', mt: 1, mb: 2 }}
+                                    >
+                                        {submitLoad == true
+                                            ? 'Please Wait...'
+                                            : 'Associate MUIC'}
+                                    </Button>
+                                </Box>
+                            </Card>
+                        ) : null}
+                    </Box>
+                </Box>
+            </Container>
+        </>
+        // </Card>
+    )
 }
 
-
-export default Association;
+export default Association

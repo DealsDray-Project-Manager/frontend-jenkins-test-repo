@@ -153,7 +153,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'ReocrdId',
-            label: 'Reocrd Id',
+            label: 'Record Id',
             options: {
                 filter: true,
                 sort: true,
@@ -262,7 +262,7 @@ const SimpleMuiTable = () => {
                 Add Category
             </Button>
             <MUIDataTable
-                title={'All Categorys'}
+                title={'All Categories'}
                 data={ctxCategorylist}
                 columns={columns}
                 options={{

@@ -2,9 +2,8 @@ import { Box, Card, Button, Typography } from "@mui/material";
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-// import CheckCircle from '@mui/icons-material/CheckCircle';
 
-const Spare1 = () => {
+const Partsassociation = () => {
     const Container = styled('div')(({ theme }) => ({
         margin: '30px',
         [theme.breakpoints.down('sm')]: {
@@ -25,24 +24,28 @@ const Spare1 = () => {
             <div className="breadcrumb">
                 <Breadcrumb
 
-                    routeSegments={[{ name: 'Spare Parts Add Reporting', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Products', path: '/' },
+                        { name: 'Manage Parts', path: '/' },
+                        { name: 'MUIC to Part-Association',path: '/'},
+                        { name: 'Part Association Reporting'}
+                    ]}
                     style={{ marginLeft: "20px" }}
                 />
             </div>
             <Box sx={{ p: 1, display: 'flex' }}>
-                <Card sx={{ marginRight: "", marginLeft: "", width: "100%" }}> 
+                <Card sx={{ marginRight: "", marginLeft: "", width: "100%" }}>
 
-                    
                     <Box sx={{ p: 2, alignItems: "center" }}>
                         <Typography sx={{ ml:2, fontWeight: "bold" }}>Spare Parts Add Reporting</Typography>
                     </Box>
                     
-                    
 
                     <Box sx={{ ml: 4 }}>
-                        <Typography sx={{ fontSize: "16px" }}>Spare part Uploaded: 25 </Typography>
-                        <Typography sx={{ fontSize: "16px" }}>Upload successful: 19 </Typography>
-                        <Typography sx={{ fontSize: "16px" }}>Bad Spare parts: 10 - View List </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Parts Uploaded: 25 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Valid: 20 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Duplicate: 3 </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Invalid: 2 </Typography>
                     </Box>
                     <br />
                     <Box sx={{ alignItems: "center", justifyContent: "center", display: "flex" }}>
@@ -50,9 +53,9 @@ const Spare1 = () => {
                             sx={{ margin: "auto", mt: 1, mb: 2, ml: 50 }}
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate('/sup-admin/view-part-list')}
+                            onClick={() => navigate('/sup-admin/products')}
                         >
-                            Back to spare part list
+                            Back to MUIC list
                         </Button>
                         {/* <Button
                             variant="contained"
@@ -69,4 +72,4 @@ const Spare1 = () => {
     );
 }
 
-export default Spare1;
+export default Partsassociation;

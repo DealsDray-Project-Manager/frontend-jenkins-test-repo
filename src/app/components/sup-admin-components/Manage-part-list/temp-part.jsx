@@ -314,7 +314,7 @@ const PartTable = () => {
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="warning"
-                onClick={() => navigate('/sup-admin/view-list/uploadspare')}
+                onClick={() => navigate('/sup-admin/view-list/uploadspare1')}
             >
                 Manage Stock
             </Button>

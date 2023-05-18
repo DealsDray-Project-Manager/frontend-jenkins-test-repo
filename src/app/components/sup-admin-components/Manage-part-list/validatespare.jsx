@@ -67,7 +67,7 @@ const Validatespare = () => {
     const handelDelete = (id,type) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Location!',
+            text: 'You want to Delete Part?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

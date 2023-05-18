@@ -39,7 +39,7 @@ const Sparereporting = () => {
                     <Box sx={{ ml: 4 }}>
                         <Typography sx={{ fontSize: "16px" }}>Spare part Uploaded: 108 </Typography>
                         <Typography sx={{ fontSize: "16px" }}>Upload successful: 98 </Typography>
-                        <Typography sx={{ fontSize: "16px" }}>Bad Spare parts: 10 - View List </Typography>
+                        <Typography sx={{ fontSize: "16px" }}>Bad Spare parts: 10 - View List </Typography> 
                     </Box>
                     <br />
                     <Box sx={{ alignItems: "center", justifyContent: "center", display: "flex" }}>

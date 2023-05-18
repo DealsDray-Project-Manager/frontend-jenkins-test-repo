@@ -8,6 +8,24 @@ const ViewUserEditHistory = Loadable(
 const ViewProducts = Loadable(
     lazy(() => import('./Manage-products/view-products'))
 )
+const MUIClist = Loadable(
+    lazy(() => import('./Manage-products/muiclist'))
+)
+const Addparts = Loadable(
+    lazy(() => import('./Manage-products/addparts'))
+)
+const Partsvalid = Loadable(
+    lazy(() => import('./Manage-products/partsvalidation'))
+)
+const Partsassociation = Loadable(
+    lazy(() => import('./Manage-products/partsassociation'))
+)
+
+
+
+
+
+
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -51,10 +69,12 @@ const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
 const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association')))
 // const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
 const Uploadspare=Loadable(lazy(()=>import('./Manage-part-list/uploadspare')))
+const Uploadspare1=Loadable(lazy(()=>import('./Manage-part-list/uploadspare1')))
 const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')))
 const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
 const Spare1=Loadable(lazy(()=>import('./Manage-part-list/sparereporting1')))
 const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
+// const MUICreporting=Loadable(lazy(()=>import('./Manage-part-list/muicreporting')))
 
 
 const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
@@ -68,6 +88,22 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/products',
         element: <ViewProducts />,
+    },
+    {
+        path: '/sup-admin/products/muiclist',
+        element: <MUIClist />,
+    },
+    {
+        path: '/sup-admin/products/addparts',
+        element: <Addparts />,
+    },
+    {
+        path: '/sup-admin/products/partsvalidation',
+        element: <Partsvalid />,
+    },
+    {
+        path: '/sup-admin/products/partsassociation',
+        element: <Partsassociation />,
     },
     {
         path: '/sup-admin/products/bulk-product',
@@ -179,6 +215,10 @@ const SuperAdminRouter = [
         element: <Uploadspare />,
     },
     {
+        path: '/sup-admin/view-list/uploadspare1',
+        element: <Uploadspare1 />,
+    },
+    {
         path: '/sup-admin/view-list/validatespare',
         element: <Validatespare />,
     },
@@ -186,6 +226,10 @@ const SuperAdminRouter = [
         path: '/sup-admin/view-list/sparereporting',
         element: <Sparereporting />,
     },
+    // {
+    //     path: '/sup-admin/view-list/muicreporting',
+    //     element: <MUICreporting />,
+    // },
     {
         path: '/sup-admin/view-list/sparereporting1',
         element: <Spare1 />,

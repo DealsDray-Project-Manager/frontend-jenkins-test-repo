@@ -4,7 +4,7 @@ import {
   Box, Card, Container, Typography, Table,
   TableBody,
   TableCell,
-  TableHead,
+  TableHead, 
   TableRow,
 } from "@mui/material";
 import { Dialog, Button, Grid, TextField, MenuItem, IconButton, Icon } from '@mui/material'
@@ -92,7 +92,7 @@ const Association = () => {
   const handelDelete = (id, type) => {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to Delete Location!',
+      text: 'You want to Delete MUIC?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

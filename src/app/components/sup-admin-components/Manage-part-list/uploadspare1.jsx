@@ -104,7 +104,7 @@ const StyledLoading = styled('div')(() => ({
     },
 }))
 
-const Uploadspare = () => {
+const Uploadspare1 = () => {
     const navigate = useNavigate()
     const [validateState, setValidateState] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -251,12 +251,12 @@ const Uploadspare = () => {
                 <Breadcrumb
                 
                     routeSegments={[{ name: 'Part-List', path: '/' },
-                                    { name: 'Upload New Spare Parts'}
+                                    { name: 'Manage Stock of Spare Part'}
                 ]} 
                     style={{marginLeft:"20px"}}
                 />
             </div>
-            <SimpleCard title="Upload New Spare Parts">
+            <SimpleCard title="Manage Stock of Spare Part">
                 <Box
                     sx={{
                         display: 'flex',
@@ -549,4 +549,4 @@ const Uploadspare = () => {
      );
 }
  
-export default Uploadspare;
+export default Uploadspare1;

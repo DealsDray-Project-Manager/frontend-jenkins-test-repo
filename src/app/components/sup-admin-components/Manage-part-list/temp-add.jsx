@@ -71,10 +71,10 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
-        technical_qc:Yup.string()
-        .required('Required*')
-        .matches(/^[YN]$/, 'Please enter either Y or N')
-        .nullable()
+        technical_qc: Yup.string()
+            .required('Required*')
+            .matches(/^[YN]$/, 'Please enter either Y or N')
+            .nullable(),
     })
     const {
         register,
@@ -231,20 +231,6 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 />
 
-                <TextFieldCustOm
-                    label="Technical QC"
-                    select
-                    type="text"
-                    name="technicalqc"
-                    {...register('technicalqc')}
-                    error={errors.technicalqc ? true : false}
-                    helperText={
-                        errors.technicalqc ? errors.technicalqc?.message : ''
-                    }
-                >
-                    <MenuItem value="red">Yes</MenuItem>
-                    <MenuItem value="blue">No</MenuItem>
-                </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Description"
                     type="text"

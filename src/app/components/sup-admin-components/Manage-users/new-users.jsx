@@ -192,7 +192,7 @@ const MemberEditorDialog = ({
                 type: type,
             }
             let res = await axiosSuperAdminPrexo.post(
-                'getWarehouseByLocation',
+                '/getWarehouseByLocation',
                 obj
             )
             if (res.status == 200) {

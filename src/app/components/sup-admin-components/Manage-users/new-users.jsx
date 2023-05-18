@@ -63,7 +63,7 @@ const MemberEditorDialog = ({
             open()
         }
     }, [])
-    
+
     const schema = Yup.object().shape({
         name: Yup.string()
             .max(40, 'Please Enter Below 40')
@@ -74,6 +74,7 @@ const MemberEditorDialog = ({
         contact: Yup.string().required('Required*').nullable(),
         cpc: Yup.string().required('Required*').nullable(),
         cpc_type: Yup.string().required('Required*').nullable(),
+        warehouse: Yup.string().required('Required*').nullable(),
         user_type: Yup.string().required('Required*').nullable(),
         device_id: Yup.string()
             .required('Required*')
@@ -173,6 +174,7 @@ const MemberEditorDialog = ({
     const getLocationType = async (value) => {
         try {
             setLocation(value)
+            reset({ cpc_type: '', warehouse: '', user_type: '' })
             let res = await axiosSuperAdminPrexo.post('/location/type/' + value)
             if (res.status == 200) {
                 setCpcType(res.data.data)
@@ -184,6 +186,7 @@ const MemberEditorDialog = ({
 
     const getlWarehouse = async (type) => {
         try {
+            reset({ warehouse: '', user_type: '', warehouse: '' })
             let obj = {
                 name: location,
                 type: type,
@@ -365,22 +368,6 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-                        {warehouseType == 'PRC RMW' ? (
-                            <TextFieldCustOm
-                                label="User Type"
-                                select
-                                name="user_type"
-                                disabled={
-                                    Object.keys(editFetchData).length !== 0
-                                }
-                                defaultValue={getValues('user_type')}
-                                {...register('user_type')}
-                                error={errors.user_type ? true : false}
-                                helperText={errors.user_type?.message}
-                            >
-                                <MenuItem value="RM User">RM User</MenuItem>
-                            </TextFieldCustOm>
-                        ) : null}
 
                         {selectedCpc == 'Dock' ? (
                             <TextFieldCustOm
@@ -399,7 +386,8 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
-                        ) : selectedCpc == 'Processing' && warehouseType != 'PRC RMW'  ? (
+                        ) : selectedCpc == 'Processing' &&
+                          warehouseType != 'PRC RMW' ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select
@@ -454,9 +442,24 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
-                        ) : (
+                        ) : warehouseType == 'PRC RMW' ? (
                             <TextFieldCustOm
                                 label="User Type"
+                                select
+                                name="user_type"
+                                disabled={
+                                    Object.keys(editFetchData).length !== 0
+                                }
+                                defaultValue={getValues('user_type')}
+                                {...register('user_type')}
+                                error={errors.user_type ? true : false}
+                                helperText={errors.user_type?.message}
+                            >
+                                <MenuItem value="RM User">RM User</MenuItem>
+                            </TextFieldCustOm>
+                        ) : (
+                            <TextFieldCustOm
+                                label="User Typepp"
                                 select
                                 name="user_type"
                                 disabled={

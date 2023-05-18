@@ -7,6 +7,8 @@ import Swal from 'sweetalert2'
 import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -165,6 +167,32 @@ const PartTable = () => {
                 }
             }
         })
+    }
+
+    // DOWNLOAD PART LIST
+    const download = (e) => {
+        let arr = []
+        for (let x of partList) {
+            let obj = {
+                part_code: x.part_code,
+                name: x.name,
+                color: x.color,
+                technical_qc: x.technical_qc,
+                description: x.description,
+                available_stock: x.avl_stock,
+                update_stock: '',
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
     }
 
     const handledetails = async (id) => {
@@ -344,23 +372,22 @@ const PartTable = () => {
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="success"
-                onClick={() => navigate('/sup-admin/view-list/downloadsample')}
+                onClick={(e) => download(e)}
             >
-                Download Sample File
+                Download available stock
             </Button>
-            {/* <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="error"
-                onClick={() => navigate('/sup-admin/view-list/uploadspare')}
-            >
-                Upload Spare 
-            </Button> */}
+
             <Button
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="warning"
-                onClick={() => navigate('/sup-admin/view-list/uploadspare')}
+                onClick={() =>
+                    navigate('/sup-admin/view-list/uploadspare', {
+                        state: {
+                            partList: partList,
+                        },
+                    })
+                }
             >
                 Manage Stock
             </Button>

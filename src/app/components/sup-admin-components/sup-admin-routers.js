@@ -8,23 +8,14 @@ const ViewUserEditHistory = Loadable(
 const ViewProducts = Loadable(
     lazy(() => import('./Manage-products/view-products'))
 )
-const MUIClist = Loadable(
-    lazy(() => import('./Manage-products/muiclist'))
-)
-const Addparts = Loadable(
-    lazy(() => import('./Manage-products/addparts'))
-)
+const MUIClist = Loadable(lazy(() => import('./Manage-products/muiclist')))
+const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const Partsvalid = Loadable(
     lazy(() => import('./Manage-products/partsvalidation'))
 )
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
-
-
-
-
-
 
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
@@ -75,7 +66,9 @@ const Association = Loadable(
 const Uploadspare = Loadable(
     lazy(() => import('./Manage-part-list/uploadspare'))
 )
-const Uploadspare1=Loadable(lazy(()=>import('./Manage-part-list/uploadspare1')))
+const Uploadspare1 = Loadable(
+    lazy(() => import('./Manage-part-list/uploadspare1'))
+)
 const Validatespare = Loadable(
     lazy(() => import('./Manage-part-list/validatespare'))
 )

@@ -84,13 +84,14 @@ export default function DialogBox() {
     useEffect(() => {
         const userStatusApiCall = async () => {
             try {
+                let obj={
+                    username:trayData.issued_user_name,
+                    brand:trayData.brand,
+                    model:trayData.model
+                }
                 let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking/' +
-                        trayData.issued_user_name +
-                        '/' +
-                        trayData.brand +
-                        '/' +
-                        trayData.model
+                    '/auditUserStatusChecking',obj
+                       
                 )
                 let trayFetch = await axiosWarehouseIn.post(
                     '/fetchAssignedTrayForAudit/' +

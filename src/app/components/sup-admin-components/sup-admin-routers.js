@@ -56,29 +56,48 @@ const ReadyForChargingBqc = Loadable(
 const RemoveInvalidItem = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/bag'))
 )
-const RemoveInvalidItemView = Loadable( 
+const RemoveInvalidItemView = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/view-item'))
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
-const ReadyToTransfer =Loadable(lazy(() => import('./Ready-for-transfer/ctx-tray')))
-const PartList  =Loadable(lazy(() => import('./Manage-part-list/temp-part')))
+const ReadyToTransfer = Loadable(
+    lazy(() => import('./Ready-for-transfer/ctx-tray'))
+)
+const PartList = Loadable(lazy(() => import('./Manage-part-list/temp-part')))
 
-const Association =Loadable(lazy(()=>import('./Manage-part-list/muic-association')))
+const Association = Loadable(
+    lazy(() => import('./Manage-part-list/muic-association'))
+)
 // const MUIC_details =Loadable(lazy(()=>import('./Manage-part-list/muic-details')))
-const Uploadspare=Loadable(lazy(()=>import('./Manage-part-list/uploadspare')))
+const Uploadspare = Loadable(
+    lazy(() => import('./Manage-part-list/uploadspare'))
+)
 const Uploadspare1=Loadable(lazy(()=>import('./Manage-part-list/uploadspare1')))
-const Validatespare=Loadable(lazy(()=>import('./Manage-part-list/validatespare')))
-const Sparereporting=Loadable(lazy(()=>import('./Manage-part-list/sparereporting')))
-const Spare1=Loadable(lazy(()=>import('./Manage-part-list/sparereporting1')))
-const Managestock=Loadable(lazy(()=>import('./Manage-part-list/managestock')))
+const Validatespare = Loadable(
+    lazy(() => import('./Manage-part-list/validatespare'))
+)
+const Sparereporting = Loadable(
+    lazy(() => import('./Manage-part-list/sparereporting'))
+)
+const Spare1 = Loadable(
+    lazy(() => import('./Manage-part-list/manageStockReport'))
+)
+const Managestock = Loadable(
+    lazy(() => import('./Manage-part-list/managestock'))
+)
+const ColorList = Loadable(lazy(() => import('./Manage-color-list/temp-view')))
+const BulkAddPart = Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
 // const MUICreporting=Loadable(lazy(()=>import('./Manage-part-list/muicreporting')))
 
-
-const ColorList =Loadable(lazy(() => import('./Manage-color-list/temp-view')))
-const BulkAddPart =Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
+const SuccessPageOfMuicAssosication = Loadable(
+    lazy(() => import('./Manage-part-list/success-page-muic-ass'))
+)
+const ManageStockUpdateReport = Loadable(
+    lazy(() => import('./Manage-part-list/manageStockReport'))
+)
 
 const SuperAdminRouter = [
     {
@@ -206,7 +225,7 @@ const SuperAdminRouter = [
         element: <PartList />,
     },
     {
-        path: '/sup-admin/view-part-list/muic-association',
+        path: '/sup-admin/view-part-list/muic-association/:partId',
         element: <Association />,
     },
 
@@ -245,6 +264,14 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-list/bulk-add',
         element: <BulkAddPart />,
+    },
+    {
+        path: '/sup-admin/view-part-list/muic-association/success',
+        element: <SuccessPageOfMuicAssosication />,
+    },
+    {
+        path: '/sup-admin/view-part-list/managestock/report',
+        element: <ManageStockUpdateReport />,
     },
 ]
 

@@ -9,6 +9,8 @@ import { Button, Box, IconButton, Icon } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
+
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -304,9 +306,7 @@ const SimpleMuiTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={() => {
-                                        editImage(tableMeta.rowData[6])
-                                    }}
+                                    onClick={() =>  navigate('/sup-admin/products/muiclist')}
                                     color="default"
                                 >
                                     details
@@ -318,6 +318,8 @@ const SimpleMuiTable = () => {
             },
         },
     ]
+
+    
 
     return (
         <Container>

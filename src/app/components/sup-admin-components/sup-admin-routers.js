@@ -8,6 +8,24 @@ const ViewUserEditHistory = Loadable(
 const ViewProducts = Loadable(
     lazy(() => import('./Manage-products/view-products'))
 )
+const MUIClist = Loadable(
+    lazy(() => import('./Manage-products/muiclist'))
+)
+const Addparts = Loadable(
+    lazy(() => import('./Manage-products/addparts'))
+)
+const Partsvalid = Loadable(
+    lazy(() => import('./Manage-products/partsvalidation'))
+)
+const Partsassociation = Loadable(
+    lazy(() => import('./Manage-products/partsassociation'))
+)
+
+
+
+
+
+
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -57,6 +75,7 @@ const Association = Loadable(
 const Uploadspare = Loadable(
     lazy(() => import('./Manage-part-list/uploadspare'))
 )
+const Uploadspare1=Loadable(lazy(()=>import('./Manage-part-list/uploadspare1')))
 const Validatespare = Loadable(
     lazy(() => import('./Manage-part-list/validatespare'))
 )
@@ -71,6 +90,7 @@ const Managestock = Loadable(
 )
 const ColorList = Loadable(lazy(() => import('./Manage-color-list/temp-view')))
 const BulkAddPart = Loadable(lazy(() => import('./Manage-part-list/bulk-add')))
+// const MUICreporting=Loadable(lazy(()=>import('./Manage-part-list/muicreporting')))
 
 const SuccessPageOfMuicAssosication = Loadable(
     lazy(() => import('./Manage-part-list/success-page-muic-ass'))
@@ -87,6 +107,22 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/products',
         element: <ViewProducts />,
+    },
+    {
+        path: '/sup-admin/products/muiclist',
+        element: <MUIClist />,
+    },
+    {
+        path: '/sup-admin/products/addparts',
+        element: <Addparts />,
+    },
+    {
+        path: '/sup-admin/products/partsvalidation',
+        element: <Partsvalid />,
+    },
+    {
+        path: '/sup-admin/products/partsassociation',
+        element: <Partsassociation />,
     },
     {
         path: '/sup-admin/products/bulk-product',
@@ -195,7 +231,11 @@ const SuperAdminRouter = [
 
     {
         path: '/sup-admin/view-list/uploadspare',
-        element: <Managestock />,
+        element: <Uploadspare />,
+    },
+    {
+        path: '/sup-admin/view-list/uploadspare1',
+        element: <Uploadspare1 />,
     },
     {
         path: '/sup-admin/view-list/validatespare',
@@ -205,6 +245,10 @@ const SuperAdminRouter = [
         path: '/sup-admin/view-list/sparereporting',
         element: <Sparereporting />,
     },
+    // {
+    //     path: '/sup-admin/view-list/muicreporting',
+    //     element: <MUICreporting />,
+    // },
     {
         path: '/sup-admin/view-list/sparereporting1',
         element: <Spare1 />,

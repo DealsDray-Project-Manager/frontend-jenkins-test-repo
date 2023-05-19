@@ -257,7 +257,7 @@ const AddBulkPart = () => {
         }
     }
 
-    // console.log(item)
+    console.log(err)
 
     return (
         <Container>
@@ -467,14 +467,13 @@ const AddBulkPart = () => {
                                             name="technical_qc"
                                             value={data.technical_qc?.toString()}
                                         />
-                                        {err?.err_technical_qc?.includes(data.technical_qc?.toString())
-                                            (Object.keys(err).length != 0 &&
-                                                data.technical_qc) ||
-                                                (Object.keys(err).length != 0 &&
-                                                    data.technical_qc ==
-                                                        undefined) ||
-                                                data.technical_qc == ''
-                                         ? (
+                                        {err?.technical_qc?.includes(
+                                            data.technical_qc?.toString()
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == '') ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.technical_qc == undefined) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -486,7 +485,7 @@ const AddBulkPart = () => {
                                             ''
                                         )}
 
-                                        {err?.err_technical_qc?.includes(
+                                        {err?.technical_qc?.includes(
                                             data.technical_qc?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
@@ -516,7 +515,7 @@ const AddBulkPart = () => {
                                         {err?.duplicate_part_name?.includes(
                                             data.part_name?.toString()
                                         ) == true ||
-                                        err?.err_technical_qc?.includes(
+                                        err?.technical_qc?.includes(
                                             data.technical_qc?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&

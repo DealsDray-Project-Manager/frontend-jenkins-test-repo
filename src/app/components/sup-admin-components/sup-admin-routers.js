@@ -8,23 +8,11 @@ const ViewUserEditHistory = Loadable(
 const ViewProducts = Loadable(
     lazy(() => import('./Manage-products/view-products'))
 )
-const MUIClist = Loadable(
-    lazy(() => import('./Manage-products/muiclist'))
-)
-const Addparts = Loadable(
-    lazy(() => import('./Manage-products/addparts'))
-)
-const Partsvalid = Loadable(
-    lazy(() => import('./Manage-products/partsvalidation'))
-)
+const MUIClist = Loadable(lazy(() => import('./Manage-products/muiclist')))
+const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
-
-
-
-
-
 
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
@@ -76,7 +64,9 @@ const Association = Loadable(
 const Uploadspare = Loadable(
     lazy(() => import('./Manage-part-list/uploadspare'))
 )
-const Uploadspare1=Loadable(lazy(()=>import('./Manage-part-list/uploadspare1')))
+const Uploadspare1 = Loadable(
+    lazy(() => import('./Manage-part-list/uploadspare1'))
+)
 const Validatespare = Loadable(
     lazy(() => import('./Manage-part-list/validatespare'))
 )
@@ -110,19 +100,16 @@ const SuperAdminRouter = [
         element: <ViewProducts />,
     },
     {
-        path: '/sup-admin/products/muiclist',
+        path: '/sup-admin/products/muiclist/:muic',
         element: <MUIClist />,
     },
     {
         path: '/sup-admin/products/addparts',
         element: <Addparts />,
     },
+   
     {
-        path: '/sup-admin/products/partsvalidation',
-        element: <Partsvalid />,
-    },
-    {
-        path: '/sup-admin/products/partsassociation',
+        path: '/sup-admin/products/partsassociation/report',
         element: <Partsassociation />,
     },
     {

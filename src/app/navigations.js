@@ -129,6 +129,11 @@ export const navigations = [
                 path: '/sup-admin/warehouse',
             },
             {
+                name: 'Vendors',
+                // icon: 'home',
+                path: '/sup-admin/view-vendors',
+            },
+            {
                 name: 'Tray Category',
                 // icon: 'category',
                 path: '/sup-admin/Category',

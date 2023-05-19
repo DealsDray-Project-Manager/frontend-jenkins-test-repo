@@ -7,17 +7,25 @@ import {
     TableCell,
     Button,
     TextField,
+    MenuItem,
+    IconButton,
+    Icon,
 } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
 import * as XLSX from 'xlsx'
 import { Box, styled } from '@mui/system'
 import { SimpleCard, Breadcrumb } from 'app/components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
-import useAuth from 'app/hooks/useAuth'
+import * as FileSaver from 'file-saver'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -70,11 +78,11 @@ const StyledLoading = styled('div')(() => ({
 
 const AddBulkPart = () => {
     const navigate = useNavigate()
-    const { user } = useAuth()
     const [validateState, setValidateState] = useState(false)
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState({})
     const [partCount, setPartId] = useState(0)
+    const { state } = useLocation()
     const [item, setItem] = useState([])
     const [exFile, setExfile] = useState(null)
     const [pagination, setPagination] = useState({
@@ -152,10 +160,33 @@ const AddBulkPart = () => {
             accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
-            accumulator.created_by = 'super-admin'
-            accumulator.created_by = user.name
             return accumulator
         }, {})
+    }
+    // DOWNLOAD PART LIST
+    const download = (e) => {
+        let arr = []
+        for (let x of state.partList) {
+            let obj = {
+                part_code: x.part_code,
+                name: x.name,
+                color: x.color,
+                technical_qc: x.technical_qc,
+                description: x.description,
+                available_stock: x.avl_stock,
+                update_stock: '',
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
     }
 
     const updateFieldChanged = (id) => (e) => {
@@ -163,7 +194,7 @@ const AddBulkPart = () => {
         setPagination((p) => ({
             ...p,
             item: pagination.item.map((data, i) => {
-                if (data.code === id) {
+                if (data.id === id) {
                     return { ...data, [e.target.name]: e.target.value }
                 } else {
                     return data
@@ -184,7 +215,7 @@ const AddBulkPart = () => {
         try {
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
-                '/bulkvalidationForPart',
+                '/partlist/manageStock/bulkValidation',
                 pagination.item
             )
             if (res.status == 200) {
@@ -216,7 +247,7 @@ const AddBulkPart = () => {
         try {
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post(
-                '/bulkAddPart',
+                '/partlist/manageStock/update',
                 pagination.item
             )
             if (res.status == 200) {
@@ -228,9 +259,9 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/sup-admin/view-list/sparereporting', {
+                        navigate('/rm-user/view-list/managestock/report', {
                             state: {
-                                validatedSuccess: res.data.addedCount,
+                                validatedSuccess: res.data.count,
                             },
                         })
                     }
@@ -253,19 +284,19 @@ const AddBulkPart = () => {
         }
     }
 
-    console.log(err)
+    // console.log(item)
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Part-List', path: '/' },
-                        { name: 'Bulk-Part' },
+                        { name: 'Parts-list', path: '/' },
+                        { name: 'Manage-stock' },
                     ]}
                 />
             </div>
-            <SimpleCard title="Bulk Part">
+            <SimpleCard title="Manage stock">
                 <Box
                     sx={{
                         display: 'flex',
@@ -279,9 +310,7 @@ const AddBulkPart = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() =>
-                                navigate('/sup-admin/view-part-list')
-                            }
+                            onClick={() => navigate('/rm-user/part-list')}
                         >
                             Back to Spare Part list
                         </Button>
@@ -289,13 +318,12 @@ const AddBulkPart = () => {
                             sx={{ mb: 2, ml: 2 }}
                             variant="contained"
                             color="primary"
-                            href={
-                                process.env.PUBLIC_URL +
-                                '/Bulk-add-part-sample-sheet.xlsx'
-                            }
+                            onClick={(e) => {
+                                download(e)
+                            }}
                             download
                         >
-                            Download Sample Sheet
+                            Download available stock
                         </Button>
                     </Box>
                 </Box>
@@ -359,10 +387,13 @@ const AddBulkPart = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Sl No</TableCell>
+                                <TableCell>Part Number</TableCell>
                                 <TableCell>Part Name</TableCell>
-                                <TableCell>Color</TableCell>
-                                <TableCell>Technical QC</TableCell>
-                                <TableCell>Part Description</TableCell>
+                                <TableCell>Part Color</TableCell>
+                                <TableCell>Technical Qc</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell>Available Stock</TableCell>
+                                <TableCell>Update Stock</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -372,20 +403,26 @@ const AddBulkPart = () => {
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"
-                                            name="part_name"
-                                            value={data.part_name?.toString()}
+                                            name="part_code"
+                                            value={data.part_code?.toString()}
                                         />
-                                        {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == '') ? (
+                                        {err?.part_code_not_exists?.includes(
+                                            data.part_code
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : err?.duplicate_part_code?.includes(
+                                              data.part_code
+                                          ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -397,37 +434,51 @@ const AddBulkPart = () => {
                                             ''
                                         )}
 
-                                        {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == '') ? (
+                                        {err?.part_code_not_exists?.includes(
+                                            data.part_code
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
-                                                Duplicate Part Name
+                                                Invalid Part Number
+                                            </p>
+                                        ) : err?.duplicate_part_code?.includes(
+                                              data.part_code
+                                          ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Duplicate Part Number
                                             </p>
                                         ) : (
                                             ''
                                         )}
                                     </TableCell>
+
+                                    <TableCell>
+                                        {data.name?.toString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {data.color?.toString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {data.technical_qc?.toString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {data.description?.toString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {data.available_stock?.toString()}
+                                    </TableCell>
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"
-                                            name="part_color"
-                                            value={data.part_color?.toString()}
+                                            name="update_stock"
+                                            value={data.update_stock?.toString()}
                                         />
-                                        {err?.duplicate_color?.includes(
-                                            data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        {err?.update_stock_check?.includes(
+                                            data.update_stock?.toString()
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -439,96 +490,27 @@ const AddBulkPart = () => {
                                             ''
                                         )}
 
-                                        {err?.duplicate_color?.includes(
-                                            data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        {err?.update_stock_check?.includes(
+                                            data.update_stock?.toString()
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
-                                                Color does not exists
+                                                Only Positive Integers are
+                                                Acceptable
                                             </p>
                                         ) : (
                                             ''
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        <TextField
-                                            onChange={updateFieldChanged(
-                                                data.code
-                                            )}
-                                            id="outlined-password-input"
-                                            type="text"
-                                            name="technical_qc"
-                                            value={data.technical_qc?.toString()}
-                                        />
-                                        {err?.technical_qc?.includes(
-                                            data.technical_qc?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == '') ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == undefined) ? (
-                                            <ClearIcon
-                                                style={{ color: 'red' }}
-                                            />
-                                        ) : Object.keys(err).length != 0 ? (
-                                            <DoneIcon
-                                                style={{ color: 'green' }}
-                                            />
-                                        ) : (
-                                            ''
-                                        )}
-
-                                        {err?.technical_qc?.includes(
-                                            data.technical_qc?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == '') ? (
-                                            <p style={{ color: 'red' }}>
-                                                Only Y/N are acceptable
-                                            </p>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        <TextField
-                                            onChange={updateFieldChanged(
-                                                data.code
-                                            )}
-                                            id="outlined-password-input"
-                                            type="text"
-                                            name="description"
-                                            value={data.description?.toString()}
-                                        />
-                                    </TableCell>
-
-                                    <TableCell>
-                                        {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
+                                        {err?.update_stock_check?.includes(
+                                            data.update_stock?.toString()
                                         ) == true ||
-                                        err?.technical_qc?.includes(
-                                            data.technical_qc?.toString()
+                                        err?.part_code_not_exists?.includes(
+                                            data.part_code
                                         ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.technical_qc == '') ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == '') ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ||
-                                        err?.duplicate_color?.includes(
-                                            data.part_color?.toString()
-                                        ) == true ? (
+                                        err?.duplicate_part_code?.includes(
+                                            data.part_code
+                                        ) ? (
                                             <Button
                                                 sx={{
                                                     ml: 2,

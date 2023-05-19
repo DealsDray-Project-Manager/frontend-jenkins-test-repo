@@ -3,7 +3,7 @@ import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon, RepairIcon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosRmUserAgent } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -14,11 +14,16 @@ const StatCard3 = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post(
-                    '/superAdminDashboard'
-                )
-                if (res.status == 200) {
-                    setCount(res.data.data)
+                let user = localStorage.getItem('prexo-authentication')
+                if (user) {
+                    let { location } = jwt_decode(user)
+
+                    let res = await axiosRmUserAgent.post(
+                        '/dashboard/' + location
+                    )
+                    if (res.status == 200) {
+                        setCount(res.data.data)
+                    }
                 }
             } catch (error) {
                 Swal.fire({
@@ -34,16 +39,17 @@ const StatCard3 = () => {
 
     const statList = [
         {
-            icon: 'branding_watermark',
-            amount: count?.partList,
-            title: 'Part List',
-            path: '/rm-warehouse/part-list',
+            icon: 'art_track',
+            amount: count.rdl_two,
+            title: 'Upcoming Repairs',
+            path: '/rm-user/upcoming-repair-tray',
+            sales: false,
         },
         {
             icon: 'branding_watermark',
-            amount: count?.colorList,
-            title: 'Color List',
-            path: '/rm-warehouse/color-list',
+            amount: count?.rdl2Request,
+            title: 'Parts Issue Request',
+            path: '/rm-user/rdl-2-issue-request',
         },
     ]
     const { palette } = useTheme()

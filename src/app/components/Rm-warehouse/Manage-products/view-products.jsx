@@ -2,10 +2,14 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import MemberEditorDialog from './add-part'
+import EditProdutDilog from './edit-product'
+import AddEditorDialog from './add-products'
+import { useNavigate } from 'react-router-dom'
+import { Button, Box, IconButton, Icon } from '@mui/material'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,28 +24,26 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const PartTable = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [editFetchData, setEditFetchData] = useState({})
-    const [partList, setPartList] = useState([])
-    const [muicData, setMuicData] = useState([])
-    const [partId, setPartId] = useState([])
+    const [productList, setProductList] = useState([])
+    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const [shouldOpenProductEditDialog, setShouldOpenProductEditDialog] =
+        useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post(
-                    '/partAndColor/view/' + 'part-list'
-                )
+                const res = await axiosSuperAdminPrexo.post('/getAllProducts')
                 if (res.status === 200) {
-                    setPartList(res.data.data)
                     setIsLoading(false)
+                    setProductList(res.data.data)
                 }
             } catch (error) {
-                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -56,40 +58,15 @@ const PartTable = () => {
         }
     }, [isAlive])
 
-    const handleDialogClose = () => {
-        setEditFetchData({})
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = async (state) => {
+    const editProductData = async (prdodutId) => {
         try {
-            const res = await axiosSuperAdminPrexo.post('/muic/view')
-            if (res.status === 200) {
-                setMuicData(res.data.data)
-            }
-            if (state == 'ADD') {
-                const trayId = await axiosSuperAdminPrexo.post(
-                    '/partList/idGen'
-                )
-                if (trayId.status == 200) {
-                    setPartId(trayId.data.data)
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
-        setShouldOpenEditorDialog(true)
-    }
-
-    const editMaster = async (id) => {
-        try {
-            let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/oneData/' + id + '/part-list'
+            let response = await axiosSuperAdminPrexo.get(
+                '/getEditProduct/' + prdodutId
             )
-            if (response.status == 200) {
+            if (response.status === 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
-            } else {
+            } else if (response.status == 202) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -105,10 +82,50 @@ const PartTable = () => {
         }
     }
 
-    const handelDelete = (id) => {
+    const editImage = async (productId) => {
+        try {
+            let res = await axiosSuperAdminPrexo.post(
+                '/getImageEditProdt/' + productId
+            )
+            if (res.status == 200) {
+                setEditFetchData(res.data.data)
+                handleDialogOpenForProductEdit()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
+
+    const handleDialogClose = () => {
+        setEditFetchData({})
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+    const handleDialogCloseForProductEdit = () => {
+        setShouldOpenProductEditDialog(false)
+    }
+
+    const handleDialogOpenForProductEdit = () => {
+        setShouldOpenProductEditDialog(true)
+    }
+
+    const handelDelete = (prdodutId) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: 'You want to Delete Product!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -117,18 +134,18 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/part-list'
+                    let res = await axiosSuperAdminPrexo.get(
+                        '/getEditProduct/' + prdodutId
                     )
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         let response = await axiosSuperAdminPrexo.post(
-                            '/partAndColor/delete/' + id
+                            '/deleteProduct/' + prdodutId
                         )
-                        if (response.status == 200) {
+                        if (response.status === 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Part has been Deleted.',
+                                title: 'Your Product has been Deleted',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -141,14 +158,14 @@ const PartTable = () => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: "This Part You Can't Delete",
+                                text: "You Can't Delete This Product",
                             })
                         }
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "This Part You Can't Delete",
+                            text: "You Can't Delete This Product",
                         })
                     }
                 } catch (error) {
@@ -174,36 +191,60 @@ const PartTable = () => {
             },
         },
         {
-            name: 'part_code', // field name in the row object
-            label: 'Id', // column title that will be shown in table
+            name: 'image', // field name in the row object
+            label: 'Image', // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value == undefined
+                                    ? 'https://prexo-v8-3-dev-api.dealsdray.com/product/image/' +
+                                      tableMeta.rowData[2] +
+                                      '.jpg'
+                                    : value
+                            }
+                        />
+                    )
+                },
+            },
+        },
+        
+        {
+            name: 'vendor_sku_id',
+            label: 'SKU ID',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'muic', // field name in the row object
-            label: 'MUIC', // column title that will be shown in table
+            name: 'brand_name',
+            label: 'Brand',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'color', // field name in the row object
-            label: 'Color', // column title that will be shown in table
+            name: 'model_name',
+            label: 'Model',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name', // field name in the row object
-            label: 'Part Name', // column title that will be shown in table
+            name: 'vendor_name',
+            label: 'Vendor Name',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'description',
-            label: 'Description',
+            name: 'muic',
+            label: 'MUIC',
             options: {
                 filter: true,
             },
@@ -212,27 +253,38 @@ const PartTable = () => {
             name: 'created_at',
             label: 'Creation Date',
             options: {
-                filter: false,
-                sort: true,
-                customBodyRender: (value) =>
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
         },
         {
-            name: '_id',
+            name: 'created_by',
+            label: 'Created By',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status',
             label: 'Actions',
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editMaster(value)
+                                        editProductData(tableMeta.rowData[6])
                                     }}
                                     color="primary"
                                 >
@@ -241,40 +293,68 @@ const PartTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={(e) => {
-                                        handelDelete(value)
+                                    onClick={() => {
+                                        handelDelete(tableMeta.rowData[6])
                                     }}
                                     color="error"
                                 >
                                     delete
                                 </Icon>
                             </IconButton>
-                        </>
+                            <IconButton>
+                                <Icon
+                                    onClick={() => {
+                                        editImage(tableMeta.rowData[6])
+                                    }}
+                                    color="primary"
+                                >
+                                    image
+                                </Icon>
+                            </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={() =>  navigate('/rm-user/products/muiclist/' + tableMeta.rowData[6])}
+                                    color="default"
+                                >
+                                    details
+                                </Icon>
+                            </IconButton>
+                            
+                        </Box>
                     )
                 },
             },
         },
     ]
 
+    
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Part-list', path: '/' }]}
+                    routeSegments={[{ name: 'Products', path: '/pages' }]}
                 />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => handleDialogOpen('ADD')}
+                onClick={() => handleDialogOpen()}
             >
-                Add New Part
+                Add New Product
             </Button>
-
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => navigate('/rm-user/products/bulk-product')}
+            >
+                Add Bulk Products
+            </Button>
             <MUIDataTable
-                title={'All Parts'}
-                data={partList}
+                title={'All Products'}
+                data={productList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -300,13 +380,19 @@ const PartTable = () => {
                 }}
             />
             {shouldOpenEditorDialog && (
-                <MemberEditorDialog
+                <AddEditorDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
                     setIsAlive={setIsAlive}
-                    partId={partId}
-                    setPartId={setPartId}
-                    muicData={muicData}
+                    editFetchData={editFetchData}
+                    setEditFetchData={setEditFetchData}
+                />
+            )}
+            {shouldOpenProductEditDialog && (
+                <EditProdutDilog
+                    handleClose={handleDialogCloseForProductEdit}
+                    open={handleDialogOpenForProductEdit}
+                    setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
                 />
@@ -315,4 +401,4 @@ const PartTable = () => {
     )
 }
 
-export default PartTable
+export default SimpleMuiTable

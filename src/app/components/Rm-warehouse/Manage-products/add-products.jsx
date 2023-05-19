@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import useAuth from 'app/hooks/useAuth'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -28,6 +29,7 @@ const MemberEditorDialog = ({
 }) => {
     const [brands, setBrands] = useState([])
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
     const [productImage, setProductImage] = useState({
         imagePreview: '',
         imageStore: '',
@@ -104,7 +106,7 @@ const MemberEditorDialog = ({
         try {
             data.muic = muis_code
             data.created_at = Date.now()
-            data.created_by = 'super-admin'
+            data.created_by = user.name
             let formdata = new FormData()
             formdata.append('image', productImage.store)
             for (let [key, value] of Object.entries(data)) {

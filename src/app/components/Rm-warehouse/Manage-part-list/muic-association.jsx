@@ -195,7 +195,7 @@ const Association = () => {
                     if (result.isConfirmed) {
                         setSubmitLoad(false)
                         navigate(
-                            '/rm-user/view-part-list/muic-association/success',
+                            '/sup-admin/view-part-list/muic-association/success',
                             {
                                 state: {
                                     validatedSuccess: validationCount,
@@ -324,7 +324,7 @@ const Association = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelRemoveFromDb(value)
+                                      handelRemoveFromDb(value)
                                     }}
                                     color="error"
                                 >
@@ -416,7 +416,7 @@ const Association = () => {
                                                 <FormControlLabel
                                                     value="option2"
                                                     control={<Radio />}
-                                                    label="N"
+                                                    label=""
                                                     checked={
                                                         partData?.technical_qc ==
                                                         'N'

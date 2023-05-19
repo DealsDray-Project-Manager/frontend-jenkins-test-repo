@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosMisUser } from '../../../../../axios'
+import { axiosMisUser } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
-import AssignDialogBox from './user-dailog'
 import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
@@ -98,7 +97,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/mis/assign-to-agent/Rdl-repair/view-item/' + trayId)
+        navigate('/rm-user/upcoming-repair-tray/units/' + trayId)
     }
 
     const columns = [
@@ -256,23 +255,10 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Assign to RDL Two', path: '/' },
-                        { name: 'RDL Two' },
-                    ]}
+                    routeSegments={[{ name: 'Upcoming Repairs', path: '/' }]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                disabled={isCheck.length == 0}
-                onClick={(e) => {
-                    handelReadyForRdl(e)
-                }}
-            >
-                Assign For RDL-2
-            </Button>
+
             <MUIDataTable
                 title={'WHT Tray'}
                 data={whtTrayList}
@@ -316,16 +302,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-
-            {shouldOpenEditorDialog && (
-                <AssignDialogBox
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    RDLUsers={RDLUsers}
-                    isCheckk={isCheck}
-                />
-            )}
         </Container>
     )
 }

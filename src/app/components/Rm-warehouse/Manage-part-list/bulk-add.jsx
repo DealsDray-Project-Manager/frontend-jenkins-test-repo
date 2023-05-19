@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
+import useAuth from 'app/hooks/useAuth'
 import * as XLSX from 'xlsx'
 import { Box, styled } from '@mui/system'
 import { SimpleCard, Breadcrumb } from 'app/components'
@@ -17,7 +18,6 @@ import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
-import useAuth from 'app/hooks/useAuth'
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -152,7 +152,6 @@ const AddBulkPart = () => {
             accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
-            accumulator.created_by = 'super-admin'
             accumulator.created_by = user.name
             return accumulator
         }, {})
@@ -228,7 +227,7 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/sup-admin/view-list/sparereporting', {
+                        navigate('/rm-user/view-list/sparereporting', {
                             state: {
                                 validatedSuccess: res.data.addedCount,
                             },
@@ -252,8 +251,6 @@ const AddBulkPart = () => {
             })
         }
     }
-
-    console.log(err)
 
     return (
         <Container>
@@ -279,9 +276,7 @@ const AddBulkPart = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() =>
-                                navigate('/sup-admin/view-part-list')
-                            }
+                            onClick={() => navigate('/rm-user/part-list')}
                         >
                             Back to Spare Part list
                         </Button>

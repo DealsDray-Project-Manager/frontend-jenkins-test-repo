@@ -97,7 +97,7 @@ const Login = () => {
             } else if (user_type == 'RDL-2') {
                 navigate('/rdl-two/dashboard')
             } else if (user_type == 'RM User') {
-                navigate('/rm-warehouse/dashboard')
+                navigate('/rm-user/dashboard')
             }
         } else {
             navigate('/')
@@ -146,7 +146,7 @@ const Login = () => {
                 } else if (response.data.data?.user_type == 'RDL-2') {
                     navigate('/rdl-two/dashboard')
                 } else if (response.data.data?.user_type == 'RM User') {
-                    navigate('/rm-warehouse/dashboard')
+                    navigate('/rm-user/dashboard')
                 }
             } else {
                 setLoading(false)

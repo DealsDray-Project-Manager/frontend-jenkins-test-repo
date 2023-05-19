@@ -9,8 +9,6 @@ import { Button, Box, IconButton, Icon } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
-
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -213,7 +211,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        
+
         {
             name: 'vendor_sku_id',
             label: 'SKU ID',
@@ -258,6 +256,13 @@ const SimpleMuiTable = () => {
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
+            },
+        },
+        {
+            name: 'created_by',
+            label: 'Created By',
+            options: {
+                filter: true,
             },
         },
         {
@@ -306,21 +311,23 @@ const SimpleMuiTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={() =>  navigate('/sup-admin/products/muiclist/' + tableMeta.rowData[6])}
+                                    onClick={() =>
+                                        navigate(
+                                            '/sup-admin/products/muiclist/' +
+                                                tableMeta.rowData[6]
+                                        )
+                                    }
                                     color="default"
                                 >
                                     details
                                 </Icon>
                             </IconButton>
-                            
                         </Box>
                     )
                 },
             },
         },
     ]
-
-    
 
     return (
         <Container>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import {
     Box,
-    Button,
     Dialog,
     DialogTitle,
     IconButton,
@@ -34,6 +33,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -83,7 +83,6 @@ export default function DialogBox() {
                     if (response.status === 200) {
                         setTrayData(response.data.data)
                     } else {
-                      
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -137,7 +136,7 @@ export default function DialogBox() {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }
@@ -147,7 +146,6 @@ export default function DialogBox() {
             SetCloseButDis(true)
             let res = await axiosAuditAgent.post('/trayClose/' + id)
             if (res.status == 200) {
-              
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -164,14 +162,14 @@ export default function DialogBox() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:res?.data?.message,
+                    text: res?.data?.message,
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

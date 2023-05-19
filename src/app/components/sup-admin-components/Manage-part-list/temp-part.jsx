@@ -382,7 +382,7 @@ const PartTable = () => {
                 variant="contained"
                 color="warning"
                 onClick={() =>
-                    navigate('/sup-admin/view-list/uploadspare', {
+                    navigate('/sup-admin/view-list/managestock', {
                         state: {
                             partList: partList,
                         },

@@ -31,9 +31,10 @@ const BulkProducts = Loadable(
 )
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const Location = Loadable(lazy(() => import('./Manage-location/view-location')))
-const Warehouse = Loadable(
-    lazy(() => import('./Manage-warehouse/view-warehouse'))
-)
+const Warehouse = Loadable(lazy(() => import('./Manage-warehouse/view-warehouse')))
+
+const Vendors = Loadable(lazy(() => import('./Manage-vendors/view-vendors')))
+
 const Brands = Loadable(lazy(() => import('./Manage-brands/view-brands')))
 const BulkBrand = Loadable(lazy(() => import('./Manage-brands/bulk-add-brand')))
 const Bag = Loadable(lazy(() => import('./Manage-bag/view-bag')))
@@ -139,6 +140,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/warehouse',
         element: <Warehouse />,
+    },
+    {
+        path: '/sup-admin/view-vendors',
+        element: <Vendors />,
     },
     {
         path: '/sup-admin/Category',

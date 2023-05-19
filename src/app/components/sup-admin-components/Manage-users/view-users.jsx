@@ -4,7 +4,7 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
@@ -157,7 +157,7 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1"><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -167,7 +167,7 @@ const UserTable = () => {
         },
         {
             name: 'profile',
-            label: 'Profile',
+            label: <Typography variant="subtitle1"><strong>Profile</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -178,7 +178,7 @@ const UserTable = () => {
         },
         {
             name: 'creation_date',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -189,70 +189,70 @@ const UserTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'email',
-            label: 'Email',
+            label: <Typography variant="subtitle1"><strong>Email</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'contact',
-            label: 'Mobile No',
+            label: <Typography variant="subtitle1"><strong>Mobile No</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_name',
-            label: 'User name',
+            label: <Typography variant="subtitle1"><strong>User Name</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_type',
-            label: 'User Type',
+            label: <Typography variant="subtitle1"><strong>User Type</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: 'CPC',
+            label: <Typography variant="subtitle1"><strong>CPC</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc_type',
-            label: 'CPC Type',
+            label: <Typography variant="subtitle1"><strong>CPC Type</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_name',
-            label: 'Device Name',
+            label: <Typography variant="subtitle1"><strong>Device Name</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_id',
-            label: 'Device Id',
+            label: <Typography variant="subtitle1"><strong>Device ID</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: 'Status',
+            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -274,7 +274,7 @@ const UserTable = () => {
         },
         {
             name: 'status',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 sort: false,
                 filter: false,
@@ -342,6 +342,7 @@ const UserTable = () => {
             >
                 Add New Member
             </Button>
+            <>
             <MUIDataTable
                 title={'User Report'}
                 data={userList}
@@ -378,6 +379,7 @@ const UserTable = () => {
                     setEditFetchData={setEditFetchData}
                 />
             )}
+            </>
         </Container>
     )
 }

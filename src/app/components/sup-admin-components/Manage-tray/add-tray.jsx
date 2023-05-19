@@ -556,6 +556,14 @@ const MemberEditorDialog = ({
                             >
                                 ST
                             </MenuItem>
+                            <MenuItem
+                                value="ST"
+                                // onClick={(e) => {
+                                //     fetchTypeWiseId(e, 'ST', 'below')
+                                // }}
+                            >
+                                SP
+                            </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'CT' ||
                         getValues('type_taxanomy') == 'ST' ? (

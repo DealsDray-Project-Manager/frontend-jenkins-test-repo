@@ -306,12 +306,13 @@ const SimpleMuiTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={() =>  navigate('/sup-admin/products/muiclist')}
+                                    onClick={() =>  navigate('/sup-admin/products/muiclist/' + tableMeta.rowData[6])}
                                     color="default"
                                 >
                                     details
                                 </Icon>
                             </IconButton>
+                            
                         </Box>
                     )
                 },

@@ -416,7 +416,7 @@ const Association = () => {
                                                 <FormControlLabel
                                                     value="option2"
                                                     control={<Radio />}
-                                                    label="N"
+                                                    label=""
                                                     checked={
                                                         partData?.technical_qc ==
                                                         'N'

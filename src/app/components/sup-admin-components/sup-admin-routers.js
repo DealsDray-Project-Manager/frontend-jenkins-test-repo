@@ -10,9 +10,6 @@ const ViewProducts = Loadable(
 )
 const MUIClist = Loadable(lazy(() => import('./Manage-products/muiclist')))
 const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
-const Partsvalid = Loadable(
-    lazy(() => import('./Manage-products/partsvalidation'))
-)
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
@@ -102,19 +99,16 @@ const SuperAdminRouter = [
         element: <ViewProducts />,
     },
     {
-        path: '/sup-admin/products/muiclist',
+        path: '/sup-admin/products/muiclist/:muic',
         element: <MUIClist />,
     },
     {
         path: '/sup-admin/products/addparts',
         element: <Addparts />,
     },
+   
     {
-        path: '/sup-admin/products/partsvalidation',
-        element: <Partsvalid />,
-    },
-    {
-        path: '/sup-admin/products/partsassociation',
+        path: '/sup-admin/products/partsassociation/report',
         element: <Partsassociation />,
     },
     {

@@ -559,7 +559,7 @@ const Association = () => {
                                     }}
                                 >
                                     <Typography
-                                        sx={{ p: 2, fontWeight: 'bold' }}
+                                        sx={{ p: 2, fontWeight: 'bold',fontSize:'20px' }}
                                     >
                                         MUIC Validation
                                     </Typography>
@@ -646,14 +646,14 @@ const Association = () => {
                                                             phones.validationStatus
                                                         }
                                                     </TableCell>
-                                                    <TableCell>
+                                                        <TableCell align='center'>
                                                         <IconButton
                                                             onClick={(e) => {
                                                                 handelDelete(
                                                                     phones?.muic
                                                                 )
                                                             }}
-                                                            sx={{ ml: 13 }}
+                                                            
                                                         >
                                                             <Icon color="error">
                                                                 delete

@@ -478,7 +478,9 @@ const AddBulkPart = () => {
                                         />
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        ) ? (
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.update_stock == undefined) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -492,7 +494,9 @@ const AddBulkPart = () => {
 
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        ) ? (
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.update_stock == undefined) ? (
                                             <p style={{ color: 'red' }}>
                                                 Only Positive Integers are
                                                 Acceptable
@@ -510,6 +514,11 @@ const AddBulkPart = () => {
                                         ) ||
                                         err?.duplicate_part_code?.includes(
                                             data.part_code
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.update_stock == undefined) ||
+                                        err?.duplicate_part_code?.includes(
+                                            data.part_code?.toString()
                                         ) ? (
                                             <Button
                                                 sx={{

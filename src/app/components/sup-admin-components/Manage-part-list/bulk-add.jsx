@@ -399,13 +399,16 @@ const AddBulkPart = () => {
 
                                         {err?.duplicate_part_name?.includes(
                                             data.part_name?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == '') ? (
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Name
+                                            </p>
+                                        ) : (Object.keys(err).length != 0 &&
+                                              data.part_name == undefined) ||
+                                          (Object.keys(err).length != 0 &&
+                                              data.part_name == '') ? (
+                                            <p style={{ color: 'red' }}>
+                                                Part Name Reqiured
                                             </p>
                                         ) : (
                                             ''
@@ -423,11 +426,7 @@ const AddBulkPart = () => {
                                         />
                                         {err?.duplicate_color?.includes(
                                             data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -441,11 +440,7 @@ const AddBulkPart = () => {
 
                                         {err?.duplicate_color?.includes(
                                             data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Color does not exists
                                             </p>
@@ -522,10 +517,6 @@ const AddBulkPart = () => {
                                             data.part_name == undefined) ||
                                         (Object.keys(err).length != 0 &&
                                             data.part_name == '') ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ||
                                         err?.duplicate_color?.includes(
                                             data.part_color?.toString()
                                         ) == true ? (

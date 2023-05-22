@@ -259,7 +259,7 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/rm-user/view-list/managestock/report', {
+                        navigate('/rm-user/view-part-list/managestock/report', {
                             state: {
                                 validatedSuccess: res.data.count,
                             },

@@ -12,7 +12,7 @@ const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
- 
+
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -85,19 +85,6 @@ const AddPartOrColorAndEditDialog = ({
     } = useForm({
         resolver: yupResolver(schema),
     })
-
-    // const getColorList = async (muic) => {
-    //     try {
-    //         const res = await axiosSuperAdminPrexo.post(
-    //             '/muic/listColor/' + muic
-    //         )
-    //         if (res.status == 200) {
-    //             setColorData(res.data.data)
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
 
     const onSubmit = async (data) => {
         try {

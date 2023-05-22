@@ -51,6 +51,12 @@ const StatCard3 = () => {
             link: '/sup-admin/warehouse',
         },
         {
+            icon: 'home',
+            amount: count.vendor,
+            title: 'Vendors',
+            link: '/sup-admin/view-vendors',
+        },
+        {
             icon: 'branding_watermark',
             amount: count.ctxCategory,
             title: 'Category',

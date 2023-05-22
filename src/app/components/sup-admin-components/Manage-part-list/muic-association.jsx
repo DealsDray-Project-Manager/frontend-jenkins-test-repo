@@ -195,7 +195,7 @@ const Association = () => {
                     if (result.isConfirmed) {
                         setSubmitLoad(false)
                         navigate(
-                            '/rm-user/view-part-list/muic-association/success',
+                            '/sup-admin/view-part-list/muic-association/success',
                             {
                                 state: {
                                     validatedSuccess: validationCount,

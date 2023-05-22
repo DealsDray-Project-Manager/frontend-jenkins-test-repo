@@ -307,7 +307,7 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[8] == 'Active' ? (
+                            {tableMeta.rowData[9] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')

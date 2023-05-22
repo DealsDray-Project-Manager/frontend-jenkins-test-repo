@@ -117,11 +117,11 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // let res = await axiosSuperAdminPrexo.post(
-                    //     '/partAndColor/oneData/' + id + '/part-list'
-                    // )
-                    // if (res.status == 200) {
-                    // }
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/partAndColor/oneData/' + id + '/part-list'
+                    )
+                    if (res.status == 200) {
+                    }
                     let obj = {
                         id: id,
                         type: type,
@@ -307,13 +307,13 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[8] == 'Active' ? (
+                            {tableMeta.rowData[9] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')
                                     }}
                                     checked
-                                    style={{ color: 'green' }}
+                                    style={{ color: 'red' }}
                                 />
                             ) : (
                                 <Radio
@@ -321,7 +321,7 @@ const PartTable = () => {
                                         handelActive(value, 'Active')
                                     }}
                                     checked
-                                    style={{ color: 'red' }}
+                                    style={{ color: 'green' }}
                                 />
                             )}
                             <IconButton>

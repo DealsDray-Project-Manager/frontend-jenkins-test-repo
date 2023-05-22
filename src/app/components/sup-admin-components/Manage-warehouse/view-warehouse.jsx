@@ -265,7 +265,7 @@ const SimpleMuiTable = () => {
                 Add New Warehouse
             </Button>
             <MUIDataTable
-                title={'All Warehouse'}
+                title={'All Warehouses'}
                 data={warehouseList}
                 columns={columns}
                 options={{

@@ -256,7 +256,7 @@ const SimpleMuiTable = () => {
                 Add New Location
             </Button>
             <MUIDataTable
-                title={'All Location'}
+                title={'All Locations'}
                 data={locationList}
                 columns={columns}
                 options={{

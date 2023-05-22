@@ -117,11 +117,11 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // let res = await axiosSuperAdminPrexo.post(
-                    //     '/partAndColor/oneData/' + id + '/part-list'
-                    // )
-                    // if (res.status == 200) {
-                    // }
+                    let res = await axiosSuperAdminPrexo.post(
+                        '/partAndColor/oneData/' + id + '/part-list'
+                    )
+                    if (res.status == 200) {
+                    }
                     let obj = {
                         id: id,
                         type: type,
@@ -219,7 +219,7 @@ const PartTable = () => {
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: 'Available stock', // column title that will be shown in table
+            label: 'Available Stock', // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -240,7 +240,7 @@ const PartTable = () => {
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: 'Technical qc', // column title that will be shown in table
+            label: 'Technical QC', // column title that will be shown in table
             options: {
                 filter: true,
             },

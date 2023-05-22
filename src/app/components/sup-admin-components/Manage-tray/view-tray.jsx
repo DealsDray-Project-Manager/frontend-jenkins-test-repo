@@ -322,7 +322,7 @@ const SimpleMuiTable = () => {
     const trayData = useMemo(() => {
         return (
             <MUIDataTable
-                title={'All Tray'}
+                title={'All Trays'}
                 data={trayList}
                 columns={columns}
                 options={{

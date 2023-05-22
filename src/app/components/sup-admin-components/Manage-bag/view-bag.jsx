@@ -307,7 +307,7 @@ const SimpleMuiTable = () => {
                 Add Bulk Bag
             </Button>
             <MUIDataTable
-                title={'All Bag'}
+                title={'All Bags'}
                 data={bagList}
                 columns={columns}
                 options={{

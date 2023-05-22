@@ -154,22 +154,28 @@ const UserTable = () => {
         })
     }
 
+    
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1"><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
             options: {
+                responsive: 'scrollMaxHeight',
                 filter: false,
+                setCellProps: () => ({ style: { width: '150px', paddingRight: '10px', align:'center' }}),
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
+            // minWidth:100
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1"><strong>Profile</strong></Typography>,
+            label: <Typography variant="subtitle1" sx={{marginLeft:'9px'}}><strong>Profile</strong></Typography>,
             options: {
+                responsive: 'scrollMaxHeight',
                 filter: false,
+                setCellProps: () => ({ align: 'right'}),
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
@@ -181,6 +187,7 @@ const UserTable = () => {
             label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: true,
+                responsive: 'scrollMaxHeight',
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -342,14 +349,19 @@ const UserTable = () => {
             >
                 Add New Member
             </Button>
-            <>
+
+            <Box sx={{overflowX:'auto'}}>
             <MUIDataTable
+                
                 title={'User Report'}
                 data={userList}
                 columns={columns}
+                // optionss={options}
                 options={{
+                    // options,
                     filterType: 'textField',
-                    responsive: 'simple',
+                    // responsive: 'scrollMaxHeight',
+                    minWidth:'100',
                     download: false,
                     print: false,
                     textLabels: {
@@ -370,6 +382,8 @@ const UserTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Box>
+            
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -379,7 +393,6 @@ const UserTable = () => {
                     setEditFetchData={setEditFetchData}
                 />
             )}
-            </>
         </Container>
     )
 }

@@ -296,8 +296,10 @@ const MemberEditorDialog = ({
                                 helperText={errors.warehouse_type?.message}
                                 defaultValue={getValues('warehouse_type')}
                             >
-                                <MenuItem value="STW">STW</MenuItem>
-                                <MenuItem value="PRC">PRC</MenuItem>
+                                 <MenuItem value="Dock">Dock</MenuItem>
+                                <MenuItem value="Processing">
+                                    Processing
+                                </MenuItem>
                                 <MenuItem value="Sales">Sales</MenuItem>
                             </TextFieldCustOm>
                         )}

@@ -25,13 +25,16 @@ const SimpleMuiTable = () => {
     const [warehouseList, setWarehouseList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
+    const [vendorId, setVendorId] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchLocation = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/getWarehouse')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/vendorMaster/view'
+                )
                 if (res.status === 200) {
                     setIsLoading(false)
                     setWarehouseList(res.data.data)
@@ -57,20 +60,31 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = () => {
+    const handleDialogOpen = async (state) => {
+        try {
+            if (state == 'ADD') {
+                const trayId = await axiosSuperAdminPrexo.post(
+                    '/partList/idGen'
+                )
+                if (trayId.status == 200) {
+                    setVendorId(trayId.data.venId)
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
         setShouldOpenEditorDialog(true)
     }
 
-    const editWarehouse = async (empId,type) => {
+    const editWarehouse = async (empId) => {
         try {
-            let obj={
-                empId:empId,
-                type:type
-            }
-            let response = await axiosSuperAdminPrexo.post('/getInfra',obj)
+
+            let response = await axiosSuperAdminPrexo.post(
+                '/vendorMaster/one/' + empId
+            )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen()
+                handleDialogOpen("Edit")
             }
         } catch (error) {
             Swal.fire({
@@ -80,7 +94,7 @@ const SimpleMuiTable = () => {
             })
         }
     }
-   
+
     const handelActive = (id, type) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -93,25 +107,20 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // let res = await axiosSuperAdminPrexo.post(
-                    //     '/partAndColor/oneData/' + id + '/part-list'
-                    // )
-                    // if (res.status == 200) {
-                    // }
                     let obj = {
                         id: id,
                         type: type,
                         page: 'part-list',
                     }
                     let response = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/delete',
+                        '/vendorMaster/statusChange',
                         obj
                     )
                     if (response.status == 200) {
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title: `Your Part has been ${type}.`,
+                            title: `Your Vendor has been ${type}.`,
                             confirmButtonText: 'Ok',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
@@ -124,16 +133,9 @@ const SimpleMuiTable = () => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "This Part You Can't Delete",
+                            text: response.data.message,
                         })
                     }
-                    //  else {
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Oops...',
-                    //         text: "This Part You Can't Delete",
-                    //     })
-                    // }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -148,12 +150,19 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Vendor ID',
+            label: 'Record No',
             options: {
                 filter: true,
                 sort: true,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'vendor_id', // field name in the row object
+            label: 'Vendor ID', // column title that will be shown in table
+            options: {
+                filter: true,
             },
         },
         {
@@ -185,15 +194,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'mobile1',
+            name: 'mobile_one',
             label: 'Mobile 1',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'mobile2',
-            label: 'Mobile2',
+            name: 'mobile_two',
+            label: 'Mobile 2',
             options: {
                 filter: true,
             },
@@ -220,16 +229,41 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'type_taxanomy',
-            label: 'Type',
-            
+            name: 'status',
+            label: 'Status',
             options: {
                 filter: true,
-                display:false
+                customBodyRender: (value) => {
+                    if (value == 'Active') {
+                        return (
+                            <div style={{ color: 'green', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <div style={{ color: 'red', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    }
+                },
             },
         },
         {
-            name: 'code',
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'vendor_id',
             label: 'Actions',
             options: {
                 filter: false,
@@ -237,42 +271,40 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                        <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                        }}
-                        >
-                        {tableMeta.rowData[8] == 'Active' ? (
-                                <Radio
-                                    onClick={(e) => {
-                                        handelActive(value, 'Deactive')
-                                    }}
-                                    checked
-                                    style={{ color: 'green' }}
-                                />
-                            ) : (
-                                <Radio
-                                    onClick={(e) => {
-                                        handelActive(value, 'Active')
-                                    }}
-                                    checked
-                                    style={{ color: 'red' }}
-                                />
-                            )}
-                             <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        editWarehouse(value,tableMeta.rowData[10])
-                                    }}
-                                    color="primary"
-                                >
-                                    edit
-                                </Icon>
-                            </IconButton>
-                        </Box>
-                           
-                           
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                {tableMeta.rowData[11] == 'Active' ? (
+                                    <Radio
+                                        onClick={(e) => {
+                                            handelActive(value, 'Deactive')
+                                        }}
+                                        checked
+                                        style={{ color: 'red' }}
+                                    />
+                                ) : (
+                                    <Radio
+                                        onClick={(e) => {
+                                            handelActive(value, 'Active')
+                                        }}
+                                        checked
+                                        style={{ color: 'green' }}
+                                    />
+                                )}
+                                <IconButton>
+                                    <Icon
+                                        onClick={(e) => {
+                                            editWarehouse(value)
+                                        }}
+                                        color="primary"
+                                    >
+                                        edit
+                                    </Icon>
+                                </IconButton>
+                            </Box>
                         </>
                     )
                 },
@@ -282,16 +314,14 @@ const SimpleMuiTable = () => {
 
     return (
         <Container>
-            <div className="breadcrumb"> 
-                <Breadcrumb
-                    routeSegments={[{ name: 'Vendors', path: '/' }]}
-                />
+            <div className="breadcrumb">
+                <Breadcrumb routeSegments={[{ name: 'Vendors', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
+                onClick={() => handleDialogOpen('ADD')}
             >
                 Add New Vendor
             </Button>
@@ -329,6 +359,8 @@ const SimpleMuiTable = () => {
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
+                    vendorId={vendorId}
+                    setVendorId={setVendorId}
                 />
             )}
         </Container>

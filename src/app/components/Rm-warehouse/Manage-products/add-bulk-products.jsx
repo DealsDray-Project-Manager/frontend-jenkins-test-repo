@@ -13,6 +13,7 @@ import {
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
 import * as XLSX from 'xlsx'
+import useAuth from 'app/hooks/useAuth'
 import React, { useState, useEffect } from 'react'
 import { Box, styled } from '@mui/system'
 import { SimpleCard, Breadcrumb } from 'app/components'
@@ -76,6 +77,7 @@ const AddBulkProduct = () => {
     const [validateState, setValidateState] = useState(false)
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState({})
+    const { user } = useAuth()
     const [item, setItem] = useState([])
     const [exFile, setExfile] = useState(null)
     const [pagination, setPagination] = useState({
@@ -146,8 +148,8 @@ const AddBulkProduct = () => {
                 )
             }
             accumulator.muic = muis_code
+            accumulator.created_by = user.name
             accumulator.created_at = Date.now()
-            accumulator.created_by = 'super-admin'
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             return accumulator
         }, {})
@@ -273,7 +275,7 @@ const AddBulkProduct = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate('/sup-admin/products')}
+                            onClick={() => navigate('/rm-user/product-list')}
                         >
                             Back to list
                         </Button>

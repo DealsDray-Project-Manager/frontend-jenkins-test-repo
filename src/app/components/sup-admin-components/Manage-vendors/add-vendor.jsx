@@ -1,11 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, Button, Grid, TextField, MenuItem, DialogTitle, DialogContent, FormControl, InputLabel, Select } from '@mui/material'
+import React, { useEffect, useState, Controller } from 'react'
+import {
+    Dialog,
+    Button,
+    Grid,
+    TextField,
+    MenuItem,
+    Checkbox,
+    Select,
+    FormControl,
+    InputLabel,
+} from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
+import { useTheme } from '@mui/material/styles'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -18,6 +30,16 @@ const FormHandlerBox = styled('div')(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
 }))
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
 
 const MemberEditorDialog = ({
     open,
@@ -25,15 +47,21 @@ const MemberEditorDialog = ({
     setIsAlive,
     editFetchData,
     setEditFetchData,
+    vendorId,
+    setVendorId
 }) => {
     const [loading, setLoading] = useState(false)
+    const theme = useTheme()
     const [locationDrop, setLocationDrop] = useState([])
-    const [selectedCpc, setSelectedCpc] = useState('')
+    const [personName, setPersonName] = React.useState([])
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log(editFetchData);
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
+                setPersonName(editFetchData.location)
+                setVendorId(editFetchData.vendor_id)
                 open()
             }
         }
@@ -58,15 +86,14 @@ const MemberEditorDialog = ({
         fetchData()
     }, [])
 
+    useEffect(() => {
+        setValue('location', personName)
+    }, [personName])
+
     const schema = Yup.object().shape({
+        vendor_id: Yup.string().required('Required*').nullable(),
         name: Yup.string()
-            .max(40, 'Please Enter Below 40')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-            .max(40)
-            .required('Required*')
-            .nullable(),
-        code: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid code')
             .max(40)
             .required('Required*')
             .nullable(),
@@ -85,34 +112,39 @@ const MemberEditorDialog = ({
             .max(40)
             .required('Required*')
             .nullable(),
-        country: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
-            .max(40)
-            .required('Required*')
-            .nullable(),
-        pincode: Yup.string()
-            .min(6, 'Please Enter valid Pincode')
-            .required('Required*')
-            .nullable(),
-        parent_id: Yup.string().required('Required*').nullable(),
-        warehouse_type: Yup.string().required('Required*').nullable(),
+
+        mobile_one: Yup.string().required('Required*').nullable(),
+        deals: Yup.string().required('Required*').nullable(),
+        mobile_two: Yup.string().required('Required*').nullable(),
+        reference: Yup.string().required('Required*').nullable(),
+        location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
 
+    console.log(errors)
+
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
         reset,
         getValues,
+        setValue,
     } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            location: [], // Set initial values here
+        },
     })
 
     const onSubmit = async (data) => {
-        data.type_taxanomy = 'Warehouse'
+        data.created_at = Date.now()
         try {
             setLoading(true)
-            let response = await axiosSuperAdminPrexo.post('/addLocation', data)
+            let response = await axiosSuperAdminPrexo.post(
+                '/vendorMaster/create',
+                data
+            )
             if (response.status == 200) {
                 setLoading(false)
                 handleClose()
@@ -147,9 +179,17 @@ const MemberEditorDialog = ({
             })
         }
     }
+    function getStyles(name, personName, theme) {
+        return {
+            fontWeight:
+                personName.indexOf(name) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+        }
+    }
     const handelEdit = async (data) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/editInfra', data)
+            let response = await axiosSuperAdminPrexo.post('/vendorMaster/edit', data)
             if (response.status == 200) {
                 setEditFetchData({})
                 handleClose()
@@ -183,32 +223,15 @@ const MemberEditorDialog = ({
             })
         }
     }
-
-
-
-    const [opens, setOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const handleToggle = (option) => () => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((selectedOption) => selectedOption !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event
+        setPersonName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value
+        )
     }
-  };
-
-//   const handleOpenDialog = () => {
-//     setOpen(true);
-//   };
-
-//   const handleCloseDialog = () => {
-//     setOpen(false);
-//   };
-
-//   const handelSubmit = () => {
-//     // Handle the selected options
-//     console.log(selectedOptions);
-//     setOpen(false);
-//   };
 
     return (
         <Dialog open={open}>
@@ -220,40 +243,26 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Vendor ID"
                             type="text"
-                            name="name"
-                            {...register('name')}
-                            error={errors.name ? true : false}
-                            helperText={errors.name ? errors.name?.message : ''}
+                            name="vendor_id"
+                            value={vendorId}
+                            {...register('vendor_id')}
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            error={errors.vendor_id ? true : false}
+                            helperText={
+                                errors.vendor_id
+                                    ? errors.vendor_id?.message
+                                    : ''
+                            }
                         />
                         <TextFieldCustOm
                             label="Name"
                             type="text"
                             name="name"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('name')}
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name?.message : ''}
                         />
-                        {/* <TextFieldCustOm
-                            label="Location"
-                            select
-                            name="parent_id"
-                            {...register('parent_id')}
-                            error={errors.parent_id ? true : false}
-                            helperText={errors.parent_id?.message}
-                            defaultValue={getValues('parent_id')}
-                        >
-                            {locationDrop.map((data) => (
-                                <MenuItem
-                                    onClick={(e) => {
-                                        setSelectedCpc(data.location_type)
-                                    }}
-                                    value={data.code}
-                                >
-                                    {data.code}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm> */}
-
                         <TextFieldCustOm
                             label="Address"
                             type="text"
@@ -283,141 +292,94 @@ const MemberEditorDialog = ({
                                 errors.state ? errors.state?.message : ''
                             }
                         />
-
-                        {/* <TextFieldCustOm
-                            label="Pincode"
-                            type="number"
-                            name="pincode"
-                            inputProps={{ maxLength: 6 }}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault()
-                                }
-                            }}
-                            {...register('pincode')}
-                            error={errors.pincode ? true : false}
-                            helperText={
-                                errors.pincode ? errors.pincode?.message : ''
-                            }
-                        /> */}
                     </Grid>
 
                     <Grid item sm={6} xs={12}>
                         <TextFieldCustOm
-                            label="Mobile 1" 
-                            type="tel"
-                            name="code"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('code')}
-                            error={errors.code ? true : false}
-                            helperText={errors.code ? errors.code?.message : ''}
+                            label="Mobile 1"
+                            type="number"
+                            name="mobile_one"
+                           
+                            {...register('mobile_one')}
+                            error={errors.mobile_one ? true : false}
+                            helperText={
+                                errors.mobile_one
+                                    ? errors.mobile_one?.message
+                                    : ''
+                            }
                         />
                         <TextFieldCustOm
-                            label="Mobile 2" 
-                            type="tel"
-                            name="code"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('code')}
-                            error={errors.code ? true : false}
-                            helperText={errors.code ? errors.code?.message : ''}
+                            label="Mobile 2"
+                            type="number"
+                            name="mobile_two"
+                          
+                            {...register('mobile_two')}
+                            error={errors.mobile_two ? true : false}
+                            helperText={
+                                errors.mobile_two
+                                    ? errors.mobile_two?.message
+                                    : ''
+                            }
                         />
-                        {/* {selectedCpc == 'Processing' ? (
-                            <TextFieldCustOm
-                                label="Warehouse Type"
-                                select
-                                name="warehouse_type"
-                                {...register('warehouse_type')}
-                                error={errors.warehouse_type ? true : false}
-                                helperText={errors.warehouse_type?.message}
-                                defaultValue={getValues('warehouse_type')}
-                            >
-                                <MenuItem value="Dock">Dock</MenuItem>
-                                <MenuItem value="Processing">
-                                    Processing
-                                </MenuItem>
-                                <MenuItem value="Sales">Sales</MenuItem>
-                                <MenuItem value="PRC RMW">PRC RMW</MenuItem>
-                            </TextFieldCustOm>
-                        ) : (
-                            <TextFieldCustOm
-                                label="Warehouse Type"
-                                select
-                                name="warehouse_type"
-                                {...register('warehouse_type')}
-                                error={errors.warehouse_type ? true : false}
-                                helperText={errors.warehouse_type?.message}
-                                defaultValue={getValues('warehouse_type')}
-                            >
-                                <MenuItem value="STW">STW</MenuItem>
-                                <MenuItem value="PRC">PRC</MenuItem>
-                                <MenuItem value="Sales">Sales</MenuItem>
-                            </TextFieldCustOm>
-                        )} */}
-
-                        {/* <textarea name="" id="" cols="30" rows="3" placeholder='Deals'style={{width: "100%", marginBottom:"11px"}}></textarea> */}
 
                         <TextFieldCustOm
                             label="Reference"
                             type="text"
-                            name="country"
-                            {...register('country')}
-                            error={errors.country ? true : false}
+                            name="reference"
+                            {...register('reference')}
+                            error={errors.reference ? true : false}
                             helperText={
-                                errors.country ? errors.country?.message : ''
+                                errors.reference
+                                    ? errors.reference?.message
+                                    : ''
                             }
                         />
-                        <TextFieldCustOm
-                            label="Location"
-                            select
-                            multiple
-                            value={selectedOptions}
-                            onChange={(event) => setSelectedOptions(event.target.value)}
-                            renderValue={(selected) => selected.join(', ')}
-                            type="text"
-                            name="location"
-                            {...register('country')}
-                            error={errors.country ? true : false}
-                            helperText={
-                                errors.country ? errors.country?.message : ''
-                            }                     
-                        >
-                            <
-                            
+                        <FormControl sx={{ mb: 2, width: 260 }}>
+                            <InputLabel id="demo-multiple-name-label">
+                                Location
+                            </InputLabel>
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                value={personName}
+                                input={<OutlinedInput label="location" />}
+                                MenuProps={MenuProps}
+                                onChange={(e) => {
+                                    handleChange(e)
+                                }}
+                                error={errors.location ? true : false}
+                                helperText={
+                                    errors.location
+                                        ? errors.location?.message
+                                        : ''
+                                }
                             >
-                                <MenuItem >
-                                     <input type="checkbox" checked={selectedOptions.includes('Option 1')} onClick={handleToggle('Option 1')} />
-                                     Haryana
-                                   </MenuItem>
-                                   <MenuItem >
-                                     <input type="checkbox" checked={selectedOptions.includes('Option 2')} onClick={handleToggle('Option 2')} />
-                                     Bangalore
-                                   </MenuItem>
-                                   <MenuItem >
-                                     <input type="checkbox" checked={selectedOptions.includes('Option 3')} onClick={handleToggle('Option 3')} />
-                                     Gurgaon
-                                   </MenuItem>
-                            </>
-
-                               
-                        </TextFieldCustOm>
-                        
+                                {locationDrop.map((data) => (
+                                    <MenuItem
+                                        style={getStyles(
+                                            data.code,
+                                            personName,
+                                            theme
+                                        )}
+                                        value={data.code}
+                                    >
+                                        {data.code}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                         <TextFieldCustOm
                             label="Deals"
                             type="text"
-                            name="country"
-                            {...register('country')}
-                            error={errors.country ? true : false}
+                            name="deals"
+                            {...register('deals')}
+                            error={errors.deals ? true : false}
                             helperText={
-                                errors.country ? errors.country?.message : ''
+                                errors.deals ? errors.deals?.message : ''
                             }
                         />
-
                     </Grid>
-
-                    
-
-                   
-
                 </Grid>
 
                 <FormHandlerBox>

@@ -7,9 +7,6 @@ import {
     TableCell,
     Button,
     TextField,
-    MenuItem,
-    IconButton,
-    Icon,
 } from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -20,11 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
-
-const TextFieldCustOm = styled(TextField)(() => ({
-    width: '100%',
-    marginBottom: '16px',
-}))
+import useAuth from 'app/hooks/useAuth'
 
 const StyledTable = styled(Table)(({ theme }) => ({
     whiteSpace: 'pre',
@@ -77,6 +70,7 @@ const StyledLoading = styled('div')(() => ({
 
 const AddBulkPart = () => {
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [validateState, setValidateState] = useState(false)
     const [loading, setLoading] = useState(false)
     const [err, setErr] = useState({})
@@ -158,6 +152,8 @@ const AddBulkPart = () => {
             accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
+            accumulator.created_by = 'super-admin'
+            accumulator.created_by = user.name
             return accumulator
         }, {})
     }
@@ -403,13 +399,16 @@ const AddBulkPart = () => {
 
                                         {err?.duplicate_part_name?.includes(
                                             data.part_name?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_name == '') ? (
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Name
+                                            </p>
+                                        ) : (Object.keys(err).length != 0 &&
+                                              data.part_name == undefined) ||
+                                          (Object.keys(err).length != 0 &&
+                                              data.part_name == '') ? (
+                                            <p style={{ color: 'red' }}>
+                                                Part Name Reqiured
                                             </p>
                                         ) : (
                                             ''
@@ -427,11 +426,7 @@ const AddBulkPart = () => {
                                         />
                                         {err?.duplicate_color?.includes(
                                             data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -445,11 +440,7 @@ const AddBulkPart = () => {
 
                                         {err?.duplicate_color?.includes(
                                             data.part_color?.toString()
-                                        ) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ? (
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Color does not exists
                                             </p>
@@ -526,10 +517,6 @@ const AddBulkPart = () => {
                                             data.part_name == undefined) ||
                                         (Object.keys(err).length != 0 &&
                                             data.part_name == '') ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_color == '') ||
                                         err?.duplicate_color?.includes(
                                             data.part_color?.toString()
                                         ) == true ? (

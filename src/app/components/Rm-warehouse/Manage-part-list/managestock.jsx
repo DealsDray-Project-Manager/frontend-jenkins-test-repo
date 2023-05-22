@@ -259,14 +259,11 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate(
-                            '/sup-admin/view-part-list/managestock/report',
-                            {
-                                state: {
-                                    validatedSuccess: res.data.count,
-                                },
-                            }
-                        )
+                        navigate('/rm-user/view-part-list/managestock/report', {
+                            state: {
+                                validatedSuccess: res.data.count,
+                            },
+                        })
                     }
                 })
             } else {
@@ -313,9 +310,7 @@ const AddBulkPart = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() =>
-                                navigate('/sup-admin/view-part-list')
-                            }
+                            onClick={() => navigate('/rm-user/part-list')}
                         >
                             Back to Spare Part list
                         </Button>
@@ -417,8 +412,7 @@ const AddBulkPart = () => {
                                         />
                                         {err?.part_code_not_exists?.includes(
                                             data.part_code
-                                        ) 
-                                        ? (
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -441,15 +435,13 @@ const AddBulkPart = () => {
                                         )}
 
                                         {err?.part_code_not_exists?.includes(
-                                            data.part_code?.toString()
-                                        ) ? 
-                                           
-                                                <p style={{ color: 'red' }}>
-                                                    Invalid Part Number
-                                                </p>
-                                        
-                                         : err?.duplicate_part_code?.includes(
-                                            data.part_code?.toString()
+                                            data.part_code
+                                        ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Invalid Part Number
+                                            </p>
+                                        ) : err?.duplicate_part_code?.includes(
+                                              data.part_code
                                           ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Number
@@ -486,8 +478,7 @@ const AddBulkPart = () => {
                                         />
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        )|| (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ?  (
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -501,8 +492,7 @@ const AddBulkPart = () => {
 
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        ) || (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ? (
+                                        ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Only Positive Integers are
                                                 Acceptable
@@ -512,21 +502,14 @@ const AddBulkPart = () => {
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        {
-                                        err?.update_stock_check?.includes(
+                                        {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
                                         ) == true ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_code == undefined) ||
-                                        (Object.keys(err).length != 0 &&
-                                            data.part_code == '') ||
                                         err?.part_code_not_exists?.includes(
-                                            data.part_code?.toString()
+                                            data.part_code
                                         ) ||
-                                        (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ||
                                         err?.duplicate_part_code?.includes(
-                                            data.part_code?.toString()
+                                            data.part_code
                                         ) ? (
                                             <Button
                                                 sx={{

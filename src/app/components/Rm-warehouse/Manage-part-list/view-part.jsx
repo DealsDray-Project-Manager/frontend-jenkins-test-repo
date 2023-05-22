@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import MemberEditorDialog from './temp-add'
+import MemberEditorDialog from './part-add'
 import Swal from 'sweetalert2'
 import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -117,11 +117,11 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/part-list'
-                    )
-                    if (res.status == 200) {
-                    }
+                    // let res = await axiosSuperAdminPrexo.post(
+                    //     '/partAndColor/oneData/' + id + '/part-list'
+                    // )
+                    // if (res.status == 200) {
+                    // }
                     let obj = {
                         id: id,
                         type: type,
@@ -196,7 +196,7 @@ const PartTable = () => {
     }
 
     const handledetails = async (id) => {
-        navigate('/sup-admin/view-part-list/muic-association/' + id)
+        navigate('/rm-user/view-part-list/muic-association/' + id)
     }
 
     const columns = [
@@ -313,7 +313,7 @@ const PartTable = () => {
                                         handelActive(value, 'Deactive')
                                     }}
                                     checked
-                                    style={{ color: 'red' }}
+                                    style={{ color: 'green' }}
                                 />
                             ) : (
                                 <Radio
@@ -321,7 +321,7 @@ const PartTable = () => {
                                         handelActive(value, 'Active')
                                     }}
                                     checked
-                                    style={{ color: 'green' }}
+                                    style={{ color: 'red' }}
                                 />
                             )}
                             <IconButton>
@@ -371,7 +371,7 @@ const PartTable = () => {
                 sx={{ mb: 2, ml: 2 }}
                 variant="contained"
                 color="secondary"
-                onClick={() => navigate('/sup-admin/view-list/bulk-add')}
+                onClick={() => navigate('/rm-user/view-list/bulk-add')}
             >
                 Add Bulk
             </Button>
@@ -389,7 +389,7 @@ const PartTable = () => {
                 variant="contained"
                 color="warning"
                 onClick={() =>
-                    navigate('/sup-admin/view-list/managestock', {
+                    navigate('/rm-user/view-list/managestock', {
                         state: {
                             partList: partList,
                         },

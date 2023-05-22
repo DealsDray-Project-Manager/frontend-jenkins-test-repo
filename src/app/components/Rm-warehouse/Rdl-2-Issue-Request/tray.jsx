@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosMisUser } from '../../../../../axios'
+import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
-import AssignDialogBox from './user-dailog'
 import jwt_decode from 'jwt-decode'
 
 const Container = styled('div')(({ theme }) => ({
@@ -34,11 +33,17 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                setIsLoading(true)
-                const res = await axiosMisUser.post('/RDLoneDoneTray')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setWhtTrayList(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    setIsLoading(true)
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+                    )
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setWhtTrayList(res.data.data)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -98,30 +103,10 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/mis/assign-to-agent/Rdl-repair/view-item/' + trayId)
+        navigate('/rm-user/upcoming-repair-tray/units/' + trayId)
     }
 
     const columns = [
-        {
-            name: 'code',
-            label: 'Select',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, dataIndex) => {
-                    return (
-                        <Checkbox
-                            onClick={(e) => {
-                                handleClick(e)
-                            }}
-                            id={value}
-                            key={value}
-                            checked={isCheck.includes(value)}
-                        />
-                    )
-                },
-            },
-        },
         {
             name: 'index',
             label: 'Record No',
@@ -133,25 +118,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
+            name: 'code',
+            label: 'Tray Id',
             options: {
                 filter: true,
             },
         },
+
         {
             name: 'warehouse',
             label: 'Warehouse',
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Category',
-            options: {
-                filter: false,
-                sort: false,
             },
         },
         {
@@ -169,13 +147,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            label: 'Tray Name',
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'limit',
             label: 'Limit',
             options: {
@@ -185,46 +156,32 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            hide: true,
+            name: 'issued_user_name',
+            label: 'RDL Agent',
             options: {
                 filter: true,
             },
         },
         {
-            name: 'items',
-            label: 'Quantity',
+            name: 'requested_date',
+            label: 'Request sent Date',
             options: {
                 filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
-            },
-        },
-        {
-            name: 'display',
-            label: 'Tray Display',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'assigned_date',
-            label: 'RDL one Closed Date',
-            options: {
-                filter: true,
+                sort: false,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
         },
+
         {
-            name: 'sort_id',
-            label: 'Status',
+            name: 'items',
+            label: 'Quantity',
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                customBodyRender: (items, tableMeta) =>
+                    items?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
@@ -256,23 +213,10 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Assign to RDL Two', path: '/' },
-                        { name: 'RDL Two' },
-                    ]}
+                    routeSegments={[{ name: 'Part Issue Request', path: '/' }]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                disabled={isCheck.length == 0}
-                onClick={(e) => {
-                    handelReadyForRdl(e)
-                }}
-            >
-                Assign For RDL-2
-            </Button>
+
             <MUIDataTable
                 title={'WHT Tray'}
                 data={whtTrayList}
@@ -316,16 +260,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-
-            {shouldOpenEditorDialog && (
-                <AssignDialogBox
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    RDLUsers={RDLUsers}
-                    isCheckk={isCheck}
-                />
-            )}
         </Container>
     )
 }

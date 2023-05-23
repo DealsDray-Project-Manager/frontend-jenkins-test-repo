@@ -33,11 +33,17 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                setIsLoading(true)
-                const res = await axiosMisUser.post('/RDLoneDoneTray')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setWhtTrayList(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    setIsLoading(true)
+                    const res = await axiosMisUser.post(
+                        '/RDLoneDoneTray/' + location
+                    )
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setWhtTrayList(res.data.data)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)

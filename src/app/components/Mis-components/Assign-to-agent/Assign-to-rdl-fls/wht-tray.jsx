@@ -35,10 +35,14 @@ const SimpleMuiTable = () => {
         const fetchWht = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosMisUser.post('/auditDoneWht')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setWhtTrayList(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if(admin){
+                    let { location } = jwt_decode(admin)
+                    const res = await axiosMisUser.post('/auditDoneWht/' + location)
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setWhtTrayList(res.data.data)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)

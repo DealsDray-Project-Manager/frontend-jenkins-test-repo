@@ -162,11 +162,11 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px',  width: '150px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1"  marginLeft='7px' marginRight=''  width= '150px'><strong>Record No</strong></Typography>,
             options: {
-                responsive: 'scrollMaxHeight',
+                // responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ align: 'center', position:'fixed' }),
+                setCellProps: () => ({ align: 'center', position:'sticky' }),
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
@@ -175,11 +175,11 @@ const UserTable = () => {
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'9px'}}><strong>Profile</strong></Typography>,
+            label: <Typography variant="subtitle1" marginLeft='9px' align= 'center'><strong>Profile</strong></Typography>,
             options: {
-                responsive: 'scrollMaxHeight',
+                // responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ paddingRight: '10px', textAlign:'right'}),
+                setCellProps: () => ({ align: 'center', position:'fixed'}),
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />

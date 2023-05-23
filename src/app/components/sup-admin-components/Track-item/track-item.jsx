@@ -674,7 +674,7 @@ const TrackItem = () => {
                 {tableData}
             </Card>
             <TableFooter>
-                <TableRow>
+                <TableRow> 
                     <TablePagination
                         sx={{ px: 2 }}
                         rowsPerPageOptions={[100, 150, 200]}

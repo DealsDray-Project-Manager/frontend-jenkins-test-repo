@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-category'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon } from '@mui/material'
+import { Button, IconButton, Icon,Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -153,10 +153,11 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'ReocrdId',
-            label: 'Record Id',
+            label: <Typography variant="subtitle1"><strong>Record No</strong></Typography>,
             options: {
                 filter: true,
                 sort: true,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -164,42 +165,42 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code', // field name in the row object
-            label: 'Code', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Code</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'float',
-            label: 'Float Number',
+            label: <Typography variant="subtitle1"><strong>Float Number</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sereis_start',
-            label: 'Series Start',
+            label: <Typography variant="subtitle1"><strong>Series Start</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'series_end',
-            label: 'Series End',
+            label: <Typography variant="subtitle1"><strong>Series End</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: 'Description',
+            label: <Typography variant="subtitle1"><strong>Description</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -212,7 +213,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,

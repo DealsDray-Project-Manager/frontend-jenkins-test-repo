@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import MemberEditorDialog from './add-brand'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon } from '@mui/material'
+import { Button, IconButton, Icon, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -160,24 +160,25 @@ const BrandTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'brand_id', // field name in the row object
-            label: 'Brand Id', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Brand ID</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: 'Brand Name',
+            label: <Typography variant="subtitle1"><strong>Brand Name</strong></Typography>,
             options: {
                 filter: true,
             },
@@ -185,7 +186,7 @@ const BrandTable = () => {
 
         {
             name: 'brand_id',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,

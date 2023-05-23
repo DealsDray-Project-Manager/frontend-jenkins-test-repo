@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -60,7 +60,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -70,35 +70,35 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code', // field name in the row object
-            label: 'Bag Id', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Bag ID</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: 'Location',
+            label: <Typography variant="subtitle1"><strong>Location</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography variant="subtitle1"><strong>Warehouse</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: 'Tray Display Name',
+            label: <Typography variant="subtitle1"><strong>Tray Display Name</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'Limit',
+            label: <Typography variant="subtitle1"><strong>Limit</strong></Typography>,
             options: {
                 filter: true,
                 display: false,
@@ -106,7 +106,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography variant="subtitle1"><strong>Quantity</strong></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -116,14 +116,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: <Typography variant="subtitle1"><strong>Tray Display</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -131,7 +131,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -142,7 +142,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Action</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,

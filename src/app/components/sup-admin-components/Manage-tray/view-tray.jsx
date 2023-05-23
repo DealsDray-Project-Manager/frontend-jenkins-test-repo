@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-tray'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -162,94 +162,95 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1"><strong>Tray ID</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: 'Location',
+            label: <Typography variant="subtitle1"><strong>Location</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography variant="subtitle1"><strong>Warehouse</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: 'Tray Display Name',
+            label: <Typography variant="subtitle1"><strong>Tray Display Name</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'Tray Limit',
+            label: <Typography variant="subtitle1"><strong>Trya Limit</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1"><strong>Brand</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1"><strong>Model</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: <Typography variant="subtitle1"><strong>Tray Display</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
+            label: <Typography variant="subtitle1"><strong>Tray Type</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_grade',
-            label: 'Grade',
+            label: <Typography variant="subtitle1"><strong>Grade</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -261,7 +262,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {

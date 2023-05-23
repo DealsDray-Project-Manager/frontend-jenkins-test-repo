@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio ,Typography} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -148,80 +148,81 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Vendor ID',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Vendor ID</strong></Typography>,
             options: {
                 filter: true,
                 sort: true,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: 'Address',
+            label: <Typography variant="subtitle1"><strong>Address</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: 'City',
+            label: <Typography variant="subtitle1"><strong>City</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: 'State',
+            label: <Typography variant="subtitle1"><strong>State</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile1',
-            label: 'Mobile 1',
+            label: <Typography variant="subtitle1"><strong>Mobile 1</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile2',
-            label: 'Mobile2',
+            label: <Typography variant="subtitle1"><strong>Mobile 2</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'deals',
-            label: 'Deals',
+            label: <Typography variant="subtitle1"><strong>Deals</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'reference',
-            label: 'Reference',
+            label: <Typography variant="subtitle1"><strong>Reference</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'location',
-            label: 'Location',
+            label: <Typography variant="subtitle1"><strong>Location</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Type',
+            label: <Typography variant="subtitle1"><strong>Type</strong></Typography>,
             
             options: {
                 filter: true,
@@ -230,7 +231,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,

@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
-        margin: '16px',
+        margin: '16px', 
     },
     '& .breadcrumb': {
         marginBottom: '30px',
@@ -154,15 +154,19 @@ const UserTable = () => {
         })
     }
 
+    const options = {
+        // Other table options...
+        setTableProps: () => ({ style: { tableLayout: 'auto', marginLeft:'20px' } }),
+      };
     
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px',  width: '150px'}}><strong>Record No</strong></Typography>,
             options: {
                 responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ style: { width: '150px', paddingRight: '10px', align:'center' }}),
+                setCellProps: () => ({ align: 'center', position:'fixed' }),
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
@@ -175,7 +179,7 @@ const UserTable = () => {
             options: {
                 responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ align: 'right'}),
+                setCellProps: () => ({ paddingRight: '10px', textAlign:'right'}),
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
@@ -350,15 +354,16 @@ const UserTable = () => {
                 Add New Member
             </Button>
 
-            <Box sx={{overflowX:'auto'}}>
+            <Box sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
-                
+                style={{width:'100%', marginLeft:'40px'}}
                 title={'User Report'}
                 data={userList}
                 columns={columns}
                 // optionss={options}
                 options={{
                     // options,
+                    style: { tableLayout: 'auto'},
                     filterType: 'textField',
                     // responsive: 'scrollMaxHeight',
                     minWidth:'100',

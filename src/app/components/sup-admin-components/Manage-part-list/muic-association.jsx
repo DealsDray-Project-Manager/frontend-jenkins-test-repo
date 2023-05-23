@@ -473,7 +473,7 @@ const Association = () => {
                                 >
                                     {validateButLoad == true
                                         ? 'Validating...'
-                                        : 'Validate MUIC'}
+                                        : 'Validate Parts'}
                                 </Button>
                             </Box>
                         </Card>

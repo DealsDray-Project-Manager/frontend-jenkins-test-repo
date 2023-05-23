@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -202,59 +202,60 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'part_code', // field name in the row object
-            label: 'Part No', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Part No</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: 'Available Stock', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Available Stock</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'color', // field name in the row object
-            label: 'Color', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Color</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: 'Part Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Part Name</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: 'Technical QC', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Technical QC</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: 'Description',
+            label: <Typography variant="subtitle1"><strong>Description</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -265,8 +266,15 @@ const PartTable = () => {
             },
         },
         {
+            name: 'created_by',
+            label: <Typography variant="subtitle1"><strong>Created By</strong></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'status',
-            label: 'Status',
+            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -288,7 +296,7 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -300,13 +308,13 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[8] == 'Active' ? (
+                            {tableMeta.rowData[9] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')
                                     }}
                                     checked
-                                    style={{ color: 'green' }}
+                                    style={{ color: 'red' }}
                                 />
                             ) : (
                                 <Radio
@@ -314,7 +322,7 @@ const PartTable = () => {
                                         handelActive(value, 'Active')
                                     }}
                                     checked
-                                    style={{ color: 'red' }}
+                                    style={{ color: 'green' }}
                                 />
                             )}
                             <IconButton>

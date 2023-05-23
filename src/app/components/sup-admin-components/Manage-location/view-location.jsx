@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-location'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon } from '@mui/material'
+import { Button, IconButton, Icon, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -133,73 +133,74 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{marginLeft:'7px',  width: '150px'}}><strong>Record No</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: 'Code',
+            label: <Typography variant="subtitle1"><strong>Code</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'location_type',
-            label: 'Location Type',
+            label: <Typography variant="subtitle1"><strong>Location Type</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: 'Address',
+            label: <Typography variant="subtitle1"><strong>Address</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: 'City',
+            label: <Typography variant="subtitle1"><strong>City</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: 'State',
+            label: <Typography variant="subtitle1"><strong>State</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'country',
-            label: 'Country',
+            label: <Typography variant="subtitle1"><strong>Country</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'pincode',
-            label: 'Pincode',
+            label: <Typography variant="subtitle1"><strong>Pincode</strong></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Type',
+            label: <Typography variant="subtitle1"><strong>Type</strong></Typography>,
             
             options: {
                 filter: true,
@@ -208,7 +209,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -256,7 +257,7 @@ const SimpleMuiTable = () => {
                 Add New Location
             </Button>
             <MUIDataTable
-                title={'All Locations'}
+                title={'All Locations'} 
                 data={locationList}
                 columns={columns}
                 options={{

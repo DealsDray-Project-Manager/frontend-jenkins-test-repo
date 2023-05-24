@@ -356,7 +356,8 @@ const UserTable = () => {
 
             <Box sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
-                style={{width:'100%', marginLeft:'40px'}}
+                style={{width:'100%', marginLeft:'40px',marginRight:'20px'}}
+                
                 title={'User Report'}
                 data={userList}
                 columns={columns}
@@ -386,6 +387,7 @@ const UserTable = () => {
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
+                
             />
             </Box>
             

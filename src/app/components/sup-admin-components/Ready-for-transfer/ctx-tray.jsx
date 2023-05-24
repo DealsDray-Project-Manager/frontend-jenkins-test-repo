@@ -120,7 +120,7 @@ const SimpleMuiTable = () => {
                         <Checkbox
                             onClick={(e) => {
                                 handleClick(e)
-                            }}
+                            }} 
                             id={value}
                             key={value}
                             checked={isCheck.includes(value)}

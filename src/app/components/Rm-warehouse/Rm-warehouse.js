@@ -22,6 +22,9 @@ const Association = Loadable(
 const SuccessPageOfMuicAssosication = Loadable(
     lazy(() => import('./Manage-part-list/success-page-muic-ass'))
 )
+const Partsassociation = Loadable(
+    lazy(() => import('./Manage-products/partsassociation'))
+)
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -92,6 +95,10 @@ const RmWarehouse = [
     {
         path: '/rm-user/rdl-2-issue-request',
         element: <IssueRequesToRdl2 />,
+    },
+    {
+        path: '/rm-user/products/partsassociation/report',
+        element: <Partsassociation />,
     },
 ]
 

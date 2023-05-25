@@ -229,6 +229,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'Pincode',
+            label: 'pincode',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'status',
             label: 'Status',
             options: {
@@ -277,7 +284,7 @@ const SimpleMuiTable = () => {
                                     flexDirection: 'row',
                                 }}
                             >
-                                {tableMeta.rowData[11] == 'Active' ? (
+                                {tableMeta.rowData[12] == 'Active' ? (
                                     <Radio
                                         onClick={(e) => {
                                             handelActive(value, 'Deactive')

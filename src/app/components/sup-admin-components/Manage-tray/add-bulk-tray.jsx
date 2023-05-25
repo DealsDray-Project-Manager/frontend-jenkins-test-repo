@@ -142,6 +142,7 @@ const PaginationTable = () => {
         let count2 = 0
         let count3 = 0
         let count4 = 0
+        let count5 = 0
         let obj = {
             ...countOfTray,
         }
@@ -160,6 +161,9 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'WHT') {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
+                } else if (x.tray_category == 'SP') {
+                    x.tray_id = 'SP' + (countOfTray.SP + count5)
+                    count5++
                 } else {
                     x.tray_id =
                         x.tray_category +
@@ -190,34 +194,63 @@ const PaginationTable = () => {
                 pagination.item
             )
             if (res.status == 200) {
-                setLoading(false)
-                setErr({})
-                setCountOfTray((p) => ({
-                    ...p,
-                    BOT: p.BOT + count1,
-                    MMT: p.MMT + count2,
-                    PMT: p.PMT + count3,
-                    WHT: p.WHT + count4,
-                }))
-                Swal.fire({
-                    icon: 'success',
-                    title: res.data.message,
-                    showConfirmButton: true,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setValidateState(true)
-                    }
-                })
+                if (res.data.dupId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error please upload again...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(true)
+                        }
+                    })
+                } else {
+                    setLoading(false)
+                    setErr({})
+                    setCountOfTray((p) => ({
+                        ...p,
+                        BOT: p.BOT + count1,
+                        MMT: p.MMT + count2,
+                        PMT: p.PMT + count3,
+                        WHT: p.WHT + count4,
+                        SP:  p.SP + count5
+                    }))
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.data.message,
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setValidateState(true)
+                        }
+                    })
+                }
             } else {
-                setLoading(false)
-                setErr(res.data.data)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.message,
-                })
+                if (res.data.dupId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error please upload again...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(true)
+                        }
+                    })
+                } else {
+                    setLoading(false)
+                    setErr(res.data.data)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res.data.message,
+                    })
+                }
             }
             // }
         } catch (error) {

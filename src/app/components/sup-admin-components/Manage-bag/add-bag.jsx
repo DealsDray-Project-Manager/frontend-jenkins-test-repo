@@ -242,6 +242,7 @@ const MemberEditorDialog = ({
                                         : bagCount
                                     : getValues('code')
                             }
+                            disabled
                         />
 
                         <TextFieldCustOm

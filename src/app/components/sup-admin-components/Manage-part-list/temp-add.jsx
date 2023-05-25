@@ -209,7 +209,7 @@ const AddPartOrColorAndEditDialog = ({
                     ))}
                 </TextFieldCustOm>
                 <TextFieldCustOm
-                    label="Technical qc"
+                    label="Technical qc (Y/N)"
                     type="text"
                     name="technical_qc"
                     {...register('technical_qc')}

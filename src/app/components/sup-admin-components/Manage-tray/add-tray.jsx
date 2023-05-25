@@ -123,12 +123,12 @@ const MemberEditorDialog = ({
                                 handleClose()
                             }
                         })
-                    } else if (type == 'WHT' && res.data.data > '1501') {
+                    } else if (type == 'WHT' && res.data.data > '11000') {
                         handleClose()
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'WHT Tray Maximum ID NO  1501',
+                            text: 'WHT Tray Maximum ID NO  11000',
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 handleClose()
@@ -215,10 +215,11 @@ const MemberEditorDialog = ({
         }
     }
     // Get Cpc data from server
-    async function getCpcData(data) {
+    async function getCpcData(name, code) {
         try {
             let obj = {
-                name: data,
+                name: name,
+                code: code,
             }
             let response = await axiosSuperAdminPrexo.post(
                 '/getWarehouseByLocation',
@@ -470,7 +471,10 @@ const MemberEditorDialog = ({
                                 <MenuItem
                                     value={data.code}
                                     onClick={() =>
-                                        getCpcData(data.name, data.code)
+                                        getCpcData(
+                                            data.code,
+                                            data.location_type
+                                        )
                                     }
                                 >
                                     {data.code}
@@ -557,10 +561,10 @@ const MemberEditorDialog = ({
                                 ST
                             </MenuItem>
                             <MenuItem
-                                value="ST"
-                                // onClick={(e) => {
-                                //     fetchTypeWiseId(e, 'ST', 'below')
-                                // }}
+                            // value="ST"
+                            // onClick={(e) => {
+                            //     fetchTypeWiseId(e, 'ST', 'below')
+                            // }}
                             >
                                 SP
                             </MenuItem>

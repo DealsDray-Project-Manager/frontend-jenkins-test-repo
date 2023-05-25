@@ -84,15 +84,15 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // let fetchPart = await axiosSuperAdminPrexo.post(
-                //     '/partAndColor/view/' + 'part-list'
-                // )
-                // if (fetchPart.status == 200) {
-                //     setPartList(fetchPart.data.data)
-                // }
+                let fetchPart = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'part-list'
+                )
+                if (fetchPart.status == 200) {
+                    setPartList(fetchPart.data.data)
+                }
 
                 let colorList = await axiosSuperAdminPrexo.post(
-                    '/muic/listColor/' + reportData?.muic
+                    '/partAndColor/view/' + 'color-list'
                 )
                 if (colorList.status == 200) {
                     setColorList(colorList.data.data)
@@ -255,7 +255,7 @@ export default function DialogBox() {
                 navigate('/rdL-fls/tray/approve/' + trayId)
             } else {
                 setAddButDis(false)
-                alert(res.data.data)
+                alert(res.data.message)
             }
         } catch (error) {
             alert(error)

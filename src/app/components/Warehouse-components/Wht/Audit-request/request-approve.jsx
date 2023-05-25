@@ -91,15 +91,15 @@ export default function DialogBox() {
                 }
                 let res = await axiosWarehouseIn.post(
                     '/auditUserStatusChecking',obj
-                       
                 )
+                let obj2={
+                    username:trayData.issued_user_name,
+                    brand:trayData.brand,
+                    model:trayData.model
+                }
                 let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit/' +
-                        trayData.issued_user_name +
-                        '/' +
-                        trayData.brand +
-                        '/' +
-                        trayData.model
+                    '/fetchAssignedTrayForAudit',obj2
+                       
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({

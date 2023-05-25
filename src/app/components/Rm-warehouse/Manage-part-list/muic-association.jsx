@@ -157,6 +157,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
+                    totalPage: Math.ceil(res.data.data.length / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -324,7 +325,7 @@ const Association = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                      handelRemoveFromDb(value)
+                                        handelRemoveFromDb(value)
                                     }}
                                     color="error"
                                 >
@@ -416,7 +417,7 @@ const Association = () => {
                                                 <FormControlLabel
                                                     value="option2"
                                                     control={<Radio />}
-                                                    label=""
+                                                    label="N"
                                                     checked={
                                                         partData?.technical_qc ==
                                                         'N'
@@ -646,14 +647,14 @@ const Association = () => {
                                                             phones.validationStatus
                                                         }
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell  align="center">
                                                         <IconButton
                                                             onClick={(e) => {
                                                                 handelDelete(
                                                                     phones?.muic
                                                                 )
                                                             }}
-                                                            sx={{ ml: 13 }}
+                                                          
                                                         >
                                                             <Icon color="error">
                                                                 delete

@@ -136,8 +136,8 @@ const Search = () => {
                     tray_closed_by_bot: result?.[0]?.tray_closed_by_bot,
                 }}
             />
-            {result?.[0]?.tray_type == 'BOT' ||
-            result?.[0]?.tray_type == 'WHT' ? (
+            {result?.[0]?.tray_type !== 'PMT' ||
+            result?.[0]?.tray_type !== 'MMT' ? (
                 <Botdetails
                     BotTrayDetails={{
                         tray_id: result?.[0]?.tray_id,

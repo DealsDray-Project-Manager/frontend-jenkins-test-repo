@@ -157,7 +157,7 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1"><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1">Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -167,7 +167,7 @@ const UserTable = () => {
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1"><strong>Profile</strong></Typography>,
+            label: <Typography variant="subtitle1">Profile</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -178,7 +178,7 @@ const UserTable = () => {
         },
         {
             name: 'creation_date',
-            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
+            label: <Typography variant="subtitle1">Creation Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -189,70 +189,78 @@ const UserTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>,
+            label: <Typography variant="subtitle1">Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'email',
-            label: <Typography variant="subtitle1"><strong>Email</strong></Typography>,
+            label: <Typography variant="subtitle1">Email</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'contact',
-            label: <Typography variant="subtitle1"><strong>Mobile No</strong></Typography>,
+            label: <Typography variant="subtitle1">Mobile No</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_name',
-            label: <Typography variant="subtitle1"><strong>User Name</strong></Typography>,
+            label: <Typography variant="subtitle1">User Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_type',
-            label: <Typography variant="subtitle1"><strong>User Type</strong></Typography>,
+            label: <Typography variant="subtitle1">User Type</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1"><strong>CPC</strong></Typography>,
+            label: <Typography variant="subtitle1">CPC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
+
             name: 'cpc_type',
-            label: <Typography variant="subtitle1"><strong>CPC Type</strong></Typography>,
+            label: <Typography variant="subtitle1">CPC Type</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'warehouse',
+            label: <Typography variant="subtitle1">Warehouse</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1"><strong>Device Name</strong></Typography>,
+            label: <Typography variant="subtitle1">Device Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_id',
-            label: <Typography variant="subtitle1"><strong>Device ID</strong></Typography>,
+            label: <Typography variant="subtitle1">Device ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
+            label: <Typography variant="subtitle1">Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -274,7 +282,7 @@ const UserTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1">Actions</Typography>,
             options: {
                 sort: false,
                 filter: false,

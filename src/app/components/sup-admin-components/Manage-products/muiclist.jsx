@@ -173,6 +173,7 @@ const MUIClist = () => {
                             width={260}
                         />
                     </Box>
+
                     <Box
                         sx={{
                             display: 'flex',

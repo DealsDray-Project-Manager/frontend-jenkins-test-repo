@@ -33,11 +33,17 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchWht = async () => {
             try {
-                setIsLoading(true)
-                const res = await axiosMisUser.post('/RDLoneDoneTray')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setWhtTrayList(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    setIsLoading(true)
+                    const res = await axiosMisUser.post(
+                        '/RDLoneDoneTray/' + location
+                    )
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setWhtTrayList(res.data.data)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -101,26 +107,7 @@ const SimpleMuiTable = () => {
     }
 
     const columns = [
-        {
-            name: 'code',
-            label: 'Select',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, dataIndex) => {
-                    return (
-                        <Checkbox
-                            onClick={(e) => {
-                                handleClick(e)
-                            }}
-                            id={value}
-                            key={value}
-                            checked={isCheck.includes(value)}
-                        />
-                    )
-                },
-            },
-        },
+       
         {
             name: 'index',
             label: 'Record No',
@@ -197,7 +184,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
+                    value.length + '/' + tableMeta.rowData[7],
             },
         },
         {

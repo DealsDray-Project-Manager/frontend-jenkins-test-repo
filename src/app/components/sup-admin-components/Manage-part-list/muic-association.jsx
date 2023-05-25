@@ -100,7 +100,7 @@ const Association = () => {
         )
     }, [pagination.page, pagination.item])
 
-    const handelDelete = (muic) => {
+    const handelDelete = (partId) => {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Remove!',
@@ -111,11 +111,13 @@ const Association = () => {
             confirmButtonText: 'Yes, Remove it!',
         }).then((result) => {
             if (result.isConfirmed) {
-                const updatedString = muicData.replace(muic + ',', '')
+                const updatedString = muicData.replace(partId + ',', '')
                 setMuicData(updatedString)
                 setPagination((p) => ({
                     ...p,
-                    item: pagination.item.filter((item) => item.muic != muic),
+                    item: pagination.item.filter(
+                        (item) => item.partId != partId
+                    ),
                 }))
                 Swal.fire({
                     position: 'top-center',
@@ -145,7 +147,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length / p.size),
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -157,6 +159,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -559,7 +562,11 @@ const Association = () => {
                                     }}
                                 >
                                     <Typography
-                                        sx={{ p: 2, fontWeight: 'bold',fontSize:'20px' }}
+                                        sx={{
+                                            p: 2,
+                                            fontWeight: 'bold',
+                                            fontSize: '20px',
+                                        }}
                                     >
                                         MUIC Validation
                                     </Typography>
@@ -646,14 +653,13 @@ const Association = () => {
                                                             phones.validationStatus
                                                         }
                                                     </TableCell>
-                                                        <TableCell align='center'>
+                                                    <TableCell align="center">
                                                         <IconButton
                                                             onClick={(e) => {
                                                                 handelDelete(
-                                                                    phones?.muic
+                                                                    phones?.partId
                                                                 )
                                                             }}
-                                                            
                                                         >
                                                             <Icon color="error">
                                                                 delete

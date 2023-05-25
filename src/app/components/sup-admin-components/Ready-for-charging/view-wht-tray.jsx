@@ -64,36 +64,53 @@ const SimpleMuiTable = () => {
     const handelReadyForCharging = async () => {
         try {
             setSubmitDis(true)
-            let obj = {
+            let obj1 = {
                 ischeck: isCheck,
-                status: 'Closed',
+                status: 'Inuse',
             }
-            let res = await axiosSuperAdminPrexo.post(
-                '/ready-for-charging',
-                obj
+            let checkStatus = await axiosSuperAdminPrexo.post(
+                '/tray/checkStatus',
+                obj1
             )
-            setIsCheck([])
-            if (res.status === 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res.data.message,
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsCheck([])
-                        setSubmitDis(false)
-                        setIsAlive((isAlive) => !isAlive)
-                    }
-                })
-            } else if (res.status == 202) {
+            if (checkStatus.status == 200) {
+                let obj = {
+                    ischeck: isCheck,
+                    status: 'Closed',
+                }
+                let res = await axiosSuperAdminPrexo.post(
+                    '/ready-for-charging',
+                    obj
+                )
+                setIsCheck([])
+                if (res.status === 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res.data.message,
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setIsCheck([])
+                            setSubmitDis(false)
+                            setIsAlive((isAlive) => !isAlive)
+                        }
+                    })
+                } else if (res.status == 202) {
+                    setSubmitDis(false)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
+                }
+            } else {
                 setSubmitDis(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: res?.data?.message,
+                    text: checkStatus?.data?.message,
                 })
             }
         } catch (error) {

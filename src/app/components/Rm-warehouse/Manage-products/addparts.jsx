@@ -229,7 +229,7 @@ const Addparts = () => {
                     >
                         {validateButLoad == true
                             ? 'Validating...'
-                            : 'Validate MUIC'}
+                            : 'Validate Parts'}
                     </Button>
                 </Box>
             </Card>
@@ -369,14 +369,14 @@ const Addparts = () => {
                                         >
                                             {phones.validationStatus}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell  align="center" >
                                             <IconButton
                                                 onClick={(e) => {
                                                     handelDelete(
                                                         phones?.part_code
                                                     )
                                                 }}
-                                                sx={{ ml: 13 }}
+                                             
                                             >
                                                 <Icon color="error">
                                                     delete

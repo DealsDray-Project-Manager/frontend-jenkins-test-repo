@@ -417,8 +417,7 @@ const AddBulkPart = () => {
                                         />
                                         {err?.part_code_not_exists?.includes(
                                             data.part_code
-                                        ) 
-                                        ? (
+                                        ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -442,14 +441,12 @@ const AddBulkPart = () => {
 
                                         {err?.part_code_not_exists?.includes(
                                             data.part_code?.toString()
-                                        ) ? 
-                                           
-                                                <p style={{ color: 'red' }}>
-                                                    Invalid Part Number
-                                                </p>
-                                        
-                                         : err?.duplicate_part_code?.includes(
-                                            data.part_code?.toString()
+                                        ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Invalid Part Number
+                                            </p>
+                                        ) : err?.duplicate_part_code?.includes(
+                                              data.part_code?.toString()
                                           ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Number
@@ -486,8 +483,9 @@ const AddBulkPart = () => {
                                         />
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        )|| (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ?  (
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.update_stock == undefined) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -501,8 +499,9 @@ const AddBulkPart = () => {
 
                                         {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
-                                        ) || (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ? (
+                                        ) ||
+                                        (Object.keys(err).length != 0 &&
+                                            data.update_stock == undefined) ? (
                                             <p style={{ color: 'red' }}>
                                                 Only Positive Integers are
                                                 Acceptable
@@ -512,8 +511,7 @@ const AddBulkPart = () => {
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        {
-                                        err?.update_stock_check?.includes(
+                                        {err?.update_stock_check?.includes(
                                             data.update_stock?.toString()
                                         ) == true ||
                                         (Object.keys(err).length != 0 &&
@@ -524,7 +522,7 @@ const AddBulkPart = () => {
                                             data.part_code?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
-                                        data.update_stock == undefined)  ||
+                                            data.update_stock == undefined) ||
                                         err?.duplicate_part_code?.includes(
                                             data.part_code?.toString()
                                         ) ? (

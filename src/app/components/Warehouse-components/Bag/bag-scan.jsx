@@ -218,6 +218,7 @@ const PaginationTable = () => {
                         order_date: awbn.order_date,
                         status: status,
                         sotckin_date: Date.now(),
+                        old_item_details:awbn.old_item_details
                     }
                     let res = await axiosWarehouseIn.post(
                         '/stockInToWarehouse',

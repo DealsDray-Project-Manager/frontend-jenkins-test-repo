@@ -225,15 +225,14 @@ const PickupPage = () => {
                 const { location } = jwt_decode(admin)
                 setIsCheck([])
                 setIsLoading(true)
+                let obj={
+                    brand:state?.brand,
+                    model:state?.model,
+                    location:location,
+                    type:value
+                }
                 const res = await axiosMisUser.post(
-                    '/pickup/sortItem/' +
-                        state?.brand +
-                        '/' +
-                        state?.model +
-                        '/' +
-                        value +
-                        '/' +
-                        location
+                    '/pickup/sortItem',obj
                 )
                 if (res.status == 200) {
                     setIsLoading(false)

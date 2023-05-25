@@ -15,6 +15,7 @@ import {
     InputLabel,
     Select,
     TextField,
+    Typography,
     InputAdornment,
 } from '@mui/material'
 import PropTypes from 'prop-types'
@@ -364,7 +365,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:1}}>Record No</Typography>,
             options: {
                 filter: true,
                 sort: true,

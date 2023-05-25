@@ -153,7 +153,7 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -171,21 +171,21 @@ const PartTable = () => {
         // },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Color Name</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Color Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1"><strong>Description</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -197,7 +197,7 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

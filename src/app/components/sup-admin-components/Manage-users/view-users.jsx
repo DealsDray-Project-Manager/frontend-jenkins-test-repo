@@ -162,7 +162,7 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1"  marginLeft='7px' marginRight=''  width= '150px'><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'  marginLeft='7px' marginRight=''  width= '150px'><>Record No</></Typography>,
             options: {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
@@ -175,7 +175,7 @@ const UserTable = () => {
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1" marginLeft='9px' align= 'center'><strong>Profile</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' marginLeft='9px' align= 'center'><>Profile</></Typography>,
             options: {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
@@ -188,7 +188,7 @@ const UserTable = () => {
         },
         {
             name: 'creation_date',
-            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 responsive: 'scrollMaxHeight',
@@ -200,70 +200,70 @@ const UserTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'email',
-            label: <Typography variant="subtitle1"><strong>Email</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Email</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'contact',
-            label: <Typography variant="subtitle1"><strong>Mobile No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Mobile No</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_name',
-            label: <Typography variant="subtitle1"><strong>User Name</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'user_type',
-            label: <Typography variant="subtitle1"><strong>User Type</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1"><strong>CPC</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc_type',
-            label: <Typography variant="subtitle1"><strong>CPC Type</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1"><strong>Device Name</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Device Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'device_id',
-            label: <Typography variant="subtitle1"><strong>Device ID</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -285,7 +285,7 @@ const UserTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 sort: false,
                 filter: false,

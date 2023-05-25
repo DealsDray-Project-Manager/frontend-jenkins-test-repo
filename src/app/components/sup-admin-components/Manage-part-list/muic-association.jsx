@@ -378,7 +378,7 @@ const Association = () => {
                                             marginBottom: '10px',
                                         }}
                                     >
-                                        Part Name:{partData?.name}
+                                        Part Name : {partData?.name}
                                     </Typography>
                                     <Typography
                                         sx={{
@@ -386,22 +386,22 @@ const Association = () => {
                                             marginBottom: '10px',
                                         }}
                                     >
-                                        Part Color:{partData?.color}
+                                        Part Color : {partData?.color}
                                     </Typography>
-                                    <Box sx={{ display: 'flex' }}>
+                                    <Box sx={{ display: 'inline-flex' }}>
                                         <Typography
                                             sx={{
                                                 fontSize: '16px',
                                                 marginBottom: '10px',
                                             }}
                                         >
-                                            Technical QC:{' '}
+                                            Technical QC : {' '}
                                         </Typography>
                                         <FormControl
                                             component="fieldset"
                                             sx={{ ml: 2 }}
                                         >
-                                            <RadioGroup>
+                                            <RadioGroup >
                                                 <FormControlLabel
                                                     value="option1"
                                                     control={<Radio />}
@@ -428,7 +428,7 @@ const Association = () => {
                                         </FormControl>
                                     </Box>
                                     <Typography sx={{ fontSize: '16px' }}>
-                                        Description:{partData?.description}
+                                        Description : {partData?.description}
                                     </Typography>
                                 </Box>
                             </Box>

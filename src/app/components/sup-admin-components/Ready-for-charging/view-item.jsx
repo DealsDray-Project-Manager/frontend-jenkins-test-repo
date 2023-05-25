@@ -64,7 +64,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -75,49 +75,49 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'uic', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>UIC</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography variant="subtitle1"><strong>MUIC</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography variant="subtitle1"><strong>Brand</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography variant="subtitle1"><strong>Model</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tracking_id',
-            label: <Typography variant="subtitle1"><strong>Tracking ID</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tracking ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_id',
-            label: <Typography variant="subtitle1"><strong>BOT Tray</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Tray</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'bot_agent',
-            label: <Typography variant="subtitle1"><strong>BOT Agent</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Agent</></Typography>,
             options: {
                 filter: true,
                 display: false,

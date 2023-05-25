@@ -133,7 +133,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px',  width: '150px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px',  width: '150px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -144,63 +144,63 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Name</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1"><strong>Code</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Code</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'location_type',
-            label: <Typography variant="subtitle1"><strong>Location Type</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Location Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: <Typography variant="subtitle1"><strong>Address</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Address</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: <Typography variant="subtitle1"><strong>City</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>City</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: <Typography variant="subtitle1"><strong>State</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>State</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'country',
-            label: <Typography variant="subtitle1"><strong>Country</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Country</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'pincode',
-            label: <Typography variant="subtitle1"><strong>Pincode</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1"><strong>Type</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Type</></Typography>,
             
             options: {
                 filter: true,
@@ -209,7 +209,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

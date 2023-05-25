@@ -160,7 +160,7 @@ const BrandTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -171,14 +171,14 @@ const BrandTable = () => {
         },
         {
             name: 'brand_id', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Brand ID</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand ID</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography variant="subtitle1"><strong>Brand Name</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand Name</></Typography>,
             options: {
                 filter: true,
             },
@@ -186,7 +186,7 @@ const BrandTable = () => {
 
         {
             name: 'brand_id',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

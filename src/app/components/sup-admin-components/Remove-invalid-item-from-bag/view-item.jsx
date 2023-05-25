@@ -90,7 +90,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'awbn_number', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Tracking ID</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tracking ID</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -116,14 +116,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'order_id',
-            label: <Typography variant="subtitle1"><strong>Order ID</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'order_date',
-            label: <Typography variant="subtitle1"><strong>Order Date</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -136,14 +136,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Action</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {

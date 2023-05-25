@@ -202,7 +202,7 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{marginLeft:'7px'}}><strong>Record No</strong></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><> Record No</> </Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -213,49 +213,49 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Part No</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'  ><>Part No</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Available Stock</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Available Stock</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'color', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Color</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Color</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Part Name</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1"fontWeight='bold' ><>Part Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: <Typography variant="subtitle1"><strong>Technical QC</strong></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1"fontWeight='bold' ><>Technical QC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1"><strong>Description</strong></Typography>,
+            label: <Typography variant="subtitle1"fontWeight='bold' ><>Description</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1"><strong>Creation Date</strong></Typography>,
+            label: <Typography variant="subtitle1"fontWeight='bold' ><>Creation Date</></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -267,14 +267,14 @@ const PartTable = () => {
         },
         {
             name: 'created_by',
-            label: <Typography variant="subtitle1"><strong>Created By</strong></Typography>,
+            label: <Typography variant="subtitle1"><>Created By</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><strong>Status</strong></Typography>,
+            label: <Typography variant="subtitle1"><>Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -296,7 +296,7 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: <Typography variant="subtitle1"><strong>Actions</strong></Typography>,
+            label: <Typography variant="subtitle1"><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

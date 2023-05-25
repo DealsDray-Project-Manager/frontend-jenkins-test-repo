@@ -48,7 +48,7 @@ const MemberEditorDialog = ({
     editFetchData,
     setEditFetchData,
     vendorId,
-    setVendorId
+    setVendorId,
 }) => {
     const [loading, setLoading] = useState(false)
     const theme = useTheme()
@@ -57,7 +57,7 @@ const MemberEditorDialog = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(editFetchData);
+            console.log(editFetchData)
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 setPersonName(editFetchData.location)
@@ -116,6 +116,7 @@ const MemberEditorDialog = ({
         mobile_one: Yup.string().required('Required*').nullable(),
         deals: Yup.string().required('Required*').nullable(),
         mobile_two: Yup.string().required('Required*').nullable(),
+        pincode: Yup.string().required('Required*').nullable(),
         reference: Yup.string().required('Required*').nullable(),
         location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
@@ -189,7 +190,10 @@ const MemberEditorDialog = ({
     }
     const handelEdit = async (data) => {
         try {
-            let response = await axiosSuperAdminPrexo.post('/vendorMaster/edit', data)
+            let response = await axiosSuperAdminPrexo.post(
+                '/vendorMaster/edit',
+                data
+            )
             if (response.status == 200) {
                 setEditFetchData({})
                 handleClose()
@@ -292,15 +296,36 @@ const MemberEditorDialog = ({
                                 errors.state ? errors.state?.message : ''
                             }
                         />
+                        <TextFieldCustOm
+                            label="Pincode"
+                            type="text"
+                            name="pincode"
+                            {...register('pincode')}
+                            inputProps={{ maxLength: 6 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            error={errors.pincode ? true : false}
+                            helperText={
+                                errors.pincode ? errors.pinocode?.message : ''
+                            }
+                        />
                     </Grid>
 
                     <Grid item sm={6} xs={12}>
                         <TextFieldCustOm
                             label="Mobile 1"
-                            type="number"
+                            type="text"
                             name="mobile_one"
-                           
                             {...register('mobile_one')}
+                            inputProps={{ maxLength: 10 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
                             error={errors.mobile_one ? true : false}
                             helperText={
                                 errors.mobile_one
@@ -310,10 +335,15 @@ const MemberEditorDialog = ({
                         />
                         <TextFieldCustOm
                             label="Mobile 2"
-                            type="number"
+                            type="text"
                             name="mobile_two"
-                          
                             {...register('mobile_two')}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            inputProps={{ maxLength: 10 }}
                             error={errors.mobile_two ? true : false}
                             helperText={
                                 errors.mobile_two

@@ -9,6 +9,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -31,6 +32,7 @@ const PartTable = () => {
     const navigate = useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const { user } = useAuth()
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -299,6 +301,7 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
+
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -307,44 +310,49 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[9] == 'Active' ? (
-                                <Radio
-                                    onClick={(e) => {
-                                        handelActive(value, 'Deactive')
-                                    }}
-                                    checked
-                                    style={{ color: 'green' }}
-                                />
-                            ) : (
-                                <Radio
-                                    onClick={(e) => {
-                                        handelActive(value, 'Active')
-                                    }}
-                                    checked
-                                    style={{ color: 'red' }}
-                                />
-                            )}
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        editMaster(value)
-                                    }}
-                                    color="primary"
-                                >
-                                    edit
-                                </Icon>
-                            </IconButton>
-
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        handledetails(tableMeta.rowData[1])
-                                    }}
-                                    color="default"
-                                >
-                                    details
-                                </Icon>
-                            </IconButton>
+                            {tableMeta.rowData[8] == user.name ? (
+                                <>
+                                    {tableMeta.rowData[9] == 'Active' ? (
+                                        <Radio
+                                            onClick={(e) => {
+                                                handelActive(value, 'Deactive')
+                                            }}
+                                            checked
+                                            style={{ color: 'green' }}
+                                        />
+                                    ) : (
+                                        <Radio
+                                            onClick={(e) => {
+                                                handelActive(value, 'Active')
+                                            }}
+                                            checked
+                                            style={{ color: 'red' }}
+                                        />
+                                    )}
+                                    <IconButton>
+                                        <Icon
+                                            onClick={(e) => {
+                                                editMaster(value)
+                                            }}
+                                            color="primary"
+                                        >
+                                            edit
+                                        </Icon>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Icon
+                                            onClick={(e) => {
+                                                handledetails(
+                                                    tableMeta.rowData[1]
+                                                )
+                                            }}
+                                            color="default"
+                                        >
+                                            details
+                                        </Icon>
+                                    </IconButton>
+                                </>
+                            ) : null}
                         </Box>
                     )
                 },

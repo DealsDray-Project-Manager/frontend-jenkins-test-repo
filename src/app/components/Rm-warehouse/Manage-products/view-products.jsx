@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Box, IconButton, Icon } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-
+import useAuth from 'app/hooks/useAuth'
 
 
 const Container = styled('div')(({ theme }) => ({
@@ -30,6 +30,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
+    const { user } = useAuth()
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const [shouldOpenProductEditDialog, setShouldOpenProductEditDialog] =
         useState(false)
@@ -213,7 +214,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        
+
         {
             name: 'vendor_sku_id',
             label: 'SKU ID',
@@ -281,53 +282,63 @@ const SimpleMuiTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        editProductData(tableMeta.rowData[6])
-                                    }}
-                                    color="primary"
-                                >
-                                    edit
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        handelDelete(tableMeta.rowData[6])
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        editImage(tableMeta.rowData[6])
-                                    }}
-                                    color="primary"
-                                >
-                                    image
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() =>  navigate('/rm-user/products/muiclist/' + tableMeta.rowData[6])}
-                                    color="default"
-                                >
-                                    details
-                                </Icon>
-                            </IconButton>
-                            
+                            {tableMeta.rowData[8] == user.name ? (
+                                <>
+                                    <IconButton>
+                                        <Icon
+                                            onClick={(e) => {
+                                                editProductData(
+                                                    tableMeta.rowData[6]
+                                                )
+                                            }}
+                                            color="primary"
+                                        >
+                                            edit
+                                        </Icon>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Icon
+                                            onClick={() => {
+                                                handelDelete(
+                                                    tableMeta.rowData[6]
+                                                )
+                                            }}
+                                            color="error"
+                                        >
+                                            delete
+                                        </Icon>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Icon
+                                            onClick={() => {
+                                                editImage(tableMeta.rowData[6])
+                                            }}
+                                            color="primary"
+                                        >
+                                            image
+                                        </Icon>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Icon
+                                            onClick={() =>
+                                                navigate(
+                                                    '/rm-user/products/muiclist/' +
+                                                        tableMeta.rowData[6]
+                                                )
+                                            }
+                                            color="default"
+                                        >
+                                            details
+                                        </Icon>
+                                    </IconButton>
+                                </>
+                            ) : null}
                         </Box>
                     )
                 },
             },
         },
     ]
-
-    
 
     return (
         <Container>

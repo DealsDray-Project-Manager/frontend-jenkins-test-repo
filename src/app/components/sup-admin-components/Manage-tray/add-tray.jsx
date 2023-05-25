@@ -146,6 +146,18 @@ const MemberEditorDialog = ({
                             }
                         })
                     }
+                    else if (type == 'SP' && res.data.data > '19999') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'SP Tray Maximum ID NO  19999',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    }
                     // else if (type == 'CTA' && res.data.data > '1999') {
                     //     handleClose()
                     //     Swal.fire({
@@ -409,6 +421,7 @@ const MemberEditorDialog = ({
                                         : trayCount
                                     : getValues('code')
                             }
+                            disabled
                         />
 
                         <TextFieldCustOm
@@ -561,10 +574,10 @@ const MemberEditorDialog = ({
                                 ST
                             </MenuItem>
                             <MenuItem
-                            // value="ST"
-                            // onClick={(e) => {
-                            //     fetchTypeWiseId(e, 'ST', 'below')
-                            // }}
+                            value="SP"
+                            onClick={(e) => {
+                                fetchTypeWiseId(e, 'SP', 'TOP')
+                            }}
                             >
                                 SP
                             </MenuItem>

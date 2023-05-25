@@ -145,11 +145,11 @@ const AddBulkPart = () => {
     }
     function toLowerKeys(obj, count, id) {
         return Object.keys(obj).reduce((accumulator, key) => {
-            let num = parseInt(count.substring(2)) + id
-            let updatedStr =
-                count.substring(0, 2) + num.toString().padStart(6, '0')
-            obj.PARTID = updatedStr
-            accumulator.code = updatedStr
+            // let num = parseInt(count.substring(2)) + id
+            // let updatedStr =
+            //     count.substring(0, 2) + num.toString().padStart(6, '0')
+            // obj.PARTID = updatedStr
+            // accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
             accumulator.created_by = 'super-admin'
@@ -182,26 +182,63 @@ const AddBulkPart = () => {
     const validateData = async (e) => {
         try {
             setLoading(true)
+            let i = 0
+            for (let x of pagination.item) {
+                let num = parseInt(partCount?.substring(2)) + i
+                let updatedStr =
+                    partCount.substring(0, 2) + num.toString().padStart(6, '0')
+                // obj.PARTID = updatedStr
+                x.code = updatedStr
+                i++
+            }
             let res = await axiosSuperAdminPrexo.post(
                 '/bulkvalidationForPart',
                 pagination.item
             )
             if (res.status == 200) {
-                setValidateState(true)
-                setErr({})
-                setLoading(false)
-                Swal.fire({
-                    icon: 'success',
-                    title: res.data.message,
-                })
+                if (res.data.dupId == true) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Error please upload again..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(true)
+                        }
+                    })
+                } else {
+                    setValidateState(true)
+                    setErr({})
+                    setLoading(false)
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.data.message,
+                    })
+                }
             } else {
-                setLoading(false)
-                setErr(res.data.data)
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res.data.message,
-                })
+                if (res.data.dupId == true) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Error please upload again..',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(true)
+                        }
+                    })
+                } else {
+                    setLoading(false)
+                    setErr(res.data.data)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res.data.message,
+                    })
+                }
             }
         } catch (error) {
             Swal.fire({
@@ -251,8 +288,6 @@ const AddBulkPart = () => {
             })
         }
     }
-
-    console.log(err)
 
     return (
         <Container>
@@ -319,7 +354,9 @@ const AddBulkPart = () => {
                         <Button
                             variant="contained"
                             sx={{ mt: 3, mb: 1 }}
-                            disabled={loading || exFile == null}
+                            disabled={
+                                loading || exFile == null || partCount == 0
+                            }
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
                                 importExcel()

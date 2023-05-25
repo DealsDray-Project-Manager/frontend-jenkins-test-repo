@@ -1,28 +1,23 @@
-import React, { useEffect, useState, useMemo } from 'react'
 import MUIDataTable from 'mui-datatables'
-
 import { Breadcrumb } from 'app/components'
-import {
-    Box,
-    Card,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Button,
-    IconButton,
-    Icon,
-    FormControl,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-} from '@mui/material'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Box, Card, Typography } from '@mui/material'
+import { Button, IconButton, Icon } from '@mui/material'
 import { styled } from '@mui/system'
-import Swal from 'sweetalert2'
 import { useNavigate, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import Swal from 'sweetalert2'
+
+const StyledTable = styled(Table)(({ theme }) => ({
+    whiteSpace: 'pre',
+    '& thead': {
+        '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } },
+    },
+    '& tbody': {
+        '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } },
+    },
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,26 +31,15 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const StyledTable = styled(Table)(({ theme }) => ({
-    whiteSpace: 'pre',
-    '& thead': {
-        '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } },
-    },
-    '& tbody': {
-        '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } },
-    },
-}))
-
-const Association = () => {
-    const [partData, setPartData] = useState({})
-    const { partId } = useParams()
-    const [submitLoad, setSubmitLoad] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [muicData, setMuicData] = useState('')
+const Addmuicrm = () => {
     const [validationCount, setValidationCount] = useState({})
     const [validateButLoad, setValidateButLoad] = useState('')
+    const { partId } = useParams()
+    const [isLoading, setIsLoading] = useState(false)
+    const [submitLoad, setSubmitLoad] = useState(false)
     const [data, setData] = useState([])
+    const [muicData, setMuicData] = useState('')
+    const [partData, setPartData] = useState({})
     const [isAlive, setIsAlive] = useState(false)
     const navigate = useNavigate()
     const [pagination, setPagination] = useState({
@@ -100,7 +84,7 @@ const Association = () => {
         )
     }, [pagination.page, pagination.item])
 
-    const handelDelete = (muic) => {
+    const handelDelete = (partId) => {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to Remove!',
@@ -111,11 +95,13 @@ const Association = () => {
             confirmButtonText: 'Yes, Remove it!',
         }).then((result) => {
             if (result.isConfirmed) {
-                const updatedString = muicData.replace(muic + ',', '')
+                const updatedString = muicData.replace(partId + ',', '')
                 setMuicData(updatedString)
                 setPagination((p) => ({
                     ...p,
-                    item: pagination.item.filter((item) => item.muic != muic),
+                    item: pagination.item.filter(
+                        (item) => item.partId != partId
+                    ),
                 }))
                 Swal.fire({
                     position: 'top-center',
@@ -145,7 +131,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length / p.size),
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -157,7 +143,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length / p.size),
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -221,7 +207,6 @@ const Association = () => {
         }
     }
 
-    // HANDEL REMOVE FROM DB
     const handelRemoveFromDb = (muic) => {
         try {
             Swal.fire({
@@ -278,7 +263,7 @@ const Association = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{ml:3}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -288,21 +273,21 @@ const Association = () => {
         },
         {
             name: 'muic', // field name in the row object
-            label: 'MUIC', // column title that will be shown in table
+            label: <Typography sx={{ml:3}}>MUIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand', // field name in the row object
-            label: 'Brand', // column title that will be shown in table
+            label: <Typography sx={{ml:3}}>Brand</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'model', // field name in the row object
-            label: 'Model', // column title that will be shown in table
+            label: <Typography sx={{ml:3}}>Model</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -310,7 +295,7 @@ const Association = () => {
 
         {
             name: 'muic',
-            label: 'Actions',
+            label: <Typography sx={{ml:3}}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -339,225 +324,22 @@ const Association = () => {
         },
     ]
 
-    return (
-        // <Card sx={{width:'920px',marginTop:"40px",marginBottom:"40px", marginLeft:"50px",border:'1px solid black'}}>
+    return ( 
+        <Container>
+        <div className="breadcrumb">
+            <Breadcrumb
+                routeSegments={[
+                    { name: 'Part-List', path: '/' },
+                    { name: 'MUIC Association', path: '/' },
+                    { name: 'MUIC Validation' },
+                ]}
+                style={{ marginLeft: '20px' }}
+            />
+        </div>
 
-        <>
-            <Container>
-                <div className="breadcrumb">
-                    <Breadcrumb
-                        routeSegments={[
-                            { name: 'MUIC-Association', path: '/' },
-                        ]}
-                        style={{ marginLeft: '20px' }}
-                    />
-                </div>
-
-                <Box sx={{ p: 1, display: 'flex' }}>
+         <Card>
                     <Box>
-                        <Card sx={{ mb: 5 }}>
-                            {/* <Typography
-                                sx={{
-                                    p: 3,
-                                    fontWeight: 'bold',
-                                    fontSize: '16px',
-                                }}
-                            >
-                                PART NUMBER:{partData?.part_code}
-                            </Typography>
-                            <Box
-                                sx={{
-                                    p: 3,
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Box>
-                                    <Typography
-                                        sx={{
-                                            fontSize: '16px',
-                                            marginBottom: '10px',
-                                        }}
-                                    >
-                                        Part Name:{partData?.name}
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontSize: '16px',
-                                            marginBottom: '10px',
-                                        }}
-                                    >
-                                        Part Color:{partData?.color}
-                                    </Typography>
-                                    <Box sx={{ display: 'flex' }}>
-                                        <Typography
-                                            sx={{
-                                                fontSize: '16px',
-                                                marginBottom: '10px',
-                                            }}
-                                        >
-                                            Technical QC:{' '}
-                                        </Typography>
-                                        <FormControl
-                                            component="fieldset"
-                                            sx={{ ml: 2 }}
-                                        >
-                                            <RadioGroup>
-                                                <FormControlLabel
-                                                    value="option1"
-                                                    control={<Radio />}
-                                                    label="Y"
-                                                    checked={
-                                                        partData?.technical_qc ==
-                                                        'Y'
-                                                            ? true
-                                                            : false
-                                                    }
-                                                />
-                                                <FormControlLabel
-                                                    value="option2"
-                                                    control={<Radio />}
-                                                    label="N"
-                                                    checked={
-                                                        partData?.technical_qc ==
-                                                        'N'
-                                                            ? true
-                                                            : false
-                                                    }
-                                                />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </Box>
-                                    <Typography sx={{ fontSize: '16px' }}>
-                                        Description:{partData?.description}
-                                    </Typography>
-                                </Box>
-                            </Box> */}
-
-                        <Box sx={{ display:'flex', justifyContent:'space-between'}}>
-                           
-                           <Typography
-                               sx={{
-                                   p: 3,
-                                   fontWeight: 'bold',
-                                   fontSize: '16px',
-                               }}
-                           >
-                               PART NUMBER:{partData?.part_code}
-                           </Typography>
-                           
-                           <Button
-                                   variant="contained"
-                                   color="primary"
-                                   // disabled={validateButLoad || muicData == ''}
-                                   onClick={() => {
-                                       navigate('/rm-user/part-list')
-                                   }}
-                                   sx={{ margin: 'auto', mt:4, mr:4}}
-                               >
-                                   Back to Spare Part List
-                               </Button>
-                     
-                           </Box>
-                           
-                           <Box
-                               sx={{
-                                   p: 3,
-                                   display: 'flex',
-                                   justifyContent: 'space-between',
-                               }}
-                           >
-                               <Box sx={{display:"flex"}}>
-
-                                   <Box>
-                                   <Typography
-                                       sx={{
-                                           fontSize: '16px',
-                                           marginBottom: '14px',
-                                       }}
-                                   >
-                                       Part Name : {partData?.name}
-                                   </Typography>
-                                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                       <Typography
-                                           sx={{
-                                               fontSize: '16px',
-                                               marginBottom: '10px',
-                                               marginRight: '10px',
-                                           }}
-                                       >
-                                           Technical QC : {' '}
-                                       </Typography>
-                                       <FormControl
-                                           component="fieldset"
-                                           // sx={{ ml: 2 }}
-                                       >
-                                           <RadioGroup sx={{ flexDirection: 'row', mb:1 }}>
-                                               <FormControlLabel
-                                                   value="option1"
-                                                   control={<Radio />}
-                                                   label="Y"
-                                                   checked={
-                                                       partData?.technical_qc ==
-                                                       'Y'
-                                                           ? true
-                                                           : false
-                                                   }
-                                               />
-                                               <FormControlLabel
-                                                   value="option2"
-                                                   control={<Radio />}
-                                                   label="N"
-                                                   checked={
-                                                       partData?.technical_qc ==
-                                                       'N'
-                                                           ? true
-                                                           : false
-                                                   }
-                                               />
-                                           </RadioGroup>
-                                       </FormControl>
-                                   </Box>
-                                   </Box>
-                                   
-
-
-                                   <Box sx={{ml:40}}>
-                                   <Typography
-                                       sx={{
-                                           fontSize: '16px',
-                                           marginBottom: '21px',
-                                       }}
-                                   >
-                                       Part Color : {partData?.color}
-                                   </Typography>
-                                   
-                                   <Typography sx={{ fontSize: '16px' }}>
-                                       Description : {partData?.description}
-                                   </Typography>
-                                   </Box>
-                                  
-                               </Box>
-
-
-                           </Box>
-                               
-                               <Box sx={{marginLeft:'auto',display:'flex', mr:4}}>
-                               <Button
-                                   variant="contained"
-                                   color="primary"
-                                   // disabled={validateButLoad || muicData == ''}
-                                   onClick={() => {
-                                       navigate('/rm-user/view-part-list/addmuicrm')
-                                   }}
-                                   sx={{ margin: 'auto',display:'flex', mr:0 }}
-                               >
-                                   Associate MUIC
-                               </Button>
-                               </Box>
-
-
-                            {/* <Box sx={{ p: 3 }}>
+                    <Box sx={{ p: 3 }}>
                                 <Typography
                                     sx={{
                                         fontSize: '16px',
@@ -599,80 +381,24 @@ const Association = () => {
                                     {validateButLoad == true
                                         ? 'Validating...'
                                         : 'Validate MUIC'}
+                                       
                                 </Button>
                             </Box>
-                        </Card>
-                        <Card> */}
-                            <Box
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
+                            </Box>
 
-                                    justifyContent: 'flex-end',
-                                }}
-                            >
-                                <Typography sx={{ fontWeight: 'bold', ml: 80 }}>
-                                    Total - {partData?.muic_association?.length}
-                                </Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    border: '',
-                                    width: '100%',
-                                    marginLeft: '',
-                                    marginRight: '',
-                                    borderRadius: '8px',
-                                    background: 'white',
-                                }}
-                                overflow="auto"
-                            >
-                                <StyledTable
-                                    sx={{
-                                        borderRadius: '20px',
-                                        margin: 'auto',
-                                    }}
-                                >
-                                    <MUIDataTable
-                                        title={'MUIC Associated'}
-                                        data={partData?.muic_association}
-                                        columns={columns}
-                                        options={{
-                                            filterType: 'textField',
-                                            responsive: 'simple',
-                                            download: false,
-                                            print: false,
-                                            textLabels: {
-                                                body: {
-                                                    noMatch: isLoading
-                                                        ? 'Loading...'
-                                                        : 'Sorry, there is no matching data to display',
-                                                },
-                                            },
-                                            selectableRows: 'none', // set checkbox for each row
-                                            // search: false, // set search option
-                                            // filter: false, // set data filter option
-                                            // download: false, // set download option
-                                            // print: false, // set print option
-                                            // pagination: true, //set pagination option
-                                            // viewColumns: false, // set column option
-                                            elevation: 0,
-                                            rowsPerPageOptions: [
-                                                10, 20, 40, 80, 100,
-                                            ],
-                                        }}
-                                    />
-                                </StyledTable>
-                                <br />
-                            </Box>
-                        </Card>
-                        <br />
-                        <br />
-                        {pagination?.item?.length !== 0 ? (
+                            
+
+
+                            </Card>
+                            <br />
+                            {pagination?.item?.length !== 0 ? (
+                                
                             <Card
                                 sx={{
                                     border: '',
                                     marginRight: '',
                                     marginLeft: '',
+                                    
                                 }}
                             >
                                 <Box
@@ -684,7 +410,11 @@ const Association = () => {
                                     }}
                                 >
                                     <Typography
-                                        sx={{ p: 2, fontWeight: 'bold' }}
+                                        sx={{
+                                            p: 2,
+                                            fontWeight: 'bold',
+                                            fontSize: '18px',
+                                        }}
                                     >
                                         MUIC Validation
                                     </Typography>
@@ -771,14 +501,13 @@ const Association = () => {
                                                             phones.validationStatus
                                                         }
                                                     </TableCell>
-                                                    <TableCell  align="center">
+                                                    <TableCell align="center">
                                                         <IconButton
                                                             onClick={(e) => {
                                                                 handelDelete(
-                                                                    phones?.muic
+                                                                    phones?.partId
                                                                 )
                                                             }}
-                                                          
                                                         >
                                                             <Icon color="error">
                                                                 delete
@@ -882,12 +611,10 @@ const Association = () => {
                                 </Box>
                             </Card>
                         ) : null}
-                    </Box>
-                </Box>
-            </Container>
-        </>
-        // </Card>
-    )
+                  
+         
+        </Container>
+     );
 }
-
-export default Association
+ 
+export default Addmuicrm;

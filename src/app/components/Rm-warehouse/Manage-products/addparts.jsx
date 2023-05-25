@@ -217,7 +217,7 @@ const Addparts = () => {
                         style={{ width: '100%' }}
                     ></textarea>
                 </Box>
-                <Box>
+                <Box sx={{textAlign: 'center'}}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -225,7 +225,7 @@ const Addparts = () => {
                         onClick={(e) => {
                             validateMuic()
                         }}
-                        sx={{ margin: 'auto', mt: 1, mb: 2, ml: 74 }}
+                        sx={{ margin: 'auto', mt: 1, mb: 2 }}
                     >
                         {validateButLoad == true
                             ? 'Validating...'

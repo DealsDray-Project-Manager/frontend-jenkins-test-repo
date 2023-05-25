@@ -19,6 +19,9 @@ const ManageStockUpdateReport = Loadable(
 const Association = Loadable(
     lazy(() => import('./Manage-part-list/muic-association'))
 )
+const Addmuicrm = Loadable(
+    lazy(() => import('./Manage-part-list/addmuicrm'))
+)
 const SuccessPageOfMuicAssosication = Loadable(
     lazy(() => import('./Manage-part-list/success-page-muic-ass'))
 )
@@ -59,6 +62,10 @@ const RmWarehouse = [
     {
         path: '/rm-user/view-list/sparereporting',
         element: <Sparereporting />,
+    },
+    {
+        path: '/rm-user/view-part-list/addmuicrm',
+        element: <Addmuicrm />,
     },
     {
         path: '/rm-user/view-part-list/managestock/report',

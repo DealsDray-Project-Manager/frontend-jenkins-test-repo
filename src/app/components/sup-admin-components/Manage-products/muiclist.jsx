@@ -253,7 +253,7 @@ const MUIClist = () => {
                     }}
                 />
             </Card>
-            <br />
+            <br /> 
         </Container>
     )
 }

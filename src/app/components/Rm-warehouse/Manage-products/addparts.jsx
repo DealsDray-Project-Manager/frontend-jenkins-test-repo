@@ -7,7 +7,6 @@ import { styled } from '@mui/system'
 import { useNavigate, useLocation } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-
 import Swal from 'sweetalert2'
 
 const StyledTable = styled(Table)(({ theme }) => ({

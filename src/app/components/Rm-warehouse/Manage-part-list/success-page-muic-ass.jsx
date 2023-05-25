@@ -41,7 +41,7 @@ const Spare1 = () => {
                     </Box>
                     <Box sx={{ ml: 4 }}>
                         <Typography sx={{ fontSize: '16px' }}>
-                            MUIC Uploaded: {state?.validatedSuccess?.success}
+                            Parts Uploaded: {state?.validatedSuccess?.success}
                         </Typography>
                         <Typography sx={{ fontSize: '16px' }}>
                             Validate: {state?.validatedSuccess?.success}
@@ -57,14 +57,18 @@ const Spare1 = () => {
                         </Typography>
                     </Box>
                     <br />
+
+                    <Box sx={{textAlign: 'center', mb:2}}>
                     <Button
-                        sx={{ mb: 2, ml: 55 }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => navigate('/rm-user/part-list')}
-                    >
-                        Back to Spare Part list
-                    </Button>
+                       
+                       variant="contained"
+                       color="primary"
+                       onClick={() => navigate('/rm-user/part-list')}
+                   >
+                       Back to Spare Part list
+                   </Button>
+                    </Box>
+                    
                 </Card>
             </Box>
         </Container>

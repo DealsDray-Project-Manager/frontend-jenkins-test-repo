@@ -43,7 +43,7 @@ const Partsassociation = () => {
 
                     <Box sx={{ ml: 4 }}>
                         <Typography sx={{ fontSize: '16px' }}>
-                            MUIC Uploaded: {state?.validatedSuccess?.success}
+                            Parts Uploaded: {state?.validatedSuccess?.success}
                         </Typography>
                         <Typography sx={{ fontSize: '16px' }}>
                             Validate: {state?.validatedSuccess?.success}
@@ -62,8 +62,9 @@ const Partsassociation = () => {
                     <br />
                     <Box
                         sx={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            margin: 'auto',
+                            textAlign: 'center',
+                            // justifyContent: 'center',
                             display: 'flex',
                         }}
                     >

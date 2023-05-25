@@ -356,7 +356,7 @@ const Association = () => {
                 <Box sx={{ p: 1, display: 'flex' }}>
                     <Box>
                         <Card sx={{ mb: 5 }}>
-                            <Typography
+                            {/* <Typography
                                 sx={{
                                     p: 3,
                                     fontWeight: 'bold',
@@ -432,8 +432,132 @@ const Association = () => {
                                         Description:{partData?.description}
                                     </Typography>
                                 </Box>
-                            </Box>
-                            <Box sx={{ p: 3 }}>
+                            </Box> */}
+
+                        <Box sx={{ display:'flex', justifyContent:'space-between'}}>
+                           
+                           <Typography
+                               sx={{
+                                   p: 3,
+                                   fontWeight: 'bold',
+                                   fontSize: '16px',
+                               }}
+                           >
+                               PART NUMBER:{partData?.part_code}
+                           </Typography>
+                           
+                           <Button
+                                   variant="contained"
+                                   color="primary"
+                                   // disabled={validateButLoad || muicData == ''}
+                                   onClick={() => {
+                                       navigate('/rm-user/part-list')
+                                   }}
+                                   sx={{ margin: 'auto', mt:4, mr:4}}
+                               >
+                                   Back to Spare Part List
+                               </Button>
+                     
+                           </Box>
+                           
+                           <Box
+                               sx={{
+                                   p: 3,
+                                   display: 'flex',
+                                   justifyContent: 'space-between',
+                               }}
+                           >
+                               <Box sx={{display:"flex"}}>
+
+                                   <Box>
+                                   <Typography
+                                       sx={{
+                                           fontSize: '16px',
+                                           marginBottom: '14px',
+                                       }}
+                                   >
+                                       Part Name : {partData?.name}
+                                   </Typography>
+                                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                       <Typography
+                                           sx={{
+                                               fontSize: '16px',
+                                               marginBottom: '10px',
+                                               marginRight: '10px',
+                                           }}
+                                       >
+                                           Technical QC : {' '}
+                                       </Typography>
+                                       <FormControl
+                                           component="fieldset"
+                                           // sx={{ ml: 2 }}
+                                       >
+                                           <RadioGroup sx={{ flexDirection: 'row', mb:1 }}>
+                                               <FormControlLabel
+                                                   value="option1"
+                                                   control={<Radio />}
+                                                   label="Y"
+                                                   checked={
+                                                       partData?.technical_qc ==
+                                                       'Y'
+                                                           ? true
+                                                           : false
+                                                   }
+                                               />
+                                               <FormControlLabel
+                                                   value="option2"
+                                                   control={<Radio />}
+                                                   label="N"
+                                                   checked={
+                                                       partData?.technical_qc ==
+                                                       'N'
+                                                           ? true
+                                                           : false
+                                                   }
+                                               />
+                                           </RadioGroup>
+                                       </FormControl>
+                                   </Box>
+                                   </Box>
+                                   
+
+
+                                   <Box sx={{ml:40}}>
+                                   <Typography
+                                       sx={{
+                                           fontSize: '16px',
+                                           marginBottom: '21px',
+                                       }}
+                                   >
+                                       Part Color : {partData?.color}
+                                   </Typography>
+                                   
+                                   <Typography sx={{ fontSize: '16px' }}>
+                                       Description : {partData?.description}
+                                   </Typography>
+                                   </Box>
+                                  
+                               </Box>
+
+
+                           </Box>
+                               
+                               <Box sx={{marginLeft:'auto',display:'flex', mr:4}}>
+                               <Button
+                                   variant="contained"
+                                   color="primary"
+                                   // disabled={validateButLoad || muicData == ''}
+                                   onClick={() => {
+                                       navigate('/rm-user/view-part-list/addmuicrm')
+                                   }}
+                                   sx={{ margin: 'auto',display:'flex', mr:0 }}
+                               >
+                                   Associate MUIC
+                               </Button>
+                               </Box>
+
+
+                            {/* <Box sx={{ p: 3 }}>
                                 <Typography
                                     sx={{
                                         fontSize: '16px',
@@ -478,7 +602,7 @@ const Association = () => {
                                 </Button>
                             </Box>
                         </Card>
-                        <Card>
+                        <Card> */}
                             <Box
                                 sx={{
                                     p: 2,

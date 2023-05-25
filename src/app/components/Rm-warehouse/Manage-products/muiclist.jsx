@@ -159,7 +159,9 @@ const MUIClist = () => {
                 />
             </div>
             <Card sx={{ p: 3 }}>
-                <Box sx={{ display: 'flex' }}>
+
+                <Box sx={{display: 'flex', alignItems:'center' }}>
+
                     <Box>
                         <Image
                             src={
@@ -173,15 +175,8 @@ const MUIClist = () => {
                             width={260}
                         />
                     </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            ml: 4,
-                            mt: 6,
-                        }}
-                    >
-                        <Box>
+
+                    <Box>
                             <Typography>
                                 MUIC:{productData?.[0]?.muic}
                             </Typography>
@@ -197,21 +192,25 @@ const MUIClist = () => {
                             </Typography>
                             <Typography>Vendor:</Typography>
                         </Box>
-                        <Box sx={{ ml: 79 }}>
-                            <Button
+
+                        <Box sx={{margin: 'auto',textAlign:'end', mb:23, mr:2}}>
+                        <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() =>
-                                    navigate('/rm-user/product-list')
-                                }
+                                onClick={() => navigate('/rm-user/product-list')}
                                 //   sx={{ margin: "auto", mt: 1, mb: 2 }}
                             >
                                 Back to MUIC list
                             </Button>
                         </Box>
-                    </Box>
+
                 </Box>
-                <Box sx={{ ml: 123, mb: 3, mt: 3 }}>
+
+
+
+
+
+                <Box sx={{ margin: 'auto', mt:4, mr:2 ,mb:3, textAlign:'end' }}>
                     <Button
                         variant="contained"
                         color="primary"

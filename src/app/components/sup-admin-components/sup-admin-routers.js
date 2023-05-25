@@ -56,6 +56,7 @@ const ReadyToTransfer = Loadable(
     lazy(() => import('./Ready-for-transfer/ctx-tray'))
 )
 const PartList = Loadable(lazy(() => import('./Manage-part-list/temp-part')))
+const Addmuic = Loadable(lazy(() => import('./Manage-part-list/addmuic')))
 
 const Association = Loadable(
     lazy(() => import('./Manage-part-list/muic-association'))
@@ -106,6 +107,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/products/addparts',
         element: <Addparts />,
+    },
+    {
+        path: '/sup-admin/view-part-list/addmuic',
+        element: <Addmuic />,
     },
    
     {

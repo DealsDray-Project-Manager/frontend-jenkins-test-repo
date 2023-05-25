@@ -145,7 +145,6 @@ const PaginationTable = () => {
         let obj = {
             ...countOfTray,
         }
-
         try {
             for (let x of pagination.item) {
                 x.tray_id = ''
@@ -163,8 +162,12 @@ const PaginationTable = () => {
                     count4++
                 } else {
                     x.tray_id =
-                        x.tray_category + x.tray_grade + obj[x.tray_category + x.tray_grade]
-                    obj[x.tray_category + x.tray_grade] = Number(obj[x.tray_category + x.tray_grade] + 1)
+                        x.tray_category +
+                        x.tray_grade +
+                        obj[x.tray_category + x.tray_grade]
+                    obj[x.tray_category + x.tray_grade] = Number(
+                        obj[x.tray_category + x.tray_grade] + 1
+                    )
                 }
                 // else if (x.tray_category == 'CTA') {
                 //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
@@ -195,7 +198,6 @@ const PaginationTable = () => {
                     MMT: p.MMT + count2,
                     PMT: p.PMT + count3,
                     WHT: p.WHT + count4,
-                    ...obj,
                 }))
                 Swal.fire({
                     icon: 'success',
@@ -234,7 +236,6 @@ const PaginationTable = () => {
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
-
             let obj = {
                 allCount: countOfTray,
                 item: pagination.item,

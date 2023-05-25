@@ -123,6 +123,7 @@ const Addparts = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
+                    totalPage: Math.ceil(res.data.data.length / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -137,52 +138,49 @@ const Addparts = () => {
         }
     }
     const handelSubmit = async () => {
-      try {
-          setSubmitLoad(true)
-          let obj = {
-            muicData: state.muicData,
-            part: pagination.item,
-          }
-          let res = await axiosSuperAdminPrexo.post(
-              '/muicPage/partAdd',
-              obj
-          )
-          if (res.status == 200) {
-              Swal.fire({
-                  position: 'top-center',
-                  icon: 'success',
-                  title: res?.data?.message,
-                  confirmButtonText: 'Ok',
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      setSubmitLoad(false)
-                      navigate(
-                          '/sup-admin/products/partsassociation/report',
-                          {
-                              state: {
-                                  validatedSuccess: validationCount,
-                              },
-                          }
-                      )
-                  }
-              })
-          } else {
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Oops...',
-                  text: res.data.message,
-              })
-          }
-      } catch (error) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: error,
-          })
-      }
-  }
+        try {
+            setSubmitLoad(true)
+            let obj = {
+                muicData: state.muicData,
+                part: pagination.item,
+            }
+            let res = await axiosSuperAdminPrexo.post('/muicPage/partAdd', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setSubmitLoad(false)
+                        navigate(
+                            '/sup-admin/products/partsassociation/report',
+                            {
+                                state: {
+                                    validatedSuccess: validationCount,
+                                },
+                            }
+                        )
+                    }
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
 
     return (
         <Container>
@@ -229,7 +227,7 @@ const Addparts = () => {
                     >
                         {validateButLoad == true
                             ? 'Validating...'
-                            : 'Validate MUIC'}
+                            : 'Validate Parts'}
                     </Button>
                 </Box>
             </Card>
@@ -369,14 +367,13 @@ const Addparts = () => {
                                         >
                                             {phones.validationStatus}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             <IconButton
                                                 onClick={(e) => {
                                                     handelDelete(
                                                         phones?.part_code
                                                     )
                                                 }}
-                                                sx={{ ml: 13 }}
                                             >
                                                 <Icon color="error">
                                                     delete

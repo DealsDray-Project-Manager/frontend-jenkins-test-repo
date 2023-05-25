@@ -51,17 +51,15 @@ const MemberEditorDialog = ({
             const user = localStorage.getItem('prexo-authentication')
             if (user) {
                 const { location } = jwt_decode(user)
+                let obj={
+                    trayId:trayId,
+                    trayType:trayType,
+                    location:location,
+                    brand:brand,
+                    model:model
+                }
                 let res = await axiosWarehouseIn.post(
-                    '/trayIdCheckAuditApprovePage/' +
-                        trayId +
-                        '/' +
-                        trayType +
-                        '/' +
-                        location +
-                        '/' +
-                        brand +
-                        '/' +
-                        model
+                    '/trayIdCheckAuditApprovePage',obj
                 )
                 if (res.status == 200) {
                     // Swal.fire({

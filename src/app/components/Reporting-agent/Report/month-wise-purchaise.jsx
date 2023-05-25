@@ -252,7 +252,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 'Order Id': x?.order_id,
                 'Tracking Id': x?.tracking_id,
-                'Model Name': x?.old_item_details.replace(/:/g, ' ').toUpperCase(),
+                'Model Name': x?.old_item_details?.replace(/:/g, ' ').toUpperCase(),
                 IMEI: x?.imei,
                 'SKU Name': x?.item_id,
                 'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
@@ -527,13 +527,12 @@ const SimpleMuiTable = () => {
                             <TableCell>{data.id}</TableCell>
                             <TableCell>{data?.order_id}</TableCell>
                             <TableCell>{data?.tracking_id}</TableCell>
-                            <TableCell>{data?.old_item_details.replace(/:/g, ' ').toUpperCase()}</TableCell>
+                            <TableCell>{data?.old_item_details?.replace(/:/g, ' ')?.toUpperCase()}</TableCell>
                             <TableCell>{data?.imei}</TableCell>
                             <TableCell>{data?.item_id}</TableCell>
                             <TableCell>
                                 {data?.bot_report?.body_damage_des}
                             </TableCell>
-
                             {data.tray_type == 'MMT' ? (
                                 <TableCell>Model MisMatch MMT</TableCell>
                             ) : data.tray_type == 'PMT' ? (

@@ -88,9 +88,9 @@ export default function DialogBox() {
                     '/partAndColor/view/' + 'part-list'
                 )
                 if (fetchPart.status == 200) {
+                    
                     setPartList(fetchPart.data.data)
                 }
-
                 let colorList = await axiosSuperAdminPrexo.post(
                     '/partAndColor/view/' + 'color-list'
                 )

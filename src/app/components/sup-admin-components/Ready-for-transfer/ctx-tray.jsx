@@ -62,36 +62,54 @@ const SimpleMuiTable = () => {
     const handelReadyForRdl = async () => {
         try {
             setSubmitButDis(true)
-            let obj = {
+            let obj1 = {
                 ischeck: isCheck,
-                type: 'Ready to Transfer to Sales',
+                status: 'Audit Done Closed By Warehouse',
             }
-            let res = await axiosSuperAdminPrexo.post(
-                '/forceFullReadySend',
-                obj
+            let checkStatus = await axiosSuperAdminPrexo.post(
+                '/tray/checkStatus',
+                obj1
             )
-            setIsCheck([])
-            if (res.status === 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res.data.message,
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsCheck([])
-                        setSubmitButDis(false)
-                        setIsAlive((isAlive) => !isAlive)
-                    }
-                })
-            } else if (res.status == 202) {
+            if (checkStatus.status == 200) {
+                let obj = {
+                    ischeck: isCheck,
+                    type: 'Ready to Transfer to Sales',
+                }
+                let res = await axiosSuperAdminPrexo.post(
+                    '/forceFullReadySend',
+                    obj
+                )
+                setIsCheck([])
+                if (res.status === 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res.data.message,
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setIsCheck([])
+                            setSubmitButDis(false)
+                            setIsAlive((isAlive) => !isAlive)
+                        }
+                    })
+                } else if (res.status == 202) {
+                    setSubmitButDis(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
+            } else {
                 setSubmitButDis(false)
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
+                    icon: 'error',
+                    title: checkStatus?.data?.message,
                     confirmButtonText: 'Ok',
                 })
             }

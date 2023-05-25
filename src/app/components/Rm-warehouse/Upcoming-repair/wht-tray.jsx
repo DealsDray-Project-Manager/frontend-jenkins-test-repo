@@ -107,26 +107,7 @@ const SimpleMuiTable = () => {
     }
 
     const columns = [
-        {
-            name: 'code',
-            label: 'Select',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, dataIndex) => {
-                    return (
-                        <Checkbox
-                            onClick={(e) => {
-                                handleClick(e)
-                            }}
-                            id={value}
-                            key={value}
-                            checked={isCheck.includes(value)}
-                        />
-                    )
-                },
-            },
-        },
+       
         {
             name: 'index',
             label: 'Record No',
@@ -203,7 +184,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
+                    value.length + '/' + tableMeta.rowData[7],
             },
         },
         {

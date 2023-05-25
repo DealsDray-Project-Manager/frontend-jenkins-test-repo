@@ -147,7 +147,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length / p.size),
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -159,6 +159,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
+                    totalPage: Math.ceil(res.data.data.length  / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)

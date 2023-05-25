@@ -153,7 +153,6 @@ const AddBulkPart = () => {
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
             accumulator.created_by = 'super-admin'
-            accumulator.created_by = user.name
             return accumulator
         }, {})
     }

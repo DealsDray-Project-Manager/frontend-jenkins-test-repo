@@ -79,7 +79,7 @@ const Actionfunction = () => {
       return updatedValues;
     });
   };
-
+ 
   const columns = [
     {
       name: 'select',
@@ -102,10 +102,11 @@ const Actionfunction = () => {
     },
     {
       name: 'part_no',
-      label: <Typography variant="subtitle1"fontWeight='bold'><>Part No</></Typography>,
+      label: <Typography variant="subtitle1"fontWeight='bold' ><>Part No</></Typography>,
       options: {
         filter: true,
         sort: false,
+        setCellProps: () => ({ marginLeft:'10px' }),
         customBodyRender: (rowIndex, tableMeta) =>
           tableMeta.rowIndex + 1,
       },
@@ -154,7 +155,7 @@ const Actionfunction = () => {
       <H3>UIC Detail:</H3>
       <br />
 
-      <TextField select sx={{ width: '180px', ml:2 }} label="Select an Option">
+      <TextField select sx={{ width: '180px' }} label="Select an Option">
         <MenuItem>Battery Boosted</MenuItem>
         <MenuItem>Charge jack Replaced & Boosted</MenuItem>
         <MenuItem>Battery Damage</MenuItem>
@@ -166,7 +167,7 @@ const Actionfunction = () => {
       </TextField>
       <br />
       <br />
-      <TextField sx={{ width: '180px', ml:2 }} label="Description">
+      <TextField sx={{ width: '180px' }} label="Description">
         
       </TextField>
 

@@ -99,7 +99,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: 'Records No',
             options: {
                 filter: false,
                 sort: false,

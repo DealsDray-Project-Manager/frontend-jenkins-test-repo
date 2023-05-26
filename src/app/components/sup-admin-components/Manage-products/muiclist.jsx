@@ -162,7 +162,7 @@ const MUIClist = () => {
             
                 <Box sx={{display: 'flex', alignItems:'center' }}>
 
-                    <Box>
+                    <Box sx={{mt:2}}>
                         <Image
                             src={
                                 productData?.[0]?.image == undefined
@@ -171,12 +171,12 @@ const MUIClist = () => {
                                       '.jpg'
                                     : productData?.[0]?.image
                             }
-                            height={280}
-                            width={260}
+                            height='200px'
+                            width="100%"
                         />
                     </Box>
 
-                    <Box>
+                    <Box sx={{ml:5}}>
                             <Typography>
                                 MUIC:{productData?.[0]?.muic}
                             </Typography>

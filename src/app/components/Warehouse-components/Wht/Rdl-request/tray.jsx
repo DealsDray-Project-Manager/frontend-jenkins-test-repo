@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
+import { Button , Typography} from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -63,17 +63,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -87,21 +88,21 @@ const SimpleMuiTable = () => {
         // },
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -117,14 +118,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: 'RDL Agent',
+            label: <Typography sx={{fontWeight:'bold'}}>RDL Agent</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'requested_date',
-            label: 'Request sent Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Request Sent Date</Typography>,
             options: {
                 filter: true,
                 sort: false,
@@ -137,7 +138,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
@@ -146,7 +147,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

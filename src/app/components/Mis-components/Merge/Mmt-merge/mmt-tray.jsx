@@ -12,6 +12,7 @@ import {
     FormControl,
     InputLabel,
     Select,
+    Typography,
     MenuItem,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -230,7 +231,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -240,7 +241,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Tray ID</></Typography>,// column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -256,7 +257,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Quantity</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -265,21 +266,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Tray Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_time_wharehouse',
-            label: 'Closed Time Warehouse',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Closed Time Warehouse</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -290,7 +291,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

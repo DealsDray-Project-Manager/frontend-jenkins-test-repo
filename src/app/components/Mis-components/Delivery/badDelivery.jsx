@@ -236,23 +236,23 @@ const SimpleMuiTable = () => {
                 <ProductTable>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Record.NO</TableCell>
-                            <TableCell>Delivery Imported Date</TableCell>
-                            <TableCell>Tracking ID</TableCell>
-                            <TableCell>Order ID</TableCell>
-                            <TableCell>Order Date</TableCell>
-                            <TableCell>Item ID</TableCell>
-                            <TableCell>GEP Order</TableCell>
-                            <TableCell>IMEI</TableCell>
-                            <TableCell>Partner Purchase Price</TableCell>
-                            <TableCell>Partner Shop</TableCell>
-                            <TableCell>Base Discount</TableCell>
-                            <TableCell>Diagnostics Discount</TableCell>
-                            <TableCell>Storage Disscount</TableCell>
-                            <TableCell>Buyback Category</TableCell>
-                            <TableCell>Doorsteps Diagnostics</TableCell>
-                            <TableCell>Delivered Date</TableCell>
-                            <TableCell>Reason</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Imported Date</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order Date</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GEP Order</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diagnostics Discount</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Disscount</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorsteps Diagnostics</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivered Date</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Reason</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

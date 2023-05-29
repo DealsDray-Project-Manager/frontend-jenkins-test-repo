@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { axiosAuditAgent } from '../../../../../axios'
 import Swal from 'sweetalert2'
-
+import { Typography } from '@mui/material'
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -46,24 +46,25 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
             },
@@ -71,21 +72,21 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand_name',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'audit_report',
-            label: 'Audit Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Audit Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.stage,
@@ -93,7 +94,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Orginel Grade',
+            label: <Typography sx={{fontWeight:'bold'}}>Original Grade</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.orgGrade,
@@ -101,7 +102,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Audit Recomendad Grade',
+            label: <Typography sx={{fontWeight:'bold'}}>Audit Recommended Grade</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.grade,
@@ -109,7 +110,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Reason',
+            label: <Typography sx={{fontWeight:'bold'}}>Reason</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.reason,
@@ -117,7 +118,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: 'Description',
+            label: <Typography sx={{fontWeight:'bold'}}>Description</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.description,

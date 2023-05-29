@@ -151,7 +151,7 @@ const UserTable = () => {
                     })
                 }
             }
-        })
+        }) 
     }
 
     const options = {
@@ -167,11 +167,12 @@ const UserTable = () => {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
                 setCellProps: () => ({ align: 'center', position:'sticky' }),
+                
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
-            // minWidth:100
+            
         },
         {
             name: 'profile',
@@ -357,7 +358,6 @@ const UserTable = () => {
             <Box sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
                 style={{width:'100%', marginLeft:'40px',marginRight:'20px'}}
-                
                 title={'User Report'}
                 data={userList}
                 columns={columns}

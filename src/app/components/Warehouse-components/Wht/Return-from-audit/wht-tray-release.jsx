@@ -99,6 +99,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },

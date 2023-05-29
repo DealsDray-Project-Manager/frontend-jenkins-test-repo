@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import AssignDialogBox from './assign-dialog'
 import { styled } from '@mui/system'
-import { Button, Box } from '@mui/material'
+import { Button, Box, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../../axios'
@@ -99,31 +99,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Records No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Bag Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status_change_time',
-            label: 'Date Of Closure',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Date of Closure</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -134,14 +135,15 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: 'Max',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'40px'}}><>Max</></Typography>,
             options: {
+                setCellProps: () => ({ align: 'center' }),
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'Valid',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Valid</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -152,7 +154,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Invalid',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Invalid</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -163,7 +165,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Duplicate',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Duplicate</></Typography>,
             options: {
                 filter: true,
 
@@ -176,7 +178,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Total',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Total</></Typography>,
             options: {
                 filter: true,
 
@@ -185,7 +187,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: 'Action',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: false,
                 sort: false,

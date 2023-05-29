@@ -539,11 +539,11 @@ const PaginationTable = () => {
                 <StyledTable>
                     <TableHead>
                         <TableRow>
-                            <TableCell>S.NO</TableCell>
-                            <TableCell>AWBN Number</TableCell>
-                            <TableCell>Order ID</TableCell>
-                            <TableCell>Order Date</TableCell>
-                            <TableCell>Status</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>S.NO</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>AWBN Number</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Order ID</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Order Date</TableCell>
+                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
+import { Button,Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -63,52 +63,53 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: 'Agent Name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'limit',
+            label: <Typography sx={{fontWeight:'bold'}}>Limit</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -118,7 +119,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -127,7 +128,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

@@ -130,7 +130,7 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 3050,
+        width: 3200,
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -193,24 +193,24 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Record.NO</TableCell>
-                        <TableCell>Delivery Status</TableCell>
-                        <TableCell>Delivery Imported Date</TableCell>
-                        <TableCell>UIC Status</TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Order Date</TableCell>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>GEP Order</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Partner Purchase Price</TableCell>
-                        <TableCell>Partner Shop</TableCell>
-                        <TableCell>Base Discount</TableCell>
-                        <TableCell>Diagnostics Discount</TableCell>
-                        <TableCell>Storage Disscount</TableCell>
-                        <TableCell>Buyback Category</TableCell>
-                        <TableCell>Doorsteps Diagnostics</TableCell>
-                        <TableCell>Actual Delivered Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Imported Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GEP Order</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diagnostics Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Disscount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorsteps Diagnostics</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivered Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

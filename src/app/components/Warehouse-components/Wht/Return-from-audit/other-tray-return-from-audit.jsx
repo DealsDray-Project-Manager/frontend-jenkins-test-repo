@@ -13,6 +13,7 @@ import {
     Dialog,
     DialogTitle,
     IconButton,
+    Typography,
     DialogContent,
     DialogActions,
 } from '@mui/material'
@@ -200,38 +201,39 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: 'Agent Name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
             options: {
                 filter: true,
             },
@@ -239,14 +241,14 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -263,7 +265,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'closed_time_bot',
-            label: 'Audit Done Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Audit Done Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -274,7 +276,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

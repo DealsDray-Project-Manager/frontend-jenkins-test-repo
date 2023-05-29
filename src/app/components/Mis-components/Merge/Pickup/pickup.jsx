@@ -14,6 +14,7 @@ import {
     Box,
     Table,
     Card,
+    Typography,
     TextField,
     Button,
     MenuItem,
@@ -308,7 +309,7 @@ const PickupPage = () => {
     const columnsOne = [
         {
             name: 'items',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -328,7 +329,7 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -339,7 +340,7 @@ const PickupPage = () => {
 
         {
             name: 'items', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
 
             options: {
                 filter: true,
@@ -349,7 +350,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Order Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -358,7 +359,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'IMEI',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>IMEI</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -368,7 +369,7 @@ const PickupPage = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -376,7 +377,7 @@ const PickupPage = () => {
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -384,7 +385,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'MUIC',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -393,7 +394,7 @@ const PickupPage = () => {
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -401,7 +402,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Battery Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Battery Status</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -411,7 +412,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charge Percentage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charge Percentage</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -421,7 +422,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Condition</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -431,7 +432,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Display Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Display Condition</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -448,7 +449,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Lock Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Lock Status</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -458,7 +459,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charging Jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charging Jack</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -468,7 +469,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Part Missing',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Part Missing</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -480,7 +481,7 @@ const PickupPage = () => {
     const columnsTwo = [
         {
             name: 'items',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -500,7 +501,7 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -511,7 +512,7 @@ const PickupPage = () => {
 
         {
             name: 'items', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.uic || '',
@@ -519,7 +520,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Order Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.order_id || '',
@@ -527,7 +528,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'IMEI',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>IMEI</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.imei || '',
@@ -536,21 +537,21 @@ const PickupPage = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'MUIC',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.muic || '',
@@ -558,14 +559,14 @@ const PickupPage = () => {
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'Battery Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Battery Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -574,7 +575,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charge Percentage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charge Percentage</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -583,7 +584,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Condition</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -592,7 +593,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Display Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Display Condition</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -601,7 +602,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Lock Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Lock Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -610,7 +611,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charging Jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charging Jack</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -619,7 +620,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Part Missing',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Missing Part</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -628,7 +629,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Blancoo QC Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Blanco QC Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -637,7 +638,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Factory Reset Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Factory Reset Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -646,7 +647,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC Incomplete Reason',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC Incomplete Reason</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -655,7 +656,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Technical Issue',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Technical Issue</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -664,7 +665,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC User Remark',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC User Remark</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -675,7 +676,7 @@ const PickupPage = () => {
     const columnsThree = [
         {
             name: 'items',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -696,7 +697,7 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -707,7 +708,7 @@ const PickupPage = () => {
 
         {
             name: 'items', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.uic || '',
@@ -715,7 +716,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Order Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.order_id || '',
@@ -723,7 +724,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'IMEI',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>IMEI</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.imei || '',
@@ -732,21 +733,21 @@ const PickupPage = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'MUIC',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.muic || '',
@@ -754,14 +755,14 @@ const PickupPage = () => {
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'Battery Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Battery Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -770,7 +771,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charge Percentage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charge Percentage</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -779,7 +780,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Condition</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -788,7 +789,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Display Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Display Condition</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -797,7 +798,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Lock Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Lock Status</></Typography>,
             options: {
                 filter: true,
                 setCellProps: () => ({ style: { width: '100px' } }),
@@ -807,7 +808,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charging Jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charging Jack</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -816,7 +817,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Part Missing',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Missing Part</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -825,7 +826,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Blancoo QC Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Blanco QC Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -834,7 +835,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Factory Reset Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Factory Reset Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -843,7 +844,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC Incomplete Reason',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC Incomplete Reason</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -852,7 +853,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Technical Issue',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Technical Issue</></Typography>,
             options: {
                 filter: true,
 
@@ -862,7 +863,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC User Remark',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC User Remark</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -871,7 +872,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Orginal Grade',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Original Grade</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -880,7 +881,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Audit Recomendad Grade',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Audit Recommend Grade</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -889,7 +890,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Stage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Stage</></Typography>,
             options: {
                 filter: true,
 
@@ -899,7 +900,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Reason',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Reason</></Typography>,
             options: {
                 filter: true,
                 FileList: (value) => value?.audit_report?.reason,
@@ -909,7 +910,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Description',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -920,7 +921,7 @@ const PickupPage = () => {
     const columnsForRdlOne = [
         {
             name: 'items',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -941,7 +942,7 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -952,7 +953,7 @@ const PickupPage = () => {
 
         {
             name: 'items', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -961,7 +962,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Order Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -970,7 +971,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'IMEI',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>IMEI</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -980,7 +981,7 @@ const PickupPage = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -988,7 +989,7 @@ const PickupPage = () => {
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -996,7 +997,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'MUIC',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1005,7 +1006,7 @@ const PickupPage = () => {
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1013,7 +1014,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Battery Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Battery Status</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1023,7 +1024,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charge Percentage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charge Percentage</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1034,7 +1035,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Condition</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1045,7 +1046,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Display Condition',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Display Condition</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1056,7 +1057,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Lock Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Lock Status</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -1067,7 +1068,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Charging Jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Charging Jack</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1078,7 +1079,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Body Part Missing',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Body Missing Part</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1089,7 +1090,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Blancoo QC Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Blanco QC Status</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1100,7 +1101,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Factory Reset Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Factory Reset Status</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1111,7 +1112,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC Incomplete Reason',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC Incomplete Reason</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1122,7 +1123,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Technical Issue',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Technical Issue</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1133,7 +1134,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'BQC User Remark',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BQC User Remark</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1144,7 +1145,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Orginal Grade',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Original Grade</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1155,7 +1156,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Audit Recomendad Grade',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Audit Recommend Grade</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1166,7 +1167,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Stage',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Stage</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1177,7 +1178,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Reason',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Reason</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1189,7 +1190,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Description',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1200,7 +1201,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Username',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Username</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1210,7 +1211,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Status</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1222,7 +1223,7 @@ const PickupPage = () => {
 
         {
             name: 'items',
-            label: 'RDL 1 Added Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Model</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1233,7 +1234,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Color',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Color</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1244,7 +1245,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part List Count',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part List Count</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1255,7 +1256,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part One',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part One</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1266,7 +1267,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part Two',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Two</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1277,7 +1278,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part Three',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Three</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1288,7 +1289,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part Four',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Four</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1299,7 +1300,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'RDL 1 Added Part Five',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Five</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1310,7 +1311,7 @@ const PickupPage = () => {
         },
         {
             name: 'closed_date_agent',
-            label: 'RDL 1 Done Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Done Date</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
@@ -1322,7 +1323,7 @@ const PickupPage = () => {
         },
         {
             name: 'items',
-            label: 'Description',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column

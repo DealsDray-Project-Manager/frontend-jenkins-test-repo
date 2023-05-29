@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -71,17 +71,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'tray',
-            label: 'BOT Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT Tray ID</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -90,14 +91,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: '_id',
-            label: 'Sorting Agent',
+            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray',
-            label: 'Assigned Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -111,7 +112,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray',
-            label: 'Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => value?.[0]?.sort_id,
@@ -119,7 +120,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray',
-            label: 'WHT Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>WHT Tray</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -136,7 +137,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: 'Actions',
+            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

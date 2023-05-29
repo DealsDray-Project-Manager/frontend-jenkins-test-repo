@@ -232,7 +232,7 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record No</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
@@ -317,7 +317,7 @@ const SimpleMuiTable = () => {
                     ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
+                            <TableCell sx={{textAlign:'center'}}>{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.delivery_status == 'Pending'

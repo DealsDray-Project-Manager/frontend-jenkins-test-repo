@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -68,31 +68,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand Name',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model Name',
+            label: <Typography sx={{fontWeight:'bold'}}>Model Name</Typography>,
             options: {
                 filter: true,
             },
@@ -100,7 +101,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'item',
-            label: 'Units',
+            label: <Typography sx={{fontWeight:'bold'}}>Units</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => value?.length,
@@ -108,7 +109,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'wht_tray',
-            label: 'Open WHT',
+            label: <Typography sx={{fontWeight:'bold'}}>Open WHT</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => value?.join(', '),
@@ -116,7 +117,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'muic',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

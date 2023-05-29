@@ -123,7 +123,7 @@ const SimpleMuiTable = () => {
             borderBottom: 'none',
         },
         '& td:first-of-type': {
-            paddingLeft: '16px !important',
+            paddingLeft: '36px !important',
         },
     }))
 
@@ -226,7 +226,7 @@ const SimpleMuiTable = () => {
                 <TableBody>
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
+                            <TableCell >{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.delivery_status === 'Pending'

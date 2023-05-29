@@ -137,7 +137,7 @@ const SimpleMuiTable = () => {
             borderBottom: 'none',
         },
         '& td:first-of-type': {
-            paddingLeft: '16px !important',
+            paddingLeft: '36px !important',
         },
     }))
 
@@ -256,7 +256,7 @@ const SimpleMuiTable = () => {
                     ) : null}
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
+                            <TableCell sx={{pl:4}}>{data.id}</TableCell>
                             <TableCell>
                                 {new Date(data.created_at).toLocaleString(
                                     'en-GB',

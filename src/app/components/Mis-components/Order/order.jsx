@@ -179,7 +179,7 @@ const SimpleMuiTable = () => {
             borderBottom: 'none',
         },
         '& td:first-of-type': {
-            paddingLeft: '16px !important',
+            paddingLeft: '36px !important',
         },
     }))
 

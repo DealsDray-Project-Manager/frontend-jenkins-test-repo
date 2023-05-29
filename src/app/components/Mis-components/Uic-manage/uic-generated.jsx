@@ -374,7 +374,7 @@ const SimpleMuiTable = () => {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell>{data.id}</TableCell>
+                            <TableCell sx={{pl:4}}>{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.uic_status == 'Pending'

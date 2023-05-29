@@ -129,7 +129,7 @@ const SimpleMuiTable = () => {
     }
 
     const ProductTable = styled(Table)(() => ({
-        minWidth: 750,
+        minWidth: 800,
         width: 3200,
         whiteSpace: 'pre',
         '& thead': {
@@ -141,7 +141,7 @@ const SimpleMuiTable = () => {
             borderBottom: 'none',
         },
         '& td:first-of-type': {
-            paddingLeft: '16px !important',
+            paddingLeft: '36px !important',
         },
     }))
 
@@ -226,9 +226,10 @@ const SimpleMuiTable = () => {
                         </TableCell>
                     ) : null}
                     {data.map((data, index) => (
-                        <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
+                        <TableRow align='center' tabIndex={-1}>
+                            <TableCell >{data.id}</TableCell>
                             <TableCell
+                            // sx={{paddingLeft:'25px'}}
                                 style={
                                     data.result.length != 0
                                         ? { color: 'green' }

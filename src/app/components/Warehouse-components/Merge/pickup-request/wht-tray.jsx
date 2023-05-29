@@ -63,14 +63,14 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align:'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -86,7 +86,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
 
@@ -96,28 +96,28 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: 'Sorting Agent',
+            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'to_tray_for_pickup',
-            label: 'To Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>To Tray</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'requested_date',
-            label: 'Assigned Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -129,7 +129,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

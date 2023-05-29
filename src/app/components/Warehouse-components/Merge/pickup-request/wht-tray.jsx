@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -59,10 +59,11 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -162,7 +163,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'tray'}
+                title={'Tray'}
                 data={tray}
                 columns={columns}
                 options={{

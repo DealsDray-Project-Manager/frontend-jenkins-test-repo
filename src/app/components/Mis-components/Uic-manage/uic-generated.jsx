@@ -299,7 +299,7 @@ const SimpleMuiTable = () => {
                                 checked={
                                     item.length == isCheck.length ? true : false
                                 }
-                            />{' '}
+                            />{' '} 
                             Select All
                         </TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>

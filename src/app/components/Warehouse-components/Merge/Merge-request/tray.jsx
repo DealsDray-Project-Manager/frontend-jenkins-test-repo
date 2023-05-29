@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -63,17 +63,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -89,7 +90,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
 
@@ -99,28 +100,28 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: 'Sorting Agent',
+            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'to_merge',
-            label: 'To Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>To Tray</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status_change_time',
-            label: 'Assigned Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -131,7 +132,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -165,7 +166,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'tray'}
+                title={'Tray'}
                 data={tray}
                 columns={columns}
                 options={{

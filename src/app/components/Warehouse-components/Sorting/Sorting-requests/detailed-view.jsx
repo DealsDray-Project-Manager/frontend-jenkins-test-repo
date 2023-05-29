@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button, Box, Typography } from '@mui/material'
+import { Button, Box, Card, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -241,11 +241,13 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <Box
-                sx={{
-                    float: 'right',
-                }}
-            >
+        <Card>
+
+            <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                <Box sx={{ml:3}}>
+                    <Typography sx={{fontSize:'20px', fontWeight:'bold'}}>Tray</Typography>
+                </Box>
+            <Box sx={{mr:3}}>
                 <h4>
                     Assigned Date -{' '}
                     {new Date(botTray[0]?.status_change_time).toLocaleString(
@@ -259,9 +261,11 @@ const SimpleMuiTable = () => {
                 </h4>
                 <h4>Agent Name- {botTray[0]?.issued_user_name}</h4>
             </Box>
+            </Box>
+            
 
             <MUIDataTable
-                title={'Tray'}
+                // title={'Tray'}
                 data={botTray}
                 columns={columns}
                 options={{
@@ -330,6 +334,7 @@ const SimpleMuiTable = () => {
                     </Button>
                 ) : null}
             </Box>
+            </Card>
         </Container>
     )
 }

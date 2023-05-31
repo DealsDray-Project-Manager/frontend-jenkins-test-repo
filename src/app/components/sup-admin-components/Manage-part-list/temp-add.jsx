@@ -68,7 +68,7 @@ const AddPartOrColorAndEditDialog = ({
             .nullable(),
         color: Yup.string()
             .required('Required*')
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
             .max(40)
             .nullable(),
         technical_qc: Yup.string()
@@ -91,6 +91,7 @@ const AddPartOrColorAndEditDialog = ({
             setLoading(true)
             data.type = 'part-list'
             data.created_by = 'super-admin'
+            data.created_at=Date.now()
             let response = await axiosSuperAdminPrexo.post(
                 '/partAndColor/create',
                 data
@@ -154,7 +155,7 @@ const AddPartOrColorAndEditDialog = ({
             } else {
                 handleClose()
                 Swal.fire({
-                    icon: 'failed',
+                    icon: 'error',
                     title: response.data.message,
                     showConfirmButton: false,
                 })
@@ -201,6 +202,8 @@ const AddPartOrColorAndEditDialog = ({
                     name="color"
                     defaultValue={getValues('color')}
                     {...register('color')}
+                    error={errors.color ? true : false}
+                    helperText={errors.color ? errors.color?.message : ''}
                 >
                     {colorData?.map((data) => (
                         <MenuItem key={data?.name} value={data?.name}>

@@ -42,14 +42,14 @@ const StatCard3 = () => {
             icon: 'art_track',
             amount: count.rdl_two,
             title: 'Upcoming Repairs',
-            path: '/rm-user/upcoming-repair-tray',
+            path: '/sp-user/upcoming-repair-tray',
             sales: false,
         },
         {
             icon: 'branding_watermark',
             amount: count?.rdl2Request,
             title: 'Parts Issue Request',
-            path: '/rm-user/rdl-2-issue-request',
+            path: '/sp-user/rdl-2-issue-request',
         },
     ]
     const { palette } = useTheme()

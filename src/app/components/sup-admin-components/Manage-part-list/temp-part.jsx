@@ -180,7 +180,7 @@ const PartTable = () => {
                 technical_qc: x.technical_qc,
                 description: x.description,
                 available_stock: x.avl_stock,
-                update_stock: '',
+                stock_update: '',
             }
             arr.push(obj)
         }
@@ -264,13 +264,7 @@ const PartTable = () => {
                     }),
             },
         },
-        {
-            name: 'created_by',
-            label: 'Created By',
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'status',
             label: 'Status',
@@ -307,13 +301,13 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[9] == 'Active' ? (
+                            {tableMeta.rowData[8] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')
                                     }}
                                     checked
-                                    style={{ color: 'red' }}
+                                    style={{ color: 'green' }}
                                 />
                             ) : (
                                 <Radio
@@ -321,7 +315,7 @@ const PartTable = () => {
                                         handelActive(value, 'Active')
                                     }}
                                     checked
-                                    style={{ color: 'green' }}
+                                    style={{ color: 'red' }}
                                 />
                             )}
                             <IconButton>

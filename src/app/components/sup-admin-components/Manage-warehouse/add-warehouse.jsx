@@ -34,6 +34,9 @@ const MemberEditorDialog = ({
         const fetchData = async () => {
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
+                 if(editFetchData.warehouse_type == "PRC SPW"){
+                    setSelectedCpc("Processing")
+                 }
                 open()
             }
         }
@@ -284,7 +287,7 @@ const MemberEditorDialog = ({
                                     Processing
                                 </MenuItem>
                                 <MenuItem value="Sales">Sales</MenuItem>
-                                <MenuItem value="PRC RMW">PRC RMW</MenuItem>
+                                <MenuItem value="PRC SPW">PRC SPW</MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm

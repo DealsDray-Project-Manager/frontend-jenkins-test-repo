@@ -184,9 +184,9 @@ const AddBulkPart = () => {
             setLoading(true)
             let i = 0
             for (let x of pagination.item) {
-                let num = parseInt(partCount?.substring(2)) + i
+                let num = parseInt(partCount?.substring(3)) + i
                 let updatedStr =
-                    partCount.substring(0, 2) + num.toString().padStart(6, '0')
+                    partCount.substring(0, 3) + num.toString().padStart(6, '0')
                 // obj.PARTID = updatedStr
                 x.code = updatedStr
                 i++
@@ -264,7 +264,7 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/rm-user/view-list/sparereporting', {
+                        navigate('/sp-user/view-list/sparereporting', {
                             state: {
                                 validatedSuccess: res.data.addedCount,
                             },
@@ -313,7 +313,7 @@ const AddBulkPart = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() => navigate('/rm-user/part-list')}
+                            onClick={() => navigate('/sp-user/part-list')}
                         >
                             Back to Spare Part list
                         </Button>

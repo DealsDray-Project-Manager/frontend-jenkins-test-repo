@@ -174,7 +174,7 @@ const AddBulkPart = () => {
                 technical_qc: x.technical_qc,
                 description: x.description,
                 available_stock: x.avl_stock,
-                update_stock: '',
+                stock_update: '',
             }
             arr.push(obj)
         }
@@ -478,14 +478,14 @@ const AddBulkPart = () => {
                                             )}
                                             id="outlined-password-input"
                                             type="text"
-                                            name="update_stock"
-                                            value={data.update_stock?.toString()}
+                                            name="stock_update"
+                                            value={data.stock_update?.toString()}
                                         />
                                         {err?.update_stock_check?.includes(
-                                            data.update_stock?.toString()
+                                            data.stock_update?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
-                                            data.update_stock == undefined) ? (
+                                            data.stock_update == undefined) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
                                             />
@@ -498,10 +498,10 @@ const AddBulkPart = () => {
                                         )}
 
                                         {err?.update_stock_check?.includes(
-                                            data.update_stock?.toString()
+                                            data.stock_update?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
-                                            data.update_stock == undefined) ? (
+                                            data.stock_update == undefined) ? (
                                             <p style={{ color: 'red' }}>
                                                 Only Positive Integers are
                                                 Acceptable
@@ -512,7 +512,7 @@ const AddBulkPart = () => {
                                     </TableCell>
                                     <TableCell>
                                         {err?.update_stock_check?.includes(
-                                            data.update_stock?.toString()
+                                            data.stock_update?.toString()
                                         ) == true ||
                                         (Object.keys(err).length != 0 &&
                                             data.part_code == undefined) ||
@@ -522,7 +522,7 @@ const AddBulkPart = () => {
                                             data.part_code?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
-                                            data.update_stock == undefined) ||
+                                            data.stock_update == undefined) ||
                                         err?.duplicate_part_code?.includes(
                                             data.part_code?.toString()
                                         ) ? (

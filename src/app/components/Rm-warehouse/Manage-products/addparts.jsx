@@ -158,7 +158,7 @@ const Addparts = () => {
                   if (result.isConfirmed) {
                       setSubmitLoad(false)
                       navigate(
-                          '/rm-user/products/partsassociation/report',
+                          '/sp-user/products/partsassociation/report',
                           {
                               state: {
                                   validatedSuccess: validationCount,

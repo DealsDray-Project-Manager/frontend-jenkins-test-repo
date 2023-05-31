@@ -244,7 +244,6 @@ export default function DialogBox() {
                     }
                 } else {
                     setLoading(false)
-
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',

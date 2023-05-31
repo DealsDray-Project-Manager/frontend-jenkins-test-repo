@@ -473,7 +473,7 @@ const Association = () => {
                                     color="primary"
                                     // disabled={validateButLoad || muicData == ''}
                                     onClick={() => {
-                                        navigate('/sup-admin/view-part-list/addmuic/')
+                                        navigate('/sup-admin/view-part-list/addmuic/' + partId)
                                     }}
                                     sx={{ margin: 'auto',display:'flex', mr:0 }}
                                 >

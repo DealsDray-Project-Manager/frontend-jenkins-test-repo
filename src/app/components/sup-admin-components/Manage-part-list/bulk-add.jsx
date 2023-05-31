@@ -101,6 +101,7 @@ const AddBulkPart = () => {
             })
         }
     }, [])
+
     useEffect(() => {
         setItem((_) =>
             pagination.item
@@ -136,6 +137,7 @@ const AddBulkPart = () => {
             }
         })
         const data = await promise
+
         setPagination((p) => ({
             ...p,
             page: 1,
@@ -152,7 +154,9 @@ const AddBulkPart = () => {
             // accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
+            accumulator.created_at=Date.now()
             accumulator.created_by = 'super-admin'
+
             return accumulator
         }, {})
     }
@@ -162,7 +166,7 @@ const AddBulkPart = () => {
         setPagination((p) => ({
             ...p,
             item: pagination.item.map((data, i) => {
-                if (data.code === id) {
+                if (data.id === id) {
                     return { ...data, [e.target.name]: e.target.value }
                 } else {
                     return data
@@ -184,11 +188,12 @@ const AddBulkPart = () => {
             setLoading(true)
             let i = 0
             for (let x of pagination.item) {
-                let num = parseInt(partCount?.substring(2)) + i
+                let num = parseInt(partCount?.substring(3)) + i
                 let updatedStr =
-                    partCount.substring(0, 2) + num.toString().padStart(6, '0')
+                    partCount.substring(0, 3) + num.toString().padStart(6, '0')
                 // obj.PARTID = updatedStr
                 x.code = updatedStr
+                console.log(x.part_color);
                 i++
             }
             let res = await axiosSuperAdminPrexo.post(
@@ -408,7 +413,7 @@ const AddBulkPart = () => {
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"
@@ -453,12 +458,16 @@ const AddBulkPart = () => {
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"
                                             name="part_color"
-                                            value={data.part_color?.toString()}
+                                            value={
+                                                data.part_color
+                                                    ? data.part_color.toString()
+                                                    : ''
+                                            }
                                         />
                                         {err?.duplicate_color?.includes(
                                             data.part_color?.toString()
@@ -487,7 +496,7 @@ const AddBulkPart = () => {
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"
@@ -529,7 +538,7 @@ const AddBulkPart = () => {
                                     <TableCell>
                                         <TextField
                                             onChange={updateFieldChanged(
-                                                data.code
+                                                data.id
                                             )}
                                             id="outlined-password-input"
                                             type="text"

@@ -62,6 +62,7 @@ const AddPartOrColorAndEditDialog = ({
         try {
             setLoading(true)
             data.type = 'color-list'
+            data.created_at=Date.now()
             let response = await axiosSuperAdminPrexo.post(
                 '/partAndColor/create',
                 data

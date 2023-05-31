@@ -72,7 +72,7 @@ const Partsassociation = () => {
                             sx={{ margin: 'auto', mt: 1, mb: 2, ml: 50 }}
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate('/rm-user/product-list')}
+                            onClick={() => navigate('/sp-user/product-list')}
                         >
                             Back to MUIC list
                         </Button>

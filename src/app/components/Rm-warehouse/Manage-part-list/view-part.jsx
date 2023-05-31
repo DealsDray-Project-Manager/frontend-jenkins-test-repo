@@ -198,7 +198,7 @@ const PartTable = () => {
     }
 
     const handledetails = async (id) => {
-        navigate('/rm-user/view-part-list/muic-association/' + id)
+        navigate('/sp-user/view-part-list/muic-association/' + id)
     }
 
     const columns = [
@@ -266,13 +266,13 @@ const PartTable = () => {
                     }),
             },
         },
-        {
-            name: 'created_by',
-            label: 'Created By',
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'created_by',
+        //     label: 'Created By',
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'status',
             label: 'Status',
@@ -295,69 +295,67 @@ const PartTable = () => {
                 },
             },
         },
-        {
-            name: '_id',
-            label: 'Actions',
-            options: {
-                filter: false,
-                sort: false,
+        // {
+        //     name: '_id',
+        //     label: 'Actions',
+        //     options: {
+        //         filter: false,
+        //         sort: false,
 
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
-                            {tableMeta.rowData[8] == user.name ? (
-                                <>
-                                    {tableMeta.rowData[9] == 'Active' ? (
-                                        <Radio
-                                            onClick={(e) => {
-                                                handelActive(value, 'Deactive')
-                                            }}
-                                            checked
-                                            style={{ color: 'green' }}
-                                        />
-                                    ) : (
-                                        <Radio
-                                            onClick={(e) => {
-                                                handelActive(value, 'Active')
-                                            }}
-                                            checked
-                                            style={{ color: 'red' }}
-                                        />
-                                    )}
-                                    <IconButton>
-                                        <Icon
-                                            onClick={(e) => {
-                                                editMaster(value)
-                                            }}
-                                            color="primary"
-                                        >
-                                            edit
-                                        </Icon>
-                                    </IconButton>
-                                    <IconButton>
-                                        <Icon
-                                            onClick={(e) => {
-                                                handledetails(
-                                                    tableMeta.rowData[1]
-                                                )
-                                            }}
-                                            color="default"
-                                        >
-                                            details
-                                        </Icon>
-                                    </IconButton>
-                                </>
-                            ) : null}
-                        </Box>
-                    )
-                },
-            },
-        },
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <Box
+        //                     sx={{
+        //                         display: 'flex',
+        //                         flexDirection: 'row',
+        //                     }}
+        //                 >
+        //                     {tableMeta.rowData[8] == user.name ? (
+        //                         <>
+        //                             {tableMeta.rowData[9] == 'Active' ? (
+        //                                 <Radio
+        //                                     onClick={(e) => {
+        //                                         handelActive(value, 'Deactive')
+        //                                     }}
+        //                                     checked
+        //                                     style={{ color: 'green' }}
+        //                                 />
+        //                             ) : (
+        //                                 <Radio
+        //                                     onClick={(e) => {
+        //                                         handelActive(value, 'Active')
+        //                                     }}
+        //                                     checked
+        //                                     style={{ color: 'red' }}
+        //                                 />
+        //                             )}
+        //                             <IconButton>
+        //                                 <Icon
+        //                                     onClick={(e) => {
+        //                                         editMaster(value)
+        //                                     }}
+        //                                     color="primary"
+        //                                 >
+        //                                     edit
+        //                                 </Icon>
+        //                             </IconButton>
+        //                         </>
+        //                     ) : null}
+        //                     <IconButton>
+        //                         <Icon
+        //                             onClick={(e) => {
+        //                                 handledetails(tableMeta.rowData[1])
+        //                             }}
+        //                             color="default"
+        //                         >
+        //                             details
+        //                         </Icon>
+        //                     </IconButton>
+        //                 </Box>
+        //             )
+        //         },
+        //     },
+        // },
     ]
 
     return (
@@ -367,7 +365,7 @@ const PartTable = () => {
                     routeSegments={[{ name: 'Part-list', path: '/' }]}
                 />
             </div>
-            <Button
+            {/* <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
@@ -405,7 +403,7 @@ const PartTable = () => {
                 }
             >
                 Manage Stock
-            </Button>
+            </Button> */}
 
             <MUIDataTable
                 title={'Spare Part List'}

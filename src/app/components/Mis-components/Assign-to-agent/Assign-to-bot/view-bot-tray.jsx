@@ -135,9 +135,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'40px'}}><>Max</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Max</></Typography>,
             options: {
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align: 'center' }),
                 filter: true,
             },
         },

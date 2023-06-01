@@ -360,7 +360,7 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h4>Expected</h4>
+                <h4>EXPECTED</h4>
 
                 <Box
                     sx={{
@@ -391,7 +391,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -402,7 +402,7 @@ export default function DialogBox() {
                         <TableBody>
                             {employeeData[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.bag_id}</TableCell>
 
@@ -486,7 +486,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -502,7 +502,7 @@ export default function DialogBox() {
                                         role="checkbox"
                                         tabIndex={-1}
                                     >
-                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                         <TableCell>{data?.uic}</TableCell>
                                         <TableCell>{data?.bag_id}</TableCell>
                                         <TableCell>{data?.order_id}</TableCell>

@@ -713,7 +713,8 @@ const SimpleMuiTable = () => {
             >
                 Assign new tray
             </Button>
-
+                <br />
+                <br />
             <MUIDataTable
                 title={'Tray'}
                 data={trayData}

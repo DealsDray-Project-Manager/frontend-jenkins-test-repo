@@ -176,9 +176,10 @@ const SimpleMuiTable = () => {
 
     const tableData = useMemo(() => {
         return (
-            <ProductTable>
+            <Table >
+                <ProductTable  >
                 <TableHead>
-                    <TableRow>
+                    <TableRow className="table-centered table-nowrap mb-0">
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
@@ -385,6 +386,8 @@ const SimpleMuiTable = () => {
                     ))}
                 </TableBody>
             </ProductTable>
+            </Table>
+            
         )
     }, [data])
 

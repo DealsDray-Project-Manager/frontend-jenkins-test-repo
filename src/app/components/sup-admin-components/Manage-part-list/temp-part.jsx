@@ -206,9 +206,9 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
@@ -267,14 +267,14 @@ const PartTable = () => {
         },
         {
             name: 'created_by',
-            label: <Typography variant="subtitle1"><>Created By</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Created By</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1"><>Status</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -296,7 +296,7 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: <Typography variant="subtitle1"><>Actions</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

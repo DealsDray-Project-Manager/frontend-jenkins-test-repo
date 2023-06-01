@@ -8,19 +8,23 @@ import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
+// import '../../../components/styles/styles.css';
+
+import { DataGrid } from '@mui/x-data-grid';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
-        margin: '16px', 
+      margin: '16px',
     },
     '& .breadcrumb': {
-        marginBottom: '30px',
-        [theme.breakpoints.down('sm')]: {
-            marginBottom: '16px',
-        },
-    },
-}))
+      marginBottom: '30px',
+      [theme.breakpoints.down('sm')]: {
+        marginBottom: '16px',
+      },
+    }
+  }));
+  
 
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -162,34 +166,33 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'  marginLeft='7px' marginRight=''  width= '150px'><>Record No</></Typography>,
+            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' marginRight='7px'  width= '150px'><>Record No</></Typography>,
             options: {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ align: 'center', position:'sticky' }),
                 
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
-            
+           minWidth:200 
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1" fontWeight='bold' marginLeft='9px' align= 'center'><>Profile</></Typography>,
+            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
             options: {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
-                setCellProps: () => ({ align: 'center', position:'fixed'}),
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
             },
+            minWidth:200 
         },
         {
             name: 'creation_date',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 responsive: 'scrollMaxHeight',
@@ -198,6 +201,7 @@ const UserTable = () => {
                         hour12: true,
                     }),
             },
+            minWidth:200 
         },
         {
             name: 'name', // field name in the row object
@@ -205,6 +209,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'email',
@@ -212,6 +217,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'contact',
@@ -219,6 +225,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'user_name',
@@ -226,6 +233,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'user_type',
@@ -233,6 +241,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'cpc',
@@ -240,6 +249,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'cpc_type',
@@ -247,6 +257,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'device_name',
@@ -254,6 +265,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'device_id',
@@ -261,10 +273,12 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'status',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            minWidth:200 ,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -287,6 +301,7 @@ const UserTable = () => {
         {
             name: 'status',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            minWidth:200 ,
             options: {
                 sort: false,
                 filter: false,
@@ -340,6 +355,7 @@ const UserTable = () => {
                 },
             },
         },
+    
     ]
     return (
         <Container>
@@ -355,19 +371,22 @@ const UserTable = () => {
                 Add New Member
             </Button>
 
-            <Box sx={{overflowX:'auto',width:'100%'}}>
+            <Box  sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
-                style={{width:'100%', marginLeft:'40px',marginRight:'20px'}}
+            
+                style={{width:'100%', marginLeft:'40px',marginRight:'20px', columnSpacing: 10,}}
+                // className="table-class"
                 title={'User Report'}
                 data={userList}
                 columns={columns}
+                
                 // optionss={options}
                 options={{
                     // options,
                     style: { tableLayout: 'auto'},
                     filterType: 'textField',
                     // responsive: 'scrollMaxHeight',
-                    minWidth:'100',
+                    // minWidth:'100',
                     download: false,
                     print: false,
                     textLabels: {

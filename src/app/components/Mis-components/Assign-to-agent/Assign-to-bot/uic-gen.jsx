@@ -15,6 +15,7 @@ import {
     TablePagination,
     Checkbox,
     Box,
+    TableFooter,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
@@ -285,7 +286,7 @@ const SimpleMuiTable = () => {
                                     isCheck.length
                                         ? true
                                         : false
-                                }
+                                } 
                             />{' '}
                             Select All
                         </TableCell>
@@ -424,7 +425,9 @@ const SimpleMuiTable = () => {
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}
             </Card>
-            <TablePagination
+            <TableFooter>
+                <TableRow>
+                <TablePagination
                 sx={{ px: 2 }}
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
@@ -442,6 +445,9 @@ const SimpleMuiTable = () => {
                     setRowsPerPage(value)
                 }
             />
+                </TableRow>
+            </TableFooter>
+           
         </Container>
     )
 }

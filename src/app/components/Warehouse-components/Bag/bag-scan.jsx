@@ -492,7 +492,7 @@ const PaginationTable = () => {
                                     m: 2,
                                 }}
                             >
-                                <h4>In Valid</h4>
+                                <h4>Invalid</h4>
                                 <h4
                                     style={{
                                         marginLeft: '13px',

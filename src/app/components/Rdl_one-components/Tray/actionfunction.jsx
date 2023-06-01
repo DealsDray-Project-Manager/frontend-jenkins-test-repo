@@ -32,7 +32,7 @@ const NumberInput = ({ digit, onChange }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-        }}
+        }} 
       >
         {digit}
       </Box>

@@ -153,13 +153,13 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'ReocrdId',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ml={2}><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
 

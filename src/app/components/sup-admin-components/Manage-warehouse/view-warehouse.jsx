@@ -130,6 +130,7 @@ const SimpleMuiTable = () => {
         })
     }
 
+    
     const columns = [
         {
             name: 'index',
@@ -137,9 +138,9 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {

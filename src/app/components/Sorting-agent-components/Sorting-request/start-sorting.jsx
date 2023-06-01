@@ -258,7 +258,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>IMEI</TableCell>
                                 <TableCell>MUIC</TableCell>
@@ -267,7 +267,7 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.bot?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
@@ -313,7 +313,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>WHT TRay ID</TableCell>
                                 <TableCell>Brand</TableCell>
                                 <TableCell>Model</TableCell>
@@ -325,7 +325,7 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.wht?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.code}</TableCell>
                                     <TableCell>{data?.brand}</TableCell>
                                     <TableCell>{data?.model}</TableCell>

@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -72,24 +72,24 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
                 customBodyRender: () => {
@@ -99,7 +99,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'Brand',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
                 customBodyRender: () => {
@@ -109,7 +109,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'Model',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
                 customBodyRender: () => {
@@ -120,21 +120,21 @@ const SimpleMuiTable = () => {
 
         {
             name: 'awbn_number',
-            label: 'Tracking Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tracking ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'order_id',
-            label: 'Order Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Order ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'order_date',
-            label: 'Order Date',
+            label: <Typography sx={{fontWeight:'bold'}}>Order Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -145,7 +145,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bag_id',
-            label: 'BOT ID',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT ID</Typography>,
             options: {
                 filter: true,
             },

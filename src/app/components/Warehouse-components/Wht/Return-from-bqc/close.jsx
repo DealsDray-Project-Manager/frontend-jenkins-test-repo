@@ -200,7 +200,7 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>Expected</h5>
+                <h5>EXPECTED</h5>
                 <Box
                     sx={{
                         display: 'flex',
@@ -242,7 +242,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -253,7 +253,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -331,7 +331,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -343,7 +343,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>

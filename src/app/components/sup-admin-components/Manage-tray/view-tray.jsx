@@ -166,9 +166,9 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
@@ -201,7 +201,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Trya Limit</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Limit</></Typography>,
             options: {
                 filter: true,
             },

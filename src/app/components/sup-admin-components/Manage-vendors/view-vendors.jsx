@@ -140,7 +140,7 @@ const SimpleMuiTable = () => {
                         title: 'Oops...',
                         text: error,
                     })
-                }
+                } 
             }
         })
     }
@@ -152,9 +152,9 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-                setCellProps: () => ({ align: 'center' }),
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
@@ -181,6 +181,13 @@ const SimpleMuiTable = () => {
         {
             name: 'state',
             label: <Typography variant="subtitle1" fontWeight='bold'><>State</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'pincode',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
             options: {
                 filter: true,
             },

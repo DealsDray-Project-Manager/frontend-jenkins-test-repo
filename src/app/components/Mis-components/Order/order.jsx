@@ -418,7 +418,7 @@ const SimpleMuiTable = () => {
                                 <TableCell>
                                     {data.vc_eligible?.toString()}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell >
                                     {data.customer_declaration_physical_defect_present?.toString()}
                                 </TableCell>
                                 <TableCell>

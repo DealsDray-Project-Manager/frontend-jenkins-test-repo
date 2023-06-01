@@ -386,7 +386,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Processing' &&
-                          warehouseType != 'PRC SPW' ? (
+                          warehouseType != 'Spare Part Warehouse' ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select
@@ -441,7 +441,7 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
-                        ) : warehouseType == 'PRC SPW' ? (
+                        ) : warehouseType == 'Spare Part Warehouse' ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select

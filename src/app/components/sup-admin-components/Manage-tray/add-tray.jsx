@@ -145,13 +145,23 @@ const MemberEditorDialog = ({
                                 handleClose()
                             }
                         })
-                    }
-                    else if (type == 'SP' && res.data.data > '19999') {
+                    } else if (type == 'SPT' && res.data.data > '19999') {
                         handleClose()
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'SP Tray Maximum ID NO  19999',
+                            text: 'SPT Tray Maximum ID NO  19999',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    } else if (type == 'RPT' && res.data.data > '19999') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'RPT Tray Maximum ID NO  19999',
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 handleClose()
@@ -574,12 +584,20 @@ const MemberEditorDialog = ({
                                 ST
                             </MenuItem>
                             <MenuItem
-                            value="SP"
-                            onClick={(e) => {
-                                fetchTypeWiseId(e, 'SP', 'TOP')
-                            }}
+                                value="SPT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'SPT', 'TOP')
+                                }}
                             >
-                                SP
+                                SPT
+                            </MenuItem>
+                            <MenuItem
+                                value="RPT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'RPT', 'TOP')
+                                }}
+                            >
+                                RPT
                             </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'CT' ||
@@ -611,6 +629,7 @@ const MemberEditorDialog = ({
                         ) : null}
                         {getValues('type_taxanomy') !== 'BOT' &&
                         getValues('type_taxanomy') !== 'PMT' &&
+                        getValues('type_taxanomy') !== 'SPT' &&
                         getValues('type_taxanomy') !== 'MMT' ? (
                             <>
                                 <TextFieldCustOm

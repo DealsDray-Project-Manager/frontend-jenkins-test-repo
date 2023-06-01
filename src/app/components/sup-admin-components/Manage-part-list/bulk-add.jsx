@@ -154,7 +154,7 @@ const AddBulkPart = () => {
             // accumulator.code = updatedStr
             accumulator[key.toLowerCase().split('-').join('_')] = obj[key]
             accumulator.type = 'part-list'
-            accumulator.created_at=Date.now()
+            accumulator.created_at = Date.now()
             accumulator.created_by = 'super-admin'
 
             return accumulator
@@ -193,7 +193,6 @@ const AddBulkPart = () => {
                     partCount.substring(0, 3) + num.toString().padStart(6, '0')
                 // obj.PARTID = updatedStr
                 x.code = updatedStr
-                console.log(x.part_color);
                 i++
             }
             let res = await axiosSuperAdminPrexo.post(
@@ -421,7 +420,7 @@ const AddBulkPart = () => {
                                             value={data.part_name?.toString()}
                                         />
                                         {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
+                                            data.code?.toString()
                                         ) ||
                                         (Object.keys(err).length != 0 &&
                                             data.part_name == undefined) ||
@@ -439,7 +438,7 @@ const AddBulkPart = () => {
                                         )}
 
                                         {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
+                                            data.code?.toString()
                                         ) ? (
                                             <p style={{ color: 'red' }}>
                                                 Duplicate Part Name
@@ -549,7 +548,7 @@ const AddBulkPart = () => {
 
                                     <TableCell>
                                         {err?.duplicate_part_name?.includes(
-                                            data.part_name?.toString()
+                                            data.code?.toString()
                                         ) == true ||
                                         err?.technical_qc?.includes(
                                             data.technical_qc?.toString()

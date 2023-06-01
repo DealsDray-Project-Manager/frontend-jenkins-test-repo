@@ -352,7 +352,7 @@ const UserTable = () => {
             </Button>
             <>
                 
-                    <MUIDataTablenpm
+                    <MUIDataTable
                         title={'User Report'}
                         data={userList}
                         columns={columns}

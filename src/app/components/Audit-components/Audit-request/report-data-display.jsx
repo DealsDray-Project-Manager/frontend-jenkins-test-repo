@@ -101,6 +101,13 @@ export default function DialogBox() {
                         obj.grade = stateData.tray_grade
                         obj.reason = stateData.reason
                         obj.description = stateData.description
+                    } else if (
+                        stateData?.stage == 'Direct Downgrade' ||
+                        stateData?.stage == 'Direct Upgrade'
+                    ) {
+                        obj.type = stateData.tray_type
+                        obj.grade = stateData.tray_grade
+                        obj.description = stateData.description
                     } else {
                         obj.type = 'WHT'
                         obj.description = stateData.description
@@ -273,7 +280,12 @@ export default function DialogBox() {
                                 ?.final_grade !== 'D' ? (
                                 <MenuItem value="Downgrade">Downgrade</MenuItem>
                             ) : null}
-                            <MenuItem value="Repair">Repair</MenuItem>
+                            <MenuItem value="Direct Upgrade">
+                                Direct Upgrade
+                            </MenuItem>
+                            <MenuItem value="Direct Downgrade">
+                                Direct Downgrade
+                            </MenuItem>
                         </TextField>
                         {stateData.stage === 'Accept' ? (
                             <TextField
@@ -341,7 +353,8 @@ export default function DialogBox() {
                                 ) : null}
                             </TextField>
                         ) : null}
-                        {stateData.stage === 'Upgrade' ? (
+                        {stateData.stage === 'Upgrade' ||
+                        stateData.stage == 'Direct Upgrade' ? (
                             <>
                                 <TextField
                                     label="Select Grade"
@@ -372,40 +385,45 @@ export default function DialogBox() {
                                         <MenuItem value="C">C</MenuItem>
                                     ) : null}
                                 </TextField>
-                                <TextField
-                                    label="Upgrade Reason"
-                                    fullWidth
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                    select
-                                    onChange={handleChange}
-                                    name="reason"
-                                >
-                                    <MenuItem value="Wrong cosmetic input by BQC operator">
-                                        Wrong cosmetic input by BQC operator
-                                    </MenuItem>
-                                    <MenuItem value="Wrong assisted test input by BQC operator">
-                                        Wrong assisted test input by BQC
-                                        operator
-                                    </MenuItem>
-                                    <MenuItem value="Bqc workflow grading issue">
-                                        Bqc workflow grading issue
-                                    </MenuItem>
-                                    <MenuItem value="Other">Other</MenuItem>
-                                </TextField>
-                                <TextField
-                                    label="Audit Remark"
-                                    fullWidth
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                    onChange={handleChange}
-                                    name="description"
-                                />
+                                {stateData.stage === 'Upgrade' ? (
+                                    <>
+                                        <TextField
+                                            label="Upgrade Reason"
+                                            fullWidth
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                            select
+                                            onChange={handleChange}
+                                            name="reason"
+                                        >
+                                            <MenuItem value="Wrong cosmetic input by BQC operator">
+                                                Wrong cosmetic input by BQC
+                                                operator
+                                            </MenuItem>
+                                            <MenuItem value="Wrong assisted test input by BQC operator">
+                                                Wrong assisted test input by BQC
+                                                operator
+                                            </MenuItem>
+                                            <MenuItem value="Bqc workflow grading issue">
+                                                Bqc workflow grading issue
+                                            </MenuItem>
+                                            <MenuItem value="Other">
+                                                Other
+                                            </MenuItem>
+                                        </TextField>
+                                        <TextField
+                                            label="Audit Remark"
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="description"
+                                        />
+                                    </>
+                                ) : null}
                             </>
                         ) : null}
-                        {stateData.stage === 'Downgrade' ? (
+                        {stateData.stage === 'Downgrade' ||
+                        stateData.stage == 'Direct Downgrade' ? (
                             <>
                                 <TextField
                                     label="Select Grade"
@@ -437,37 +455,109 @@ export default function DialogBox() {
                                         <MenuItem value="D">D</MenuItem>
                                     ) : null}
                                 </TextField>
-                                <TextField
-                                    label="Downgrade Reason"
-                                    fullWidth
-                                    select
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                    onChange={handleChange}
-                                    name="reason"
-                                >
-                                    <MenuItem value="Wrong cosmetic input by BQC operator">
-                                        Wrong cosmetic input by BQC operator
-                                    </MenuItem>
-                                    <MenuItem value="Wrong assisted test input by BQC operator">
-                                        Wrong assisted test input by BQC
-                                        operator
-                                    </MenuItem>
-                                    <MenuItem value="Bqc workflow grading issue">
-                                        Bqc workflow grading issue
-                                    </MenuItem>
-                                    <MenuItem value="Other">Other</MenuItem>
-                                </TextField>
-                                <TextField
-                                    label="Audit Remark"
-                                    fullWidth
-                                    onChange={handleChange}
-                                    name="description"
-                                />
+                                {stateData.stage === 'Downgrade' ? (
+                                    <>
+                                        <TextField
+                                            label="Downgrade Reason"
+                                            fullWidth
+                                            select
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                            onChange={handleChange}
+                                            name="reason"
+                                        >
+                                            <MenuItem value="Wrong cosmetic input by BQC operator">
+                                                Wrong cosmetic input by BQC
+                                                operator
+                                            </MenuItem>
+                                            <MenuItem value="Wrong assisted test input by BQC operator">
+                                                Wrong assisted test input by BQC
+                                                operator
+                                            </MenuItem>
+                                            <MenuItem value="Bqc workflow grading issue">
+                                                Bqc workflow grading issue
+                                            </MenuItem>
+                                            <MenuItem value="Other">
+                                                Other
+                                            </MenuItem>
+                                        </TextField>
+                                        <TextField
+                                            label="Audit Remark"
+                                            fullWidth
+                                            onChange={handleChange}
+                                            name="description"
+                                        />
+                                    </>
+                                ) : null}
                             </>
                         ) : null}
-                        {stateData.stage == 'Repair' ? (
+                        {stateData.stage == 'Direct Downgrade' ||
+                        stateData.stage == 'Direct Upgrade' ? (
+                            <TextField
+                                label="Select Tray"
+                                select
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                onChange={handleChange}
+                                name="tray_type"
+                            >
+                                {stateData.tray_grade == 'A' ? (
+                                    <MenuItem value="A">
+                                        CTA - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'A' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : stateData.tray_grade == 'B' ? (
+                                    <MenuItem value="B">
+                                        CTB - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'B' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : stateData.tray_grade == 'C' ? (
+                                    <MenuItem value="C">
+                                        CTC - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'C' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : stateData.tray_grade == 'D' ? (
+                                    <MenuItem value="D">
+                                        CTD - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'D' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : null}
+                            </TextField>
+                        ) : null}
+                        {stateData.stage == 'Repair' ||
+                        stateData.stage == 'Direct Downgrade' ||
+                        stateData.stage == 'Direct Upgrade' ? (
                             <>
                                 <TextField
                                     label="Audit Remark"
@@ -489,6 +579,10 @@ export default function DialogBox() {
                                 (stateData.stage == 'Accept' &&
                                     stateData.tray_type == undefined) ||
                                 (stateData.stage == 'Upgrade' &&
+                                    stateData.tray_grade == undefined) ||
+                                (stateData.stage == 'Direct Downgrade' &&
+                                    stateData.tray_grade == undefined) ||
+                                (stateData.stage == 'Direct Upgrade' &&
                                     stateData.tray_grade == undefined) ||
                                 (stateData.stage == 'Upgrade' &&
                                     stateData.reason == undefined) ||

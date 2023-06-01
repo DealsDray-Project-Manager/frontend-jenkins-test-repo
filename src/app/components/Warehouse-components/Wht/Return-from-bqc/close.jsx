@@ -267,6 +267,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items])
+    
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>

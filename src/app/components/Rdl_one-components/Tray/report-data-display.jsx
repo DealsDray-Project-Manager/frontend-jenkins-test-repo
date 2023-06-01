@@ -88,7 +88,6 @@ export default function DialogBox() {
                     '/partAndColor/view/' + 'part-list'
                 )
                 if (fetchPart.status == 200) {
-                    
                     setPartList(fetchPart.data.data)
                 }
                 let colorList = await axiosSuperAdminPrexo.post(
@@ -255,9 +254,7 @@ export default function DialogBox() {
                 <Grid item lg={6} md={12} xs={12}>
                     <AuditReport
                         AuditData={reportData?.delivery?.audit_report}
-                        otherAuditFeedBack={
-                            reportData?.otherAudFeedBack
-                        }
+                        otherAuditFeedBack={reportData?.otherAudFeedBack}
                     />
                 </Grid>
                 <Grid item lg={6} md={12} xs={12}>
@@ -300,6 +297,22 @@ export default function DialogBox() {
             </Grid>
         )
     }, [reportData])
+
+    /// HANDEL NAVIGATE
+
+    const handelNavigate = (e) => {
+        e.preventDefault()
+        navigate(
+            '/rdL-fls/rdl-fls-request/approve/information-display/action',
+            {
+                state: {
+                    muic: state.reportData.muic,
+                    allData: state,
+                    whtTrayId: trayId,
+                },
+            }
+        )
+    }
 
     return (
         <>
@@ -674,7 +687,7 @@ export default function DialogBox() {
                     <Box>
                         <Button
                             sx={{ mr: 2 }}
-                            onClick={(e) => handleOpen()}
+                            onClick={(e) => handelNavigate(e)}
                             variant="contained"
                             color="primary"
                         >

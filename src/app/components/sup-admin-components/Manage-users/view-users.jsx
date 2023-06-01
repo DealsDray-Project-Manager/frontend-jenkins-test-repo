@@ -13,15 +13,16 @@ import { useNavigate } from 'react-router-dom'
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
-        margin: '16px',
+      margin: '16px',
     },
     '& .breadcrumb': {
-        marginBottom: '30px',
-        [theme.breakpoints.down('sm')]: {
-            marginBottom: '16px',
-        },
-    },
-}))
+      marginBottom: '30px',
+      [theme.breakpoints.down('sm')]: {
+        marginBottom: '16px',
+      },
+    }
+  }));
+  
 
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -152,83 +153,101 @@ const UserTable = () => {
                     })
                 }
             }
-        })
+        }) 
     }
 
+    const options = {
+        // Other table options...
+        setTableProps: () => ({ style: { tableLayout: 'auto', marginLeft:'20px' } }),
+      };
+    
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1">Record No</Typography>,
+            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' marginRight='7px'  width= '150px'><>Record No</></Typography>,
             options: {
+                // responsive: 'scrollMaxHeight',
                 filter: false,
+                
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
+           minWidth:200 
         },
         {
             name: 'profile',
-            label: <Typography variant="subtitle1">Profile</Typography>,
+            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
             options: {
+                // responsive: 'scrollMaxHeight',
                 filter: false,
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
             },
+            minWidth:200 
         },
         {
             name: 'creation_date',
-            label: <Typography variant="subtitle1">Creation Date</Typography>,
+            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
+                responsive: 'scrollMaxHeight',
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
+            minWidth:200 
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1">Name</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'email',
-            label: <Typography variant="subtitle1">Email</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Email</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'contact',
-            label: <Typography variant="subtitle1">Mobile No</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Mobile No</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'user_name',
-            label: <Typography variant="subtitle1">User Name</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'user_type',
-            label: <Typography variant="subtitle1">User Type</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1">CPC</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'cpc_type',
@@ -240,27 +259,32 @@ const UserTable = () => {
         {
             name: 'warehouse',
             label: <Typography variant="subtitle1">Warehouse</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC Type</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1">Device Name</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Device Name</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'device_id',
-            label: <Typography variant="subtitle1">Device ID</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
             options: {
                 filter: true,
             },
+            minWidth:200 
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1">Status</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            minWidth:200 ,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -282,7 +306,8 @@ const UserTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1">Actions</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            minWidth:200 ,
             options: {
                 sort: false,
                 filter: false,
@@ -336,6 +361,7 @@ const UserTable = () => {
                 },
             },
         },
+    
     ]
     return (
         <Container>
@@ -350,41 +376,55 @@ const UserTable = () => {
             >
                 Add New Member
             </Button>
-            <>
-                
-                    <MUIDataTable
-                        title={'User Report'}
-                        data={userList}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
-                            },
-                            selectableRows: 'none',
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                
 
-                {shouldOpenEditorDialog && (
-                    <MemberEditorDialog
-                        handleClose={handleDialogClose}
-                        open={handleDialogOpen}
-                        setIsAlive={setIsAlive}
-                        editFetchData={editFetchData}
-                        setEditFetchData={setEditFetchData}
-                    />
-                )}
-            </>
+            <Box  sx={{overflowX:'auto',width:'100%'}}>
+            <MUIDataTable
+            
+                style={{width:'100%', marginLeft:'40px',marginRight:'20px', columnSpacing: 10,}}
+                // className="table-class"
+                title={'User Report'}
+                data={userList}
+                columns={columns}
+                
+                // optionss={options}
+                options={{
+                    // options,
+                    style: { tableLayout: 'auto'},
+                    filterType: 'textField',
+                    // responsive: 'scrollMaxHeight',
+                    // minWidth:'100',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+                
+            />
+            </Box>
+            
+            {shouldOpenEditorDialog && (
+                <MemberEditorDialog
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    editFetchData={editFetchData}
+                    setEditFetchData={setEditFetchData}
+                />
+            )}
         </Container>
     )
 }

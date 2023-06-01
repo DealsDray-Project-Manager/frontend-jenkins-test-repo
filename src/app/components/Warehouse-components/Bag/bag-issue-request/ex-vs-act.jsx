@@ -531,7 +531,7 @@ const SimpleMuiTable = () => {
     const tabelDataExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>Expected</h5>
+                <h5>EXPECTED</h5>
 
                 <Box
                     sx={{
@@ -582,7 +582,7 @@ const SimpleMuiTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
@@ -592,7 +592,7 @@ const SimpleMuiTable = () => {
                         <TableBody>
                             {bagData[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -700,7 +700,7 @@ const SimpleMuiTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
@@ -711,7 +711,7 @@ const SimpleMuiTable = () => {
                         <TableBody>
                             {bagData[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>

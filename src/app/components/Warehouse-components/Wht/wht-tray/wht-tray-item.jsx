@@ -6,6 +6,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import { Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -59,24 +60,25 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
             },
@@ -84,35 +86,35 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand_name',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tracking_id',
-            label: 'Tracking Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tracking ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_id',
-            label: 'BOT Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT Tray</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'bot_agent',
-            label: 'BOT Agent',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT Agent</Typography>,
             options: {
                 filter: true,
             },

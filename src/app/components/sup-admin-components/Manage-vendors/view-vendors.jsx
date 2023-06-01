@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio ,Typography} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -142,7 +142,7 @@ const SimpleMuiTable = () => {
                         title: 'Oops...',
                         text: error,
                     })
-                }
+                } 
             }
         })
     }
@@ -154,6 +154,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
@@ -167,28 +168,35 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: 'Address',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Address</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: 'City',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>City</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: 'State',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>State</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'pincode',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
             options: {
                 filter: true,
             },
@@ -209,28 +217,28 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'deals',
-            label: 'Deals',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Deals</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'reference',
-            label: 'Reference',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Reference</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'location',
-            label: 'Location',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'pincode',
-            label: 'Pincode',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
             options: {
                 filter: true,
             },

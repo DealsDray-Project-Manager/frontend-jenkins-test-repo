@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox } from '@mui/material'
+import { Button, Checkbox, Typography } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -111,7 +111,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort:false,
@@ -131,67 +131,67 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort:false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
 
         {
             name: 'name', // field name in the row object
-            label: 'Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Category',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Category</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: 'Tray Name',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tary Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'Limit',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
             options: {
                 filter: true,
                 display: false,
@@ -199,7 +199,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
             options: {
                 filter: true,
 
@@ -209,21 +209,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>craetion Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -234,7 +234,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: false,
                 sort: false,

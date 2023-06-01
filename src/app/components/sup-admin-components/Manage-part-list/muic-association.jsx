@@ -403,12 +403,19 @@ const Association = () => {
                                     >
                                         Part Name : {partData?.name}
                                     </Typography>
-                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <Typography
+                                        sx={{
+                                            fontSize: '16px',
+                                            marginBottom: '10px',
+                                        }}
+                                    >
+                                        Part Color : {partData?.color}
+                                    </Typography>
+                                    <Box sx={{ display: 'inline-flex' }}>
                                         <Typography
                                             sx={{
                                                 fontSize: '16px',
                                                 marginBottom: '10px',
-                                                marginRight: '10px',
                                             }}
                                         >
                                             Technical QC : {' '}
@@ -417,7 +424,7 @@ const Association = () => {
                                             component="fieldset"
                                             // sx={{ ml: 2 }}
                                         >
-                                            <RadioGroup sx={{ flexDirection: 'row', mb:1 }}>
+                                            <RadioGroup >
                                                 <FormControlLabel
                                                     value="option1"
                                                     control={<Radio />}
@@ -522,7 +529,7 @@ const Association = () => {
                                 >
                                     {validateButLoad == true
                                         ? 'Validating...'
-                                        : 'Validate MUIC'}
+                                        : 'Validate Parts'}
                                 </Button>
                             </Box> */}
                         {/* </Card>
@@ -707,6 +714,7 @@ const Association = () => {
                                                                     phones?.partId
                                                                 )
                                                             }}
+                                                            sx={{ ml: 13,  }}
                                                         >
                                                             <Icon color="error">
                                                                 delete

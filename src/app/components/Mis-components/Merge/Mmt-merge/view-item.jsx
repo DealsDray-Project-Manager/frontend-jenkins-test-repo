@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { axiosBot } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -81,93 +82,94 @@ const SimpleMuiTable = () => {
 const columns = [
     {
         name: 'index',
-        label: 'Record No',
+        label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
+            customBodyRender: (rowIndex, dataIndex) => 
+            <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
         },
     },
     {
         name: 'uic',
-        label: 'UIC',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>UIC</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'imei',
-        label: 'IMEI',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>IMEI</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'bag_id',
-        label: 'Bag Id',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Bag ID</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'body_damage',
-        label: 'Body Damage',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Body Damage</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'body_damage_des',
-        label: 'Body Damage Description',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Body Damage Description</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'item_recieved',
-        label: 'Item Received In Packet',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Item Received in Packet</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'model_brand',
-        label: 'Mismatched Model Brand Name',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Mismatched Model Brand Name</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerOne',
-        label: 'Other Info 1',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 1</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerTwo',
-        label: 'Other Info 2',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 2</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerThree',
-        label: 'Other Info 3',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 3</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerFour',
-        label: 'Other Info 4',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 4</></Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'added_time',
-        label: 'Added Date',
+        label: <Typography variant="subtitle1" fontWeight='bold' ><>Added Date</></Typography>,
         options: {
             filter: true,
             customBodyRender: (value) =>

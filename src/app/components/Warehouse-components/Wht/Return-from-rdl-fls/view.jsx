@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -59,52 +60,53 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: true,
                 sort: true,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'uic', // field name in the row object
-            label: 'UIC', // column title that will be shown in table
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tracking_id',
-            label: 'Tracking Id',
+            label: <Typography sx={{fontWeight:'bold'}}>Tracking ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_id',
-            label: 'Bot Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT Tray</Typography>,
             options: {
                 filter: true,
             },

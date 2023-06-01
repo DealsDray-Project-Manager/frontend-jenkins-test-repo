@@ -549,6 +549,7 @@ export default function DialogBox() {
                                     id="example"
                                     stickyHeader
                                     aria-label="sticky table"
+                                    
                                 >
                                     <TableHead>
                                         <TableRow>

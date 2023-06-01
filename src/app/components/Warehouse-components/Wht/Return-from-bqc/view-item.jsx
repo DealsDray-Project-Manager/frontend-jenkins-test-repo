@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import { Typography } from '@mui/material'
 import { axiosBot } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -50,31 +50,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'imei',
-            label: 'IMEI',
+            label: <Typography sx={{fontWeight:'bold'}}>IMEI</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -84,7 +85,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -94,14 +95,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_status',
-            label: 'BQC STAGE',
+            label: <Typography sx={{fontWeight:'bold'}}>BQC Stage</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'bqc_report',
-            label: 'Blancco QC Status',
+            label: <Typography sx={{fontWeight:'bold'}}>Blanco QC Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -111,7 +112,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_report',
-            label: 'BQC Incomplete Reason',
+            label: <Typography sx={{fontWeight:'bold'}}>BQC Incomplete Reason</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -121,7 +122,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_report',
-            label: 'Technical Issue',
+            label: <Typography sx={{fontWeight:'bold'}}>Technical Isuue</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -132,7 +133,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'bqc_report',
-            label: 'BQC User Remark',
+            label: <Typography sx={{fontWeight:'bold'}}>BQC User Remark</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -142,7 +143,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_report',
-            label: 'Factory reset status',
+            label: <Typography sx={{fontWeight:'bold'}}>Factory Reset Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import EditProdutDilog from './edit-product'
 import AddEditorDialog from './add-products'
 import { useNavigate } from 'react-router-dom'
-import { Button, Box, IconButton, Icon } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -180,17 +180,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'image', // field name in the row object
-            label: 'Image', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Image</></Typography>, // column title that will be shown in table
             options: {
                 filter: false,
                 sort: false,
@@ -214,42 +215,42 @@ const SimpleMuiTable = () => {
 
         {
             name: 'vendor_sku_id',
-            label: 'SKU ID',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>SKU ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: 'Brand',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: 'Model',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'vendor_name',
-            label: 'Vendor Name',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Vendor Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -267,7 +268,7 @@ const SimpleMuiTable = () => {
         // },
         {
             name: 'status',
-            label: 'Actions',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

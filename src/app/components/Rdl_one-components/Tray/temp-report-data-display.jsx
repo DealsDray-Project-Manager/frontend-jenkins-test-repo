@@ -189,7 +189,8 @@ export default function DialogBox() {
         reset({})
     }
     const handleOpen = () => {
-        setOpen(true)
+        // setOpen(true)
+        navigate('/rdL-fls/tray/actionfunction/')
     }
     const getPartList = async (color) => {
         try {

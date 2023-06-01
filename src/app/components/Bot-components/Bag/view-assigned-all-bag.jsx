@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosBot } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -58,38 +58,38 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{ml:2}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'code',
-            label: 'Bag Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'Max',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>MAX</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'Valid',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Valid</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.length,
@@ -97,7 +97,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Total',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Total</></Typography>,
             options: {
                 filter: true,
 
@@ -106,7 +106,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status_change_time',
-            label: 'Date Of Closure',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Date of Closure</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -117,7 +117,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: false,
                 sort: false,

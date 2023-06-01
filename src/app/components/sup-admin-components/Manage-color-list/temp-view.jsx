@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon } from '@mui/material'
+import { Button, IconButton, Icon, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -153,12 +153,13 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         // {
@@ -170,21 +171,21 @@ const PartTable = () => {
         // },
         {
             name: 'name', // field name in the row object
-            label: 'Color Name', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Color Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: 'Description',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -196,7 +197,7 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: 'Actions',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,

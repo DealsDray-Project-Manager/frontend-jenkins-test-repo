@@ -12,7 +12,8 @@ import {
     TablePagination,
     TextField,
     Box,
-    Button
+    Button,
+    Typography
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -129,13 +130,13 @@ const SimpleMuiTable = () => {
             <Table id="example">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Record.NO</TableCell>
-                        <TableCell>UIC</TableCell>
-                        <TableCell>Grade</TableCell>
-                        <TableCell>Added Agent Name</TableCell>
-                        <TableCell>Added Time</TableCell>
-                        <TableCell>From Tray ID</TableCell>
-                        <TableCell>Description</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', p:2}}>Record.NO</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Grade</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Added Agent Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Added Time</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>From Tray ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Description</TableCell>
                     </TableRow>
                 </TableHead>
                 {tableMessage !== '' ? (
@@ -144,7 +145,7 @@ const SimpleMuiTable = () => {
                     <TableBody>
                         {data.map((data, index) => (
                             <TableRow tabIndex={-1}>
-                                <TableCell>{data.id}</TableCell>
+                                <TableCell sx={{paddingLeft:'30px'}}>{data.id}</TableCell>
 
                                 <TableCell>{data.uic_code}</TableCell>
                                 <TableCell>{data.sales_bin_grade}</TableCell>

@@ -15,6 +15,7 @@ import {
     TablePagination,
     Checkbox,
     Box,
+    TableFooter,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
@@ -274,7 +275,7 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>
                             {' '}
                             <Checkbox
                                 onClick={(e) => {
@@ -285,23 +286,23 @@ const SimpleMuiTable = () => {
                                     isCheck.length
                                         ? true
                                         : false
-                                }
+                                } 
                             />{' '}
                             Select All
                         </TableCell>
-                        <TableCell>S.NO</TableCell>
-                        <TableCell>UIC Status</TableCell>
-                        <TableCell>UIC Generated Admin</TableCell>
-                        <TableCell>UIC Generated Time</TableCell>
-                        <TableCell>UIC Code</TableCell>
-                        <TableCell>UIC Downloaded Time</TableCell>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Actual Delivery Date</TableCell>
-                        <TableCell>Order Date</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>Old Item Details</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Sl.No</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Generated Admin</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Generated Time</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Code</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Downloaded Time</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Actual Delivery Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>IMEI</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Item ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Old Item Details</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -320,7 +321,7 @@ const SimpleMuiTable = () => {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell>{index + 1}</TableCell>
+                            <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                             <TableCell
                                 style={
                                     data?.uic_status == 'Pending'
@@ -424,7 +425,9 @@ const SimpleMuiTable = () => {
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 {tableData}
             </Card>
-            <TablePagination
+            <TableFooter>
+                <TableRow>
+                <TablePagination
                 sx={{ px: 2 }}
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
@@ -442,6 +445,9 @@ const SimpleMuiTable = () => {
                     setRowsPerPage(value)
                 }
             />
+                </TableRow>
+            </TableFooter>
+           
         </Container>
     )
 }

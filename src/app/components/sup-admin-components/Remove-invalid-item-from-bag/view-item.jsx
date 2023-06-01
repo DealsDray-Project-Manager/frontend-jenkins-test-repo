@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo, axiosWarehouseIn } from '../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { useParams } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
@@ -90,17 +90,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'awbn_number', // field name in the row object
-            label: 'Tracking Id', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tracking ID</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -115,14 +116,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'order_id',
-            label: 'Order Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'order_date',
-            label: 'Order Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Order Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -135,14 +136,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: 'Action',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {

@@ -357,13 +357,13 @@ const SimpleMuiTable = () => {
             })
         }
     }
-
+ 
     const tableData = useMemo(() => {
         return (
             <ProductTable>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>
+                <TableHead >
+                    <TableRow > ;
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>
                             {' '}
                             <Checkbox
                                 {...label}
@@ -376,59 +376,59 @@ const SimpleMuiTable = () => {
                             />{' '}
                             Select All
                         </TableCell>
-                        <TableCell>Record.NO</TableCell>
-                        <TableCell>UIC Status</TableCell>
-                        <TableCell>UIC Generated Admin</TableCell>
-                        <TableCell>UIC Generated Time</TableCell>
-                        <TableCell>UIC Code</TableCell>
-                        <TableCell>UIC Downloaded Time</TableCell>
-                        <TableCell>Delivery Status</TableCell>
-                        <TableCell>Actual Delivery Date</TableCell>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Order Date</TableCell>
-                        <TableCell>Order TimeStamp</TableCell>
-                        <TableCell>Order Status</TableCell>
-                        <TableCell>Partner ID</TableCell>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>Old Item Details</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Base Disscount</TableCell>
-                        <TableCell>Diganostic</TableCell>
-                        <TableCell>Partner Purchase Price</TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Delivery Date</TableCell>
-                        <TableCell>Order ID Replaced</TableCell>
-                        <TableCell>Deliverd With OTP</TableCell>
-                        <TableCell>Deliverd With Bag Exception</TableCell>
-                        <TableCell>GC Amount Redeemed</TableCell>
-                        <TableCell>GC Amount Refund</TableCell>
-                        <TableCell>GC Redeem Time</TableCell>
-                        <TableCell>GC Amount Refund Time</TableCell>
-                        <TableCell>Diagonstic Status</TableCell>
-                        <TableCell>VC Eligible</TableCell>
-                        <TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Generated Admin</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Generated Time</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Code</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Downloaded Time</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivery Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order TimeStamp</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Old Item Details</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Disscount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diganostic</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID Replaced</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Deliverd With OTP</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Deliverd With Bag Exception</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GC Amount Redeemed</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GC Amount Refund</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GC Redeem Time</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GC Amount Refund Time</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diagonstic Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>VC Eligible</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>
                             Customer Declaration Physical Defect Present
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>
                             Customer Declaration Physical Defect Type
                         </TableCell>
-                        <TableCell>Partner Price No Defect</TableCell>
-                        <TableCell>Revised Partner Price</TableCell>
-                        <TableCell>Delivery Fee</TableCell>
-                        <TableCell>Exchange Facilitation Fee</TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Order ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Price No Defect</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Revised Partner Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Fee</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Exchange Facilitation Fee</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
 
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>Gep Order</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Partner Purchase Price</TableCell>
-                        <TableCell>Partner Shop</TableCell>
-                        <TableCell>Base Discount</TableCell>
-                        <TableCell>Diganostic Discount</TableCell>
-                        <TableCell>Storage Discount</TableCell>
-                        <TableCell>Buyback Category</TableCell>
-                        <TableCell>Doorstep Diganostic</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Gep Order</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diganostic Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorstep Diganostic</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -448,7 +448,7 @@ const SimpleMuiTable = () => {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell>{data.id}</TableCell>
+                            <TableCell sx={{pl:4}}>{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.uic_status == 'Pending'

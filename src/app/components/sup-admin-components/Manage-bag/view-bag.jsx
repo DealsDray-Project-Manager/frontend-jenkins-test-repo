@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-bag'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -159,73 +159,74 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'code',
-            label: 'Bag Id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: 'Location',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: 'Bag Display Name',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Display Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: 'Bag Limit',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Limit</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: 'Bag Display',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Display</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -236,7 +237,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: 'Actions',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -307,7 +308,7 @@ const SimpleMuiTable = () => {
                 Add Bulk Bag
             </Button>
             <MUIDataTable
-                title={'All Bag'}
+                title={'All Bags'}
                 data={bagList}
                 columns={columns}
                 options={{

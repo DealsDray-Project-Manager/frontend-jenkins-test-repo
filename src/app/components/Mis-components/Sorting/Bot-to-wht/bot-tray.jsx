@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, TextField, Checkbox } from '@mui/material'
+import { Button, Box, TextField, Checkbox, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import moment from 'moment'
@@ -116,7 +116,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: 'Select',
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -136,24 +136,24 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'code',
-            label: 'Tray ID',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_time_wharehouse_from_bot',
-            label: 'Date of Clouser',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Date of Closure</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -166,7 +166,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: 'Limit',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -175,7 +175,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Items Count',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Items Count</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -184,7 +184,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'temp_array',
-            label: 'Sku Count',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>SKU Count</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => value.length,
@@ -192,7 +192,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },

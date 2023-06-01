@@ -4,7 +4,7 @@ import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio ,Typography} from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -95,7 +95,8 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelActive = (id, type) => {
+
+const handelActive = (id, type) => {
         Swal.fire({
             title: 'Are you sure?',
             text: `You Want to ${type}!`,
@@ -142,7 +143,7 @@ const SimpleMuiTable = () => {
                         title: 'Oops...',
                         text: error,
                     })
-                } 
+                }
             }
         })
     }
@@ -150,95 +151,87 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography variant="subtitle1" sx={{ml:2, fontWeight:'bold'}} ><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
-                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'vendor_id', // field name in the row object
-            label: 'Vendor ID', // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Vendor ID</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Address</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Address</></Typography>,             
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>City</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>City</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>State</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'pincode',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>State</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile_one',
-            label: 'Mobile 1',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Mobile 1</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile_two',
-            label: 'Mobile 2',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Mobile 2</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'deals',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Deals</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Deals</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'reference',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Reference</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Reference</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'location',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Location</></Typography>, 
             options: {
                 filter: true,
             },
         },
         {
             name: 'pincode',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Pincode</></Typography>, 
             options: {
                 filter: true,
             },
@@ -246,7 +239,7 @@ const SimpleMuiTable = () => {
        
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
             options: {
                 filter: false,
                 sort: false,
@@ -254,11 +247,11 @@ const SimpleMuiTable = () => {
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
-            },
+                },
         },
         {
             name: 'status',
-            label: 'Status',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Status</></Typography>, 
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -280,7 +273,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'vendor_id',
-            label: 'Actions',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Action</></Typography>, 
             options: {
                 filter: false,
                 sort: false,
@@ -328,7 +321,8 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    return (
+
+return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: 'Vendors', path: '/' }]} />

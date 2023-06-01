@@ -164,7 +164,7 @@ const UserTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' marginRight='7px'  width= '150px'><>Record No</></Typography>,
+            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
             options: {
                 // responsive: 'scrollMaxHeight',
                 filter: false,
@@ -251,19 +251,18 @@ const UserTable = () => {
         },
         {
             name: 'cpc_type',
-            label: <Typography variant="subtitle1">CPC Type</Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1">Warehouse</Typography>,
-            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC Type</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
             options: {
                 filter: true,
             },
-            minWidth:200 
+            
         },
         {
             name: 'device_name',
@@ -271,7 +270,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+            
         },
         {
             name: 'device_id',
@@ -279,7 +278,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+            
         },
         {
             name: 'status',

@@ -258,13 +258,13 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'created_by',
-            label: 'Created By',
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'created_by',
+        //     label: 'Created By',
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'status',
             label: 'Actions',

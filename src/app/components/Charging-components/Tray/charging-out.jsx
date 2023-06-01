@@ -252,7 +252,6 @@ export default function DialogBox() {
     }
     const onSubmit = async (values) => {
         values.charging_person = user_name1
-
         if (trayData.limit <= trayData?.actual_items?.length) {
             Swal.fire({
                 position: 'top-center',
@@ -261,6 +260,7 @@ export default function DialogBox() {
                 confirmButtonText: 'Ok',
             })
         } else {
+            handleClose()
             setlLoading(true)
             if (
                 values.battery_status !== 'Charge' &&
@@ -295,7 +295,6 @@ export default function DialogBox() {
                     setlLoading(false)
                     setTextBoxDis(false)
                     setRefresh((refresh) => !refresh)
-                    handleClose()
                 }
             } catch (error) {
                 Swal.fire({

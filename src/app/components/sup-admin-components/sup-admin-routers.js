@@ -109,7 +109,7 @@ const SuperAdminRouter = [
         element: <Addparts />,
     },
     {
-        path: '/sup-admin/view-part-list/addmuic',
+        path: '/sup-admin/view-part-list/addmuic/:partId',
         element: <Addmuic />,
     },
    

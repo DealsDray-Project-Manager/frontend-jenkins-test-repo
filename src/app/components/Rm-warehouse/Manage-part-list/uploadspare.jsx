@@ -271,7 +271,7 @@ const Uploadspare = () => {
                                 sx={{ mb: 2 }}
                                 variant="contained"
                                 color="secondary"
-                                onClick={() => navigate('/rm-user/part-list')}
+                                onClick={() => navigate('/sp-user/part-list')}
                             >
                                 Back to Spare Part list
                             </Button>

@@ -10,7 +10,6 @@ import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import useAuth from 'app/hooks/useAuth'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -261,83 +260,83 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'created_by',
-            label: 'Created By',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'status',
-            label: 'Actions',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
-                            {tableMeta.rowData[8] == user.name ? (
-                                <>
-                                    <IconButton>
-                                        <Icon
-                                            onClick={(e) => {
-                                                editProductData(
-                                                    tableMeta.rowData[6]
-                                                )
-                                            }}
-                                            color="primary"
-                                        >
-                                            edit
-                                        </Icon>
-                                    </IconButton>
-                                    <IconButton>
-                                        <Icon
-                                            onClick={() => {
-                                                handelDelete(
-                                                    tableMeta.rowData[6]
-                                                )
-                                            }}
-                                            color="error"
-                                        >
-                                            delete
-                                        </Icon>
-                                    </IconButton>
-                                    <IconButton>
-                                        <Icon
-                                            onClick={() => {
-                                                editImage(tableMeta.rowData[6])
-                                            }}
-                                            color="primary"
-                                        >
-                                            image
-                                        </Icon>
-                                    </IconButton>
-                                    <IconButton>
-                                        <Icon
-                                            onClick={() =>
-                                                navigate(
-                                                    '/rm-user/products/muiclist/' +
-                                                        tableMeta.rowData[6]
-                                                )
-                                            }
-                                            color="default"
-                                        >
-                                            details
-                                        </Icon>
-                                    </IconButton>
-                                </>
-                            ) : null}
-                        </Box>
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'created_by',
+        //     label: 'Created By',
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
+        // {
+        //     name: 'status',
+        //     label: 'Actions',
+        //     options: {
+        //         filter: false,
+        //         sort: false,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <Box
+        //                     sx={{
+        //                         display: 'flex',
+        //                         flexDirection: 'row',
+        //                     }}
+        //                 >
+        //                     {tableMeta.rowData[8] == user.name ? (
+        //                         <>
+        //                             <IconButton>
+        //                                 <Icon
+        //                                     onClick={(e) => {
+        //                                         editProductData(
+        //                                             tableMeta.rowData[6]
+        //                                         )
+        //                                     }}
+        //                                     color="primary"
+        //                                 >
+        //                                     edit
+        //                                 </Icon>
+        //                             </IconButton>
+        //                             <IconButton>
+        //                                 <Icon
+        //                                     onClick={() => {
+        //                                         handelDelete(
+        //                                             tableMeta.rowData[6]
+        //                                         )
+        //                                     }}
+        //                                     color="error"
+        //                                 >
+        //                                     delete
+        //                                 </Icon>
+        //                             </IconButton>
+        //                             <IconButton>
+        //                                 <Icon
+        //                                     onClick={() => {
+        //                                         editImage(tableMeta.rowData[6])
+        //                                     }}
+        //                                     color="primary"
+        //                                 >
+        //                                     image
+        //                                 </Icon>
+        //                             </IconButton>
+        //                         </>
+        //                     ) : null}
+        //                     <IconButton>
+        //                         <Icon
+        //                             onClick={() =>
+        //                                 navigate(
+        //                                     '/rm-user/products/muiclist/' +
+        //                                         tableMeta.rowData[6]
+        //                                 )
+        //                             }
+        //                             color="default"
+        //                         >
+        //                             details
+        //                         </Icon>
+        //                     </IconButton>
+        //                 </Box>
+        //             )
+        //         },
+        //     },
+        // },
     ]
 
     return (
@@ -347,7 +346,7 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Products', path: '/pages' }]}
                 />
             </div>
-            <Button
+            {/* <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
@@ -362,7 +361,7 @@ const SimpleMuiTable = () => {
                 onClick={() => navigate('/rm-user/products/bulk-product')}
             >
                 Add Bulk Products
-            </Button>
+            </Button> */}
             <MUIDataTable
                 title={'All Products'}
                 data={productList}

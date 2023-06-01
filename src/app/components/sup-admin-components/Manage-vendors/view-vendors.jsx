@@ -229,10 +229,23 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'Pincode',
-            label: 'pincode',
+            name: 'pincode',
+            label: 'Pincode',
             options: {
                 filter: true,
+            },
+        },
+       
+        {
+            name: 'created_at',
+            label: 'Creation Date',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
@@ -258,18 +271,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: 'Creation Date',
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'vendor_id',
             label: 'Actions',
             options: {
@@ -284,13 +285,13 @@ const SimpleMuiTable = () => {
                                     flexDirection: 'row',
                                 }}
                             >
-                                {tableMeta.rowData[12] == 'Active' ? (
+                                {tableMeta.rowData[13] == 'Active' ? (
                                     <Radio
                                         onClick={(e) => {
                                             handelActive(value, 'Deactive')
                                         }}
                                         checked
-                                        style={{ color: 'red' }}
+                                        style={{ color: 'green' }}
                                     />
                                 ) : (
                                     <Radio
@@ -298,7 +299,7 @@ const SimpleMuiTable = () => {
                                             handelActive(value, 'Active')
                                         }}
                                         checked
-                                        style={{ color: 'green' }}
+                                        style={{ color: 'red' }}
                                     />
                                 )}
                                 <IconButton>

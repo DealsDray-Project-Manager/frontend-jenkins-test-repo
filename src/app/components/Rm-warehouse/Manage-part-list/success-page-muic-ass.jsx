@@ -63,7 +63,7 @@ const Spare1 = () => {
                        
                        variant="contained"
                        color="primary"
-                       onClick={() => navigate('/rm-user/part-list')}
+                       onClick={() => navigate('/sp-user/part-list')}
                    >
                        Back to Spare Part list
                    </Button>

@@ -386,7 +386,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Processing' &&
-                          warehouseType != 'PRC RMW' ? (
+                          warehouseType != 'Spare Part Warehouse' ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select
@@ -441,7 +441,7 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
-                        ) : warehouseType == 'PRC RMW' ? (
+                        ) : warehouseType == 'Spare Part Warehouse' ? (
                             <TextFieldCustOm
                                 label="User Type"
                                 select
@@ -454,14 +454,14 @@ const MemberEditorDialog = ({
                                 error={errors.user_type ? true : false}
                                 helperText={errors.user_type?.message}
                             >
-                                <MenuItem value="RM User">RM User</MenuItem>
-                                <MenuItem value="Purchase User">
-                                    Purchase User
+                                <MenuItem value="SP User">SP User</MenuItem>
+                                <MenuItem value="Purchase RM">
+                                    Purchase RM
                                 </MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm
-                                label="User Typepp"
+                                label="User Type"
                                 select
                                 name="user_type"
                                 disabled={

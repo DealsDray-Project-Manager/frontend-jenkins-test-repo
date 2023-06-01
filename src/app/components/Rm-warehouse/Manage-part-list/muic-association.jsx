@@ -196,7 +196,7 @@ const Association = () => {
                     if (result.isConfirmed) {
                         setSubmitLoad(false)
                         navigate(
-                            '/rm-user/view-part-list/muic-association/success',
+                            '/sp-user/view-part-list/muic-association/success',
                             {
                                 state: {
                                     validatedSuccess: validationCount,
@@ -451,7 +451,7 @@ const Association = () => {
                                    color="primary"
                                    // disabled={validateButLoad || muicData == ''}
                                    onClick={() => {
-                                       navigate('/rm-user/part-list')
+                                       navigate('/sp-user/part-list')
                                    }}
                                    sx={{ margin: 'auto', mt:4, mr:4}}
                                >
@@ -548,7 +548,7 @@ const Association = () => {
                                    color="primary"
                                    // disabled={validateButLoad || muicData == ''}
                                    onClick={() => {
-                                       navigate('/rm-user/view-part-list/addmuicrm')
+                                       navigate('/sp-user/view-part-list/addmuic/' + partId )
                                    }}
                                    sx={{ margin: 'auto',display:'flex', mr:0 }}
                                >

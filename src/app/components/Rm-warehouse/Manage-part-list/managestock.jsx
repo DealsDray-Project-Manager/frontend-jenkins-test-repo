@@ -259,7 +259,7 @@ const AddBulkPart = () => {
                     allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/rm-user/view-part-list/managestock/report', {
+                        navigate('/sp-user/view-part-list/managestock/report', {
                             state: {
                                 validatedSuccess: res.data.count,
                             },
@@ -310,7 +310,7 @@ const AddBulkPart = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="secondary"
-                            onClick={() => navigate('/rm-user/part-list')}
+                            onClick={() => navigate('/sp-user/part-list')}
                         >
                             Back to Spare Part list
                         </Button>

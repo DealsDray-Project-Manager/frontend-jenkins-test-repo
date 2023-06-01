@@ -171,12 +171,12 @@ const MUIClist = () => {
                                       '.jpg'
                                     : productData?.[0]?.image
                             }
-                            height={280}
-                            width={260}
+                            height={200}
+                            width="100%"
                         />
                     </Box>
 
-                    <Box>
+                    <Box sx={{ml:5}}>
                             <Typography>
                                 MUIC:{productData?.[0]?.muic}
                             </Typography>
@@ -190,14 +190,14 @@ const MUIClist = () => {
                             <Typography>
                                 Model:{productData?.[0]?.model_name}
                             </Typography>
-                            <Typography>Vendor:</Typography>
+                            <Typography>Vendor:{productData?.[0]?.vendor_name}</Typography>
                         </Box>
 
                         <Box sx={{margin: 'auto',textAlign:'end', mb:23, mr:2}}>
                         <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => navigate('/rm-user/product-list')}
+                                onClick={() => navigate('/sp-user/product-list')}
                                 //   sx={{ margin: "auto", mt: 1, mb: 2 }}
                             >
                                 Back to MUIC list
@@ -215,7 +215,7 @@ const MUIClist = () => {
                         variant="contained"
                         color="primary"
                         onClick={() =>
-                            navigate('/rm-user/products/addparts', {
+                            navigate('/sp-user/products/addparts', {
                                 state: {
                                     muicData: productData?.[0],
                                 },

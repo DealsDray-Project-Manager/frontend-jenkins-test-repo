@@ -275,7 +275,7 @@ const AddBulkProduct = () => {
                             sx={{ mb: 2 }}
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate('/rm-user/product-list')}
+                            onClick={() => navigate('/sp-user/product-list')}
                         >
                             Back to list
                         </Button>

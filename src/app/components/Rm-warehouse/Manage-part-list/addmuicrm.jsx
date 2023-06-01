@@ -182,7 +182,7 @@ const Addmuicrm = () => {
                     if (result.isConfirmed) {
                         setSubmitLoad(false)
                         navigate(
-                            '/rm-user/view-part-list/muic-association/success',
+                            '/sp-user/view-part-list/muic-association/success',
                             {
                                 state: {
                                     validatedSuccess: validationCount,

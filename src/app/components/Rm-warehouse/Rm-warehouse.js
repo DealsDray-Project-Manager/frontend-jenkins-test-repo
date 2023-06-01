@@ -40,71 +40,71 @@ const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray
 
 const RmWarehouse = [
     {
-        path: '/rm-user/dashboard',
+        path: '/sp-user/dashboard',
         element: <Dashboard />,
     },
     {
-        path: '/rm-user/part-list',
+        path: '/sp-user/part-list',
         element: <PartList />,
     },
     {
-        path: '/rm-user/product-list',
+        path: '/sp-user/product-list',
         element: <ProductMaster />,
     },
     {
-        path: '/rm-user/view-list/bulk-add',
+        path: '/sp-user/view-list/bulk-add',
         element: <BulkAddPart />,
     },
     {
-        path: '/rm-user/view-list/managestock',
+        path: '/sp-user/view-list/managestock',
         element: <Managestock />,
     },
     {
-        path: '/rm-user/view-list/sparereporting',
+        path: '/sp-user/view-list/sparereporting',
         element: <Sparereporting />,
     },
     {
-        path: '/rm-user/view-part-list/addmuicrm',
+        path: '/sp-user/view-part-list/addmuic/:partId',
         element: <Addmuicrm />,
     },
     {
-        path: '/rm-user/view-part-list/managestock/report',
+        path: '/sp-user/view-part-list/managestock/report',
         element: <ManageStockUpdateReport />,
     },
     {
-        path: '/rm-user/view-part-list/muic-association/:partId',
+        path: '/sp-user/view-part-list/muic-association/:partId',
         element: <Association />,
     },
     {
-        path: '/rm-user/view-part-list/muic-association/success',
+        path: '/sp-user/view-part-list/muic-association/success',
         element: <SuccessPageOfMuicAssosication />,
     },
     {
-        path: '/rm-user/products/bulk-product',
+        path: '/sp-user/products/bulk-product',
         element: <BulkProducts />,
     },
     {
-        path: '/rm-user/products/muiclist/:muic',
+        path: '/sp-user/products/muiclist/:muic',
         element: <MUIClist />,
     },
     {
-        path: '/rm-user/upcoming-repair-tray',
+        path: '/sp-user/upcoming-repair-tray',
         element: <UpcomingRepairTray />,
     },
     {
-        path: '/rm-user/products/addparts',
+        path: '/sp-user/products/addparts',
         element: <Addparts />,
     },
     {
-        path: '/rm-user/upcoming-repair-tray/units/:trayId',
+        path: '/sp-user/upcoming-repair-tray/units/:trayId',
         element: <ViewRequirementOfPart />,
     },
     {
-        path: '/rm-user/rdl-2-issue-request',
+        path: '/sp-user/rdl-2-issue-request',
         element: <IssueRequesToRdl2 />,
     },
     {
-        path: '/rm-user/products/partsassociation/report',
+        path: '/sp-user/products/partsassociation/report',
         element: <Partsassociation />,
     },
 ]

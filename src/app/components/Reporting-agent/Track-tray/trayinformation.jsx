@@ -145,7 +145,10 @@ const Trayinformation = () => {
                         : result?.items
                 }
             />
-            <Trayjourney TrayMovement={result?.track_tray} />
+            <Trayjourney TrayMovement={result?.track_tray}
+             TrayType={result?.type_taxanomy}
+
+             />
             {/* <Trayjourneytable /> */}
         </Container>
     )

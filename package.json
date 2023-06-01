@@ -7,7 +7,7 @@
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
         "@hookform/resolvers": "^2.9.10",
-        "@mui/icons-material": "^5.11.16",
+        "@mui/icons-material": "^5.1.1",
         "@mui/lab": "^5.0.0-alpha.55",
         "@mui/material": "^5.0.6",
         "@mui/styles": "^5.2.0",
@@ -59,7 +59,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "GENERATE_SOURCEMAP=false react-scripts build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "ghp": "react-scripts build && gh-pages -d build"

@@ -34,6 +34,9 @@ const MemberEditorDialog = ({
         const fetchData = async () => {
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
+                if (editFetchData.warehouse_type == 'Spare Part Warehouse') {
+                    setSelectedCpc('Processing')
+                }
                 open()
             }
         }
@@ -284,7 +287,9 @@ const MemberEditorDialog = ({
                                     Processing
                                 </MenuItem>
                                 <MenuItem value="Sales">Sales</MenuItem>
-                                <MenuItem value="PRC RMW">PRC RMW</MenuItem>
+                                <MenuItem value="Spare Part Warehouse">
+                                    Spare Part Warehouse
+                                </MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm
@@ -296,7 +301,7 @@ const MemberEditorDialog = ({
                                 helperText={errors.warehouse_type?.message}
                                 defaultValue={getValues('warehouse_type')}
                             >
-                                 <MenuItem value="Dock">Dock</MenuItem>
+                                <MenuItem value="Dock">Dock</MenuItem>
                                 <MenuItem value="Processing">
                                     Processing
                                 </MenuItem>

@@ -7,7 +7,9 @@ const TrayRDL_oneApprove = Loadable(lazy(() => import('./Tray/approve')))
 const ReportDataDisplay = Loadable(
     lazy(() => import('./Tray/report-data-display'))
 )
-
+const ActionDisplay = Loadable(
+    lazy(() => import('./Tray/action'))
+)
 const RDLRouter = [
     {
         path: '/rdL-fls/dashboard',
@@ -24,6 +26,10 @@ const RDLRouter = [
     {
         path: '/rdL-fls/rdl-fls-request/approve/information-display',
         element: <ReportDataDisplay />,
+    },
+    {
+        path: '/rdL-fls/rdl-fls-request/approve/information-display/action',
+        element: <ActionDisplay />,
     },
 ]
 

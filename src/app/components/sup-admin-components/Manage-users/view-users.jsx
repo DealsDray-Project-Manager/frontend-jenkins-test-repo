@@ -9,6 +9,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
 
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -230,7 +231,6 @@ const UserTable = () => {
             },
         },
         {
-
             name: 'cpc_type',
             label: <Typography variant="subtitle1">CPC Type</Typography>,
             options: {
@@ -351,42 +351,39 @@ const UserTable = () => {
                 Add New Member
             </Button>
             <>
-            <MUIDataTable
-                title={'User Report'}
-                data={userList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-            {shouldOpenEditorDialog && (
-                <MemberEditorDialog
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    editFetchData={editFetchData}
-                    setEditFetchData={setEditFetchData}
-                />
-            )}
+                
+                    <MUIDataTable
+                        title={'User Report'}
+                        data={userList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none',
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                
+
+                {shouldOpenEditorDialog && (
+                    <MemberEditorDialog
+                        handleClose={handleDialogClose}
+                        open={handleDialogOpen}
+                        setIsAlive={setIsAlive}
+                        editFetchData={editFetchData}
+                        setEditFetchData={setEditFetchData}
+                    />
+                )}
             </>
         </Container>
     )

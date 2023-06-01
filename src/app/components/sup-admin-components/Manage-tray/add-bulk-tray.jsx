@@ -143,6 +143,7 @@ const PaginationTable = () => {
         let count3 = 0
         let count4 = 0
         let count5 = 0
+        let count6 = 0
         let obj = {
             ...countOfTray,
         }
@@ -161,9 +162,12 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'WHT') {
                     x.tray_id = 'WHT' + (countOfTray.WHT + count4)
                     count4++
-                } else if (x.tray_category == 'SP') {
-                    x.tray_id = 'SP' + (countOfTray.SP + count5)
+                } else if (x.tray_category == 'SPT') {
+                    x.tray_id = 'SPT' + (countOfTray.SPT + count5)
                     count5++
+                } else if (x.tray_category == 'RPT') {
+                    x.tray_id = 'RPT' + (countOfTray.RPT + count6)
+                    count6++
                 } else {
                     x.tray_id =
                         x.tray_category +
@@ -215,7 +219,8 @@ const PaginationTable = () => {
                         MMT: p.MMT + count2,
                         PMT: p.PMT + count3,
                         WHT: p.WHT + count4,
-                        SP:  p.SP + count5
+                        SPT: p.SPT + count5,
+                        RPT: p.RPT + count6,
                     }))
                     Swal.fire({
                         icon: 'success',

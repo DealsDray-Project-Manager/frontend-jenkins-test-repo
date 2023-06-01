@@ -103,7 +103,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/rm-user/upcoming-repair-tray/units/' + trayId)
+        navigate('/sp-user/upcoming-repair-tray/units/' + trayId)
     }
 
     const columns = [

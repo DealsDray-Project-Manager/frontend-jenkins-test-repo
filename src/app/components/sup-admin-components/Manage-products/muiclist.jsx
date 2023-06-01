@@ -190,7 +190,7 @@ const MUIClist = () => {
                             <Typography>
                                 Model:{productData?.[0]?.model_name}
                             </Typography>
-                            <Typography>Vendor:</Typography>
+                            <Typography>Vendor:{productData?.[0]?.vendor_name}</Typography>
                         </Box>
 
                         <Box sx={{margin: 'auto',textAlign:'end', mb:23, mr:2}}>

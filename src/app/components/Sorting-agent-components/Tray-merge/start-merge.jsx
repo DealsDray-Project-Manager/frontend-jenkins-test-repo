@@ -26,12 +26,13 @@ export default function DialogBox() {
     const { trayId } = useParams()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
-    const [open, setOpen] = useState(false)
     const [description, setDescription] = useState([])
     const [itemDetails, setItemDetails] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
+    const [textDisable, setTextDisable] = useState(false)
+
     /*********************************************************** */
 
     useEffect(() => {
@@ -68,7 +69,6 @@ export default function DialogBox() {
     }, [refresh])
 
     const handleClose = () => {
-        setOpen(false)
         setLoading(false)
         setAwbn('')
     }
@@ -76,19 +76,21 @@ export default function DialogBox() {
     const handelAwbn = async (e) => {
         if (e.target.value.length === 11) {
             try {
+                setTextDisable(true)
                 let obj = {
                     uic: e.target.value,
                     trayId: trayId,
                     wht_tray: tray?.wht,
                 }
+
                 let res = await axiosSortingAgent.post(
                     '/cheack-uic-for-sorting',
                     obj
                 )
                 if (res?.status === 200) {
                     addActualitem(res.data.data)
-                    setOpen(true)
                 } else {
+                    setTextDisable(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -98,7 +100,7 @@ export default function DialogBox() {
                 }
             } catch (error) {
                 setAwbn('')
-
+                setTextDisable(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -112,7 +114,6 @@ export default function DialogBox() {
     const addActualitem = async (data) => {
         try {
             handleClose()
-            setLoading(true)
             let obj = {
                 fromTray: trayId,
                 toTray: tray[1].code,
@@ -123,8 +124,9 @@ export default function DialogBox() {
             if (res?.status === 200) {
                 setRefresh((refresh) => !refresh)
                 setAwbn('')
-                setLoading(false)
+                setTextDisable(false)
             } else {
+                setTextDisable(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -209,7 +211,6 @@ export default function DialogBox() {
                         </p>
                     </Box>
                 </Box>
-
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -269,6 +270,7 @@ export default function DialogBox() {
                     name="doorsteps_diagnostics"
                     label="Please Enter UIC"
                     value={awbn}
+                    disabled={textDisable}
                     // onChange={(e) => setAwbn(e.target.value)}
                     onChange={(e) => {
                         setAwbn(e.target.value)
@@ -315,7 +317,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [tray?.[1]?.items, awbn, tray?.[1]?.code])
+    }, [tray?.[1]?.items, awbn, textDisable, tray?.[1]?.code])
 
     /***************************************************************************************** */
     return (

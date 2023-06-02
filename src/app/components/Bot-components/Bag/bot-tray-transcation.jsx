@@ -553,7 +553,7 @@ export default function DialogBox() {
                                 >
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell>S.NO</TableCell>
+                                            <TableCell pl={{pl:2}}>S.NO</TableCell>
                                             <TableCell>AWBN Number</TableCell>
                                             <TableCell>Order ID</TableCell>
                                             <TableCell>Order Date</TableCell>
@@ -567,7 +567,7 @@ export default function DialogBox() {
                                                 role="checkbox"
                                                 tabIndex={-1}
                                             >
-                                                <TableCell>
+                                                <TableCell sx={{pl:3}}>
                                                     {index + 1}
                                                 </TableCell>
                                                 <TableCell>

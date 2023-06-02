@@ -347,19 +347,20 @@ const SimpleMuiTable = () => {
                         <>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    mb: 1,
+                                    width:'74px'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
                                     handelViewTray(e, value)
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'primary' }}
                             >
                                 View
                             </Button>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    // m: 1,
                                 }}
                                 variant="contained"
                                 onClick={(e) => {

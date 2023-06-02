@@ -358,7 +358,8 @@ const SimpleMuiTable = () => {
                         <>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    mb: 1,
+                                    width:'74px'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -370,7 +371,7 @@ const SimpleMuiTable = () => {
                             </Button>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    // m: 1,
                                 }}
                                 variant="contained"
                                 onClick={(e) => {

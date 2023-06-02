@@ -360,9 +360,34 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h4>EXPECTED</h4>
-
-                <Box
+              <Box sx={{}}>
+                    <Box
+                        sx={{
+                            float: 'left',
+                            ml: 2,
+                        }}
+                    >
+                        <h5>EXPECTED</h5>
+                    </Box>
+                    <Box
+                        sx={{
+                            float: 'right',
+                            mr: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px', marginBottom:'29px' }}>
+                            {employeeData[0]?.items?.length}/
+                                {employeeData[0]?.limit}
+                            </p>
+                            
+                        
+                        </Box>
+                    </Box>
+                </Box>
+                        
+                {/* <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
@@ -381,7 +406,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
-                </Box>
+                </Box> */}
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -435,7 +460,54 @@ export default function DialogBox() {
     }, [employeeData[0]?.items])
     const tableActual = useMemo(() => {
         return (
-            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+            <Paper sx={{ width: '97%', overflow: 'hidden', m: 1 }}>
+                  <Box sx={{}}>
+                    <Box
+                        sx={{
+                            float: 'left',
+                            ml: 2,
+                        }}
+                    >
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ m: 0 }}
+                            id="outlined-password-input"
+                            type="text"
+                            name="doorsteps_diagnostics"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={awbn}
+                            onChange={(e) => {
+                                setAwbn(e.target.value)
+                                handelAwbn(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            float: 'right',
+                            mr: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Total</h5>
+                            </Box>
+                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                                {employeeData[0]?.actual_items?.length}/
+                                {employeeData[0]?.limit}
+                            </p>
+                        
+                    </Box>
+                </Box>
+
+
+                {/* <Box>
                 <h4>ACTUAL</h4>
                 <TextField
                     sx={{ m: 1 }}
@@ -461,11 +533,12 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
+                        
                     }}
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            // m: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -477,6 +550,7 @@ export default function DialogBox() {
                         </Box>
                     </Box>
                 </Box>
+                </Box> */}
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}

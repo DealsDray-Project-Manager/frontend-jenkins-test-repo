@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import { Typography } from '@mui/material'
 import { axiosWarehouseIn } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -46,31 +46,31 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
             name: 'imei',
-            label: 'IMEI',
+            label: <Typography sx={{fontWeight:'bold'}}>IMEI</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -80,7 +80,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: 'Model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -91,7 +91,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'rdl_fls_report',
-            label: 'RDL Status',
+            label: <Typography sx={{fontWeight:'bold'}}>RDL Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Model Required',
+            label: <Typography sx={{fontWeight:'bold'}}>Model Required</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -111,7 +111,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List Count',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List Count</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -121,7 +121,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 1',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List 1</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -131,7 +131,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 2',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List 2</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -141,7 +141,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 3',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List 3</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -151,7 +151,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 4',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List 4</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -161,7 +161,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Part List 5',
+            label: <Typography sx={{fontWeight:'bold'}}>Part List 5</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -171,7 +171,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Color',
+            label: <Typography sx={{fontWeight:'bold'}}>Color</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -181,7 +181,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_fls_report',
-            label: 'Description',
+            label: <Typography sx={{fontWeight:'bold'}}>Description</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

@@ -227,6 +227,7 @@ const SimpleMuiTable = () => {
                                 fullWidth
                                 sx={{
                                     m: 1,
+                                    width:'77px'
                                 }}
                                 variant="contained"
                                 style={{ backgroundColor: 'primery' }}

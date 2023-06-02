@@ -105,7 +105,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray_id',
-            label: 'Bot Tray',
+            label: <Typography sx={{fontWeight:'bold'}}>BOT Tray</Typography>,
             options: {
                 filter: true,
             },

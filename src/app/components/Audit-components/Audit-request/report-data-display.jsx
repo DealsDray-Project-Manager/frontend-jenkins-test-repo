@@ -280,12 +280,19 @@ export default function DialogBox() {
                                 ?.final_grade !== 'D' ? (
                                 <MenuItem value="Downgrade">Downgrade</MenuItem>
                             ) : null}
-                            <MenuItem value="Direct Upgrade">
+                            {/* <MenuItem value="Direct Upgrade">
                                 Direct Upgrade
-                            </MenuItem>
-                            <MenuItem value="Direct Downgrade">
-                                Direct Downgrade
-                            </MenuItem>
+                            </MenuItem> */}
+                            {reportData?.delivery?.bqc_software_report
+                                ?.final_grade !== 'A' ? (
+                                <MenuItem value="Direct Upgrade">Direct Upgrade</MenuItem>
+                            ) : null}
+                            {reportData?.delivery?.bqc_software_report
+                                ?.final_grade !== 'D' ? (
+                                <MenuItem value="Direct Downgrade">Direct Downgrade</MenuItem>
+                            ) : null}
+                           
+                            <MenuItem value="Repair">Repair</MenuItem>
                         </TextField>
                         {stateData.stage === 'Accept' ? (
                             <TextField

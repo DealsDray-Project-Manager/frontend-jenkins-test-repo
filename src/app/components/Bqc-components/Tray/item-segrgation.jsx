@@ -173,6 +173,7 @@ export default function DialogBox() {
             }
         }
     }
+
     /************************************************************************** */
     const addActualitem = async (e, type, value) => {
         if (e.keyCode !== 32) {
@@ -222,11 +223,13 @@ export default function DialogBox() {
             }
         }
     }
+
     /************************************************************************** */
     const handelIssue = async (e) => {
         e.preventDefault()
         navigate('/bqc/tray/bqc-out/' + trayId)
     }
+
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
@@ -287,6 +290,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
@@ -346,6 +350,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.temp_array, textBoxDis])
+    
 
     return (
         <>

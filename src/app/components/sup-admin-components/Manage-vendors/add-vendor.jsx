@@ -57,7 +57,6 @@ const MemberEditorDialog = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(editFetchData)
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 setPersonName(editFetchData.location)

@@ -56,8 +56,6 @@ const MUIClist = () => {
         }
     }, [isAlive])
 
-    console.log(productData)
-
     const columns = [
         {
             name: 'index',

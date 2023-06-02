@@ -147,7 +147,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length  / p.size),
+                    totalPage: Math.ceil(res.data.data.length / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -159,7 +159,7 @@ const Association = () => {
                 setValidateButLoad(false)
                 setPagination((p) => ({
                     ...p,
-                    totalPage: Math.ceil(res.data.data.length  / p.size),
+                    totalPage: Math.ceil(res.data.data.length / p.size),
                     item: res.data.data,
                 }))
                 setValidationCount(res.data.validateObj)
@@ -280,7 +280,7 @@ const Association = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{ml:3}}>Record No</Typography>,
+            label: <Typography sx={{ ml: 3 }}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -290,28 +290,28 @@ const Association = () => {
         },
         {
             name: 'muic', // field name in the row object
-            label: <Typography sx={{ml:3}}>MUIC</Typography>, // column title that will be shown in table
+            label: <Typography sx={{ ml: 3 }}>MUIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand', // field name in the row object
-            label: <Typography sx={{ml:3}}>Brand</Typography>, // column title that will be shown in table
+            label: <Typography sx={{ ml: 3 }}>Brand</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'model', // field name in the row object
-            label: <Typography sx={{ml:3}}>Model</Typography>, // column title that will be shown in table
+            label: <Typography sx={{ ml: 3 }}>Model</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography sx={{ml:3}}>Actions</Typography>,
+            label: <Typography sx={{ ml: 3 }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -358,129 +358,150 @@ const Association = () => {
                 <Box sx={{ p: 1, display: 'flex' }}>
                     <Box>
                         <Card sx={{ mb: 5 }}>
-                            <Box sx={{ display:'flex', justifyContent:'space-between'}}>
-                           
-                            <Typography
+                            <Box
                                 sx={{
-                                    p: 3,
-                                    fontWeight: 'bold',
-                                    fontSize: '16px',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
                                 }}
                             >
-                                PART NUMBER:{partData?.part_code}
-                            </Typography>
-                            
-                            <Button
+                                <Typography
+                                    sx={{
+                                        p: 3,
+                                        fontWeight: 'bold',
+                                        fontSize: '16px',
+                                    }}
+                                >
+                                    PART NUMBER:{partData?.part_code}
+                                </Typography>
+
+                                <Button
                                     variant="contained"
                                     color="primary"
-// disabled={validateButLoad  muicData == ''}
-onClick={() => {
-    navigate('/sup-admin/view-part-list')
-}}
-sx={{ margin: 'auto', mt:4, mr:4}}
->
-Back to Spare Part List
-</Button>
+                                    // disabled={validateButLoad  muicData == ''}
+                                    onClick={() => {
+                                        navigate('/sup-admin/view-part-list')
+                                    }}
+                                    sx={{ margin: 'auto', mt: 4, mr: 4 }}
+                                >
+                                    Back to Spare Part List
+                                </Button>
+                            </Box>
 
-</Box>
+                            <Box
+                                sx={{
+                                    p: 3,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Box sx={{ display: 'flex' }}>
+                                    <Box>
+                                        <Typography
+                                            sx={{
+                                                fontSize: '16px',
+                                                marginBottom: '14px',
+                                            }}
+                                        >
+                                            Part Name : {partData?.name}
+                                        </Typography>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Typography
+                                                sx={{
+                                                    fontSize: '16px',
+                                                    marginBottom: '10px',
+                                                    marginRight: '10px',
+                                                }}
+                                            >
+                                                Technical QC :{' '}
+                                            </Typography>
+                                            <FormControl
+                                                component="fieldset"
+                                                // sx={{ ml: 2 }}
+                                            >
+                                                <RadioGroup
+                                                    sx={{
+                                                        flexDirection: 'row',
+                                                        mb: 1,
+                                                    }}
+                                                >
+                                                    <FormControlLabel
+                                                        value="option1"
+                                                        control={<Radio />}
+                                                        label="Y"
+                                                        checked={
+                                                            partData?.technical_qc ==
+                                                            'Y'
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
+                                                    <FormControlLabel
+                                                        value="option2"
+                                                        control={<Radio />}
+                                                        label="N"
+                                                        checked={
+                                                            partData?.technical_qc ==
+                                                            'N'
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </Box>
+                                    </Box>
 
-<Box
-sx={{
-p: 3,
-display: 'flex',
-justifyContent: 'space-between',
-}}
->
-<Box sx={{display:"flex"}}>
+                                    <Box sx={{ ml: 40 }}>
+                                        <Typography
+                                            sx={{
+                                                fontSize: '16px',
+                                                marginBottom: '21px',
+                                            }}
+                                        >
+                                            Part Color : {partData?.color}
+                                        </Typography>
 
-<Box>
-<Typography
-    sx={{
-        fontSize: '16px',
-        marginBottom: '14px',
-    }}
->
-    Part Name : {partData?.name}
-</Typography>
-<Box sx={{ display: 'flex', alignItems: 'center' }}>
-    <Typography
-        sx={{
-            fontSize: '16px',
-            marginBottom: '10px',
-            marginRight: '10px',
-        }}
-    >
-        Technical QC : {' '}
-    </Typography>
-    <FormControl
-        component="fieldset"
-        // sx={{ ml: 2 }}
-    >
-        <RadioGroup sx={{ flexDirection: 'row', mb:1 }}>
-            <FormControlLabel
-                value="option1"
-                control={<Radio />}
-                label="Y"
-                checked={
-                    partData?.technical_qc ==
-                    'Y'
-                        ? true
-                        : false
-                }
-            />
-            <FormControlLabel
-                value="option2"
-                control={<Radio />}
-                label="N"
-                checked={
-                    partData?.technical_qc ==
-                    'N'
-                        ? true
-                        : false
-                }
-            />
-        </RadioGroup>
-    </FormControl>
-</Box>
-</Box>
+                                        <Typography sx={{ fontSize: '16px' }}>
+                                            Description :{' '}
+                                            {partData?.description}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Box>
 
-
-
-<Box sx={{ml:40}}>
-<Typography
-sx={{
-    fontSize: '16px',
-    marginBottom: '21px',
-}}
->
-Part Color : {partData?.color}
-</Typography>
-
-<Typography sx={{ fontSize: '16px' }}>
-Description : {partData?.description}
-</Typography>
-</Box>
-
-</Box>
-
-
-</Box>
-
-<Box sx={{marginLeft:'auto',display:'flex', mr:4}}>
-<Button
-variant="contained"
-color="primary"
-// disabled={validateButLoad  muicData == ''}
-onClick={() => {
-navigate('/sup-admin/view-part-list/addmuic/' + partId)
-}}
-sx={{ margin: 'auto',display:'flex', mr:0 }}
->
-Associate MUIC
-</Button>
-</Box>
-<br />
-{/* <Box sx={{ p: 3 }}>
+                            <Box
+                                sx={{
+                                    marginLeft: 'auto',
+                                    display: 'flex',
+                                    mr: 4,
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    // disabled={validateButLoad  muicData == ''}
+                                    onClick={() => {
+                                        navigate(
+                                            '/sup-admin/view-part-list/addmuic/' +
+                                                partId
+                                        )
+                                    }}
+                                    sx={{
+                                        margin: 'auto',
+                                        display: 'flex',
+                                        mr: 0,
+                                    }}
+                                >
+                                    Associate MUIC
+                                </Button>
+                            </Box>
+                            <br />
+                            {/* <Box sx={{ p: 3 }}>
 <Typography
 sx={{
 fontSize: '16px',
@@ -524,18 +545,26 @@ sx={{ margin: 'auto', mt: 1, mb: 2 }}
 : 'Validate MUIC'}
 </Button>
 </Box> */}
-{/* </Card>
+                            {/* </Card>
 <Card> */}
-<Box
-sx={{
-display: 'flex',
-justifyContent: 'space-between',
-alignItems: 'center',
-marginBottom: '10px',
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '10px',
                                 }}
                             >
-                                <Typography sx={{ fontWeight: 'bold', ml:3, fontSize:'20px' }}>MUIC Associated</Typography>
-                                <Typography sx={{ fontWeight: 'bold', mr:4}}>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        ml: 3,
+                                        fontSize: '20px',
+                                    }}
+                                >
+                                    MUIC Associated
+                                </Typography>
+                                <Typography sx={{ fontWeight: 'bold', mr: 4 }}>
                                     Total - {partData?.muic_association?.length}
                                 </Typography>
                             </Box>

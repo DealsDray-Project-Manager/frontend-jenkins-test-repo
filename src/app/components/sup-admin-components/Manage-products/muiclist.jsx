@@ -56,8 +56,6 @@ const MUIClist = () => {
         }
     }, [isAlive])
 
-    console.log(productData)
-
     const columns = [
         {
             name: 'index',
@@ -166,7 +164,7 @@ const MUIClist = () => {
                         <Image
                             src={
                                 productData?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-3-dev-api.dealsdray.com/product/image/' +
+                                    ? 'https://prexo-v8-3-adminapi.dealsdray.com/product/image/' +
                                       productData?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : productData?.[0]?.image

@@ -40,8 +40,8 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     const res = await axiosMisUser.post('/RDLoneDoneTray/' + location)
                     if (res.status === 200) {
-                        setIsLoading(false)
                         setWhtTrayList(res.data.data)
+                        setIsLoading(false)
                     }
                 }
             } catch (error) {
@@ -189,6 +189,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'name',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
             hide: true,
             options: {
@@ -210,17 +211,6 @@ const SimpleMuiTable = () => {
             label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'assigned_date',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>RDL One Closed Date</></Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
@@ -270,7 +260,8 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                disabled={isCheck.length == 0}
+                disabled
+                // disabled={isCheck.length == 0}
                 onClick={(e) => {
                     handelReadyForRdl(e)
                 }}

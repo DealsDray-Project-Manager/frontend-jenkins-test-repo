@@ -64,7 +64,7 @@ const AddPartOrColorAndEditDialog = ({
         description: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-            .max(40)
+            .max(500)
             .nullable(),
         color: Yup.string()
             .required('Required*')

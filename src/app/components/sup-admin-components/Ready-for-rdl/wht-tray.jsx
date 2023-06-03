@@ -6,6 +6,8 @@ import { Button, Checkbox, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -32,10 +34,14 @@ const SimpleMuiTable = () => {
         const fetchWht = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/auditDoneWht')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setWhtTrayList(res.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if(admin){
+                    let { location } = jwt_decode(admin)
+                    const res = await axiosSuperAdminPrexo.post('/auditDoneWht')
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setWhtTrayList(res.data.data)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)

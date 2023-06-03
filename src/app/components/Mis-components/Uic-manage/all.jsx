@@ -362,7 +362,7 @@ const SimpleMuiTable = () => {
         return (
             <ProductTable>
                 <TableHead >
-                    <TableRow > ;
+                    <TableRow > 
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>
                             {' '}
                             <Checkbox

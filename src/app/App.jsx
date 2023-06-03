@@ -12,7 +12,7 @@ const App = () => {
     const all_pages = useRoutes(AllPages())
 
     return (
-        <Provider store={Store}>
+        <Provider store={Store}> 
             <SettingsProvider>
                 <MatxTheme>
                     <AuthProvider>{all_pages}</AuthProvider>

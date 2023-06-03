@@ -98,7 +98,7 @@ const MemberEditorDialog = ({
             .nullable(),
         address: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
-            .max(40)
+            .max(500)
             .required('Required*')
             .nullable(),
         city: Yup.string()

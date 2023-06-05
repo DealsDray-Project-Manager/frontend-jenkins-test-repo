@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import {
     Button,
+    Box,
     Dialog,
     DialogContent,
     DialogActions,
@@ -12,6 +13,8 @@ import {
     FormControl,
     InputLabel,
     Select,
+    Table,
+    TableContainer,
     Typography,
     MenuItem,
 } from '@mui/material'
@@ -21,6 +24,27 @@ import { axiosMisUser } from '../../../../../axios'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '130%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -241,7 +265,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Tray ID</></Typography>,// column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Tray ID</></Typography>,// column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -257,7 +281,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Quantity</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Quantity</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -266,21 +290,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Tray Type</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Tray Type</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Status</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_time_wharehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Closed Time Warehouse</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Closed Time Warehouse</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -297,11 +321,12 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box sx={{textAlign:'center'}}>
                             <Button
                                 sx={{
-                                    m: 1,
-                                    width:'74px'
+                                    width:'74px',
+                                    mb:2,
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -313,7 +338,7 @@ const SimpleMuiTable = () => {
                             </Button>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -327,7 +352,7 @@ const SimpleMuiTable = () => {
                             >
                                 Merge
                             </Button>
-                        </>
+                        </Box>
                     )
                 },
             },
@@ -433,8 +458,9 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
+                    <ScrollableTableContainer>
+                        <ProductTable>
+                        <MUIDataTable
                 title={'Mmt Tray'}
                 data={mmtTray}
                 columns={columns}
@@ -477,6 +503,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                        </ProductTable>
+                    </ScrollableTableContainer>
+            
         </Container>
     )
 }

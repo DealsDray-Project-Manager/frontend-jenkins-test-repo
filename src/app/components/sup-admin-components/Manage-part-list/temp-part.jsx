@@ -180,7 +180,7 @@ const PartTable = () => {
                 technical_qc: x.technical_qc,
                 description: x.description,
                 available_stock: x.avl_stock,
-                add_stock: '',
+                add_stock: '0',
             }
             arr.push(obj)
         }

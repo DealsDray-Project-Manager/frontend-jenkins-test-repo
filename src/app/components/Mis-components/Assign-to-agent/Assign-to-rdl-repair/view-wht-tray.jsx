@@ -109,64 +109,70 @@ const SimpleMuiTable = () => {
                 },
             },
         },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Part List Count',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.part_list_count
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Part List 1',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.part_list_1
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Part List 2',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.part_list_2
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Part List 3',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.part_list_3
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Part List 4',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.part_list_4
+        //         },
+        //     },
+        // },
         {
             name: 'rdl_fls_report',
-            label: 'Part List Count',
+            label: 'RDL 1 Added Part List',
             options: {
                 filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_count
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Part List 1',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_1
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Part List 2',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_2
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Part List 3',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_3
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Part List 4',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_4
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Part List 5',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.part_list_5
-                },
+                customBodyRender: (value, dataIndex) =>
+                {
+                    return value?.partRequired?.map((data, index) => (
+                        <p>
+                            
+                            {index + 1}.{data?.part_name} - {data?.part_id} ,
+                        </p>
+                    ))
+                }
             },
         },
         {

@@ -164,7 +164,7 @@ const MUIClist = () => {
                         <Image
                             src={
                                 productData?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-3-dev-api.dealsdray.com/product/image/' +
+                                    ? 'https://prexo-v8-4-dev-api.dealsdray.com/product/image/' +
                                       productData?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : productData?.[0]?.image

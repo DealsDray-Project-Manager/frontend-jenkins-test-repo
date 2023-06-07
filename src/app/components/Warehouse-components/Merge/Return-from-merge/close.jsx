@@ -222,13 +222,14 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
+                        ml: 2,
                     }}
                 >
                     <h5>EXPECTED</h5>
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -302,6 +303,7 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
+                        ml: 2,
                     }}
                 >
                     <Box>
@@ -329,7 +331,7 @@ export default function DialogBox() {
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -359,7 +361,7 @@ export default function DialogBox() {
                                 <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 {/* <TableCell>Bag Id</TableCell> */}
-                                {/* <TableCell>AWBN Number</TableCell> */}
+                                {/* <TableCell>AWBN Number</TableCell> */} 
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
                                 <TableCell>Status</TableCell>

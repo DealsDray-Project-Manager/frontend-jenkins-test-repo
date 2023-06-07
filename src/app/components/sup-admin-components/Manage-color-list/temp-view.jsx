@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Typography } from '@mui/material'
+import { Button, IconButton, Icon, Typography,Table, TableContainer } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -19,6 +19,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '100%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -159,7 +181,7 @@ const PartTable = () => {
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         // {
@@ -247,7 +269,9 @@ const PartTable = () => {
                 Add New Color
             </Button>
 
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'All Colors'}
                 data={partList}
                 columns={columns}
@@ -274,6 +298,9 @@ const PartTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+           
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

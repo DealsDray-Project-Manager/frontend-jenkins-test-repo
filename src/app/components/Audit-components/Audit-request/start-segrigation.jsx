@@ -179,6 +179,7 @@ export default function DialogBox() {
             <Grid container spacing={2}>
                 {trayData?.otherTray?.map((data, index) => (
                     <Grid item xs={12} md={4}>
+                        <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
                         <Box
                             sx={{
                                 display: 'flex',
@@ -195,7 +196,7 @@ export default function DialogBox() {
                                 ''
                             )}
                         </Box>
-                        <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                        
                             <TableContainer>
                                 <Table
                                     style={{ width: '100%' }}
@@ -246,6 +247,7 @@ export default function DialogBox() {
                     </Grid>
                 ))}
                 <Grid item xs={12} md={4}>
+                <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -256,7 +258,7 @@ export default function DialogBox() {
                             WHT Tray Id:- {trayData?.wht?.code}
                         </h4>
                     </Box>
-                    <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
+                    
                         <TableContainer>
                             <Table
                                 style={{ width: '100%' }}

@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import { authRoles } from 'app/auth/authRoles'
 
 export const navigations = [
@@ -984,7 +985,7 @@ export const navigations = [
                 path: '/reporting/delivery/item',
             },
             {
-                name: 'Units Available In Processing',
+                name: <Typography sx={{textAlign:'left'}}>Units Available in Processing</Typography>,
 
                 path: '/reporting/units/processing',
             },
@@ -1028,7 +1029,7 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: 'Soring Pending',
+                name: 'Sorting Pending',
                 path: '/reporting/bot-tray/sorting-pending',
             },
         ],
@@ -1124,7 +1125,7 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: 'Sale Bucket Transfer Pending',
+                name: <Typography sx={{textAlign:'left'}}>Sales Bucket Transfer Pending</Typography>,
                 path: '/reporting/ctx/transfer-pending-to-sales',
             },
             {

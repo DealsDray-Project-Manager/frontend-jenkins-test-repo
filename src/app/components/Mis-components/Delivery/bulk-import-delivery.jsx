@@ -61,7 +61,7 @@ const ProductTable = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',

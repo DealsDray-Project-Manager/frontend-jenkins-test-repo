@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { axiosBot } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { Typography, Table, TableContainer } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -18,6 +19,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '270%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayData, setTrayData] = useState([])
@@ -47,6 +70,107 @@ const SimpleMuiTable = () => {
         return () => setIsAlive(false)
     }, [isAlive])
 
+const columns = [
+    {
+        name: 'index',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Record No</Typography>,
+        options: {
+            filter: false,
+            sort: false,
+            customBodyRender: (rowIndex, dataIndex) => 
+            <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
+        },
+    },
+    {
+        name: 'uic',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>UIC</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'imei',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>IMEI</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'bag_id',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Bag ID</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'body_damage',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Body Damage</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'body_damage_des',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Body Damage Description</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'item_recieved',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Item Recieved in Packet</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'model_brand',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Mismatched Model Brand Name</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'stickerOne',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Other Info 1</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'stickerTwo',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Other Info 2</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'stickerThree',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Other Info 3</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'stickerFour',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Other Info 4</Typography>,
+        options: {
+            filter: true,
+        },
+    },
+    {
+        name: 'added_time',
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Added Date</Typography>,
+        options: {
+            filter: true,
+            customBodyRender: (value) =>
+                new Date(value).toLocaleString('en-GB', {
+                    hour12: true,
+                }),
+        },
+    },
+]
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -57,8 +181,10 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
+            
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'Tray'}
                 data={trayData}
                 columns={columns}
@@ -101,108 +227,11 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         </Container>
     )
 }
-
-const columns = [
-    {
-        name: 'index',
-        label: 'Record No',
-        options: {
-            filter: false,
-            sort: false,
-            customBodyRender: (rowIndex, dataIndex) => dataIndex.rowIndex + 1,
-        },
-    },
-    {
-        name: 'uic',
-        label: 'UIC',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'imei',
-        label: 'IMEI',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'bag_id',
-        label: 'Bag Id',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'body_damage',
-        label: 'Body Damage',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'body_damage_des',
-        label: 'Body Damage Description',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'item_recieved',
-        label: 'Item Received In Packet',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'model_brand',
-        label: 'Mismatched Model Brand Name',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerOne',
-        label: 'Other Info 1',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerTwo',
-        label: 'Other Info 2',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerThree',
-        label: 'Other Info 3',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerFour',
-        label: 'Other Info 4',
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'added_time',
-        label: 'Added Date',
-        options: {
-            filter: true,
-            customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
-        },
-    },
-]
 
 export default SimpleMuiTable

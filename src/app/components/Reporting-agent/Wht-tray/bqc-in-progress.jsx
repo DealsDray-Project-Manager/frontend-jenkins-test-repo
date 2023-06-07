@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button } from '@mui/material'
+import { Button, Typography, Table, TableContainer } from '@mui/material'
 import { axiosReportingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -20,6 +20,27 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '130%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -67,38 +88,38 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: 'Tray Display Name',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Display Name</Typography>,
             options: {
                 filter: true,
             },
@@ -106,14 +127,14 @@ const SimpleMuiTable = () => {
 
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'assigned_date',
-            label: 'Assigned Date',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -130,14 +151,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: 'Assigned To',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Assigned To</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:1}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -171,8 +192,10 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
+            
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'WHT'}
                 data={whtTray}
                 columns={columns}
@@ -215,6 +238,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         </Container>
     )
 }

@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography } from '@mui/material'
+import { Button, Checkbox, Typography,Table, TableContainer } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
@@ -19,6 +19,29 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -129,7 +152,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Select</Typography>,
+            label: <Typography sx={{fontWeight:'bold', fontSize:'16px', ml:2}}>Select</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -149,7 +172,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold'}}>Record No</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -159,21 +182,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code', // field name in the row object
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>, // column title that will be shown in table
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Tray ID</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Warehouse</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Category</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Tray Category</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -181,21 +204,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Name</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Tray Name</Typography>,
             options: {
                 filter: true,
             },
@@ -211,7 +234,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Name</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Name</Typography>,
             hide: true,
             options: {
                 filter: true,
@@ -219,7 +242,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Quantity</Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -229,14 +252,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Display</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Tray Display</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Status</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -244,7 +267,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{fontWeight:'bold' , fontSize:'16px'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -285,7 +308,9 @@ const SimpleMuiTable = () => {
             >
                 Ready For Charging
             </Button>
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'WHT Tray'}
                 data={whtTrayList}
                 columns={columns}
@@ -328,6 +353,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         </Container>
     )
 }

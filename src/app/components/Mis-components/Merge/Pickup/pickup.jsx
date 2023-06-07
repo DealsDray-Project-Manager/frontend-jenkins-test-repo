@@ -12,9 +12,10 @@ import jwt_decode from 'jwt-decode'
 
 import {
     Box,
-    Table,
     Card,
     Typography,
+    Table,
+    TableContainer,
     TextField,
     Button,
     MenuItem,
@@ -22,6 +23,9 @@ import {
 } from '@mui/material'
 import { includes } from 'lodash'
 import { async } from 'q'
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,7 +43,8 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: 2000,
+    width: '150%',
+    height:'100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -47,7 +52,7 @@ const ProductTable = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -56,7 +61,8 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: 3000,
+    width: '200%',
+    height:'100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -64,7 +70,7 @@ const ProductTableTwo = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -73,7 +79,8 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: 4000,
+    width: '230%',
+    height:'100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -81,7 +88,7 @@ const ProductTableThere = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -89,7 +96,8 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: 5000,
+    width: '280%',
+    height:'100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -97,7 +105,7 @@ const ProductTableRdlOne = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -1243,24 +1251,13 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ ml: 2 }}
-                >
-                    <>Record No</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
-
-                customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
-                        {dataIndex.rowIndex + 1}
-                    </Typography>
-                ),
+                
+                customBodyRender: (rowIndex, dataIndex) =>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
 
@@ -1782,7 +1779,9 @@ const PickupPage = () => {
 
     const tableData = useMemo(() => {
         return (
-            <MUIDataTable
+            <>
+                <ProductTable>
+                <MUIDataTable
                 title={'UNITS'}
                 data={item}
                 columns={columnsOne}
@@ -1896,12 +1895,17 @@ const PickupPage = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </>
+            
         )
     }, [item, columnsOne])
 
     const tableDataTwo = useMemo(() => {
         return (
-            <MUIDataTable
+            <>
+                <ProductTableTwo>
+                <MUIDataTable
                 title={'UNITS'}
                 data={item}
                 columns={columnsTwo}
@@ -2019,12 +2023,17 @@ const PickupPage = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTableTwo>
+            </>
+            
         )
     }, [item, columnsTwo])
 
     const tableDataThree = useMemo(() => {
         return (
-            <MUIDataTable
+            <>
+                <ProductTableThere>
+                <MUIDataTable
                 title={'UNITS'}
                 data={item}
                 columns={columnsThree}
@@ -2147,12 +2156,17 @@ const PickupPage = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTableThere>
+            </>
+           
         )
     }, [item, columnsThree])
 
     const tableDataForRdl1 = useMemo(() => {
         return (
-            <MUIDataTable
+            <>
+                <ProductTableRdlOne>
+                <MUIDataTable
                 title={'UNITS'}
                 data={item}
                 columns={columnsForRdlOne}
@@ -2286,6 +2300,9 @@ const PickupPage = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTableRdlOne>
+            </>
+            
         )
     }, [item, columnsForRdlOne])
 

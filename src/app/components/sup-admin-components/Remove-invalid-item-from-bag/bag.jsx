@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography,Table, TableContainer  } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,6 +19,27 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -65,7 +86,7 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
@@ -106,12 +127,12 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}><>Quantity</></Typography>,
+            label: <Typography sx={{fontWeight:'bold', ml:2}}><>Quantity</></Typography>,
             options: {
                 filter: false,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
+                    <Typography sx={{ml:2}}>{value.length + '/' + tableMeta.rowData[5]}</Typography>
             },
         },
         {
@@ -173,7 +194,9 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'Bag'}
                 data={bagList}
                 columns={columns}
@@ -200,6 +223,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         </Container>
     )
 }

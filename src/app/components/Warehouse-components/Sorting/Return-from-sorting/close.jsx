@@ -173,16 +173,20 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
+                    <Box sx={{ml:2 }}>
+                    <h5>EXPECTED</h5>
+                    </Box>
+
+                    <Box sx={{justifyContent:'end', display: 'flex'}}>
                     <Box
                         sx={{
-                            m: 2,
+                            m: 0,
                         }}
                     >
                         <Box sx={{}}>
@@ -194,16 +198,19 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
                             <h5>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
+                            <p style={{ marginLeft: '14px', fontSize: '22px' }}>
                                 {trayData?.items?.length}
                             </p>
                         </Box>
                     </Box>
+                    </Box>
+                    
+
                 </Box>
                 <TableContainer>
                     <Table
@@ -242,7 +249,9 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>ACTUAL</h5>
+                <Box sx={{justifyContent:'space-between', display:'flex'}}>
+                    <Box sx={{ml:2}}>
+                    <h5>ACTUAL</h5>
                 <TextField
                     sx={{ mt: 1 }}
                     id="outlined-password-input"
@@ -263,6 +272,9 @@ export default function DialogBox() {
                         },
                     }}
                 />
+                    </Box>
+               
+               
 
                 <Box
                     sx={{
@@ -272,7 +284,7 @@ export default function DialogBox() {
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            m: 0,
                         }}
                     >
                         <Box sx={{}}>
@@ -285,7 +297,7 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -295,6 +307,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
+                </Box>
                 </Box>
                 <TableContainer>
                     <Table

@@ -79,7 +79,8 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 2000,
+        width: '150%',
+        height:'100%',
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -87,7 +88,7 @@ const SimpleMuiTable = () => {
             },
         },
         '& td': {
-            borderBottom: 'none',
+            borderBottom: '1px solid #ddd',
         },
         '& td:first-of-type': {
             paddingLeft: '16px !important',
@@ -275,7 +276,7 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', ml:2, paddingTop:'15px', width:'150px'}}>
                             {' '}
                             <Checkbox
                                 onClick={(e) => {
@@ -290,19 +291,19 @@ const SimpleMuiTable = () => {
                             />{' '}
                             Select All
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Sl.No</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Status</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Generated Admin</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Generated Time</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Code</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC Downloaded Time</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Actual Delivery Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>IMEI</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Item ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Old Item Details</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'100px'}}>Sl.No</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>UIC Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>UIC Generated Admin</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>UIC Generated Time</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>UIC Code</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>UIC Downloaded Time</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Actual Delivery Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Order Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Old Item Details</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -321,7 +322,7 @@ const SimpleMuiTable = () => {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell sx={{pl:4}}>{index + 1}</TableCell>
+                            <TableCell sx={{pl:2}}>{index + 1}</TableCell>
                             <TableCell
                                 style={
                                     data?.uic_status == 'Pending'

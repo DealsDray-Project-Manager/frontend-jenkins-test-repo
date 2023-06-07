@@ -3,7 +3,10 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import {
+    Table,
+    TableContainer,
     Button,
+    Box,
     Dialog,
     DialogContent,
     DialogActions,
@@ -34,6 +37,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '170%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -355,10 +380,12 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box sx={{textAlign:'center'}}>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    width:'74px',
+                                    mb:2,
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -370,7 +397,7 @@ const SimpleMuiTable = () => {
                             </Button>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -389,7 +416,7 @@ const SimpleMuiTable = () => {
                             >
                                 Merge
                             </Button>
-                        </>
+                        </Box>
                     )
                 },
             },
@@ -496,7 +523,9 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'CTX Tray'}
                 data={tray}
                 columns={columns}
@@ -539,6 +568,10 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+
+           
         </Container>
     )
 }

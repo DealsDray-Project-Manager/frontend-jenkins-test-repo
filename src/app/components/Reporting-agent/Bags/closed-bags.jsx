@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosReportingAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
+import { Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -60,31 +61,31 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                    <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'code',
-            label: 'Bag Id',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Bag ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status_change_time',
-            label: 'Date Of Closure',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Date of Closure</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -95,14 +96,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'limit',
-            label: 'Max',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Max</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: 'Valid',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Valid</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -113,7 +114,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Invalid',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Invalid</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) =>
@@ -124,7 +125,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Duplicate',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Duplicate</Typography>,
             options: {
                 filter: true,
 
@@ -137,7 +138,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Total',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Total</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.length,

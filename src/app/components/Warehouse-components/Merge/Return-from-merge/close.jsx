@@ -229,7 +229,7 @@ export default function DialogBox() {
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -331,7 +331,7 @@ export default function DialogBox() {
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>

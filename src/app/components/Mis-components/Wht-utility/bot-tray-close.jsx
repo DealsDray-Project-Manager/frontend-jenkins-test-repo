@@ -148,7 +148,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>Expected</h5>
+                        <h5>EXPECTED</h5>
                     </Box>
                     <Box
                         sx={{
@@ -173,7 +173,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>OLD UIC</TableCell>
                                 <TableCell>NEW UIC</TableCell>
                             </TableRow>
@@ -181,7 +181,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                                     <TableCell>{data?.old_uic}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                 </TableRow>
@@ -248,7 +248,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>OLD UIC</TableCell>
                                 <TableCell>NEW UIC</TableCell>
                             </TableRow>
@@ -257,7 +257,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                                     <TableCell>{data?.old_uic}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                 </TableRow>

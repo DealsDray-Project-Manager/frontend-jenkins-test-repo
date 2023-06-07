@@ -3,6 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import {
+    Box,
     Button,
     Dialog,
     DialogContent,
@@ -14,6 +15,8 @@ import {
     Typography,
     Select,
     MenuItem,
+    Table,
+    TableContainer
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
@@ -34,6 +37,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '170%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -42,6 +67,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -344,22 +370,25 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box sx={{textAlign:'center'}}>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    width:'74px',
+                                    mb:2,
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
                                     handelViewTray(e, value)
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'primary' }}
                             >
                                 View
                             </Button>
                             <Button
                                 sx={{
-                                    m: 1,
+                                    
+                                    display:'block'
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
@@ -377,7 +406,7 @@ const SimpleMuiTable = () => {
                             >
                                 Merge
                             </Button>
-                        </>
+                        </Box>
                     )
                 },
             },
@@ -483,6 +512,9 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+
+     <ScrollableTableContainer>
+         <ProductTable>
             <MUIDataTable
                 title={'Wht Tray'}
                 data={whtTray}
@@ -526,6 +558,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+        </ProductTable>
+     </ScrollableTableContainer>
+            
         </Container>
     )
 }

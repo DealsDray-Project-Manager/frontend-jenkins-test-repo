@@ -186,7 +186,7 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 2000,
+        width: '150%',
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -351,9 +351,9 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Record.NO</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Record.NO</TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold', width:'200px', cursor: 'pointer' }}
                             onClick={() => handleSort('order_id')}
                         >
                             Order ID{' '}
@@ -365,7 +365,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('tracking_id')}
                         >
                             Tracking ID{' '}
@@ -377,7 +377,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('model_name')}
                         >
                             Model Name{' '}
@@ -389,7 +389,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , width:'150px', cursor: 'pointer' }}
                             onClick={() => handleSort('imei')}
                         >
                             IMEI{' '}
@@ -401,7 +401,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('sku_name')}
                         >
                             SKU Name{' '}
@@ -413,7 +413,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'250px' }}
                             onClick={() => handleSort('bot_remark')}
                         >
                             Received Units Remarks (BOT){' '}
@@ -425,7 +425,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('type')}
                         >
                             Type{' '}
@@ -437,7 +437,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('uic')}
                         >
                             UIC{' '}
@@ -449,7 +449,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer' , width:'100px'}}
                             onClick={() => handleSort('price')}
                         >
                             Price{' '}
@@ -461,7 +461,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('order_date')}
                         >
                             Order Date{' '}
@@ -473,7 +473,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('location')}
                         >
                             Location{' '}
@@ -485,7 +485,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
                             onClick={() => handleSort('delivery_date')}
                         >
                             Delivery Date{' '}
@@ -497,7 +497,7 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ cursor: 'pointer' }}
+                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'200px' }}
                             onClick={() => handleSort('packet_open_date')}
                         >
                             Packet Open Date{' '}

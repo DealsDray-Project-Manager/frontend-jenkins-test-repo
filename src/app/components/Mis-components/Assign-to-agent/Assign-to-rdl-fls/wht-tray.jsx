@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox , Typography} from '@mui/material'
+import { Button, Checkbox , Typography, Table, TableContainer} from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
@@ -21,6 +21,27 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -267,7 +288,9 @@ const SimpleMuiTable = () => {
             >
                 Assign For RDL-FLS
             </Button>
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'WHT Tray'}
                 data={whtTrayList}
                 columns={columns}
@@ -310,6 +333,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

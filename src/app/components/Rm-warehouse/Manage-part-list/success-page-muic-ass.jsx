@@ -20,8 +20,6 @@ const Spare1 = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
 
-    console.log(state);
-
     return (
         <Container>
             <div className="breadcrumb">

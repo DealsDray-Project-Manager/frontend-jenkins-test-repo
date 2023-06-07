@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import { authRoles } from 'app/auth/authRoles'
 
 export const navigations = [
@@ -186,6 +187,73 @@ export const navigations = [
             {
                 name: 'Ready for BQC wht Tray',
                 path: '/sup-admin/ready-for-charging/bqc-tray',
+                iconText: 'PL',
+            },
+        ],
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
+        name: 'Bag Reassign',
+        icon: 'assignment_return',
+        children: [
+            {
+                name: 'Assigned Bag',
+                path: '/sup-admin/bag-assinged/bag',
+                iconText: 'PL',
+            },
+           
+        ],
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
+        name: 'Tray Reassign',
+        icon: 'remove_shopping_cart',
+        children: [
+            {
+                name: 'Sorting (bot to wht)',
+                path: '/sup-admin/tray-reassign/sorting/bot-wht',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to Merging',
+                path: '/sup-admin/tray-reassign/merge',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to charging',
+                path: '/sup-admin/tray-reassign/charging',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to recharging',
+                path: '/sup-admin/tray-reassign/recharging',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to bqc',
+                path: '/sup-admin/tray-reassign/bqc',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to audit',
+                path: '/sup-admin/tray-reassign/audit',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to rdl-fls',
+                path: '/sup-admin/tray-reassign/rdl-fls',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to rdl-repair',
+                path: '/sup-admin/tray-reassign/rdl-repair',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned Sorting (ctx to stx)',
+                path: '/sup-admin/tray-reassign/sorting/ctx-stx',
                 iconText: 'PL',
             },
         ],
@@ -917,7 +985,7 @@ export const navigations = [
                 path: '/reporting/delivery/item',
             },
             {
-                name: 'Units Available In Processing',
+                name: <Typography sx={{textAlign:'left'}}>Units Available in Processing</Typography>,
 
                 path: '/reporting/units/processing',
             },
@@ -961,7 +1029,7 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: 'Soring Pending',
+                name: 'Sorting Pending',
                 path: '/reporting/bot-tray/sorting-pending',
             },
         ],
@@ -1057,7 +1125,7 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: 'Sale Bucket Transfer Pending',
+                name: <Typography sx={{textAlign:'left'}}>Sales Bucket Transfer Pending</Typography>,
                 path: '/reporting/ctx/transfer-pending-to-sales',
             },
             {
@@ -1098,20 +1166,20 @@ export const navigations = [
         sales: false,
         auth: authRoles.reporting,
     },
-    {
-        name: 'Track Items',
-        icon: '',
-        path: '/reporting/track-item',
-        sales: false,
-        auth: authRoles.reporting,
-    },
-    {
-        name: 'Track Trays',
-        icon: '',
-        path: '/reporting/track-tray',
-        sales: false,
-        auth: authRoles.reporting,
-    },
+    // {
+    //     name: 'Track Items',
+    //     icon: '',
+    //     path: '/reporting/track-item',
+    //     sales: false,
+    //     auth: authRoles.reporting,
+    // },
+    // {
+    //     name: 'Track Trays',
+    //     icon: '',
+    //     path: '/reporting/track-tray',
+    //     sales: false,
+    //     auth: authRoles.reporting,
+    // },
     {
         name: 'RDL 2 Requests',
         icon: 'class',

@@ -2,7 +2,6 @@ import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-
 import {
     Button,
     TableCell,
@@ -130,7 +129,8 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 800,
-        width: 3200,
+        width: '260%',
+        height:'100%',
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -138,7 +138,7 @@ const SimpleMuiTable = () => {
             },
         },
         '& td': {
-            borderBottom: 'none',
+            borderBottom: '1px solid #ddd',
         },
         '& td:first-of-type': {
             paddingLeft: '36px !important',
@@ -195,7 +195,7 @@ const SimpleMuiTable = () => {
                     <TableRow>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Imported Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Delivery Imported Date</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Status</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
@@ -203,7 +203,7 @@ const SimpleMuiTable = () => {
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GEP Order</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
                         <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diagnostics Discount</TableCell>

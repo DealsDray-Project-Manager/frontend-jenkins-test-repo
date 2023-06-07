@@ -57,7 +57,6 @@ const MemberEditorDialog = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(editFetchData)
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 setPersonName(editFetchData.location)
@@ -99,7 +98,7 @@ const MemberEditorDialog = ({
             .nullable(),
         address: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
-            .max(40)
+            .max(500)
             .required('Required*')
             .nullable(),
         city: Yup.string()

@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Typography } from '@mui/material'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -32,10 +31,14 @@ const SimpleMuiTable = () => {
         const fetchWht = async () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
-                if(admin){
+                if (admin) {
                     let { location } = jwt_decode(admin)
                     const res = await axiosWarehouseIn.post(
-                        '/getWhtTrayItem/' + trayId + '/' + 'super-admin/' + location
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'super-admin/' +
+                            location
                     )
                     if (res.status === 200) {
                         setWhtTrayItem(res.data?.data?.items)
@@ -64,60 +67,99 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'uic', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>UIC</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>UIC</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>MUIC</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'tracking_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tracking ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tracking ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Tray</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>BOT Tray</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'bot_agent',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Agent</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>BOT Agent</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 display: false,
@@ -128,12 +170,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                     
-                        { name: 'View-Item' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'View-Item' }]} />
             </div>
             <MUIDataTable
                 title={'Tray Item'}
@@ -142,8 +179,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

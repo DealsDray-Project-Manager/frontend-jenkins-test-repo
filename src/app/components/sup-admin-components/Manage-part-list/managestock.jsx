@@ -96,7 +96,6 @@ const AddBulkPart = () => {
             const fetchData = async () => {
                 let res = await axiosSuperAdminPrexo.post('/getBrandIdHighest')
                 if (res.status == 200) {
-                    console.log(res)
                     setPartId(res.data.partCount)
                 }
             }
@@ -174,7 +173,7 @@ const AddBulkPart = () => {
                 technical_qc: x.technical_qc,
                 description: x.description,
                 available_stock: x.avl_stock,
-                add_stock: '',
+                add_stock: '0',
             }
             arr.push(obj)
         }
@@ -210,7 +209,6 @@ const AddBulkPart = () => {
             item: pagination.item.filter((item) => item.id != id),
         }))
     }
-
     const validateData = async (e) => {
         try {
             setLoading(true)
@@ -398,7 +396,7 @@ const AddBulkPart = () => {
                                 <TableCell>Technical Qc</TableCell>
                                 <TableCell>Description</TableCell>
                                 <TableCell>Available Stock</TableCell>
-                                <TableCell>Update Stock</TableCell>
+                                <TableCell>Add/Delete Stock</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -503,8 +501,9 @@ const AddBulkPart = () => {
                                         (Object.keys(err).length != 0 &&
                                             data.add_stock == undefined) ? (
                                             <p style={{ color: 'red' }}>
-                                                Only Positive Integers are
-                                                Acceptable
+                                                Only Integers are Acceptable or
+                                                Please check your Available
+                                                stock
                                             </p>
                                         ) : (
                                             ''

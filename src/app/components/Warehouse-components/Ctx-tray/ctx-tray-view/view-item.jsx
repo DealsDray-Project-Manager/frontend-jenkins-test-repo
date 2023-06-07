@@ -2,10 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { axiosAuditAgent } from '../../../../../axios'
-import { Button, Typography } from '@mui/material'
-
+import Swal from 'sweetalert2'
+import { Typography, Table, TableContainer } from '@mui/material'
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -18,10 +18,32 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '140%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const SimpleMuiTable = () => {
     const [trayItem, setTrayItem] = useState([])
+
     const { trayId } = useParams()
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,18 +52,19 @@ const SimpleMuiTable = () => {
                     '/view-items/' + trayId
                 )
                 if (response.status === 200) {
-                    setTrayItem(response.data.data.items)
+                    setTrayItem(response.data.data)
                 }
             } catch (error) {
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
         }
         fetchData()
     }, [])
-
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/tray/view-item/' + id)
-    }
 
     const columns = [
         {
@@ -50,6 +73,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                 <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
@@ -101,10 +125,10 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Audit Recommended Grade</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}}>Auditor Final Grade</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.grade,
+                customBodyRender: (value, dataIndex) => trayItem?.tray_grade,
             },
         },
         {
@@ -123,7 +147,6 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.description,
             },
         },
-       
     ]
 
     return (
@@ -131,15 +154,16 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Tray', path: '/' },
+                        { name: 'Assigned Tray', path: '/' },
                         { name: 'Tray-Item' },
                     ]}
                 />
             </div>
-
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'Tray'}
-                data={trayItem}
+                data={trayItem.items}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -173,6 +197,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+           
         </Container>
     )
 }

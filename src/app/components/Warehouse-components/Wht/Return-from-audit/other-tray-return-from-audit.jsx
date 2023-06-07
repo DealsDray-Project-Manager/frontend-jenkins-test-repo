@@ -78,7 +78,6 @@ const SimpleMuiTable = () => {
     const [receiveBut, setReceiveBut] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -159,9 +158,15 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, id) => {
+    const handelViewTray = (e, id,trayType) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/return-from-audit/tray-items/' + id)
+        if(trayType == "WHT"){
+
+            navigate('/wareshouse/wht/return-from-audit/tray-items/' + id)
+        }
+        else{
+            navigate('/wareshouse/wht/return-from-audit/ctx/tray-items/' + id)
+        }
     }
 
     const handleDialogClose = () => {
@@ -306,7 +311,7 @@ const SimpleMuiTable = () => {
                                         variant="contained"
                                         style={{ backgroundColor: '#206CE2' }}
                                         onClick={(e) => {
-                                            handelViewTray(e, value)
+                                            handelViewTray(e, value,tableMeta.rowData[2])
                                         }}
                                     >
                                         View

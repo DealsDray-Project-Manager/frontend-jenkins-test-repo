@@ -18,6 +18,7 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
+    console.log(imei)
     return (
         <Card >
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
@@ -26,11 +27,11 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                 <TableBody>
                     <TableRow key={BqcSowftwareReport?.mandatory_test}>
                         <TableCell sx={{ pl: 2 }}>IMEI Verification</TableCell>
-                        {imei?.match(/[0-9]/g).join('') ==
+                        {imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?.mobile_imei ||
-                        imei?.match(/[0-9]/g).join('') ==
+                        imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?.mobile_imei2 ||
-                        imei?.match(/[0-9]/g).join('') ==
+                        imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?._ro_ril_miui_imei0 ? (
                             <TableCell style={{ color: 'green' }}>
                                 Verified

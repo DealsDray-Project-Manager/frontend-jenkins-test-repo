@@ -123,7 +123,6 @@ const Uploadspare1 = () => {
             const fetchData = async () => {
                 let res = await axiosSuperAdminPrexo.post('/getBrandIdHighest')
                 if (res.status == 200) {
-                    console.log(res);
                     setPartId(res.data.partCount)
                 }
             }

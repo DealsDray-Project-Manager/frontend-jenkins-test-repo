@@ -129,7 +129,7 @@ const SimpleMuiTable = () => {
 
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
-        width: 4000,
+        width: 2800,
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -193,24 +193,20 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Record.NO</TableCell>
-
-                        <TableCell>UIC Code</TableCell>
-
-                        <TableCell>Actual Delivery Date</TableCell>
-                        <TableCell>Order ID</TableCell>
-
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Item ID</TableCell>
-
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Partner Purchase Price</TableCell>
-                        <TableCell>Partner Shop</TableCell>
-                        <TableCell>Base Discount</TableCell>
-                        <TableCell>Diganostic Discount</TableCell>
-                        <TableCell>Storage Discount</TableCell>
-                        <TableCell>Buyback Category</TableCell>
-                        <TableCell>Doorstep Diganostic</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Code</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivery Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diganostic Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Discount</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorstep Diganostic</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

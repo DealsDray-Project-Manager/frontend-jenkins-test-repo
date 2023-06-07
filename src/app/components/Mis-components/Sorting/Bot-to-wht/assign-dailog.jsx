@@ -46,7 +46,7 @@ const MemberEditorDialog = ({
                 )
                 if (res.status === 200) {
                     setLoading(false)
-                 
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -55,7 +55,6 @@ const MemberEditorDialog = ({
                     })
                     navigate('/mis/sorting/bot-to-wht')
                 } else if (res.status == 202) {
-                   
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -66,6 +65,16 @@ const MemberEditorDialog = ({
                     handleClose()
                     setSortingAgentName('')
                 }
+            } else {
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: checkReadyForSorting?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setLoading(false)
+                setSortingAgentName('')
             }
         } catch (error) {
             Swal.fire({

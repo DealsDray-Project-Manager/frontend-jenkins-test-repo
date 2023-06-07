@@ -173,6 +173,9 @@ const PickupDoneClose = Loadable(
 const CtxTransferRequest = Loadable(
     lazy(() => import('./Ctx-tray/Transfer-ctx-request/request'))
 )
+const ReturnFromAuditItemView = Loadable(
+    lazy(() => import('./Wht/Return-from-audit/view-item-ctx'))
+)
 const CtxTransferApprove = Loadable(
     lazy(() => import('./Ctx-tray/Transfer-ctx-request/approve'))
 )
@@ -440,6 +443,10 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/return-from-audit/tray-items/:trayId',
         element: <OtherTrayReturnFromAuditViewItem />,
+    },
+    {
+        path: '/wareshouse/wht/return-from-audit/ctx/tray-items/:trayId',
+        element: <ReturnFromAuditItemView />,
     },
 
     {

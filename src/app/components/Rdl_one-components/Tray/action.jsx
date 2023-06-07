@@ -86,7 +86,7 @@ const Actionfunction = () => {
                 )
                 if (fetch.status == 200) {
                     for (let x of fetch.data.data) {
-                        x.quantity = 0
+                        x.quantity = 1
                         setPartData((partData) => [...partData, x])
                     }
                 }
@@ -96,8 +96,6 @@ const Actionfunction = () => {
         }
         fetchPartList()
     }, [])
-
-    console.log(partData)
 
     const schema = Yup.object().shape({
         selected_status: Yup.string().required('Required*').nullable(),
@@ -139,9 +137,9 @@ const Actionfunction = () => {
     const handleClick = (e, rowIndex, quantity) => {
         const { id, checked } = e.target
         setIsCheck([...isCheck, id])
-        handleChange(quantity + 1, rowIndex)
+        // handleChange(quantity + 1, rowIndex)
         if (!checked) {
-            handleChange(0, rowIndex)
+            // handleChange(0, rowIndex)
             setIsCheck(isCheck.filter((item) => item !== id))
         }
     }
@@ -169,9 +167,7 @@ const Actionfunction = () => {
                 }
                 values.partRequired = arr
             }
-            values.username = user
-            console.log(values)
-
+            values.username = user.name
             let objData = {
                 trayId: whtTrayId,
                 rdl_fls_report: values,
@@ -281,18 +277,18 @@ const Actionfunction = () => {
             options: {
                 filter: false,
                 sort: false,
-
-                customBodyRender: (digit, tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     const rowIndex = tableMeta.rowIndex
                     if (isCheck.includes(tableMeta.rowData[0])) {
-                        return (
-                            <NumberInput
-                                digit={digit}
-                                onChange={(newValue) =>
-                                    handleChange(newValue, rowIndex)
-                                }
-                            />
-                        )
+                        // return (
+                        return value
+                        //     <NumberInput
+                        //         digit={digit}
+                        //         // onChange={(newValue) =>
+                        //         //     handleChange(newValue, rowIndex)
+                        //         // }
+                        //     />
+                        // )
                     }
                 },
             },
@@ -451,6 +447,7 @@ const Actionfunction = () => {
             <Box sx={{ textAlign: 'right' }}>
                 <Button
                     type="submit"
+                    disabled={addButDis ||selectedStatus == 'Repair Required' && isCheck.length == 0}
                     onClick={handleSubmit(onSubmit)}
                     variant="contained"
                     color="primary"

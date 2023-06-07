@@ -63,7 +63,7 @@ const ProductTable = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -100,7 +100,6 @@ const PaginationTable = () => {
 
     const importExcel = (e) => {
         if (exFile == null) {
-          
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
@@ -171,7 +170,7 @@ const PaginationTable = () => {
                     setErr(res.data.data)
                     setValidate(true)
                     setLoading(false)
-                   
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -203,6 +202,11 @@ const PaginationTable = () => {
                 data.order_timestamp = new Date(data.order_timestamp)
                 data.delivery_date = new Date(data.gc_redeem_time)
                 data.gc_redeem_time = new Date(data.gc_redeem_time)
+                data.base_discount = data?.base_discount?.toString()
+                data.order_id_replaced = data.order_id_replaced?.toString()
+                data.gc_amount_redeemed = data.gc_amount_redeemed?.toString()
+                data.gc_amount_refund = data.gc_amount_refund?.toString()
+
                 if (
                     err?.order_id_is_duplicate?.includes(data?.order_id) ||
                     data?.order_id == undefined ||
@@ -339,11 +343,10 @@ const PaginationTable = () => {
             })
             let res = await axiosMisUser.post('/ordersImport', obj)
             if (res.status == 200) {
-            
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title:"Successfully Added",
+                    title: 'Successfully Added',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -676,7 +679,7 @@ const PaginationTable = () => {
                                                         ''
                                                     )}
                                                 </TableCell>
-                                                
+
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(

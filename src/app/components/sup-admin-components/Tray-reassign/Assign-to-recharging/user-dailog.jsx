@@ -3,7 +3,6 @@ import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
-import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -21,87 +20,65 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    sortingAgent,
+    chargingUsers,
     isCheck,
 }) => {
-    const [sortingAgentName, setSortingAgentName] = useState('')
+    const [chargingUserName, setCharging] = useState('')
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
 
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
             let obj = {
-                agent_name: sortingAgentName,
-                trayId: isCheck,
+                tray: isCheck,
+                user_name: chargingUserName,
+                sort_id: 'Send for charging',
             }
-            let checkReadyForSorting = await axiosMisUser.post(
-                '/check-all-wht-inuse-for-sorting',
-                obj
-            )
-            if (checkReadyForSorting.status === 200) {
-                let res = await axiosMisUser.post(
-                    '/assign-to-sorting-agent',
-                    obj
-                )
-                if (res.status === 200) {
-                    setLoading(false)
-
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate('/mis/sorting/bot-to-wht')
-                } else if (res.status == 202) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    handleClose()
-                    setSortingAgentName('')
-                }
-            } else {
-                handleClose()
+            let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
+            if (res.status == 200) {
+                setLoading(false)
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'error',
-                    title: checkReadyForSorting?.data?.message,
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setCharging('')
+                setIsAlive((isAlive) => !isAlive)
+                handleClose()
+            } else {
                 setLoading(false)
-                setSortingAgentName('')
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select Sorting User</H4>
+                <H4 sx={{ mb: '20px' }}>Select Charging User</H4>
                 <TextFieldCustOm
                     label="Username"
                     fullWidth
                     select
                     name="username"
                 >
-                    {sortingAgent.map((data) => (
+                    {chargingUsers.map((data) => (
                         <MenuItem
                             key={data.user_name}
                             value={data.user_name}
                             onClick={(e) => {
-                                setSortingAgentName(data.user_name)
+                                setCharging(data.user_name)
                             }}
                         >
                             {data.user_name}
@@ -111,8 +88,7 @@ const MemberEditorDialog = ({
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        p
-                        disabled={loading || sortingAgentName === ''}
+                        disabled={loading || chargingUserName == ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { Dialog, Button, TextField, MenuItem } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
+import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -18,90 +18,76 @@ const FormHandlerBox = styled('div')(() => ({
 }))
 
 const MemberEditorDialog = ({
-    handleClose,
     open,
+    handleClose,
     setIsAlive,
-    sortingAgent,
-    isCheck,
+    editFetchData,
+    botUsers,
+    setBotUsers,
+    bagId,
 }) => {
-    const [sortingAgentName, setSortingAgentName] = useState('')
-    const [loading, setLoading] = useState(false)
+    const [botName, setBotName] = useState()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
             let obj = {
-                agent_name: sortingAgentName,
-                trayId: isCheck,
+                bagId: bagId,
+                bot_name: botName,
             }
-            let checkReadyForSorting = await axiosMisUser.post(
-                '/check-all-wht-inuse-for-sorting',
-                obj
-            )
-            if (checkReadyForSorting.status === 200) {
-                let res = await axiosMisUser.post(
-                    '/assign-to-sorting-agent',
-                    obj
-                )
-                if (res.status === 200) {
-                    setLoading(false)
+            let res = await axiosMisUser.post('/issueRequestSend', obj)
+            if (res.status == 200) {
+                setLoading(false)
 
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate('/mis/sorting/bot-to-wht')
-                } else if (res.status == 202) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    handleClose()
-                    setSortingAgentName('')
-                }
-            } else {
-                handleClose()
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'error',
-                    title: checkReadyForSorting?.data?.message,
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setBotName('')
+                setIsAlive((isAlive) => !isAlive)
+                handleClose()
+            } else {
                 setLoading(false)
-                setSortingAgentName('')
+                handleClose()
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
+                setBotName('')
+                handleClose()
+                navigate(
+                    '/mis/assign-to-agent/bot/uic-genaration/' + res.data.bagId
+                )
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select Sorting User</H4>
+                <H4 sx={{ mb: '20px' }}>Select Bot User</H4>
                 <TextFieldCustOm
                     label="Username"
                     fullWidth
                     select
                     name="username"
                 >
-                    {sortingAgent.map((data) => (
+                    {botUsers.map((data) => (
                         <MenuItem
                             key={data.user_name}
                             value={data.user_name}
                             onClick={(e) => {
-                                setSortingAgentName(data.user_name)
+                                setBotName(data.user_name)
                             }}
                         >
                             {data.user_name}
@@ -111,8 +97,7 @@ const MemberEditorDialog = ({
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        p
-                        disabled={loading || sortingAgentName === ''}
+                        disabled={loading || botName == ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

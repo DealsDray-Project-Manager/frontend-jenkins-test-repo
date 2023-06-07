@@ -192,6 +192,73 @@ export const navigations = [
         auth: authRoles.admin,
         sales: false,
     },
+    {
+        name: 'Bag Reassign',
+        icon: 'assignment_return',
+        children: [
+            {
+                name: 'Assigned Bag',
+                path: '/sup-admin/bag-assinged/bag',
+                iconText: 'PL',
+            },
+           
+        ],
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
+        name: 'Tray Reassign',
+        icon: 'remove_shopping_cart',
+        children: [
+            {
+                name: 'Sorting (bot to wht)',
+                path: '/sup-admin/tray-reassign/sorting/bot-wht',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to Merging',
+                path: '/sup-admin/tray-reassign/merge',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to charging',
+                path: '/sup-admin/tray-reassign/charging',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to recharging',
+                path: '/sup-admin/tray-reassign/recharging',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to bqc',
+                path: '/sup-admin/tray-reassign/bqc',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to audit',
+                path: '/sup-admin/tray-reassign/audit',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to rdl-fls',
+                path: '/sup-admin/tray-reassign/rdl-fls',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to rdl-repair',
+                path: '/sup-admin/tray-reassign/rdl-repair',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned Sorting (ctx to stx)',
+                path: '/sup-admin/tray-reassign/sorting/ctx-stx',
+                iconText: 'PL',
+            },
+        ],
+        auth: authRoles.admin,
+        sales: false,
+    },
 
     {
         name: 'Remove invalid item',

@@ -23,6 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const [isLoading, setIsLoading] = useState(false)

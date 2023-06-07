@@ -19,7 +19,9 @@ const BulkProducts = Loadable(
 )
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const Location = Loadable(lazy(() => import('./Manage-location/view-location')))
-const Warehouse = Loadable(lazy(() => import('./Manage-warehouse/view-warehouse')))
+const Warehouse = Loadable(
+    lazy(() => import('./Manage-warehouse/view-warehouse'))
+)
 
 const Vendors = Loadable(lazy(() => import('./Manage-vendors/view-vendors')))
 
@@ -90,6 +92,39 @@ const SuccessPageOfMuicAssosication = Loadable(
 const ManageStockUpdateReport = Loadable(
     lazy(() => import('./Manage-part-list/manageStockReport'))
 )
+const ReassignToCharging = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-charging/view-wht-tray'))
+)
+const ReassignToBqc = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-bqc/view-wht-tray'))
+)
+const ReassignToAudit = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-audit/view-wht-tray'))
+)
+const ReassignToRdlFls = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-fls/wht-tray'))
+)
+const ReassignToRdlRepair = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-repair/wht-tray'))
+)
+const ReassignToReCharging = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-recharging/view-wht-tray'))
+)
+const ReassignTrayItemView = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-fls/view-wht-tray'))
+)
+const ReassignMergeRequest = Loadable(
+    lazy(() => import('./Tray-reassign/Tray-merge/tray'))
+)
+const AssignedBag = Loadable(
+    lazy(() => import('./Bag-reassign/Assign-to-bot/view-bot-bag'))
+)
+const ReassignSortingCtxToStx = Loadable(
+    lazy(() => import('./Tray-reassign/Ctx-to-stx/ctx-tray'))
+)
+const ReassignSortingBotToWht = Loadable(
+    lazy(() => import('./Tray-reassign/Bot-wht-sort/tray'))
+)
 
 const SuperAdminRouter = [
     {
@@ -112,7 +147,7 @@ const SuperAdminRouter = [
         path: '/sup-admin/view-part-list/addmuic/:partId',
         element: <Addmuic />,
     },
-   
+
     {
         path: '/sup-admin/products/partsassociation/report',
         element: <Partsassociation />,
@@ -269,6 +304,50 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-part-list/managestock/report',
         element: <ManageStockUpdateReport />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/charging',
+        element: <ReassignToCharging />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/bqc',
+        element: <ReassignToBqc />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/audit',
+        element: <ReassignToAudit />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/rdl-fls',
+        element: <ReassignToRdlFls />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/rdl-repair',
+        element: <ReassignToRdlRepair />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/recharging',
+        element: <ReassignToReCharging />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/merge',
+        element: <ReassignMergeRequest />,
+    },
+    {
+        path: '/sup-admin/tray/item-view/:trayId',
+        element: <ReassignTrayItemView />,
+    },
+    {
+        path: '/sup-admin/bag-assinged/bag',
+        element: <AssignedBag />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/sorting/ctx-stx',
+        element: <ReassignSortingCtxToStx />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/sorting/bot-wht',
+        element: <ReassignSortingBotToWht />,
     },
 ]
 

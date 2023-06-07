@@ -18,6 +18,7 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
+    console.log(imei)
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
@@ -25,12 +26,14 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={BqcSowftwareReport?.mandatory_test}>
-                        <TableCell sx={{ pl: 2 }}>IMEI Verification :</TableCell>
-                        {imei?.match(/[0-9]/g).join('') ==
+                        <TableCell sx={{ pl: 2 }}>
+                            IMEI Verification :
+                        </TableCell>
+                        {imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?.mobile_imei ||
-                        imei?.match(/[0-9]/g).join('') ==
+                        imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?.mobile_imei2 ||
-                        imei?.match(/[0-9]/g).join('') ==
+                        imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?._ro_ril_miui_imei0 ? (
                             <TableCell style={{ color: 'green' }}>
                                 Verified
@@ -80,7 +83,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                     )}
                     {grade == 'A' ? (
                         <>
-                            <H6 sx={{ p: 2 }}>List of Cosmetic Failed Test :</H6>
+                            <H6 sx={{ p: 2 }}>
+                                List of Cosmetic Failed Test :
+                            </H6>
                             <Divider />
                             {BqcSowftwareReport?.crackedlens?.toLowerCase() ==
                             'failed' ? (
@@ -344,7 +349,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Automated Failed Test :</H6>
+                            <H6 sx={{ p: 2 }}>
+                                List of Automated Failed Test :
+                            </H6>
                             <Divider />
 
                             {BqcSowftwareReport?.front_camera_test?.toLowerCase() ==
@@ -366,7 +373,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.back_camera_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Back Camera Test  :
+                                        Back Camera Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.back_camera_test}
@@ -671,7 +678,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
                                     <TableCell sx={{ pl: 2 }}>
-                                        Auto Rotation Test  :
+                                        Auto Rotation Test :
                                     </TableCell>
                                     <TableCell>
                                         {BqcSowftwareReport?.auto_rotation_test}
@@ -778,7 +785,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 </TableRow>
                             ) : null}
 
-                            <H6 sx={{ p: 2 }}>List of Assisted Failed Test :</H6>
+                            <H6 sx={{ p: 2 }}>
+                                List of Assisted Failed Test :
+                            </H6>
                             <Divider />
 
                             {BqcSowftwareReport?.screen_damage_test?.toLowerCase() ==
@@ -1955,7 +1964,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 >
                                     <TableCell sx={{ pl: 2 }}>
                                         PQ Scratches Display :
-                                    </TableCell> 
+                                    </TableCell>
                                     <TableCell>
                                         {
                                             BqcSowftwareReport?.pq_scratchesdisplay
@@ -3313,7 +3322,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                 <TableRow
                                     key={BqcSowftwareReport?.auto_rotation_test}
                                 >
-                                    <TableCell sx={{ pl: 2 }}> 
+                                    <TableCell sx={{ pl: 2 }}>
                                         Auto Rotation Test :
                                     </TableCell>
                                     <TableCell>

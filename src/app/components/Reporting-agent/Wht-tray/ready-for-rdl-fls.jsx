@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    const response = await axiosMisUser.post('/auditDoneWht')
+                    const response = await axiosMisUser.post('/auditDoneWht/' + location)
 
                     if (response.status === 200) {
                         setIsLoading(false)

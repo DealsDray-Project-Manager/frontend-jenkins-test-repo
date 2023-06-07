@@ -212,7 +212,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Type</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Type</></Typography>,
             options: {
                 filter: true,
             },

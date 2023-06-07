@@ -89,26 +89,26 @@ const SimpleMuiTable = () => {
             },
         },
 
-        {
-            name: 'rdl_fls_report',
-            label: 'RDL Status',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.selected_status
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Model Required',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.model_reg
-                },
-            },
-        },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'RDL Status',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.selected_status
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Model Required',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.model_reg
+        //         },
+        //     },
+        // },
         // {
         //     name: 'rdl_fls_report',
         //     label: 'Part List Count',
@@ -159,42 +159,42 @@ const SimpleMuiTable = () => {
         //         },
         //     },
         // },
-        {
-            name: 'rdl_fls_report',
-            label: 'RDL 1 Added Part List',
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                {
-                    return value?.partRequired?.map((data, index) => (
-                        <p>
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'RDL 1 Added Part List',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value, dataIndex) =>
+        //         {
+        //             return value?.partRequired?.map((data, index) => (
+        //                 <p>
                             
-                            {index + 1}.{data?.part_name} - {data?.part_id} ,
-                        </p>
-                    ))
-                }
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Color',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.color
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_report',
-            label: 'Description',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.description
-                },
-            },
-        },
+        //                     {index + 1}.{data?.part_name} - {data?.part_id} ,
+        //                 </p>
+        //             ))
+        //         }
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Color',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.color
+        //         },
+        //     },
+        // },
+        // {
+        //     name: 'rdl_fls_report',
+        //     label: 'Description',
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) => {
+        //             return value?.description
+        //         },
+        //     },
+        // },
     ]
 
     return (

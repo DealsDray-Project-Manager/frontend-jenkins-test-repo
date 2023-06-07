@@ -35,42 +35,30 @@ const MemberEditorDialog = ({
                 agent_name: sortingAgentName,
                 trayId: isCheck,
             }
-            let checkReadyForSorting = await axiosMisUser.post(
-                '/check-all-wht-inuse-for-sorting',
-                obj
-            )
-            if (checkReadyForSorting.status === 200) {
-                let res = await axiosMisUser.post(
-                    '/assign-to-sorting-agent',
-                    obj
-                )
-                if (res.status === 200) {
-                    setLoading(false)
 
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate('/mis/sorting/bot-to-wht')
-                } else if (res.status == 202) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    handleClose()
-                    setSortingAgentName('')
-                }
-            } else {
+            let res = await axiosMisUser.post('/assign-to-sorting-agent', obj)
+            console.log(res)
+            if (res.status === 200) {
+                setLoading(false)
+                handleClose()
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                    }
+                })
+            } else if (res.status == 202) {
                 handleClose()
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: checkReadyForSorting?.data?.message,
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)

@@ -167,7 +167,7 @@ const Actionfunction = () => {
                 }
                 values.partRequired = arr
             }
-            values.username = user
+            values.username = user.name
             let objData = {
                 trayId: whtTrayId,
                 rdl_fls_report: values,

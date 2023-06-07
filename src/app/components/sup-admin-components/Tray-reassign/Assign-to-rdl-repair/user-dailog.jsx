@@ -3,7 +3,6 @@ import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
-import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -21,87 +20,66 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    sortingAgent,
-    isCheck,
+    RDLUsers,
+    isCheckk,
 }) => {
-    const [sortingAgentName, setSortingAgentName] = useState('')
+    const [RDLUserName, setRDL] = useState('')
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
 
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
             let obj = {
-                agent_name: sortingAgentName,
-                trayId: isCheck,
+                tray: isCheckk,
+                user_name: RDLUserName,
+                sortId: 'Send for RDL-2',
             }
-            let checkReadyForSorting = await axiosMisUser.post(
-                '/check-all-wht-inuse-for-sorting',
+            let res = await axiosMisUser.post(
+                '/assignToAgent/rdl-fls/sentToWarehouse',
                 obj
             )
-            if (checkReadyForSorting.status === 200) {
-                let res = await axiosMisUser.post(
-                    '/assign-to-sorting-agent',
-                    obj
-                )
-                if (res.status === 200) {
-                    setLoading(false)
-
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    navigate('/mis/sorting/bot-to-wht')
-                } else if (res.status == 202) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    handleClose()
-                    setSortingAgentName('')
-                }
-            } else {
+            if (res.status == 200) {
                 handleClose()
+                setLoading(false)
                 Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: checkReadyForSorting?.data?.message,
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setLoading(false)
-                setSortingAgentName('')
+                setRDL('')
+                setIsAlive((isAlive) => !isAlive)
+            } else {
+                // setLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res?.data?.message,
+                })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select Sorting User</H4>
+                <H4 sx={{ mb: '20px' }}>Select RDL 2 User</H4>
                 <TextFieldCustOm
                     label="Username"
                     fullWidth
                     select
                     name="username"
                 >
-                    {sortingAgent.map((data) => (
+                    {RDLUsers.map((data) => (
                         <MenuItem
                             key={data.user_name}
                             value={data.user_name}
                             onClick={(e) => {
-                                setSortingAgentName(data.user_name)
+                                setRDL(data.user_name)
                             }}
                         >
                             {data.user_name}
@@ -111,8 +89,7 @@ const MemberEditorDialog = ({
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        p
-                        disabled={loading || sortingAgentName === ''}
+                        disabled={loading || RDLUserName == ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
-import { axiosWarehouseIn } from '../../../../axios'
+import { axiosWarehouseIn } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Typography } from '@mui/material'
@@ -142,29 +142,21 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'tray_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>BOT Tray</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'bot_agent',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>BOT Agent</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'tray_id',
+        //     label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Tray</></Typography>,
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
+        // {
+        //     name: 'bot_agent',
+        //     label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Agent</></Typography>,
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
     ]
 
     return (

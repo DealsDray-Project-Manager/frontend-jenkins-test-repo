@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosReportingAgent } from '../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -65,17 +65,17 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                   <Typography sx={{pl:4}}>{ dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -90,7 +90,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: false,
                 customBodyRender: (value, tableMeta) =>
@@ -99,21 +99,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Type </Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_time_wharehouse_from_bot',
-            label: 'Closed Time',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Closed Time</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -126,7 +126,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Action',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:1}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

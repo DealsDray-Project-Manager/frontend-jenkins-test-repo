@@ -962,7 +962,7 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: 'Soring Pending',
+                name: 'Sorting Pending',
                 path: '/reporting/bot-tray/sorting-pending',
             },
         ],

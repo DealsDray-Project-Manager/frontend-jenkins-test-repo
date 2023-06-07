@@ -7,7 +7,7 @@ import { axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-import { Box } from '@mui/material'
+import { Box, Typography, Table } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,6 +19,24 @@ const Container = styled('div')(({ theme }) => ({
         [theme.breakpoints.down('sm')]: {
             marginBottom: '16px',
         },
+    },
+}))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '100%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
     },
 }))
 
@@ -64,31 +82,31 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: 'Brand',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: 'Model',
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -109,8 +127,10 @@ const SimpleMuiTable = () => {
                 <H3>Tray Status : {data?.sort_id}</H3>
                 <H3>Tray Display Name :{data?.display}</H3>
             </Box>
-
-            <MUIDataTable
+            <br />
+            <>
+                <ProductTable>
+                <MUIDataTable
                 title={'Tray'}
                 data={whtTray}
                 columns={columns}
@@ -146,6 +166,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </>
+           
         </Container>
     )
 }

@@ -158,7 +158,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', ml:1}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

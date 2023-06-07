@@ -155,6 +155,7 @@ const SimpleMuiTable = () => {
             paddingLeft: '16px !important',
         },
     }))
+    
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
     const fileType =
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'

@@ -311,23 +311,23 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow >
-                        <TableCell sx={{fontWeight:'bold'}}>Record No</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Actual Delivered Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Order ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Uic Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>UIC</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Item ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Bag ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Bot Tray ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Tray Type</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Tray Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Tray Location</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>WHT Tray</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>CTX Tray Id</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>STX Tray Id</TableCell>
-                        <TableCell sx={{fontWeight:'bold'}}>Partner Purchase Price</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record No</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivered Date</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Uic Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Bag ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Bot Tray ID</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tray Type</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tray Status</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tray Location</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>WHT Tray</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>CTX Tray Id</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>STX Tray Id</TableCell>
+                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

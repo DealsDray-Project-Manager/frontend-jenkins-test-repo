@@ -150,6 +150,7 @@ export default function StickyHeadTable({ props }) {
                     <Box
                     sx={{
                         float: 'right',
+                        mr:2
                     }}
                 >
                     <h4>

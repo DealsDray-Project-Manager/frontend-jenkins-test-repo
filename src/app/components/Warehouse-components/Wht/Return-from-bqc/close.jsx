@@ -12,10 +12,25 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -218,7 +233,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'18px'}}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}/
                                 {trayData?.limit}
@@ -231,7 +246,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Valid</h5>
+                            <h5 style={{marginLeft:'14px'}}>Valid</h5>
                             <p style={{ marginLeft: '14px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}
                             </p>
@@ -315,7 +330,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'16px'}}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData?.items?.length}/{trayData?.limit}
                             </p>
@@ -327,7 +342,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Valid</h5>
+                            <h5 style={{marginLeft:'16px'}}>Valid</h5>
                             <p style={{ marginLeft: '19px', fontSize: '24px' }}>
                                 {trayData?.items?.length}
                             </p>
@@ -372,13 +387,22 @@ export default function DialogBox() {
         )
     }, [trayData?.items, textDisable, uic])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-From-BQC ', path: '/' },
+                        { name: 'Tray Close'}
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+                // sx={{
+                //     mt: 1,
+                //     height: 70,
+                //     borderRadius: 1,
+                // }}
             >
                 <Box
                     sx={{
@@ -448,6 +472,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

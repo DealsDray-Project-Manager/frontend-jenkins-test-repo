@@ -17,6 +17,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
@@ -24,6 +25,19 @@ import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Checkbox from '@mui/material/Checkbox'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -200,7 +214,7 @@ export default function DialogBox() {
                         </Box>
                     </Box>
                 </Box>
-                <TableContainer>
+                <TableContainer> 
                     <Table
                         style={{ width: '100%' }}
                         id="example"
@@ -265,7 +279,7 @@ export default function DialogBox() {
                                 }}
                             />
                             <Button
-                                sx={{ ml: 3, mt: 2, mb: 9 }}
+                                sx={{ ml: 3, mt: 2, mb: 2 }}
                                 variant="contained"
                                 disabled={uic == ''}
                                 style={{ backgroundColor: 'green' }}
@@ -323,7 +337,15 @@ export default function DialogBox() {
     }, [trayData?.actual_items, textDisable, uic])
 
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Tray', path: '/' },
+                        { name: 'Resticker'}
+                    ]}
+                />
+            </div>
             <BootstrapDialog
                 aria-labelledby="customized-dialog-title"
                 open={open}
@@ -452,6 +474,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

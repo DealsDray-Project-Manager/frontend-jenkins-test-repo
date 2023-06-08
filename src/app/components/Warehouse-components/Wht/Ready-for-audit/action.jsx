@@ -19,6 +19,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -32,6 +33,20 @@ import Swal from 'sweetalert2'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -318,7 +333,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'12px'}}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.temp_array?.length}/{trayData?.limit}
                             </p>
@@ -376,7 +391,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'12px'}}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (
@@ -425,6 +440,16 @@ export default function DialogBox() {
     }, [trayData?.actual_items, textDisable, uic])
 
     return (
+        <Container>
+             <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Ready-For-Audit', path: '/' },
+                        { name: 'Audit', path: '/' },
+                        { name: 'Verification'}
+                    ]}
+                />
+            </div>
         <Box>
             <BootstrapDialog
                 aria-labelledby="customized-dialog-title"
@@ -511,11 +536,11 @@ export default function DialogBox() {
             </BootstrapDialog>
 
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+                // sx={{
+                //     mt: 1,
+                //     height: 70,
+                //     borderRadius: 1,
+                // }}
             >
                 <Box
                     sx={{
@@ -589,5 +614,6 @@ export default function DialogBox() {
                 </Box>
             </div>
         </Box>
+        </Container>
     )
 }

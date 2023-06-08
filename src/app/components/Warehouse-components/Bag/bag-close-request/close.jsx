@@ -12,6 +12,8 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -19,6 +21,19 @@ import Checkbox from '@mui/material/Checkbox'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -457,6 +472,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
+        
     }, [employeeData[0]?.items])
     const tableActual = useMemo(() => {
         return (
@@ -635,13 +651,21 @@ export default function DialogBox() {
         )
     }, [employeeData[0]?.actual_items, textDisable, awbn])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'PMT And MMT', path: '/' },
+                        { name: 'Tray-Close-Request', path: '/' },
+                        { name: 'Tray Close'}
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+                // sx={{
+                //     height: 70,
+                //     borderRadius: 10,
+                // }}
             >
                 <Box
                     sx={{
@@ -724,6 +748,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

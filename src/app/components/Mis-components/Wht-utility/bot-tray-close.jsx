@@ -19,10 +19,24 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
+import { Breadcrumb } from 'app/components'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -157,7 +171,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.items?.length}/{trayData?.limit}
                             </p>
@@ -231,7 +245,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData.actual_items?.length}/
                                 {trayData?.limit}
@@ -270,13 +284,21 @@ export default function DialogBox() {
     }, [trayData?.actual_items, textDisable, uic])
 
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Tray', path: '/' },
+                        { name: 'Tray Close'}
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+                // sx={{
+                //     mt: 1,
+                //     height: 70,
+                //     borderRadius: 1,
+                // }}
             >
                 <Box
                     sx={{
@@ -323,6 +345,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

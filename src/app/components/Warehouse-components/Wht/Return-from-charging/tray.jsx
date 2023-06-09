@@ -12,6 +12,8 @@ import {
     DialogContent,
     DialogActions,
     TextField,
+    Table,
+    TableContainer,
     Typography
 } from '@mui/material'
 import PropTypes from 'prop-types'
@@ -31,6 +33,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '110%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -347,9 +371,11 @@ const SimpleMuiTable = () => {
                         { name: 'Return-from-charging' },
                     ]}
                 />
-            </div>
+            </div> 
 
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'Tray'}
                 data={tray}
                 columns={columns}
@@ -392,6 +418,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+           
         </Container>
     )
 }

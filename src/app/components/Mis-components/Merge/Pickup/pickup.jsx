@@ -1730,12 +1730,10 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
-
                 customBodyRender: (value, dataIndex) => {
                     return value?.rdl_fls_report?.partRequired?.map(
                         (data, index) => (
                             <p>
-                               
                                 {index + 1}.{data?.part_name} - {data?.part_id},
                             </p>
                         )

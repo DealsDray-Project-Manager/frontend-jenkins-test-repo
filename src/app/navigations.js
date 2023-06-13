@@ -437,6 +437,11 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
+            {
+                name: 'WHT to RP',
+                path: '/mis/sorting/wht-to-rp',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -867,6 +872,11 @@ export const navigations = [
         children: [
             {
                 name: 'BOT to WHT',
+                path: '/sorting/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'WHT to RP',
                 path: '/sorting/request',
                 iconText: 'VP',
             },

@@ -501,52 +501,7 @@ const Association = () => {
                                 </Button>
                             </Box>
                             <br />
-                            {/* <Box sx={{ p: 3 }}>
-<Typography
-sx={{
-fontSize: '16px',
-marginBottom: '15px',
-}}
->
-Add MUIC in Bulk
-</Typography>
-
-<textarea
-style={{
-marginLeft: '5px',
-width: '100%',
-height: '100px',
-}}
-onChange={(e) => {
-setMuicData(e.target.value)
-}}
-value={muicData}
-placeholder="Please add MUIC separated by Commas"
-></textarea>
-</Box>
-<Box
-sx={{
-justifyContent: 'center',
-alignItems: 'center',
-display: 'flex',
-}}
->
-<Button
-variant="contained"
-color="primary"
-disabled={validateButLoad || muicData == ''}
-onClick={(e) => {
-validateMuic()
-}}
-sx={{ margin: 'auto', mt: 1, mb: 2 }}
->
-{validateButLoad == true
-? 'Validating...'
-: 'Validate MUIC'}
-</Button>
-</Box> */}
-                            {/* </Card>
-<Card> */}
+                       
                             <Box
                                 sx={{
                                     display: 'flex',

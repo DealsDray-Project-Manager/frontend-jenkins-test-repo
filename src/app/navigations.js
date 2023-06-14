@@ -681,6 +681,11 @@ export const navigations = [
                 path: '/wareshouse/sorting/return-from-sorting',
                 iconText: 'VP',
             },
+            {
+                name: 'WHT to RP',
+                path: '/wareshouse/sorting/spwhuser',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: false,

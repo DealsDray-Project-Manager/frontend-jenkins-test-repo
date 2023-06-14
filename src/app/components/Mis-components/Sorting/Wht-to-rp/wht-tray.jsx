@@ -156,8 +156,8 @@ const handelViewItem = (id) => {
             label: <Typography variant="subtitle1" fontWeight='bold'><>Units to Repair</></Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[4],
+                // customBodyRender: (value, tableMeta) =>
+                //     value.length + '/' + tableMeta.rowData[4],
             },
         },
         {

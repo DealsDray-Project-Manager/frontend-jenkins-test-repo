@@ -84,9 +84,19 @@ const SortingRequestExvsAct = Loadable(
 const ReturnFromSorting = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/tray'))
 )
+
 const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
+
+
+const SPWHuser = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/spwhuser'))
+)
+const Viewparts = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/viewparts'))
+)
+
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
 const MergeRequestApprove = Loadable(
     lazy(() => import('./Merge/Merge-request/approve-request'))
@@ -371,6 +381,14 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/sorting/return-from-sorting',
         element: <ReturnFromSorting />,
+    },
+    {
+        path: '/wareshouse/sorting/spwhuser',
+        element: <SPWHuser />,
+    },
+    {
+        path: '/wareshouse/sorting/viewparts',
+        element: <Viewparts />,
     },
     {
         path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',

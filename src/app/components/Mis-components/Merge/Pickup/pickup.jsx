@@ -61,7 +61,7 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '200%',
+    width: '187%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -79,7 +79,7 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: '230%',
+    width: '212%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -96,7 +96,7 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: '280%',
+    width: '240%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -384,7 +384,7 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" marginLeft='20px'>
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -392,7 +392,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) => value.uic,
+                customBodyRender: (value, dataIndex) => {
+                    <Typography>{value.uic}</Typography>
+                }
             },
         },
         {

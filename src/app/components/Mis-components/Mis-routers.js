@@ -56,6 +56,12 @@ const UicNotGenerated = Loadable(
 const SortingBotTowht = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/bot-tray'))
 )
+const SortingWhtTorp = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/wht-tray'))
+)
+const Process = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/process'))
+)
 const SortingBotTowhtViewItem = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/view-clubed-item'))
 )
@@ -179,6 +185,14 @@ const dataTableRoutes = [
     {
         path: '/mis/sorting/bot-to-wht',
         element: <SortingBotTowht />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp',
+        element: <SortingWhtTorp />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp/process',
+        element: <Process />,
     },
     {
         path: '/mis/sorting/ctx-to-stx',

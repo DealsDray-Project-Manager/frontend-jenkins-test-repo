@@ -19,6 +19,11 @@ import {
     Button,
     MenuItem,
     Checkbox,
+    FormControl,
+    InputLabel,
+    Select,
+    ListItemText,
+    Chip,
 } from '@mui/material'
 import { includes } from 'lodash'
 import { async } from 'q'
@@ -220,7 +225,6 @@ const PickupPage = () => {
             alert(error)
         }
     }
-
 
     /*---------------------STATE CHANGE FOR SORT----------------------*/
     const handleChangeSort = ({ target: { name, value } }) => {
@@ -1668,81 +1672,27 @@ const PickupPage = () => {
                     value?.rdl_fls_report?.color || '',
             },
         },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part List Count</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_count || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part One</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_1 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Two</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_2 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Three</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_3 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Four</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_4 || '',
-        //     },
-        // },
         {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Added Part List</>
+                    RDL 1 Added Part List
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) => {
-                    return value?.rdl_fls_report?.partRequired?.map(
-                        (data, index) => (
-                            <p>
-                               
-                                {index + 1}.{data?.part_name} - {data?.part_id},
+                sort: true,
+                customBodyRenderLite: (dataIndex) => {
+                    const value = item[dataIndex]?.items
+                    const partList = value?.rdl_fls_report?.partRequired
+                    if (partList && Array.isArray(partList)) {
+                        return partList.map((data, index) => (
+                            <p key={index}>
+                                {index + 1}.{data?.part_name} - {data?.part_id}
                             </p>
-                        )
-                    )
+                        ))
+                    }
+                    return ''
                 },
             },
         },
@@ -2207,12 +2157,8 @@ const PickupPage = () => {
                             28: 'rdl_fls_report.model_reg',
                             29: 'rdl_fls_report.color',
                             30: 'rdl_fls_report.part_list_count',
-                            31: 'rdl_fls_report.part_list_1',
-                            32: 'rdl_fls_report.part_list_2',
-                            33: 'rdl_fls_report.part_list_3',
-                            34: 'rdl_fls_report.part_list_4',
-                            35: 'rdl_fls_report.part_list_5',
-                            37: 'rdl_fls_report.description',
+                            31: 'value?.rdl_fls_report?.partRequired',
+                            31: 'rdl_fls_report.description',
                             // add more columns and properties here
                         }
                         const property = columnProperties[colIndex]

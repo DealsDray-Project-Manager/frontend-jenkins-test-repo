@@ -44,8 +44,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
-    height: '100%',
+    width: 2000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -53,7 +52,7 @@ const ProductTable = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: '1px solid #ddd',
+        borderBottom: 'none',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -62,8 +61,7 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '187%',
-    height: '100%',
+    width: 3000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -71,7 +69,7 @@ const ProductTableTwo = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: '1px solid #ddd',
+        borderBottom: 'none',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -80,8 +78,7 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: '212%',
-    height: '100%',
+    width: 4000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -89,7 +86,7 @@ const ProductTableThere = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: '1px solid #ddd',
+        borderBottom: 'none',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
@@ -97,8 +94,7 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: '240%',
-    height: '100%',
+    width: 5000,
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -106,16 +102,16 @@ const ProductTableRdlOne = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: '1px solid #ddd',
+        borderBottom: 'none',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
     },
 }))
 
+
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
-
     const [value, setValue] = React.useState('Charge Done')
     const [item, setItem] = useState([])
     const [brand, setbrand] = useState([])

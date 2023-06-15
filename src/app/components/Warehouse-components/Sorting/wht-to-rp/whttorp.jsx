@@ -144,9 +144,9 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handleViewParts = (e, code) => {
+    const handelViewTray = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/viewparts')
+        navigate('/wareshouse/sorting/wht-to-rp/user')
     }
 
     const columns = [
@@ -162,15 +162,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'sptray',
-            label: <Typography sx={{fontWeight:'bold'}}>SP Tray ID</Typography>,
+            name: 'name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'rptray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -185,8 +185,15 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Item Recieved Count</Typography>,
+            name: 'wht_tray',
+            label: <Typography sx={{fontWeight:'bold'}}>WHT Tray ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rp_tray',
+            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -200,31 +207,33 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
-                           sx={{
-                               m: 1,
-                           }}
-                           variant="contained"
-                           style={{ backgroundColor: '#206CE2' }}
-                           onClick={(e) => {
-                               handleViewParts(e, value)
-                           }}
-                       >
-                           Add Parts
-                       </Button>
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) => {
+                                handelViewTray(e, value)
+                            }}
+                        >
+                            Approve
+                        </Button>
                     )
                 },
             },
         },
     ]
 
-   const columns1 = [
+    const columns1 = [
         {
             index:1,
-            sptray:'SP18001',
-            rptray:'RP001',
-            items:3
+            name:'abc',
+            model:'S5',
+            wht_tray:'WHT101, WHT102',
+            rp_tray:'RP001'
         }
     ]
+
     return (
         <Container>
             <BootstrapDialog
@@ -275,14 +284,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT to RP', path: '/' },
-                        { name: 'Spare Parts' },
+                        { name: 'WHT-to-RP', path: '/' },
+                        { name: 'WHT Tray' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
+                title={'Tray'}
                 data={columns1}
                 columns={columns}
                 options={{

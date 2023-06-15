@@ -4,14 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from 'axios'
+import { axiosWarehouseIn } from '../../../../axios'
 import {
     Button,
-    Card,
     Dialog,
-    Box,
     DialogTitle,
     IconButton,
+    Box,
     DialogContent,
     DialogActions,
     TextField,
@@ -77,32 +76,32 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [receiveButDis,setReceiveButDis]=useState(false)
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/return-from-sorting-wht/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setTray(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [refresh])
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/return-from-sorting-wht/' + location
+                    )
+                    if (res.status == 200) {
+                        setTray(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            }
+            fetchData()
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }, [refresh])
 
     const handelTrayReceived = async () => {
         try {
@@ -140,15 +139,22 @@ const SimpleMuiTable = () => {
                 confirmButtonText: 'Ok',
                 text: error,
             })
-        }         
+        }
     }
     const handleClose = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, code) => {
+    const handleAdd = () => {
+        Swal.fire({
+            title: 'Added Successfully',
+            icon: 'success'
+        })
+    }
+
+    const handleViewSpIssue = (e, code) => {
         e.preventDefault()
-        navigate('/sorting/request/start')
+        navigate('/wareshouse/sorting/sptrayissue')
     }
 
     const columns = [
@@ -171,22 +177,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rptray_id',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            name: 'tray_display_name',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Display Name</Typography>,
             options: {
                 filter: true,
             },
@@ -201,49 +193,91 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            name: 'model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'remarks',
+            label: <Typography sx={{fontWeight:'bold'}}>SPWH User Remarks</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'tray_type',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: '#206CE2' }}
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                        >
-                            Start
-                        </Button>
+                           sx={{
+                               m: 1,
+                           }}
+                           variant="contained"
+                           style={{ backgroundColor: '#206CE2' }}
+                           onClick={(e) => {
+                            //    handleAdd(e, value)
+                           }}
+                       >
+                           View 
+                       </Button>
                     )
                 },
             },
         },
     ]
 
-    const columns1 = [
+   const columns1 = [
         {
             index:1,
-            tray_id:'WHT2004',
-            rptray_id:'RP388',
-            brand:'Xiomi',
-            model:'S5',
-            qty:'1'
-        }
+            tray_id:'SP1001',
+            tray_display_name:'SP1001',
+            model:'Camera Glass/Black-XIOMI MI A2',
+            qty:1,
+            remarks:'',
+            tray_type:'SP',
+            status:'Ready To RDL 2'
+        },
+        {
+            index:2,
+            tray_id:'SP1000',
+            tray_display_name:'SP1000',
+            model:'Camera Glass/Black-XIOMI MI A2',
+            qty:2,
+            remarks:'',
+            tray_type:'SP',
+            status:'Send TO SP Warehouse'
+        },
+        {
+            index:3,
+            tray_id:'SP1002',
+            tray_display_name:'SP1002',
+            model:'Camera Glass/Black-XIOMI MI A2',
+            qty:1,
+            remarks:'',
+            tray_type:'SP',
+            status:'Open'
+        },
     ]
-
     return (
         <Container>
             <BootstrapDialog
@@ -294,14 +328,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT-to-RP', path: '/' },
-                        { name: 'WHT Tray' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'Spare Parts' },
                     ]}
                 />
             </div>
-            <Card>
+            
             <MUIDataTable
-                // title={'Tray'}
+                title={'Spare Part Tray Ready to Issue'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -336,8 +370,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            </Card>
-            
         </Container>
     )
 }

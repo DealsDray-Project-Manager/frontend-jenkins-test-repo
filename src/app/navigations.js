@@ -424,6 +424,11 @@ export const navigations = [
                 path: '/mis/assign-to-agent/Rdl-repair',
                 iconText: 'NP',
             },
+            {
+                name: <Typography sx={{textAlign:'left'}}>Assign to RDL 2 (WHT to RP)</Typography>,
+                path: '/mis/assign-to-agent/Rdl2',
+                iconText: 'NP',
+            },
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -682,8 +687,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
+                name: 'Sorting Done (WHT to RP)',
+                path: '/wareshouse/sorting/return-from-sorting-rp',
+                iconText: 'VP',
+            },
+            {
                 name: 'WHT to RP',
-                path: '/wareshouse/sorting/spwhuser',
+                path: '/wareshouse/sorting/wht-to-rp/whttorp',
                 iconText: 'VP',
             },
         ],
@@ -875,11 +885,11 @@ export const navigations = [
         name: 'Sorting Request',
         icon: 'sort',
         children: [
-            {
-                name: 'BOT to WHT',
-                path: '/sorting/request',
-                iconText: 'VP',
-            },
+            // {
+            //     name: 'BOT to WHT',
+            //     path: '/sorting/request',
+            //     iconText: 'VP',
+            // },
             {
                 name: 'WHT to RP',
                 path: '/sorting/request',
@@ -1231,11 +1241,18 @@ export const navigations = [
         sales: false,
     },
     {
+        name: 'WHT to RP',
+        path: '/wareshouse/sorting/spwhuser',
+        iconText: 'VP',
+        auth: authRoles.RMWAREHOUSE,   
+        sales: false,
+    },
+    {
         name: 'Dummy Panel',
         icon: 'class',
         path: '',
         auth: authRoles.Sales_Agent,
-        sales: true,
+        sales: false,
     },
     {
         name: 'Dummy Panel',

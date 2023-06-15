@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from 'axios'
+import { axiosWarehouseIn } from '../../../../../axios'
 import {
     Button,
     Card,
@@ -77,32 +77,32 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [receiveButDis,setReceiveButDis]=useState(false)
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/return-from-sorting-wht/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setTray(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [refresh])
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/return-from-sorting-wht/' + location
+                    )
+                    if (res.status == 200) {
+                        setTray(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            }
+            fetchData()
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }, [refresh])
 
     const handelTrayReceived = async () => {
         try {
@@ -140,7 +140,7 @@ const SimpleMuiTable = () => {
                 confirmButtonText: 'Ok',
                 text: error,
             })
-        }         
+        }
     }
     const handleClose = () => {
         setOpen(false)
@@ -148,7 +148,13 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, code) => {
         e.preventDefault()
-        navigate('/sorting/request/start')
+        navigate('/wareshouse/sorting/wht-to-rp/scan')
+    }
+    const handleIssue = () => {
+        Swal.fire({
+            title: 'Issued Successfully',
+            icon: 'success'
+        })
     }
 
     const columns = [
@@ -166,13 +172,6 @@ const SimpleMuiTable = () => {
         {
             name: 'tray_id',
             label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'rptray_id',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -225,7 +224,7 @@ const SimpleMuiTable = () => {
                                 handelViewTray(e, value)
                             }}
                         >
-                            Start
+                            Scan
                         </Button>
                     )
                 },
@@ -236,12 +235,25 @@ const SimpleMuiTable = () => {
     const columns1 = [
         {
             index:1,
-            tray_id:'WHT2004',
-            rptray_id:'RP388',
+            tray_id:'WHT101',
             brand:'Xiomi',
             model:'S5',
-            qty:'1'
-        }
+            qty:'2'
+        },
+        {
+            index:2,
+            tray_id:'WHT101',
+            brand:'Xiomi',
+            model:'S5',
+            qty:'2'
+        },
+        {
+            index:3,
+            tray_id:'WHT101',
+            brand:'Xiomi',
+            model:'S5',
+            qty:'2'
+        },
     ]
 
     return (
@@ -300,6 +312,10 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Card>
+                <Box sx={{p:2}}>
+                    <Typography sx={{fontWeight:'bold'}}>Username : abc</Typography>
+                    <Typography sx={{mt:2,fontWeight:'bold'}}>Assigned Date : 22-03-2023</Typography>
+                </Box>
             <MUIDataTable
                 // title={'Tray'}
                 data={columns1}
@@ -336,6 +352,20 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            <Box sx={{textAlign:'right', mr:6}}>
+            <Button
+                sx={{
+                    m: 1,
+                }}
+                variant="contained"
+                style={{ backgroundColor: '#206CE2' }}
+                onClick={(e) => {
+                    handleIssue(e)
+                }}
+            >
+                Issue to Agent
+            </Button>
+            </Box>
             </Card>
             
         </Container>
@@ -343,4 +373,3 @@ const SimpleMuiTable = () => {
 }
 
 export default SimpleMuiTable
-

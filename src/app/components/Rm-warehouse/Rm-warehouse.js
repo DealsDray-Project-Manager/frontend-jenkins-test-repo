@@ -38,7 +38,29 @@ const ViewRequirementOfPart = Loadable(lazy(() => import('./Upcoming-repair/view
 const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray')))
 
 
+const SPWHuser = Loadable(
+    lazy(() => import('../Rm-warehouse/Wht-to-rp/spwhuser'))
+)
+const Viewparts = Loadable(
+    lazy(() => import('../Rm-warehouse/Wht-to-rp/viewparts'))
+)
+const SPtrayIssue = Loadable(
+    lazy(() => import('../Rm-warehouse/Wht-to-rp/sptrayissue'))
+)
+
 const RmWarehouse = [
+    {
+        path: '/wareshouse/sorting/spwhuser',
+        element: <SPWHuser />,
+    },
+    {
+        path: '/wareshouse/sorting/viewparts',
+        element: <Viewparts />,
+    },
+    {
+        path: '/wareshouse/sorting/sptrayissue',
+        element: <SPtrayIssue />,
+    },
     {
         path: '/sp-user/dashboard',
         element: <Dashboard />,

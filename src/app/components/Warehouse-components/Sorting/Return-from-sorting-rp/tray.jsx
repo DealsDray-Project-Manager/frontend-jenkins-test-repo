@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from 'axios'
+import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosMisUser} from '../../../../../axios'
 import {
     Button,
     Card,
@@ -17,6 +18,7 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+import AssignDialogBox from './recievedialog'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
@@ -71,38 +73,43 @@ BootstrapDialogTitle.propTypes = {
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const [counts, setCounts] = useState('')
+    const [isAlive, setIsAlive] = useState(true)
+    const [isCheck, setIsCheck] = useState([])
     const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const [chargingUsers, setChargingUsers] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    
     const navigate = useNavigate()
     const [receiveButDis,setReceiveButDis]=useState(false)
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/return-from-sorting-wht/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setTray(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [refresh])
+    useEffect(() => {
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosWarehouseIn.post(
+                        '/return-from-sorting-wht/' + location
+                    )
+                    if (res.status == 200) {
+                        setTray(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            }
+            fetchData()
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }, [refresh])
 
     const handelTrayReceived = async () => {
         try {
@@ -140,16 +147,55 @@ const SimpleMuiTable = () => {
                 confirmButtonText: 'Ok',
                 text: error,
             })
-        }         
+        }
     }
     const handleClose = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, code) => {
-        e.preventDefault()
-        navigate('/sorting/request/start')
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setChargingUsers([])
+        setShouldOpenEditorDialog(false)
     }
+    
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const handleRecieve = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/get-charging-users/' + 'BQC/' + location
+                    )
+                    if (res.status == 200) {
+                        setChargingUsers(res.data.data)
+                        handleDialogOpen()
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
+            }
+        }
+        fetchData()
+    }
+    const handleView = (e, code) => {
+        e.preventDefault()
+        navigate('/wareshouse/sorting/return-from-sorting-rp/view')
+    }
+    const handleClose1 = (e, code) => {
+        e.preventDefault()
+        navigate('/wareshouse/sorting/return-from-sorting-rp/close')
+    }
+    
 
     const columns = [
         {
@@ -171,22 +217,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rptray_id',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'tray',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Display Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            name: 'name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
             options: {
                 filter: true,
             },
@@ -201,8 +240,8 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            name: 'status',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Status</Typography>,
             options: {
                 filter: true,
             },
@@ -215,6 +254,19 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
+                        <>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        variant="contained"
+                        // disabled={isCheck.length == 0}
+                        onClick={() => handleRecieve(true)}
+                        style={{ backgroundColor: 'green' }}
+                        component="span"
+                    >
+                        Send to Repair
+                    </Button>
                         <Button
                             sx={{
                                 m: 1,
@@ -222,11 +274,24 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handelViewTray(e, value)
+                                handleView(e, value)
                             }}
                         >
-                            Start
+                            View
                         </Button>
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: '#f44336' }}
+                            onClick={(e) => {
+                                handleClose1(e, value)
+                            }}
+                        >
+                            Close
+                        </Button>    
+                        </>
                     )
                 },
             },
@@ -237,10 +302,9 @@ const SimpleMuiTable = () => {
         {
             index:1,
             tray_id:'WHT2004',
-            rptray_id:'RP388',
-            brand:'Xiomi',
-            model:'S5',
-            qty:'1'
+            tray:'WHT2004',
+            name:'abc',
+            status:'Sorting Done'
         }
     ]
 
@@ -301,7 +365,7 @@ const SimpleMuiTable = () => {
             </div>
             <Card>
             <MUIDataTable
-                // title={'Tray'}
+                title={'Tray'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -337,10 +401,17 @@ const SimpleMuiTable = () => {
                 }}
             />
             </Card>
-            
+            {shouldOpenEditorDialog && (
+            <AssignDialogBox
+                handleClose={handleDialogClose}
+                open={handleDialogOpen}
+                setIsAlive={setIsAlive}
+                chargingUsers={chargingUsers}
+                isCheck={isCheck}
+            />
+        )}
         </Container>
     )
 }
 
 export default SimpleMuiTable
-

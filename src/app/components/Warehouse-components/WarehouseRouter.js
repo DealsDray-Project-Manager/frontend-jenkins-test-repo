@@ -84,18 +84,20 @@ const SortingRequestExvsAct = Loadable(
 const ReturnFromSorting = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/tray'))
 )
+const ReturnFromSortingrp = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-rp/tray'))
+)
+const View = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-rp/view'))
+)
+const Close = Loadable(
+    lazy(() => import('./Sorting/Return-from-sorting-rp/close'))
+)
 
 const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
 
-
-const SPWHuser = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/spwhuser'))
-)
-const Viewparts = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/viewparts'))
-)
 
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
 const MergeRequestApprove = Loadable(
@@ -207,9 +209,19 @@ const SortingDoneCtxtoStxTray = Loadable(
 const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
+const WHTtoRP = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/whttorp'))
+)
+const User = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/user'))
+)
+const Scan = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/scan'))
+)
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
+const RDL2Requestscan = Loadable(lazy(() => import('./Wht/Rdl-2-Request/scan')))
 const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
 
 
@@ -383,13 +395,30 @@ const WarehoueRouter = [
         element: <ReturnFromSorting />,
     },
     {
-        path: '/wareshouse/sorting/spwhuser',
-        element: <SPWHuser />,
+        path: '/wareshouse/sorting/return-from-sorting-rp',
+        element: <ReturnFromSortingrp />,
     },
     {
-        path: '/wareshouse/sorting/viewparts',
-        element: <Viewparts />,
+        path: '/wareshouse/sorting/return-from-sorting-rp/view',
+        element: <View />,
     },
+    {
+        path: '/wareshouse/sorting/return-from-sorting-rp/close',
+        element: <Close />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/whttorp',
+        element: <WHTtoRP />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/user',
+        element: <User />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/scan',
+        element: <Scan />,
+    },
+    
     {
         path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',
         element: <SortingDoneCtxOrStxTrayClose />,
@@ -526,6 +555,10 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/wht/rdl2-request/approve/:trayId',
         element: <RDL2RequestApprove />,
+    },
+    {
+        path: '/wareshouse/wht/rdl2-request/scan',
+        element: <RDL2Requestscan />,
     },
    
 ]

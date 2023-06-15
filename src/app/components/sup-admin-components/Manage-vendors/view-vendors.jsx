@@ -78,13 +78,12 @@ const SimpleMuiTable = () => {
 
     const editWarehouse = async (empId) => {
         try {
-
             let response = await axiosSuperAdminPrexo.post(
                 '/vendorMaster/one/' + empId
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen('Edit')
             }
         } catch (error) {
             Swal.fire({
@@ -95,8 +94,7 @@ const SimpleMuiTable = () => {
         }
     }
 
-
-const handelActive = (id, type) => {
+    const handelActive = (id, type) => {
         Swal.fire({
             title: 'Are you sure?',
             text: `You Want to ${type}!`,
@@ -151,95 +149,153 @@ const handelActive = (id, type) => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{ml:2, fontWeight:'bold'}} ><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    sx={{ ml: 2, fontWeight: 'bold' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'vendor_id', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Vendor ID</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Vendor ID</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Name</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Name</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'address',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Address</></Typography>,             
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Address</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'city',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>City</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>City</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'state',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>State</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>State</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile_one',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Mobile 1</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Mobile 1</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'mobile_two',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Mobile 2</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Mobile 2</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'deals',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Deals</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Deals</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'reference',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Reference</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Reference</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'location',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Location</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Location</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'pincode',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Pincode</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Pincode</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-       
+
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -247,11 +303,15 @@ const handelActive = (id, type) => {
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
-                },
+            },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Status</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -273,7 +333,11 @@ const handelActive = (id, type) => {
         },
         {
             name: 'vendor_id',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Action</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -321,8 +385,7 @@ const handelActive = (id, type) => {
         },
     ]
 
-
-return (
+    return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: 'Vendors', path: '/' }]} />

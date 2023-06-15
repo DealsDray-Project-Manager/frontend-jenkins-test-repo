@@ -1722,6 +1722,32 @@ const PickupPage = () => {
         //             value?.rdl_fls_report?.part_list_4 || '',
         //     },
         // },
+        // {
+        //     name: 'items',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>RDL 1 Added Part List</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         sort: true, // enable sorting for Brand column
+        //         customBodyRender: (value, tableMeta) => {
+        //             const dataIndex = tableMeta.rowIndex;
+        //             const partRequired = value?.rdl_fls_report?.partRequired;
+                  
+        //             if (partRequired && partRequired.length > 0) {
+        //               const partsList = partRequired.map((data, index) => {
+        //                 return `${index + 1}.${data?.part_name} - ${data?.part_id}`;
+        //               });
+                  
+        //               return partsList.join(', ');
+        //             }
+                  
+        //             return '';
+        //           },
+        //     },
+        // },
         {
             name: 'items',
             label: (
@@ -1731,16 +1757,21 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
-                customBodyRender: (value, dataIndex) => {
-                    return value?.rdl_fls_report?.partRequired?.map(
-                        (data, index) => (
-                            <p>
-                                {index + 1}.{data?.part_name} - {data?.part_id},
-                            </p>
-                        )
-                    )
-                },
+                sort: true, // enable sorting for Brand colum
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex;
+                    const partRequired = value?.rdl_fls_report?.partRequired;
+                  
+                    if (partRequired && partRequired.length > 0) {
+                      const partsList = partRequired.map((data, index) => {
+                        return `${index + 1}.${data?.part_name} - ${data?.part_id}`;
+                      });
+                  
+                      return partsList.join(', ');
+                    }
+                  
+                    return '';
+                  },
             },
         },
         {
@@ -2164,147 +2195,139 @@ const PickupPage = () => {
 
     const tableDataForRdl1 = useMemo(() => {
         return (
-            <>
-                <ProductTableRdlOne>
-                <MUIDataTable
+          <>
+            <ProductTableRdlOne>
+              <MUIDataTable
                 title={'UNITS'}
                 data={item}
                 columns={columnsForRdlOne}
                 options={{
-                    filterType: 'multiselect',
-                    responsive: 'standared',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
+                  filterType: 'multiselect',
+                  responsive: 'standared',
+                  download: false,
+                  print: false,
+                  textLabels: {
+                    body: {
+                      noMatch: isLoading
+                        ? 'Loading...'
+                        : 'Sorry, there is no matching data to display',
                     },
-
-                    showFirstButton: 'true',
-                    showLastButton: 'true',
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        const columnProperties = {
-                            1: 'price',
-                            2: 'uic',
-                            3: 'order_id',
-                            4: 'imei',
-                            7: 'muic',
-                            9: 'charging.battery_status',
-                            10: 'charging.charge_percentage',
-                            11: 'charging.body_condition',
-                            12: 'charging.display_condition',
-                            13: 'charging.lock_status',
-                            14: 'charging.charging_jack_type',
-                            15: 'charging.boady_part_missing',
-                            16: 'bqc_report.blancoo_qc_status',
-                            17: 'bqc_report.factory_reset_status',
-                            18: 'bqc_report.bqc_incomplete_reason',
-                            19: 'bqc_report.technical_issue',
-                            20: 'bqc_report.other',
-                            21: 'audit_report.orgGrade',
-                            22: 'audit_report.grade',
-                            23: 'audit_report.stage',
-                            24: 'audit_report.reason',
-                            25: 'audit_report.description',
-                            26: 'rdl_fls_report.username',
-                            27: 'rdl_fls_report.selected_status',
-                            28: 'rdl_fls_report.model_reg',
-                            29: 'rdl_fls_report.color',
-                            30: 'rdl_fls_report.part_list_count',
-                            31: 'rdl_fls_report.part_list_1',
-                            32: 'rdl_fls_report.part_list_2',
-                            33: 'rdl_fls_report.part_list_3',
-                            34: 'rdl_fls_report.part_list_4',
-                            35: 'rdl_fls_report.part_list_5',
-                            37: 'rdl_fls_report.description',
-                            // add more columns and properties here
-                        }
-                        const property = columnProperties[colIndex]
-
-                        if (property) {
-                            return data.sort((a, b) => {
-                                const aPropertyValue = getValueByProperty(
-                                    a.data[colIndex],
-                                    property
-                                )
-                                const bPropertyValue = getValueByProperty(
-                                    b.data[colIndex],
-                                    property
-                                )
-                                if (
-                                    typeof aPropertyValue === 'string' &&
-                                    typeof bPropertyValue === 'string'
-                                ) {
-                                    return (
-                                        (order === 'asc' ? 1 : -1) *
-                                        aPropertyValue.localeCompare(
-                                            bPropertyValue
-                                        )
-                                    )
-                                }
-                                return (
-                                    (parseFloat(aPropertyValue) -
-                                        parseFloat(bPropertyValue)) *
-                                    (order === 'desc' ? -1 : 1)
-                                )
-                            })
-                        }
-
+                  },
+                  showFirstButton: 'true',
+                  showLastButton: 'true',
+                  selectableRows: 'none',
+                  customSort: (data, colIndex, order) => {
+                    const columnProperties = {
+                      1: 'price',
+                      2: 'uic',
+                      3: 'order_id',
+                      4: 'imei',
+                      7: 'muic',
+                      9: 'charging.battery_status',
+                      10: 'charging.charge_percentage',
+                      11: 'charging.body_condition',
+                      12: 'charging.display_condition',
+                      13: 'charging.lock_status',
+                      14: 'charging.charging_jack_type',
+                      15: 'charging.boady_part_missing',
+                      16: 'bqc_report.blancoo_qc_status',
+                      17: 'bqc_report.factory_reset_status',
+                      18: 'bqc_report.bqc_incomplete_reason',
+                      19: 'bqc_report.technical_issue',
+                      20: 'bqc_report.other',
+                      21: 'audit_report.orgGrade',
+                      22: 'audit_report.grade',
+                      23: 'audit_report.stage',
+                      24: 'audit_report.reason',
+                      25: 'audit_report.description',
+                      26: 'rdl_fls_report.username',
+                      27: 'rdl_fls_report.selected_status',
+                      28: 'rdl_fls_report.model_reg',
+                      29: 'rdl_fls_report.color',
+                      30: 'rdl_fls_report.partRequired',
+                      31: 'rdl_fls_report.description',
+                    };
+      
+                    const property = columnProperties[colIndex];
+                    if (colIndex === 30) {
                         return data.sort((a, b) => {
-                            const aValue = a.data[colIndex]
-                            const bValue = b.data[colIndex]
-                            if (aValue === bValue) {
-                                return 0
-                            }
-                            if (aValue === null || aValue === undefined) {
-                                return 1
-                            }
-                            if (bValue === null || bValue === undefined) {
-                                return -1
-                            }
-                            if (
-                                typeof aValue === 'string' &&
-                                typeof bValue === 'string'
-                            ) {
-                                return (
-                                    (order === 'asc' ? 1 : -1) *
-                                    aValue.localeCompare(bValue)
-                                )
-                            }
-                            return (
-                                (parseFloat(aValue) - parseFloat(bValue)) *
-                                (order === 'desc' ? -1 : 1)
-                            )
-                        })
-
-                        function getValueByProperty(data, property) {
-                            const properties = property.split('.')
-                            const value = properties.reduce(
-                                (obj, key) => obj?.[key],
-                                data
-                            )
-                            return value !== undefined ? value : ''
+                          const aValue = a.data[colIndex]?.rdl_fls_report?.partRequired || [];
+                          const bValue = b.data[colIndex]?.rdl_fls_report?.partRequired || [];
+                    
+                          const aList = aValue.map(data => `${data?.part_name} - ${data?.part_id}`).join(', ');
+                          const bList = bValue.map(data => `${data?.part_name} - ${data?.part_id}`).join(', ');
+                    
+                          return (order === 'asc' ? 1 : -1) * aList.localeCompare(bList);
+                        });
+                      }
+                    if (property) {
+                      return data.sort((a, b) => {
+                        const aPropertyValue = getValueByProperty(a.data[colIndex], property);
+                        const bPropertyValue = getValueByProperty(b.data[colIndex], property);
+      
+                        if (
+                          typeof aPropertyValue === 'string' &&
+                          typeof bPropertyValue === 'string'
+                        ) {
+                          return (order === 'asc' ? 1 : -1) * aPropertyValue.localeCompare(bPropertyValue);
                         }
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+      
+                        return (
+                          (parseFloat(aPropertyValue) - parseFloat(bPropertyValue)) *
+                          (order === 'desc' ? -1 : 1)
+                        );
+                      });
+                    }
+      
+                    return data.sort((a, b) => {
+                      const aValue = a.data[colIndex];
+                      const bValue = b.data[colIndex];
+      
+                      if (aValue === bValue) {
+                        return 0;
+                      }
+      
+                      if (aValue === null || aValue === undefined) {
+                        return 1;
+                      }
+      
+                      if (bValue === null || bValue === undefined) {
+                        return -1;
+                      }
+      
+                      if (
+                        typeof aValue === 'string' &&
+                        typeof bValue === 'string'
+                      ) {
+                        return (order === 'asc' ? 1 : -1) * aValue.localeCompare(bValue);
+                      }
+      
+                      return (
+                        (parseFloat(aValue) - parseFloat(bValue)) *
+                        (order === 'desc' ? -1 : 1)
+                      );
+                    });
+      
+                    function getValueByProperty(data, property) {
+                      const properties = property.split('.');
+                      let value = properties.reduce((obj, key) => obj?.[key], data);
+      
+                      if (properties[0] === 'rdl_fls_report' && properties[1] === 'partRequired' && properties[2] === 'length') {
+                        value = value || 0;
+                      }
+      
+                      return value !== undefined ? value : '';
+                    }
+                  },
+                  elevation: 0,
+                  rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
-            />
-                </ProductTableRdlOne>
-            </>
-            
-        )
-    }, [item, columnsForRdlOne])
+              />
+            </ProductTableRdlOne>
+          </>
+        );
+      }, [item, columnsForRdlOne]);
+      
 
     return (
         <Container>

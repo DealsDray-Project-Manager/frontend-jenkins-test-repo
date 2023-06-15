@@ -191,7 +191,7 @@ const dataTableRoutes = [
         element: <SortingWhtTorp />,
     },
     {
-        path: '/mis/sorting/wht-to-rp/process',
+        path: '/mis/sorting/wht-to-rp/process/:brand/:model',
         element: <Process />,
     },
     {

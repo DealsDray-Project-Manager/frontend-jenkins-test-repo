@@ -885,11 +885,11 @@ export const navigations = [
         name: 'Sorting Request',
         icon: 'sort',
         children: [
-            // {
-            //     name: 'BOT to WHT',
-            //     path: '/sorting/request',
-            //     iconText: 'VP',
-            // },
+            {
+                name: 'BOT to WHT',
+                path: '/sorting/request/tray1',
+                iconText: 'VP',
+            },
             {
                 name: 'WHT to RP',
                 path: '/sorting/request',

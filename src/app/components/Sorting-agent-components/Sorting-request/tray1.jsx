@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from 'axios'
 import {
     Button,
+    Card,
     Dialog,
+    Box,
     DialogTitle,
     IconButton,
     DialogContent,
@@ -75,32 +77,32 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [receiveButDis,setReceiveButDis]=useState(false)
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/return-from-sorting-wht/' + location
-                    )
-                    if (res.status == 200) {
-                        setTray(res.data.data)
-                    }
-                } else {
-                    navigate('/')
-                }
-            }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }, [refresh])
+    // useEffect(() => {
+    //     try {
+    //         const fetchData = async () => {
+    //             let admin = localStorage.getItem('prexo-authentication')
+    //             if (admin) {
+    //                 let { location } = jwt_decode(admin)
+    //                 let res = await axiosWarehouseIn.post(
+    //                     '/return-from-sorting-wht/' + location
+    //                 )
+    //                 if (res.status == 200) {
+    //                     setTray(res.data.data)
+    //                 }
+    //             } else {
+    //                 navigate('/')
+    //             }
+    //         }
+    //         fetchData()
+    //     } catch (error) {
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             confirmButtonText: 'Ok',
+    //             text: error,
+    //         })
+    //     }
+    // }, [refresh])
 
     const handelTrayReceived = async () => {
         try {
@@ -138,7 +140,7 @@ const SimpleMuiTable = () => {
                 confirmButtonText: 'Ok',
                 text: error,
             })
-        }
+        }         
     }
     const handleClose = () => {
         setOpen(false)
@@ -146,11 +148,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/tray/item/' + code)
-    }
-    const handelViewDetailTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/sorting/return-from-sorting/close/' + id)
+        navigate('/sorting/request/start')
     }
 
     const columns = [
@@ -166,15 +164,29 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
+            name: 'tray_id',
             label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            name: 'status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'qty',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
             },
@@ -189,29 +201,17 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
+            name: 'date',
+            label: <Typography sx={{fontWeight:'bold'}}>Date of Closure</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            name: 'assigned_date',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
             options: {
                 filter: true,
-            },
-        },
-
-        {
-            name: 'closed_time_sorting_agent',
-            label: <Typography sx={{fontWeight:'bold'}}>Closed Date</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
@@ -222,55 +222,33 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
-                            {tableMeta.rowData[5] != 'Received From Sorting' ? (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    disabled={receiveButDis}
-                                    style={{ backgroundColor: 'green' }}
-                                    onClick={(e) => {
-                                        setOpen(true)
-                                        setTrayId(value)
-                                    }}
-                                >
-                                    RECEIVED
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: '#206CE2' }}
-                                        onClick={(e) => {
-                                            handelViewTray(e, value)
-                                        }}
-                                    >
-                                        View
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: 'red' }}
-                                        onClick={(e) => {
-                                            handelViewDetailTray(e, value)
-                                        }}
-                                    >
-                                        Close
-                                    </Button>
-                                </>
-                            )}
-                        </>
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) => {
+                                handelViewTray(e, value)
+                            }}
+                        >
+                            Start
+                        </Button>
                     )
                 },
             },
         },
+    ]
+
+    const columns1 = [
+        {
+            index:1,
+            tray_id:'WHT2004',
+            rptray_id:'RP388',
+            brand:'Xiomi',
+            model:'S5',
+            qty:'1'
+        }
     ]
 
     return (
@@ -323,14 +301,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting done (WHT)', path: '/' }
+                        { name: 'WHT-to-RP', path: '/' },
+                        { name: 'WHT Tray' },
                     ]}
                 />
             </div>
-
+            <Card>
             <MUIDataTable
-                title={'Requests'}
-                data={tray}
+                title={'Tray'}
+                // data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -364,8 +343,11 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Card>
+            
         </Container>
     )
 }
 
 export default SimpleMuiTable
+

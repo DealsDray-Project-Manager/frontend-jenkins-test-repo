@@ -95,13 +95,14 @@ const ProductTableThere = styled(Table)(() => ({
     },
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
-    minWidth: 750,
+    // minWidth: 4500,
     width: '240%',
     height:'100%',
-    whiteSpace: 'pre',
+    whiteSpace:'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
+            width:120
         },
     },
     '& td': {
@@ -1228,8 +1229,7 @@ const PickupPage = () => {
                 <Typography
                     variant="subtitle1"
                     fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
-                >
+                sx={{}}>
                     <>Select</>
                 </Typography>
             ),
@@ -1253,13 +1253,13 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{mr:4}}><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
                 
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
 
@@ -1789,7 +1789,7 @@ const PickupPage = () => {
                 columns={columnsOne}
                 options={{
                     filterType: 'multiselect',
-                    responsive: 'standared',
+                    responsive: 'standard',
                     download: false,
                     print: false,
                     showFirstButton: 'true',
@@ -1913,7 +1913,7 @@ const PickupPage = () => {
                 columns={columnsTwo}
                 options={{
                     filterType: 'multiselect',
-                    responsive: 'standared',
+                    responsive: 'standard',
                     download: false,
                     print: false,
 
@@ -2041,7 +2041,7 @@ const PickupPage = () => {
                 columns={columnsThree}
                 options={{
                     filterType: 'multiselect',
-                    responsive: 'standared',
+                    responsive: 'standard',
                     download: false,
                     print: false,
                     textLabels: {
@@ -2174,7 +2174,7 @@ const PickupPage = () => {
                 columns={columnsForRdlOne}
                 options={{
                     filterType: 'multiselect',
-                    responsive: 'standared',
+                    responsive:'simple',
                     download: false,
                     print: false,
                     textLabels: {

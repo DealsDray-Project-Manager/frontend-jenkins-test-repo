@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
@@ -26,35 +26,35 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
-                    )
-                    if (res.status == 200) {
-                        setIsLoading(false)
-                        setRDLRequest(res.data.data)
-                    }
-                } else {
-                    navigate('/')
-                }
-            }
-            fetchData()
-        } catch (error) {
-            setIsLoading(false)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         const fetchData = async () => {
+    //             let admin = localStorage.getItem('prexo-authentication')
+    //             if (admin) {
+    //                 setIsLoading(true)
+    //                 let { location } = jwt_decode(admin)
+    //                 let res = await axiosWarehouseIn.post(
+    //                     '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+    //                 )
+    //                 if (res.status == 200) {
+    //                     setIsLoading(false)
+    //                     setRDLRequest(res.data.data)
+    //                 }
+    //             } else {
+    //                 navigate('/')
+    //             }
+    //         }
+    //         fetchData()
+    //     } catch (error) {
+    //         setIsLoading(false)
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             confirmButtonText: 'Ok',
+    //             text: error,
+    //         })
+    //     }
+    // }, [])
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
@@ -74,59 +74,65 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'part_no',
+            label: <Typography sx={{fontWeight:'bold'}}>Spare Part Number</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}}>Spare Part Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'rptray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            name: 'model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
-                // customBodyRender: (items, tableMeta) =>
-                //     items?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            name: 'muic',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) => {
-                    return (
-                        <Button 
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Issue
-                        </Button>
-                    )
-                }, 
+                filter: true,
             },
         },
+        {
+            name: 'avl_qty',
+            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'req_qty',
+            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            options: {
+                filter: true,
+            },
+        }
     ]
 
     const columns1 = [
         {
             index:1,
-            name:'abc',
-            rptray:'RP188098',
-            items:2
+            part_no:'SPN000736',
+            name:'Camera Glass/Black-XIOMI MI A2',
+            brand:'Xiomi',
+            model:'MI A2',
+            muic:'KG888',
+            units:4
         }
     ]
 
@@ -135,6 +141,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
+                        { name: 'WHT', path: '/' },
                         { name: 'RDL-2-Requests' },
                     ]}
                 />

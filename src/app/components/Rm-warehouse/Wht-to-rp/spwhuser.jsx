@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../axios'
 import {
     Button,
     Dialog,
@@ -146,7 +146,7 @@ const SimpleMuiTable = () => {
 
     const handleViewParts = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/viewparts')
+        navigate('/sp-user/spwhuser/viewparts')
     }
 
     const columns = [
@@ -193,7 +193,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -282,7 +282,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'Requests'}
+                title={'Tray'}
                 data={columns1}
                 columns={columns}
                 options={{

@@ -39,7 +39,8 @@ import SalesRoutes from 'app/components/Sales-components/Sales_routes'
 import ReportingAgent from 'app/components/Reporting-agent/Reporting-agent-router'
 import Rdl2Routers from 'app/components/Rdl-2-panel/Rdl-2-router'
 import RmWarehouse from 'app/components/Rm-warehouse/Rm-warehouse'
-
+import PurchaseRmPanel from "app/components/Purchase-rm/purchase-rm"
+import SpmisPanel from "app/components/Sp-mis-panel/sp-mis-panel"
 export const AllPages = () => {
     const all_routes = [
         {
@@ -49,6 +50,8 @@ export const AllPages = () => {
                 </AuthGuard>
             ),
             children: [
+                ...SpmisPanel,
+                ...PurchaseRmPanel,
                 ...dashboardRoutes,
                 ...calendarRoutes,
                 ...chartsRoute,

@@ -4,21 +4,20 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../axios'
 import {
     Button,
     Dialog,
     DialogTitle,
     IconButton,
+    Box,
     DialogContent,
     DialogActions,
     TextField,
-    Table,
-    TableContainer,
     Typography
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -33,28 +32,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '110%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -89,80 +66,33 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
+
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
-    const [open, setOpen] = useState(false)
     const [counts, setCounts] = useState('')
+    const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
-    const [receiveBut, setReceiveBut] = useState(false)
-    const [refresh, setRefresh] = useState(refresh)
-    const [isLoading, setIsLoading] = useState(false)
+    const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const [receiveButDis,setReceiveButDis]=useState(false)
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
+        try {
+            const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/wht-return-from-charging/' + location
+                        '/return-from-sorting-wht/' + location
                     )
                     if (res.status == 200) {
-                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
-            } catch (error) {
-                setIsLoading(false)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
             }
-        }
-        fetchData()
-    }, [refresh])
-
-    const handelViewDetailTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/wht/return-from-charging/close/' + id)
-    }
-
-    const handelTrayReceived = async () => {
-        try {
-            setReceiveBut(true)
-            let obj = {
-                trayId: trayId,
-                counts: counts,
-                type: 'charging',
-            }
-            let res = await axiosWarehouseIn.post('/receivedTray', obj)
-            if (res.status == 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-                setReceiveBut(false)
-                setOpen(false)
-                setRefresh((refresh) => !refresh)
-            } else {
-                setReceiveBut(false)
-                setOpen(false)
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-            }
+            fetchData()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -171,15 +101,60 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }
+    }, [refresh])
 
+    const handelTrayReceived = async () => {
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+            }
+            setReceiveButDis(true)
+            let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setReceiveButDis(false)
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                setOpen(false)
+                setReceiveButDis(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOpen(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
     const handleClose = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, id) => {
+    const handleAdd = () => {
+        Swal.fire({
+            title: 'Added Successfully',
+            icon: 'success'
+        })
+    }
+
+    const handleViewSpIssue = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/return-from-charging/view-item/' + id)
+        navigate('/sp-user/spwhuser/viewparts/sptrayissue')
     }
 
     const columns = [
@@ -195,128 +170,101 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            name: 'partno',
+            label: <Typography sx={{fontWeight:'bold'}}>Part Number</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
+            name: 'boxid',
+            label: <Typography sx={{fontWeight:'bold'}}>Box ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Tray',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+
+        {
+            name: 'spare_part_name',
+            label: <Typography sx={{fontWeight:'bold'}}>Spare Part Name</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'qty',
+            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status',
             label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        // {
-        //     name: 'limit',
-        //     label: 'limit',
-        //     options: {
-        //         filter: false,
-        //         sort: false,
-        //         display: false,
-        //     },
-        // },
-
-        {
-            name: 'closed_time_bot',
-            label: <Typography sx={{fontWeight:'bold'}}>Charging Done Date</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
-                            {tableMeta.rowData[2] != 'Received From Charging' &&
-                            tableMeta.rowData[2] !=
-                                'Received From Recharging' ? (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'green' }}
-                                    onClick={(e) => {
-                                        setOpen(true)
-                                        setTrayId(value)
-                                    }}
-                                >
-                                    RECEIVE
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: '#206CE2' }}
-                                        onClick={(e) => {
-                                            handelViewTray(e, value)
-                                        }}
-                                    >
-                                        View
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: 'red' }}
-                                        onClick={(e) => {
-                                            handelViewDetailTray(e, value)
-                                        }}
-                                    >
-                                        Close
-                                    </Button>
-                                </>
-                            )}
-                        </>
+                        <Button
+                           sx={{
+                               m: 1,
+                           }}
+                           variant="contained"
+                           style={{ backgroundColor: '#206CE2' }}
+                           onClick={(e) => {
+                               handleAdd(e, value)
+                           }}
+                       >
+                           Add 
+                       </Button>
                     )
                 },
             },
         },
     ]
 
+   const columns1 = [
+        {
+            index:1,
+            partno:'SPN000739',
+            boxid:'',
+            spare_part_name:'Camera Glass/Black-XIOMI MI A2',
+            qty:1,
+            status:'Added'
+        },
+        {
+            index:2,
+            partno:'SPN000740',
+            boxid:'',
+            spare_part_name:'Camera Glass/Black-XIOMI MI A2',
+            qty:2,
+            status:'Pending'
+        },
+        {
+            index:3,
+            partno:'SPN000742',
+            boxid:'',
+            spare_part_name:'Camera Glass/Black-XIOMI MI A2',
+            qty:1,
+            status:'Pending'
+        },
+    ]
     return (
         <Container>
             <BootstrapDialog
@@ -329,7 +277,7 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    Please verify the count of - {trayId}
+                    RECEIVED
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -353,8 +301,8 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === '' || receiveBut}
                         variant="contained"
+                        disabled={counts === '' || receiveButDis}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -367,30 +315,22 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'Return-from-charging' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'Spare Parts', path: '/' },
+                        { name: 'Requests' },
                     ]}
                 />
-            </div> 
-
-            <ScrollableTableContainer>
-                <ProductTable>
-                <MUIDataTable
-                title={'Tray'}
-                data={tray}
+            </div>
+            
+            <MUIDataTable
+                title={'Requests'}
+                data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -418,9 +358,33 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
+            <Box sx={{display:'flex', justifyContent:'space-between'}}>
+            <Button
+                sx={{
+                    m: 1,
+                }}
+                variant="contained"
+                style={{ backgroundColor: '#206CE2' }}
+                onClick={(e) => {
+                 //    handleViewParts(e, value)
+                }}
+            >
+                SPWHN remarks 
+            </Button>
+            <Button
+                sx={{
+                    m: 1,
+                    mr:5
+                }}
+                variant="contained"
+                style={{ backgroundColor: '#206CE2' }}
+                onClick={(e) => {
+                    handleViewSpIssue(e)
+                }}
+            >
+                Close & Send 
+            </Button>
+            </Box>
         </Container>
     )
 }

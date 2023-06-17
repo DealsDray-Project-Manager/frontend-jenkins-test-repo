@@ -4,21 +4,23 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosMisUser} from '../../../../../axios'
 import {
     Button,
+    Card,
     Dialog,
+    Box,
     DialogTitle,
     IconButton,
     DialogContent,
     DialogActions,
     TextField,
-    Table,
-    TableContainer,
     Typography
 } from '@mui/material'
+// import AssignDialogBox from './recievedialog'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -33,28 +35,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '110%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -89,80 +69,38 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
+
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
-    const [open, setOpen] = useState(false)
     const [counts, setCounts] = useState('')
+    const [isAlive, setIsAlive] = useState(true)
+    const [isCheck, setIsCheck] = useState([])
+    const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
-    const [receiveBut, setReceiveBut] = useState(false)
-    const [refresh, setRefresh] = useState(refresh)
-    const [isLoading, setIsLoading] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [chargingUsers, setChargingUsers] = useState([])
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    
     const navigate = useNavigate()
+    const [receiveButDis,setReceiveButDis]=useState(false)
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
+        try {
+            const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/wht-return-from-charging/' + location
+                        '/return-from-sorting-wht/' + location
                     )
                     if (res.status == 200) {
-                        setIsLoading(false)
                         setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
-            } catch (error) {
-                setIsLoading(false)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
             }
-        }
-        fetchData()
-    }, [refresh])
-
-    const handelViewDetailTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/wht/return-from-charging/close/' + id)
-    }
-
-    const handelTrayReceived = async () => {
-        try {
-            setReceiveBut(true)
-            let obj = {
-                trayId: trayId,
-                counts: counts,
-                type: 'charging',
-            }
-            let res = await axiosWarehouseIn.post('/receivedTray', obj)
-            if (res.status == 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-                setReceiveBut(false)
-                setOpen(false)
-                setRefresh((refresh) => !refresh)
-            } else {
-                setReceiveBut(false)
-                setOpen(false)
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-            }
+            fetchData()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -171,16 +109,93 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }
+    }, [refresh])
 
+    const handelTrayReceived = async () => {
+        try {
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+            }
+            setReceiveButDis(true)
+            let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setReceiveButDis(false)
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                setOpen(false)
+                setReceiveButDis(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOpen(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
     const handleClose = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/wht/return-from-charging/view-item/' + id)
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setChargingUsers([])
+        setShouldOpenEditorDialog(false)
     }
+    
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const handleRecieve = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/get-charging-users/' + 'BQC/' + location
+                    )
+                    if (res.status == 200) {
+                        setChargingUsers(res.data.data)
+                        handleDialogOpen()
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text:error,
+                })
+            }
+        }
+        fetchData()
+    }
+    const handleView = (e, code) => {
+        e.preventDefault()
+        navigate('/wareshouse/sorting/return-from-sorting-rp/view')
+    }
+    const handleClose1 = (e, code) => {
+        e.preventDefault()
+        navigate('/wareshouse/sorting/return-from-sorting-rp/close')
+    }
+    
 
     const columns = [
         {
@@ -195,29 +210,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
+            name: 'uic',
+            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
             options: {
                 filter: true,
             },
@@ -238,83 +232,30 @@ const SimpleMuiTable = () => {
         },
         // {
         //     name: 'limit',
-        //     label: 'limit',
+        //     label: 'Tray',
         //     options: {
-        //         filter: false,
-        //         sort: false,
+        //         filter: true,
         //         display: false,
         //     },
         // },
 
         {
-            name: 'closed_time_bot',
-            label: <Typography sx={{fontWeight:'bold'}}>Charging Done Date</Typography>,
+            name: 'muic',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
-        },
+        }
+    ]
+
+    const columns1 = [
         {
-            name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <>
-                            {tableMeta.rowData[2] != 'Received From Charging' &&
-                            tableMeta.rowData[2] !=
-                                'Received From Recharging' ? (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'green' }}
-                                    onClick={(e) => {
-                                        setOpen(true)
-                                        setTrayId(value)
-                                    }}
-                                >
-                                    RECEIVE
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: '#206CE2' }}
-                                        onClick={(e) => {
-                                            handelViewTray(e, value)
-                                        }}
-                                    >
-                                        View
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: 'red' }}
-                                        onClick={(e) => {
-                                            handelViewDetailTray(e, value)
-                                        }}
-                                    >
-                                        Close
-                                    </Button>
-                                </>
-                            )}
-                        </>
-                    )
-                },
-            },
-        },
+            index:1,
+            uic:'867',
+            brand:'Xiomi',
+            model:'S5',
+            muic:'OF487'
+        }
     ]
 
     return (
@@ -329,7 +270,7 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    Please verify the count of - {trayId}
+                    RECEIVED
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -353,8 +294,8 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
-                        disabled={counts === '' || receiveBut}
                         variant="contained"
+                        disabled={counts === '' || receiveButDis}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -367,30 +308,22 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'Return-from-charging' },
+                        { name: 'Assign To RDL-2', path: '/' },
+                        { name: 'RDL-2', path: '/' },
+                        { name: 'Repair Parts' },
                     ]}
                 />
-            </div> 
-
-            <ScrollableTableContainer>
-                <ProductTable>
-                <MUIDataTable
+            </div>
+            <Card>
+            <MUIDataTable
                 title={'Tray'}
-                data={tray}
+                data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
@@ -418,9 +351,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
+            </Card>
+            
         </Container>
     )
 }

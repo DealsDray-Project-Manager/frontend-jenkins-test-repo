@@ -3,6 +3,8 @@ import Loadable from '../Loadable/Loadable'
 
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const SortingRequest = Loadable(lazy(() => import('./Sorting-request/tray')))
+const SortingRequest1 = Loadable(lazy(() => import('./Sorting-request/tray1')))
+const Start = Loadable(lazy(() => import('./Sorting-request/start')))
 const StartSorting = Loadable(
     lazy(() => import('./Sorting-request/start-sorting'))
 )
@@ -35,6 +37,10 @@ const SortingRouter = [
         element: <SortingRequest />,
     },
     {
+        path: '/sorting/request/tray1',
+        element: <SortingRequest1 />,
+    },
+    {
         path: '/sorting/ctx/request',
         element: <CtxtoStxSortingRequest />,
     },
@@ -45,6 +51,10 @@ const SortingRouter = [
     {
         path: '/sorting/request/start-sorting/:trayId',
         element: <StartSorting />,
+    },
+    {
+        path: '/sorting/request/start',
+        element: <Start />,
     },
     {
         path: '/sorting/merge',

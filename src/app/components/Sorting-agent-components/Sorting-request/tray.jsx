@@ -205,3 +205,6 @@ const SimpleMuiTable = () => {
 }
 
 export default SimpleMuiTable
+
+
+

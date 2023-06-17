@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Card, Box } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl2-request/scan')
+        navigate('')
     }
 
     const columns = [
@@ -132,8 +132,19 @@ const SimpleMuiTable = () => {
             brand:'Xiomi',
             model:'MI A2',
             muic:'KG888',
-            units:4
-        }
+            avl_qty:1,
+            req_qty:2
+        },
+        {
+            index:2,
+            part_no:'SPN000735',
+            name:'Camera Glass/Black-XIOMI MI A2',
+            brand:'Xiomi',
+            model:'MI A2',
+            muic:'KG888',
+            avl_qty:0,
+            req_qty:2
+        },
     ]
 
     return (
@@ -146,7 +157,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
+            <Card>
             <MUIDataTable
                 title={'Requests'}
                 data={columns1}
@@ -190,6 +201,23 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            <br />
+            <Box>
+            <Button 
+                sx={{
+                    float:'right',
+                    mr:2
+                }}
+                variant="contained"
+                onClick={(e) => handelDetailPage(e)}
+                style={{ backgroundColor: 'green' }}
+                component="span"
+            >
+                Create Request                            
+            </Button>
+            </Box>
+            <br />
+            </Card>
         </Container>
     )
 }

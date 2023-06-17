@@ -106,22 +106,22 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'actual_items',
-        //     label: 'acutual_items',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
-        // {
-        //     name: 'limit',
-        //     label: 'limit',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
+        {
+            name: 'actual_items',
+            label: 'acutual_items',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,

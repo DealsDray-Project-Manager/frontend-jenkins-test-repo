@@ -189,6 +189,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            
             name: 'image', // field name in the row object
             label: <Typography variant="subtitle1" fontWeight='bold'><>Image</></Typography>, // column title that will be shown in table
             options: {
@@ -201,11 +202,12 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'https://prexo-v8-3-dev-api.dealsdray.com/product/image/' +
+                                    ? 'https://prexo-v8-3-uat-api.dealsdray.com/product/image/' +
                                       tableMeta.rowData[2] +
                                       '.jpg'
                                     : value
                             }
+
                         />
                     )
                 },

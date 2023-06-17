@@ -15,6 +15,7 @@ const initialAuthState = {
     isInitialised: false,
     user: null,
 }
+
 const reducer = (state, action) => {
     switch (action.type) {
         case 'AUTH_STATE_CHANGED': {

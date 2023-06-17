@@ -38,60 +38,7 @@ const ViewRequirementOfPart = Loadable(lazy(() => import('./Upcoming-repair/view
 const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray')))
 
 
-const SPWHuser = Loadable(
-    lazy(() => import('../Rm-warehouse/Wht-to-rp/spwhuser'))
-)
-const Viewparts = Loadable(
-    lazy(() => import('../Rm-warehouse/Wht-to-rp/viewparts'))
-)
-const SPtrayIssue = Loadable(
-    lazy(() => import('../Rm-warehouse/Wht-to-rp/sptrayissue'))
-)
-const RDL2Request = Loadable(
-    lazy(() => import('./Wht-to-rp/tray'))
-)
-const RDL2Requestscan = Loadable(
-    lazy(() => import('./Wht-to-rp/scan'))
-)
-const Request = Loadable(
-    lazy(() => import('./Wht-to-rp/request'))
-)
-const Scanitem = Loadable(
-    lazy(() => import('./Wht-to-rp/scanitem'))
-)
-
-
-
 const RmWarehouse = [
-    {
-        path: '/sp-user/spwhuser',
-        element: <SPWHuser />,
-    },
-    {
-        path: '/sp-user/spwhuser/viewparts',
-        element: <Viewparts />,
-    },
-    {
-        path: '/sp-user/spwhuser/viewparts/sptrayissue',
-        element: <SPtrayIssue />,
-    },
-
-    {
-        path: '/sp-user/rdl2-request',
-        element: <RDL2Request />,
-    },
-    {
-        path: '/sp-user/rdl2-request/request',
-        element: <Request />,
-    },
-    {
-        path: '/sp-user/rdl2-request/scanitem',
-        element: <Scanitem />,
-    },
-    {
-        path: '/sp-user/rdl2-request/scan',
-        element: <RDL2Requestscan />,
-    },
     {
         path: '/sp-user/dashboard',
         element: <Dashboard />,

@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl2-request/scan')
+        navigate('/wareshouse/wht/rdl2-request/approve/' + trayId)
     }
 
     const columns = [
@@ -74,26 +74,70 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            name: 'code',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+
+        {
+            name: 'warehouse',
+            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'rptray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
+        {
+            name: 'model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Limit',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: <Typography sx={{fontWeight:'bold'}}>RDL Agent</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: <Typography sx={{fontWeight:'bold'}}>Request Sent Date</Typography>,
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {
                 filter: true,
-                // customBodyRender: (items, tableMeta) =>
-                //     items?.length + '/' + tableMeta.rowData[5],
+                customBodyRender: (items, tableMeta) =>
+                    items?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
@@ -104,7 +148,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value) => {
                     return (
-                        <Button 
+                        <Button
                             sx={{
                                 m: 1,
                             }}
@@ -113,28 +157,19 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Issue
+                            Approve
                         </Button>
                     )
-                }, 
+                },
             },
         },
     ]
-
-    const columns1 = [
-        {
-            index:1,
-            name:'abc',
-            rptray:'RP188098',
-            items:2
-        }
-    ]
-
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
+                        { name: 'WHT', path: '/' },
                         { name: 'RDL-2-Requests' },
                     ]}
                 />
@@ -142,7 +177,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Requests'}
-                data={columns1}
+                data={RDLRequest}
                 columns={columns}
                 options={{
                     filterType: 'textField',

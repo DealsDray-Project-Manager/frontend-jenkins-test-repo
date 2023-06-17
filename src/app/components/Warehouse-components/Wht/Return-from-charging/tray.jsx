@@ -236,15 +236,15 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'limit',
-            label: 'limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'limit',
+        //     label: 'limit',
+        //     options: {
+        //         filter: false,
+        //         sort: false,
+        //         display: false,
+        //     },
+        // },
 
         {
             name: 'closed_time_bot',

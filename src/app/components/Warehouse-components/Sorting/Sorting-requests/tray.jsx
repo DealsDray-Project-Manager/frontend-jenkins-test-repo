@@ -127,14 +127,14 @@ const SimpleMuiTable = () => {
                     value?.[0]?.WhtTray?.join(', '),
             },
         },
-        {
-            name: 'code',
-            label: 'WHT Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'code',
+        //     label: 'WHT Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
         {
             name: 'sort_id',
             label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,

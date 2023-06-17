@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { axiosRdlTwoAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 
@@ -54,30 +54,30 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/rdl-two/tray/view-item/' + trayId)
+        navigate('/rdl-two/scan')
     }
 
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography fontSize='16px' fontWeight='bold' marginLeft='7px'>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                    <Typography>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography fontSize='16px' fontWeight='bold'>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'requested_date',
-            label: 'Assigned Date',
+            name: 'sptray',
+            label: <Typography fontSize='16px' fontWeight='bold'>SP Tray ID</Typography>,
             options: {
                 filter: true,
                 sort: false,
@@ -88,22 +88,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'warehouse',
-            label: 'Warehouse',
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography fontSize='16px' fontWeight='bold'>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography fontSize='16px' fontWeight='bold'>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -120,11 +113,11 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography fontSize='16px' fontWeight='bold'>Quantity</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[6],
+                // customBodyRender: (items, tableMeta) =>
+                //     items?.length + '/' + tableMeta.rowData[6],
             },
         },
         {
@@ -144,7 +137,7 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            View
+                            Start
                         </Button>
                     )
                 },
@@ -152,20 +145,31 @@ const SimpleMuiTable = () => {
         },
     ]
 
+    const columns1 = [
+        {
+            index:1,
+            code:'RP388',
+            sptray:'SP001 (3)',
+            brand:'Xiomi',
+            model:'S5',
+            items:2
+        }
+
+    ]
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'RDL-2-Request' },
+                        { name: 'RDL-2-Request', path: '/' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
                 title={'Requests'}
-                data={RDLRequest}
+                data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',

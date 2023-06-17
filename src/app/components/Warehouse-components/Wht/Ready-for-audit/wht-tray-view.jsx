@@ -178,14 +178,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'limit',
+        //     label: 'Limit',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,

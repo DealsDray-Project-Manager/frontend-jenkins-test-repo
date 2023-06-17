@@ -146,7 +146,7 @@ const SimpleMuiTable = () => {
 
     const handleViewParts = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/viewparts')
+        navigate('/sp-user/spwhuser/viewparts')
     }
 
     const columns = [

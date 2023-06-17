@@ -230,14 +230,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'limit',
-            label: 'Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'limit',
+        //     label: 'Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
 
         {
             name: 'muic',

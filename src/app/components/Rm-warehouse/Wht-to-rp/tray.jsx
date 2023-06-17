@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
@@ -26,39 +26,39 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
-                    )
-                    if (res.status == 200) {
-                        setIsLoading(false)
-                        setRDLRequest(res.data.data)
-                    }
-                } else {
-                    navigate('/')
-                }
-            }
-            fetchData()
-        } catch (error) {
-            setIsLoading(false)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         const fetchData = async () => {
+    //             let admin = localStorage.getItem('prexo-authentication')
+    //             if (admin) {
+    //                 setIsLoading(true)
+    //                 let { location } = jwt_decode(admin)
+    //                 let res = await axiosWarehouseIn.post(
+    //                     '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+    //                 )
+    //                 if (res.status == 200) {
+    //                     setIsLoading(false)
+    //                     setRDLRequest(res.data.data)
+    //                 }
+    //             } else {
+    //                 navigate('/')
+    //             }
+    //         }
+    //         fetchData()
+    //     } catch (error) {
+    //         setIsLoading(false)
+    //         Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             confirmButtonText: 'Ok',
+    //             text: error,
+    //         })
+    //     }
+    // }, [])
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl2-request/scan')
+        navigate('/sp-user/rdl2-request/request')
     }
 
     const columns = [
@@ -81,8 +81,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rptray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'sptray',
+            label: <Typography sx={{fontWeight:'bold'}}>SP Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -125,8 +125,8 @@ const SimpleMuiTable = () => {
         {
             index:1,
             name:'abc',
-            rptray:'RP188098',
-            items:2
+            sptray:'SP18001',
+            items:3
         }
     ]
 
@@ -135,6 +135,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
+                        { name: 'WHT', path: '/' },
                         { name: 'RDL-2-Requests' },
                     ]}
                 />

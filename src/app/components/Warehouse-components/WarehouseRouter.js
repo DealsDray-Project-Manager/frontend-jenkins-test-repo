@@ -546,7 +546,7 @@ const WarehoueRouter = [
     },
     {
         path: '/wareshouse/wht/pickup/return-from-pickup/close/:trayId',
-        element: <PickupDoneClose />,
+        element: <PickupDoneClose />, 
     },
     {
         path: '/wareshouse/wht/rdl2-request',

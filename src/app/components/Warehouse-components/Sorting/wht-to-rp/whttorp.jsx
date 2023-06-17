@@ -162,29 +162,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-
-        {
             name: 'wht_tray',
             label: <Typography sx={{fontWeight:'bold'}}>WHT Tray ID</Typography>,
             options: {
@@ -198,6 +175,42 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'date',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand',
+            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'model',
+            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        // {
+        //     name: 'limit',
+        //     label: 'Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
         {
             name: 'code',
             label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
@@ -228,6 +241,8 @@ const SimpleMuiTable = () => {
         {
             index:1,
             name:'abc',
+            brand:'Xiomi',
+            date:'',
             model:'S5',
             wht_tray:'WHT101, WHT102',
             rp_tray:'RP001'
@@ -284,7 +299,6 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT-to-RP', path: '/' },
                         { name: 'WHT Tray' },
                     ]}
                 />

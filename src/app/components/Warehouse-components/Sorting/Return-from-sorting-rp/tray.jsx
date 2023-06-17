@@ -230,15 +230,29 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        // {
+        //     name: 'limit',
+        //     label: 'Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
+
         {
-            name: 'limit',
-            label: 'Tray',
+            name: 'status',
+            label: <Typography sx={{fontWeight:'bold'}}>Tray Status</Typography>,
             options: {
                 filter: true,
-                display: false,
             },
         },
-
+        {
+            name: 'date',
+            label: <Typography sx={{fontWeight:'bold'}}>Closed Date</Typography>,
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'status',
             label: <Typography sx={{fontWeight:'bold'}}>Tray Status</Typography>,
@@ -265,7 +279,7 @@ const SimpleMuiTable = () => {
                         style={{ backgroundColor: 'green' }}
                         component="span"
                     >
-                        Send to Repair
+                        Recieved
                     </Button>
                         <Button
                             sx={{
@@ -304,6 +318,7 @@ const SimpleMuiTable = () => {
             tray_id:'WHT2004',
             tray:'WHT2004',
             name:'abc',
+            date:'',
             status:'Sorting Done'
         }
     ]

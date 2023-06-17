@@ -81,7 +81,6 @@ const handlerecieve = () => {
                 <TextFieldCustOm
                     label="Enter the Count"
                     fullWidth
-                    select
                     name="username"
                 >
                    

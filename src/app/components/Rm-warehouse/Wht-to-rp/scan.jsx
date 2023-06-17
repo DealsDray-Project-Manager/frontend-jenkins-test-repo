@@ -358,7 +358,8 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RDL-2-Requests', path: '/' },
+                        { name: 'WHT', path: '/' },
+                        { name: 'BQC-Requests', path: '/' },
                         { name: 'Verification'}
                     ]}
                 />

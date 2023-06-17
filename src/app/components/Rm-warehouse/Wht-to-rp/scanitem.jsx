@@ -12,15 +12,11 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
-import { styled } from '@mui/system'
 import { Breadcrumb } from 'app/components'
-import { useParams } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import jwt_decode from 'jwt-decode'
-
+import { styled } from '@mui/system'
+import { useParams, useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from 'axios'
-import { navigate } from 'react-big-calendar/lib/utils/constants'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -35,44 +31,31 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
-
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
-    const { trayId } = useParams()
-    const [loading, setLoading] = useState(false)
+    const { trayId, sortId } = useParams()
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
-    const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
-
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let response = await axiosWarehouseIn.post(
-    //                     '/getWhtTrayItem/' +
-    //                         trayId +
-    //                         '/' +
-    //                         'Send for charging/' +
-    //                         location
-    //                 )
-    //                 if (response.status === 200) {
-    //                     setTrayData(response.data.data)
-    //                 } else {
-    //                     Swal.fire({
-    //                         position: 'top-center',
-    //                         icon: 'error',
-    //                         title: response?.data?.message,
-    //                         confirmButtonText: 'Ok',
-    //                     })
-    //                     navigate(-1)
-    //                 }
+    //             let response = await axiosWarehouseIn.post(
+    //                 '/get-tray-sorting/' + trayId
+    //             )
+    //             if (response.status === 200) {
+    //                 setTrayData(response.data.data)
+    //             } else {
+    //                 Swal.fire({
+    //                     position: 'top-center',
+    //                     icon: 'error',
+    //                     title: response?.data?.message,
+    //                     confirmButtonText: 'Ok',
+    //                 })
+    //                 navigate(-1)
     //             }
     //         } catch (error) {
     //             Swal.fire({
@@ -94,9 +77,8 @@ export default function DialogBox() {
     //                 trayId: trayId,
     //             }
     //             setTextDisable(true)
-
     //             let res = await axiosWarehouseIn.post('/check-uic', obj)
-    //             if (res?.status == 200) {
+    //             if (res?.status === 200) {
     //                 addActualitem(res.data.data)
     //             } else {
     //                 setTextDisable(false)
@@ -119,30 +101,39 @@ export default function DialogBox() {
     //         }
     //     }
     // }
-    // /************************************************************************** */
+    /************************************************************************** */
     // const addActualitem = async (obj) => {
-    //     if (trayData.items.length < trayData?.actual_items?.length) {
+    //     if (trayData.limit <= trayData?.actual_items?.length) {
     //         Swal.fire({
     //             position: 'top-center',
     //             icon: 'success',
-    //             title: 'All items Scanned',
+    //             title: 'All Items Scanned',
     //             confirmButtonText: 'Ok',
     //         })
     //     } else {
+    //         setTextDisable(true)
     //         try {
     //             let objData = {
     //                 trayId: trayId,
     //                 item: obj,
     //             }
-    //             setTextDisable(true)
     //             let res = await axiosWarehouseIn.post(
     //                 '/wht-add-actual-item',
     //                 objData
     //             )
-    //             if (res.status == 200) {
+    //             if (res.status === 200) {
     //                 setUic('')
     //                 setTextDisable(false)
     //                 setRefresh((refresh) => !refresh)
+    //             } else {
+    //                 setTextDisable(false)
+
+    //                 Swal.fire({
+    //                     position: 'top-center',
+    //                     icon: 'error',
+    //                     title: res?.data?.message,
+    //                     confirmButtonText: 'Ok',
+    //                 })
     //             }
     //         } catch (error) {
     //             Swal.fire({
@@ -154,69 +145,14 @@ export default function DialogBox() {
     //         }
     //     }
     // }
-    // /************************************************************************** */
-    // const handelIssue = async (e, sortId) => {
-    //     try {
-    //         if (trayData?.actual_items?.length == trayData?.items?.length) {
-    //             setLoading(true)
-    //             let obj = {
-    //                 trayId: trayId,
-    //                 description: description,
-    //                 sortId: trayData?.sort_id,
-    //             }
-    //             let res = await axiosWarehouseIn.post(
-    //                 '/issue-to-agent-wht',
-    //                 obj
-    //             )
-    //             if (res.status == 200) {
-    //                 Swal.fire({
-    //                     position: 'top-center',
-    //                     icon: 'success',
-    //                     title: res?.data?.message,
-    //                     confirmButtonText: 'Ok',
-    //                 })
-    //                 if (trayData?.sort_id == 'Send for BQC') {
-    //                     setLoading(false)
-    //                     navigate('/wareshouse/wht/bqc-request')
-    //                 } else {
-    //                     setLoading(false)
-    //                     navigate('/wareshouse/wht/charging-request')
-    //                 }
-    //             } else {
-    //                 Swal.fire({
-    //                     position: 'top-center',
-    //                     icon: 'error',
-    //                     title: res?.data?.message,
-    //                     confirmButtonText: 'Ok',
-    //                 })
-    //             }
-    //         } else {
-    //             setLoading(false)
-
-    //             Swal.fire({
-    //                 position: 'top-center',
-    //                 icon: 'error',
-    //                 title: 'Please Verify Actual Data',
-    //                 confirmButtonText: 'Ok',
-    //             })
-    //         }
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }
-
-    const handleissue = () =>{
+    /************************************************************************** */
+    const handleclose = () => {
         Swal.fire({
-            title: 'Issued Successfully',
+            title: 'Closed Successfully',
             icon: 'success'
         })
     }
-
+    /************************************************************************** */
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
@@ -227,94 +163,17 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>EXPECTED</h5>
+                        <h5>Item</h5>
                     </Box>
                     <Box
                         sx={{
                             float: 'right',
-                            mr: 2,
+                            mr: 5,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'5px'}}>Total</h5>
-                            <p style={{ paddingLeft: '0px', fontSize: '22px' }}>
-                              0/40
-                            </p>
-                        </Box>
-                    </Box>
-                </Box>
-                <TableContainer>
-                    <Table
-                        style={{ width: '100%' }}
-                        id="example"
-                        stickyHeader
-                        aria-label="sticky table"
-                    >
-                        <TableHead>
-                            <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
-                                <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {trayData?.items?.map((data, index) => (
-                                <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
-                                    <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
-        )
-    }, [trayData?.items])
-    const tableActual = useMemo(() => {
-        return (
-            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{}}>
-                    <Box
-                        sx={{
-                            float: 'left',
-                            ml: 2,
-                        }}
-                    >
-                        <h5>ACTUAL</h5>
-                        <TextField
-                            sx={{ mt: 1 }}
-                            id="outlined-password-input"
-                            type="text"
-                            disabled={textDisable}
-                            name="doorsteps_diagnostics"
-                            inputRef={(input) => input && input.focus()}
-                            label="SCAN UIC"
-                            value={uic}
-                            onChange={(e) => {
-                                setUic(e.target.value)
-                                // handelUic(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
-                            }}
-                        />
-                    </Box>
-                    <Box
-                        sx={{
-                            float: 'right',
-                            mr: 2,
-                        }}
-                    >
-                        <Box sx={{pl:8}}>
-                            <h5 style={{marginLeft:'12px'}}>Total</h5>
-                            <p style={{ marginLeft: '0px', fontSize: '24px' }}>
+                            <h5 style={{ marginLeft: '9px' }}>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 0/40
                             </p>
                         </Box>
@@ -331,9 +190,95 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                               <TableCell>MUIC</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {trayData?.items?.map((data, index) => (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>
+                                            {data?.awbn_number}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell>{data?.muic}</TableCell>
+                                    )}
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>{data?.bag_id}</TableCell>
+                                    ) : (
+                                        <TableCell>{data?.tray_id}</TableCell>
+                                    )}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        )
+    }, [trayData?.items])
+    const tableActul = useMemo(() => {
+        return (
+            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{}}>
+                    <Box
+                        sx={{
+                            float: 'left',
+                            ml: 2,
+                        }}
+                    >
+                        <h5>Repair Started Item</h5>
+                        <TextField
+                            sx={{ mt: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={uic}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                // handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            float: 'right',
+                            mr: 5,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5 style={{ marginLeft: '14px' }}>Total</h5>
+
+                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                                0/40
+                            </p>
+                        </Box>
+                    </Box>
+                </Box>
+                <TableContainer>
+                    <Table
+                        style={{ width: '100%' }}
+                        id="example"
+                        stickyHeader
+                        aria-label="sticky table"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell>UIC</TableCell>
+                               <TableCell>MUIC</TableCell>
+                               <TableCell>Part Item</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -342,9 +287,20 @@ export default function DialogBox() {
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>
+                                            {data?.awbn_number}
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell>{data?.muic}</TableCell>
+                                    )}
+                                    {trayData?.type_taxanomy === 'MMT' &&
+                                    trayData?.prefix == 'tray-master' ? (
+                                        <TableCell>{data?.bag_id}</TableCell>
+                                    ) : (
+                                        <TableCell>{data?.tray_id}</TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -358,7 +314,8 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RDL-2-Requests', path: '/' },
+                        { name: 'WHT-to-RP', path: '/' },
+                        { name: 'WHT tray', path: '/' },
                         { name: 'Verification'}
                     ]}
                 />
@@ -370,64 +327,36 @@ export default function DialogBox() {
                 //     borderRadius: 1,
                 // }}
             >
-                <Box
+                {/* <Box
                     sx={{
                         float: 'left',
                     }}
                 >
-                    <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
-                    <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
-                    </h4>
-                </Box>
-                <Box
-                    sx={{
-                        float: 'right',
-                    }}
-                >
-                    <h4 style={{ marginRight: '13px' }}>
-                        Brand -- {trayData?.brand}
-                    </h4>
-                    <h4 style={{ marginRight: '13px' }}>
-                        Model -- {trayData?.model}
-                    </h4>
-                </Box>
+                    <h4 style={{ marginLeft: '13px' }}>Issued Date: 22-04-2023</h4>
+                    <h4 style={{ marginLeft: '13px' }}>Brand: Xiomi</h4>
+                    <h4 style={{ marginLeft: '13px' }}>Model: S5</h4>
+                </Box> */}
             </Box>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     {tableExpected}
                 </Grid>
                 <Grid item xs={6}>
-                    {tableActual}
+                    {tableActul}
                 </Grid>
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <textarea
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        style={{ width: '300px', height: '60px' }}
-                        placeholder="Description"
-                    ></textarea>
-                    <Button
+                    {/* <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
-                        // disabled={
-                        //     trayData?.actual_items?.length !==
-                        //         trayData?.items?.length ||
-                        //     loading == true ||
-                        //     description == ''
-                        //         ? true
-                        //         : false
-                        // }
-                        style={{ backgroundColor: 'green' }}
+                        style={{ backgroundColor: 'primery' }}
                         onClick={(e) => {
-                            handleissue()
+                            handleclose(e)
                         }}
                     >
-                        Issue Tray
-                    </Button>
+                        Close Tray
+                    </Button> */}
                 </Box>
             </div>
         </Container>

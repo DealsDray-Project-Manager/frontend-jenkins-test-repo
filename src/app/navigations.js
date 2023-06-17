@@ -32,6 +32,20 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/sp-mis/dashboard', 
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/purchase-user/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/bot/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -172,6 +186,32 @@ export const navigations = [
             },
         ],
         auth: authRoles.admin,
+        sales: false,
+    },
+    {
+        name: 'Procurement',
+        icon: 'fiber_manual_record',
+        children: [            
+            {
+                name: 'Items for Procurement',
+                iconText:'VP',
+                path: '/sp-mis/procurement',
+            },
+        ],
+        auth: authRoles.SPMIS,
+        sales: false,
+    },
+    {
+        name: 'Purchase User',
+        icon: 'fiber_manual_record',
+        children: [            
+            {
+                name: 'Procurement Request',
+                iconText:'VP',
+                path: '/purchase-user/purchase',
+            },
+        ],
+        auth: authRoles.PURCHASERM,
         sales: false,
     },
 
@@ -425,8 +465,8 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: <Typography sx={{textAlign:'left'}}>Assign to RDL 2 (WHT to RP)</Typography>,
-                path: '/mis/assign-to-agent/Rdl2',
+                name: 'Assign to RDL-2',
+                path: '/mis/assign-to-agent/Rdl-2',
                 iconText: 'NP',
             },
         ],
@@ -447,6 +487,11 @@ export const navigations = [
                 path: '/mis/sorting/wht-to-rp',
                 iconText: 'VP',
             },
+            // {
+            //     name: 'Spare Part Procurement',
+            //     path: '/mis/sorting/procurement',
+            //     iconText: 'VP',
+            // },
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -687,15 +732,16 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Sorting Done (WHT to RP)',
-                path: '/wareshouse/sorting/return-from-sorting-rp',
-                iconText: 'VP',
-            },
-            {
                 name: 'WHT to RP',
                 path: '/wareshouse/sorting/wht-to-rp/whttorp',
                 iconText: 'VP',
             },
+            {
+                name: 'Sorting Done (WHT to RP)',
+                path: '/wareshouse/sorting/return-from-sorting-rp',
+                iconText: 'VP',
+            },
+            
         ],
         auth: authRoles.Warehouse,
         sales: false,
@@ -887,12 +933,12 @@ export const navigations = [
         children: [
             {
                 name: 'BOT to WHT',
-                path: '/sorting/request/tray1',
+                path: '/sorting/request',
                 iconText: 'VP',
             },
             {
                 name: 'WHT to RP',
-                path: '/sorting/request',
+                path: '/sorting/request/tray1',
                 iconText: 'VP',
             },
         ],
@@ -1242,7 +1288,14 @@ export const navigations = [
     },
     {
         name: 'WHT to RP',
-        path: '/wareshouse/sorting/spwhuser',
+        path: '/sp-user/spwhuser',
+        iconText: 'VP',
+        auth: authRoles.RMWAREHOUSE,   
+        sales: false,
+    },
+    {
+        name: 'WHT to SP',
+        path: '/sp-user/rdl2-request',
         iconText: 'VP',
         auth: authRoles.RMWAREHOUSE,   
         sales: false,

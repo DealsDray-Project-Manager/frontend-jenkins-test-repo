@@ -230,14 +230,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'limit',
-            label: 'Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'limit',
+        //     label: 'Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
 
         {
             name: 'muic',
@@ -308,8 +308,9 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT-to-RP', path: '/' },
-                        { name: 'WHT Tray' },
+                        { name: 'Assign To RDL-2', path: '/' },
+                        { name: 'RDL-2', path: '/' },
+                        { name: 'Repair Parts' },
                     ]}
                 />
             </div>

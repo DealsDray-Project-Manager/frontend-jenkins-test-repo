@@ -232,7 +232,7 @@ const SimpleMuiTable = () => {
                        <>
                        <span>SP18001</span>,<br />
                         <span>Pending</span>,<br />
-                        <span>Ready for RDL 2</span>,
+                        <span>Ready for RDL-2</span>,
                         <Button
                             sx={{
                                 m: 1,
@@ -259,7 +259,7 @@ const SimpleMuiTable = () => {
                         <>
                         <span>RP18098</span>,<br />
                         <span>Pending</span>,<br />
-                        <span>Ready for RDL 2</span>,
+                        <span>Ready for RDL-2</span>,
                         <Button
                             sx={{
                                 m: 1,
@@ -286,7 +286,7 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                         <span>Pending</span>,<br />
-                        <span>Ready for RDL 2</span>,<br />
+                        <span>Ready for RDL-2</span>,<br />
                         </>
                     )
                 },
@@ -309,15 +309,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign to RDL Two', path: '/' },
-                        { name: 'RDL Two' },
+                        { name: 'Assign to RDL-2', path: '/' },
+                        { name: 'RDL-2' },
                     ]}
                 />
             </div>
             <>
                 <>
                 <MUIDataTable
-                title={'Assign to RDL 2'}
+                title={'Assign to RDL-2'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -369,7 +369,7 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'primary' }}
                             component="span"
                         >
-                            Assign for RDL 2
+                            Assign for RDL-2
                         </Button>
             </Box>
               {shouldOpenEditorDialog && (

@@ -46,7 +46,7 @@ const AssignToRdltwoview = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))
 )
 const RDL2 = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl2/rdl2'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl2/rdl-2'))
 )
 const Viewrp = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl2/viewrp'))
@@ -67,6 +67,9 @@ const SortingBotTowht = Loadable(
 )
 const SortingWhtTorp = Loadable(
     lazy(() => import('./Sorting/Wht-to-rp/wht-tray'))
+)
+const Procurement = Loadable(
+    lazy(() => import('../Sp-mis-panel/procurement/sp_procurement'))
 )
 const Process = Loadable(
     lazy(() => import('./Sorting/Wht-to-rp/process'))
@@ -192,7 +195,7 @@ const dataTableRoutes = [
         element: <AssignToRdltwoview />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl2',
+        path: '/mis/assign-to-agent/Rdl-2',
         element: <RDL2 />,
     },
     {

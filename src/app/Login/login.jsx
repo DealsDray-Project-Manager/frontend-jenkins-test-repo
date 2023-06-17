@@ -99,12 +99,6 @@ const Login = () => {
             } else if (user_type == 'SP User') {
                 navigate('/sp-user/dashboard')
             }
-            else if (user_type == 'Purchase RM') {
-                navigate('/purchase-user/dashboard')
-            }
-            else if (user_type == 'Sp MIS') {
-                navigate('/sp-mis/dashboard')
-            }
         } else {
             navigate('/')
         }
@@ -153,12 +147,6 @@ const Login = () => {
                     navigate('/rdl-two/dashboard')
                 } else if (response.data.data?.user_type == 'SP User') {
                     navigate('/sp-user/dashboard')
-                }
-                else if (response.data.data?.user_type == 'Purchase RM') {
-                    navigate('/purchase-user/dashboard')
-                }
-                else if (response.data.data?.user_type == 'Sp MIS') {
-                    navigate('/sp-mis/dashboard')
                 }
             } else {
                 setLoading(false)

@@ -458,9 +458,6 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Purchase RM">
                                     Purchase RM
                                 </MenuItem>
-                                <MenuItem value="Sp MIS">
-                                    Sp MIS
-                                </MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm

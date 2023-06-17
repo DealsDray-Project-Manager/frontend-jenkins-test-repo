@@ -212,14 +212,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'limit',
-        //     label: 'limit',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
 
         {
             name: 'closed_time_bot',

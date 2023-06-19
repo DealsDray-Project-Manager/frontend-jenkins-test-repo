@@ -163,7 +163,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' marginLeft='7px'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -189,7 +189,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                        <>
-                       <span>RP388</span>,<br />
+                       <span style={{marginLeft:'10px'}}>RP388</span>,<br />
                         <Button
                             sx={{
                                 m: 1,

@@ -7,9 +7,7 @@ import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import {
     Button,
-    Card,
     Dialog,
-    Box,
     DialogTitle,
     IconButton,
     DialogContent,
@@ -146,15 +144,9 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, code) => {
+    const handleViewParts = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/wht-to-rp/scan')
-    }
-    const handleIssue = () => {
-        Swal.fire({
-            title: 'Issued Successfully',
-            icon: 'success'
-        })
+        navigate('/wareshouse/sorting/viewparts')
     }
 
     const columns = [
@@ -170,38 +162,31 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'tray_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            name: 'sptray',
+            label: <Typography sx={{fontWeight:'bold'}}>SP Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            name: 'rptray',
+            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            name: 'limit',
+            label: 'Tray',
             options: {
                 filter: true,
+                display: false,
             },
         },
-        // {
-        //     name: 'limit',
-        //     label: 'Tray',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
 
         {
-            name: 'qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            name: 'items',
+            label: <Typography sx={{fontWeight:'bold'}}>Item Recieved Count</Typography>,
             options: {
                 filter: true,
             },
@@ -215,49 +200,31 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: '#206CE2' }}
-                            onClick={(e) => {
-                                handelViewTray(e, value)
-                            }}
-                        >
-                            Scan
-                        </Button>
+                           sx={{
+                               m: 1,
+                           }}
+                           variant="contained"
+                           style={{ backgroundColor: '#206CE2' }}
+                           onClick={(e) => {
+                               handleViewParts(e, value)
+                           }}
+                       >
+                           Add Parts
+                       </Button>
                     )
                 },
             },
         },
     ]
 
-    const columns1 = [
+   const columns1 = [
         {
             index:1,
-            tray_id:'WHT101',
-            brand:'Xiomi',
-            model:'S5',
-            qty:'2'
-        },
-        {
-            index:2,
-            tray_id:'WHT101',
-            brand:'Xiomi',
-            model:'S5',
-            qty:'2'
-        },
-        {
-            index:3,
-            tray_id:'WHT101',
-            brand:'Xiomi',
-            model:'S5',
-            qty:'2'
-        },
+            sptray:'SP18001',
+            rptray:'RP001',
+            items:3
+        }
     ]
-
-    
-
     return (
         <Container>
             <BootstrapDialog
@@ -308,18 +275,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT Tray', path: '/' },
-                        { name: 'Scanning' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'Spare Parts' },
                     ]}
                 />
             </div>
-            <Card>
-                <Box sx={{p:2}}>
-                    <Typography sx={{fontWeight:'bold'}}>Username : abc</Typography>
-                    <Typography sx={{mt:2,fontWeight:'bold'}}>Assigned Date : 22-03-2023</Typography>
-                </Box>
+
             <MUIDataTable
-                // title={'Tray'}
+                title={'Requests'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -354,24 +317,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            <Box sx={{textAlign:'right', mr:6}}>
-            <Button
-                sx={{
-                    m: 1,
-                }}
-                variant="contained"
-                style={{ backgroundColor: '#206CE2' }}
-                onClick={(e) => {
-                    handleIssue(e)
-                }}
-            >
-                Issue to Agent
-            </Button>
-            </Box>
-            </Card>
-            
         </Container>
     )
 }
 
-export default SimpleMuiTable
+

@@ -210,19 +210,20 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
 const WHTtoRP = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/whttorp'))
+    lazy(() => import('./Sorting/Wht-to-rp/whttorp'))
 )
 const User = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/user'))
+    lazy(() => import('./Sorting/Wht-to-rp/user'))
 )
 const Scan = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/scan'))
+    lazy(() => import('./Sorting/Wht-to-rp/scan'))
 )
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
 const RDL2Requestscan = Loadable(lazy(() => import('./Wht/Rdl-2-Request/scan')))
 const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
+
 
 
 const WarehoueRouter = [

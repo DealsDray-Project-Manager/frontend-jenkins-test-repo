@@ -683,7 +683,7 @@ export const navigations = [
             },
             {
                 name: 'WHT to RP',
-                path: '/wareshouse/sorting/spwhuser',
+                path: '/wareshouse/sorting/wht-to-rp',
                 iconText: 'VP',
             },
         ],
@@ -1199,6 +1199,13 @@ export const navigations = [
         name: 'RDL 2 Requests',
         icon: 'class',
         path: '/rdl-two/tray',
+        auth: authRoles.RDL_2,
+        sales: false,
+    },
+    {
+        name: 'RDL 2 Requests 1',
+        icon: 'class',
+        path: '/rdl-two/Sp_Rp_trays',
         auth: authRoles.RDL_2,
         sales: false,
     },

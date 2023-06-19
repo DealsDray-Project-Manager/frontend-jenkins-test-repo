@@ -5,6 +5,7 @@ const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
 const TrayRequest = Loadable(lazy(() => import('./Tray/request')))
 const TrayItem = Loadable(lazy(() => import('./Tray/item')))
 
+const Trayrequest = Loadable(lazy(() => import('./Sp_Rp_trays/request')))
 const RDLRouter = [
     {
         path: '/rdl-two/dashboard',
@@ -17,6 +18,10 @@ const RDLRouter = [
     {
         path: '/rdl-two/tray/view-item/:trayId',
         element: <TrayItem />,
+    },
+    {
+        path: '/rdl-two/Sp_Rp_trays',
+        element: <Trayrequest />,
     },
 ]
 

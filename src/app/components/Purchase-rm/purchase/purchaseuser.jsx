@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box } from '@mui/material'
+import { Button, Typography, Card, Box, TextField } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -56,9 +56,8 @@ const SimpleMuiTable = () => {
     //     }
     // }, [])
 
-    const handelDetailPage = (e, trayId) => {
-        e.preventDefault()
-        navigate('/sp-mis/procurement/procurementlist/request')
+    const handleplace = () => {
+        navigate('/purchase-user/purchase/order')
     }
 
     const columns = [
@@ -74,29 +73,36 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'part_no',
+            name: 'id',
+            label: <Typography sx={{fontWeight:'bold'}}>Request ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'date',
+            label: <Typography sx={{fontWeight:'bold'}}>Request Date</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sp_no',
             label: <Typography sx={{fontWeight:'bold'}}>Spare Part Number</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name',
+            name: 'sp_name',
             label: <Typography sx={{fontWeight:'bold'}}>Spare Part Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            name: 'sp_mis_name',
+            label: <Typography sx={{fontWeight:'bold'}}>SP MIS name</Typography>,
             options: {
                 filter: true,
             },
@@ -109,42 +115,67 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'avl_qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            name: 'qty',
+            label: <Typography sx={{fontWeight:'bold'}}>Required Quantity</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'req_qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            name: 'status',
+            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
             options: {
                 filter: true,
             },
-        }
+        },
+        {
+            name: 'code',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 0,
+                            }}
+                            variant="contained"
+                            onClick={() => handleplace()}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            Place order
+                        </Button>
+                    )
+                },
+            },
+        },
     ]
 
     const columns1 = [
         {
             index:1,
-            part_no:'SPN000736',
-            name:'Camera Glass/Black-XIOMI MI A2',
-            brand:'Xiomi',
-            model:'MI A2',
+            id:'1223,1224',
+            date:'12/06/2023',
+            sp_no:'SPN000736',
+            sp_name:'Camera Glass/Red-XIOMI MI A2',
+            sp_mis_name:'abc',
             muic:'KG888',
-            avl_qty:1,
-            req_qty:2
+            qty:2,
+            status:'Pending'
         },
         {
             index:2,
-            part_no:'SPN000735',
-            name:'Camera Glass/Black-XIOMI MI A2',
-            brand:'Xiomi',
-            model:'MI A2',
+            id:'1200',
+            date:'12/06/2023',
+            sp_no:'SPN000735',
+            sp_name:'Camera Glass/Black-XIOMI MI A2',
+            sp_mis_name:'abc',
             muic:'KG888',
-            avl_qty:0,
-            req_qty:2
-        },
+            qty:2,
+            status:'Pending'
+        }
     ]
 
     return (
@@ -152,14 +183,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Items for Procurement', path: '/' },
-                        { name: 'Procurement List' },
+                        { name: 'Requests', path: '/' },
+                        // { name: 'RDL-2-Requests' },
                     ]}
                 />
             </div>
             <Card>
             <MUIDataTable
-                title={'Requests'}
+                title={'Procurement Requests'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -202,22 +233,6 @@ const SimpleMuiTable = () => {
                 }}
             />
             <br />
-            <Box>
-            <Button 
-                sx={{
-                    float:'right',
-                    mr:2,
-                    mb:2
-                }}
-                variant="contained"
-                onClick={(e) => handelDetailPage(e)}
-                style={{ backgroundColor: 'green' }}
-                component="span"
-            >
-                Create Request                            
-            </Button>
-            </Box>
-           
             </Card>
         </Container>
     )

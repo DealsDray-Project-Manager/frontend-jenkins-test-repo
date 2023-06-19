@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box } from '@mui/material'
+import { Button, Typography, Card, Box, TextField } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -56,9 +56,11 @@ const SimpleMuiTable = () => {
     //     }
     // }, [])
 
-    const handelDetailPage = (e, trayId) => {
-        e.preventDefault()
-        navigate('/sp-mis/procurement/procurementlist/request')
+    const handlesend = () =>{
+        Swal.fire({
+            title: 'Sent Successfully',
+            icon: 'success'
+        })
     }
 
     const columns = [
@@ -133,7 +135,15 @@ const SimpleMuiTable = () => {
             model:'MI A2',
             muic:'KG888',
             avl_qty:1,
-            req_qty:2
+            req_qty:<Box>
+                        <TextField
+                        sx={{
+                            width:'70px',
+                            height:'50px',
+                            ml:3
+                        }}
+                        />
+                    </Box>
         },
         {
             index:2,
@@ -143,7 +153,15 @@ const SimpleMuiTable = () => {
             model:'MI A2',
             muic:'KG888',
             avl_qty:0,
-            req_qty:2
+            req_qty:<Box>
+                        <TextField
+                        sx={{
+                            width:'70px',
+                            height:'50px',
+                            ml:3
+                        }}
+                        />
+                    </Box>
         },
     ]
 
@@ -153,13 +171,21 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Items for Procurement', path: '/' },
-                        { name: 'Procurement List' },
+                        { name: 'Procurement List', path: '/' },
+                        { name: 'Requests' },
                     ]}
                 />
             </div>
             <Card>
+                <Box sx={{p:2}}>
+                    <Typography sx={{fontSize:'large', fontWeight:'bold'}}>Pre Purchase Requests</Typography>
+                    <br />
+                    <Typography sx={{fontSize:'16px'}}>Brand : XIOMI</Typography>
+                    <Typography sx={{fontSize:'16px'}}>Model : MI A2</Typography>
+                </Box>
             <MUIDataTable
-                title={'Requests'}
+            sx={{mt:0}}
+                // title={'Pre Purchase Requests'}
                 data={columns1}
                 columns={columns}
                 options={{
@@ -210,11 +236,11 @@ const SimpleMuiTable = () => {
                     mb:2
                 }}
                 variant="contained"
-                onClick={(e) => handelDetailPage(e)}
+                onClick={(e) => handlesend(e)}
                 style={{ backgroundColor: 'green' }}
                 component="span"
             >
-                Create Request                            
+                Send Request                            
             </Button>
             </Box>
            

@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/sp-mis/procurement/procurementlist/request')
+        navigate('/sp-mis/procurement/procurementlist')
     }
 
     const columns = [
@@ -74,15 +74,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'part_no',
-            label: <Typography sx={{fontWeight:'bold'}}>Spare Part Number</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Spare Part Name</Typography>,
+            name: 'muic',
+            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
             },
@@ -102,49 +95,45 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'muic',
-            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
+            name: 'units',
+            label: <Typography sx={{fontWeight:'bold'}}>Units to Repair</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'avl_qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            name: 'code',
+            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
+                customBodyRender: (value) => {
+                    return (
+                        <Button 
+                            sx={{
+                                m: 0
+                            }}
+                            variant="contained"
+                            onClick={(e) => handelDetailPage(e, value)}
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            Create Procurement List                            
+                        </Button>
+                    )
+                }, 
             },
         },
-        {
-            name: 'req_qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
-            options: {
-                filter: true,
-            },
-        }
     ]
 
     const columns1 = [
         {
             index:1,
-            part_no:'SPN000736',
-            name:'Camera Glass/Black-XIOMI MI A2',
+            muic:'OF487',
             brand:'Xiomi',
-            model:'MI A2',
-            muic:'KG888',
-            avl_qty:1,
-            req_qty:2
-        },
-        {
-            index:2,
-            part_no:'SPN000735',
-            name:'Camera Glass/Black-XIOMI MI A2',
-            brand:'Xiomi',
-            model:'MI A2',
-            muic:'KG888',
-            avl_qty:0,
-            req_qty:2
-        },
+            model:'K5',
+            units:4
+        }
     ]
 
     return (
@@ -152,12 +141,11 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Items for Procurement', path: '/' },
-                        { name: 'Procurement List' },
+                        { name: 'Items for Procurement', path: '/' }
                     ]}
                 />
             </div>
-            <Card>
+
             <MUIDataTable
                 title={'Requests'}
                 data={columns1}
@@ -201,24 +189,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            <br />
-            <Box>
-            <Button 
-                sx={{
-                    float:'right',
-                    mr:2,
-                    mb:2
-                }}
-                variant="contained"
-                onClick={(e) => handelDetailPage(e)}
-                style={{ backgroundColor: 'green' }}
-                component="span"
-            >
-                Create Request                            
-            </Button>
-            </Box>
-           
-            </Card>
         </Container>
     )
 }

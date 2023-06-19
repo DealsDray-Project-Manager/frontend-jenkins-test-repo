@@ -207,10 +207,20 @@ const SortingDoneCtxtoStxTray = Loadable(
 const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
+const WHTtoRPnew = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/whttorpnew'))
+)
+const Scanning = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/scanning'))
+)
+const Scannew = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/scannew'))
+)
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
 const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
+
 
 
 const WarehoueRouter = [
@@ -387,9 +397,26 @@ const WarehoueRouter = [
         element: <SPWHuser />,
     },
     {
-        path: '/wareshouse/sorting/viewparts',
-        element: <Viewparts />,
+        path: '/wareshouse/sorting/return-from-sorting-rp/view',
+        element: <View />,
     },
+    {
+        path: '/wareshouse/sorting/return-from-sorting-rp/close',
+        element: <Close />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp',
+        element: <WHTtoRPnew />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/scanning',
+        element: <Scanning />,
+    },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/scannew',
+        element: <Scannew />,
+    },
+    
     {
         path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',
         element: <SortingDoneCtxOrStxTrayClose />,

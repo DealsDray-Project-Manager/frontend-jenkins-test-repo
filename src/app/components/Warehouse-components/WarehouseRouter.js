@@ -209,13 +209,13 @@ const SortingDoneCtxtoStxTray = Loadable(
 const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
-const WHTtoRP = Loadable(
+const WHTtoRPnew = Loadable(
     lazy(() => import('./Sorting/wht-to-rp/whttorpnew'))
 )
-const User = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/usernew'))
+const Scanning = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/scanning'))
 )
-const Scan = Loadable(
+const Scannew = Loadable(
     lazy(() => import('./Sorting/wht-to-rp/scannew'))
 )
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
@@ -408,16 +408,16 @@ const WarehoueRouter = [
         element: <Close />,
     },
     {
-        path: '/wareshouse/sorting/wht-to-rp/whttorp',
-        element: <WHTtoRP />,
+        path: '/wareshouse/sorting/wht-to-rp',
+        element: <WHTtoRPnew />,
     },
     {
-        path: '/wareshouse/sorting/wht-to-rp/user',
-        element: <User />,
+        path: '/wareshouse/sorting/wht-to-rp/scanning',
+        element: <Scanning />,
     },
     {
-        path: '/wareshouse/sorting/wht-to-rp/scan',
-        element: <Scan />,
+        path: '/wareshouse/sorting/wht-to-rp/scannew',
+        element: <Scannew />,
     },
     
     {

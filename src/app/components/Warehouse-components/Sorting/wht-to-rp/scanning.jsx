@@ -148,7 +148,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/wht-to-rp/scan')
+        navigate('/wareshouse/sorting/wht-to-rp/scannew')
     }
     const handleIssue = () => {
         Swal.fire({

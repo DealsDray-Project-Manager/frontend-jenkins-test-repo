@@ -211,7 +211,7 @@ export default function DialogBox() {
     // }
 
     const handlelist = () =>{
-        navigate('/wareshouse/sorting/wht-to-rp/user')
+        navigate('/wareshouse/sorting/wht-to-rp/scanning')
     }
 
     const tableExpected = useMemo(() => {

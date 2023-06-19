@@ -733,7 +733,7 @@ export const navigations = [
             },
             {
                 name: 'WHT to RP',
-                path: '/wareshouse/sorting/wht-to-rp/whttorp',
+                path: '/wareshouse/sorting/wht-to-rp',
                 iconText: 'VP',
             },
             {

@@ -146,7 +146,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/wht-to-rp/user')
+        navigate('/wareshouse/sorting/wht-to-rp/scanning')
     }
 
     const columns = [

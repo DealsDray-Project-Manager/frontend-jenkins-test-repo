@@ -207,15 +207,16 @@ const SortingDoneCtxtoStxTray = Loadable(
 const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
-const WHTtoRPnew = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/whttorpnew'))
-)
-const Scanning = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/scanning'))
-)
-const Scannew = Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/scannew'))
-)
+
+
+
+const WhttoRpRequests= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/requests')))
+const whtToRpScanEach= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/scan-each-tray')))
+const whtToRpScanActVsExt= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/act-ext')))
+
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
@@ -406,15 +407,15 @@ const WarehoueRouter = [
     },
     {
         path: '/wareshouse/sorting/wht-to-rp',
-        element: <WHTtoRPnew />,
+        element: <WhttoRpRequests />,
     },
     {
         path: '/wareshouse/sorting/wht-to-rp/scanning',
-        element: <Scanning />,
+        element: <whtToRpScanEach />,
     },
     {
         path: '/wareshouse/sorting/wht-to-rp/scannew',
-        element: <Scannew />,
+        element: <whtToRpScanActVsExt />,
     },
     
     {

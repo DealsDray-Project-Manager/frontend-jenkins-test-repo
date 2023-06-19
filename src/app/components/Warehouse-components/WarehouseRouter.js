@@ -210,13 +210,13 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
 const WHTtoRP = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/whttorp'))
+    lazy(() => import('./Sorting/wht-to-rp/whttorpnew'))
 )
 const User = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/user'))
+    lazy(() => import('./Sorting/wht-to-rp/usernew'))
 )
 const Scan = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/scan'))
+    lazy(() => import('./Sorting/wht-to-rp/scannew'))
 )
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))

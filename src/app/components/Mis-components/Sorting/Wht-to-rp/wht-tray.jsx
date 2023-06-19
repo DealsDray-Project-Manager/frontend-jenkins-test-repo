@@ -183,7 +183,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'Wht Tray'}
+                title={'Items'}
                 data={item}
                 columns={columns}
                 options={{

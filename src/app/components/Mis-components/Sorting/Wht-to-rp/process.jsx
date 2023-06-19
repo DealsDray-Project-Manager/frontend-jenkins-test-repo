@@ -72,6 +72,7 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [chargingUsers, setChargingUsers] = useState([])
     const [unitsData, setUnitsData] = useState([])
+    const [checkBoxDis, setCheckBoxDis] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -104,11 +105,12 @@ const SimpleMuiTable = () => {
 
     const handleClick = async (e, partData, uic) => {
         try {
+            setCheckBoxDis(true)
             const { id, checked } = e.target
             let obj = {
                 isCheck: isCheck,
                 partList: partData,
-                checked:checked,
+                checked: checked,
                 uic: uic,
             }
             const res = await axiosMisUser.post(
@@ -116,10 +118,10 @@ const SimpleMuiTable = () => {
                 obj
             )
             if (res.status == 200) {
+                setCheckBoxDis(false)
                 setIsCheck(res.data.data)
-            }
-           
-             else {
+            } else {
+                setCheckBoxDis(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -185,12 +187,20 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Checkbox
+                            disabled={checkBoxDis}
                             onClick={(e) => {
-                                handleClick(e,tableMeta.rowData[7]?.rdl_fls_report?.partRequired,value?.uic)
+                                handleClick(
+                                    e,
+                                    tableMeta.rowData[7]?.rdl_fls_report
+                                        ?.partRequired,
+                                    value?.uic
+                                )
                             }}
                             id={value?.uic}
                             key={value?.uic}
-                            checked={isCheck.some(obj => obj?.uic?.includes(value?.uic))}
+                            checked={isCheck.some((obj) =>
+                                obj?.uic?.includes(value?.uic)
+                            )}
                         />
                     )
                 },
@@ -235,7 +245,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-               
             },
         },
         {
@@ -347,15 +356,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
-
             name: 'uic',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>UIC's Selected</>
+                    UIC's Selected
                 </Typography>
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value.join(',')
+                },
             },
         },
         {
@@ -449,7 +460,7 @@ const SimpleMuiTable = () => {
                 />
             </StyledTable>
         )
-    }, [unitsData,columns])
+    }, [unitsData, columns])
 
     // SELECTED UIC TABLE BOTTOM
     const selectedUicTable = useMemo(() => {
@@ -515,15 +526,15 @@ const SimpleMuiTable = () => {
                 </Box>
             </ProductTable1>
         )
-    }, [isCheck,columns2])
+    }, [isCheck, columns2])
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging' },
+                        { name: 'Sorting', path: '/' },
+                        { name: 'Wht to rp' },
                     ]}
                 />
             </div>

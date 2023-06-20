@@ -50,7 +50,7 @@ const MemberEditorDialog = ({
             setLoading(true)
             values.spDetails = isCheck
             values.selectedUic = selectedUic
-            let res = await axiosMisUser.post('/whtToRpSorting/assign',values)
+            let res = await axiosMisUser.post('/whtToRpSorting/assign', values)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -96,7 +96,7 @@ const MemberEditorDialog = ({
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
-                
+
                 <TextFieldCustOm
                     label="SP Tray"
                     fullWidth

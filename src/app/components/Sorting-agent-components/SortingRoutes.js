@@ -25,6 +25,16 @@ const StartCtxToStx = Loadable(
     lazy(() => import('./Sorting-request/ctx-to-stx/start-sort'))
 )
 
+const WhtToRpSortingTryaMain= Loadable(
+    lazy(() => import('./Sorting-request/wht-to-rp/tray'))
+)
+const WhtToRpSortingSortingStartPage= Loadable(
+    lazy(() => import('./Sorting-request/wht-to-rp/start'))
+) 
+const RpTrayForSortingWhtToRp = Loadable(
+    lazy(() => import('./Sorting-request/wht-to-rp/rp-tray-view'))
+) 
+
 const SortingRouter = [
     {
         path: '/sorting/dashboard',
@@ -43,8 +53,20 @@ const SortingRouter = [
         element: <StartCtxToStx />,
     },
     {
+        path: '/sorting/wht-to-rp/request',
+        element: <WhtToRpSortingTryaMain />,
+    },
+    {
+        path: '/sorting/wht-to-rp/rp-tray',
+        element: <RpTrayForSortingWhtToRp />,
+    },
+    {
         path: '/sorting/request/start-sorting/:trayId',
         element: <StartSorting />,
+    },
+    {
+        path: '/sorting/wht-to-rp/request/start-sorting/:trayId',
+        element: <WhtToRpSortingSortingStartPage />,
     },
     {
         path: '/sorting/merge',

@@ -21,8 +21,6 @@ import {
     MenuItem,
     Checkbox,
 } from '@mui/material'
-import { includes } from 'lodash'
-import { async } from 'q'
 
 const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;

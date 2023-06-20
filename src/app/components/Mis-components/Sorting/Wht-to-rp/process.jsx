@@ -109,7 +109,7 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [isAlive])
 
     const handleClick = async (e, partData, uic) => {
         try {

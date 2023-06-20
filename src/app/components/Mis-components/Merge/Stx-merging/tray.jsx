@@ -86,6 +86,7 @@ const SimpleMuiTable = () => {
         toTray: '',
         sort_agent: '',
     })
+    
     const navigate = useNavigate()
 
     useEffect(() => {

@@ -202,7 +202,6 @@ export const navigations = [
                 path: '/sup-admin/bag-assinged/bag',
                 iconText: 'PL',
             },
-           
         ],
         auth: authRoles.admin,
         sales: false,
@@ -880,11 +879,6 @@ export const navigations = [
                 path: '/sorting/request',
                 iconText: 'VP',
             },
-            {
-                name: 'WHT to RP',
-                path: '/sorting/request',
-                iconText: 'VP',
-            },
         ],
         auth: authRoles.sorting,
         sales: false,
@@ -923,6 +917,24 @@ export const navigations = [
                 name: 'To Tray',
                 icon: 'merge_type',
                 path: '/sorting/pickup/to-tray',
+            },
+        ],
+        auth: authRoles.sorting,
+        sales: false,
+    },
+    {
+        name: 'Sorting Request (Wht to rp)',
+        icon: 'sort',
+        children: [
+            {
+                name: 'WHT to RP',
+                path: '/sorting/wht-to-rp/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Rp tray',
+                path: '/sorting/wht-to-rp/rp-tray',
+                iconText: 'VP',
             },
         ],
         auth: authRoles.sorting,
@@ -1000,7 +1012,11 @@ export const navigations = [
                 path: '/reporting/delivery/item',
             },
             {
-                name: <Typography sx={{textAlign:'left'}}>Units Available in Processing</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Units Available in Processing
+                    </Typography>
+                ),
 
                 path: '/reporting/units/processing',
             },
@@ -1140,7 +1156,11 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: <Typography sx={{textAlign:'left'}}>Sales Bucket Transfer Pending</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Sales Bucket Transfer Pending
+                    </Typography>
+                ),
                 path: '/reporting/ctx/transfer-pending-to-sales',
             },
             {

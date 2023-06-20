@@ -24,7 +24,6 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
-
     const { trayId } = useParams()
     const navigate = useNavigate()
 

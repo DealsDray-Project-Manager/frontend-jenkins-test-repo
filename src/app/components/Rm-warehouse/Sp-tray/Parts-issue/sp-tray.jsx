@@ -3,9 +3,20 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography } from '@mui/material'
+import { axiosRmUserAgent, axiosWarehouseIn } from '../../../../../axios'
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Typography,
+} from '@mui/material'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -22,112 +33,135 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [tray, setTray] = useState([])
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 setIsLoading(true)
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setIsLoading(false)
-    //                     setRDLRequest(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         setIsLoading(false)
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { user_name } = jwt_decode(admin)
+                    let res = await axiosRmUserAgent.post(
+                        '/spTray/' + user_name
+                    )
+                    if (res.status == 200) {
+                        setTray(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
-    const handelDetailPage = (e, trayId) => {
+    const handleViewParts = (e, code) => {
         e.preventDefault()
-        navigate('/sp-user/rdl2-request/request')
+        navigate('/sp-user/sp-tray/add-parts/' + code)
     }
 
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
-            },
-        },
-        {
-            name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sptray',
-            label: <Typography sx={{fontWeight:'bold'}}>SP Tray ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
-            options: {
-                filter: true,
-                // customBodyRender: (items, tableMeta) =>
-                //     items?.length + '/' + tableMeta.rowData[5],
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>SP Tray ID</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rpTray',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'Tray',
+            options: {
+                filter: false,
+                display: false,
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Item Recieved Count
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.length,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Issued date</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button 
+                        <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) => {
+                                handleViewParts(e, value)
+                            }}
                         >
-                            Issue
+                            Add Parts
                         </Button>
                     )
-                }, 
+                },
             },
         },
-    ]
-
-    const columns1 = [
-        {
-            index:1,
-            name:'abc',
-            sptray:'SP18001',
-            items:3
-        }
     ]
 
     return (
@@ -135,28 +169,21 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'RDL-2-Requests' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'Spare Parts' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
-                data={columns1}
+                title={'Sp Tray'}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

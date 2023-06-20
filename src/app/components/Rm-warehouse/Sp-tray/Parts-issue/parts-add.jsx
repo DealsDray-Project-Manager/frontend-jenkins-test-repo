@@ -2,22 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
-import {
-    Button,
-    Dialog,
-    DialogTitle,
-    IconButton,
-    Box,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Typography,
-} from '@mui/material'
-import PropTypes from 'prop-types'
-import CloseIcon from '@mui/icons-material/Close'
+import { axiosRmUserAgent } from '../../../../../axios'
+import { Button, Box, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -32,61 +20,33 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
-    },
-}))
-const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props
-    return (
-        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-            {children}
-            {onClose ? (
-                <IconButton
-                    aria-label="close"
-                    onClick={onClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </DialogTitle>
-    )
-}
-BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-}
 
 const SimpleMuiTable = () => {
-    const [tray, setTray] = useState([])
-    const [counts, setCounts] = useState('')
-    const [open, setOpen] = React.useState(false)
-    const [trayId, setTrayId] = useState('')
+    const [tray, setTray] = useState({})
+    const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
-    const [receiveButDis, setReceiveButDis] = useState(false)
+    const [description, setDescription] = useState([])
 
     useEffect(() => {
         try {
             const fetchData = async () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosWarehouseIn.post(
-                        '/return-from-sorting-wht/' + location
+                    let { user_name } = jwt_decode(admin)
+                    let res = await axiosRmUserAgent.post(
+                        '/spTray/part-issue/' + trayId + '/' + user_name
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            confirmButtonText: 'Ok',
+                            text: res.data.message,
+                        })
+                        navigate(-1)
                     }
                 } else {
                     navigate('/')
@@ -103,14 +63,45 @@ const SimpleMuiTable = () => {
         }
     }, [refresh])
 
-    const handelTrayReceived = async () => {
-        try {
-            let obj = {
-                trayId: trayId,
-                counts: counts,
+    const handleAdd = (partId) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be add this part!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response = await axiosRmUserAgent.post(
+                        '/spTray/addParts/' + partId + '/' + trayId
+                    )
+                    if (response.status == 200) {
+                        setRefresh((isAlive) => !isAlive)
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error,
+                    })
+                }
             }
-            setReceiveButDis(true)
-            let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
+        })
+    }
+
+    const handleViewSpIssue = async (e, code) => {
+        e.preventDefault()
+        try {
+            const res = await axiosRmUserAgent.post('/spTray/close/' + trayId)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -118,43 +109,17 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setReceiveButDis(false)
-                setOpen(false)
-                setRefresh((refresh) => !refresh)
+                navigate('/sp-user/sp-tray')
             } else {
-                setOpen(false)
-                setReceiveButDis(false)
                 Swal.fire({
-                    position: 'top-center',
                     icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
+                    title: 'Oops...',
+                    text: res.data.message,
                 })
             }
         } catch (error) {
-            setOpen(false)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
+            alert(error)
         }
-    }
-    const handleClose = () => {
-        setOpen(false)
-    }
-
-    const handleAdd = () => {
-        Swal.fire({
-            title: 'Added Successfully',
-            icon: 'success',
-        })
-    }
-
-    const handleViewSpIssue = (e, code) => {
-        e.preventDefault()
-        navigate('/sp-user/spwhuser/viewparts/sptrayissue')
     }
 
     const columns = [
@@ -177,7 +142,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'partno',
+            name: 'partId',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Part Number</Typography>
             ),
@@ -202,7 +167,7 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'spare_part_name',
+            name: 'partName',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
                     Spare Part Name
@@ -213,7 +178,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'qty',
+            name: 'selected_qty',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
@@ -229,7 +194,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
+            name: 'partId',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
@@ -240,10 +205,11 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
+                            disabled={tableMeta.rowData[6] == 'Added'}
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handleAdd(e, value)
+                                handleAdd(value)
                             }}
                         >
                             Add
@@ -254,79 +220,8 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const columns1 = [
-        {
-            index: 1,
-            partno: 'SPN000739',
-            boxid: '',
-            spare_part_name: 'Camera Glass/Black-XIOMI MI A2',
-            qty: 1,
-            status: 'Added',
-        },
-        {
-            index: 2,
-            partno: 'SPN000740',
-            boxid: '',
-            spare_part_name: 'Camera Glass/Black-XIOMI MI A2',
-            qty: 2,
-            status: 'Pending',
-        },
-        {
-            index: 3,
-            partno: 'SPN000742',
-            boxid: '',
-            spare_part_name: 'Camera Glass/Black-XIOMI MI A2',
-            qty: 1,
-            status: 'Pending',
-        },
-    ]
     return (
         <Container>
-            <BootstrapDialog
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                fullWidth
-                maxWidth="xs"
-            >
-                <BootstrapDialogTitle
-                    id="customized-dialog-title"
-                    onClose={handleClose}
-                >
-                    RECEIVED
-                </BootstrapDialogTitle>
-                <DialogContent dividers>
-                    <TextField
-                        label="Enter Item Count"
-                        variant="outlined"
-                        onChange={(e) => {
-                            setCounts(e.target.value)
-                        }}
-                        inputProps={{ maxLength: 3 }}
-                        onKeyPress={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault()
-                            }
-                        }}
-                        fullWidth
-                        sx={{ mt: 2 }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        sx={{
-                            m: 1,
-                        }}
-                        variant="contained"
-                        disabled={counts === '' || receiveButDis}
-                        style={{ backgroundColor: 'green' }}
-                        onClick={(e) => {
-                            handelTrayReceived(e)
-                        }}
-                    >
-                        RECEIVED
-                    </Button>
-                </DialogActions>
-            </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
@@ -336,10 +231,9 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
             <MUIDataTable
-                title={'Requests'}
-                data={columns1}
+                title={'Parts'}
+                data={tray?.items}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -373,25 +267,29 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button
-                    sx={{
-                        m: 1,
+            <Box sx={{ float: 'right' }}>
+                <textarea
+                    onChange={(e) => {
+                        setDescription(e.target.value)
                     }}
-                    variant="contained"
-                    style={{ backgroundColor: '#206CE2' }}
-                    onClick={(e) => {
-                        //    handleViewParts(e, value)
+                    style={{
+                        width: '300px',
+                        height: '60px',
+                        marginTop: '20px',
                     }}
-                >
-                    SPWHN remarks
-                </Button>
+                    placeholder="Remarks"
+                ></textarea>
                 <Button
                     sx={{
                         m: 1,
                         mr: 5,
+                        mb: 5,
                     }}
                     variant="contained"
+                    disabled={
+                        tray?.items?.length !== tray?.actual_items?.length ||
+                        description == ''
+                    }
                     style={{ backgroundColor: '#206CE2' }}
                     onClick={(e) => {
                         handleViewSpIssue(e)

@@ -36,9 +36,19 @@ const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const UpcomingRepairTray = Loadable(lazy(() => import('./Upcoming-repair/wht-tray')))
 const ViewRequirementOfPart = Loadable(lazy(() => import('./Upcoming-repair/view-wht-tray')))
 const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray')))
+const SptrayReadyForAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/sp-tray')))
+const SptrayAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/parts-add')))
 
 
 const RmWarehouse = [
+    {
+        path: '/sp-user/sp-tray',
+        element: <SptrayReadyForAddParts />,
+    },
+    {
+        path: '/sp-user/sp-tray/add-parts/:trayId',
+        element: <SptrayAddParts />,
+    },
     {
         path: '/sp-user/dashboard',
         element: <Dashboard />,

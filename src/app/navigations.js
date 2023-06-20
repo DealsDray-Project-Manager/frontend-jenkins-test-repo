@@ -1276,6 +1276,22 @@ export const navigations = [
         auth: authRoles.pricing_Agent,
         sales: true,
     },
+    {
+        name: 'Sp tray',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Part issue',
+                path: '/sp-user/sp-tray',
+            },
+            {
+                name: 'Issue to rdl-two',
+                path: '/reporting/track-tray',
+            },
+        ],
+        sales: 'all',
+        auth: authRoles.RMWAREHOUSE,
+    },
 ]
 export const getfilteredNavigations = (navList = [], role, cpc_type) => {
     return navList.reduce((array, nav) => {

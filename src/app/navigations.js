@@ -681,8 +681,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'WHT to RP',
+                name: 'Sorting Requests (WHT to RP)',
                 path: '/wareshouse/sorting/wht-to-rp',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return from sorting (WHT to RP)',
+                path: '/warehouse/sorting/return-from-wht-to-rp',
                 iconText: 'VP',
             },
         ],

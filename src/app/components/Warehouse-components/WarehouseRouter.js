@@ -212,10 +212,19 @@ const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
 const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
-
+const ReturnFromWhtToRp = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/tray')))
+const ReturnFromWhtToRpClose = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close')))
 
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/sorting/return-from-wht-to-rp',
+        element: <ReturnFromWhtToRp />,
+    },
+    {
+        path: '/warehouse/sorting/return-from-wht-to-rp/close/:trayId',
+        element: <ReturnFromWhtToRpClose />,
+    },
     {
         path: '/warehouse/dashboard',
         element: <Dashboard />,

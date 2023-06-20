@@ -88,15 +88,6 @@ const ReturnFromSorting = Loadable(
 const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
-
-
-const SPWHuser = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/spwhuser'))
-)
-const Viewparts = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/viewparts'))
-)
-
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
 const MergeRequestApprove = Loadable(
     lazy(() => import('./Merge/Merge-request/approve-request'))
@@ -212,9 +203,9 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
 
 const WhttoRpRequests= Loadable(
     lazy(() => import('./Sorting/wht-to-rp/Requests/requests')))
-const whtToRpScanEach= Loadable(
+const WhtToRpScanEach= Loadable(
     lazy(() => import('./Sorting/wht-to-rp/Requests/scan-each-tray')))
-const whtToRpScanActVsExt= Loadable(
+const WhtToRpScanActVsExt= Loadable(
     lazy(() => import('./Sorting/wht-to-rp/Requests/act-ext')))
 
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
@@ -393,29 +384,29 @@ const WarehoueRouter = [
         path: '/wareshouse/sorting/return-from-sorting',
         element: <ReturnFromSorting />,
     },
-    {
-        path: '/wareshouse/sorting/spwhuser',
-        element: <SPWHuser />,
-    },
-    {
-        path: '/wareshouse/sorting/return-from-sorting-rp/view',
-        element: <View />,
-    },
-    {
-        path: '/wareshouse/sorting/return-from-sorting-rp/close',
-        element: <Close />,
-    },
+    // {
+    //     path: '/wareshouse/sorting/spwhuser',
+    //     element: <SPWHuser />,
+    // },
+    // {
+    //     path: '/wareshouse/sorting/return-from-sorting-rp/view',
+    //     element: <View />,
+    // },
+    // {
+    //     path: '/wareshouse/sorting/return-from-sorting-rp/close',
+    //     element: <Close />,
+    // },
     {
         path: '/wareshouse/sorting/wht-to-rp',
         element: <WhttoRpRequests />,
     },
     {
         path: '/wareshouse/sorting/wht-to-rp/scanning',
-        element: <whtToRpScanEach />,
+        element: <WhtToRpScanEach />,
     },
     {
-        path: '/wareshouse/sorting/wht-to-rp/scannew',
-        element: <whtToRpScanActVsExt />,
+        path: '/wareshouse/sorting/wht-to-rp/scan/:trayId',
+        element: <WhtToRpScanActVsExt />,
     },
     
     {

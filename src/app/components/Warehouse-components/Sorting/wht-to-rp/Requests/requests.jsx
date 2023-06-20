@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../../../axios'
 import {
     Button,
     Dialog,
@@ -13,7 +13,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -73,7 +73,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
-    const [receiveButDis,setReceiveButDis]=useState(false)
+    const [receiveButDis, setReceiveButDis] = useState(false)
 
     useEffect(() => {
         try {
@@ -82,7 +82,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/return-from-sorting-wht/' + location
+                        '/whtToRp/requests/' + location
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
@@ -144,76 +144,97 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, code) => {
+    const handelViewTray = (e, code, whtTray) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/wht-to-rp/scanning')
+        navigate('/wareshouse/sorting/wht-to-rp/scanning', {
+            state: {
+                whtTray: whtTray,
+                rpTray: code,
+            },
+        })
     }
 
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'wht_tray',
-            label: <Typography sx={{fontWeight:'bold'}}>WHT Tray ID</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>WHT Tray ID</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
+            },
+        },
+        {
+            name: 'code',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'rp_tray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'requested_date',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned Date
+                </Typography>
+            ),
             options: {
                 filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
-            name: 'date',
-            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            name: 'issued_user_name',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
-        // {
-        //     name: 'limit',
-        //     label: 'Tray',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -226,7 +247,7 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handelViewTray(e, value)
+                                handelViewTray(e, value, tableMeta.rowData[1])
                             }}
                         >
                             Approve
@@ -235,18 +256,6 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-    ]
-
-    const columns1 = [
-        {
-            index:1,
-            name:'abc',
-            brand:'Xiomi',
-            date:'',
-            model:'S5',
-            wht_tray:'WHT101, WHT102',
-            rp_tray:'RP001'
-        }
     ]
 
     return (
@@ -297,16 +306,12 @@ const SimpleMuiTable = () => {
                 </DialogActions>
             </BootstrapDialog>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT Tray' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'WHT Tray' }]} />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={columns1}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

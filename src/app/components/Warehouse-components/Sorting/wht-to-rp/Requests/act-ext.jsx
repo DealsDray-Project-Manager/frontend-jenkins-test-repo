@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useMemo } from 'react'
 import {
     Box,
@@ -20,8 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 
-import { axiosWarehouseIn } from 'axios'
-import { navigate } from 'react-big-calendar/lib/utils/constants'
+import { axiosWarehouseIn } from '../../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,8 +34,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
-
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -50,169 +46,114 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 let { location } = jwt_decode(admin)
-    //                 let response = await axiosWarehouseIn.post(
-    //                     '/getWhtTrayItem/' +
-    //                         trayId +
-    //                         '/' +
-    //                         'Send for charging/' +
-    //                         location
-    //                 )
-    //                 if (response.status === 200) {
-    //                     setTrayData(response.data.data)
-    //                 } else {
-    //                     Swal.fire({
-    //                         position: 'top-center',
-    //                         icon: 'error',
-    //                         title: response?.data?.message,
-    //                         confirmButtonText: 'Ok',
-    //                     })
-    //                     navigate(-1)
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 confirmButtonText: 'Ok',
-    //                 text: error,
-    //             })
-    //         }
-    //     }
-    //     fetchData()
-    // }, [refresh])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosWarehouseIn.post(
+                        '/getWhtTrayItem/' +
+                            trayId +
+                            '/' +
+                            'Assigned to sorting (Wht to rp)/' +
+                            location
+                    )
+                    if (response.status === 200) {
+                        setTrayData(response.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: response?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                        navigate(-1)
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [refresh])
 
-    // const handelUic = async (e) => {
-    //     if (e.target.value.length === 11) {
-    //         try {
-    //             let obj = {
-    //                 uic: e.target.value,
-    //                 trayId: trayId,
-    //             }
-    //             setTextDisable(true)
+    const handelUic = async (e) => {
+        if (e.target.value.length === 11) {
+            try {
+                let obj = {
+                    uic: e.target.value,
+                    trayId: trayId,
+                }
+                setTextDisable(true)
 
-    //             let res = await axiosWarehouseIn.post('/check-uic', obj)
-    //             if (res?.status == 200) {
-    //                 addActualitem(res.data.data)
-    //             } else {
-    //                 setTextDisable(false)
-    //                 setUic('')
+                let res = await axiosWarehouseIn.post('/check-uic', obj)
+                if (res?.status == 200) {
+                    addActualitem(res.data.data)
+                } else {
+                    setTextDisable(false)
+                    setUic('')
 
-    //                 Swal.fire({
-    //                     position: 'top-center',
-    //                     icon: 'error',
-    //                     title: res?.data?.message,
-    //                     confirmButtonText: 'Ok',
-    //                 })
-    //             }
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 confirmButtonText: 'Ok',
-    //                 text: error,
-    //             })
-    //         }
-    //     }
-    // }
-    // /************************************************************************** */
-    // const addActualitem = async (obj) => {
-    //     if (trayData.items.length < trayData?.actual_items?.length) {
-    //         Swal.fire({
-    //             position: 'top-center',
-    //             icon: 'success',
-    //             title: 'All items Scanned',
-    //             confirmButtonText: 'Ok',
-    //         })
-    //     } else {
-    //         try {
-    //             let objData = {
-    //                 trayId: trayId,
-    //                 item: obj,
-    //             }
-    //             setTextDisable(true)
-    //             let res = await axiosWarehouseIn.post(
-    //                 '/wht-add-actual-item',
-    //                 objData
-    //             )
-    //             if (res.status == 200) {
-    //                 setUic('')
-    //                 setTextDisable(false)
-    //                 setRefresh((refresh) => !refresh)
-    //             }
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 confirmButtonText: 'Ok',
-    //                 text: error,
-    //             })
-    //         }
-    //     }
-    // }
-    // /************************************************************************** */
-    // const handelIssue = async (e, sortId) => {
-    //     try {
-    //         if (trayData?.actual_items?.length == trayData?.items?.length) {
-    //             setLoading(true)
-    //             let obj = {
-    //                 trayId: trayId,
-    //                 description: description,
-    //                 sortId: trayData?.sort_id,
-    //             }
-    //             let res = await axiosWarehouseIn.post(
-    //                 '/issue-to-agent-wht',
-    //                 obj
-    //             )
-    //             if (res.status == 200) {
-    //                 Swal.fire({
-    //                     position: 'top-center',
-    //                     icon: 'success',
-    //                     title: res?.data?.message,
-    //                     confirmButtonText: 'Ok',
-    //                 })
-    //                 if (trayData?.sort_id == 'Send for BQC') {
-    //                     setLoading(false)
-    //                     navigate('/wareshouse/wht/bqc-request')
-    //                 } else {
-    //                     setLoading(false)
-    //                     navigate('/wareshouse/wht/charging-request')
-    //                 }
-    //             } else {
-    //                 Swal.fire({
-    //                     position: 'top-center',
-    //                     icon: 'error',
-    //                     title: res?.data?.message,
-    //                     confirmButtonText: 'Ok',
-    //                 })
-    //             }
-    //         } else {
-    //             setLoading(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+    }
+    /************************************************************************** */
+    const addActualitem = async (obj) => {
+        if (trayData.items.length < trayData?.actual_items?.length) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All items Scanned',
+                confirmButtonText: 'Ok',
+            })
+        } else {
+            try {
+                let objData = {
+                    trayId: trayId,
+                    item: obj,
+                }
+                setTextDisable(true)
+                let res = await axiosWarehouseIn.post(
+                    '/wht-add-actual-item',
+                    objData
+                )
+                if (res.status == 200) {
+                    setUic('')
+                    setTextDisable(false)
+                    setRefresh((refresh) => !refresh)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+    }
 
-    //             Swal.fire({
-    //                 position: 'top-center',
-    //                 icon: 'error',
-    //                 title: 'Please Verify Actual Data',
-    //                 confirmButtonText: 'Ok',
-    //             })
-    //         }
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }
-
-    const handlelist = () =>{
-        navigate('/wareshouse/sorting/wht-to-rp/scanning')
+    const handlelist = () => {
+        navigate(-1)
     }
 
     const tableExpected = useMemo(() => {
@@ -234,9 +175,9 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'5px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '5px' }}>Total</h5>
                             <p style={{ paddingLeft: '0px', fontSize: '22px' }}>
-                              0/40
+                                {trayData?.items?.length}/{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -250,7 +191,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -260,7 +201,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -295,7 +238,7 @@ export default function DialogBox() {
                             value={uic}
                             onChange={(e) => {
                                 setUic(e.target.value)
-                                // handelUic(e)
+                                handelUic(e)
                             }}
                             inputProps={{
                                 style: {
@@ -310,10 +253,11 @@ export default function DialogBox() {
                             mr: 2,
                         }}
                     >
-                        <Box sx={{pl:8}}>
-                            <h5 style={{marginLeft:'12px'}}>Total</h5>
+                        <Box sx={{ pl: 8 }}>
+                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ marginLeft: '0px', fontSize: '24px' }}>
-                                0/40
+                                {trayData.actual_items?.length}/
+                                {trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -327,7 +271,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -338,7 +282,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -358,16 +304,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT Tray', path: '/' },
                         { name: 'Scanning', path: '/' },
-                        { name: 'Verification'}
+                        { name: 'Verification' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -402,13 +348,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <textarea
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        style={{ width: '300px', height: '60px' }}
-                        placeholder="Description"
-                    ></textarea>
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"

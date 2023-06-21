@@ -53,7 +53,6 @@ const SimpleMuiTable = () => {
     const [partData, setPartData] = useState([])
 
     useEffect(() => {
-       
         const fetchData = async () => {
             const fetch = await axiosRDL_oneAgent.post(
                 '/rdl-fls/fetchPart/' + reportData?.muic?.muic
@@ -613,7 +612,7 @@ const SimpleMuiTable = () => {
                             </Typography>
 
                             <textarea
-                            onChange={(e)=> setDescription(e.target.value)}
+                                onChange={(e) => setDescription(e.target.value)}
                                 style={{
                                     marginLeft: '5px',
                                     width: '100%',
@@ -733,7 +732,9 @@ const SimpleMuiTable = () => {
                             disabled={
                                 selectedValue == '' ||
                                 description == '' ||
-                               isCheck.length == 0
+                                (selectedValue == 'Repair Not Done' &&
+                                    selectReason == '') ||
+                                isCheck.length == 0
                             }
                             onClick={(e) => {
                                 handelSubmit()
@@ -743,7 +744,6 @@ const SimpleMuiTable = () => {
                         >
                             Submit
                         </Button>
-
                     </Box>
                 </>
             </Container>

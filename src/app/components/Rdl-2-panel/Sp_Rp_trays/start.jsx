@@ -27,13 +27,11 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [isCheck, setIsCheck] = useState([])
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState({})
     const { trayId } = useParams()
     const [username, setUsername] = useState('')
     const [uic, setUic] = useState('')
-    const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,7 +69,7 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [refresh])
+    }, [])
 
     const handelUic = async (uicCode) => {
         try {
@@ -106,6 +104,10 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
+    }
+
+    const handelSummery = () => {
+        navigate('/rdl-two/tray/tray/summery/' + trayId)
     }
 
     const columns = [
@@ -291,12 +293,9 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            disabled={
-                                trayData?.actual_items?.length !==
-                                trayData?.items?.length
-                            }
+                            disabled={trayData?.items?.length !== 0}
                             onClick={(e) => {
-                                navigate('/rdl-two/Traysummary')
+                                handelSummery()
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"

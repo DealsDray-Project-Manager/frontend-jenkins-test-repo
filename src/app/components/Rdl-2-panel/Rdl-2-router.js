@@ -9,9 +9,13 @@ const Trayrequest = Loadable(lazy(() => import('./Sp_Rp_trays/request')))
 const RpTrayReceive = Loadable(lazy(() => import('./Sp_Rp_trays/rp-receive')))
 const SpTrayReceive = Loadable(lazy(() => import('./Sp_Rp_trays/sp-receive')))
 const TrayStartPage = Loadable(lazy(() => import('./Sp_Rp_trays/start')))
-const TrayUnitInformationDisplay = Loadable(lazy(() => import('./Sp_Rp_trays/start-repair')))
-const TrayUnitInformationDisplayAction = Loadable(lazy(() => import('./Sp_Rp_trays/repair-done-action')))
-
+const TrayUnitInformationDisplay = Loadable(
+    lazy(() => import('./Sp_Rp_trays/start-repair'))
+)
+const TrayUnitInformationDisplayAction = Loadable(
+    lazy(() => import('./Sp_Rp_trays/repair-done-action'))
+)
+const TraySummery = Loadable(lazy(() => import('./Sp_Rp_trays/summery')))
 
 const RDLRouter = [
     {
@@ -41,6 +45,10 @@ const RDLRouter = [
     {
         path: '/rdl-two/tray/tray/unit-information-display/action',
         element: <TrayUnitInformationDisplayAction />,
+    },
+    {
+        path: '/rdl-two/tray/tray/summery/:trayId',
+        element: <TraySummery />,
     },
 ]
 

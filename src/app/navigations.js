@@ -1286,7 +1286,7 @@ export const navigations = [
             },
             {
                 name: 'Issue to rdl-two',
-                path: '/reporting/track-tray',
+                path: '/sp-user/ready-to-repair',
             },
         ],
         sales: 'all',

@@ -4,12 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn, axiosMisUser } from '../../../../../../axios'
 import {
     Button,
-    Card,
     Dialog,
-    Box,
     DialogTitle,
     IconButton,
     DialogContent,
@@ -17,9 +14,9 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import AssignDialogBox from './received'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+import { axiosWarehouseIn } from '../../../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -68,78 +65,84 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
-
 const SimpleMuiTable = () => {
-    const [tray, setTray] = useState([])
-    const [counts, setCounts] = useState('')
     const [isAlive, setIsAlive] = useState(true)
-    const [isCheck, setIsCheck] = useState([])
+    const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
+    const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
-    const [refresh, setRefresh] = useState(false)
-    const [chargingUsers, setChargingUsers] = useState([])
-    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-
+    const [isLoading, setIsLoading] = useState(false)
+    const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
-    const [receiveButDis, setReceiveButDis] = useState(false)
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/return-from-sorting-wht/' + location
+                        '/returnFromWhtToRpSorting/' + location
                     )
                     if (res.status == 200) {
-                        setTray(res.data.data)
+                        setIsLoading(false)
+                        setTray(res?.data?.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                setIsLoading(false)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
-    }, [refresh])
+        fetchData()
+    }, [isAlive])
+
+    const handelViewDetailTray = (e, id) => {
+        e.preventDefault()
+        navigate('/warehouse/sorting/return-from-wht-to-rp/close/' + id)
+    }
 
     const handelTrayReceived = async () => {
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
                 counts: counts,
             }
-            setReceiveButDis(true)
-            let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)
+            let res = await axiosWarehouseIn.post(
+                '/recieved-from-sortingWhtToRp',
+                obj
+            )
+
             if (res.status == 200) {
+                setOpen(!open)
+                setReceiveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setReceiveButDis(false)
-                setOpen(false)
-                setRefresh((refresh) => !refresh)
+                setIsAlive((isAlive) => !isAlive)
             } else {
-                setOpen(false)
-                setReceiveButDis(false)
+                setReceiveBut(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setOpen(!open)
             }
         } catch (error) {
-            setOpen(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -148,51 +151,14 @@ const SimpleMuiTable = () => {
             })
         }
     }
+
     const handleClose = () => {
         setOpen(false)
     }
 
-    const handleDialogClose = () => {
-        setIsCheck([])
-        setChargingUsers([])
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-
-    const handleRecieve = () => {
-        const fetchData = async () => {
-            try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosMisUser.post(
-                        '/get-charging-users/' + 'BQC/' + location
-                    )
-                    if (res.status == 200) {
-                        setChargingUsers(res.data.data)
-                        handleDialogOpen()
-                    }
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
-            }
-        }
-        fetchData()
-    }
-    const handleView = (e, code) => {
+    const handelViewTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/return-from-sorting-rp/view')
-    }
-    const handleClose1 = (e, code) => {
-        e.preventDefault()
-        navigate('/wareshouse/sorting/return-from-sorting-rp/close')
+        navigate('/wareshouse/wht/return-from-rdl-fls/view/' + id)
     }
 
     const columns = [
@@ -215,25 +181,30 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'tray_id',
+            name: 'code',
             label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'tray',
+            name: 'type_taxanomy',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Tray Display Name
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name',
+            name: 'sort_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
             ),
@@ -241,40 +212,27 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'limit',
-        //     label: 'Tray',
-        //     options: {
-        //         filter: true,
-        //         display: false,
-        //     },
-        // },
 
         {
-            name: 'status',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Tray Status</Typography>
-            ),
+            name: 'brand',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'date',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Closed Date</Typography>
-            ),
+            name: 'model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'status',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Tray Status</Typography>
-            ),
+            name: 'limit',
+            label: 'limit',
             options: {
                 filter: true,
+                display: false,
             },
         },
         {
@@ -286,57 +244,53 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                // disabled={isCheck.length == 0}
-                                onClick={() => handleRecieve(true)}
-                                style={{ backgroundColor: 'green' }}
-                                component="span"
-                            >
-                                Recieved
-                            </Button>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                style={{ backgroundColor: '#206CE2' }}
-                                onClick={(e) => {
-                                    handleView(e, value)
-                                }}
-                            >
-                                View
-                            </Button>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                style={{ backgroundColor: '#f44336' }}
-                                onClick={(e) => {
-                                    handleClose1(e, value)
-                                }}
-                            >
-                                Close
-                            </Button>
+                            {tableMeta.rowData[3] !=
+                            'Received from sorting (Wht to rp)' ? (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        setTrayId(value)
+                                    }}
+                                >
+                                    RECEIVE
+                                </Button>
+                            ) : (
+                                <>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: '#206CE2' }}
+                                        onClick={(e) => {
+                                            handelViewTray(e, value)
+                                        }}
+                                    >
+                                        View
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
+                            )}
                         </>
                     )
                 },
             },
-        },
-    ]
-
-    const columns1 = [
-        {
-            index: 1,
-            tray_id: 'WHT2004',
-            tray: 'WHT2004',
-            name: 'abc',
-            date: '',
-            status: 'Sorting Done',
         },
     ]
 
@@ -352,7 +306,7 @@ const SimpleMuiTable = () => {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    RECEIVED
+                    Please verify the count of - {trayId}
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -376,8 +330,8 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
-                        disabled={counts === '' || receiveButDis}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -390,59 +344,55 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT-to-RP', path: '/' },
-                        { name: 'WHT Tray' },
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-from-RDL-FLS' },
                     ]}
                 />
             </div>
-            <Card>
-                <MUIDataTable
-                    title={'Tray'}
-                    data={columns1}
-                    columns={columns}
-                    options={{
-                        filterType: 'textField',
-                        responsive: 'simple',
-                        download: false,
-                        print: false,
-                        selectableRows: 'none', // set checkbox for each row
-                        // search: false, // set search option
-                        // filter: false, // set data filter option
-                        // download: false, // set download option
-                        // print: false, // set print option
-                        // pagination: true, //set pagination option
-                        // viewColumns: false, // set column option
-                        customSort: (data, colIndex, order) => {
-                            return data.sort((a, b) => {
-                                if (colIndex === 1) {
-                                    return (
-                                        (a.data[colIndex].price <
-                                        b.data[colIndex].price
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                }
+
+            <MUIDataTable
+                title={'Tray'}
+                data={tray}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
                                 return (
-                                    (a.data[colIndex] < b.data[colIndex]
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            })
-                        },
-                        elevation: 0,
-                        rowsPerPageOptions: [10, 20, 40, 80, 100],
-                    }}
-                />
-            </Card>
-            {shouldOpenEditorDialog && (
-                <AssignDialogBox
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    chargingUsers={chargingUsers}
-                    isCheck={isCheck}
-                />
-            )}
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
         </Container>
     )
 }

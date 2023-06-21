@@ -159,6 +159,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     sortId: trayData?.sort_id,
+                    screen:"return-from-rdl-fls"
                 }
                 let res = await axiosWarehouseIn.post(
                     '/rdl-fls/closedByWh',

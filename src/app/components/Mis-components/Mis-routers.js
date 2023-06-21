@@ -40,7 +40,7 @@ const AssignToRdltrayView = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/view-wht-tray'))
 )
 const AssignToRdltwo = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/tray'))
 )
 const AssignToRdltwoview = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))

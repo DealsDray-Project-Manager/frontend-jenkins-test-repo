@@ -1227,13 +1227,7 @@ export const navigations = [
         auth: authRoles.RDL_2,
         sales: false,
     },
-    {
-        name: 'RDL 2 Requests 1',
-        icon: 'class',
-        path: '/rdl-two/Sp_Rp_trays',
-        auth: authRoles.RDL_2,
-        sales: false,
-    },
+    
     {
         name: 'Part List',
         icon: 'class',

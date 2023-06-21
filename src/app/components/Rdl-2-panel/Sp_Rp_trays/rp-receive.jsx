@@ -12,14 +12,13 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
-import { styled } from '@mui/system'
 import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/material/styles'
+import { axiosRdlTwoAgent, axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-
-import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,7 +41,6 @@ export default function DialogBox() {
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
-    const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
 
@@ -56,7 +54,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Send for charging/' +
+                            'Issued to RDL-2/' +
                             location
                     )
                     if (response.status === 200) {
@@ -152,58 +150,23 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const handelIssue = async (e, sortId) => {
+    const handelIssue = async (e) => {
         try {
-            if (trayData?.actual_items?.length == trayData?.items?.length) {
-                setLoading(true)
-                let obj = {
-                    trayId: trayId,
-                    description: description,
-                    sortId: trayData?.sort_id,
-                }
-                let res = await axiosWarehouseIn.post(
-                    '/issue-to-agent-wht',
-                    obj
-                )
-                if (res.status == 200) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    if (trayData?.sort_id == 'Send for BQC') {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/bqc-request')
-                    } else {
-                        setLoading(false)
-                        navigate('/wareshouse/wht/charging-request')
-                    }
-                } else {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
-            } else {
-                setLoading(false)
-
+            setLoading(true)
+            let res = await axiosRdlTwoAgent.post('/recieved-sp-tray/' + trayId)
+            if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'error',
-                    title: 'Please Verify Actual Data',
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                navigate('/rdl-two/tray')
+            } else {
+                alert(res.data.message)
             }
         } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
+            alert(error)
         }
     }
 
@@ -226,14 +189,9 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '5px' }}>Total</h5>
-                            <p style={{ paddingLeft: '0px', fontSize: '22px' }}>
-                                {
-                                    trayData?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                                {trayData?.items?.length} / {trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -250,20 +208,16 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{ pl: 3 }}>
+                                    <TableCell sx={{ pl: 4 }}>
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -272,6 +226,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
@@ -309,17 +264,11 @@ export default function DialogBox() {
                             mr: 2,
                         }}
                     >
-                        <Box sx={{ pl: 8 }}>
+                        <Box sx={{}}>
                             <h5 style={{ marginLeft: '12px' }}>Total</h5>
-                            <p style={{ marginLeft: '0px', fontSize: '24px' }}>
-                                {
-                                    trayData.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                            <p style={{ marginLeft: '5px', fontSize: '22px' }}>
+                                {trayData?.actual_items?.length} /{' '}
+                                {trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -336,21 +285,17 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{ pl: 3 }}>
+                                    <TableCell sx={{ pl: 4 }}>
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -359,48 +304,57 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'BQC-Requests', path: '/' },
-                        { name: 'Verification' },
+                        { name: 'Tray', path: '/' },
+                        { name: 'Resticker' },
                     ]}
                 />
             </div>
             <Box
-            // sx={{
-            //     mt: 1,
-            //     height: 70,
-            //     borderRadius: 1,
-            // }}
+                sx={{
+                    mt: 1,
+                    height: 70,
+                    borderRadius: 1,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
             >
                 <Box
                     sx={{
                         float: 'left',
                     }}
                 >
-                    <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        Issued Date :{' '}
+                        {new Date(trayData?.requested_date).toLocaleString(
+                            'en-GB',
+                            {
+                                hour12: true,
+                            }
+                        )}
                     </h4>
+                    <h4 style={{ marginLeft: '13px' }}>RP Tray : {trayId}</h4>
                 </Box>
+
                 <Box
                     sx={{
-                        float: 'right',
+                        float: 'left',
                     }}
                 >
-                    <h4 style={{ marginRight: '13px' }}>
-                        Brand -- {trayData?.brand}
+                    <h4 style={{ marginLeft: '13px' }}>
+                        Brand : {trayData?.brand}
                     </h4>
-                    <h4 style={{ marginRight: '13px' }}>
-                        Model -- {trayData?.model}
+                    <h4 style={{ marginLeft: '13px' }}>
+                        Model : {trayData?.model}
                     </h4>
                 </Box>
             </Box>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} sx={{ mt: 2 }}>
                 <Grid item xs={6}>
                     {tableExpected}
                 </Grid>
@@ -410,32 +364,20 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <textarea
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        style={{ width: '300px', height: '60px' }}
-                        placeholder="Description"
-                    ></textarea>
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            trayData?.actual_items?.length !==
-                                trayData?.items?.length ||
                             loading == true ||
-                            description == ''
-                                ? true
-                                : false
+                            trayData?.actual_items?.length !==
+                                trayData?.items?.length
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
-                            if (window.confirm('You Want to Issue?')) {
-                                handelIssue(e)
-                            }
+                            handelIssue()
                         }}
                     >
-                        Issue To Agent
+                        Recieved
                     </Button>
                 </Box>
             </div>

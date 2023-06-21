@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosMisUser, axiosRdlTwoAgent } from '../../../../axios'
+import { axiosRdlTwoAgent } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './sp-receive'
 import jwt_decode from 'jwt-decode'
@@ -62,8 +62,6 @@ const SimpleMuiTable = () => {
         navigate('/rdl-two/tray/rp-tray-receive/' + code)
     }
 
-   
-
     const handleDialogClose = () => {
         setTrayId('')
         setShouldOpenEditorDialog(false)
@@ -77,6 +75,10 @@ const SimpleMuiTable = () => {
     // const handelViewItem = (trayId) => {
     //     navigate('/mis/assign-to-agent/Rdl-repair/view-item/' + trayId)
     // }
+
+    const handelStart = (code) => {
+        navigate('/rdl-two/tray/tray/start/' + code)
+    }
 
     const columns = [
         {
@@ -244,7 +246,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'action',
+            name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Action</>
@@ -266,7 +268,7 @@ const SimpleMuiTable = () => {
                                     'Rdl-2 inprogress'
                             }
                             onClick={(e) => {
-                                navigate('/rdl-two/Sp_Rp_trays/scan')
+                                handelStart(value)
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"

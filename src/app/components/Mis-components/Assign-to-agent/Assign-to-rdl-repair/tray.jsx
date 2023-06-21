@@ -75,12 +75,12 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handleviewrp = () => {
-        navigate('/mis/assign-to-agent/viewrp')
+    const handleviewrp = (code) => {
+        navigate('/mis/assign-to-agent/Rdl-repair/view-rp/' + code)
     }
 
-    const handleviewsp = () => {
-        navigate('/mis/assign-to-agent/viewsp')
+    const handleviewsp = (code) => {
+        navigate('/mis/assign-to-agent/Rdl-repair/view-sp/' + code)
     }
 
     const handelReadyForRdl = () => {
@@ -243,7 +243,7 @@ const SimpleMuiTable = () => {
                                     m: 1,
                                 }}
                                 variant="contained"
-                                onClick={() => handleviewsp()}
+                                onClick={() => handleviewsp(value?.[0].code)}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
@@ -273,7 +273,7 @@ const SimpleMuiTable = () => {
                                     m: 1,
                                 }}
                                 variant="contained"
-                                onClick={() => handleviewrp()}
+                                onClick={() => handleviewrp(value)}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >

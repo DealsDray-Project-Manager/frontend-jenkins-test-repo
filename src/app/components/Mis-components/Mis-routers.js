@@ -98,14 +98,24 @@ const CtxToStxAssignToSorting = Loadable(
 )
 const StxMerging = Loadable(lazy(() => import('./Merge/Stx-merging/tray')))
 const BilledBin = Loadable(lazy(() => import('./BilledBin/items')))
-
 const BilledBinReport = Loadable(lazy(() => import('./Report/billed-bin')))
+const ViewRpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-rp')))
+const ViewSpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp')))
 
 const dataTableRoutes = [
+    {
+        path: '/mis/assign-to-agent/Rdl-repair/view-rp/:trayId',
+        element: <ViewRpTray />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl-repair/view-sp/:trayId',
+        element: <ViewSpTray />,
+    },
     {
         path: '/mis/dashboard',
         element: <Dashboard />,
     },
+   
     {
         path: '/mis/orders',
         element: <Orders />,

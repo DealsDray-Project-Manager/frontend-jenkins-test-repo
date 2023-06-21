@@ -142,21 +142,21 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'brand',
+            name: 'brand_name',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'model',
+            name: 'model_name',
             label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'repairstatus',
+            name: 'rdl_repair_report',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
                     Repair Status
@@ -164,17 +164,19 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.status,
             },
         },
         {
-            name: 'reason',
+            name: 'rdl_repair_report',
             label: <Typography sx={{ fontWeight: 'bold' }}>Reason</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.reason,
             },
         },
         {
-            name: 'status',
+            name: '',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
@@ -289,6 +291,10 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
+                            disabled={
+                                trayData?.actual_items?.length !==
+                                trayData?.items?.length
+                            }
                             onClick={(e) => {
                                 navigate('/rdl-two/Traysummary')
                             }}

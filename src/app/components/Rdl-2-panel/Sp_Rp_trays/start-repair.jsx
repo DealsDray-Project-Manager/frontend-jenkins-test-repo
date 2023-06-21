@@ -15,7 +15,6 @@ import ChargingDetails from '../../Audit-components/Audit-request/Report/chargin
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
 import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -36,14 +35,6 @@ const SimpleMuiTable = () => {
     const { state } = useLocation()
     const { reportData, trayId, username, uic, whtTrayId } = state
 
-    /**************************************************************************** */
-    const [refresh, setRefresh] = useState(false)
-
-    const [selectedDate, setSelectedDate] = React.useState(null)
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date)
-    }
     const columns = [
         {
             name: 'index',
@@ -94,13 +85,18 @@ const SimpleMuiTable = () => {
         },
     ]
 
- 
-    const handleclose = () => {
-        Swal.fire({
-            title: 'Closed Successfully',
-            icon: 'success',
+    const handelNextpage = () => {
+        navigate('/rdl-two/tray/tray/unit-information-display/action', {
+            state: {
+                reportData: reportData,
+                trayId: trayId,
+                username: username,
+                whtTrayId: trayId,
+                uic:uic
+            },
         })
     }
+    
     /************************************************************************** */
     // const tableExpected = useMemo(() => {
     return (
@@ -154,7 +150,10 @@ const SimpleMuiTable = () => {
                     <Card sx={{ mt: 2, width: '100%' }}>
                         <MUIDataTable
                             title={'Tray'}
-                            data={reportData?.delivery?.rdl_fls_one_report?.partRequired}
+                            data={
+                                reportData?.delivery?.rdl_fls_one_report
+                                    ?.partRequired
+                            }
                             columns={columns}
                             options={{
                                 filterType: 'textField',
@@ -193,7 +192,7 @@ const SimpleMuiTable = () => {
                         />
                     </Card>
 
-                    <Grid container spacing={3} sx={{mt:1}}>
+                    <Grid container spacing={3} sx={{ mt: 1 }}>
                         <Grid item lg={6} md={12} xs={12}>
                             <ChargingDetails
                                 Charging={reportData?.delivery?.charging}
@@ -210,16 +209,21 @@ const SimpleMuiTable = () => {
                                 }
                             />
                         </Grid>
-                        <Grid sx={{ boxShadow: 1 }} item lg={12} md={12} xs={12}>
-                    <BqcApiAllReport
-                        BqcSowftwareReport={
-                            reportData?.delivery?.bqc_software_report
-                        }
-                    />
-                </Grid>
+                        <Grid
+                            sx={{ boxShadow: 1 }}
+                            item
+                            lg={12}
+                            md={12}
+                            xs={12}
+                        >
+                            <BqcApiAllReport
+                                BqcSowftwareReport={
+                                    reportData?.delivery?.bqc_software_report
+                                }
+                            />
+                        </Grid>
                     </Grid>
 
-             
                     <Box sx={{ textAlign: 'right' }}>
                         <Button
                             sx={{
@@ -227,9 +231,7 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             onClick={(e) => {
-                                navigate(
-                                    '/rdl-two/Sp_Rp_trays/scan/unitrepair/repairdone'
-                                )
+                                handelNextpage(e)
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"

@@ -26,7 +26,6 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
-   
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
@@ -56,94 +55,104 @@ const SimpleMuiTable = () => {
             navigate('/')
         }
         return () => {
-         
             setIsLoading(false)
         }
     }, [])
 
-    const handelDetailPage = (brand,model) => {
-        navigate('/sp-mis/procurement/procurementlist/' + brand + "/" + model)
+    const handelDetailPage = (brand, model) => {
+        navigate('/sp-mis/procurement/procurementlist/' + brand + '/' + model)
     }
 
     const columns = [
-        {   
+        {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: '_id',
-            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.muic || '',
-
             },
         },
         {
             name: '_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.brand || '',
-
             },
         },
         {
             name: '_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.model || '',
-
             },
         },
         {
             name: 'count',
-            label: <Typography sx={{fontWeight:'bold'}}>Units to Repair</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Units to Repair
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value,tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button 
+                        <Button
                             sx={{
-                                m: 0
+                                m: 0,
                             }}
                             variant="contained"
-                            onClick={(e) => handelDetailPage(tableMeta.rowData[2]?.brand,tableMeta.rowData[3]?.model)}
+                            onClick={(e) =>
+                                handelDetailPage(
+                                    tableMeta.rowData[2]?.brand,
+                                    tableMeta.rowData[3]?.model
+                                )
+                            }
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Create Procurement List                            
+                            Create Procurement List
                         </Button>
                     )
-                }, 
+                },
             },
         },
     ]
-
-   
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Items for Procurement', path: '/' }
+                        { name: 'Items for Procurement', path: '/' },
                     ]}
                 />
             </div>

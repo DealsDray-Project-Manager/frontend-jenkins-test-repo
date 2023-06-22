@@ -97,7 +97,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rpTray',
+            name: 'rp_tray',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
             ),

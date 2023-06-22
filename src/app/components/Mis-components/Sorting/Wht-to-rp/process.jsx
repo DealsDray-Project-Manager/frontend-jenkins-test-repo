@@ -120,12 +120,9 @@ const SimpleMuiTable = () => {
                 partList: partData,
                 checked: checked,
                 uic: uic,
-               
             }
             if (!checked) {
                 setSelectedUic(selectedUic.filter((item) => item !== uic))
-            } else {
-                setSelectedUic([...selectedUic, uic])
             }
             const res = await axiosMisUser.post(
                 '/assignForRepiar/stockCheck',
@@ -134,6 +131,9 @@ const SimpleMuiTable = () => {
             if (res.status == 200) {
                 setCheckBoxDis(false)
                 setIsCheck(res.data.data)
+                if (checked) {
+                    setSelectedUic([...selectedUic, uic])
+                }
             } else {
                 setCheckBoxDis(false)
                 Swal.fire({
@@ -166,7 +166,7 @@ const SimpleMuiTable = () => {
                 brand: brand,
                 model: model,
                 uicLength: selectedUic.length,
-                isCheck:isCheck.length
+                isCheck: isCheck.length,
             }
             const res = await axiosMisUser.post(
                 '/assignForRepiar/getTheRequrements',
@@ -185,7 +185,6 @@ const SimpleMuiTable = () => {
             alert('Server not responding please wait...')
         }
     }
-
 
     const columns = [
         {
@@ -534,7 +533,7 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        disabled={isCheck?.length ==0}
+                        disabled={isCheck?.length == 0}
                         onClick={() => handleDialogOpen()}
                         style={{ backgroundColor: 'green' }}
                         component="span"

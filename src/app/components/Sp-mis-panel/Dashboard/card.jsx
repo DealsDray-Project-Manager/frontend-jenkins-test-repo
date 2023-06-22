@@ -40,16 +40,10 @@ const StatCard3 = () => {
     const statList = [
         {
             icon: 'art_track',
-            amount: 1,
-            title: 'Upcoming Repairs',
-            path: '/sp-user/upcoming-repair-tray',
+            amount: 234,
+            title: 'Procurement creation',
+            path: '/sp-mis/procurement',
             sales: false,
-        },
-        {
-            icon: 'branding_watermark',
-            amount: 4,
-            title: 'Parts Issue Request',
-            path: '/sp-user/rdl-2-issue-request',
         },
     ]
     const { palette } = useTheme()

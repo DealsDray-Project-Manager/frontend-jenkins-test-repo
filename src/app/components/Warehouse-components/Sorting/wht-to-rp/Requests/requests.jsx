@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../../../axios'
 import {
     Button,
     Dialog,
@@ -13,7 +13,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -73,7 +73,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
-    const [receiveButDis,setReceiveButDis]=useState(false)
+    const [receiveButDis, setReceiveButDis] = useState(false)
 
     useEffect(() => {
         try {
@@ -82,7 +82,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/return-from-sorting-wht/' + location
+                        '/whtToRp/requests/' + location
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
@@ -144,87 +144,120 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handleViewParts = (e, code) => {
+    const handelViewTray = (e, code, whtTray) => {
         e.preventDefault()
-        navigate('/wareshouse/sorting/viewparts')
+        navigate('/wareshouse/sorting/wht-to-rp/scanning', {
+            state: {
+                whtTray: whtTray,
+                rpTray: code,
+            },
+        })
     }
 
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
-            name: 'sptray',
-            label: <Typography sx={{fontWeight:'bold'}}>SP Tray ID</Typography>,
+            name: 'wht_tray',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>WHT Tray ID</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
+            },
+        },
+        {
+            name: 'code',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'rptray',
-            label: <Typography sx={{fontWeight:'bold'}}>RP Tray ID</Typography>,
+            name: 'requested_date',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned Date
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'issued_user_name',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'limit',
-            label: 'Tray',
+            name: 'brand',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
-                display: false,
             },
         },
-
         {
-            name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Item Recieved Count</Typography>,
+            name: 'model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
-                           sx={{
-                               m: 1,
-                           }}
-                           variant="contained"
-                           style={{ backgroundColor: '#206CE2' }}
-                           onClick={(e) => {
-                               handleViewParts(e, value)
-                           }}
-                       >
-                           Add Parts
-                       </Button>
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            style={{ backgroundColor: '#206CE2' }}
+                            onClick={(e) => {
+                                handelViewTray(e, value, tableMeta.rowData[1])
+                            }}
+                        >
+                            Approve
+                        </Button>
                     )
                 },
             },
         },
     ]
 
-   const columns1 = [
-        {
-            index:1,
-            sptray:'SP18001',
-            rptray:'RP001',
-            items:3
-        }
-    ]
     return (
         <Container>
             <BootstrapDialog
@@ -273,17 +306,12 @@ const SimpleMuiTable = () => {
                 </DialogActions>
             </BootstrapDialog>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT to RP', path: '/' },
-                        { name: 'Spare Parts' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'WHT Tray' }]} />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
-                data={columns1}
+                title={'Tray'}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

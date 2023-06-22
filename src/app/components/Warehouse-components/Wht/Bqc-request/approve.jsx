@@ -226,7 +226,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'5px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '5px' }}>Total</h5>
                             <p style={{ paddingLeft: '0px', fontSize: '22px' }}>
                                 {
                                     trayData?.items?.filter(function (item) {
@@ -247,7 +247,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -257,7 +257,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -307,8 +309,8 @@ export default function DialogBox() {
                             mr: 2,
                         }}
                     >
-                        <Box sx={{pl:8}}>
-                            <h5 style={{marginLeft:'12px'}}>Total</h5>
+                        <Box sx={{ pl: 8 }}>
+                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ marginLeft: '0px', fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (
@@ -331,7 +333,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -342,7 +344,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -362,16 +366,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'BQC-Requests', path: '/' },
-                        { name: 'Verification'}
+                        { name: 'Verification' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{

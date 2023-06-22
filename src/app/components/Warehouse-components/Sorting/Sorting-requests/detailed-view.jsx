@@ -19,11 +19,11 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
-
     const { trayId } = useParams()
     const navigate = useNavigate()
 
@@ -129,25 +129,34 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -162,7 +171,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -171,7 +182,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
@@ -189,7 +200,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort_id: false,
@@ -241,99 +252,107 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-        <Card>
-
-            <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                <Box sx={{ml:3}}>
-                    <Typography sx={{fontSize:'20px', fontWeight:'bold'}}>Tray</Typography>
+            <Card>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Box sx={{ ml: 3 }}>
+                        <Typography
+                            sx={{ fontSize: '20px', fontWeight: 'bold' }}
+                        >
+                            Tray
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mr: 3 }}>
+                        <h4>
+                            Assigned Date -{' '}
+                            {new Date(
+                                botTray[0]?.status_change_time
+                            ).toLocaleString('en-GB', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                            })}
+                        </h4>
+                        <h4>Agent Name- {botTray[0]?.issued_user_name}</h4>
+                    </Box>
                 </Box>
-            <Box sx={{mr:3}}>
-                <h4>
-                    Assigned Date -{' '}
-                    {new Date(botTray[0]?.status_change_time).toLocaleString(
-                        'en-GB',
-                        {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        }
-                    )}
-                </h4>
-                <h4>Agent Name- {botTray[0]?.issued_user_name}</h4>
-            </Box>
-            </Box>
-            
 
-            <MUIDataTable
-                // title={'Tray'}
-                data={botTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                <MUIDataTable
+                    // title={'Tray'}
+                    data={botTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+                <Box sx={{ float: 'right' }}>
+                    {botTray?.[0]?.sort_id == 'Assigned to sorting agent' ? (
+                        <Button
+                            sx={{ m: 3, mb: 9 }}
+                            variant="contained"
+                            disabled={
+                                botTray?.[0]?.items.length !==
+                                botTray?.[0]?.actual_items.length
+                                    ? true
+                                    : loading == true
+                                    ? true
+                                    : false
                             }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-            <Box sx={{ float: 'right' }}>
-                {botTray?.[0]?.sort_id == 'Assigned to sorting agent' ? (
-                    <Button
-                        sx={{ m: 3, mb: 9 }}
-                        variant="contained"
-                        disabled={
-                            botTray?.[0]?.items.length !==
-                            botTray?.[0]?.actual_items.length
-                                ? true
-                                : loading == true
-                                ? true
-                                : false
-                        }
-                        style={{ backgroundColor: 'primery' }}
-                        onClick={(e) => {
-                            handelIssue(e, 'Issued to sorting agent')
-                        }}
-                    >
-                        Handover Done
-                    </Button>
-                ) : botTray?.[0]?.sort_id !== 'Issued to sorting agent' ? (
-                    <Button
-                        sx={{ m: 3, mb: 9 }}
-                        variant="contained"
-                        disabled={loading}
-                        style={{ backgroundColor: 'primery' }}
-                        onClick={(e) => {
-                            handelIssue(e, 'Assigned to sorting agent')
-                        }}
-                    >
-                        Assign To Agent
-                    </Button>
-                ) : null}
-            </Box>
+                            style={{ backgroundColor: 'primery' }}
+                            onClick={(e) => {
+                                handelIssue(e, 'Issued to sorting agent')
+                            }}
+                        >
+                            Handover Done
+                        </Button>
+                    ) : botTray?.[0]?.sort_id !== 'Issued to sorting agent' ? (
+                        <Button
+                            sx={{ m: 3, mb: 9 }}
+                            variant="contained"
+                            disabled={loading}
+                            style={{ backgroundColor: 'primery' }}
+                            onClick={(e) => {
+                                handelIssue(e, 'Assigned to sorting agent')
+                            }}
+                        >
+                            Assign To Agent
+                        </Button>
+                    ) : null}
+                </Box>
             </Card>
         </Container>
     )

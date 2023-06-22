@@ -4,6 +4,21 @@ import { authRoles } from 'app/auth/authRoles'
 export const navigations = [
     {
         name: 'Dashboard',
+        path: '/sp-mis/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/purchase-user/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+   
+    {
+        name: 'Dashboard',
         path: '/sup-admin/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -111,6 +126,20 @@ export const navigations = [
         type: 'label',
     },
     {
+        name: 'Procurement',
+        path: '/sp-mis/procurement',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Purchase request',
+        path: '/purchase-user/purchase',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
         name: 'Masters',
         icon: 'fiber_manual_record',
         children: [
@@ -202,7 +231,6 @@ export const navigations = [
                 path: '/sup-admin/bag-assinged/bag',
                 iconText: 'PL',
             },
-           
         ],
         auth: authRoles.admin,
         sales: false,
@@ -682,8 +710,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'WHT to RP',
-                path: '/wareshouse/sorting/spwhuser',
+                name: 'Sorting Requests (WHT to RP)',
+                path: '/wareshouse/sorting/wht-to-rp',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return from sorting (WHT to RP)',
+                path: '/warehouse/sorting/return-from-wht-to-rp',
                 iconText: 'VP',
             },
         ],
@@ -880,11 +913,6 @@ export const navigations = [
                 path: '/sorting/request',
                 iconText: 'VP',
             },
-            {
-                name: 'WHT to RP',
-                path: '/sorting/request',
-                iconText: 'VP',
-            },
         ],
         auth: authRoles.sorting,
         sales: false,
@@ -923,6 +951,24 @@ export const navigations = [
                 name: 'To Tray',
                 icon: 'merge_type',
                 path: '/sorting/pickup/to-tray',
+            },
+        ],
+        auth: authRoles.sorting,
+        sales: false,
+    },
+    {
+        name: 'Sorting Request (Wht to rp)',
+        icon: 'sort',
+        children: [
+            {
+                name: 'WHT to RP',
+                path: '/sorting/wht-to-rp/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Rp tray',
+                path: '/sorting/wht-to-rp/rp-tray',
+                iconText: 'VP',
             },
         ],
         auth: authRoles.sorting,
@@ -1000,7 +1046,11 @@ export const navigations = [
                 path: '/reporting/delivery/item',
             },
             {
-                name: <Typography sx={{textAlign:'left'}}>Units Available in Processing</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Units Available in Processing
+                    </Typography>
+                ),
 
                 path: '/reporting/units/processing',
             },
@@ -1140,7 +1190,11 @@ export const navigations = [
         icon: 'shopping_cart',
         children: [
             {
-                name: <Typography sx={{textAlign:'left'}}>Sales Bucket Transfer Pending</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Sales Bucket Transfer Pending
+                    </Typography>
+                ),
                 path: '/reporting/ctx/transfer-pending-to-sales',
             },
             {
@@ -1202,6 +1256,7 @@ export const navigations = [
         auth: authRoles.RDL_2,
         sales: false,
     },
+    
     {
         name: 'Part List',
         icon: 'class',
@@ -1243,6 +1298,22 @@ export const navigations = [
         path: '',
         auth: authRoles.pricing_Agent,
         sales: true,
+    },
+    {
+        name: 'Sp tray',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Part issue',
+                path: '/sp-user/sp-tray',
+            },
+            {
+                name: 'Issue to rdl-two',
+                path: '/sp-user/ready-to-repair',
+            },
+        ],
+        sales: 'all',
+        auth: authRoles.RMWAREHOUSE,
     },
 ]
 export const getfilteredNavigations = (navList = [], role, cpc_type) => {

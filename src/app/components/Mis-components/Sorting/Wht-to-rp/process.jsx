@@ -69,9 +69,17 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { brand, model } = useParams()
     const { logout, user } = useAuth()
+    const [requrementList, setRequrementList] = useState({
+        spTray: [],
+        rpTray: [],
+        spWUser: [],
+        sortingAgent: [],
+    })
     const [isLoading, setIsLoading] = useState(false)
-    const [chargingUsers, setChargingUsers] = useState([])
+    const [selectedUic, setSelectedUic] = useState([])
     const [unitsData, setUnitsData] = useState([])
+    const [checkBoxDis, setCheckBoxDis] = useState(false)
+    const [location, setLoaction] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -80,6 +88,7 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     const { location } = jwt_decode(admin)
+                    setLoaction(location)
                     setIsLoading(true)
                     let obj = {
                         brand: brand,
@@ -100,26 +109,33 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [isAlive])
 
     const handleClick = async (e, partData, uic) => {
         try {
+            setCheckBoxDis(true)
             const { id, checked } = e.target
             let obj = {
                 isCheck: isCheck,
                 partList: partData,
-                checked:checked,
+                checked: checked,
                 uic: uic,
+            }
+            if (!checked) {
+                setSelectedUic(selectedUic.filter((item) => item !== uic))
             }
             const res = await axiosMisUser.post(
                 '/assignForRepiar/stockCheck',
                 obj
             )
             if (res.status == 200) {
+                setCheckBoxDis(false)
                 setIsCheck(res.data.data)
-            }
-           
-             else {
+                if (checked) {
+                    setSelectedUic([...selectedUic, uic])
+                }
+            } else {
+                setCheckBoxDis(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -134,37 +150,40 @@ const SimpleMuiTable = () => {
 
     const handleDialogClose = () => {
         setIsCheck([])
-        setChargingUsers([])
+        setRequrementList({
+            spTray: [],
+            rpTray: [],
+            spWUser: [],
+            sortingAgent: [],
+        })
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-
-    const handelGetBqcUser = () => {
-        const fetchData = async () => {
-            try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosMisUser.post(
-                        '/get-charging-users/' + 'BQC/' + location
-                    )
-                    if (res.status == 200) {
-                        setChargingUsers(res.data.data)
-                        handleDialogOpen()
-                    }
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
+    const handleDialogOpen = async () => {
+        try {
+            let obj = {
+                location: location,
+                brand: brand,
+                model: model,
+                uicLength: selectedUic.length,
+                isCheck: isCheck.length,
             }
+            const res = await axiosMisUser.post(
+                '/assignForRepiar/getTheRequrements',
+                obj
+            )
+            if (res.status == 200) {
+                setRequrementList({
+                    spTray: res.data.getSpTray,
+                    rpTray: res.data.getRpTray,
+                    spWUser: res.data.spWhUser,
+                    sortingAgent: res.data.getSortingAgent,
+                })
+                setShouldOpenEditorDialog(true)
+            }
+        } catch (error) {
+            alert('Server not responding please wait...')
         }
-        fetchData()
     }
 
     const columns = [
@@ -185,12 +204,20 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Checkbox
+                            disabled={checkBoxDis}
                             onClick={(e) => {
-                                handleClick(e,tableMeta.rowData[7]?.rdl_fls_report?.partRequired,value?.uic)
+                                handleClick(
+                                    e,
+                                    tableMeta.rowData[7]?.rdl_fls_report
+                                        ?.partRequired,
+                                    value?.uic
+                                )
                             }}
                             id={value?.uic}
                             key={value?.uic}
-                            checked={isCheck.some(obj => obj?.uic?.includes(value?.uic))}
+                            checked={isCheck.some((obj) =>
+                                obj?.uic?.includes(value?.uic)
+                            )}
                         />
                     )
                 },
@@ -235,7 +262,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-               
             },
         },
         {
@@ -347,15 +373,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
-
             name: 'uic',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>UIC's Selected</>
+                    UIC's Selected
                 </Typography>
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
             },
         },
         {
@@ -449,7 +477,7 @@ const SimpleMuiTable = () => {
                 />
             </StyledTable>
         )
-    }, [unitsData,columns])
+    }, [unitsData, columns])
 
     // SELECTED UIC TABLE BOTTOM
     const selectedUicTable = useMemo(() => {
@@ -505,8 +533,8 @@ const SimpleMuiTable = () => {
                             m: 1,
                         }}
                         variant="contained"
-                        // disabled={isCheck.length == 0}
-                        onClick={() => handelGetBqcUser(true)}
+                        disabled={isCheck?.length == 0}
+                        onClick={() => handleDialogOpen()}
                         style={{ backgroundColor: 'green' }}
                         component="span"
                     >
@@ -515,15 +543,15 @@ const SimpleMuiTable = () => {
                 </Box>
             </ProductTable1>
         )
-    }, [isCheck,columns2])
+    }, [isCheck, columns2])
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging' },
+                        { name: 'Sorting', path: '/' },
+                        { name: 'Wht to rp' },
                     ]}
                 />
             </div>
@@ -583,7 +611,8 @@ const SimpleMuiTable = () => {
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
                     setIsAlive={setIsAlive}
-                    chargingUsers={chargingUsers}
+                    requrementList={requrementList}
+                    selectedUic={selectedUic}
                     isCheck={isCheck}
                 />
             )}

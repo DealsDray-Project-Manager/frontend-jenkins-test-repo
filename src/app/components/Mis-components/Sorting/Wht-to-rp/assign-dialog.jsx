@@ -4,6 +4,9 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -20,36 +23,45 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    chargingUsers,
+    requrementList,
+    selectedUic,
     isCheck,
 }) => {
-    const [bqcuserName, setBqcUserName] = useState('')
     const [loading, setLoading] = useState(false)
+    const schema = Yup.object().shape({
+        rpTray: Yup.string().required('Required*').nullable(),
+        spTray: Yup.string().required('Required*').nullable(),
+        spwhuser: Yup.string().required('Required*').nullable(),
+        sortingUser: Yup.string().required('Required*').nullable(),
+    })
 
-    const handelSendRequestConfirm = async () => {
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
+
+    const onSubmit = async (values) => {
         try {
             setLoading(true)
-            let obj = {
-                tray: isCheck,
-                user_name: bqcuserName,
-                sort_id: 'Send for BQC',
-            }
-            let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
+            values.spDetails = isCheck
+            values.selectedUic = selectedUic
+            let res = await axiosMisUser.post('/whtToRpSorting/assign', values)
             if (res.status == 200) {
-                setLoading(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-
-                setBqcUserName('')
                 setIsAlive((isAlive) => !isAlive)
                 handleClose()
             } else {
                 setLoading(false)
-
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -57,6 +69,7 @@ const MemberEditorDialog = ({
                 })
             }
         } catch (error) {
+            setLoading(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -72,35 +85,30 @@ const MemberEditorDialog = ({
                     label="Repair Tray"
                     fullWidth
                     select
-                    name="username"
+                    {...register('rpTray')}
+                    error={errors.rpTray ? true : false}
+                    helperText={errors.rpTray?.message}
+                    name="rpTray"
                 >
-                    {chargingUsers.map((data) => (
-                        <MenuItem
-                            key={data.user_name}
-                            value={data.user_name}
-                            onClick={(e) => {
-                                setBqcUserName(data.user_name)
-                            }}
-                        >
-                            {data.user_name}
+                    {requrementList?.rpTray?.map((data) => (
+                        <MenuItem key={data.code} value={data.code}>
+                            {data.code} - ({data?.items?.length})
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
+
                 <TextFieldCustOm
                     label="SP Tray"
                     fullWidth
                     select
-                    name="username"
+                    name="spTray"
+                    {...register('spTray')}
+                    error={errors.spTray ? true : false}
+                    helperText={errors.spTray?.message}
                 >
-                    {chargingUsers.map((data) => (
-                        <MenuItem
-                            key={data.user_name}
-                            value={data.user_name}
-                            onClick={(e) => {
-                                setBqcUserName(data.user_name)
-                            }}
-                        >
-                            {data.user_name}
+                    {requrementList?.spTray?.map((data) => (
+                        <MenuItem key={data.code} value={data.code}>
+                            {data.code}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
@@ -108,16 +116,13 @@ const MemberEditorDialog = ({
                     label="SPWH Agent"
                     fullWidth
                     select
-                    name="username"
+                    name="spwhuser"
+                    {...register('spwhuser')}
+                    error={errors.spwhuser ? true : false}
+                    helperText={errors.spwhuser?.message}
                 >
-                    {chargingUsers.map((data) => (
-                        <MenuItem
-                            key={data.user_name}
-                            value={data.user_name}
-                            onClick={(e) => {
-                                setBqcUserName(data.user_name)
-                            }}
-                        >
+                    {requrementList?.spWUser?.map((data) => (
+                        <MenuItem key={data.user_name} value={data.user_name}>
                             {data.user_name}
                         </MenuItem>
                     ))}
@@ -126,16 +131,13 @@ const MemberEditorDialog = ({
                     label="Sorting Agent"
                     fullWidth
                     select
-                    name="username"
+                    name="sortingUser"
+                    {...register('sortingUser')}
+                    error={errors.sortingUser ? true : false}
+                    helperText={errors.sortingUser?.message}
                 >
-                    {chargingUsers.map((data) => (
-                        <MenuItem
-                            key={data.user_name}
-                            value={data.user_name}
-                            onClick={(e) => {
-                                setBqcUserName(data.user_name)
-                            }}
-                        >
+                    {requrementList?.sortingAgent?.map((data) => (
+                        <MenuItem key={data.user_name} value={data.user_name}>
                             {data.user_name}
                         </MenuItem>
                     ))}
@@ -143,10 +145,8 @@ const MemberEditorDialog = ({
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        disabled={loading || bqcuserName == ''}
-                        onClick={(e) => {
-                            handelSendRequestConfirm()
-                        }}
+                        disabled={loading}
+                        onClick={handleSubmit(onSubmit)}
                         color="primary"
                         type="submit"
                     >

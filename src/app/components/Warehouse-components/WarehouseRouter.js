@@ -88,15 +88,6 @@ const ReturnFromSorting = Loadable(
 const ReturnFromSortingClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting/close'))
 )
-
-
-const SPWHuser = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/spwhuser'))
-)
-const Viewparts = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/viewparts'))
-)
-
 const MergeRequest = Loadable(lazy(() => import('./Merge/Merge-request/tray')))
 const MergeRequestApprove = Loadable(
     lazy(() => import('./Merge/Merge-request/approve-request'))
@@ -207,13 +198,33 @@ const SortingDoneCtxtoStxTray = Loadable(
 const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
+
+
+
+const WhttoRpRequests= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/requests')))
+const WhtToRpScanEach= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/scan-each-tray')))
+const WhtToRpScanActVsExt= Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/act-ext')))
+
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
 const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
 const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
 const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
+const ReturnFromWhtToRp = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/tray')))
+const ReturnFromWhtToRpClose = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close')))
 
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/sorting/return-from-wht-to-rp',
+        element: <ReturnFromWhtToRp />,
+    },
+    {
+        path: '/warehouse/sorting/return-from-wht-to-rp/close/:trayId',
+        element: <ReturnFromWhtToRpClose />,
+    },
     {
         path: '/warehouse/dashboard',
         element: <Dashboard />,
@@ -382,14 +393,31 @@ const WarehoueRouter = [
         path: '/wareshouse/sorting/return-from-sorting',
         element: <ReturnFromSorting />,
     },
+    // {
+    //     path: '/wareshouse/sorting/spwhuser',
+    //     element: <SPWHuser />,
+    // },
+    // {
+    //     path: '/wareshouse/sorting/return-from-sorting-rp/view',
+    //     element: <View />,
+    // },
+    // {
+    //     path: '/wareshouse/sorting/return-from-sorting-rp/close',
+    //     element: <Close />,
+    // },
     {
-        path: '/wareshouse/sorting/spwhuser',
-        element: <SPWHuser />,
+        path: '/wareshouse/sorting/wht-to-rp',
+        element: <WhttoRpRequests />,
     },
     {
-        path: '/wareshouse/sorting/viewparts',
-        element: <Viewparts />,
+        path: '/wareshouse/sorting/wht-to-rp/scanning',
+        element: <WhtToRpScanEach />,
     },
+    {
+        path: '/wareshouse/sorting/wht-to-rp/scan/:trayId',
+        element: <WhtToRpScanActVsExt />,
+    },
+    
     {
         path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',
         element: <SortingDoneCtxOrStxTrayClose />,

@@ -4,6 +4,21 @@ import { authRoles } from 'app/auth/authRoles'
 export const navigations = [
     {
         name: 'Dashboard',
+        path: '/sp-mis/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
+        path: '/purchase-user/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+   
+    {
+        name: 'Dashboard',
         path: '/sup-admin/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -109,6 +124,20 @@ export const navigations = [
     {
         label: 'Pages',
         type: 'label',
+    },
+    {
+        name: 'Procurement',
+        path: '/sp-mis/procurement',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Purchase request',
+        path: '/purchase-user/purchase',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Masters',

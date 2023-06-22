@@ -2,7 +2,7 @@ import React, { lazy } from 'react'
 import Loadable from '../Loadable/Loadable'
 
 
-const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
+const Dashboard = Loadable(lazy(() => import('./Dahsboard/dashboard')))
 const Purchase = Loadable(lazy(() => import('./purchase/purchaseuser')))
 const Order = Loadable(lazy(() => import('./purchase/order')))
 

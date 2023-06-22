@@ -2,8 +2,8 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
+import { useNavigate,useParams } from 'react-router-dom'
+import { axiosSpMisAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Card, Box, TextField } from '@mui/material'
 import Swal from 'sweetalert2'
@@ -22,39 +22,40 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
+    const [location, setLocation] = useState('')
+    const { brand, model } = useParams()
+    const [spList, setSpList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 setIsLoading(true)
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setIsLoading(false)
-    //                     setRDLRequest(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         setIsLoading(false)
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    const { location } = jwt_decode(admin)
+                    setLocation(location)
+                    setIsLoading(true)
+                    let obj = {
+                        brand: brand,
+                        model: model,
+                        location: location,
+                    }
+                    const res = await axiosSpMisAgent.post(
+                        '/procurment/creation',
+                        obj
+                    )
+                    if (res.status == 200) {
+                        setIsLoading(false)
+                        setSpList(res.data.data)
+                    }
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    }, [])
 
     const handlesend = () =>{
         Swal.fire({
@@ -76,14 +77,14 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'part_no',
+            name: 'part_id',
             label: <Typography sx={{fontWeight:'bold'}}>Spare Part Number</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name',
+            name: 'part_name',
             label: <Typography sx={{fontWeight:'bold'}}>Spare Part Name</Typography>,
             options: {
                 filter: true,
@@ -103,67 +104,34 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+       
         {
-            name: 'muic',
-            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'avl_qty',
+            name: 'aval_qty',
             label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'req_qty',
-            label: <Typography sx={{fontWeight:'bold'}}>Available Quantity</Typography>,
+            name: 'required_qty',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Required Quantity</Typography>,
             options: {
-                filter: true,
+              filter: true,
+              customBodyRenderLite: (dataIndex, rowIndex) => (
+                <TextField
+                  value={dataIndex[rowIndex]?.rowData.required_qty}
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              ),
             },
-        }
+          }
     ]
 
-    const columns1 = [
-        {
-            index:1,
-            part_no:'SPN000736',
-            name:'Camera Glass/Black-XIOMI MI A2',
-            brand:'Xiomi',
-            model:'MI A2',
-            muic:'KG888',
-            avl_qty:1,
-            req_qty:<Box>
-                        <TextField
-                        sx={{
-                            width:'70px',
-                            height:'50px',
-                            ml:3
-                        }}
-                        />
-                    </Box>
-        },
-        {
-            index:2,
-            part_no:'SPN000735',
-            name:'Camera Glass/Black-XIOMI MI A2',
-            brand:'Xiomi',
-            model:'MI A2',
-            muic:'KG888',
-            avl_qty:0,
-            req_qty:<Box>
-                        <TextField
-                        sx={{
-                            width:'70px',
-                            height:'50px',
-                            ml:3
-                        }}
-                        />
-                    </Box>
-        },
-    ]
+  
 
     return (
         <Container>
@@ -180,13 +148,13 @@ const SimpleMuiTable = () => {
                 <Box sx={{p:2}}>
                     <Typography sx={{fontSize:'large', fontWeight:'bold'}}>Pre Purchase Requests</Typography>
                     <br />
-                    <Typography sx={{fontSize:'16px'}}>Brand : XIOMI</Typography>
-                    <Typography sx={{fontSize:'16px'}}>Model : MI A2</Typography>
+                    <Typography sx={{fontSize:'16px'}}>Brand : {brand}</Typography>
+                    <Typography sx={{fontSize:'16px'}}>Model : {model}</Typography>
                 </Box>
             <MUIDataTable
             sx={{mt:0}}
                 // title={'Pre Purchase Requests'}
-                data={columns1}
+                data={spList}
                 columns={columns}
                 options={{
                     filterType: 'textField',

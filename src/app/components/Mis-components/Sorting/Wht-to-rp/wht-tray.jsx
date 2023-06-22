@@ -97,7 +97,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.muic || '',
+                customBodyRender: (value, dataIndex) => value?.muic || '',
 
             },
         },
@@ -110,7 +110,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.brand || '',
+                customBodyRender: (value, dataIndex) => value?.brand || '',
             },
         },
         {
@@ -122,7 +122,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.model || '',
+                customBodyRender: (value, dataIndex) => value?.model || '',
             },
         },
         {

@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
+import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
@@ -22,47 +22,51 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
+    const [item, setItem] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     try {
-    //         const fetchData = async () => {
-    //             let admin = localStorage.getItem('prexo-authentication')
-    //             if (admin) {
-    //                 setIsLoading(true)
-    //                 let { location } = jwt_decode(admin)
-    //                 let res = await axiosWarehouseIn.post(
-    //                     '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
-    //                 )
-    //                 if (res.status == 200) {
-    //                     setIsLoading(false)
-    //                     setRDLRequest(res.data.data)
-    //                 }
-    //             } else {
-    //                 navigate('/')
-    //             }
-    //         }
-    //         fetchData()
-    //     } catch (error) {
-    //         setIsLoading(false)
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             confirmButtonText: 'Ok',
-    //             text: error,
-    //         })
-    //     }
-    // }, [])
+   
+    useEffect(() => {
+        let admin = localStorage.getItem('prexo-authentication')
+        if (admin) {
+            setIsLoading(true)
+            const { location } = jwt_decode(admin)
+            const fetchData = async () => {
+                try {
+                    let res = await axiosMisUser.post(
+                        '/whToRp/muicList/repair/' + location
+                    )
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setItem(res.data.data)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
+                }
+            }
+            fetchData()
+        } else {
+            navigate('/')
+        }
+        return () => {
+         
+            setIsLoading(false)
+        }
+    }, [])
 
-    const handelDetailPage = (e, trayId) => {
-        e.preventDefault()
-        navigate('/sp-mis/procurement/procurementlist')
+    const handelDetailPage = (brand,model) => {
+        navigate('/sp-mis/procurement/procurementlist/' + brand + "/" + model)
     }
 
     const columns = [
-        {
+        {   
             name: 'index',
             label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
             options: {
@@ -74,28 +78,34 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'muic',
+            name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.muic || '',
+
             },
         },
         {
-            name: 'brand',
+            name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.brand || '',
+
             },
         },
         {
-            name: 'model',
+            name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.model || '',
+
             },
         },
         {
-            name: 'units',
+            name: 'count',
             label: <Typography sx={{fontWeight:'bold'}}>Units to Repair</Typography>,
             options: {
                 filter: true,
@@ -107,14 +117,14 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value,tableMeta) => {
                     return (
                         <Button 
                             sx={{
                                 m: 0
                             }}
                             variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
+                            onClick={(e) => handelDetailPage(tableMeta.rowData[2]?.brand,tableMeta.rowData[3]?.model)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
@@ -126,15 +136,7 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const columns1 = [
-        {
-            index:1,
-            muic:'OF487',
-            brand:'Xiomi',
-            model:'K5',
-            units:4
-        }
-    ]
+   
 
     return (
         <Container>
@@ -148,7 +150,7 @@ const SimpleMuiTable = () => {
 
             <MUIDataTable
                 title={'Requests'}
-                data={columns1}
+                data={item}
                 columns={columns}
                 options={{
                     filterType: 'textField',

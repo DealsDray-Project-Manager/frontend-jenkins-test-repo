@@ -19,11 +19,11 @@ const Spmis=[
         element: <Procurement />,
     },
     {
-        path: '/sp-mis/procurement/procurementlist',
+        path: '/sp-mis/procurement/procurementlist/:brand/:model',
         element: <Procurementlist />,
     },
     {
-        path: '/sp-mis/procurement/procurementlist/request',
+        path: '/sp-mis/procurement/procurementlist/request/:brand/:model',
         element: <Request />,
     },
 ]

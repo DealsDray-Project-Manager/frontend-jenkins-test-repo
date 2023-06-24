@@ -33,6 +33,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -44,6 +45,7 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     /*********************************************************** */
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,7 +79,8 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-    /************************************************************************** */
+
+/************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
             Swal.fire({
@@ -121,7 +124,8 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
+
+/************************************************************************** */
     const handelIssue = async (e) => {
         e.preventDefault()
         try {
@@ -219,46 +223,45 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <Box sx={{ml:2 }}>
-                    <h5>EXPECTED</h5>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>EXPECTED</h5>
                     </Box>
-                    <Box sx={{justifyContent:'end', display: 'flex'}}>
-                    <Box
-                        sx={{
-                            m: 0,
-                        }}
-                    >
-                        <Box sx={{mr:2}}>
-                            <h5 style={{marginLeft:'10px'}}>Total</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '22px',
-                                }}
-                            >
-                                {trayData?.items?.length}/{trayData?.limit}
-                            </p>
+                    <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+                        <Box
+                            sx={{
+                                m: 0,
+                            }}
+                        >
+                            <Box sx={{ mr: 2 }}>
+                                <h5 style={{ marginLeft: '10px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}/{trayData?.limit}
+                                </p>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5>Valid</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
-                    <Box
-                        sx={{
-                            mr: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '22px',
-                                }}
-                            >
-                                {trayData?.items?.length}
-                            </p>
-                        </Box>
-                    </Box>
-                    </Box>
-                    
                 </Box>
                 <TableContainer>
                     <Table
@@ -269,7 +272,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -280,7 +283,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -297,73 +302,72 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{justifyContent:'space-between', display:'flex'}}>
-                <Box sx={{ml:2}}>
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ mt: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    name="doorsteps_diagnostics"
-                    disabled={textDisable}
-                    label="SCAN UIC"
-                    value={uic}
-                    onChange={(e) => {
-                        setUic(e.target.value)
-                        handelUic(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-                </Box>
-                
+                <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ mt: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={uic}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
-                            mr: 2,
+                            display: 'flex',
+                            justifyContent: 'end',
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5 style={{marginLeft:'10px'}}>Total</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '24px',
-                                }}
-                            >
-                                {trayData?.actual_items?.length}/
-                                {trayData?.limit}
-                            </p>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '10px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}/
+                                    {trayData?.limit}
+                                </p>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5>Valid</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
-                    <Box
-                        sx={{
-                            mr: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '24px',
-                                }}
-                            >
-                                {trayData?.actual_items?.length}
-                            </p>
-                        </Box>
-                    </Box>
-                </Box>
                 </Box>
 
                 <TableContainer>
@@ -375,7 +379,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -387,7 +391,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{px:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ px: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -408,16 +414,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'Return-From-Audit', path: '/' },
-                        { name: 'Verification'}
+                        { name: 'Verification' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -474,7 +480,9 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             trayData?.items?.length !==
-                                trayData?.actual_items?.length || loading
+                                trayData?.actual_items?.length ||
+                            loading ||
+                            trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

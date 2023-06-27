@@ -80,7 +80,9 @@ export default function DialogBox() {
                 setTextBoxDis(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextBoxDis(false)
+                    setRefresh((refresh) => !refresh)
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setUic('')
@@ -227,7 +229,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -238,7 +240,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -313,7 +317,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -324,7 +328,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>

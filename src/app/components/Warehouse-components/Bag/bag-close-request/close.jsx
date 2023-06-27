@@ -150,7 +150,9 @@ export default function DialogBox() {
                 setTextDisable(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setAwbn('')
+                    setTextDisable(false)
+                    getitem()
                 } else if (res.status == 202) {
                     setTextDisable(false)
 
@@ -369,13 +371,15 @@ export default function DialogBox() {
             })
         }
     }
+
     /***************************************************************************************** */
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
     /******************************************************************************** */
+
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-              <Box sx={{}}>
+                <Box sx={{}}>
                     <Box
                         sx={{
                             float: 'left',
@@ -392,16 +396,20 @@ export default function DialogBox() {
                     >
                         <Box sx={{}}>
                             <h5>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px', marginBottom:'29px' }}>
-                            {employeeData[0]?.items?.length}/
+                            <p
+                                style={{
+                                    paddingLeft: '5px',
+                                    fontSize: '22px',
+                                    marginBottom: '29px',
+                                }}
+                            >
+                                {employeeData[0]?.items?.length}/
                                 {employeeData[0]?.limit}
                             </p>
-                            
-                        
                         </Box>
                     </Box>
                 </Box>
-                        
+
                 {/* <Box
                     sx={{
                         display: 'flex',
@@ -431,7 +439,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -442,7 +450,9 @@ export default function DialogBox() {
                         <TableBody>
                             {employeeData[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.bag_id}</TableCell>
 
@@ -472,12 +482,12 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-        
     }, [employeeData[0]?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '97%', overflow: 'hidden', m: 1 }}>
-                  <Box sx={{}}>
+                <Box sx={{}}>
                     <Box
                         sx={{
                             float: 'left',
@@ -513,15 +523,13 @@ export default function DialogBox() {
                     >
                         <Box sx={{}}>
                             <h5>Total</h5>
-                            </Box>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {employeeData[0]?.actual_items?.length}/
-                                {employeeData[0]?.limit}
-                            </p>
-                        
+                        </Box>
+                        <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            {employeeData[0]?.actual_items?.length}/
+                            {employeeData[0]?.limit}
+                        </p>
                     </Box>
                 </Box>
-
 
                 {/* <Box>
                 <h4>ACTUAL</h4>
@@ -576,7 +584,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -592,7 +600,9 @@ export default function DialogBox() {
                                         role="checkbox"
                                         tabIndex={-1}
                                     >
-                                        <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                        <TableCell sx={{ pl: 3 }}>
+                                            {index + 1}
+                                        </TableCell>
                                         <TableCell>{data?.uic}</TableCell>
                                         <TableCell>{data?.bag_id}</TableCell>
                                         <TableCell>{data?.order_id}</TableCell>
@@ -657,15 +667,15 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'PMT And MMT', path: '/' },
                         { name: 'Tray-Close-Request', path: '/' },
-                        { name: 'Tray Close'}
+                        { name: 'Tray Close' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     height: 70,
-                //     borderRadius: 10,
-                // }}
+            // sx={{
+            //     height: 70,
+            //     borderRadius: 10,
+            // }}
             >
                 <Box
                     sx={{

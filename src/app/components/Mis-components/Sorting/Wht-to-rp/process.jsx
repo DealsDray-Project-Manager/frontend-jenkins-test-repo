@@ -573,9 +573,15 @@ const SimpleMuiTable = () => {
                         }}
                     >
                         <Typography sx={{ ml: 2 }}>Model : {model}</Typography>
+                        <Box>
+
+                        <Typography sx={{ mr: 4 }}>
+                            Selected UIC's : {selectedUic?.length}
+                        </Typography>
                         <Typography sx={{ mr: 4 }}>
                             Total : {unitsData?.length}
                         </Typography>
+                        </Box>
                     </Box>
 
                     <Box

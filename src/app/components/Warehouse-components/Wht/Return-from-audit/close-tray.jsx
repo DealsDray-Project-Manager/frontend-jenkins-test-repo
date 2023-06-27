@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -33,7 +32,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -45,7 +43,6 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     /*********************************************************** */
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -79,8 +76,7 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-
-/************************************************************************** */
+    /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.items.length < trayData?.actual_items?.length) {
             Swal.fire({
@@ -125,48 +121,41 @@ export default function DialogBox() {
         }
     }
 
-/************************************************************************** */
+    /************************************************************************** */
     const handelIssue = async (e) => {
         e.preventDefault()
         try {
             setLoading(true)
-            if (description == '') {
+
+            setLoading(false)
+
+            let obj = {
+                trayId: trayId,
+                description: description,
+                type: 'Audit Done Closed By Warehouse',
+                length: trayData?.items?.length,
+                limit: trayData?.limit,
+                trayType: trayData?.type_taxanomy,
+            }
+            let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
+            if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'warning',
-                    title: 'please Add Description',
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
+                navigate('/wareshouse/wht/return-from-audit')
             } else {
-                let obj = {
-                    trayId: trayId,
-                    description: description,
-                    type: 'Audit Done Closed By Warehouse',
-                    length: trayData?.items?.length,
-                    limit: trayData?.limit,
-                    trayType: trayData?.type_taxanomy,
-                }
-                let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
-                if (res.status == 200) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    navigate('/wareshouse/wht/return-from-audit')
-                } else {
-                    setLoading(false)
+                setLoading(false)
 
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
             setLoading(false)
@@ -481,7 +470,7 @@ export default function DialogBox() {
                         disabled={
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
-                            loading ||
+                            loading || description == '' ||
                             trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}

@@ -38,7 +38,6 @@ const AuthGuard = ({ children }) => {
     // AND COMMENT OUT BELOW LINE
     // let authenticated = isAuthenticated
 
-
     useEffect(() => {
         const checkUserActiveOrNot = async () => {
             try {
@@ -49,8 +48,13 @@ const AuthGuard = ({ children }) => {
                         navigate('/')
                     } else {
                         if (user_type !== 'super-admin') {
+                            let obj = {
+                                username: user_name,
+                                jwt: user,
+                            }
                             let res = await axiosSuperAdminPrexo.post(
-                                '/check-user-status/' + user_name
+                                '/check-user-status',
+                                obj
                             )
                             if (res.status === 200) {
                             } else if (res.status == 202) {
@@ -85,10 +89,6 @@ const AuthGuard = ({ children }) => {
         checkUserActiveOrNot()
         if (previouseRoute !== null) setPreviousRoute(pathname)
     }, [pathname, previouseRoute])
-
-
-
-
 
     if (authenticated) return <>{children}</>
     else {

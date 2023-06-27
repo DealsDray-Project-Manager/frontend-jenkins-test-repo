@@ -93,7 +93,9 @@ export default function DialogBox() {
 
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextDisable(false)
+                    setRefresh((refresh) => !refresh)
                 } else {
                     setTextDisable(false)
                     setUic('')
@@ -159,7 +161,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     sortId: trayData?.sort_id,
-                    screen:"return-from-rdl-fls"
+                    screen: 'return-from-rdl-fls',
                 }
                 let res = await axiosWarehouseIn.post(
                     '/rdl-fls/closedByWh',
@@ -221,7 +223,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'15px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {
                                     trayData?.items?.filter(function (item) {
@@ -242,7 +244,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -252,7 +254,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -303,7 +307,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'15px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (
@@ -326,7 +330,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -337,7 +341,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -353,21 +359,21 @@ export default function DialogBox() {
 
     return (
         <Container>
-              <div className="breadcrumb">
+            <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'Return-From-RDL-FLS', path: '/' },
-                        { name: 'Tray Close'}
+                        { name: 'Tray Close' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{

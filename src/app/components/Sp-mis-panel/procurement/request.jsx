@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
             name: 'requested_qtc',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Requested Quantity
+                   Purchase request created
                 </Typography>
             ),
             options: {

@@ -3,12 +3,17 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
+import {
+    axiosMisUser,
+    axiosSuperAdminPrexo,
+    axiosWarehouseIn,
+} from '../../../../../axios'
 import Tab from '@mui/material/Tab'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import Swal from 'sweetalert2'
 import AssignToSorting from './assign-to-user'
 import jwt_decode from 'jwt-decode'
+import moment from 'moment'
 
 import {
     Box,
@@ -127,6 +132,10 @@ const PickupPage = () => {
     const [location, setLoaction] = useState('')
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
+    const [filterData, setFilterData] = useState({
+        fromDate: '',
+        toDate: '',
+    })
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
     /*--------------------------------------------------------------*/
@@ -246,6 +255,33 @@ const PickupPage = () => {
 
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
+    }
+
+    const handleChangeDate = ({ target: { name, value } }) => {
+        setFilterData({
+            ...filterData,
+            [name]: value,
+        })
+    }
+    const dataFilter = async () => {
+        try {
+            filterData.location = location
+            filterData.type = value
+            setIsLoading(true)
+            const res = await axiosMisUser.post(
+                '/pickup/dateFilter',
+                filterData
+            )
+            if (res.status === 200) {
+                setIsLoading(false)
+                setItem(res.data.data)
+            } else {
+                setIsLoading(false)
+                setItem(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     /*---------------------HANDEL SORT-------------------------------*/
@@ -1954,7 +1990,7 @@ const PickupPage = () => {
                 </ProductTable>
             </>
         )
-    }, [item, columnsOne])
+    }, [item, columnsOne, isLoading])
 
     const tableDataTwo = useMemo(() => {
         return (
@@ -2091,7 +2127,7 @@ const PickupPage = () => {
                 </ProductTableTwo>
             </>
         )
-    }, [item, columnsTwo])
+    }, [item, columnsTwo, isLoading])
 
     const tableDataThree = useMemo(() => {
         return (
@@ -2233,7 +2269,7 @@ const PickupPage = () => {
                 </ProductTableThere>
             </>
         )
-    }, [item, columnsThree])
+    }, [item, columnsThree, isLoading])
 
     const tableDataForRdl1 = useMemo(() => {
         return (
@@ -2390,7 +2426,7 @@ const PickupPage = () => {
                 </ProductTableRdlOne>
             </>
         )
-    }, [item, columnsForRdlOne])
+    }, [item, columnsForRdlOne, isLoading])
 
     return (
         <Container>
@@ -2438,7 +2474,7 @@ const PickupPage = () => {
                             mt: 2,
                         }}
                     >
-                        <Box>
+                        <Box sx={{ mt: 1 }}>
                             {/* <TextField
                                 label="Search UIC"
                                 variant="outlined"
@@ -2501,7 +2537,52 @@ const PickupPage = () => {
                                 Sort
                             </Button>
                         </Box>
-                        <Box>
+                        <Box sx={{ mt: 1 }}>
+                            <TextField
+                                type="date"
+                                label="From Date"
+                                variant="outlined"
+                                inputProps={{
+                                    max: moment().format('YYYY-MM-DD'),
+                                }}
+                                onChange={(e) => {
+                                    handleChangeDate(e)
+                                }}
+                                sx={{ ml: 3 }}
+                                name="fromDate"
+                                InputLabelProps={{ shrink: true }}
+                            />
+                            <TextField
+                                type="date"
+                                label="To Date"
+                                name="toDate"
+                                inputProps={{
+                                    min: filterData?.fromDate,
+                                    max: moment().format('YYYY-MM-DD'),
+                                }}
+                                disabled={filterData.fromDate == ''}
+                                variant="outlined"
+                                onChange={(e) => {
+                                    handleChangeDate(e)
+                                }}
+                                sx={{ ml: 3 }}
+                                InputLabelProps={{ shrink: true }}
+                            />
+                            <Button
+                                sx={{ ml: 2, mr: 3 }}
+                                variant="contained"
+                                disabled={
+                                    filterData.fromDate == '' ||
+                                    filterData.toDate == ''
+                                }
+                                style={{ backgroundColor: 'green' }}
+                                onClick={(e) => {
+                                    dataFilter(e)
+                                }}
+                            >
+                                Filter
+                            </Button>
+
                             <Button
                                 sx={{
                                     mr: 3,

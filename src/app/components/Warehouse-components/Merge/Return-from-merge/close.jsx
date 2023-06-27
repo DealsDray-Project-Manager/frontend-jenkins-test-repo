@@ -104,7 +104,9 @@ export default function DialogBox() {
                 setTextDisable(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setAwbn('')
+                    setTextDisable(false)
+                    getitem()
                 } else {
                     setTextDisable(false)
 

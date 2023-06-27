@@ -582,7 +582,7 @@ const SimpleMuiTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
@@ -592,7 +592,9 @@ const SimpleMuiTable = () => {
                         <TableBody>
                             {bagData[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -700,7 +702,7 @@ const SimpleMuiTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
@@ -711,7 +713,9 @@ const SimpleMuiTable = () => {
                         <TableBody>
                             {bagData[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>

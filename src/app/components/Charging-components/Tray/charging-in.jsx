@@ -80,7 +80,9 @@ export default function DialogBox() {
                 setTextBoxDis(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextBoxDis(false)
+                    setRefresh((refresh) => !refresh)
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setUic('')

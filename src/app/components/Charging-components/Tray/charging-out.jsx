@@ -221,7 +221,7 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextBoxDis(true)
-                let res = await axiosWarehouseIn.post('/check-uic', obj)
+                let res = await axiosCharging.post('/check-uic', obj)
                 if (res?.status == 200) {
                     reset({
                         ...res.data.data?.charging,

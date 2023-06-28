@@ -224,6 +224,7 @@ export default function DialogBox() {
                         sx={{
                             float: 'left',
                             ml: 2,
+                            mb:2
                         }}
                     >
                         <h5>ACTUAL</h5>

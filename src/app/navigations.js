@@ -164,6 +164,11 @@ export const navigations = [
                 path: '/sup-admin/view-vendors',
             },
             {
+                name: 'Categories',
+                // icon: 'home',
+                path: '/sup-admin/view-categories',
+            },
+            {
                 name: 'Tray Category',
                 // icon: 'category',
                 path: '/sup-admin/Category',
@@ -710,12 +715,12 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Sorting Requests (WHT to RP)',
+                name: <Typography sx={{textAlign:'left'}}>Sorting Requests (WHT to RP)</Typography>,
                 path: '/wareshouse/sorting/wht-to-rp',
                 iconText: 'VP',
             },
             {
-                name: 'Return from sorting (WHT to RP)',
+                name: <Typography sx={{textAlign:'left'}}>Return from sorting (WHT to RP)</Typography>,
                 path: '/warehouse/sorting/return-from-wht-to-rp',
                 iconText: 'VP',
             },

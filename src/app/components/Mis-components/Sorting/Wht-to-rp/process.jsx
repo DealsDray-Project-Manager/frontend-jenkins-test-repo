@@ -41,11 +41,28 @@ const StyledTable = styled(Table)(({ theme }) => ({
     },
 }))
 
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '100%',
+    height: '100%',
+    whiteSpace: 'nowrap',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
 const ProductTable1 = styled(Table)(() => ({
     minWidth: 750,
     width: '100%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'nowrap',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -60,8 +77,13 @@ const ProductTable1 = styled(Table)(() => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
+overflow-x: scroll;
+
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -226,7 +248,7 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap sx={{mr:8}}>
                     <>Record No</>
                 </Typography>
             ),
@@ -267,7 +289,7 @@ const SimpleMuiTable = () => {
         {
             name: 'closed_date_agent',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Done Date</>
                 </Typography>
             ),
@@ -282,7 +304,7 @@ const SimpleMuiTable = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Username</>
                 </Typography>
             ),
@@ -295,7 +317,7 @@ const SimpleMuiTable = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 User Remarks</>
                 </Typography>
             ),
@@ -353,7 +375,7 @@ const SimpleMuiTable = () => {
         {
             name: 'partId',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Spare Part Number</>
                 </Typography>
             ),
@@ -430,7 +452,10 @@ const SimpleMuiTable = () => {
                     margin: 'auto',
                 }}
             >
-                <MUIDataTable
+                <ScrollableTableContainer>
+                    <ProductTable>
+
+                    <MUIDataTable
                     // title={'Assign for Repairs'}
                     sx={{ borderTop: '0px' }}
                     data={unitsData}
@@ -475,6 +500,9 @@ const SimpleMuiTable = () => {
                         // rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
+                    </ProductTable>
+                </ScrollableTableContainer>
+                
             </StyledTable>
         )
     }, [unitsData, columns])

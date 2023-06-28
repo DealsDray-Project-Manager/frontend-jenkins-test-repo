@@ -22,8 +22,24 @@ import {
     Checkbox,
 } from '@mui/material'
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const StyledTable = styled(Table)(({ theme }) => ({
+    whiteSpace: 'pre',
+    '& thead': {
+        '& tr': { '& th': { paddingLeft: 0, paddingRight: 0 } },
+    },
+    '& tbody': {
+        '& tr': { '& td': { paddingLeft: 0, textTransform: 'capitalize' } },
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)`
+overflow-x: auto;
+
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -41,9 +57,9 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '140%',
     height:'100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'nowrap',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -59,9 +75,9 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '187%',
+    width: '180%',
     height:'100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'nowrap',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -77,9 +93,9 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: '212%',
+    width: '200%',
     height:'100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'nowrap',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -94,9 +110,9 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: '240%',
+    width: '227%',
     height:'100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'nowrap',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -338,7 +354,7 @@ const PickupPage = () => {
             label: (
                 <Typography
                     variant="subtitle1"
-                    fontWeight="bold"
+                    fontWeight="bold" noWrap
                     sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
@@ -364,7 +380,7 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Record No</>
                 </Typography>
             ),
@@ -382,7 +398,7 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" marginLeft='20px'>
+                <Typography variant="subtitle1" fontWeight="bold" noWrap marginLeft='20px'>
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -398,7 +414,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Order ID</>
                 </Typography>
             ),
@@ -411,7 +427,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>IMEI</>
                 </Typography>
             ),
@@ -425,7 +441,7 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Brand</>
                 </Typography>
             ),
@@ -437,7 +453,7 @@ const PickupPage = () => {
         {
             name: 'model',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Model</>
                 </Typography>
             ),
@@ -449,7 +465,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>MUIC</>
                 </Typography>
             ),
@@ -462,7 +478,7 @@ const PickupPage = () => {
         {
             name: 'code',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Tray ID</>
                 </Typography>
             ),
@@ -474,7 +490,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Battery Status</>
                 </Typography>
             ),
@@ -488,7 +504,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap >
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -502,7 +518,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap >
                     <>Body Condition</>
                 </Typography>
             ),
@@ -516,7 +532,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap >
                     <>Display Condition</>
                 </Typography>
             ),
@@ -537,7 +553,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap >
                     <>Lock Status</>
                 </Typography>
             ),
@@ -551,7 +567,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap sx={{mr:3}}>
                     <>Charging Jack</>
                 </Typography>
             ),
@@ -565,7 +581,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap sx={{ml:3, mr:3}}>
                     <>Body Part Missing</>
                 </Typography>
             ),
@@ -584,6 +600,7 @@ const PickupPage = () => {
                 <Typography
                     variant="subtitle1"
                     fontWeight="bold"
+                    noWrap
                     sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
@@ -616,6 +633,7 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
+                marginRight:'20px',
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -709,7 +727,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Battery Status</>
                 </Typography>
             ),
@@ -722,7 +740,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -735,7 +753,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Condition</>
                 </Typography>
             ),
@@ -748,7 +766,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Display Condition</>
                 </Typography>
             ),
@@ -761,7 +779,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Lock Status</>
                 </Typography>
             ),
@@ -774,7 +792,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Charging Jack</>
                 </Typography>
             ),
@@ -787,7 +805,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -800,7 +818,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -813,7 +831,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Factory Reset Status</>
                 </Typography>
             ),
@@ -826,7 +844,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap sx={{ml:3, mr:3}}>
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
@@ -839,7 +857,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Technical Issue</>
                 </Typography>
             ),
@@ -852,7 +870,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>BQC User Remark</>
                 </Typography>
             ),
@@ -1009,7 +1027,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -1022,7 +1040,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Condition</>
                 </Typography>
             ),
@@ -1035,7 +1053,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Display Condition</>
                 </Typography>
             ),
@@ -1075,7 +1093,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -1088,7 +1106,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -1101,7 +1119,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Factory Reset Status</>
                 </Typography>
             ),
@@ -1114,7 +1132,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
@@ -1127,7 +1145,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Technical Issue</>
                 </Typography>
             ),
@@ -1141,7 +1159,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>BQC User Remark</>
                 </Typography>
             ),
@@ -1167,7 +1185,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Audit Recommend Grade</>
                 </Typography>
             ),
@@ -1367,7 +1385,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -1382,7 +1400,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Condition</>
                 </Typography>
             ),
@@ -1397,7 +1415,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Display Condition</>
                 </Typography>
             ),
@@ -1442,7 +1460,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -1457,7 +1475,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -1472,7 +1490,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Factory Reset Status</>
                 </Typography>
             ),
@@ -1487,7 +1505,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
@@ -1502,7 +1520,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Technical Issue</>
                 </Typography>
             ),
@@ -1517,7 +1535,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>BQC User Remark</>
                 </Typography>
             ),
@@ -1532,7 +1550,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Original Grade</>
                 </Typography>
             ),
@@ -1547,7 +1565,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Audit Recommend Grade</>
                 </Typography>
             ),
@@ -1562,7 +1580,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Stage</>
                 </Typography>
             ),
@@ -1608,7 +1626,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Username</>
                 </Typography>
             ),
@@ -1622,7 +1640,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Status</>
                 </Typography>
             ),
@@ -1638,7 +1656,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Added Model</>
                 </Typography>
             ),
@@ -1653,7 +1671,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Added Color</>
                 </Typography>
             ),
@@ -1749,7 +1767,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Added Part List</>
                 </Typography>
             ),
@@ -1775,7 +1793,7 @@ const PickupPage = () => {
         {
             name: 'closed_date_agent',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>RDL 1 Done Date</>
                 </Typography>
             ),
@@ -1791,7 +1809,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Description</>
                 </Typography>
             ),
@@ -1808,7 +1826,14 @@ const PickupPage = () => {
 
     const tableData = useMemo(() => {
         return (
-            <>
+
+            <StyledTable
+            sx={{
+                borderRadius: '20px',
+                margin: 'auto',
+            }}
+            >
+            <ScrollableTableContainer>
                 <ProductTable>
                 <MUIDataTable
                 title={'UNITS'}
@@ -1925,7 +1950,8 @@ const PickupPage = () => {
                 }}
             />
                 </ProductTable>
-            </>
+            </ScrollableTableContainer>
+            </StyledTable>
             
         )
     }, [item, columnsOne])

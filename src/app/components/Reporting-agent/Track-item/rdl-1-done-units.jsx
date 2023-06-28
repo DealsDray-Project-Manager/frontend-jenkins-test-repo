@@ -179,9 +179,11 @@ const TrackItem = () => {
                 <TableHead sx={{ position: 'sticky', top: 0, zIndex: 1 }}>
                     {' '}
                     <TableRow>
-                        <TableCell>Record.NO</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'120px'}}>Record No</TableCell>
                         <TableCell
                             sx={{
+                                width:'120px',
+                                fontSize:'16px', fontWeight:'bold',
                                 position: 'sticky',
                                 left: 0,
                                 zIndex: 1,
@@ -190,67 +192,67 @@ const TrackItem = () => {
                         >
                             UIC
                         </TableCell>
-                        <TableCell>Tracking ID</TableCell>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>IMEI</TableCell>
-                        <TableCell>Item ID</TableCell>
-                        <TableCell>Tray Status</TableCell>
-                        <TableCell>Tray Location</TableCell>
-                        <TableCell>Partner Shop</TableCell>
-                        <TableCell>WHT Tray</TableCell>
-                        <TableCell>BOT Added Body Damage</TableCell>
-                        <TableCell>Charging Username</TableCell>
-                        <TableCell>Battery Status</TableCell>
-                        <TableCell>Charge Percentage</TableCell>
-                        <TableCell>Body Condition</TableCell>
-                        <TableCell>Display Condition</TableCell>
-                        <TableCell>Lock Status</TableCell>
-                        <TableCell>Charging Jack</TableCell>
-                        <TableCell>Body Part Missing</TableCell>
-                        <TableCell>Body Part Name</TableCell>
-                        <TableCell>Charge Done Date</TableCell>
-                        <TableCell>BQC Agent Name</TableCell>
-                        <TableCell>BQC S/W Report Date</TableCell>
-                        <TableCell>BQC S/W Report Device Color IOS</TableCell>
-                        <TableCell>BQC S/W Report Device Color</TableCell>
-                        <TableCell>BQC S/W Report Erasure Technician</TableCell>
-                        <TableCell>BQC S/W Report Final Grade</TableCell>
-                        <TableCell>BQC S/W Report Mandotory Test</TableCell>
-                        <TableCell>BQC S/W Report Market Name</TableCell>
-                        <TableCell>BQC S/W Report Microphone Test</TableCell>
-                        <TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>Tray Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'150px'}}>Tray Location</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'150px'}}>Partner Shop</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>WHT Tray</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'200px'}}>BOT Added Body Damage</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Charging Username</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Battery Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Charge Percentage</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Body Condition</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Display Condition</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Lock Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Charging Jack</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Body Part Missing</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Body Part Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Charge Done Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>BQC Agent Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>BQC S/W Report Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'280px'}}>BQC S/W Report Device Color IOS</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>BQC S/W Report Device Color</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'280px'}}>BQC S/W Report Erasure Technician</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>BQC S/W Report Final Grade</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'260px'}}>BQC S/W Report Mandatory Test</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>BQC S/W Report Market Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'270px'}}>BQC S/W Report Microphone Test</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'300px'}}>
                             BQC S/W Report Mobile Internal Model
                         </TableCell>
 
-                        <TableCell>BQC Added Status</TableCell>
-                        <TableCell>Blancoo QC Status</TableCell>
-                        <TableCell>Factory Reset Status</TableCell>
-                        <TableCell>BQC Incomplete Reason</TableCell>
-                        <TableCell>Technical Issue</TableCell>
-                        <TableCell>BQC User Remark</TableCell>
-                        <TableCell>BQC Done Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'200px'}}>BQC Added Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>Blancoo QC Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>Factory Reset Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>BQC Incomplete Reason</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>Technical Issue</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>BQC User Remark</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'120px'}}>BQC Done Date</TableCell>
 
-                        <TableCell>Audit Agnet Name</TableCell>
-                        <TableCell>Audit Recomendad Grade</TableCell>
-                        <TableCell>Audit Added Stage</TableCell>
-                        <TableCell>Audit Added Reason</TableCell>
-                        <TableCell>Audit Added Description</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Audit Agnet Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'200px'}}>Audit Recomendad Grade</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>Audit Added Stage</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>Audit Added Reason</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'200px'}}>Audit Added Description</TableCell>
 
-                        <TableCell>Audit Done Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Audit Done Date</TableCell>
 
-                        <TableCell>RDL FLS Agent name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>RDL FLS Agent name</TableCell>
 
-                        <TableCell>RDL 1 Status</TableCell>
-                        <TableCell>RDL 1 Added Model</TableCell>
-                        <TableCell>RDL 1 Added Color</TableCell>
-                        <TableCell>RDL 1 Added Part List Count</TableCell>
-                        <TableCell>RDL 1 Added Part One</TableCell>
-                        <TableCell>RDL 1 Added Part Two</TableCell>
-                        <TableCell>RDL 1 Added Part Three</TableCell>
-                        <TableCell>RDL 1 Added Part Four</TableCell>
-                        <TableCell>RDL 1 Added Part Five</TableCell>
-                        <TableCell>RDL 1 Added Description</TableCell>
-                        <TableCell>Tray Closed By RDL FLS Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>RDL 1 Status</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>RDL 1 Added Model</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>RDL 1 Added Color</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>RDL 1 Added Part List Count</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part One</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Two</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Three</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Four</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Five</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Description</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>Tray Closed By RDL FLS Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

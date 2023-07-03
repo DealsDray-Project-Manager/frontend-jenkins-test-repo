@@ -25,9 +25,22 @@ import {
     Button,
     MenuItem,
     Checkbox,
+    FormControl,
+    InputLabel,
+    Select,
+    OutlinedInput
 } from '@mui/material'
-import { includes } from 'lodash'
-import { async } from 'q'
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
 
 const ScrollableTableContainer = styled(TableContainer)`
     overflow-x: auto;
@@ -132,10 +145,8 @@ const PickupPage = () => {
     const [location, setLoaction] = useState('')
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
-    const [filterData, setFilterData] = useState({
-        fromDate: '',
-        toDate: '',
-    })
+    const [selectedStatus, setSelectedStatus] = useState([]);
+
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
     /*--------------------------------------------------------------*/
@@ -145,6 +156,7 @@ const PickupPage = () => {
         setItem([])
         setIsCheck([])
         setValue(newValue)
+        setSelectedStatus([])
     }
     // const valueRef = useRef(value)
 
@@ -257,20 +269,22 @@ const PickupPage = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const handleChangeDate = ({ target: { name, value } }) => {
-        setFilterData({
-            ...filterData,
-            [name]: value,
-        })
+    const handleChangeDate = ({ target: {  value } }) => {
+        console.log(value);
+        setSelectedStatus( typeof value === 'string' ? value.split(',') : value)
     }
     const dataFilter = async () => {
         try {
-            filterData.location = location
-            filterData.type = value
+            let obj={
+                selectedStatus:selectedStatus,
+                location:location,
+                type:value
+            }
+          
             setIsLoading(true)
             const res = await axiosMisUser.post(
                 '/pickup/dateFilter',
-                filterData
+                obj
             )
             if (res.status === 200) {
                 setIsLoading(false)
@@ -312,33 +326,7 @@ const PickupPage = () => {
             alert(error)
         }
     }
-    /*---------------------------SEARCH UIC-----------------------------*/
-
-    // const handelSearchUid = async (e) => {
-    //     try {
-    //         if (e.target.value == '') {
-    //             setRefresh((refresh) => !refresh)
-    //         } else {
-    //             setItem([])
-    //             setIsCheck([])
-
-    //             setDisplayText('Searching....')
-    //             const res = await axiosMisUser.post(
-    //                 '/pickup/uicSearch/' + e.target.value + '/' + value
-    //             )
-    //             if (res.status == 200) {
-    //                 setDisplayText('')
-
-    //                 setItem(res.data.data)
-    //             } else {
-    //                 setItem([])
-    //                 setDisplayText(res.data.message)
-    //             }
-    //         }
-    //     } catch (error) {
-    //         alert(error)
-    //     }
-    // }
+   
 
     const handelSortingAgent = async () => {
         try {
@@ -2428,6 +2416,9 @@ const PickupPage = () => {
         )
     }, [item, columnsForRdlOne, isLoading])
 
+
+    console.log(selectedStatus);
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -2538,42 +2529,79 @@ const PickupPage = () => {
                             </Button>
                         </Box>
                         <Box sx={{ mt: 1 }}>
-                            <TextField
-                                type="date"
-                                label="From Date"
-                                variant="outlined"
-                                inputProps={{
-                                    max: moment().format('YYYY-MM-DD'),
-                                }}
-                                onChange={(e) => {
-                                    handleChangeDate(e)
-                                }}
-                                sx={{ ml: 3 }}
-                                name="fromDate"
-                                InputLabelProps={{ shrink: true }}
-                            />
-                            <TextField
-                                type="date"
-                                label="To Date"
-                                name="toDate"
-                                inputProps={{
-                                    min: filterData?.fromDate,
-                                    max: moment().format('YYYY-MM-DD'),
-                                }}
-                                disabled={filterData.fromDate == ''}
-                                variant="outlined"
-                                onChange={(e) => {
-                                    handleChangeDate(e)
-                                }}
-                                sx={{ ml: 3 }}
-                                InputLabelProps={{ shrink: true }}
-                            />
+                            {value == 'Audit Done' ? (
+                                    <FormControl sx={{ mb: 2, width: 260 }}>
+                                    <InputLabel id="demo-multiple-name-label">
+                                        Auditor status
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={selectedStatus}
+                                        input={<OutlinedInput label="Auditor status" />}
+                                        MenuProps={MenuProps}
+                                        onChange={(e) => {
+                                          handleChangeDate(e)
+                                        }}
+                                       
+                                    >
+                                    <MenuItem value="Accept">Accept</MenuItem>
+                                    <MenuItem value="Upgrade">Upgrade</MenuItem>
+                                    <MenuItem value="Downgrade">
+                                        Downgrade
+                                    </MenuItem>
+                                    <MenuItem value="Direct Upgrade">
+                                        Direct Upgrade
+                                    </MenuItem>
+                                    <MenuItem value="Direct Downgrade">
+                                        Direct Downgrade
+                                    </MenuItem>
+                                    <MenuItem value="Repair">Repair</MenuItem>
+                                    <MenuItem value="BQC Not Done">BQC Not Done</MenuItem>
+                                    </Select>
+                        </FormControl>
+                            ) : null}
+                            {value == 'Ready to RDL-Repair' ? (
+                                  <FormControl sx={{ mb: 2, width: 260 }}>
+                                  <InputLabel id="demo-multiple-name-label">
+                                      Rdl 1 status
+                                  </InputLabel>
+                                  <Select
+                                      labelId="demo-multiple-name-label"
+                                      id="demo-multiple-name"
+                                      multiple
+                                      value={selectedStatus}
+                                      input={<OutlinedInput label=" Rdl 1 status" />}
+                                      MenuProps={MenuProps}
+                                      onChange={(e) => {
+                                        handleChangeDate(e)
+                                      }}
+                                     
+                                  >
+                                    <MenuItem value="Battery Boosted" >Battery Boosted</MenuItem>
+                                    <MenuItem value="Charge jack Replaced & Boosted">
+                                    Charge jack Replaced & Boosted
+                                    </MenuItem>
+                                    <MenuItem value="Battery Damage">Battery Damage</MenuItem>
+                                    <MenuItem value="Repair Required">Repair Required</MenuItem>
+                                    <MenuItem value="Accept Auditor Feedback">Accept Auditor Feedback</MenuItem>
+                                    <MenuItem value="Unlocked">Unlocked</MenuItem>
+                                    <MenuItem value="Issue Resolved Through Software">
+                                        Issue Resolved Through Software
+                                    </MenuItem>
+                                    <MenuItem value="Dead">Dead</MenuItem>
+                                    </Select>
+                        </FormControl>
+                            ) : null}
+                            {
+                               value == 'Ready to RDL-Repair' ||  value == 'Audit Done' ?
+
                             <Button
                                 sx={{ ml: 2, mr: 3 }}
                                 variant="contained"
                                 disabled={
-                                    filterData.fromDate == '' ||
-                                    filterData.toDate == ''
+                                    selectedStatus.length ==0
                                 }
                                 style={{ backgroundColor: 'green' }}
                                 onClick={(e) => {
@@ -2582,6 +2610,9 @@ const PickupPage = () => {
                             >
                                 Filter
                             </Button>
+                            :
+                            null
+                            }
 
                             <Button
                                 sx={{

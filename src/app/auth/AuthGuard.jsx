@@ -47,32 +47,31 @@ const AuthGuard = ({ children }) => {
                     if (user_name == undefined || user_type == undefined) {
                         navigate('/')
                     } else {
-                        if (user_type !== 'super-admin') {
-                            let obj = {
-                                username: user_name,
-                                jwt: user,
-                            }
-                            let res = await axiosSuperAdminPrexo.post(
-                                '/check-user-status',
-                                obj
-                            )
-                            if (res.status === 200) {
-                            } else if (res.status == 202) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: res.data.message,
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        localStorage.removeItem(
-                                            'prexo-authentication'
-                                        )
-                                        navigate('/')
-                                    }
-                                })
-                            }
+                        let obj = {
+                            username: user_name,
+                            jwt: user,
+                            user_type: user_type,
+                        }
+                        let res = await axiosSuperAdminPrexo.post(
+                            '/check-user-status',
+                            obj
+                        )
+                        if (res.status === 200) {
+                        } else if (res.status == 202) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: res.data.message,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    localStorage.removeItem(
+                                        'prexo-authentication'
+                                    )
+                                    navigate('/')
+                                }
+                            })
                         }
                     }
                 } else {

@@ -505,7 +505,7 @@ const SimpleMuiTable = () => {
                             />
                         </Grid>
                         <Grid
-                            sx={{ boxShadow: 1 }}
+                            // sx={{ boxShadow: 1 }}
                             item
                             lg={12}
                             md={12}

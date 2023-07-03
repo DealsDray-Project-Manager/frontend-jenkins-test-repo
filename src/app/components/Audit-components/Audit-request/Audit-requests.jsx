@@ -128,7 +128,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'assigned_date',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Assigned Date</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Assigned Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>

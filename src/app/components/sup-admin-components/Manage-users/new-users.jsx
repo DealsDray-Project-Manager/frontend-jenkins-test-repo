@@ -63,6 +63,7 @@ const MemberEditorDialog = ({
             open()
         }
     }, [])
+    
 
     const schema = Yup.object().shape({
         name: Yup.string()

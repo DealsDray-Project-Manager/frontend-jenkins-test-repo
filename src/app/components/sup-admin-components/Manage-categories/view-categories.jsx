@@ -1,6 +1,6 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-vendor'
+import MemberEditorDialog from './create-category'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
@@ -22,7 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '145%',
+    width: '100%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -99,12 +99,13 @@ const SimpleMuiTable = () => {
 
     const editWarehouse = async (empId) => {
         try {
+
             let response = await axiosSuperAdminPrexo.post(
                 '/vendorMaster/one/' + empId
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen('Edit')
+                handleDialogOpen("Edit")
             }
         } catch (error) {
             Swal.fire({
@@ -115,32 +116,31 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelActive = (id, type) => {
+
+    const handelDelete = (id,type) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: `You Want to ${type}!`,
+            text: 'You want to Delete Category!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: `Yes, ${type} it!`,
+            confirmButtonText: 'Yes, Delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let obj = {
-                        id: id,
-                        type: type,
-                        page: 'part-list',
+                    let obj={
+                        empId:id,
+                        type:type
                     }
                     let response = await axiosSuperAdminPrexo.post(
-                        '/vendorMaster/statusChange',
-                        obj
+                        '/deleteInfra',obj
                     )
                     if (response.status == 200) {
                         Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title: `Your Vendor has been ${type}.`,
+                            title: 'Location has been Deleted',
                             confirmButtonText: 'Ok',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
@@ -153,7 +153,7 @@ const SimpleMuiTable = () => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: response.data.message,
+                            text: response?.data?.message,
                         })
                     }
                 } catch (error) {
@@ -170,7 +170,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{ fontWeight:'bold'}} noWrap><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" sx={{ fontWeight:'bold'}} ><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -179,219 +179,109 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'vendor_id', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Vendor ID</></Typography>, // column title that will be shown in table
+            name: 'category_id', // field name in the row object
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Category ID</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name', // field name in the row object
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Name</>
-                </Typography>
-            ), // column title that will be shown in table
+            name: 'category', // field name in the row object
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Category</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'address',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Address</>
-                </Typography>
-            ),
+            name: 'desc',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Description</></Typography>,             
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'city',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>City</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'state',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>State</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'mobile_one',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Mobile 1</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'mobile_two',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Mobile 2</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'deals',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Deals</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'reference',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Reference</></Typography>, 
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'location',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Location</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'pincode',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Pincode</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-
         {
             name: 'created_at',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Creation Date</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'status',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Status</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    if (value == 'Active') {
-                        return (
-                            <div style={{ color: 'green', fontWeight: 'bold' }}>
-                                {value}
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div style={{ color: 'red', fontWeight: 'bold' }}>
-                                {value}
-                            </div>
-                        )
-                    }
+                // customBodyRender: (value) =>
+                //     new Date(value).toLocaleString('en-GB', {
+                //         hour12: true,
+                //     }),
                 },
-            },
         },
         {
-            name: 'vendor_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
-                </Typography>
-            ),
+            name: 'action',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Action</></Typography>, 
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
+                        <IconButton>
+                            <Icon
+                                onClick={(e) => {
+                                    // editCategories(value,tableMeta.rowData[10])
                                 }}
+                                color="primary"
                             >
-                                {tableMeta.rowData[13] == 'Active' ? (
-                                    <Radio
-                                        onClick={(e) => {
-                                            handelActive(value, 'Deactive')
-                                        }}
-                                        checked
-                                        style={{ color: 'green' }}
-                                    />
-                                ) : (
-                                    <Radio
-                                        onClick={(e) => {
-                                            handelActive(value, 'Active')
-                                        }}
-                                        checked
-                                        style={{ color: 'red' }}
-                                    />
-                                )}
-                                <IconButton>
-                                    <Icon
-                                        onClick={(e) => {
-                                            editWarehouse(value)
-                                        }}
-                                        color="primary"
-                                    >
-                                        edit
-                                    </Icon>
-                                </IconButton>
-                            </Box>
-                        </>
+                                edit
+                            </Icon>
+                        </IconButton>
+                        <IconButton>
+                            <Icon
+                                onClick={(e) => {
+                                    handelDelete(value,tableMeta.rowData[10])
+                                }}
+                                color="error"
+                            >
+                                delete
+                            </Icon>
+                        </IconButton>
+                    </>
                     )
                 },
             },
         },
     ]
 
-    return (
+    const columns1 = [
+        {
+            index:1,
+            category_id:'CT000001',
+            category:'Display',
+            desc:'Display',
+            created_at:'13/06/2023',
+        },
+        {
+            index:2,
+            category_id:'CT000002',
+            category:'Charge jack',
+            desc:'Charge jack',
+            created_at:'13/06/2023',
+        },
+        {
+            index:3,
+            category_id:'CT000003',
+            category:'Home button',
+            desc:'Home button',
+            created_at:'13/06/2023',
+        },
+        {
+            index:4,
+            category_id:'CT000004',
+            category:'Back panel',
+            desc:'Back panel',
+            created_at:'13/06/2023',
+        },
+    ]
+
+return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Vendors', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Categories', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -399,13 +289,13 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Vendor
+                Add New Category
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
+            <>
+                <>
                 <MUIDataTable
-                title={'All Vendors'}
-                data={warehouseList}
+                title={'Manage Categories'}
+                data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -430,8 +320,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
+                </>
+            </>
             
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog

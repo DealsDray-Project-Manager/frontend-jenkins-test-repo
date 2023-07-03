@@ -33,7 +33,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
-    return (
+    return ( 
         <Card elevation={3}>
             <H4 sx={{ p: 2 }}>BQC Report</H4>
             <Divider />

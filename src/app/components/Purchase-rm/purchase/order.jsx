@@ -61,7 +61,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -72,7 +72,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'id',
-            label: <Typography sx={{fontWeight:'bold'}}>Vendor ID</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Vendor ID</Typography>,
             options: {
                 filter: true,
             },

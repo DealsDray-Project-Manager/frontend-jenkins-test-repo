@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './part-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Box, Radio } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -204,7 +204,7 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography fontSize='16px' fontWeight='bold'>Record No </Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -214,49 +214,49 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-            label: 'Part No', // column title that will be shown in table
+            label: <Typography fontSize='16px' fontWeight='bold'>Part No </Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: 'Available stock', // column title that will be shown in table
+            label: <Typography fontSize='16px' fontWeight='bold' noWrap>Available Stock</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'color', // field name in the row object
-            label: 'Color', // column title that will be shown in table
+            label: <Typography fontSize='16px' fontWeight='bold'>Color</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: 'Part Name', // column title that will be shown in table
+            label: <Typography fontSize='16px' fontWeight='bold'>Part Name</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: 'Technical qc', // column title that will be shown in table
+            label: <Typography fontSize='16px' fontWeight='bold'>Technical QC</Typography>,// column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: 'Description',
+            label: <Typography fontSize='16px' fontWeight='bold'>Description</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography fontSize='16px' fontWeight='bold'>Creation Date </Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -275,7 +275,7 @@ const PartTable = () => {
         // },
         {
             name: 'status',
-            label: 'Status',
+            label: <Typography fontSize='16px' fontWeight='bold'>Status</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

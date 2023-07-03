@@ -296,7 +296,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display Name</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Display Name</></Typography>,
             options: {
                 filter: true,
             },

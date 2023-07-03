@@ -220,7 +220,7 @@ const SimpleMuiTable = () => {
         {
             name: 'type_taxanomy',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Tray Category</>
                 </Typography>
             ),
@@ -312,8 +312,8 @@ const SimpleMuiTable = () => {
         {
             name: 'created_at',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>craetion Date</>
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Creation Date</>
                 </Typography>
             ),
             options: {
@@ -359,7 +359,8 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'BQC' },
+                        { name: 'BQC Planner', path:'/' },
+                        { name: 'Ready-for-BQC'}
                     ]}
                 />
             </div>

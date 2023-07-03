@@ -25,7 +25,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '107%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -41,8 +41,14 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+overflow-x: scroll;
+
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -241,7 +247,7 @@ const PartTable = () => {
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Available Stock</></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Available Stock</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -255,28 +261,28 @@ const PartTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Part Name</></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Part Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Technical QC</></Typography>, // column title that will be shown in table
+            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Technical QC</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Description</></Typography>,
+            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Description</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Creation Date</></Typography>,
+            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Creation Date</></Typography>,
             options: {
                 filter: false,
                 sort: true,
@@ -289,7 +295,7 @@ const PartTable = () => {
 
         {
             name: 'created_by',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Created By</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Created By</></Typography>,
             options: {
                 filter: true,
             },

@@ -1,6 +1,6 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-tray'
+import MemberEditorDialog from './add-rack'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
@@ -24,7 +24,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '145%',
+    width: '100%',
     // height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -40,14 +40,8 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)`
-overflow-x: scroll;
-
-/* Hide the scrollbar in webkit-based browsers */
-::-webkit-scrollbar {
-  display: none;
-}
-`;
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -199,8 +193,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            name: 'rack_id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack ID</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Name</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'display',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Display</></Typography>,
             options: {
                 filter: true,
             },
@@ -214,77 +222,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Warehouse</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap sx={{mr:1.5}}><>Tray Display Name</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Limit</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'brand',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Type</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'tray_grade',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Grade</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
@@ -320,26 +260,6 @@ const SimpleMuiTable = () => {
                                     delete
                                 </Icon>
                             </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        handelAudit(tableMeta.rowData[1])
-                                    }}
-                                    color="primary"
-                                >
-                                    history
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <EditRoadIcon
-                                    onClick={() => {
-                                        handelEditHistory(tableMeta.rowData[1])
-                                    }}
-                                    color="green"
-                                >
-                                    button
-                                </EditRoadIcon>
-                            </IconButton>
                         </Box>
                     )
                 },
@@ -347,13 +267,24 @@ const SimpleMuiTable = () => {
         },
     ]
 
+    const columns1 = [
+        {
+            index:1,
+            rack_id:'RAC00001',
+            name:'RAC00001',
+            display:'RAC00001',
+            cpc:'Gurgaon_122016',
+            warehouse:'DealsDray PREXO BLR Processing Warehouse'
+        }
+    ]
+
     const trayData = useMemo(() => {
         return (
             <ScrollableTableContainer>
                 <ProductTable>
                 <MUIDataTable
-                title={'All Trays'}
-                data={trayList}
+                title={'All Tray Racks'}
+                data={columns1}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -387,7 +318,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Racks', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -395,15 +326,7 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => setShouldOpenEditorDialog(true)}
             >
-                Add New Tray
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate('/sup-admin/tray/add-bulk-tray')}
-            >
-                Add Bulk Tray
+                Add New Rack
             </Button>
             {trayData}
             {shouldOpenEditorDialog && (

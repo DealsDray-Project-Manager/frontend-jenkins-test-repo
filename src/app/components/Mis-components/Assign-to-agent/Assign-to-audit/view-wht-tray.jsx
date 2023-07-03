@@ -180,7 +180,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Category</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Category</></Typography>,
             options: {
                 filter: true,
             },
@@ -201,7 +201,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Name</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Name</></Typography>,
             options: {
                 filter: true,
             },
@@ -226,7 +226,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Display</></Typography>,
             options: {
                 filter: true,
             },
@@ -240,7 +240,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>

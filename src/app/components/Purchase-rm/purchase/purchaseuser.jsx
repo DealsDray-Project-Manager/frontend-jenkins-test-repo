@@ -108,7 +108,7 @@ const SimpleMuiTable = () => {
         {
             name: 'spare_part_number',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Spare Part Number
                 </Typography>
             ),
@@ -119,7 +119,7 @@ const SimpleMuiTable = () => {
         {
             name: 'spare_part_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Spare Part Name
                 </Typography>
             ),
@@ -137,7 +137,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requred_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Required Quantity
                 </Typography>
             ),

@@ -10,7 +10,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '100%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -181,7 +181,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'location_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Location Type</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Location Type</></Typography>,
             options: {
                 filter: true,
             },

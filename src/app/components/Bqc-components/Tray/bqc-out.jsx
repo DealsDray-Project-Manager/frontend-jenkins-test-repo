@@ -691,10 +691,10 @@ export default function DialogBox() {
                         }}
                         fullwidth
                         variant="contained"
-                        disabled={
-                            addButDis ||
-                            (bqcStatus === 'BQC Finished' && restFact == 'NO')
-                        }
+                        // disabled={
+                        //     addButDis ||
+                        //     (bqcStatus === 'BQC Finished' && restFact == 'NO')
+                        // }
                         style={{ backgroundColor: 'green' }}
                         component="span"
                         type="submit"

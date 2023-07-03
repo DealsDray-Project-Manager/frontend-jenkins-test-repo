@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox } from '@mui/material'
+import { Button, Checkbox, Typography, Table, TableContainer } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
@@ -20,6 +20,33 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 650,
+    width: '120%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)`
+overflow-x: scroll;
+
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -109,7 +136,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography fontSize='16px' fontWeight='bold'>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -119,7 +146,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography fontSize='16px' fontWeight='bold'>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -127,44 +154,35 @@ const SimpleMuiTable = () => {
 
         {
             name: 'warehouse',
-            label: 'Warehouse',
+            label: <Typography fontSize='16px' fontWeight='bold'>Warehouse</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography fontSize='16px' fontWeight='bold'>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography fontSize='16px' fontWeight='bold'>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-        {
             name: 'issued_user_name',
-            label: 'RDL Agent',
+            label: <Typography fontSize='16px' fontWeight='bold'>RDL Agent</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'requested_date',
-            label: 'Request sent Date',
+            label: <Typography fontSize='16px' fontWeight='bold' noWrap >Request sent Date</Typography>,
             options: {
                 filter: true,
                 sort: false,
@@ -177,7 +195,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography fontSize='16px' fontWeight='bold'>Quantity</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
@@ -186,7 +204,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography fontSize='16px' fontWeight='bold'>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -216,7 +234,8 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Part Issue Request', path: '/' }]}
                 />
             </div>
-
+        <ScrollableTableContainer>
+            <ProductTable>
             <MUIDataTable
                 title={'WHT Tray'}
                 data={whtTrayList}
@@ -260,6 +279,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </ProductTable>
+            </ScrollableTableContainer>
         </Container>
     )
 }

@@ -2,11 +2,13 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Table, TableContainer, Typography } from '@mui/material'
+import { Button, Table, TableContainer, Typography, Card, Box } from '@mui/material'
 import { axiosReportingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -23,7 +25,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '130%',
+    width: '100%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -45,6 +47,7 @@ const ScrollableTableContainer = styled(TableContainer)
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
+    const [partList, setPartList] = useState([])
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
 
@@ -85,6 +88,32 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
 
+
+    const download = (e) => {
+        let arr = []
+        for (let x of partList) {
+            let obj = {
+                part_code: x.part_code,
+                name: x.name,
+                color: x.color,
+                technical_qc: x.technical_qc,
+                description: x.description,
+                available_stock: x.avl_stock,
+                add_stock: '0',
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+    }
+
     const columns = [
         {
             name: 'index',
@@ -119,7 +148,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Display Name</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', mr:1}} noWrap>Tray Display Name</Typography>,
             options: {
                 filter: true,
             },
@@ -134,7 +163,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'assigned_date',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Assigned Date</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -193,53 +222,63 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-                    <ScrollableTableContainer>
-                    <ProductTable>
-            <MUIDataTable
-                title={'WHT'}
-                data={whtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-            </ProductTable>
-                    </ScrollableTableContainer>
+                    <>
+                    <Card>
+                        <Box sx={{ textAlign:'right', mt:2, mr:2 }}>
+                        <Button
+                            sx={{}}
+                            variant="contained"
+                            color="success"
+                            onClick={(e) => download(e)}
+                        >
+                            manage stock
+                        </Button>
+                        </Box>
+                    <MUIDataTable
+                        title={'WHT'}
+                        data={whtTray}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) * (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                        (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+            </Card>
+                    </>
             
            
         </Container>

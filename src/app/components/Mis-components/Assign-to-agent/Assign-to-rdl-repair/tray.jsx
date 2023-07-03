@@ -237,7 +237,7 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                             <span>{value?.[0].code}</span>,<br />
-                            <span>{value?.[0]?.sort_id}</span>,<br />
+                            <span>{value?.[0]?.sort_id}</span><br />
                             <Button
                                 sx={{
                                     m: 1,
@@ -267,7 +267,7 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                             <span>{value}</span>,<br />
-                            <span>{tableMeta?.rowData[9]}</span>,
+                            <span>{tableMeta?.rowData[9]}</span><br />
                             <Button
                                 sx={{
                                     m: 1,

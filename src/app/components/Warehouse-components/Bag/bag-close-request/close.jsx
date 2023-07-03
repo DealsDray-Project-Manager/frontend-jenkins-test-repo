@@ -12,6 +12,8 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -19,6 +21,19 @@ import Checkbox from '@mui/material/Checkbox'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -356,15 +371,46 @@ export default function DialogBox() {
             })
         }
     }
+
     /***************************************************************************************** */
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
     /******************************************************************************** */
+
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h4>EXPECTED</h4>
+                <Box sx={{}}>
+                    <Box
+                        sx={{
+                            float: 'left',
+                            ml: 2,
+                        }}
+                    >
+                        <h5>EXPECTED</h5>
+                    </Box>
+                    <Box
+                        sx={{
+                            float: 'right',
+                            mr: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Total</h5>
+                            <p
+                                style={{
+                                    paddingLeft: '5px',
+                                    fontSize: '22px',
+                                    marginBottom: '29px',
+                                }}
+                            >
+                                {employeeData[0]?.items?.length}/
+                                {employeeData[0]?.limit}
+                            </p>
+                        </Box>
+                    </Box>
+                </Box>
 
-                <Box
+                {/* <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
@@ -383,7 +429,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
-                </Box>
+                </Box> */}
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -393,7 +439,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -404,7 +450,9 @@ export default function DialogBox() {
                         <TableBody>
                             {employeeData[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.bag_id}</TableCell>
 
@@ -435,9 +483,55 @@ export default function DialogBox() {
             </Paper>
         )
     }, [employeeData[0]?.items])
+
     const tableActual = useMemo(() => {
         return (
-            <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+            <Paper sx={{ width: '97%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{}}>
+                    <Box
+                        sx={{
+                            float: 'left',
+                            ml: 2,
+                        }}
+                    >
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ m: 0 }}
+                            id="outlined-password-input"
+                            type="text"
+                            name="doorsteps_diagnostics"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={awbn}
+                            onChange={(e) => {
+                                setAwbn(e.target.value)
+                                handelAwbn(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            float: 'right',
+                            mr: 2,
+                        }}
+                    >
+                        <Box sx={{}}>
+                            <h5>Total</h5>
+                        </Box>
+                        <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            {employeeData[0]?.actual_items?.length}/
+                            {employeeData[0]?.limit}
+                        </p>
+                    </Box>
+                </Box>
+
+                {/* <Box>
                 <h4>ACTUAL</h4>
                 <TextField
                     sx={{ m: 1 }}
@@ -463,11 +557,12 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
+                        
                     }}
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            // m: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -479,6 +574,7 @@ export default function DialogBox() {
                         </Box>
                     </Box>
                 </Box>
+                </Box> */}
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -488,7 +584,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
                                 <TableCell>Order ID</TableCell>
@@ -504,7 +600,9 @@ export default function DialogBox() {
                                         role="checkbox"
                                         tabIndex={-1}
                                     >
-                                        <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                        <TableCell sx={{ pl: 3 }}>
+                                            {index + 1}
+                                        </TableCell>
                                         <TableCell>{data?.uic}</TableCell>
                                         <TableCell>{data?.bag_id}</TableCell>
                                         <TableCell>{data?.order_id}</TableCell>
@@ -563,13 +661,21 @@ export default function DialogBox() {
         )
     }, [employeeData[0]?.actual_items, textDisable, awbn])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'PMT And MMT', path: '/' },
+                        { name: 'Tray-Close-Request', path: '/' },
+                        { name: 'Tray Close' },
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+            // sx={{
+            //     height: 70,
+            //     borderRadius: 10,
+            // }}
             >
                 <Box
                     sx={{
@@ -652,6 +758,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

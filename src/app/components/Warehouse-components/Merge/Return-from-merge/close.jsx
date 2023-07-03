@@ -12,11 +12,26 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -224,13 +239,14 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
+                        ml: 2,
                     }}
                 >
                     <h5>EXPECTED</h5>
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -255,7 +271,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
 
                                 {/* <TableCell>AWBN Number</TableCell> */}
@@ -267,7 +283,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
 
                                     <TableCell>{data?.order_id}</TableCell>
@@ -304,6 +322,7 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
+                        ml: 2,
                     }}
                 >
                     <Box>
@@ -331,7 +350,7 @@ export default function DialogBox() {
 
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -358,7 +377,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 {/* <TableCell>Bag Id</TableCell> */}
                                 {/* <TableCell>AWBN Number</TableCell> */}
@@ -370,7 +389,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -400,13 +421,22 @@ export default function DialogBox() {
         )
     }, [tray[0]?.actual_items, textDisable, awbn])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Merge', path: '/' },
+                        { name: 'Return-From-Merge', path: '/' },
+                        { name: 'Tray Close' },
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -498,6 +528,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

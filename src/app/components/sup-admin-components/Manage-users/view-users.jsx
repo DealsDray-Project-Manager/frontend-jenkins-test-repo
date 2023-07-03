@@ -4,7 +4,7 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
+import { Button, IconButton, Icon, Box, Radio,Typography,Table, TableContainer } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +23,27 @@ const Container = styled('div')(({ theme }) => ({
     }
   }));
   
+
+  const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -158,7 +179,7 @@ const UserTable = () => {
 
     const options = {
         // Other table options...
-        setTableProps: () => ({ style: { tableLayout: 'auto', marginLeft:'20px' } }),
+        setTableProps: () => ({ style: { tableLayout: 'auto'} }),
       };
     
     const columns = [
@@ -166,40 +187,40 @@ const UserTable = () => {
             name: 'index',
             label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
             options: {
-                // responsive: 'scrollMaxHeight',
+                
                 filter: false,
                 
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
-           minWidth:200 
+            
         },
         {
             name: 'profile',
             label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
             options: {
-                // responsive: 'scrollMaxHeight',
+                
                 filter: false,
                 sort: false,
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
             },
-            minWidth:200 
+             
         },
         {
             name: 'creation_date',
             label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
-                responsive: 'scrollMaxHeight',
+                
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
-            minWidth:200 
+             
         },
         {
             name: 'name', // field name in the row object
@@ -207,7 +228,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'email',
@@ -215,7 +236,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'contact',
@@ -223,7 +244,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'user_name',
@@ -231,7 +252,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'user_type',
@@ -239,7 +260,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'cpc',
@@ -247,7 +268,7 @@ const UserTable = () => {
             options: {
                 filter: true,
             },
-            minWidth:200 
+             
         },
         {
             name: 'cpc_type',
@@ -283,7 +304,7 @@ const UserTable = () => {
         {
             name: 'status',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
-            minWidth:200 ,
+             
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -306,7 +327,7 @@ const UserTable = () => {
         {
             name: 'status',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
-            minWidth:200 ,
+             
             options: {
                 sort: false,
                 filter: false,
@@ -375,22 +396,18 @@ const UserTable = () => {
             >
                 Add New Member
             </Button>
-
+            <ScrollableTableContainer>
+            <ProductTable>
             <Box  sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
-            
-                style={{width:'100%', marginLeft:'40px',marginRight:'20px', columnSpacing: 10,}}
-                // className="table-class"
                 title={'User Report'}
                 data={userList}
                 columns={columns}
-                
-                // optionss={options}
                 options={{
                     // options,
                     style: { tableLayout: 'auto'},
                     filterType: 'textField',
-                    // responsive: 'scrollMaxHeight',
+                    
                     // minWidth:'100',
                     download: false,
                     print: false,
@@ -414,7 +431,8 @@ const UserTable = () => {
                 
             />
             </Box>
-            
+            </ProductTable>
+            </ScrollableTableContainer>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -423,6 +441,7 @@ const UserTable = () => {
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
                 />
+                
             )}
         </Container>
     )

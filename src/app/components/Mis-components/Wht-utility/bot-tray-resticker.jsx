@@ -17,6 +17,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
@@ -24,6 +25,19 @@ import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Checkbox from '@mui/material/Checkbox'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -184,7 +198,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>Expected</h5>
+                        <h5>EXPECTED</h5>
                     </Box>
                     <Box
                         sx={{
@@ -200,7 +214,7 @@ export default function DialogBox() {
                         </Box>
                     </Box>
                 </Box>
-                <TableContainer>
+                <TableContainer> 
                     <Table
                         style={{ width: '100%' }}
                         id="example"
@@ -209,7 +223,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>OLD UIC</TableCell>
                                 <TableCell>NEW UIC</TableCell>
                             </TableRow>
@@ -217,7 +231,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                                     <TableCell>{data?.old_uic}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                 </TableRow>
@@ -265,7 +279,7 @@ export default function DialogBox() {
                                 }}
                             />
                             <Button
-                                sx={{ ml: 3, mt: 2, mb: 9 }}
+                                sx={{ ml: 3, mt: 2, mb: 2 }}
                                 variant="contained"
                                 disabled={uic == ''}
                                 style={{ backgroundColor: 'green' }}
@@ -301,7 +315,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>OLD UIC</TableCell>
                                 <TableCell>NEW UIC</TableCell>
                             </TableRow>
@@ -310,7 +324,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                                     <TableCell>{data?.old_uic}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                 </TableRow>
@@ -323,7 +337,15 @@ export default function DialogBox() {
     }, [trayData?.actual_items, textDisable, uic])
 
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Tray', path: '/' },
+                        { name: 'Resticker'}
+                    ]}
+                />
+            </div>
             <BootstrapDialog
                 aria-labelledby="customized-dialog-title"
                 open={open}
@@ -452,6 +474,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

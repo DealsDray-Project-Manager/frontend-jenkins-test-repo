@@ -12,10 +12,25 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -105,48 +120,42 @@ export default function DialogBox() {
             }
         }
     }
+
     /************************************************************************** */
     const handelIssue = async (e) => {
         e.preventDefault()
         try {
             setLoading(true)
-            if (description == '') {
+
+            setLoading(false)
+
+            let obj = {
+                trayId: trayId,
+                description: description,
+                type: 'Audit Done Closed By Warehouse',
+                length: trayData?.items?.length,
+                limit: trayData?.limit,
+                trayType: trayData?.type_taxanomy,
+            }
+            let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
+            if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'warning',
-                    title: 'please Add Description',
+                    icon: 'success',
+                    title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
+                navigate('/wareshouse/wht/return-from-audit')
             } else {
-                let obj = {
-                    trayId: trayId,
-                    description: description,
-                    type: 'Audit Done Closed By Warehouse',
-                    length: trayData?.items?.length,
-                    limit: trayData?.limit,
-                    trayType: trayData?.type_taxanomy,
-                }
-                let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
-                if (res.status == 200) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    navigate('/wareshouse/wht/return-from-audit')
-                } else {
-                    setLoading(false)
+                setLoading(false)
 
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             }
         } catch (error) {
             setLoading(false)
@@ -197,45 +206,49 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between',
                     }}
                 >
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '22px',
-                                }}
-                            >
-                                {trayData?.items?.length}/{trayData?.limit}
-                            </p>
-                        </Box>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>EXPECTED</h5>
                     </Box>
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '24px',
-                                }}
-                            >
-                                {trayData?.items?.length}
-                            </p>
+                    <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+                        <Box
+                            sx={{
+                                m: 0,
+                            }}
+                        >
+                            <Box sx={{ mr: 2 }}>
+                                <h5 style={{ marginLeft: '10px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}/{trayData?.limit}
+                                </p>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5>Valid</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
@@ -278,69 +291,74 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ mt: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    name="doorsteps_diagnostics"
-                    disabled={textDisable}
-                    label="SCAN UIC"
-                    value={uic}
-                    onChange={(e) => {
-                        setUic(e.target.value)
-                        handelUic(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '24px',
-                                }}
-                            >
-                                {trayData?.actual_items?.length}/
-                                {trayData?.limit}
-                            </p>
-                        </Box>
+                <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ mt: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={uic}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
                     </Box>
+
                     <Box
                         sx={{
-                            m: 2,
+                            display: 'flex',
+                            justifyContent: 'end',
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: '24px',
-                                }}
-                            >
-                                {trayData?.actual_items?.length}
-                            </p>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '10px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}/
+                                    {trayData?.limit}
+                                </p>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5>Valid</h5>
+                                <p
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
+
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -379,13 +397,22 @@ export default function DialogBox() {
         )
     }, [trayData?.actual_items, textDisable, uic])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-From-Audit', path: '/' },
+                        { name: 'Verification' },
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -443,8 +470,8 @@ export default function DialogBox() {
                         disabled={
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
-                            trayData?.length == 0 ||
-                            loading
+                            loading || description == '' ||
+                            trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
@@ -457,6 +484,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

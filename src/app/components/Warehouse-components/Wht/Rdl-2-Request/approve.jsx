@@ -12,11 +12,26 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -161,7 +176,6 @@ export default function DialogBox() {
                         confirmButtonText: 'Ok',
                     })
                     navigate('/wareshouse/wht/rdl2-request')
-
                     setLoading(false)
                 } else {
                     Swal.fire({
@@ -224,7 +238,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -234,7 +248,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -309,7 +325,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -320,7 +336,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -334,13 +352,22 @@ export default function DialogBox() {
         )
     }, [trayData?.actual_items, textDisable, uic])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'RDL-2-Requests', path: '/' },
+                        { name: 'Verification' },
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -404,6 +431,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

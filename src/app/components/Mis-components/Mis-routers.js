@@ -40,7 +40,7 @@ const AssignToRdltrayView = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/view-wht-tray'))
 )
 const AssignToRdltwo = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/tray'))
 )
 const AssignToRdltwoview = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))
@@ -55,6 +55,12 @@ const UicNotGenerated = Loadable(
 )
 const SortingBotTowht = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/bot-tray'))
+)
+const SortingWhtTorp = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/wht-tray'))
+)
+const Process = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/process'))
 )
 const SortingBotTowhtViewItem = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/view-clubed-item'))
@@ -92,14 +98,24 @@ const CtxToStxAssignToSorting = Loadable(
 )
 const StxMerging = Loadable(lazy(() => import('./Merge/Stx-merging/tray')))
 const BilledBin = Loadable(lazy(() => import('./BilledBin/items')))
-
 const BilledBinReport = Loadable(lazy(() => import('./Report/billed-bin')))
+const ViewRpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-rp')))
+const ViewSpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp')))
 
 const dataTableRoutes = [
+    {
+        path: '/mis/assign-to-agent/Rdl-repair/view-rp/:trayId',
+        element: <ViewRpTray />,
+    },
+    {
+        path: '/mis/assign-to-agent/Rdl-repair/view-sp/:trayId',
+        element: <ViewSpTray />,
+    },
     {
         path: '/mis/dashboard',
         element: <Dashboard />,
     },
+   
     {
         path: '/mis/orders',
         element: <Orders />,
@@ -179,6 +195,14 @@ const dataTableRoutes = [
     {
         path: '/mis/sorting/bot-to-wht',
         element: <SortingBotTowht />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp',
+        element: <SortingWhtTorp />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp/process/:brand/:model',
+        element: <Process />,
     },
     {
         path: '/mis/sorting/ctx-to-stx',

@@ -12,11 +12,27 @@ import {
     Card,
     Typography
 } from '@mui/material'
+import { styled } from '@mui/system'
 import { axiosWarehouseIn } from '../../../../../axios'
+import { Breadcrumb } from 'app/components'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function StickyHeadTable({ props }) {
     const [mmtTray, setMmtTray] = useState([])
@@ -136,7 +152,16 @@ export default function StickyHeadTable({ props }) {
     }
 
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Merge', path: '/' },
+                        { name: 'Merge-Requests', path: '/' },
+                        { name: 'Merge-Tray' },
+                    ]}
+                />
+            </div>
             <Box
                 sx={{
                     m: 3,
@@ -150,6 +175,7 @@ export default function StickyHeadTable({ props }) {
                     <Box
                     sx={{
                         float: 'right',
+                        mr:2
                     }}
                 >
                     <h4>
@@ -166,9 +192,10 @@ export default function StickyHeadTable({ props }) {
                 </Box>
                     </Box>
 
-                
+                    
                 <Box sx={{}}>
                     {/* <Paper sx={{ width: '100%', overflow: 'auto' }}> */}
+                    
                         <TableContainer>
                             <Table
                                 id="example"
@@ -265,6 +292,6 @@ export default function StickyHeadTable({ props }) {
                 </div>
                 </Card>
             </Box>
-        </>
+        </Container>
     )
 }

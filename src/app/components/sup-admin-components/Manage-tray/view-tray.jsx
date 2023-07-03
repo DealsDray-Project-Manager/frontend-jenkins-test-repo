@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-tray'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -21,6 +21,27 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '200%',
+    // height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -168,7 +189,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
@@ -322,7 +343,9 @@ const SimpleMuiTable = () => {
 
     const trayData = useMemo(() => {
         return (
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'All Trays'}
                 data={trayList}
                 columns={columns}
@@ -349,6 +372,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         )
     }, [trayList, isLoading])
 

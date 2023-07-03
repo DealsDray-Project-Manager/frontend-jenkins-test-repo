@@ -38,7 +38,7 @@ const MemberEditorDialog = ({
     useEffect(() => {
         const fetchCpc = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/getBrands')
+                let res = await axiosSuperAdminPrexo.post('/getBrandsAlpha')
                 if (res.status == 200) {
                     setAllBrand(res.data.data)
                 }

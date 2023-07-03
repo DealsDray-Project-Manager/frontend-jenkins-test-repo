@@ -12,10 +12,25 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -200,20 +215,25 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        justifyContent: 'space-between'
+                       
                     }}
                 >
+                    <Box sx={{ml:2 }}>
+                    <h5>EXPECTED</h5>
+                    </Box>
+                    
+                    <Box sx={{justifyContent:'end', display: 'flex'}}>
                     <Box
                         sx={{
-                            m: 2,
+                            m: 0,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'18px'}}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}/
                                 {trayData?.limit}
@@ -222,16 +242,18 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
+                            <h5 style={{marginLeft:'14px'}}>Valid</h5>
+                            <p style={{ marginLeft: '14px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}
                             </p>
                         </Box>
                     </Box>
+                    </Box>
+                    
                 </Box>
                 <TableContainer>
                     <Table
@@ -271,6 +293,8 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{justifyContent:'space-between', display:'flex'}}>
+                <Box sx={{ml:2}}>
                 <h5>ACTUAL</h5>
                 <TextField
                     sx={{ mt: 1 }}
@@ -291,6 +315,8 @@ export default function DialogBox() {
                         },
                     }}
                 />
+                </Box>
+                
 
                 <Box
                     sx={{
@@ -300,11 +326,11 @@ export default function DialogBox() {
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            m: 0,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Total</h5>
+                            <h5 style={{marginLeft:'16px'}}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData?.items?.length}/{trayData?.limit}
                             </p>
@@ -312,17 +338,19 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Valid</h5>
+                            <h5 style={{marginLeft:'16px'}}>Valid</h5>
                             <p style={{ marginLeft: '19px', fontSize: '24px' }}>
                                 {trayData?.items?.length}
                             </p>
                         </Box>
                     </Box>
                 </Box>
+                </Box>
+                
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -359,13 +387,22 @@ export default function DialogBox() {
         )
     }, [trayData?.items, textDisable, uic])
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-From-BQC ', path: '/' },
+                        { name: 'Tray Close'}
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+                // sx={{
+                //     mt: 1,
+                //     height: 70,
+                //     borderRadius: 1,
+                // }}
             >
                 <Box
                     sx={{
@@ -435,6 +472,6 @@ export default function DialogBox() {
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

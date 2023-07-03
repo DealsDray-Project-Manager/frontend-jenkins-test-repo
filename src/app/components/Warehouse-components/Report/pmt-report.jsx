@@ -7,6 +7,7 @@ import {
     TableCell,
     TableHead,
     Table,
+    TableContainer,
     TableRow,
     TableBody,
     Card,
@@ -14,7 +15,7 @@ import {
     MenuItem,
     Box,
     TextField,
-    Typography
+    Typography 
 } from '@mui/material'
 import moment from "moment";
 import { useNavigate } from 'react-router-dom'
@@ -31,6 +32,24 @@ const Container = styled('div')(({ theme }) => ({
         [theme.breakpoints.down('sm')]: {
             marginBottom: '16px',
         },
+    },
+}))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
     },
 }))
 
@@ -123,26 +142,27 @@ const SimpleMuiTable = () => {
 
     const tableData = useMemo(() => {
         return (
-            <Table id="example">
+            <ProductTable>
+                <Table id="example">
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', p:2}}>Record No</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Order Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Delivery Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>IMEI</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Item ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>MUIC</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Brand</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Model</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Bag ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>BOT Agent Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Assigned Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tray ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Type</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Closed Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Record No</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Tracking ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Order ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Order Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Delivery Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>UIC</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>IMEI</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Item ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>MUIC</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Brand</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Model</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Bag ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>BOT Agent Name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Assigned Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Tray ID</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Tray Type</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Tray Closed Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -203,6 +223,8 @@ const SimpleMuiTable = () => {
                     ))}
                 </TableBody>
             </Table>
+            </ProductTable>
+            
         )
     }, [item, data])
 

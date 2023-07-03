@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { axiosBot } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Typography } from '@mui/material'
+import { Typography, Table, TableContainer } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,6 +19,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '250%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: auto`;
+
 const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isAlive, setIsAlive] = useState(true)
@@ -165,7 +187,9 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <MUIDataTable
+            <ScrollableTableContainer>
+                <ProductTable>
+                <MUIDataTable
                 title={'Tray'}
                 data={trayData}
                 columns={columns}
@@ -192,6 +216,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </ProductTable>
+            </ScrollableTableContainer>
+            
         </Container>
     )
 }

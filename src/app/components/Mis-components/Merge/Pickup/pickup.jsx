@@ -420,7 +420,8 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) => value.uic,
+                customBodyRender: (value, dataIndex) =>  value?.uic
+                
             },
         },
         {
@@ -1753,6 +1754,32 @@ const PickupPage = () => {
 
         //         customBodyRender: (value, dataIndex) =>
         //             value?.rdl_fls_report?.part_list_4 || '',
+        //     },
+        // },
+        // {
+        //     name: 'items',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>RDL 1 Added Part List</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         sort: true, // enable sorting for Brand column
+        //         customBodyRender: (value, tableMeta) => {
+        //             const dataIndex = tableMeta.rowIndex;
+        //             const partRequired = value?.rdl_fls_report?.partRequired;
+
+        //             if (partRequired && partRequired.length > 0) {
+        //               const partsList = partRequired.map((data, index) => {
+        //                 return `${index + 1}.${data?.part_name} - ${data?.part_id}`;
+        //               });
+
+        //               return partsList.join(', ');
+        //             }
+
+        //             return '';
+        //           },
         //     },
         // },
         {

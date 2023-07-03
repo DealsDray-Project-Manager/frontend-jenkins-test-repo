@@ -201,10 +201,9 @@ const SimpleMuiTable = () => {
                 } else if (res.status == 202) {
                     setTextBoxDis(false)
                     setAwbn('')
-
                     Swal.fire({
                         position: 'top-center',
-                        icon: 'success',
+                        icon: 'error',
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })

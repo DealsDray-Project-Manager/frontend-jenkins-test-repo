@@ -179,18 +179,33 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'image', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Image</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Image</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: false,
                 sort: false,
@@ -214,42 +229,66 @@ const SimpleMuiTable = () => {
 
         {
             name: 'vendor_sku_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>SKU ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>SKU ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'vendor_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Vendor Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Vendor Name</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>MUIC</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>MUIC</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -267,7 +306,11 @@ const SimpleMuiTable = () => {
         // },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,

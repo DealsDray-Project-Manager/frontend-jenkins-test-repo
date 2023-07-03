@@ -180,7 +180,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Category</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Category</></Typography>,
             options: {
                 filter: true,
             },
@@ -276,7 +276,8 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging' },
+                        { name: 'Charging Planner', path:'/' },
+                        { name: 'Ready-for-Charging'}
                     ]}
                 />
             </div>

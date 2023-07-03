@@ -173,6 +173,7 @@ export const navigations = [
                 // icon: 'category',
                 path: '/sup-admin/Category',
             },
+           
             {
                 name: 'Brands',
                 // icon: 'branding_watermark',
@@ -204,6 +205,16 @@ export const navigations = [
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/tray',
             },
+            {
+                name: 'Tray Racks',
+                // icon: 'home',
+                path: '/sup-admin/view-trayracks',
+            },
+            // {
+            //     name: 'Tray Racks',
+            //     // icon: 'add_shopping_cart',
+            //     path: '/sup-admin/trayracks'
+            // },
         ],
         auth: authRoles.admin,
         sales: false,
@@ -433,13 +444,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Assign to Charging',
-                path: '/mis/assign-to-agent/charging',
+                name: 'Assign to Charging Planner',
+                path: '/mis/assign-to-agent/chargingplanner',
                 iconText: 'NP',
             },
             {
-                name: 'Assign to Bqc',
-                path: '/mis/assign-to-agent/bqc',
+                name: 'Assign to Bqc Planner',
+                path: '/mis/assign-to-agent/bqcplanner',
                 iconText: 'NP',
             },
             {

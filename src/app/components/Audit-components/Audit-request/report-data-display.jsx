@@ -295,6 +295,7 @@ export default function DialogBox() {
                             <MenuItem value="Repair">Repair</MenuItem>
                         </TextField>
                         {stateData.stage === 'Accept' ? (
+                            <>
                             <TextField
                                 label="Select Tray"
                                 select
@@ -359,6 +360,13 @@ export default function DialogBox() {
                                     </MenuItem>
                                 ) : null}
                             </TextField>
+                            <TextField
+                                label="Audit Remark"
+                                fullWidth
+                                onChange={handleChange}
+                                name="description"
+                            />
+                            </>
                         ) : null}
                         {stateData.stage === 'Upgrade' ||
                         stateData.stage == 'Direct Upgrade' ? (

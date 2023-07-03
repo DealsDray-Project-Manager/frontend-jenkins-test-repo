@@ -223,7 +223,7 @@ const SimpleMuiTable = () => {
                         <IconButton>
                             <Icon
                                 onClick={(e) => {
-                                    editWarehouse(value,tableMeta.rowData[10])
+                                    // editCategories(value,tableMeta.rowData[10])
                                 }}
                                 color="primary"
                             >

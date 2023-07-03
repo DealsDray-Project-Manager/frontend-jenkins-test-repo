@@ -289,7 +289,7 @@ const MemberEditorDialog = ({
                         }
                         type="submit"
                     >
-                        Add
+                        Submit
                     </Button>
                     <Button
                         variant="outlined"

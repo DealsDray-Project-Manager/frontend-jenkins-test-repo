@@ -333,7 +333,7 @@ const SimpleMuiTable = () => {
                 <Typography
                     variant="subtitle1"
                     fontWeight="bold"
-                    sx={{ ml: 5 }}
+                    // sx={{ ml: 5 }}
                 >
                     <>Repair Item</>
                 </Typography>

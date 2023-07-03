@@ -25,13 +25,19 @@ const AssignToBotUicGen = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-bot/uic-gen'))
 )
 const AssignToBqc = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-bqc/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-bqc/bqcplanner'))
 )
 const AssignToAudit = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-audit/view-wht-tray'))
 )
 const AssignToCharging = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-charging/chargingplanner'))
+)
+const FromChargingplanner = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-charging/view-wht-tray'))
+)
+const Frombqcplanner = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-bqc/view-wht-tray'))
 )
 const AssignToRdl = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/wht-tray'))
@@ -165,12 +171,20 @@ const dataTableRoutes = [
         element: <AssignToBotUicGen />,
     },
     {
-        path: '/mis/assign-to-agent/bqc',
+        path: '/mis/assign-to-agent/bqcplanner',
         element: <AssignToBqc />,
     },
     {
-        path: '/mis/assign-to-agent/charging',
+        path: '/mis/assign-to-agent/bqcplanner/view-wht-tray',
+        element: <Frombqcplanner/>,
+    },
+    {
+        path: '/mis/assign-to-agent/chargingplanner',
         element: <AssignToCharging />,
+    },
+    {
+        path: '/mis/assign-to-agent/chargingplanner/view-wht-tray',
+        element: <FromChargingplanner/>,
     },
     {
         path: '/mis/assign-to-agent/audit',

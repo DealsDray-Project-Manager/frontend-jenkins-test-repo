@@ -13,14 +13,19 @@ import {
     Card,
     MenuItem,
     Box,
+    Button,
     TextField,
     Typography,
 } from '@mui/material'
-
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
+import { DatePicker } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,6 +45,7 @@ const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;
 
 const SimpleMuiTable = () => {
+    const [partList, setPartList] = useState([])
     const [isAlive, setIsAlive] = useState(true)
     const [rowsPerPage, setRowsPerPage] = useState(50)
     const [page, setPage] = useState(0)
@@ -53,7 +59,35 @@ const SimpleMuiTable = () => {
         searchData: '',
         location: '',
     })
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const navigate = useNavigate()
+
+    const download = (e) => {
+        let arr = []
+        for (let x of partList) {
+            let obj = {
+                part_code: x.part_code,
+                name: x.name,
+                color: x.color,
+                technical_qc: x.technical_qc,
+                description: x.description,
+                available_stock: x.avl_stock,
+                add_stock: '0',
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+    }
+
     useEffect(() => {
         setDisplayText('Loading...')
         const fetchOrder = async () => {
@@ -149,6 +183,19 @@ const SimpleMuiTable = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
     }
+
+    const handleStartDateChange = (date) => {
+        setSearch((prevState) => ({ ...prevState, startDate: date }));
+      };
+    
+      const handleEndDateChange = (date) => {
+        setSearch((prevState) => ({ ...prevState, endDate: date }));
+      };
+
+      const handleApplyFilter = () => {
+        // Perform filtering logic using startDate and endDate values
+        console.log('Filtering data between', startDate, 'and', endDate);
+      };
 
     const searchOrders = async (e) => {
         e.preventDefault()
@@ -450,8 +497,33 @@ const SimpleMuiTable = () => {
                         disabled={search.type == '' ? true : false}
                         label="Search"
                         variant="outlined"
-                        sx={{ ml: 2 }}
+                        sx={{ ml: 2, mr:2 }}
                     />
+                     <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        label="Start Date"
+                        value={startDate}
+                        onChange={handleStartDateChange}
+                        renderInput={(params) => <TextField sx={{mr:2}} {...params} />}
+                      />
+                      <DatePicker
+                        label="End Date"
+                        value={endDate}
+                        onChange={handleEndDateChange}
+                        renderInput={(params) => <TextField sx={{mr:2}} {...params} />}
+                      />
+                      <Button sx={{mt:1}} variant="contained" color="primary" onClick={handleApplyFilter}>
+                        Apply Filter
+                      </Button>
+                    </LocalizationProvider>
+                    <Button
+                            sx={{ml:2, mt:1}}
+                            variant="contained"
+                            color="success"
+                            onClick={(e) => download(e)}
+                        >
+                            manage stock
+                        </Button>
                 </Box>
                 {/* <Box sx={{ mb: 1 }}>
                     <Typography variant="h6" gutterBottom>

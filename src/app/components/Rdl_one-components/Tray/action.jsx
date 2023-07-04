@@ -446,7 +446,11 @@ const Actionfunction = () => {
             <Box sx={{ textAlign: 'right' }}>
                 <Button
                     type="submit"
-                    disabled={addButDis ||selectedStatus == 'Repair Required' && isCheck.length == 0}
+                    disabled={
+                        addButDis ||
+                        (selectedStatus == 'Repair Required' &&
+                            isCheck.length == 0)
+                    }
                     onClick={handleSubmit(onSubmit)}
                     variant="contained"
                     color="primary"

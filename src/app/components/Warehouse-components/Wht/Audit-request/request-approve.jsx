@@ -100,22 +100,23 @@ export default function DialogBox() {
     useEffect(() => {
         const userStatusApiCall = async () => {
             try {
-                let obj={
-                    username:trayData.issued_user_name,
-                    brand:trayData.brand,
-                    model:trayData.model
+                let obj = {
+                    username: trayData.issued_user_name,
+                    brand: trayData.brand,
+                    model: trayData.model,
                 }
                 let res = await axiosWarehouseIn.post(
-                    '/auditUserStatusChecking',obj
+                    '/auditUserStatusChecking',
+                    obj
                 )
-                let obj2={
-                    username:trayData.issued_user_name,
-                    brand:trayData.brand,
-                    model:trayData.model
+                let obj2 = {
+                    username: trayData.issued_user_name,
+                    brand: trayData.brand,
+                    model: trayData.model,
                 }
                 let trayFetch = await axiosWarehouseIn.post(
-                    '/fetchAssignedTrayForAudit',obj2
-                       
+                    '/fetchAssignedTrayForAudit',
+                    obj2
                 )
                 if (trayFetch.status == 200) {
                     setOtherTrayAssign({
@@ -155,7 +156,9 @@ export default function DialogBox() {
 
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextDisable(false)
+                    setRefresh((refresh) => !refresh)
                 } else {
                     setTextDisable(false)
                     setUic('')
@@ -305,7 +308,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4 style={{marginLeft:'10px'}}>Total</h4>
+                            <h4 style={{ marginLeft: '10px' }}>Total</h4>
                             <p style={{ fontSize: '22px' }}>
                                 {
                                     trayData?.items?.filter(function (item) {
@@ -326,7 +329,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -336,7 +339,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -388,7 +393,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h4 style={{marginLeft:'5px'}}>Total</h4>
+                            <h4 style={{ marginLeft: '5px' }}>Total</h4>
                             <p style={{ fontSize: '24px' }}>
                                 {
                                     trayData.actual_items?.filter(function (
@@ -411,7 +416,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
@@ -422,7 +427,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.tray_id}</TableCell>
@@ -443,16 +450,18 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'Audit-Requests', path: '/' },
-                        { name: 'Verification'}
+                        { name: 'Verification' },
                     ]}
                 />
             </div>
             <Box
-                sx={{
-                    // mt: 1,
-                    // height: 70,
-                    // borderRadius: 1,
-                }}
+                sx={
+                    {
+                        // mt: 1,
+                        // height: 70,
+                        // borderRadius: 1,
+                    }
+                }
             >
                 <Box
                     sx={{

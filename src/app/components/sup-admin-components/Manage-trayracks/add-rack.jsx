@@ -38,7 +38,7 @@ const MemberEditorDialog = ({
     useEffect(() => {
         const fetchCpc = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/getBrandsAlpha')
+                let res = await axiosSuperAdminPrexo.post('/getBrands')
                 if (res.status == 200) {
                     setAllBrand(res.data.data)
                 }
@@ -415,12 +415,12 @@ const MemberEditorDialog = ({
     return (
         <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Tray</H4>
+                <H4 sx={{ mb: '20px' }}>Rack</H4>
 
                 <Grid sx={{ mb: '16px' }} container spacing={4}>
                     <Grid item sm={6} xs={12}>
                         <TextFieldCustOm
-                            label="Tray Id"
+                            label="Rack Id"
                             type="text"
                             InputLabelProps={{ shrink: true }}
                             name="email"
@@ -435,7 +435,7 @@ const MemberEditorDialog = ({
                         />
 
                         <TextFieldCustOm
-                            label="Tray Display Name"
+                            label="Rack Name"
                             type="text"
                             name="name"
                             {...register('name')}
@@ -448,26 +448,7 @@ const MemberEditorDialog = ({
                         />
 
                         <TextFieldCustOm
-                            label="Tray Limit"
-                            inputProps={{ maxLength: 2 }}
-                            onPaste={(e) => {
-                                e.preventDefault()
-                                return false
-                            }}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault()
-                                }
-                            }}
-                            {...register('limit')}
-                            error={errors.limit ? true : false}
-                            helperText={
-                                errors.limit ? errors.limit.message : ''
-                            }
-                        />
-
-                        <TextFieldCustOm
-                            label="Tray Display"
+                            label="Rack Display"
                             type="text"
                             name="display"
                             {...register('display')}
@@ -524,176 +505,6 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="Tray Category"
-                            select
-                            type="text"
-                            name="cpc"
-                            defaultValue={getValues('type_taxanomy')}
-                            {...register('type_taxanomy')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.type_taxanomy ? true : false}
-                            helperText={errors.type_taxanomy?.message}
-                        >
-                            <MenuItem
-                                value="BOT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'BOT', 'top')
-                                }}
-                            >
-                                BOT
-                            </MenuItem>
-                            <MenuItem
-                                value="PMT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'PMT', 'top')
-                                }}
-                            >
-                                PMT
-                            </MenuItem>
-                            <MenuItem
-                                value="MMT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'MMT', 'top')
-                                }}
-                            >
-                                MMT
-                            </MenuItem>
-                            <MenuItem
-                                value="WHT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'WHT', 'top')
-                                }}
-                            >
-                                WHT
-                            </MenuItem>
-                            <MenuItem
-                                value="CT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'CT', 'below')
-                                }}
-                            >
-                                CT
-                            </MenuItem>
-                            <MenuItem
-                                value="ST"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'ST', 'below')
-                                }}
-                            >
-                                ST
-                            </MenuItem>
-                            <MenuItem
-                                value="SPT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'SPT', 'TOP')
-                                }}
-                            >
-                                SPT
-                            </MenuItem>
-                            <MenuItem
-                                value="RPT"
-                                onClick={(e) => {
-                                    fetchTypeWiseId(e, 'RPT', 'TOP')
-                                }}
-                            >
-                                RPT
-                            </MenuItem>
-                        </TextFieldCustOm>
-                        {getValues('type_taxanomy') == 'CT' ||
-                        getValues('type_taxanomy') == 'ST' ? (
-                            <TextFieldCustOm
-                                label="Tray Grade"
-                                select
-                                type="text"
-                                name="tray_grade"
-                                defaultValue={getValues('tray_grade')}
-                                {...register('tray_grade')}
-                                disabled={
-                                    Object.keys(editFetchData).length !== 0
-                                }
-                                error={errors.tray_grade ? true : false}
-                                helperText={errors.tray_grade?.message}
-                            >
-                                {categorys?.map((item) => (
-                                    <MenuItem
-                                        value={item?.code}
-                                        onClick={(e) => {
-                                            fetchTypeWiseId(e, item?.code)
-                                        }}
-                                    >
-                                        {item?.code}
-                                    </MenuItem>
-                                ))}
-                            </TextFieldCustOm>
-                        ) : null}
-                        {getValues('type_taxanomy') !== 'BOT' &&
-                        getValues('type_taxanomy') !== 'PMT' &&
-                        getValues('type_taxanomy') !== 'SPT' &&
-                        getValues('type_taxanomy') !== 'MMT' ? (
-                            <>
-                                <TextFieldCustOm
-                                    label="Brand"
-                                    select
-                                    type="text"
-                                    defaultValue={getValues('brand')}
-                                    {...register('brand')}
-                                    error={errors.brand ? true : false}
-                                    helperText={
-                                        errors.brand ? errors.brand.message : ''
-                                    }
-                                >
-                                    {allBrand.map((brandData) => (
-                                        <MenuItem
-                                            value={brandData.brand_name}
-                                            onClick={(e) => {
-                                                fetchModel(brandData.brand_name)
-                                            }}
-                                        >
-                                            {brandData.brand_name}
-                                        </MenuItem>
-                                    ))}
-                                </TextFieldCustOm>
-                                <TextFieldCustOm
-                                    label="Model"
-                                    select
-                                    type="text"
-                                    name="model"
-                                    defaultValue={getValues('model')}
-                                    {...register('model')}
-                                    error={errors.model ? true : false}
-                                >
-                                    {allModel.map((modelData) => (
-                                        <MenuItem value={modelData.model_name}>
-                                            {modelData.model_name}
-                                        </MenuItem>
-                                    ))}
-                                </TextFieldCustOm>
-                            </>
-                        ) : (
-                            <>
-                                <TextFieldCustOm
-                                    label="Brand"
-                                    type="text"
-                                    name="brand"
-                                    {...register('brand')}
-                                    error={errors.brand ? true : false}
-                                    helperText={
-                                        errors.brand ? errors.brand.message : ''
-                                    }
-                                />
-                                <TextFieldCustOm
-                                    label="Model"
-                                    type="text"
-                                    name="model"
-                                    {...register('model')}
-                                    error={errors.model ? true : false}
-                                    helperText={
-                                        errors.model ? errors.model.message : ''
-                                    }
-                                />
-                            </>
-                        )}
                     </Grid>
                 </Grid>
 

@@ -164,10 +164,16 @@ export const navigations = [
                 path: '/sup-admin/view-vendors',
             },
             {
+                name: 'Categories',
+                // icon: 'home',
+                path: '/sup-admin/view-categories',
+            },
+            {
                 name: 'Tray Category',
                 // icon: 'category',
                 path: '/sup-admin/Category',
             },
+           
             {
                 name: 'Brands',
                 // icon: 'branding_watermark',
@@ -199,6 +205,16 @@ export const navigations = [
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/tray',
             },
+            {
+                name: 'Tray Racks',
+                // icon: 'home',
+                path: '/sup-admin/view-trayracks',
+            },
+            // {
+            //     name: 'Tray Racks',
+            //     // icon: 'add_shopping_cart',
+            //     path: '/sup-admin/trayracks'
+            // },
         ],
         auth: authRoles.admin,
         sales: false,
@@ -428,13 +444,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Assign to Charging',
-                path: '/mis/assign-to-agent/charging',
+                name: 'Assign to Charging Planner',
+                path: '/mis/assign-to-agent/chargingplanner',
                 iconText: 'NP',
             },
             {
-                name: 'Assign to Bqc',
-                path: '/mis/assign-to-agent/bqc',
+                name: 'Assign to Bqc Planner',
+                path: '/mis/assign-to-agent/bqcplanner',
                 iconText: 'NP',
             },
             {
@@ -710,12 +726,12 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Sorting Requests (WHT to RP)',
+                name: <Typography sx={{textAlign:'left'}}>Sorting Requests (WHT to RP)</Typography>,
                 path: '/wareshouse/sorting/wht-to-rp',
                 iconText: 'VP',
             },
             {
-                name: 'Return from sorting (WHT to RP)',
+                name: <Typography sx={{textAlign:'left'}}>Return from sorting (WHT to RP)</Typography>,
                 path: '/warehouse/sorting/return-from-wht-to-rp',
                 iconText: 'VP',
             },

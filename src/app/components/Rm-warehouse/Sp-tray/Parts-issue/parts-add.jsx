@@ -65,7 +65,7 @@ const SimpleMuiTable = () => {
 
     const handleAdd = (partId) => {
         Swal.fire({
-            title: 'Are you sure?',
+            title: 'Are you sure?', 
             text: "You won't be add this part!",
             icon: 'warning',
             showCancelButton: true,

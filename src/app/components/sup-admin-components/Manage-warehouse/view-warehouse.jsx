@@ -22,7 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '110%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -155,7 +155,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}} ><>Record No</></Typography>,
             options: {
                 filter: true,
                 sort: true,
@@ -187,7 +187,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'warehouse_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse Type</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Warehouse Type</></Typography>,
             options: {
                 filter: true,
             },

@@ -42,8 +42,14 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+overflow-x: scroll;
+
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -211,7 +217,7 @@ const UserTable = () => {
         },
         {
             name: 'creation_date',
-            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' noWrap><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 
@@ -287,7 +293,7 @@ const UserTable = () => {
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Device Name</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Device Name</></Typography>,
             options: {
                 filter: true,
             },

@@ -28,13 +28,13 @@ const AuditReport = ({ AuditData, otherAuditFeedBack }) => {
                         <TableCell>{AuditData?.stage}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.orgGrade}>
-                        <TableCell sx={{ pl: 2 }}> Orginal Grade :</TableCell>
+                        <TableCell sx={{ pl: 2 }}> original Grade :</TableCell>
                         <TableCell>{AuditData?.orgGrade}</TableCell>
                     </TableRow>
                     <TableRow key={AuditData?.grade}>
                         <TableCell sx={{ pl: 2 }}>
                             {' '}
-                            Audit Recomendad Grade :
+                            Audit Recommended Grade :
                         </TableCell>
                         <TableCell>{AuditData?.grade}</TableCell>
                     </TableRow>

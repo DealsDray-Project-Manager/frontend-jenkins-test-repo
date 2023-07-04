@@ -3,12 +3,17 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
+import {
+    axiosMisUser,
+    axiosSuperAdminPrexo,
+    axiosWarehouseIn,
+} from '../../../../../axios'
 import Tab from '@mui/material/Tab'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import Swal from 'sweetalert2'
 import AssignToSorting from './assign-to-user'
 import jwt_decode from 'jwt-decode'
+import moment from 'moment'
 
 import {
     Box,
@@ -20,10 +25,26 @@ import {
     Button,
     MenuItem,
     Checkbox,
+    FormControl,
+    InputLabel,
+    Select,
+    OutlinedInput
 } from '@mui/material'
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
+
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,7 +63,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '150%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -60,7 +81,7 @@ const ProductTable = styled(Table)(() => ({
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
     width: '187%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -78,7 +99,7 @@ const ProductTableTwo = styled(Table)(() => ({
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
     width: '212%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -95,7 +116,7 @@ const ProductTableThere = styled(Table)(() => ({
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
     width: '240%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -124,6 +145,8 @@ const PickupPage = () => {
     const [location, setLoaction] = useState('')
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
+    const [selectedStatus, setSelectedStatus] = useState([]);
+
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
     /*--------------------------------------------------------------*/
@@ -133,6 +156,7 @@ const PickupPage = () => {
         setItem([])
         setIsCheck([])
         setValue(newValue)
+        setSelectedStatus([])
     }
     // const valueRef = useRef(value)
 
@@ -227,7 +251,6 @@ const PickupPage = () => {
         }
     }
 
-
     /*---------------------STATE CHANGE FOR SORT----------------------*/
     const handleChangeSort = ({ target: { name, value } }) => {
         setState({
@@ -244,6 +267,35 @@ const PickupPage = () => {
 
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
+    }
+
+    const handleChangeDate = ({ target: {  value } }) => {
+        console.log(value);
+        setSelectedStatus( typeof value === 'string' ? value.split(',') : value)
+    }
+    const dataFilter = async () => {
+        try {
+            let obj={
+                selectedStatus:selectedStatus,
+                location:location,
+                type:value
+            }
+          
+            setIsLoading(true)
+            const res = await axiosMisUser.post(
+                '/pickup/dateFilter',
+                obj
+            )
+            if (res.status === 200) {
+                setIsLoading(false)
+                setItem(res.data.data)
+            } else {
+                setIsLoading(false)
+                setItem(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     /*---------------------HANDEL SORT-------------------------------*/
@@ -274,33 +326,7 @@ const PickupPage = () => {
             alert(error)
         }
     }
-    /*---------------------------SEARCH UIC-----------------------------*/
-
-    // const handelSearchUid = async (e) => {
-    //     try {
-    //         if (e.target.value == '') {
-    //             setRefresh((refresh) => !refresh)
-    //         } else {
-    //             setItem([])
-    //             setIsCheck([])
-
-    //             setDisplayText('Searching....')
-    //             const res = await axiosMisUser.post(
-    //                 '/pickup/uicSearch/' + e.target.value + '/' + value
-    //             )
-    //             if (res.status == 200) {
-    //                 setDisplayText('')
-
-    //                 setItem(res.data.data)
-    //             } else {
-    //                 setItem([])
-    //                 setDisplayText(res.data.message)
-    //             }
-    //         }
-    //     } catch (error) {
-    //         alert(error)
-    //     }
-    // }
+   
 
     const handelSortingAgent = async () => {
         try {
@@ -382,7 +408,11 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" marginLeft='20px'>
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    marginLeft="20px"
+                >
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -390,9 +420,7 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) => {
-                    <Typography>{value.uic}</Typography>
-                }
+                customBodyRender: (value, dataIndex) => value.uic,
             },
         },
         {
@@ -1251,13 +1279,20 @@ const PickupPage = () => {
         },
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
 
@@ -1720,32 +1755,6 @@ const PickupPage = () => {
         //             value?.rdl_fls_report?.part_list_4 || '',
         //     },
         // },
-        // {
-        //     name: 'items',
-        //     label: (
-        //         <Typography variant="subtitle1" fontWeight="bold">
-        //             <>RDL 1 Added Part List</>
-        //         </Typography>
-        //     ),
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-        //         customBodyRender: (value, tableMeta) => {
-        //             const dataIndex = tableMeta.rowIndex;
-        //             const partRequired = value?.rdl_fls_report?.partRequired;
-                  
-        //             if (partRequired && partRequired.length > 0) {
-        //               const partsList = partRequired.map((data, index) => {
-        //                 return `${index + 1}.${data?.part_name} - ${data?.part_id}`;
-        //               });
-                  
-        //               return partsList.join(', ');
-        //             }
-                  
-        //             return '';
-        //           },
-        //     },
-        // },
         {
             name: 'items',
             label: (
@@ -1755,21 +1764,53 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand colum
+                display: false,
+                sort: true, // enable sorting for Brand column
                 customBodyRender: (value, tableMeta) => {
-                    const dataIndex = tableMeta.rowIndex;
-                    const partRequired = value?.rdl_fls_report?.partRequired;
-                  
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_fls_report?.partRequired
+
                     if (partRequired && partRequired.length > 0) {
-                      const partsList = partRequired.map((data, index) => {
-                        return `${index + 1}.${data?.part_name} - ${data?.part_id}`;
-                      });
-                  
-                      return partsList.join(', ');
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            }`
+                        })
+
+                        return partsList.join(', ')
                     }
-                  
-                    return '';
-                  },
+
+                    return ''
+                },
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 1 Added Part List</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                filterType: 'textField',
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_fls_report?.partRequired
+
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            }`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
+                },
             },
         },
         {
@@ -1810,522 +1851,573 @@ const PickupPage = () => {
         return (
             <>
                 <ProductTable>
-                <MUIDataTable
-                title={'UNITS'}
-                data={item}
-                columns={columnsOne}
-                options={{
-                    filterType: 'multiselect',
-                    responsive: 'standared',
-                    download: false,
-                    print: false,
-                    showFirstButton: 'true',
-                    showLastButton: 'true',
+                    <MUIDataTable
+                        title={'UNITS'}
+                        data={item}
+                        columns={columnsOne}
+                        options={{
+                            filterType: 'multiselect',
+                            responsive: 'standared',
+                            download: false,
+                            print: false,
+                            showFirstButton: 'true',
+                            showLastButton: 'true',
 
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        const columnProperties = {
-                            1: 'price',
-                            2: 'uic',
-                            3: 'order_id',
-                            4: 'imei',
-                            7: 'muic',
-                            9: 'charging.battery_status',
-                            10: 'charging.charge_percentage',
-                            11: 'charging.body_condition',
-                            12: 'charging.display_condition',
-                            13: 'charging.lock_status',
-                            14: 'charging.charging_jack_type',
-                            15: 'charging.boady_part_missing',
-                            // add more columns and properties here
-                        }
-                        const property = columnProperties[colIndex]
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                const columnProperties = {
+                                    1: 'price',
+                                    2: 'uic',
+                                    3: 'order_id',
+                                    4: 'imei',
+                                    7: 'muic',
+                                    9: 'charging.battery_status',
+                                    10: 'charging.charge_percentage',
+                                    11: 'charging.body_condition',
+                                    12: 'charging.display_condition',
+                                    13: 'charging.lock_status',
+                                    14: 'charging.charging_jack_type',
+                                    15: 'charging.boady_part_missing',
+                                    // add more columns and properties here
+                                }
+                                const property = columnProperties[colIndex]
 
-                        if (property) {
-                            return data.sort((a, b) => {
-                                const aPropertyValue = getValueByProperty(
-                                    a.data[colIndex],
-                                    property
-                                )
-                                const bPropertyValue = getValueByProperty(
-                                    b.data[colIndex],
-                                    property
-                                )
-                                if (
-                                    typeof aPropertyValue === 'string' &&
-                                    typeof bPropertyValue === 'string'
-                                ) {
-                                    return (
-                                        (order === 'asc' ? 1 : -1) *
-                                        aPropertyValue.localeCompare(
-                                            bPropertyValue
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
                                         )
+                                    })
+                                }
+
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    return (
+                                        properties.reduce(
+                                            (obj, key) => obj[key],
+                                            data
+                                        ) || ''
                                     )
                                 }
-                                return (
-                                    (parseFloat(aPropertyValue) -
-                                        parseFloat(bPropertyValue)) *
-                                    (order === 'desc' ? -1 : 1)
-                                )
-                            })
-                        }
-
-                        return data.sort((a, b) => {
-                            const aValue = a.data[colIndex]
-                            const bValue = b.data[colIndex]
-                            if (aValue === bValue) {
-                                return 0
-                            }
-                            if (aValue === null || aValue === undefined) {
-                                return 1
-                            }
-                            if (bValue === null || bValue === undefined) {
-                                return -1
-                            }
-                            if (
-                                typeof aValue === 'string' &&
-                                typeof bValue === 'string'
-                            ) {
-                                return (
-                                    (order === 'asc' ? 1 : -1) *
-                                    aValue.localeCompare(bValue)
-                                )
-                            }
-                            return (
-                                (parseFloat(aValue) - parseFloat(bValue)) *
-                                (order === 'desc' ? -1 : 1)
-                            )
-                        })
-
-                        function getValueByProperty(data, property) {
-                            const properties = property.split('.')
-                            return (
-                                properties.reduce(
-                                    (obj, key) => obj[key],
-                                    data
-                                ) || ''
-                            )
-                        }
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </>
-            
         )
-    }, [item, columnsOne])
+    }, [item, columnsOne, isLoading])
 
     const tableDataTwo = useMemo(() => {
         return (
             <>
                 <ProductTableTwo>
-                <MUIDataTable
-                title={'UNITS'}
-                data={item}
-                columns={columnsTwo}
-                options={{
-                    filterType: 'multiselect',
-                    responsive: 'standared',
-                    download: false,
-                    print: false,
+                    <MUIDataTable
+                        title={'UNITS'}
+                        data={item}
+                        columns={columnsTwo}
+                        options={{
+                            filterType: 'multiselect',
+                            responsive: 'standared',
+                            download: false,
+                            print: false,
 
-                    showFirstButton: 'true',
-                    showLastButton: 'true',
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        const columnProperties = {
-                            1: 'price',
-                            2: 'uic',
-                            3: 'order_id',
-                            4: 'imei',
-                            7: 'muic',
-                            9: 'charging.battery_status',
-                            10: 'charging.charge_percentage',
-                            11: 'charging.body_condition',
-                            12: 'charging.display_condition',
-                            13: 'charging.lock_status',
-                            14: 'charging.charging_jack_type',
-                            15: 'charging.boady_part_missing',
-                            16: 'bqc_report.blancoo_qc_status',
-                            17: 'bqc_report.factory_reset_status',
-                            18: 'bqc_report.bqc_incomplete_reason',
-                            19: 'bqc_report.technical_issue',
-                            20: 'bqc_report.other',
-                            // add more columns and properties here
-                        }
-                        const property = columnProperties[colIndex]
-
-                        if (property) {
-                            return data.sort((a, b) => {
-                                const aPropertyValue = getValueByProperty(
-                                    a.data[colIndex],
-                                    property
-                                )
-                                const bPropertyValue = getValueByProperty(
-                                    b.data[colIndex],
-                                    property
-                                )
-                                if (
-                                    typeof aPropertyValue === 'string' &&
-                                    typeof bPropertyValue === 'string'
-                                ) {
-                                    return (
-                                        (order === 'asc' ? 1 : -1) *
-                                        aPropertyValue.localeCompare(
-                                            bPropertyValue
-                                        )
-                                    )
+                            showFirstButton: 'true',
+                            showLastButton: 'true',
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                const columnProperties = {
+                                    1: 'price',
+                                    2: 'uic',
+                                    3: 'order_id',
+                                    4: 'imei',
+                                    7: 'muic',
+                                    9: 'charging.battery_status',
+                                    10: 'charging.charge_percentage',
+                                    11: 'charging.body_condition',
+                                    12: 'charging.display_condition',
+                                    13: 'charging.lock_status',
+                                    14: 'charging.charging_jack_type',
+                                    15: 'charging.boady_part_missing',
+                                    16: 'bqc_report.blancoo_qc_status',
+                                    17: 'bqc_report.factory_reset_status',
+                                    18: 'bqc_report.bqc_incomplete_reason',
+                                    19: 'bqc_report.technical_issue',
+                                    20: 'bqc_report.other',
+                                    // add more columns and properties here
                                 }
-                                return (
-                                    (parseFloat(aPropertyValue) -
-                                        parseFloat(bPropertyValue)) *
-                                    (order === 'desc' ? -1 : 1)
-                                )
-                            })
-                        }
+                                const property = columnProperties[colIndex]
 
-                        return data.sort((a, b) => {
-                            const aValue = a.data[colIndex]
-                            const bValue = b.data[colIndex]
-                            if (aValue === bValue) {
-                                return 0
-                            }
-                            if (aValue === null || aValue === undefined) {
-                                return 1
-                            }
-                            if (bValue === null || bValue === undefined) {
-                                return -1
-                            }
-                            if (
-                                typeof aValue === 'string' &&
-                                typeof bValue === 'string'
-                            ) {
-                                return (
-                                    (order === 'asc' ? 1 : -1) *
-                                    aValue.localeCompare(bValue)
-                                )
-                            }
-                            return (
-                                (parseFloat(aValue) - parseFloat(bValue)) *
-                                (order === 'desc' ? -1 : 1)
-                            )
-                        })
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
 
-                        function getValueByProperty(data, property) {
-                            const properties = property.split('.')
-                            const value = properties.reduce(
-                                (obj, key) => obj?.[key],
-                                data
-                            )
-                            return value !== undefined ? value : ''
-                        }
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    const value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+                                    return value !== undefined ? value : ''
+                                }
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTableTwo>
             </>
-            
         )
-    }, [item, columnsTwo])
+    }, [item, columnsTwo, isLoading])
 
     const tableDataThree = useMemo(() => {
         return (
             <>
                 <ProductTableThere>
-                <MUIDataTable
-                title={'UNITS'}
-                data={item}
-                columns={columnsThree}
-                options={{
-                    filterType: 'multiselect',
-                    responsive: 'standared',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
+                    <MUIDataTable
+                        title={'UNITS'}
+                        data={item}
+                        columns={columnsThree}
+                        options={{
+                            filterType: 'multiselect',
+                            responsive: 'standared',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
 
-                    showFirstButton: 'true',
-                    showLastButton: 'true',
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        const columnProperties = {
-                            1: 'price',
-                            2: 'uic',
-                            3: 'order_id',
-                            4: 'imei',
-                            7: 'muic',
-                            9: 'charging.battery_status',
-                            10: 'charging.charge_percentage',
-                            11: 'charging.body_condition',
-                            12: 'charging.display_condition',
-                            13: 'charging.lock_status',
-                            14: 'charging.charging_jack_type',
-                            15: 'charging.boady_part_missing',
-                            16: 'bqc_report.blancoo_qc_status',
-                            17: 'bqc_report.factory_reset_status',
-                            18: 'bqc_report.bqc_incomplete_reason',
-                            19: 'bqc_report.technical_issue',
-                            20: 'bqc_report.other',
-                            21: 'audit_report.orgGrade',
-                            22: 'audit_report.grade',
-                            23: 'audit_report.stage',
-                            24: 'audit_report.reason',
-                            25: 'audit_report.description',
-                            // add more columns and properties here
-                        }
-                        const property = columnProperties[colIndex]
-
-                        if (property) {
-                            return data.sort((a, b) => {
-                                const aPropertyValue = getValueByProperty(
-                                    a.data[colIndex],
-                                    property
-                                )
-                                const bPropertyValue = getValueByProperty(
-                                    b.data[colIndex],
-                                    property
-                                )
-                                if (
-                                    typeof aPropertyValue === 'string' &&
-                                    typeof bPropertyValue === 'string'
-                                ) {
-                                    return (
-                                        (order === 'asc' ? 1 : -1) *
-                                        aPropertyValue.localeCompare(
-                                            bPropertyValue
-                                        )
-                                    )
+                            showFirstButton: 'true',
+                            showLastButton: 'true',
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                const columnProperties = {
+                                    1: 'price',
+                                    2: 'uic',
+                                    3: 'order_id',
+                                    4: 'imei',
+                                    7: 'muic',
+                                    9: 'charging.battery_status',
+                                    10: 'charging.charge_percentage',
+                                    11: 'charging.body_condition',
+                                    12: 'charging.display_condition',
+                                    13: 'charging.lock_status',
+                                    14: 'charging.charging_jack_type',
+                                    15: 'charging.boady_part_missing',
+                                    16: 'bqc_report.blancoo_qc_status',
+                                    17: 'bqc_report.factory_reset_status',
+                                    18: 'bqc_report.bqc_incomplete_reason',
+                                    19: 'bqc_report.technical_issue',
+                                    20: 'bqc_report.other',
+                                    21: 'audit_report.orgGrade',
+                                    22: 'audit_report.grade',
+                                    23: 'audit_report.stage',
+                                    24: 'audit_report.reason',
+                                    25: 'audit_report.description',
+                                    // add more columns and properties here
                                 }
-                                return (
-                                    (parseFloat(aPropertyValue) -
-                                        parseFloat(bPropertyValue)) *
-                                    (order === 'desc' ? -1 : 1)
-                                )
-                            })
-                        }
+                                const property = columnProperties[colIndex]
 
-                        return data.sort((a, b) => {
-                            const aValue = a.data[colIndex]
-                            const bValue = b.data[colIndex]
-                            if (aValue === bValue) {
-                                return 0
-                            }
-                            if (aValue === null || aValue === undefined) {
-                                return 1
-                            }
-                            if (bValue === null || bValue === undefined) {
-                                return -1
-                            }
-                            if (
-                                typeof aValue === 'string' &&
-                                typeof bValue === 'string'
-                            ) {
-                                return (
-                                    (order === 'asc' ? 1 : -1) *
-                                    aValue.localeCompare(bValue)
-                                )
-                            }
-                            return (
-                                (parseFloat(aValue) - parseFloat(bValue)) *
-                                (order === 'desc' ? -1 : 1)
-                            )
-                        })
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
 
-                        function getValueByProperty(data, property) {
-                            const properties = property.split('.')
-                            const value = properties.reduce(
-                                (obj, key) => obj?.[key],
-                                data
-                            )
-                            return value !== undefined ? value : ''
-                        }
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    const value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+                                    return value !== undefined ? value : ''
+                                }
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTableThere>
             </>
-           
         )
-    }, [item, columnsThree])
+    }, [item, columnsThree, isLoading])
 
     const tableDataForRdl1 = useMemo(() => {
         return (
-          <>
-            <ProductTableRdlOne>
-              <MUIDataTable
-                title={'UNITS'}
-                data={item}
-                columns={columnsForRdlOne}
-                options={{
-                  filterType: 'multiselect',
-                  responsive: 'standared',
-                  download: false,
-                  print: false,
-                  textLabels: {
-                    body: {
-                      noMatch: isLoading
-                        ? 'Loading...'
-                        : 'Sorry, there is no matching data to display',
-                    },
-                  },
-                  showFirstButton: 'true',
-                  showLastButton: 'true',
-                  selectableRows: 'none',
-                  customSort: (data, colIndex, order) => {
-                    const columnProperties = {
-                      1: 'price',
-                      2: 'uic',
-                      3: 'order_id',
-                      4: 'imei',
-                      7: 'muic',
-                      9: 'charging.battery_status',
-                      10: 'charging.charge_percentage',
-                      11: 'charging.body_condition',
-                      12: 'charging.display_condition',
-                      13: 'charging.lock_status',
-                      14: 'charging.charging_jack_type',
-                      15: 'charging.boady_part_missing',
-                      16: 'bqc_report.blancoo_qc_status',
-                      17: 'bqc_report.factory_reset_status',
-                      18: 'bqc_report.bqc_incomplete_reason',
-                      19: 'bqc_report.technical_issue',
-                      20: 'bqc_report.other',
-                      21: 'audit_report.orgGrade',
-                      22: 'audit_report.grade',
-                      23: 'audit_report.stage',
-                      24: 'audit_report.reason',
-                      25: 'audit_report.description',
-                      26: 'rdl_fls_report.username',
-                      27: 'rdl_fls_report.selected_status',
-                      28: 'rdl_fls_report.model_reg',
-                      29: 'rdl_fls_report.color',
-                      30: 'rdl_fls_report.partRequired',
-                      31: 'rdl_fls_report.description',
-                    };
-      
-                    const property = columnProperties[colIndex];
-                    if (colIndex === 30) {
-                        return data.sort((a, b) => {
-                          const aValue = a.data[colIndex]?.rdl_fls_report?.partRequired || [];
-                          const bValue = b.data[colIndex]?.rdl_fls_report?.partRequired || [];
-                    
-                          const aList = aValue.map(data => `${data?.part_name} - ${data?.part_id}`).join(', ');
-                          const bList = bValue.map(data => `${data?.part_name} - ${data?.part_id}`).join(', ');
-                    
-                          return (order === 'asc' ? 1 : -1) * aList.localeCompare(bList);
-                        });
-                      }
-                    if (property) {
-                      return data.sort((a, b) => {
-                        const aPropertyValue = getValueByProperty(a.data[colIndex], property);
-                        const bPropertyValue = getValueByProperty(b.data[colIndex], property);
-      
-                        if (
-                          typeof aPropertyValue === 'string' &&
-                          typeof bPropertyValue === 'string'
-                        ) {
-                          return (order === 'asc' ? 1 : -1) * aPropertyValue.localeCompare(bPropertyValue);
-                        }
-      
-                        return (
-                          (parseFloat(aPropertyValue) - parseFloat(bPropertyValue)) *
-                          (order === 'desc' ? -1 : 1)
-                        );
-                      });
-                    }
-      
-                    return data.sort((a, b) => {
-                      const aValue = a.data[colIndex];
-                      const bValue = b.data[colIndex];
-      
-                      if (aValue === bValue) {
-                        return 0;
-                      }
-      
-                      if (aValue === null || aValue === undefined) {
-                        return 1;
-                      }
-      
-                      if (bValue === null || bValue === undefined) {
-                        return -1;
-                      }
-      
-                      if (
-                        typeof aValue === 'string' &&
-                        typeof bValue === 'string'
-                      ) {
-                        return (order === 'asc' ? 1 : -1) * aValue.localeCompare(bValue);
-                      }
-      
-                      return (
-                        (parseFloat(aValue) - parseFloat(bValue)) *
-                        (order === 'desc' ? -1 : 1)
-                      );
-                    });
-      
-                    function getValueByProperty(data, property) {
-                      const properties = property.split('.');
-                      let value = properties.reduce((obj, key) => obj?.[key], data);
-      
-                      if (properties[0] === 'rdl_fls_report' && properties[1] === 'partRequired' && properties[2] === 'length') {
-                        value = value || 0;
-                      }
-      
-                      return value !== undefined ? value : '';
-                    }
-                  },
-                  elevation: 0,
-                  rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-              />
-            </ProductTableRdlOne>
-          </>
-        );
-      }, [item, columnsForRdlOne]);
-      
+            <>
+                <ProductTableRdlOne>
+                    <MUIDataTable
+                        title={'UNITS'}
+                        data={item}
+                        columns={columnsForRdlOne}
+                        options={{
+                            filterType: 'multiselect',
+                            responsive: 'standared',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            showFirstButton: 'true',
+                            showLastButton: 'true',
+                            selectableRows: 'none',
+                            customSort: (data, colIndex, order) => {
+                                const columnProperties = {
+                                    1: 'price',
+                                    2: 'uic',
+                                    3: 'order_id',
+                                    4: 'imei',
+                                    7: 'muic',
+                                    9: 'charging.battery_status',
+                                    10: 'charging.charge_percentage',
+                                    11: 'charging.body_condition',
+                                    12: 'charging.display_condition',
+                                    13: 'charging.lock_status',
+                                    14: 'charging.charging_jack_type',
+                                    15: 'charging.boady_part_missing',
+                                    16: 'bqc_report.blancoo_qc_status',
+                                    17: 'bqc_report.factory_reset_status',
+                                    18: 'bqc_report.bqc_incomplete_reason',
+                                    19: 'bqc_report.technical_issue',
+                                    20: 'bqc_report.other',
+                                    21: 'audit_report.orgGrade',
+                                    22: 'audit_report.grade',
+                                    23: 'audit_report.stage',
+                                    24: 'audit_report.reason',
+                                    25: 'audit_report.description',
+                                    26: 'rdl_fls_report.username',
+                                    27: 'rdl_fls_report.selected_status',
+                                    28: 'rdl_fls_report.model_reg',
+                                    29: 'rdl_fls_report.color',
+                                    30: 'rdl_fls_report.partRequired',
+                                    31: 'rdl_fls_report.description',
+                                }
+
+                                const property = columnProperties[colIndex]
+
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
+
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    let value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+
+                                    if (
+                                        properties[0] === 'rdl_fls_report' &&
+                                        properties[1] === 'partRequired' &&
+                                        properties[2] === 'length'
+                                    ) {
+                                        value = value || 0
+                                    }
+
+                                    return value !== undefined ? value : ''
+                                }
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTableRdlOne>
+            </>
+        )
+    }, [item, columnsForRdlOne, isLoading])
+
+
+    console.log(selectedStatus);
 
     return (
         <Container>
@@ -2373,7 +2465,7 @@ const PickupPage = () => {
                             mt: 2,
                         }}
                     >
-                        <Box>
+                        <Box sx={{ mt: 1 }}>
                             {/* <TextField
                                 label="Search UIC"
                                 variant="outlined"
@@ -2436,7 +2528,92 @@ const PickupPage = () => {
                                 Sort
                             </Button>
                         </Box>
-                        <Box>
+                        <Box sx={{ mt: 1 }}>
+                            {value == 'Audit Done' ? (
+                                    <FormControl sx={{ mb: 2, width: 260 }}>
+                                    <InputLabel id="demo-multiple-name-label">
+                                        Auditor status
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={selectedStatus}
+                                        input={<OutlinedInput label="Auditor status" />}
+                                        MenuProps={MenuProps}
+                                        onChange={(e) => {
+                                          handleChangeDate(e)
+                                        }}
+                                       
+                                    >
+                                    <MenuItem value="Accept">Accept</MenuItem>
+                                    <MenuItem value="Upgrade">Upgrade</MenuItem>
+                                    <MenuItem value="Downgrade">
+                                        Downgrade
+                                    </MenuItem>
+                                    <MenuItem value="Direct Upgrade">
+                                        Direct Upgrade
+                                    </MenuItem>
+                                    <MenuItem value="Direct Downgrade">
+                                        Direct Downgrade
+                                    </MenuItem>
+                                    <MenuItem value="Repair">Repair</MenuItem>
+                                    <MenuItem value="BQC Not Done">BQC Not Done</MenuItem>
+                                    </Select>
+                        </FormControl>
+                            ) : null}
+                            {value == 'Ready to RDL-Repair' ? (
+                                  <FormControl sx={{ mb: 2, width: 260 }}>
+                                  <InputLabel id="demo-multiple-name-label">
+                                      Rdl 1 status
+                                  </InputLabel>
+                                  <Select
+                                      labelId="demo-multiple-name-label"
+                                      id="demo-multiple-name"
+                                      multiple
+                                      value={selectedStatus}
+                                      input={<OutlinedInput label=" Rdl 1 status" />}
+                                      MenuProps={MenuProps}
+                                      onChange={(e) => {
+                                        handleChangeDate(e)
+                                      }}
+                                     
+                                  >
+                                    <MenuItem value="Battery Boosted" >Battery Boosted</MenuItem>
+                                    <MenuItem value="Charge jack Replaced & Boosted">
+                                    Charge jack Replaced & Boosted
+                                    </MenuItem>
+                                    <MenuItem value="Battery Damage">Battery Damage</MenuItem>
+                                    <MenuItem value="Repair Required">Repair Required</MenuItem>
+                                    <MenuItem value="Accept Auditor Feedback">Accept Auditor Feedback</MenuItem>
+                                    <MenuItem value="Unlocked">Unlocked</MenuItem>
+                                    <MenuItem value="Issue Resolved Through Software">
+                                        Issue Resolved Through Software
+                                    </MenuItem>
+                                    <MenuItem value="Dead">Dead</MenuItem>
+                                    </Select>
+                        </FormControl>
+                            ) : null}
+                            {
+                               value == 'Ready to RDL-Repair' ||  value == 'Audit Done' ?
+
+                            <Button
+                                sx={{ ml: 2, mr: 3 }}
+                                variant="contained"
+                                disabled={
+                                    selectedStatus.length ==0
+                                }
+                                style={{ backgroundColor: 'green' }}
+                                onClick={(e) => {
+                                    dataFilter(e)
+                                }}
+                            >
+                                Filter
+                            </Button>
+                            :
+                            null
+                            }
+
                             <Button
                                 sx={{
                                     mr: 3,

@@ -69,7 +69,7 @@ const SimpleMuiTable = () => {
                             '/searchUicPageAllPage',
                             obj
                         )
-                       
+
                         if (res.status == 200) {
                             setItem(res.data.data)
                             setDeliveryCount(res.data.count)
@@ -359,7 +359,7 @@ const SimpleMuiTable = () => {
             })
         }
     }
- 
+
     const tableData = useMemo(() => {
         return (
             <ProductTable>
@@ -449,7 +449,7 @@ const SimpleMuiTable = () => {
                                     )}
                                 />
                             </TableCell>
-                            <TableCell sx={{pl:4}}>{data.id}</TableCell>
+                            <TableCell sx={{ pl: 4 }}>{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.uic_status == 'Pending'

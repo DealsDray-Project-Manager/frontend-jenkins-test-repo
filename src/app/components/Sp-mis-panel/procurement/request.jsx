@@ -113,7 +113,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Spare Part Number
                 </Typography>
             ),
@@ -124,7 +124,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Spare Part Name
                 </Typography>
             ),
@@ -157,7 +157,7 @@ const SimpleMuiTable = () => {
         {
             name: 'aval_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' , mr:10}} noWrap>
                     Available Quantity
                 </Typography>
             ),
@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
             name: 'requested_qtc',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Requested Quantity
+                   Purchase request created
                 </Typography>
             ),
             options: {
@@ -179,7 +179,7 @@ const SimpleMuiTable = () => {
         {
             name: 'required_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Required Quantity
                 </Typography>
             ),

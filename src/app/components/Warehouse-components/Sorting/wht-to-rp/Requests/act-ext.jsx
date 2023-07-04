@@ -21,6 +21,11 @@ import jwt_decode from 'jwt-decode'
 
 import { axiosWarehouseIn } from '../../../../../../axios'
 
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+}))
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -94,7 +99,9 @@ export default function DialogBox() {
 
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextDisable(false)
+                    setRefresh((refresh) => !refresh)
                 } else {
                     setTextDisable(false)
                     setUic('')
@@ -224,6 +231,7 @@ export default function DialogBox() {
                         sx={{
                             float: 'left',
                             ml: 2,
+                            mb:2
                         }}
                     >
                         <h5>ACTUAL</h5>
@@ -348,6 +356,13 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm
+                sx={{mt:1, height:'10px'}}
+                    label='Rack ID'
+                    select
+                    type='text'
+                    style={{ width: '150px'}}
+                />
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"

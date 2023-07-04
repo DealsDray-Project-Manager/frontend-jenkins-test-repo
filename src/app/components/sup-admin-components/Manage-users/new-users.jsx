@@ -63,6 +63,7 @@ const MemberEditorDialog = ({
             open()
         }
     }, [])
+    
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -458,9 +459,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Purchase RM">
                                     Purchase RM
                                 </MenuItem>
-                                <MenuItem value="Sp mis">
-                                    Sp mis
-                                </MenuItem>
+                                <MenuItem value="Sp mis">Sp mis</MenuItem>
                             </TextFieldCustOm>
                         ) : (
                             <TextFieldCustOm

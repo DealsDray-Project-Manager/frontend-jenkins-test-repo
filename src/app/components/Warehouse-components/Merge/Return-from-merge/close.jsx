@@ -119,7 +119,9 @@ export default function DialogBox() {
                 setTextDisable(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
-                    addActualitem(res.data.data)
+                    setAwbn('')
+                    setTextDisable(false)
+                    getitem()
                 } else {
                     setTextDisable(false)
 
@@ -269,7 +271,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
 
                                 {/* <TableCell>AWBN Number</TableCell> */}
@@ -281,7 +283,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
 
                                     <TableCell>{data?.order_id}</TableCell>
@@ -373,10 +377,10 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 {/* <TableCell>Bag Id</TableCell> */}
-                                {/* <TableCell>AWBN Number</TableCell> */} 
+                                {/* <TableCell>AWBN Number</TableCell> */}
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
                                 <TableCell>Status</TableCell>
@@ -385,7 +389,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -421,16 +427,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'Merge', path: '/' },
                         { name: 'Return-From-Merge', path: '/' },
-                        { name: 'Tray Close'}
+                        { name: 'Tray Close' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{

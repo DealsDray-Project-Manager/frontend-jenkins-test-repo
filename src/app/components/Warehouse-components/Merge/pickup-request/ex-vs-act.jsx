@@ -69,7 +69,9 @@ export default function DialogBox() {
                 setTextDisable(true)
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status === 200) {
-                    addActualitem(res.data.data)
+                    setUic('')
+                    setTextDisable(false)
+                    setRefresh((refresh) => !refresh)
                 } else {
                     setTextDisable(false)
                     setUic('')
@@ -165,7 +167,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'15px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.items?.length}/{trayData?.limit}
                             </p>
@@ -181,7 +183,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>Sl.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>Sl.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 {trayData?.type_taxanomy === 'MMT' &&
                                 trayData?.prefix == 'tray-master' ? (
@@ -200,7 +202,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     {trayData?.type_taxanomy === 'MMT' &&
                                     trayData?.prefix == 'tray-master' ? (
@@ -262,7 +266,7 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{marginLeft:'20px'}}>Total</h5>
+                            <h5 style={{ marginLeft: '20px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {trayData.actual_items?.length}/
                                 {trayData?.limit}
@@ -279,7 +283,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 {trayData?.type_taxanomy === 'MMT' &&
                                 trayData?.prefix == 'tray-master' ? (
@@ -299,7 +303,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     {trayData?.type_taxanomy === 'MMT' &&
                                     trayData?.prefix == 'tray-master' ? (
@@ -330,16 +336,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'Pickup', path: '/' },
                         { name: 'Pickup-Requests', path: '/' },
-                        { name: 'Verification'}
+                        { name: 'Verification' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{

@@ -414,7 +414,7 @@ const AddBulkPart = () => {
                                             value={data.part_code?.toString()}
                                         />
                                         {err?.part_code_not_exists?.includes(
-                                            data.part_code
+                                            data.part_code?.toString()
                                         ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}
@@ -424,7 +424,7 @@ const AddBulkPart = () => {
                                                 style={{ color: 'green' }}
                                             />
                                         ) : err?.duplicate_part_code?.includes(
-                                              data.part_code
+                                              data.part_code?.toString()
                                           ) ? (
                                             <ClearIcon
                                                 style={{ color: 'red' }}

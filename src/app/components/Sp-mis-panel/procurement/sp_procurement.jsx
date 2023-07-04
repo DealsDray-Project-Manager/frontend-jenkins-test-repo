@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Box , Table, TableContainer} from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -18,6 +18,24 @@ const Container = styled('div')(({ theme }) => ({
         [theme.breakpoints.down('sm')]: {
             marginBottom: '16px',
         },
+    },
+}))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth:600,
+    width: '100%',
+    height: '100%',
+    whiteSpace: 'nowrap',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
     },
 }))
 
@@ -67,7 +85,7 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                <Typography sx={{fontWeight: 'bold', ml: 2 }}>
                     Record No
                 </Typography>
             ),
@@ -87,7 +105,8 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.muic || '',
+                customBodyRender: (value, dataIndex) => 
+                value?.muic || '',
             },
         },
         {
@@ -125,10 +144,9 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
+                        <Box>
                         <Button
-                            sx={{
-                                m: 0,
-                            }}
+                            sx={{ p:1, whiteSpace:'nowrap' }}
                             variant="contained"
                             onClick={(e) =>
                                 handelDetailPage(
@@ -141,6 +159,7 @@ const SimpleMuiTable = () => {
                         >
                             Create Procurement List
                         </Button>
+                        </Box>
                     )
                 },
             },
@@ -156,7 +175,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
+            <ProductTable>
             <MUIDataTable
                 title={'Requests'}
                 data={item}
@@ -200,6 +219,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </ProductTable>
         </Container>
     )
 }

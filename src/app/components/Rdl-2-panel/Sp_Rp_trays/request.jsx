@@ -146,7 +146,7 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                Recieved
+                                Recieve
                             </Button>
                         </>
                     )
@@ -161,7 +161,7 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: true, 
                 sort: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
@@ -184,7 +184,7 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                Recieved
+                                Recieve
                             </Button>
                         </>
                     )

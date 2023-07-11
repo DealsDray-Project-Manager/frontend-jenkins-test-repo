@@ -80,7 +80,16 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rackid',
+            name: 'limit',
+            label: 'Tray Id',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+        {
+            name: 'rack_id',
             label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
             options: {
                 filter: true,

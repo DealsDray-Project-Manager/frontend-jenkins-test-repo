@@ -37,7 +37,6 @@ const MemberEditorDialog = ({
     const [location, setLocation] = useState('')
     const [warehouse, setWarehouse] = useState([])
     const [locationDrop, setLocationDrop] = useState([])
-    const [selectedCpc, setSelectedCpc] = useState('')
     const [loading, setLoading] = useState(false)
     const [allModel, setAllModel] = useState([])
     const [categorys, setCategorys] = useState([])
@@ -308,8 +307,11 @@ return (
             >
                 {locationDrop.map((data) => (
                     <MenuItem
-                        onClick={(e) => {
-                            setSelectedCpc(data.location_type)
+                        onClick={() => {
+                            getCpcData(
+                                data.code,
+                                data.location_type
+                            )
                         }}
                         value={data.code}
                     >

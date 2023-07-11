@@ -47,7 +47,7 @@ const ScrollableTableContainer = styled(TableContainer)
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
-    const [partList, setPartList] = useState([])
+    const [dataForDownload, setDataForDownload] = useState([])
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
 
@@ -91,15 +91,16 @@ const SimpleMuiTable = () => {
 
     const download = (e) => {
         let arr = []
-        for (let x of partList) {
+        for (let x of dataForDownload) {
             let obj = {
-                part_code: x.part_code,
-                name: x.name,
-                color: x.color,
-                technical_qc: x.technical_qc,
-                description: x.description,
-                available_stock: x.avl_stock,
-                add_stock: '0',
+               'Tray ID': x?.code,
+               'Brand':x?.brand,
+               'Model':x?.model,
+               'Tray Display Name':x?.display,
+               'Status':x?.sort_id,
+               'Assigned date':x?.assigned_date,
+               'Assigned To':x?.issued_user_name,
+               
             }
             arr.push(obj)
         }
@@ -229,9 +230,9 @@ const SimpleMuiTable = () => {
                             sx={{}}
                             variant="contained"
                             color="success"
-                            onClick={(e) => download(e)}
+                            // onClick={(e) => download(e)}
                         >
-                            manage stock
+                            Download XLSX
                         </Button>
                         </Box>
                     <MUIDataTable

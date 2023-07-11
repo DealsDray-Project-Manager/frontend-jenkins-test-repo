@@ -20,6 +20,11 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 import Swal from 'sweetalert2'
 
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -465,6 +470,12 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm
+                    label='Rack ID'
+                    select
+                    type='text'
+                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
+                    />
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)

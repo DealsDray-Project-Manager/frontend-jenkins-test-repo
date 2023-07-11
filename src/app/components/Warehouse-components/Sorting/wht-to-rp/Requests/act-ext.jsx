@@ -354,7 +354,7 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm
+                <TextFieldCustOm 
                 sx={{mt:1, height:'10px'}}
                     label='Rack ID'
                     select

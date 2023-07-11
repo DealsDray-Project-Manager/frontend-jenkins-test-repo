@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
-import { styled } from '@mui/system'
+import { styled } from '@mui/system' 
 import { Button, IconButton, Icon, Box, Radio, Typography,Table, TableContainer  } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -399,7 +399,7 @@ return (
                     setVendorId={setVendorId}
                 />
             )}
-        </Container>
+        </Container> 
     )
 }
 

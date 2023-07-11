@@ -15,7 +15,7 @@ const ProductTable = styled(Table)(() => ({
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
-            paddingLeft: 16,
+            paddingLeft: 16, 
         },
     },
     '& td': {

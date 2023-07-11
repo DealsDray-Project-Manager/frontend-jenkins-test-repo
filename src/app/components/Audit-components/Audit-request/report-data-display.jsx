@@ -574,15 +574,43 @@ export default function DialogBox() {
                         stateData.stage == 'Direct Downgrade' ||
                         stateData.stage == 'Direct Upgrade' ? (
                             <>
-                                <TextField
-                                    label="Audit Remark"
-                                    fullWidth
-                                    sx={{
-                                        mb: 2,
+                                <textarea
+                                    style={{
+                                        width: '100%',
+                                        height: '100px',
+                                        marginBottom:'10px'
                                     }}
                                     onChange={handleChange}
-                                    name="description"
-                                />
+                                    placeholder='Audit Remark'
+                                ></textarea>
+                            <TextField
+                                label="Color Selection"
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="description"
+                            />
+                            
+                            <TextField
+                                label="RAM"
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="description"
+                            />
+                            <TextField
+                                label="Storage"
+                                fullWidth
+                                select
+                                onChange={handleChange}
+                                name="description"
+                            />
                             </>
                         ) : null}
                     </DialogContent>

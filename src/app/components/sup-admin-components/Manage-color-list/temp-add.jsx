@@ -36,7 +36,7 @@ const AddPartOrColorAndEditDialog = ({
         }
     }, [])
 
-    const schema = Yup.object().shape({
+    const schema = Yup.object().shape({ 
         name: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')

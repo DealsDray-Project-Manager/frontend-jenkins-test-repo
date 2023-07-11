@@ -22,7 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '270%',
+    width: '223%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -111,21 +111,21 @@ const columns = [
     },
     {
         name: 'body_damage_des',
-        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Body Damage Description</Typography>,
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold', mr:5}} noWrap>Body Damage Description</Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'item_recieved',
-        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Item Recieved in Packet</Typography>,
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold', mr:6}} noWrap>Item Recieved in Packet</Typography>,
         options: {
             filter: true,
         },
     },
     {
         name: 'model_brand',
-        label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Mismatched Model Brand Name</Typography>,
+        label: <Typography sx={{fontSize:'16px', fontWeight:'bold', mr:5}} noWrap>Mismatched Model Brand Name</Typography>,
         options: {
             filter: true,
         },

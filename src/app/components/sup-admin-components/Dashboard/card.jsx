@@ -59,8 +59,14 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count.ctxCategory,
-            title: 'Category',
+            title: 'Tray Category',
             link: '/sup-admin/category',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count.spCategory,
+            title: 'Spare Category',
+            link: '/sup-admin/view-categories',
         },
         {
             icon: 'branding_watermark',

@@ -85,7 +85,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status_change_time',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Date of Closure</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}} noWrap>Date of Closure</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>

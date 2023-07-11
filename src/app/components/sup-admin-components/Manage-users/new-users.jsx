@@ -52,6 +52,7 @@ const MemberEditorDialog = ({
                 })
             }
         }
+
         fetchCpc()
         if (Object.keys(editFetchData).length !== 0) {
             editFetchData.cpassword = editFetchData.password
@@ -63,7 +64,6 @@ const MemberEditorDialog = ({
             open()
         }
     }, [])
-    
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -408,7 +408,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="Charging">Charging</MenuItem>
                                 <MenuItem value="MIS">MIS</MenuItem>
                                 <MenuItem value="RDL-FLS">RDL-FLS</MenuItem>
-                                <MenuItem value="RDL-2">RDL-2</MenuItem>
+                                <MenuItem value="RDL-two">RDL-two</MenuItem>
 
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sorting Agent">

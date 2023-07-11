@@ -65,7 +65,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+                        '/request-for-RDL-fls/' + 'Send for RDL-two/' + location
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/assignToAgent/rdl-fls/users/' + 'RDL-2/' + location
+                        '/assignToAgent/rdl-fls/users/' + 'RDL-two/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)

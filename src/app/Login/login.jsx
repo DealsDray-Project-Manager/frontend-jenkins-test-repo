@@ -94,7 +94,7 @@ const Login = () => {
                 navigate('/pricing/dashboard')
             } else if (user_type == 'Reporting') {
                 navigate('/reporting/dashboard')
-            } else if (user_type == 'RDL-2') {
+            } else if (user_type == 'RDL-two') {
                 navigate('/rdl-two/dashboard')
             } else if (user_type == 'SP User') {
                 navigate('/sp-user/dashboard')
@@ -147,7 +147,7 @@ const Login = () => {
                     navigate('/pricing/dashboard')
                 } else if (response.data.data?.user_type == 'Reporting') {
                     navigate('/reporting/dashboard')
-                } else if (response.data.data?.user_type == 'RDL-2') {
+                } else if (response.data.data?.user_type == 'RDL-two') {
                     navigate('/rdl-two/dashboard')
                 } else if (response.data.data?.user_type == 'SP User') {
                     navigate('/sp-user/dashboard')

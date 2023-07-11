@@ -78,7 +78,7 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
-                    stage: 'BQC Not Done',
+                    stage: 'BQC Not Done / Imei not verified',
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -218,7 +218,6 @@ export default function DialogBox() {
                         BotDoneDate={reportData?.delivery?.tray_closed_by_bot}
                     />
                 </Grid>
-
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
                     <ChargingDetails
                         Charging={reportData?.delivery?.charging}
@@ -262,7 +261,7 @@ export default function DialogBox() {
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
                         <TextField
-                            label="Select"
+                            label="Select status"
                             fullWidth
                             select
                             sx={{
@@ -285,87 +284,94 @@ export default function DialogBox() {
                             </MenuItem> */}
                             {reportData?.delivery?.bqc_software_report
                                 ?.final_grade !== 'A' ? (
-                                <MenuItem value="Direct Upgrade">Direct Upgrade</MenuItem>
+                                <MenuItem value="Direct Upgrade">
+                                    Direct Upgrade
+                                </MenuItem>
                             ) : null}
                             {reportData?.delivery?.bqc_software_report
                                 ?.final_grade !== 'D' ? (
-                                <MenuItem value="Direct Downgrade">Direct Downgrade</MenuItem>
+                                <MenuItem value="Direct Downgrade">
+                                    Direct Downgrade
+                                </MenuItem>
                             ) : null}
-                           
+
                             <MenuItem value="Repair">Repair</MenuItem>
                         </TextField>
                         {stateData.stage === 'Accept' ? (
                             <>
-                            <TextField
-                                label="Select Tray"
-                                select
-                                fullWidth
-                                sx={{
-                                    mb: 2,
-                                }}
-                                onChange={handleChange}
-                                name="tray_type"
-                            >
-                                {reportData?.delivery?.bqc_software_report
-                                    ?.final_grade == 'A' ? (
-                                    <MenuItem value="A">
-                                        CTA - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'A' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : reportData?.delivery?.bqc_software_report
-                                      ?.final_grade == 'B' ? (
-                                    <MenuItem value="B">
-                                        CTB - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'B' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : reportData?.delivery?.bqc_software_report
-                                      ?.final_grade == 'C' ? (
-                                    <MenuItem value="C">
-                                        CTC - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'C' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : reportData?.delivery?.bqc_software_report
-                                      ?.final_grade == 'D' ? (
-                                    <MenuItem value="D">
-                                        CTD - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'D' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : null}
-                            </TextField>
-                            <TextField
-                                label="Audit Remark"
-                                fullWidth
-                                onChange={handleChange}
-                                name="description"
-                            />
+                                <TextField
+                                    label="Select Tray"
+                                    select
+                                    fullWidth
+                                    sx={{
+                                        mb: 2,
+                                    }}
+                                    onChange={handleChange}
+                                    name="tray_type"
+                                >
+                                    {reportData?.delivery?.bqc_software_report
+                                        ?.final_grade == 'A' ? (
+                                        <MenuItem value="A">
+                                            CTA - (
+                                            {ctxTray?.map((trayData) =>
+                                                trayData.tray_grade == 'A' &&
+                                                trayData.sort_id ==
+                                                    'Issued to Audit'
+                                                    ? trayData?.code
+                                                    : null
+                                            )}
+                                            )
+                                        </MenuItem>
+                                    ) : reportData?.delivery
+                                          ?.bqc_software_report?.final_grade ==
+                                      'B' ? (
+                                        <MenuItem value="B">
+                                            CTB - (
+                                            {ctxTray?.map((trayData) =>
+                                                trayData.tray_grade == 'B' &&
+                                                trayData.sort_id ==
+                                                    'Issued to Audit'
+                                                    ? trayData?.code
+                                                    : null
+                                            )}
+                                            )
+                                        </MenuItem>
+                                    ) : reportData?.delivery
+                                          ?.bqc_software_report?.final_grade ==
+                                      'C' ? (
+                                        <MenuItem value="C">
+                                            CTC - (
+                                            {ctxTray?.map((trayData) =>
+                                                trayData.tray_grade == 'C' &&
+                                                trayData.sort_id ==
+                                                    'Issued to Audit'
+                                                    ? trayData?.code
+                                                    : null
+                                            )}
+                                            )
+                                        </MenuItem>
+                                    ) : reportData?.delivery
+                                          ?.bqc_software_report?.final_grade ==
+                                      'D' ? (
+                                        <MenuItem value="D">
+                                            CTD - (
+                                            {ctxTray?.map((trayData) =>
+                                                trayData.tray_grade == 'D' &&
+                                                trayData.sort_id ==
+                                                    'Issued to Audit'
+                                                    ? trayData?.code
+                                                    : null
+                                            )}
+                                            )
+                                        </MenuItem>
+                                    ) : null}
+                                </TextField>
+                                <TextField
+                                    label="Audit Remark"
+                                    fullWidth
+                                    onChange={handleChange}
+                                    name="description"
+                                />
                             </>
                         ) : null}
                         {stateData.stage === 'Upgrade' ||
@@ -470,6 +476,7 @@ export default function DialogBox() {
                                         <MenuItem value="D">D</MenuItem>
                                     ) : null}
                                 </TextField>
+
                                 {stateData.stage === 'Downgrade' ? (
                                     <>
                                         <TextField
@@ -585,6 +592,42 @@ export default function DialogBox() {
                                 />
                             </>
                         ) : null}
+                        <TextField
+                            label="Select color"
+                            fullWidth
+                            select
+                            sx={{
+                                mb: 2,
+                            }}
+                            onChange={handleChange}
+                            name="color_selection"
+                        >
+                            <MenuItem value="Dummy">Dummy</MenuItem>
+                        </TextField>
+                        <TextField
+                            label="Select Ram"
+                            fullWidth
+                            select
+                            sx={{
+                                mb: 2,
+                            }}
+                            onChange={handleChange}
+                            name="ram_verification"
+                        >
+                            <MenuItem value="Dummy">Dummy</MenuItem>
+                        </TextField>
+                        <TextField
+                            label="Select storage"
+                            fullWidth
+                            select
+                            sx={{
+                                mb: 2,
+                            }}
+                            onChange={handleChange}
+                            name="storage_verification"
+                        >
+                            <MenuItem value="Dummy">Dummy</MenuItem>
+                        </TextField>
                     </DialogContent>
                     <DialogActions>
                         <Button
@@ -678,7 +721,22 @@ export default function DialogBox() {
                             //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
                             //         'failed') ||
                             reportData?.delivery?.bqc_software_report
-                                ?.final_grade == undefined ? (
+                                ?.final_grade == undefined ||
+                            (reportData?.order?.imei
+                                ?.match(/[0-9]/g)
+                                ?.join('') !==
+                                reportData?.delivery?.bqc_software_report
+                                    ?.mobile_imei &&
+                                reportData?.order?.imei
+                                    ?.match(/[0-9]/g)
+                                    ?.join('') !==
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.mobile_imei2 &&
+                                reportData?.order?.imei
+                                    ?.match(/[0-9]/g)
+                                    ?.join('') !==
+                                    reportData?.delivery?.bqc_software_report
+                                        ?._ro_ril_miui_imei0) ? (
                                 <Button
                                     sx={{ mr: 2 }}
                                     onClick={(e) =>

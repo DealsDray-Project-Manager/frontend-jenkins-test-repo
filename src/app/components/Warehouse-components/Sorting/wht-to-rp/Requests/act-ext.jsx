@@ -310,7 +310,7 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT Tray', path: '/' },
+                        { name: 'Sorting request wht-rp', path: '/' },
                         { name: 'Scanning', path: '/' },
                         { name: 'Verification' },
                     ]}

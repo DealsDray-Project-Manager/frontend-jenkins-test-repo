@@ -57,7 +57,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 rpTray: code,
                 screen: 'rp-tray',
-                type:"RPT"
+                type: 'RPT',
             }
 
             let res = await axiosSortingAgent.post('/whtToRp/closeTray', obj)
@@ -116,17 +116,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'issued_user_name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Agent Name</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'limit',
             label: 'Tray Id',
@@ -147,7 +137,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[4],
+                    value.length + '/' + tableMeta.rowData[3],
             },
         },
 
@@ -203,8 +193,8 @@ const SimpleMuiTable = () => {
                                     m: 1,
                                 }}
                                 disabled={
-                                    tableMeta.rowData[5]?.length !==
-                                    tableMeta.rowData[7]?.length
+                                    tableMeta.rowData[4]?.length !==
+                                    tableMeta.rowData[6]?.length
                                 }
                                 variant="contained"
                                 onClick={(e) => handelClose(e, value)}

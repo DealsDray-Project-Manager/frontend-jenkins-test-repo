@@ -44,7 +44,7 @@ const SimpleMuiTable = () => {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Rdl-2 inprogress/' +
+                            'Rdl-two inprogress/' +
                             location
                     )
                     if (response.status === 200) {
@@ -230,7 +230,7 @@ const SimpleMuiTable = () => {
                             SP Tray : {trayData?.sp_tray}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
-                            BRAND : {trayData?.brnad}
+                            BRAND : {trayData?.brand}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
                             MODEL : {trayData?.model}

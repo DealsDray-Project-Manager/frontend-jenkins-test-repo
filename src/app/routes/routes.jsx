@@ -41,6 +41,7 @@ import Rdl2Routers from 'app/components/Rdl-2-panel/Rdl-2-router'
 import RmWarehouse from 'app/components/Rm-warehouse/Rm-warehouse'
 import SpmisPanel from "app/components/Sp-mis-panel/sp-mis-panel"
 import PurchaseUser from 'app/components/Purchase-rm/purchase-rm'
+
 export const AllPages = () => {
     const all_routes = [
         {

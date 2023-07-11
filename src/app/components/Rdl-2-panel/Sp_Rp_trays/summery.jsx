@@ -762,7 +762,7 @@ const SimpleMuiTable = () => {
                     <br />
                     <Card>
                         <MUIDataTable
-                            title={'Parts not repairable'}
+                            title={'Devices not repairable'}
                             data={summery?.notReapairable}
                             columns={part_not_available}
                             options={{

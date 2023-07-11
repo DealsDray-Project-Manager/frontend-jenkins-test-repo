@@ -13,7 +13,7 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
-import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
+import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -92,11 +92,11 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 username: username,
                 whtTrayId: trayId,
-                uic:uic
+                uic: uic,
             },
         })
     }
-    
+
     /************************************************************************** */
     // const tableExpected = useMemo(() => {
     return (
@@ -216,10 +216,15 @@ const SimpleMuiTable = () => {
                             md={12}
                             xs={12}
                         >
-                            <BqcApiAllReport
+                            <BqcApiReport
                                 BqcSowftwareReport={
                                     reportData?.delivery?.bqc_software_report
                                 }
+                                grade={
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.final_grade
+                                }
+                                imei={reportData?.order?.imei}
                             />
                         </Grid>
                     </Grid>

@@ -54,7 +54,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Issued to RDL-2/' +
+                            'Issued to RDL-two/' +
                             location
                     )
                     if (response.status === 200) {

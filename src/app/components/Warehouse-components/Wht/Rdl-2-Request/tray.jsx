@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+                        '/request-for-RDL-fls/' + 'Send for RDL-two/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl2-request/approve/' + trayId)
+        navigate('/wareshouse/wht/rdl-two-request/approve/' + trayId)
     }
 
     const columns = [
@@ -187,7 +187,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'RDL-2-Requests' },
+                        { name: 'RDL-two-Requests' },
                     ]}
                 />
             </div>

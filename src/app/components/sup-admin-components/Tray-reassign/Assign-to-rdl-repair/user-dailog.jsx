@@ -32,7 +32,7 @@ const MemberEditorDialog = ({
             let obj = {
                 tray: isCheckk,
                 user_name: RDLUserName,
-                sortId: 'Send for RDL-2',
+                sortId: 'Send for RDL-two',
             }
             let res = await axiosMisUser.post(
                 '/assignToAgent/rdl-fls/sentToWarehouse',

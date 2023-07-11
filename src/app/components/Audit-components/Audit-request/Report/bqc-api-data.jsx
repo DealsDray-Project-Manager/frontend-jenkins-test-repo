@@ -39,7 +39,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             </TableCell>
                         ) : (
                             <TableCell style={{ color: 'red' }}>
-                                Not Verified
+                                Unverified
                             </TableCell>
                         )}
                     </TableRow>

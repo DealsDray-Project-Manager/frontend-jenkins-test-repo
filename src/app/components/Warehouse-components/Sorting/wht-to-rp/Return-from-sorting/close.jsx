@@ -171,7 +171,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/wht/return-from-rdl-fls')
+                navigate('/warehouse/sorting/return-from-wht-to-rp')
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -343,8 +343,8 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'BQC-Requests', path: '/' },
+                        { name: 'Return from sorting wht-rp', path: '/' },
+
                         { name: 'Verification' },
                     ]}
                 />

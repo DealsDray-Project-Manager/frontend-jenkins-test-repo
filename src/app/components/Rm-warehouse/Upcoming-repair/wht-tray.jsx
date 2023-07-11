@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/assignToAgent/rdl-fls/users/' + 'RDL-2/' + location
+                        '/assignToAgent/rdl-fls/users/' + 'RDL-two/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)

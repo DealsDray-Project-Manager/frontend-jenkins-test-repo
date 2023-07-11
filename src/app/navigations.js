@@ -7,16 +7,16 @@ export const navigations = [
         path: '/sp-mis/dashboard',
         icon: 'dashboard',
         sales: 'all',
-        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.SPMIS, // SP MIS DASHBOARD
     },
     {
         name: 'Dashboard',
         path: '/purchase-user/dashboard',
         icon: 'dashboard',
         sales: 'all',
-        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.PURCHASERM, // PURCHASE USER DASHBOARD
     },
-   
+
     {
         name: 'Dashboard',
         path: '/sup-admin/dashboard',
@@ -29,7 +29,7 @@ export const navigations = [
         path: '/mis/dashboard',
         icon: 'dashboard',
         sales: 'all',
-        auth: authRoles.Mis, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.Mis, // PROCESSING MIS DASHBOARD
     },
     {
         name: 'Dashboard',
@@ -173,7 +173,7 @@ export const navigations = [
                 // icon: 'category',
                 path: '/sup-admin/Category',
             },
-           
+
             {
                 name: 'Brands',
                 // icon: 'branding_watermark',
@@ -464,8 +464,8 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-Repair',
-                path: '/mis/assign-to-agent/Rdl-repair',
+                name: 'Assign to RDL-two',
+                path: '/mis/assign-to-agent/rdl-two',
                 iconText: 'NP',
             },
         ],
@@ -698,8 +698,8 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-2 Request',
-                path: '/wareshouse/wht/rdl2-request',
+                name: 'RDL-two Request',
+                path: '/wareshouse/wht/rdl-two-request',
                 iconText: 'VP',
             },
         ],
@@ -726,12 +726,20 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: <Typography sx={{textAlign:'left'}}>Sorting Requests (WHT to RP)</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Sorting Requests (WHT to RP)
+                    </Typography>
+                ),
                 path: '/wareshouse/sorting/wht-to-rp',
                 iconText: 'VP',
             },
             {
-                name: <Typography sx={{textAlign:'left'}}>Return from sorting (WHT to RP)</Typography>,
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        Return from sorting (WHT to RP)
+                    </Typography>
+                ),
                 path: '/warehouse/sorting/return-from-wht-to-rp',
                 iconText: 'VP',
             },
@@ -929,6 +937,16 @@ export const navigations = [
                 path: '/sorting/request',
                 iconText: 'VP',
             },
+            {
+                name: 'WHT to RP',
+                path: '/sorting/wht-to-rp/request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Rp tray',
+                path: '/sorting/wht-to-rp/rp-tray',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.sorting,
         sales: false,
@@ -972,24 +990,7 @@ export const navigations = [
         auth: authRoles.sorting,
         sales: false,
     },
-    {
-        name: 'Sorting Request (Wht to rp)',
-        icon: 'sort',
-        children: [
-            {
-                name: 'WHT to RP',
-                path: '/sorting/wht-to-rp/request',
-                iconText: 'VP',
-            },
-            {
-                name: 'Rp tray',
-                path: '/sorting/wht-to-rp/rp-tray',
-                iconText: 'VP',
-            },
-        ],
-        auth: authRoles.sorting,
-        sales: false,
-    },
+  
 
     {
         name: 'Charging Request',
@@ -1272,7 +1273,7 @@ export const navigations = [
         auth: authRoles.RDL_2,
         sales: false,
     },
-    
+
     {
         name: 'Part List',
         icon: 'class',
@@ -1287,20 +1288,7 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
         sales: false,
     },
-    {
-        name: 'Upcoming Repairs',
-        icon: 'shopping_cart',
-        path: '/sp-user/upcoming-repair-tray',
-        auth: authRoles.RMWAREHOUSE,
-        sales: false,
-    },
-    {
-        name: 'Part Issue Request',
-        icon: 'shopping_cart',
-        path: '/sp-user/rdl-2-issue-request',
-        auth: authRoles.RMWAREHOUSE,
-        sales: false,
-    },
+   
     {
         name: 'Dummy Panel',
         icon: 'class',
@@ -1325,7 +1313,7 @@ export const navigations = [
             },
             {
                 name: 'Issue to rdl-two',
-                path: '/sp-user/ready-to-repair',
+                path: '/sp-user/ready-to-rdl-two',
             },
         ],
         sales: 'all',

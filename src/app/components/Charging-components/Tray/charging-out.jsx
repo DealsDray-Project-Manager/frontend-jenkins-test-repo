@@ -642,9 +642,9 @@ export default function DialogBox() {
                             <Select
                                 labelId="demo-simple-select-label"
                                 fullWidth
-                                disabled={
-                                    trayData.sort_id == 'Recharging Station IN'
-                                }
+                                // disabled={
+                                //     trayData.sort_id == 'Recharging Station IN'
+                                // }
                                 label="Body Condition"
                                 defaultValue={getValues('body_condition')}
                                 {...register('body_condition')}
@@ -677,9 +677,9 @@ export default function DialogBox() {
                                 labelId="demo-simple-select-label"
                                 fullWidth
                                 defaultValue={getValues('display_condition')}
-                                disabled={
-                                    trayData.sort_id == 'Recharging Station IN'
-                                }
+                                // disabled={
+                                //     trayData.sort_id == 'Recharging Station IN'
+                                // }
                                 label="Display Condition"
                                 {...register('display_condition')}
                                 error={errors.display_condition ? true : false}
@@ -709,10 +709,10 @@ export default function DialogBox() {
                                     Lock Status
                                 </InputLabel>
                                 <Select
-                                    disabled={
-                                        trayData.sort_id ==
-                                        'Recharging Station IN'
-                                    }
+                                    // disabled={
+                                    //     trayData.sort_id ==
+                                    //     'Recharging Station IN'
+                                    // }
                                     labelId="demo-simple-select-label"
                                     fullWidth
                                     label="Lock Status"
@@ -749,9 +749,9 @@ export default function DialogBox() {
                                 Charging Jack type
                             </InputLabel>
                             <Select
-                                disabled={
-                                    trayData.sort_id == 'Recharging Station IN'
-                                }
+                                // disabled={
+                                //     trayData.sort_id == 'Recharging Station IN'
+                                // }
                                 labelId="demo-simple-select-label"
                                 fullWidth
                                 defaultValue={getValues('charging_jack_type')}
@@ -785,10 +785,10 @@ export default function DialogBox() {
                                 <Box>
                                     <FormControlLabel
                                         value="YES"
-                                        disabled={
-                                            trayData.sort_id ==
-                                            'Recharging Station IN'
-                                        }
+                                        // disabled={
+                                        //     trayData.sort_id ==
+                                        //     'Recharging Station IN'
+                                        // }
                                         {...register('boady_part_missing')}
                                         onClick={(e) => {
                                             if (
@@ -804,10 +804,10 @@ export default function DialogBox() {
                                         label="YES"
                                     />
                                     <FormControlLabel
-                                        disabled={
-                                            trayData.sort_id ==
-                                            'Recharging Station IN'
-                                        }
+                                        // disabled={
+                                        //     trayData.sort_id ==
+                                        //     'Recharging Station IN'
+                                        // }
                                         {...register('boady_part_missing')}
                                         value="NO"
                                         onClick={(e) => {
@@ -832,9 +832,9 @@ export default function DialogBox() {
                                 label="Missing Part Name"
                                 variant="outlined"
                                 type="text"
-                                disabled={
-                                    trayData.sort_id == 'Recharging Station IN'
-                                }
+                                // disabled={
+                                //     trayData.sort_id == 'Recharging Station IN'
+                                // }
                                 {...register('part_name')}
                                 error={errors.part_name ? true : false}
                                 helperText={errors.part_name?.message}
@@ -846,9 +846,9 @@ export default function DialogBox() {
                             label="CIMEI-1"
                             variant="outlined"
                             type="text"
-                            disabled={
-                                trayData.sort_id == 'Recharging Station IN'
-                            }
+                            // disabled={
+                            //     trayData.sort_id == 'Recharging Station IN'
+                            // }
                             defaultValue={getValues('cimei_1')}
                             {...register('cimei_1')}
                             inputProps={{ maxLength: 15 }}
@@ -866,9 +866,9 @@ export default function DialogBox() {
                             label="CIMEI-2"
                             variant="outlined"
                             type="text"
-                            disabled={
-                                trayData.sort_id == 'Recharging Station IN'
-                            }
+                            // disabled={
+                            //     trayData.sort_id == 'Recharging Station IN'
+                            // }
                             defaultValue={getValues('cimei_2')}
                             {...register('cimei_2')}
                             inputProps={{ maxLength: 15 }}

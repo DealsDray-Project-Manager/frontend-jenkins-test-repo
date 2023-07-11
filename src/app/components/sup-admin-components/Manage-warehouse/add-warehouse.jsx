@@ -246,7 +246,7 @@ const MemberEditorDialog = ({
 
                         <TextFieldCustOm
                             label="Pincode"
-                            type="number"
+                            
                             name="pincode"
                             inputProps={{ maxLength: 6 }}
                             onKeyPress={(event) => {

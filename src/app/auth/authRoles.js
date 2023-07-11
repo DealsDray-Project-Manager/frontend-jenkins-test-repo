@@ -11,7 +11,7 @@ export const authRoles = {
     Sales_Agent: ['Sales Agent'],
     pricing_Agent: ['Pricing Agent'],
     reporting: ['Reporting'],
-    RDL_2: ['RDL-2'],
+    RDL_2: ['RDL-two'],
     RMWAREHOUSE: ['SP User'],
     SPMIS:['Sp mis'],
     PURCHASERM:['Purchase RM']

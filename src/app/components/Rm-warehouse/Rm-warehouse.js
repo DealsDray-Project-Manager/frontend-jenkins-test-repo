@@ -42,7 +42,7 @@ const SptrayIssueToRdlRepair  = Loadable(lazy(() => import('./Sp-tray/sp-tray-is
 
 const RmWarehouse = [
     {
-        path: '/sp-user/ready-to-repair',
+        path: '/sp-user/ready-to-rdl-two',
         element: <SptrayIssueToRdlRepair />,
     },
     {
@@ -114,7 +114,7 @@ const RmWarehouse = [
         element: <ViewRequirementOfPart />,
     },
     {
-        path: '/sp-user/rdl-2-issue-request',
+        path: '/sp-user/rdl-two-issue-request',
         element: <IssueRequesToRdl2 />,
     },
     {

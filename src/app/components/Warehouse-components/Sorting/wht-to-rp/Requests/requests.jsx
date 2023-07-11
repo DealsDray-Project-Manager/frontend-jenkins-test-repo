@@ -195,6 +195,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'Rack ID',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'requested_date',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>

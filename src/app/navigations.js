@@ -164,7 +164,7 @@ export const navigations = [
                 path: '/sup-admin/view-vendors',
             },
             {
-                name: 'Categories',
+                name: 'SP Categories',
                 // icon: 'home',
                 path: '/sup-admin/view-categories',
             },

@@ -84,6 +84,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackid',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'code',
             label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
             options: {
@@ -92,7 +99,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Agent Name</Typography>,
             options: {
                 filter: true,
             },

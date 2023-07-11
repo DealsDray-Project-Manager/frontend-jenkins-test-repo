@@ -14,8 +14,14 @@ import {
     MenuItem,
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
+import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -318,6 +324,12 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm
+                    label='Rack ID'
+                    select
+                    type='text'
+                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
+                    />
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)

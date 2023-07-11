@@ -171,7 +171,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
+        {
+            name: 'rackid',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'sort_id',
             label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,

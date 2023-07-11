@@ -4,11 +4,6 @@ import {
     Button,
     Grid,
     TextField,
-    MenuItem,
-    Checkbox,
-    Select,
-    FormControl,
-    InputLabel,
 } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
@@ -17,7 +12,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
 import { useTheme } from '@mui/material/styles'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -30,16 +24,6 @@ const FormHandlerBox = styled('div')(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
 }))
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-}
 
 const MemberEditorDialog = ({
     open,
@@ -47,80 +31,64 @@ const MemberEditorDialog = ({
     setIsAlive,
     editFetchData,
     setEditFetchData,
-    vendorId,
-    setVendorId,
+    categoriesId,
+    setCategoriesId, 
 }) => {
     const [loading, setLoading] = useState(false)
-    const theme = useTheme()
-    const [locationDrop, setLocationDrop] = useState([])
-    const [personName, setPersonName] = React.useState([])
+    // const theme = useTheme()
+    // const [locationDrop, setLocationDrop] = useState([])
+    // const [personName, setPersonName] = React.useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-                setPersonName(editFetchData.location)
-                setVendorId(editFetchData.vendor_id)
+                // setPersonName(editFetchData.location)
+                setCategoriesId(editFetchData.categoriesId)
                 open()
             }
         }
         fetchData()
     }, [])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let res = await axiosSuperAdminPrexo.post('/getLocation')
-                if (res.status == 200) {
-                    setLocationDrop(res.data.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
-            }
-        }
-        fetchData()
-    }, [])
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             let res = await axiosSuperAdminPrexo.post('/getLocation')
+    //             if (res.status == 200) {
+    //                 setLocationDrop(res.data.data)
+    //             }
+    //         } catch (error) {
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: error,
+    //             })
+    //         }
+    //     }
+    //     fetchData()
+    // }, [])
 
-    useEffect(() => {
-        setValue('location', personName)
-    }, [personName])
+    // useEffect(() => {
+    //     setValue('location', personName)
+    // }, [personName])
 
     const schema = Yup.object().shape({
-        vendor_id: Yup.string().required('Required*').nullable(),
-        name: Yup.string()
+        spcategory_id: Yup.string().required('Required*').nullable(),
+        category_name: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .required('Required*')
             .nullable(),
-        address: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
-            .max(500)
-            .required('Required*')
-            .nullable(),
-        city: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid city')
+        description: Yup.string()
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,'Please enter valid Description')
             .max(40)
             .required('Required*')
             .nullable(),
-        state: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid state')
-            .max(40)
-            .required('Required*')
-            .nullable(),
-
-        mobile_one: Yup.string().required('Required*').nullable(),
-        deals: Yup.string().required('Required*').nullable(),
-        mobile_two: Yup.string().required('Required*').nullable(),
-        pincode: Yup.string().required('Required*').nullable(),
-        reference: Yup.string().required('Required*').nullable(),
-        location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
 
-    console.log(errors)
+    // console.log(errors)
 
     const {
         control,
@@ -128,13 +96,13 @@ const MemberEditorDialog = ({
         handleSubmit,
         formState: { errors },
         reset,
-        getValues,
-        setValue,
+        // getValues,
+        // setValue,
     } = useForm({
         resolver: yupResolver(schema),
-        defaultValues: {
-            location: [], // Set initial values here
-        },
+        // defaultValues: {
+        //     location: [], // Set initial values here
+        // },
     })
 
     const onSubmit = async (data) => {
@@ -142,7 +110,7 @@ const MemberEditorDialog = ({
         try {
             setLoading(true)
             let response = await axiosSuperAdminPrexo.post(
-                '/vendorMaster/create',
+                '/spcategories/create',
                 data
             )
             if (response.status == 200) {
@@ -175,6 +143,7 @@ const MemberEditorDialog = ({
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
@@ -190,7 +159,7 @@ const MemberEditorDialog = ({
     const handelEdit = async (data) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/vendorMaster/edit',
+                '/spcategories/edit',
                 data
             )
             if (response.status == 200) {
@@ -201,8 +170,8 @@ const MemberEditorDialog = ({
                     icon: 'success',
                     title: 'Update Successfully',
                     confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
+                    // allowOutsideClick: false,
+                    // allowEscapeKey: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         setIsAlive((isAlive) => !isAlive)
@@ -222,19 +191,20 @@ const MemberEditorDialog = ({
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event
-        setPersonName(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value
-        )
-    }
+    // const handleChange = (event) => {
+    //     const {
+    //         target: { value },
+    //     } = event
+    //     setPersonName(
+    //         // On autofill we get a stringified value.
+    //         typeof value === 'string' ? value.split(',') : value
+    //     )
+    // }
 
     return (
         <Dialog open={open}>
@@ -245,34 +215,34 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Category ID"
                             type="text"
-                            name="vendor_id"
-                            // value={vendorId}
-                            // {...register('vendor_id')}
+                            name="spcategory_id"
+                            value={categoriesId}
+                            {...register('spcategory_id')}
                             // disabled={Object.keys(editFetchData).length !== 0}
-                            // error={errors.vendor_id ? true : false}
-                            // helperText={
-                            //     errors.vendor_id
-                            //         ? errors.vendor_id?.message
-                            //         : ''
-                            // }
+                            error={errors.categoriesId ? true : false}
+                            helperText={
+                                errors.categoriesId
+                                    ? errors.categoriesId?.message
+                                    : ''
+                            }
                         />
                         <TextFieldCustOm
                             label="Category Name"
                             type="text"
                             name="name"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('name')}
-                            error={errors.name ? true : false}
-                            helperText={errors.name ? errors.name?.message : ''}
+                            // disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('category_name')}
+                            error={errors.category_name ? true : false}
+                            helperText={errors.category_name ? errors.category_name?.message : ''}
                         />
                         <TextFieldCustOm
                             label="Description"
                             type="text"
-                            name="address"
-                            {...register('address')}
-                            error={errors.address ? true : false}
+                            name="description"
+                            {...register('description')}
+                            error={errors.description ? true : false}
                             helperText={
-                                errors.address ? errors.address?.message : ''
+                                errors.description ? errors.description?.message : ''
                             }
                         />
                 </Grid>

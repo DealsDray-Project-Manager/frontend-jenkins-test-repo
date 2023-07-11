@@ -7,7 +7,6 @@ import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-import EditRoadIcon from '@mui/icons-material/EditRoad'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -45,23 +44,20 @@ const ScrollableTableContainer = styled(TableContainer)
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [trayList, setTrayList] = useState([])
-    const navigate = useNavigate()
+    const [trayrackList, setTrayRackList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [trayRackId, settrayRackId] = useState('')
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchBrand = async () => {
+        const fetchRacks = async () => {
             try {
                 setIsLoading(true)
-                let obj = {
-                    master_type: 'tray-master',
-                }
-                const res = await axiosSuperAdminPrexo.post('/getMasters', obj)
+                const res = await axiosSuperAdminPrexo.post('/trayracks/view')
                 if (res.status === 200) {
                     setIsLoading(false)
-                    setTrayList(res.data.data)
+                    setTrayRackList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -72,8 +68,11 @@ const SimpleMuiTable = () => {
                 })
             }
         }
-        fetchBrand()
-        return () => setIsAlive(false)
+        fetchRacks()
+        return () => {
+            setIsAlive(false)
+            setIsLoading(true)
+        }
     }, [isAlive])
 
     const handleDialogClose = () => {
@@ -81,14 +80,44 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = () => {
+    const handleDialogOpen = async (state) => {
+        try {
+            if (state == 'ADD') {
+                const trayId = await axiosSuperAdminPrexo.post(
+                    '/trayracks/idGen'
+                )
+                if (trayId.status == 200) {
+                    settrayRackId(trayId.data.rackID)
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
         setShouldOpenEditorDialog(true)
     }
 
-    const handelDelete = (masterId) => {
+    const editRack = async (trayRackId) => {
+        try {
+            let response = await axiosSuperAdminPrexo.post(
+                '/trayracks/one/' + trayRackId
+            )
+            if (response.status == 200) {
+                setEditFetchData(response.data.data)
+                handleDialogOpen("Edit")
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
+
+    const handelDelete = (rack_id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: 'You want to Delete Rack!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -97,21 +126,14 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let obj={
-                        masterId:masterId
-                    }
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/getOneMaster',obj
-                    )
-                    if (res.status == 200) {
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deleteMaster/' + masterId
+                            '/deleteTrayRacks/' + rack_id
                         )
                         if (response.status == 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Tray has been Deleted',
+                                title: 'Your Tray Rack has been Deleted.',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -124,16 +146,10 @@ const SimpleMuiTable = () => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: response?.data?.message,
+                                text: "This rack You Can't Delete",
                             })
                         }
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: "You Can't Delete This Tray",
-                        })
-                    }
+                   
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -143,41 +159,6 @@ const SimpleMuiTable = () => {
                 }
             }
         })
-    }
-
-    const editTray = async (masterId) => {
-        try {
-            let obj={
-                masterId:masterId
-            }
-            let response = await axiosSuperAdminPrexo.post(
-                '/getOneMaster',obj
-            )
-            if (response.status == 200) {
-                setEditFetchData(response.data.data)
-                handleDialogOpen()
-            } else if (response.status === 202) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: "You Can't Edit This Tray",
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
-
-    const handelAudit = (trayId) => {
-        navigate('/sup-admin/tray/audit/' + trayId)
-    }
-
-    const handelEditHistory = (trayId) => {
-        navigate('/sup-admin/tray/edit-history/' + trayId)
     }
 
     const columns = [
@@ -214,7 +195,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'cpc',
+            name: 'parent_id',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
             options: {
                 filter: true,
@@ -234,7 +215,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box
+                        <Box 
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -243,7 +224,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editTray(tableMeta.rowData[1])
+                                        editRack(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
@@ -267,24 +248,24 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const columns1 = [
-        {
-            index:1,
-            rack_id:'RAC00001',
-            name:'RAC00001',
-            display:'RAC00001',
-            cpc:'Gurgaon_122016',
-            warehouse:'DealsDray PREXO BLR Processing Warehouse'
-        }
-    ]
-
-    const trayData = useMemo(() => {
-        return (
-            <ScrollableTableContainer>
-                <ProductTable>
+    return (
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb routeSegments={[{ name: 'Categories', path: '/' }]} />
+            </div>
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="primary"
+                onClick={() => handleDialogOpen('ADD')}
+            >
+                Add New Rack
+            </Button>
+            <>
+                <>
                 <MUIDataTable
-                title={'All Tray Racks'}
-                data={columns1}
+                title={'Manage Racks'}
+                data={trayrackList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -309,26 +290,9 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
+                </>
+            </>
             
-        )
-    }, [trayList, isLoading])
-
-    return (
-        <Container>
-            <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Racks', path: '/' }]} />
-            </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
-            >
-                Add New Rack
-            </Button>
-            {trayData}
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -336,7 +300,9 @@ const SimpleMuiTable = () => {
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                />
+                    trayRackId={trayRackId}
+                    settrayRackId={settrayRackId}
+                /> 
             )}
         </Container>
     )

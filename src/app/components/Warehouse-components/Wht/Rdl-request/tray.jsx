@@ -79,6 +79,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'rackid',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
         // {
         //     name: 'issued_user_name',
         //     label: 'Agent Name',
@@ -125,7 +132,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'requested_date',
-            label: <Typography sx={{fontWeight:'bold'}}>Request Sent Date</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Request Sent Date</Typography>,
             options: {
                 filter: true,
                 sort: false,
@@ -155,7 +162,7 @@ const SimpleMuiTable = () => {
                     return (
                         <Button
                             sx={{
-                                m: 1,
+                                // m: 1,
                             }}
                             variant="contained"
                             onClick={(e) => handelDetailPage(e, value)}

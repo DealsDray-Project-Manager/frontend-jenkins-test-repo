@@ -87,6 +87,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'rackid',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
 
         {
             name: 'warehouse',
@@ -112,15 +119,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-        {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>RDL Agent</Typography>
@@ -132,7 +130,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
                     Request Sent Date
                 </Typography>
             ),

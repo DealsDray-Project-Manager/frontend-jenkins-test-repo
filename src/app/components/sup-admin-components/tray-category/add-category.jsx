@@ -74,7 +74,7 @@ const MemberEditorDialog = ({
         register,
         handleSubmit,
         getValues,
-        formState: { errors },
+        formState: { errors }, 
         reset,
     } = useForm({
         resolver: yupResolver(schema),

@@ -468,7 +468,7 @@ const SimpleMuiTable = () => {
                     <TextFieldCustOm
                     label='Select Vendor'
                     select
-                    type='text'
+                    type='text' 
                     style={{ width: '200px', marginRight:'20px' }}
                     />
                 

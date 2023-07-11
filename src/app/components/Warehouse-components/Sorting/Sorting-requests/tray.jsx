@@ -90,6 +90,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackid',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+                // customBodyRender: (value, tableMeta) =>
+                //     value?.[0]?.botTray?.join(', '),
+            },
+        },
+        {
             name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
             options: {

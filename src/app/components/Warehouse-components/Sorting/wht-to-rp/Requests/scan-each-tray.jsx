@@ -20,6 +20,13 @@ import {
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,6 +49,17 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
     const [receiveButDis, setReceiveButDis] = useState(false)
+
+    const {
+        register,
+        formState: { errors },
+    }= useForm({
+        resolver: yupResolver(schema),
+    })
+
+    const schema= Yup.object().shape({
+        rack_id: Yup.string().required('Required*').nullable(),
+    })
 
     useEffect(() => {
         try {
@@ -324,9 +342,19 @@ const SimpleMuiTable = () => {
                     }}
                 />
                 <Box sx={{ textAlign: 'right', mr: 6 }}>
+                <TextFieldCustOm 
+                    sx={{m:1}}
+                        label='Rack ID'
+                        select
+                        style={{ width: '150px'}}
+                        {...register('rack_id')}
+                        error={errors.rack_id ? true : false}
+                        helperText={errors.rack_id?.message}
+                        name="rack_id"
+                />
                     <Button
                         sx={{
-                            m: 1,
+                            m: 1, mt:2
                         }}
                         variant="contained"
                         style={{ backgroundColor: '#206CE2' }}

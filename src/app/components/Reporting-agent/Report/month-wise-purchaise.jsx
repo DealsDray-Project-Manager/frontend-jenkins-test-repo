@@ -8,7 +8,7 @@ import moment from 'moment'
 
 import {
     TableCell,
-    TableHead,
+    TableHead, 
     Table,
     TableRow,
     TableBody,

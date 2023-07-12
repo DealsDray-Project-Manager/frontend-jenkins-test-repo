@@ -53,19 +53,21 @@ const SimpleMuiTable = () => {
     const [partData, setPartData] = useState([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            const fetch = await axiosRDL_oneAgent.post(
-                '/rdl-fls/fetchPart/' + reportData?.muic?.muic
-            )
-            if (fetch.status == 200) {
-                for (let x of fetch.data.data) {
-                    x.quantity = 1
-                    setPartData((partData) => [...partData, x])
-                }
+        const fetchDataFun = async () => {
+            alert("")
+          try {
+            const response = await axiosRDL_oneAgent.post('/rdl-fls/fetchPart/' + reportData?.muic?.muic);
+            if (response.status === 200) {
+              const fetchedData = response.data.data.map(item => ({ ...item, quantity: 1 }));
+              setPartData(partData => [...partData, ...fetchedData]);
             }
-        }
-        fetchData()
-    }, [])
+          } catch (error) {
+            // Handle error here
+            console.error('Error fetching data:', error);
+          }
+        };
+        fetchDataFun();
+      }, []);
 
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
@@ -138,7 +140,7 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/rdl-two/tray/tray/start/' + whtTrayId)
+                navigate('/rdl-two/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -400,8 +402,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Repair done', path: '/' },
+                            { name: 'Unit details' },
                         ]}
                     />
                 </div>

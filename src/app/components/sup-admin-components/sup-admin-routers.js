@@ -24,7 +24,7 @@ const Warehouse = Loadable(
 )
 
 const Vendors = Loadable(lazy(() => import('./Manage-vendors/view-vendors')))
-const Categories = Loadable(lazy(() => import('./Manage-categories/view-categories')))
+const Categories = Loadable(lazy(() => import('./Manage-sp-categories/view-categories')))
 const Trayrack = Loadable(lazy(() => import('./Manage-trayracks/view-trayracks')))
 
 const Brands = Loadable(lazy(() => import('./Manage-brands/view-brands')))

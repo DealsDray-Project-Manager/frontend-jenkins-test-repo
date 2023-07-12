@@ -79,7 +79,7 @@ const SimpleMuiTable = () => {
                 )
                 if (res.status === 200) {
                     // setReportData(res.data.data)
-                    navigate('/rdl-two/tray/tray/unit-information-display', {
+                    navigate('/rdl-two/tray/unit-information-display', {
                         state: {
                             reportData: res.data.data,
                             trayId: trayId,
@@ -194,8 +194,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Start', path: '/' },
+                            { name: 'Scan uic' },
                         ]}
                     />
                 </div>

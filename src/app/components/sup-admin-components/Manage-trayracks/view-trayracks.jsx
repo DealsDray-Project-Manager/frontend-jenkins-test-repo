@@ -173,13 +173,7 @@ const SimpleMuiTable = () => {
                 <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
-        {
-            name: 'rack_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack ID</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+      
         {
             name: 'name',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Name</></Typography>,

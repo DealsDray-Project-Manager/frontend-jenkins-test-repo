@@ -54,17 +54,22 @@ const MemberEditorDialog = ({
     const theme = useTheme()
     const [locationDrop, setLocationDrop] = useState([])
     const [personName, setPersonName] = React.useState([])
+    const [spCategory,setSpCategory]=useState([])
 
     useEffect(() => {
         const fetchData = async () => {
-            if (Object.keys(editFetchData).length !== 0) {
-                reset({ ...editFetchData })
-                setPersonName(editFetchData.location)
-                setVendorId(editFetchData.vendor_id)
-                open()
+            const res=await axiosSuperAdminPrexo.post("/spcategories/view")
+            if(res.status == 200){
+                setSpCategory(res.data.data)
             }
         }
         fetchData()
+        if (Object.keys(editFetchData).length !== 0) {
+            reset({ ...editFetchData })
+            setPersonName(editFetchData.location)
+            setVendorId(editFetchData.vendor_id)
+            open()
+        }
     }, [])
 
     useEffect(() => {
@@ -398,26 +403,29 @@ const MemberEditorDialog = ({
                                 ))}
                             </Select>
                         </FormControl>
-                        {/* <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Deals"
-                            type="text"
+                            select
                             name="deals"
                             {...register('deals')}
                             error={errors.deals ? true : false}
                             helperText={
                                 errors.deals ? errors.deals?.message : ''
                             }
-                        /> */}
+                        >
+                             {spCategory.map((data) => (
+                                <MenuItem
+                                   
+                                    value={data.category_name}
+                                >
+                                    {data.category_name}
+                                </MenuItem>
+                            ))}
+                            </TextFieldCustOm>
 
-                            <TextFieldCustOm
-                            label='Spare Part Category'
-                            select
-                            type='text'
-                            style={{ width: '100%', marginRight:'20px' }}
-                            />
+                           
                     </Grid>
                 </Grid>
-
                 <FormHandlerBox>
                     <Button
                         variant="contained"

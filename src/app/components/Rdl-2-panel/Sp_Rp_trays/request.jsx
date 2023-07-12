@@ -77,7 +77,7 @@ const SimpleMuiTable = () => {
     // }
 
     const handelStart = (code) => {
-        navigate('/rdl-two/tray/tray/start/' + code)
+        navigate('/rdl-two/tray/start/' + code)
     }
 
     const columns = [
@@ -287,8 +287,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign to RDL-two', path: '/' },
-                        { name: 'RDL-two' },
+                        { name: 'Rdl-two requests', path: '/' },
+                        { name: 'Tray' },
                     ]}
                 />
             </div>

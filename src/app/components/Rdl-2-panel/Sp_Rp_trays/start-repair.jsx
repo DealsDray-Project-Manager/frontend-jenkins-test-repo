@@ -85,8 +85,9 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const handelNextpage = () => {
-        navigate('/rdl-two/tray/tray/unit-information-display/action', {
+    const handelNextpage = (e) => {
+        e.preventDefault()
+        navigate('/rdl-two/tray/unit-information-display/action', {
             state: {
                 reportData: reportData,
                 trayId: trayId,
@@ -105,8 +106,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Unit details', path: '/' },
+                            { name: 'Action' },
                         ]}
                     />
                 </div>
@@ -149,7 +150,7 @@ const SimpleMuiTable = () => {
 
                     <Card sx={{ mt: 2, width: '100%' }}>
                         <MUIDataTable
-                            title={'Tray'}
+                            title={"Assigned Spare Parts"}
                             data={
                                 reportData?.delivery?.rdl_fls_one_report
                                     ?.partRequired

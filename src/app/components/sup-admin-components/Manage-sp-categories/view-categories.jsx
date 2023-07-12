@@ -246,7 +246,7 @@ const SimpleMuiTable = () => {
 return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Categories', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Sp Categories', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -259,7 +259,7 @@ return (
             <>
                 <>
                 <MUIDataTable
-                title={'Manage Categories'}
+                title={'Manage sp Categories'}
                 data={categoriesList}
                 columns={columns}
                 options={{

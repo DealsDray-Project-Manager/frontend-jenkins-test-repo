@@ -80,13 +80,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'rackid',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
+     
         {
             name: 'recommend_location',
             label: <Typography sx={{fontWeight:'bold'}}>Sales Location</Typography>,

@@ -35,15 +35,15 @@ const RDLRouter = [
         element: <SpTrayReceive />,
     },
     {
-        path: '/rdl-two/tray/tray/start/:trayId',
+        path: '/rdl-two/tray/start/:trayId',
         element: <TrayStartPage />,
     },
     {
-        path: '/rdl-two/tray/tray/unit-information-display',
+        path: '/rdl-two/tray/unit-information-display',
         element: <TrayUnitInformationDisplay />,
     },
     {
-        path: '/rdl-two/tray/tray/unit-information-display/action',
+        path: '/rdl-two/tray/unit-information-display/action',
         element: <TrayUnitInformationDisplayAction />,
     },
     {

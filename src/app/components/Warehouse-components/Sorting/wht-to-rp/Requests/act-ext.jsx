@@ -310,7 +310,7 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT Tray', path: '/' },
+                        { name: 'Sorting request wht-rp', path: '/' },
                         { name: 'Scanning', path: '/' },
                         { name: 'Verification' },
                     ]}
@@ -356,7 +356,7 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm
+                <TextFieldCustOm 
                 sx={{mt:1, height:'10px'}}
                     label='Rack ID'
                     select

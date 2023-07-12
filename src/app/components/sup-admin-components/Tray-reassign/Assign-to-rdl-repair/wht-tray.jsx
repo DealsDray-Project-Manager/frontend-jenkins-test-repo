@@ -42,7 +42,7 @@ const SimpleMuiTable = () => {
                 setIsLoading(true)
                 let obj = {
                     trayType: 'WHT',
-                    sort_id: 'Send for RDL-2',
+                    sort_id: 'Send for RDL-two',
                 }
                 let response = await axiosSuperAdminPrexo.post(
                     '/tray/assigned',
@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
         const fetchData = async () => {
             try {
                 let res = await axiosMisUser.post(
-                    '/get-charging-users/' + 'RDL-2/' + location
+                    '/get-charging-users/' + 'RDL-two/' + location
                 )
                 if (res.status == 200) {
                     setRDLUsers(res.data.data)

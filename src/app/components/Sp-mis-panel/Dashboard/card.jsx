@@ -3,7 +3,7 @@ import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon, RepairIcon } from '@mui/material'
 import jwt_decode from 'jwt-decode'
-import { axiosRmUserAgent } from '../../../../axios'
+import { axiosRmUserAgent, axiosSpMisAgent } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -18,7 +18,7 @@ const StatCard3 = () => {
                 if (user) {
                     let { location } = jwt_decode(user)
 
-                    let res = await axiosRmUserAgent.post(
+                    let res = await axiosSpMisAgent.post(
                         '/dashboard/' + location
                     )
                     if (res.status == 200) {
@@ -40,7 +40,7 @@ const StatCard3 = () => {
     const statList = [
         {
             icon: 'art_track',
-            amount: 234,
+            amount: count?.precourmentCount,
             title: 'Procurement creation',
             path: '/sp-mis/procurement',
             sales: false,

@@ -153,7 +153,6 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextDisable(true)
-
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
                     setUic('')
@@ -231,8 +230,13 @@ export default function DialogBox() {
                     icon: 'warning',
                     title: 'Please Assign other tray',
                     confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handleDialogOpen()
+                    }
                 })
-                handleDialogOpen()
             } else {
                 if (trayData?.actual_items?.length == trayData?.items?.length) {
                     setLoading(true)
@@ -450,7 +454,7 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'Audit-Requests', path: '/' },
-                        { name: 'Verification' },
+                        { name: 'Approve' },
                     ]}
                 />
             </div>

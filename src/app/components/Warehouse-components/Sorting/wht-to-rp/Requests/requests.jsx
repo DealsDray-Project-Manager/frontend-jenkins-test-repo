@@ -194,6 +194,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+       
         {
             name: 'requested_date',
             label: (
@@ -306,7 +307,7 @@ const SimpleMuiTable = () => {
                 </DialogActions>
             </BootstrapDialog>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'WHT Tray' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Sorting request wht-rp' }]} />
             </div>
 
             <MUIDataTable

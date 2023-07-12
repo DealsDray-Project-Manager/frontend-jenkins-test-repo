@@ -548,11 +548,11 @@ const WarehoueRouter = [
         element: <PickupDoneClose />,
     },
     {
-        path: '/wareshouse/wht/rdl2-request',
+        path: '/wareshouse/wht/rdl-two-request',
         element: <RDL2Request />,
     },
     {
-        path: '/wareshouse/wht/rdl2-request/approve/:trayId',
+        path: '/wareshouse/wht/rdl-two-request/approve/:trayId',
         element: <RDL2RequestApprove />,
     },
    

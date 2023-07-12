@@ -198,14 +198,9 @@ const PaginationTable = () => {
             }
             pagination.item.forEach((data) => {
                 data.reason = []
-                data.order_date = new Date(data.order_date)
-                data.order_timestamp = new Date(data.order_timestamp)
-                data.delivery_date = new Date(data.gc_redeem_time)
-                data.gc_redeem_time = new Date(data.gc_redeem_time)
-                data.base_discount = data?.base_discount?.toString()
-                data.order_id_replaced = data.order_id_replaced?.toString()
-                data.gc_amount_redeemed = data.gc_amount_redeemed?.toString()
-                data.gc_amount_refund = data.gc_amount_refund?.toString()
+                if (err?.order_date?.includes(data?.order_date)) {
+                    data.reason.push('Invalid order date')
+                }
 
                 if (
                     err?.order_id_is_duplicate?.includes(data?.order_id) ||
@@ -270,7 +265,7 @@ const PaginationTable = () => {
                     data.imei == ''
                 ) {
                     data.reason.push(
-                        'Duplicate IMEI number or imei number number is empty'
+                        'Invalid IMEI number'
                     )
                 }
                 if (data.order_status !== 'NEW') {
@@ -334,12 +329,22 @@ const PaginationTable = () => {
                         data.imei == ''
                     ) {
                         obj.invalidItem.push(data)
+                    } else if (err?.order_date?.includes(data?.order_date)) {
+                        obj.invalidItem.push(data)
                     } else {
                         obj.validItem.push(data)
                     }
                 } else {
                     obj.invalidItem.push(data)
                 }
+                data.order_date = new Date(data.order_date)
+                data.order_timestamp = new Date(data.order_timestamp)
+                data.delivery_date = new Date(data.gc_redeem_time)
+                data.gc_redeem_time = new Date(data.gc_redeem_time)
+                data.base_discount = data?.base_discount?.toString()
+                data.order_id_replaced = data.order_id_replaced?.toString()
+                data.gc_amount_redeemed = data.gc_amount_redeemed?.toString()
+                data.gc_amount_refund = data.gc_amount_refund?.toString()
             })
             let res = await axiosMisUser.post('/ordersImport', obj)
             if (res.status == 200) {
@@ -383,6 +388,8 @@ const PaginationTable = () => {
             item: pagination.item.filter((item) => item.delet_id != delet_id),
         }))
     }
+
+    console.log(err?.order_date)
 
     return (
         <Container>
@@ -644,7 +651,16 @@ const PaginationTable = () => {
                                                             data.delet_id
                                                         )}
                                                         name="order_date"
-                                                        value={data.order_date}
+                                                        value={new Date(
+                                                            data?.order_date
+                                                        ).toLocaleString(
+                                                            'en-GB',
+                                                            {
+                                                                year: 'numeric',
+                                                                month: '2-digit',
+                                                                day: '2-digit',
+                                                            }
+                                                        )}
                                                     />
                                                     {err?.order_date?.includes(
                                                         data['order_date']
@@ -672,8 +688,7 @@ const PaginationTable = () => {
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            Please check date
-                                                            formate
+                                                            Invalid order date
                                                         </p>
                                                     ) : (
                                                         ''
@@ -721,8 +736,7 @@ const PaginationTable = () => {
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            Please check date
-                                                            formate
+                                                            Invalid date
                                                         </p>
                                                     ) : (
                                                         ''
@@ -1215,20 +1229,15 @@ const PaginationTable = () => {
                                                     ) : (
                                                         ''
                                                     )}
-                                                    {err?.imei_number_is_duplicate?.some(
-                                                        (d) =>
-                                                            d.imei ==
-                                                                data['imei'] &&
-                                                            d.status ==
-                                                                data.order_status
+                                                    {err?.imei_number_is_duplicate?.includes(
+                                                       data['imei']?.toString()
                                                     ) ? (
                                                         <p
                                                             style={{
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            IMEI Number Is
-                                                            Duplicate
+                                                            Invalid IMEI number
                                                         </p>
                                                     ) : (Object.keys(err)
                                                           .length != 0 &&
@@ -1243,8 +1252,7 @@ const PaginationTable = () => {
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            IMEI Number Does Not
-                                                            Exist{' '}
+                                                             Invalid IMEI number
                                                         </p>
                                                     ) : (
                                                         ''
@@ -1404,8 +1412,7 @@ const PaginationTable = () => {
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            Please check date
-                                                            formate
+                                                            Invalid order date
                                                         </p>
                                                     ) : (
                                                         ''
@@ -1532,8 +1539,7 @@ const PaginationTable = () => {
                                                                 color: 'red',
                                                             }}
                                                         >
-                                                            Please check date
-                                                            formate
+                                                            Invalid date
                                                         </p>
                                                     ) : (
                                                         ''
@@ -1779,13 +1785,7 @@ const PaginationTable = () => {
                                                             'old_item_details'
                                                         ]?.split(':')[1] ==
                                                             undefined) ||
-                                                    err?.imei_number_is_duplicate?.some(
-                                                        (d) =>
-                                                            d.imei ==
-                                                                data['imei'] &&
-                                                            d.status ==
-                                                                data.order_status
-                                                    ) ||
+                                                   
                                                     (Object.keys(err).length !=
                                                         0 &&
                                                         data['imei'] ==

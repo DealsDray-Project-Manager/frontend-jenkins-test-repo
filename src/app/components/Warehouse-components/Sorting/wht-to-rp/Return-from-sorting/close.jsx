@@ -18,8 +18,12 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-
 import { axiosWarehouseIn } from '../../../../../../axios'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -171,7 +175,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/wht/return-from-rdl-fls')
+                navigate('/warehouse/sorting/return-from-wht-to-rp')
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -343,8 +347,8 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'BQC-Requests', path: '/' },
+                        { name: 'Return from sorting wht-rp', path: '/' },
+
                         { name: 'Verification' },
                     ]}
                 />
@@ -389,6 +393,12 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm
+                    label='Rack ID'
+                    select
+                    type='text'
+                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
+                    />
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)

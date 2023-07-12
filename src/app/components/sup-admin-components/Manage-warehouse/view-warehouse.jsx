@@ -84,7 +84,7 @@ const SimpleMuiTable = () => {
 
     const editWarehouse = async (empId,type) => {
         try {
-            let obj={
+            let obj={ 
                 empId:empId,
                 type:type
             }

@@ -89,6 +89,7 @@ const SimpleMuiTable = () => {
                     value?.[0]?.botTray?.join(', '),
             },
         },
+       
         {
             name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,

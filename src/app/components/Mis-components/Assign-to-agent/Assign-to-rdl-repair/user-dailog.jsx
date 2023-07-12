@@ -32,7 +32,7 @@ const MemberEditorDialog = ({
             let obj = {
                 tray: isCheckk,
                 user_name: RDLUserName,
-                sortId: 'Send for RDL-2',
+                sortId: 'Send for RDL-two',
             }
             let res = await axiosMisUser.post(
                 '/assignToAgent/rdl-fls/sentToWarehouse',
@@ -67,7 +67,7 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select RDL 2 User</H4>
+                <H4 sx={{ mb: '20px' }}>Select RDL two User</H4>
                 <TextFieldCustOm
                     label="Username"
                     fullWidth

@@ -73,11 +73,11 @@ const SimpleMuiTable = () => {
     }
 
     // const handelViewItem = (trayId) => {
-    //     navigate('/mis/assign-to-agent/Rdl-repair/view-item/' + trayId)
+    //     navigate('/mis/assign-to-agent/rdl-two/view-item/' + trayId)
     // }
 
     const handelStart = (code) => {
-        navigate('/rdl-two/tray/tray/start/' + code)
+        navigate('/rdl-two/tray/start/' + code)
     }
 
     const columns = [
@@ -140,7 +140,7 @@ const SimpleMuiTable = () => {
                                 }}
                                 variant="contained"
                                 disabled={
-                                    tableMeta.rowData[7] !== 'Issued to RDL-2'
+                                    tableMeta.rowData[7] !== 'Issued to RDL-two'
                                 }
                                 onClick={() => handleviewrp(value)}
                                 style={{ backgroundColor: 'green' }}
@@ -176,7 +176,7 @@ const SimpleMuiTable = () => {
                                 }}
                                 variant="contained"
                                 disabled={
-                                    value?.[0]?.sort_id !== 'Issued to RDL-2'
+                                    value?.[0]?.sort_id !== 'Issued to RDL-two'
                                 }
                                 onClick={() =>
                                     handleDialogOpen(value?.[0]?.code)
@@ -256,6 +256,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) => {
+                    
                     return (
                         <Button
                             sx={{
@@ -263,9 +264,9 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             disabled={
-                                tableMeta.rowData[7] !== 'Rdl-2 inprogress' &&
+                                tableMeta.rowData[7] !== 'Rdl-two inprogress' ||
                                 tableMeta.rowData[3]?.[0]?.sort_id !==
-                                    'Rdl-2 inprogress'
+                                    'Rdl-two inprogress'
                             }
                             onClick={(e) => {
                                 handelStart(value)
@@ -286,15 +287,15 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign to RDL-2', path: '/' },
-                        { name: 'RDL-2' },
+                        { name: 'Rdl-two requests', path: '/' },
+                        { name: 'Tray' },
                     ]}
                 />
             </div>
             <>
                 <>
                     <MUIDataTable
-                        title={'Assign to RDL-2'}
+                        title={'Assign to RDL-two'}
                         data={tray}
                         columns={columns}
                         options={{

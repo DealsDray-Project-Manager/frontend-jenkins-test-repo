@@ -18,6 +18,7 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
+    console.log(BqcSowftwareReport);
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summery</H4>
@@ -39,7 +40,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             </TableCell>
                         ) : (
                             <TableCell style={{ color: 'red' }}>
-                                Not Verified
+                                Unverified
                             </TableCell>
                         )}
                     </TableRow>

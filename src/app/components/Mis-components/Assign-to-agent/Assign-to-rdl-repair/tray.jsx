@@ -76,11 +76,11 @@ const SimpleMuiTable = () => {
     }
 
     const handleviewrp = (code) => {
-        navigate('/mis/assign-to-agent/Rdl-repair/view-rp/' + code)
+        navigate('/mis/assign-to-agent/rdl-two/view-rp/' + code)
     }
 
     const handleviewsp = (code) => {
-        navigate('/mis/assign-to-agent/Rdl-repair/view-sp/' + code)
+        navigate('/mis/assign-to-agent/rdl-two/view-sp/' + code)
     }
 
     const handelReadyForRdl = () => {
@@ -90,7 +90,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/assignToAgent/rdl-fls/users/' + 'RDL-2/' + location
+                        '/assignToAgent/rdl-fls/users/' + 'RDL-two/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)
@@ -303,15 +303,16 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign to RDL-2', path: '/' },
-                        { name: 'RDL-2' },
+                        { name: 'Assign to Agent', path: '/' },
+                        { name: 'RDL-two'},
+                      
                     ]}
                 />
             </div>
             <>
                 <>
                     <MUIDataTable
-                        title={'Assign to RDL-2'}
+                        title={'Assign to RDL-two'}
                         data={whtTrayList}
                         columns={columns}
                         options={{
@@ -366,7 +367,7 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'primary' }}
                             component="span"
                         >
-                            Assign for RDL-2
+                            Assign for RDL-two
                         </Button>
                     </Box>
                     {shouldOpenEditorDialog && (

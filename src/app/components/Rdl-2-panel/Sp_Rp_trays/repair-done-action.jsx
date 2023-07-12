@@ -17,7 +17,7 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
-import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
+import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { axiosRDL_oneAgent, axiosRdlTwoAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
@@ -53,19 +53,21 @@ const SimpleMuiTable = () => {
     const [partData, setPartData] = useState([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            const fetch = await axiosRDL_oneAgent.post(
-                '/rdl-fls/fetchPart/' + reportData?.muic?.muic
-            )
-            if (fetch.status == 200) {
-                for (let x of fetch.data.data) {
-                    x.quantity = 1
-                    setPartData((partData) => [...partData, x])
-                }
+        const fetchDataFun = async () => {
+            alert("")
+          try {
+            const response = await axiosRDL_oneAgent.post('/rdl-fls/fetchPart/' + reportData?.muic?.muic);
+            if (response.status === 200) {
+              const fetchedData = response.data.data.map(item => ({ ...item, quantity: 1 }));
+              setPartData(partData => [...partData, ...fetchedData]);
             }
-        }
-        fetchData()
-    }, [])
+          } catch (error) {
+            // Handle error here
+            console.error('Error fetching data:', error);
+          }
+        };
+        fetchDataFun();
+      }, []);
 
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
@@ -138,7 +140,7 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/rdl-two/tray/tray/start/' + whtTrayId)
+                navigate('/rdl-two/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -400,8 +402,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Repair done', path: '/' },
+                            { name: 'Unit details' },
                         ]}
                     />
                 </div>
@@ -511,10 +513,15 @@ const SimpleMuiTable = () => {
                             md={12}
                             xs={12}
                         >
-                            <BqcApiAllReport
+                            <BqcApiReport
                                 BqcSowftwareReport={
                                     reportData?.delivery?.bqc_software_report
                                 }
+                                grade={
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.final_grade
+                                }
+                                imei={reportData?.order?.imei}
                             />
                         </Grid>
                     </Grid>

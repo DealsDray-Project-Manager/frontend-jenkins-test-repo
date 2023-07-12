@@ -23,7 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '130%',
+    width: '100%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -119,7 +119,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'display',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Tray Display Name</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold', mr:1}} noWrap>Tray Display Name</Typography>,
             options: {
                 filter: true,
             },
@@ -134,7 +134,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'assigned_date',
-            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}}>Assigned Date</Typography>,
+            label: <Typography sx={{fontSize:'16px', fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

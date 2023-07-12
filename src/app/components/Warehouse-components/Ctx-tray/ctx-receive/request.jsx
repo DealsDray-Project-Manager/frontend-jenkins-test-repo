@@ -171,7 +171,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
+       
         {
             name: 'sort_id',
             label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,

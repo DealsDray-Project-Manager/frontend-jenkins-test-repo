@@ -381,6 +381,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+       
 
         {
             name: 'type_taxanomy',

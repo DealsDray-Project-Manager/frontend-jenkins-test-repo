@@ -186,12 +186,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+       
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value[0]?.bag_id,
+                customBodyRender: (value, dataIndex) => value?.[0]?.bag_id,
             },
         },
         {
@@ -210,7 +211,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status_change_time',
-            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>

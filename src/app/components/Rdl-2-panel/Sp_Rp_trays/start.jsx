@@ -44,7 +44,7 @@ const SimpleMuiTable = () => {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Rdl-2 inprogress/' +
+                            'Rdl-two inprogress/' +
                             location
                     )
                     if (response.status === 200) {
@@ -79,7 +79,7 @@ const SimpleMuiTable = () => {
                 )
                 if (res.status === 200) {
                     // setReportData(res.data.data)
-                    navigate('/rdl-two/tray/tray/unit-information-display', {
+                    navigate('/rdl-two/tray/unit-information-display', {
                         state: {
                             reportData: res.data.data,
                             trayId: trayId,
@@ -194,8 +194,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Start', path: '/' },
+                            { name: 'Scan uic' },
                         ]}
                     />
                 </div>
@@ -230,7 +230,7 @@ const SimpleMuiTable = () => {
                             SP Tray : {trayData?.sp_tray}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
-                            BRAND : {trayData?.brnad}
+                            BRAND : {trayData?.brand}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
                             MODEL : {trayData?.model}

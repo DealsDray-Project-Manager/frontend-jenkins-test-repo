@@ -220,7 +220,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <IconButton>
+                            <IconButton> 
                                 <Icon
                                     onClick={(e) => {
                                         editCtxcategory(tableMeta.rowData[1])
@@ -263,7 +263,7 @@ const SimpleMuiTable = () => {
                 Add Category
             </Button>
             <MUIDataTable
-                title={'All Categories'}
+                title={'All Tray Categories'}
                 data={ctxCategorylist}
                 columns={columns}
                 options={{

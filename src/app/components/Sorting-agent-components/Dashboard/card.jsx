@@ -73,6 +73,20 @@ const StatCard3 = () => {
             path: '/sorting/pickup/to-tray',
             sales: false,
         },
+        {
+            icon: 'shopping_cart',
+            amount: count.whtToRpTraySorting,
+            title: 'Wht to rp sorting',
+            path: '/sorting/wht-to-rp/request',
+            sales: false,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rpTrayCount,
+            title: 'Rp tray',
+            path: '/sorting/wht-to-rp/rp-tray',
+            sales: false,
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

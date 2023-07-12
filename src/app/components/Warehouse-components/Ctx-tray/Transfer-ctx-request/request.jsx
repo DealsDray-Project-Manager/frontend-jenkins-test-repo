@@ -80,6 +80,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+     
         {
             name: 'recommend_location',
             label: <Typography sx={{fontWeight:'bold'}}>Sales Location</Typography>,

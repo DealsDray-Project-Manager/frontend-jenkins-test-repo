@@ -13,7 +13,7 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
-import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
+import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -85,18 +85,19 @@ const SimpleMuiTable = () => {
         },
     ]
 
-    const handelNextpage = () => {
-        navigate('/rdl-two/tray/tray/unit-information-display/action', {
+    const handelNextpage = (e) => {
+        e.preventDefault()
+        navigate('/rdl-two/tray/unit-information-display/action', {
             state: {
                 reportData: reportData,
                 trayId: trayId,
                 username: username,
                 whtTrayId: trayId,
-                uic:uic
+                uic: uic,
             },
         })
     }
-    
+
     /************************************************************************** */
     // const tableExpected = useMemo(() => {
     return (
@@ -105,8 +106,8 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                            { name: 'Unit details', path: '/' },
+                            { name: 'Action' },
                         ]}
                     />
                 </div>
@@ -149,7 +150,7 @@ const SimpleMuiTable = () => {
 
                     <Card sx={{ mt: 2, width: '100%' }}>
                         <MUIDataTable
-                            title={'Tray'}
+                            title={"Assigned Spare Parts"}
                             data={
                                 reportData?.delivery?.rdl_fls_one_report
                                     ?.partRequired
@@ -216,10 +217,15 @@ const SimpleMuiTable = () => {
                             md={12}
                             xs={12}
                         >
-                            <BqcApiAllReport
+                            <BqcApiReport
                                 BqcSowftwareReport={
                                     reportData?.delivery?.bqc_software_report
                                 }
+                                grade={
+                                    reportData?.delivery?.bqc_software_report
+                                        ?.final_grade
+                                }
+                                imei={reportData?.order?.imei}
                             />
                         </Grid>
                     </Grid>

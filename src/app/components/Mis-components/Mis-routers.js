@@ -110,11 +110,11 @@ const ViewSpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-r
 
 const dataTableRoutes = [
     {
-        path: '/mis/assign-to-agent/Rdl-repair/view-rp/:trayId',
+        path: '/mis/assign-to-agent/rdl-two/view-rp/:trayId',
         element: <ViewRpTray />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl-repair/view-sp/:trayId',
+        path: '/mis/assign-to-agent/rdl-two/view-sp/:trayId',
         element: <ViewSpTray />,
     },
     {
@@ -199,11 +199,11 @@ const dataTableRoutes = [
         element: <AssignToRdltrayView />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl-repair',
+        path: '/mis/assign-to-agent/rdl-two',
         element: <AssignToRdltwo />,
     },
     {
-        path: '/mis/assign-to-agent/Rdl-repair/view-item/:trayId',
+        path: '/mis/assign-to-agent/rdl-two/view-item/:trayId',
         element: <AssignToRdltwoview />,
     },
     {

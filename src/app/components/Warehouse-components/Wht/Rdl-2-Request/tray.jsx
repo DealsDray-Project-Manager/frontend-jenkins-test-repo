@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-2/' + location
+                        '/request-for-RDL-fls/' + 'Send for RDL-two/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl2-request/approve/' + trayId)
+        navigate('/wareshouse/wht/rdl-two-request/approve/' + trayId)
     }
 
     const columns = [
@@ -87,6 +87,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+       
 
         {
             name: 'warehouse',
@@ -112,15 +113,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'limit',
-            label: 'Limit',
-            options: {
-                filter: false,
-                sort: false,
-                display: false,
-            },
-        },
-        {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>RDL Agent</Typography>
@@ -132,7 +124,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
                     Request Sent Date
                 </Typography>
             ),
@@ -187,7 +179,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'RDL-2-Requests' },
+                        { name: 'RDL-two-Requests' },
                     ]}
                 />
             </div>

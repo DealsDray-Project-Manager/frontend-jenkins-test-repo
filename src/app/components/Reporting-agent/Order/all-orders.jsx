@@ -17,6 +17,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import moment from 'moment'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import { useNavigate } from 'react-router-dom'
@@ -45,6 +46,9 @@ const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;
 
 const SimpleMuiTable = () => {
+    const [stateForFilterUn, setFilterUn] = useState(false)
+    const [count, setCount] = useState(0)
+    const [dataForDownload, setDataForDownload] = useState([])
     const [partList, setPartList] = useState([])
     const [isAlive, setIsAlive] = useState(true)
     const [rowsPerPage, setRowsPerPage] = useState(50)
@@ -53,42 +57,164 @@ const SimpleMuiTable = () => {
     const [data, setData] = useState([])
     const [item, setItem] = useState([])
     const [lastOrderDate, setLastOrderDate] = useState('')
+    const [location, setLocation] = useState('')
     const [displayText, setDisplayText] = useState('')
+    const [searchType, setSearchType] = useState('')
+    const [filterData, setFilterData] = useState({
+        fromDate: '',
+        toDate: '',
+    })
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
         location: '',
     })
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const navigate = useNavigate()
 
-    const download = (e) => {
-        let arr = []
-        for (let x of partList) {
-            let obj = {
-                part_code: x.part_code,
-                name: x.name,
-                color: x.color,
-                technical_qc: x.technical_qc,
-                description: x.description,
-                available_stock: x.avl_stock,
-                add_stock: '0',
-            }
-            arr.push(obj)
-        }
-        const fileExtension = '.xlsx'
-        const fileType =
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        const ws = XLSX.utils.json_to_sheet(arr)
-
-        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-        const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+    const handleChangeSort = ({ target: { name, value } }) => {
+        setFilterData({
+            ...filterData,
+            [name]: value,
+        })
     }
 
+    const navigate = useNavigate()
+    const [inputSearch, setInputSearch] = useState('')
+    const [refresh, setRefresh] = useState(false)
+
+    // const download = (e) => {
+    //     let arr = []
+    //     for (let x of partList) {
+    //         let obj = {
+    //             part_code: x.part_code,
+    //             name: x.name,
+    //             color: x.color,
+    //             technical_qc: x.technical_qc,
+    //             description: x.description,
+    //             available_stock: x.avl_stock,
+    //             add_stock: '0',
+    //         }
+    //         arr.push(obj)
+    //     }
+    //     const fileExtension = '.xlsx'
+    //     const fileType =
+    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    //     const ws = XLSX.utils.json_to_sheet(arr)
+
+    //     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+    //     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+    //     const data = new Blob([excelBuffer], { type: fileType })
+    //     FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+    // }
+
+    // const download = (e) => {
+    //     let arr = []
+    //     for (let x of dataForDownload) {
+    //         let obj = {
+    //             'Delivery Status': x?.delivery_status,
+    //             'Partner ID': x?.partner_id,
+    //             'Item ID': x?.item_id,
+    //             'Brand Name': x?.brand_name,
+    //             'Product Name': x?.model_name,
+    //             'Order ID Replaced': x?.order_id_replaced,
+    //             'Delivered with OTP': x?.deliverd_with_otp,
+    //             'Delivered with Bag Exception': x?.deliverd_with_bag_exception,
+    //             'GC Amount Redeemed': x?.gc_amount_redeemed,
+    //             'GC Amount Refund': x?.gc_amount_refund,
+    //             'GC Redeemed Time': x?.gc_redeem_time,
+    //             'GC Amount Refund Time': x?.gc_amount_refund_time,
+    //             'Diagnostic Status':x?.diagnstic_status,
+    //             'VC Eligible':x?.vc_eligible,
+    //             'Customer Declaration Pysical Defect Present':x?.customer_declaration_physical_defect_present,
+    //             'Customer Declaration Pysical Defect Type': x?.customer_declaration_physical_defect_type,
+    //             'Partner Price No Defect': x?.partner_price_no_defect,
+    //             'Revised Partner Price': x?.revised_partner_price,
+    //             'Delivery Fee': x?.delivery_fee,
+    //             'Exchange Facilitation Fee': x?.exchange_facilitation_fee,
+    //             'MUIC': x?.muic,
+    //             'Base Discount': x?.base_discount,
+    //             'Diagnostic': x?.diagnostic,
+    //             'Partner Purchase Price': x?.partner_purchase_price,
+    //             'Product Name': x?.model_name,
+    //             'Order Status': x?.order_status,
+    //             'Order Id': x?.order_id,
+    //             'Tracking Id': x?.tracking_id,
+    //             'Model Name': x?.old_item_details?.replace(/:/g, ' ').toUpperCase(),
+    //             IMEI: x?.imei,
+    //             'SKU Name': x?.item_id,
+    //             'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
+    //             UIC: x?.uic_code?.code,
+    //             Price: x?.partner_purchase_price,
+    //             'Tray Location': x?.tray_location,
+    //             Location: x?.partner_shop,
+    //         }
+    //         if(x.order_timestamp !== undefined && x?.order_timestamp !== null){
+    //             obj['Order TimeStamp'] = new Date(x?.order_timestamp).toLocaleString('en-GB', {
+    //                 hour12: true,
+    //             })
+    //         } else {
+    //             obj['Order TimeStamp'] = ''
+    //         }
+    //         if(x.created_at !== undefined && x?.created_at !== null){
+    //             obj['Order Imported TimeStamp'] = new Date(x?.created_at).toLocaleString('en-GB', {
+    //                 hour12: true,
+    //             })
+    //         } else {
+    //             obj['Order TimeStamp'] = ''
+    //         }
+    //         if (x?.order_date !== undefined && x?.order_date !== null) {
+    //             obj['Order Date'] = new Date(x?.order_date).toLocaleString(
+    //                 'en-GB',
+    //                 {
+    //                     year: 'numeric',
+    //                     month: '2-digit',
+    //                     day: '2-digit',
+    //                 }
+    //             )
+    //         } else {
+    //             obj['Order Date'] = ''
+    //         }
+
+    //         if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
+    //             obj['Delivery Date'] = new Date(
+    //                 x?.delivery_date
+    //             ).toLocaleString('en-GB', {
+    //                 year: 'numeric',
+    //                 month: '2-digit',
+    //                 day: '2-digit',
+    //             })
+    //         } else {
+    //             obj['Delivery Date'] = ''
+    //         }
+    //         if (
+    //             x?.assign_to_agent !== undefined &&
+    //             x?.assign_to_agent !== null
+    //         ) {
+    //             obj['Packet Open Date'] = new Date(
+    //                 x?.assign_to_agent
+    //             ).toLocaleString('en-GB', {
+    //                 year: 'numeric',
+    //                 month: '2-digit',
+    //                 day: '2-digit',
+    //             })
+    //         } else {
+    //             obj['Packet Open Date'] = ''
+    //         }
+
+    //         arr.push(obj)
+    //     }
+    //     const fileExtension = '.xlsx'
+    //     const fileType =
+    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    //     const ws = XLSX.utils.json_to_sheet(arr)
+
+    //     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+    //     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+    //     const data = new Blob([excelBuffer], { type: fileType })
+    //     FileSaver.saveAs(data, 'Order Details' + fileExtension)
+    // }
+
     useEffect(() => {
+        setLocation(location)
         setDisplayText('Loading...')
         const fetchOrder = async () => {
             try {
@@ -103,7 +229,6 @@ const SimpleMuiTable = () => {
                             page: page,
                             rowsPerPage: rowsPerPage,
                         }
-
                         let res = await axiosMisUser.post('/ordersSearch', obj)
 
                         if (res.status == 200) {
@@ -192,10 +317,10 @@ const SimpleMuiTable = () => {
         setSearch((prevState) => ({ ...prevState, endDate: date }));
       };
 
-      const handleApplyFilter = () => {
-        // Perform filtering logic using startDate and endDate values
-        console.log('Filtering data between', startDate, 'and', endDate);
-      };
+    //   const handleApplyFilter = () => {
+    //     // Perform filtering logic using startDate and endDate values
+    //     console.log('Filtering data between', startDate, 'and', endDate);
+    //   };
 
     const searchOrders = async (e) => {
         e.preventDefault()
@@ -240,6 +365,79 @@ const SimpleMuiTable = () => {
         }
     }
 
+    const searchTrackItem = async (e) => {
+        setInputSearch(e.target.value)
+
+        e.preventDefault()
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                setDisplayText('Searching...')
+                let { location } = jwt_decode(admin)
+                if (e.target.value == '') {
+                    setRefresh((refresh) => !refresh)
+                } else {
+                    setRowsPerPage(100)
+                    setPage(0)
+                    let obj = {
+                        location: location,
+                        searchData: e.target.value,
+                        page: page,
+                        rowsPerPage: rowsPerPage,
+                    }
+                    let res = await axiosReportingAgent.post(
+                        '/search-delivery-item',
+                        obj
+                    )
+                    if (res.status == 200) {
+                        setDisplayText('')
+                        setCount(res.data.count)
+                        setDataForDownload(res.data.allMatchedResult)
+                        setItem(res.data.data)
+                    } else {
+                        setItem(res.data.data)
+                        setCount(res.data.count)
+                        setDisplayText('Sorry no data found')
+                    }
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
+    const dataFilter = async () => {
+        try {
+            filterData.location = location
+            filterData.page = page
+            filterData.type = searchType
+            filterData.size = rowsPerPage
+            setDisplayText('Please wait...')
+            setFilterUn(true)
+            const res = await axiosReportingAgent.post(
+                '/orderDateReport/item/filter',
+                filterData
+            )
+            if (res.status === 200) { 
+                setDisplayText('')
+                setCount(res.data.count)
+                setDataForDownload(res.data.forXlsx)
+                setItem(res.data.data)
+            } else {
+                setItem(res.data.data)
+                setDataForDownload(res.data.forXlsx)
+                setDisplayText('Sorry noo data found')
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
     const ProductTable = styled(Table)(() => ({
         minWidth: 750,
         width: '130%',
@@ -277,7 +475,7 @@ const SimpleMuiTable = () => {
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Product Name</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>MUIC</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>IMEI</TableCell>
-                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Base Disscount</TableCell>
+                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Base Discount</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diganostic</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Tracking ID</TableCell>
@@ -478,7 +676,15 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             setSearch((p) => ({ ...p, type: e.target.value }))
                         }}
+                    > 
+                    <MenuItem
+                        value="Order Date"
+                        onClick={(e) => {
+                            setSearchType('Order Date')
+                        }}
                     >
+                        Order Date
+                    </MenuItem>
                         <MenuItem value="order_id">Order Id</MenuItem>
                         <MenuItem value="order_status">
                             Delivery Status
@@ -499,31 +705,63 @@ const SimpleMuiTable = () => {
                         variant="outlined"
                         sx={{ ml: 2, mr:2 }}
                     />
-                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DatePicker
-                        label="Start Date"
-                        value={startDate}
-                        onChange={handleStartDateChange}
-                        renderInput={(params) => <TextField sx={{mr:2}} {...params} />}
-                      />
-                      <DatePicker
-                        label="End Date"
-                        value={endDate}
-                        onChange={handleEndDateChange}
-                        renderInput={(params) => <TextField sx={{mr:2}} {...params} />}
-                      />
-                      <Button sx={{mt:1}} variant="contained" color="primary" onClick={handleApplyFilter}>
-                        Apply Filter
-                      </Button>
-                    </LocalizationProvider>
+                    
+                    <TextField
+                        type="date"
+                        disabled={searchType == ''}
+                        label="From Date"
+                        variant="outlined"
+                        inputProps={{ max: moment().format('YYYY-MM-DD') }}
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 3 }}
+                        name="fromDate"
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        type="date"
+                        label="To Date"
+                        name="toDate"
+                        inputProps={{
+                            min: filterData?.fromDate,
+                            max: moment().format('YYYY-MM-DD'),
+                        }}
+                        disabled={filterData.fromDate == ''}
+                        variant="outlined"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 3 }}
+                        InputLabelProps={{ shrink: true }}
+                    />
                     <Button
-                            sx={{ml:2, mt:1}}
-                            variant="contained"
-                            color="success"
-                            onClick={(e) => download(e)}
-                        >
-                            manage stock
-                        </Button>
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        disabled={
+                            filterData.fromDate == '' || filterData.toDate == ''
+                        }
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            dataFilter(e)
+                        }}
+                    >
+                        Filter
+                    </Button>
+
+                    <Button
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        color="primary"
+                        disabled={
+                            inputSearch == '' && stateForFilterUn == false
+                        }
+                        onClick={(e) => {
+                            // download(e)
+                        }}
+                    >
+                        Download XLSX
+                    </Button>
                 </Box>
                 {/* <Box sx={{ mb: 1 }}>
                     <Typography variant="h6" gutterBottom>

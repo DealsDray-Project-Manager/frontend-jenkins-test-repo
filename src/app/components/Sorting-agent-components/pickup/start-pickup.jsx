@@ -75,6 +75,8 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
+    const [textDisable, setTextDisable] = useState(false)
+
     /*********************************************************** */
 
     useEffect(() => {
@@ -105,11 +107,13 @@ export default function DialogBox() {
         setOpen(false)
         setLoading(false)
         setAwbn('')
+        setTextDisable(false)
     }
 
     const handelAwbn = async (e) => {
         if (e.target.value.length === 11) {
             try {
+                setTextDisable(true)
                 let obj = {
                     uic: e.target.value,
                     fromTray: trayId,
@@ -144,7 +148,6 @@ export default function DialogBox() {
     const addActualitemTop = async (dataItem) => {
         try {
             setLoading(true)
-
             let obj = {
                 fromTray: trayId,
                 toTray: tray[1].code,
@@ -157,6 +160,7 @@ export default function DialogBox() {
                 handleClose()
                 setAwbn('')
                 setLoading(false)
+                setTextDisable(false)
                 setRefresh((refresh) => !refresh)
             } else {
                 alert(res.data.message)
@@ -423,6 +427,7 @@ export default function DialogBox() {
                         type="text"
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
+                        disabled={textDisable}
                         // inputRef={(input) => input && input.focus()}
                         value={awbn}
                         onChange={(e) => {

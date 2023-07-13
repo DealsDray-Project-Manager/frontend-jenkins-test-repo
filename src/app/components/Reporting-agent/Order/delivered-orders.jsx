@@ -88,6 +88,7 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
 
+    
 
     const download = (e) => {
         let arr = []
@@ -112,7 +113,7 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+        FileSaver.saveAs(data, 'Delivered Packets' + fileExtension)
     }
 
     const columns = [
@@ -230,7 +231,7 @@ const SimpleMuiTable = () => {
                             sx={{}}
                             variant="contained"
                             color="success"
-                            // onClick={(e) => download(e)}
+                            onClick={(e) => download(e)}
                         >
                             Download XLSX
                         </Button>

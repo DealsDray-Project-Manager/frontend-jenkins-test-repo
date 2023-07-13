@@ -63,6 +63,7 @@ BootstrapDialogTitle.propTypes = {
 export default function DialogBox() {
     const navigate = useNavigate()
     const { state } = useLocation()
+    const [color,setcolor] = useState()
     const [addButDis, setAddButDis] = useState(false)
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})

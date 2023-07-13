@@ -1,6 +1,6 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-rack'
+import MemberEditorDialog from './add-storage'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
@@ -174,39 +174,30 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rack_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack ID</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Name</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Display</></Typography>,
+            name: 'description',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Description</></Typography>,             
             options: {
                 filter: true,
             },
         },
         {
-            name: 'parent_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
+            name: 'creation_date',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
             options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
-            options: {
-                filter: true,
-            },
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+                },
         },
         {
             name: 'status',
@@ -251,7 +242,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray Racks', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Storage', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -259,12 +250,12 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Rack
+                Add Storage
             </Button>
             <>
                 <>
                 <MUIDataTable
-                title={'Manage Racks'}
+                title={'Manage Storage'}
                 data={trayrackList}
                 columns={columns}
                 options={{

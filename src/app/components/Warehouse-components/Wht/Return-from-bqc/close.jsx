@@ -497,6 +497,7 @@ export default function DialogBox() {
                     </MenuItem>
                 ))}
                 </TextFieldCustOm>
+                
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -510,7 +511,7 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             trayData?.items?.length !==
-                                trayData?.actual_items?.length || loading
+                                trayData?.actual_items?.length || loading || rackId == ''
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

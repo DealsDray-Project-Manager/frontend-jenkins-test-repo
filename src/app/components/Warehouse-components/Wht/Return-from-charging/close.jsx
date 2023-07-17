@@ -235,38 +235,33 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
+                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                <h5 style={{marginLeft:'10px'}}>EXPECTED</h5>
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'end',
+                        mr:2
+                        
                     }}
                 >
                     <Box
-                        sx={{
-                            m: 2,
-                        }}
+                        
                     >
-                        <Box sx={{}}>
                             <h5>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}/
                                 {trayData?.limit}
                             </p>
-                        </Box>
                     </Box>
                     <Box
-                        sx={{
-                            m: 2,
-                        }}
+                        
                     >
-                        <Box sx={{}}>
                             <h5>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
+                            <p style={{ marginLeft: '14px', fontSize: '22px' }}>
                                 {trayData?.actual_items?.length}
                             </p>
-                        </Box>
                     </Box>
+                </Box>
                 </Box>
                 <TableContainer>
                     <Table
@@ -305,9 +300,11 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>ACTUAL</h5>
+                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                    <Box>
+                <h5 style={{marginLeft:'10px'}}>ACTUAL</h5>
                 <TextField
-                    sx={{ mt: 1 }}
+                    sx={{ mt: 1, ml:1 }}
                     id="outlined-password-input"
                     type="text"
                     inputRef={(input) => input && input.focus()}
@@ -326,16 +323,17 @@ export default function DialogBox() {
                         },
                     }}
                 />
-
+                    </Box>
                 <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'end',
+                        mr:2
                     }}
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            
                         }}
                     >
                         <Box sx={{}}>
@@ -347,7 +345,7 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            
                         }}
                     >
                         <Box sx={{}}>
@@ -357,6 +355,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
+                </Box>
                 </Box>
                 <TableContainer>
                     <Table
@@ -445,12 +444,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm
-                    label='Rack ID'
-                    select
-                    type='text'
-                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
-                    />
                     <TextFieldCustOm 
                         sx={{m:1}}
                             label='Rack ID'
@@ -485,13 +478,12 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             trayData?.items?.length !==
-                                trayData?.actual_items?.length || loading == true || rackId 
+                                trayData?.actual_items?.length || loading == true  || rackId == ""
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             if (window.confirm('You Want to Close?')) {
-                                handelIssue(e,
-                                    )
+                                handelIssue(e)
                             }
                         }}
                     >

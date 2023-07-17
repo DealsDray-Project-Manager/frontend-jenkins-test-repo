@@ -79,13 +79,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rackid',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'issued_user_name',
             label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
             options: {

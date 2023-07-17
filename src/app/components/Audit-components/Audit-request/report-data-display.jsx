@@ -487,11 +487,9 @@ export default function DialogBox() {
                                             </MenuItem>
                                         </TextField>
                                         <TextField
-                                            defaultValue={('color')}
                                             label="Color"
                                             variant="outlined"
                                             select
-                                            type="text"
                                             fullWidth
                                             sx={{
                                                 mb: 2,
@@ -594,7 +592,6 @@ export default function DialogBox() {
                                             </MenuItem>
                                         </TextField>
                                         <TextField
-                                            defaultValue={('color')}
                                             label="Color"
                                             variant="outlined"
                                             select
@@ -708,11 +705,9 @@ export default function DialogBox() {
                         stateData.stage == 'Direct Upgrade' ? (
                             <>
                             <TextField
-                                defaultValue={('color')}
                                 label="Color"
                                 variant="outlined"
                                 select
-                                type="text"
                                 fullWidth
                                 sx={{
                                     mb: 2,

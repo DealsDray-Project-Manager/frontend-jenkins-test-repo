@@ -396,6 +396,38 @@ const Actionfunction = () => {
                 >
                     Dead
                 </MenuItem>
+                <MenuItem
+                    value="Re BQC Required"
+                    onClick={() => setSelectedStatus('Re BQC Required')}
+                >
+                    Re BQC Required
+                </MenuItem>
+                <MenuItem
+                    value="Software Installation"
+                    onClick={() => setSelectedStatus('Software Installation')}
+                >
+                    Software Installation
+                </MenuItem>
+                <MenuItem
+                    value="Motherboard Work"
+                    onClick={() => setSelectedStatus('Motherboard Work')}
+                >
+                    Motherboard Work
+                </MenuItem>
+                <MenuItem
+                    value="Repaired Without Part"
+                    onClick={() => setSelectedStatus('Repaired Without Part')}
+                >
+                    Repaired Without Part
+                </MenuItem>
+                <MenuItem
+                    value="Parts Replaced & Repaired"
+                    onClick={() =>
+                        setSelectedStatus('Parts Replaced & Repaired')
+                    }
+                >
+                    Parts Replaced & Repaired
+                </MenuItem>
             </TextField>
             <br />
 
@@ -407,7 +439,7 @@ const Actionfunction = () => {
                         variant="outlined"
                         type="text"
                         {...register('model_reg')}
-                        sx={{ width: '180px', mt: 2 }}
+                        sx={{ width: '180px', mt: 1 }}
                         error={errors.model_reg ? true : false}
                         helperText={errors.model_reg?.message}
                     />
@@ -421,7 +453,7 @@ const Actionfunction = () => {
                         {...register('color')}
                         error={errors?.color ? true : false}
                         helperText={errors?.color?.message}
-                        sx={{ width: '180px', mt: 2 }}
+                        sx={{ width: '180px', mt: 1 }}
                     >
                         {colorList.map((data) => (
                             <MenuItem value={data.name}>{data.name}</MenuItem>
@@ -434,7 +466,7 @@ const Actionfunction = () => {
             <br />
             <TextField
                 defaultValue={getValues('description')}
-                sx={{ width: '180px', mt: 2 }}
+                sx={{ width: '180px', mt: 1 }}
                 label="Description"
                 type="text"
                 {...register('description')}

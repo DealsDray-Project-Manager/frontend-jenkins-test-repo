@@ -141,6 +141,30 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
+            label: <Typography sx={{fontWeight:'bold'}}>Color</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.color,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: <Typography sx={{fontWeight:'bold'}}>Storage</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.storage_verification,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: <Typography sx={{fontWeight:'bold'}}>Ram</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.ram_verification,
+            },
+        },
+        {
+            name: 'audit_report',
             label: <Typography sx={{fontWeight:'bold'}}>Description</Typography>,
             options: {
                 filter: true,

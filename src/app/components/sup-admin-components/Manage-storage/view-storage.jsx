@@ -4,7 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './add-storage'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Typography,Table, TableContainer } from '@mui/material'
+import {
+    Button,
+    IconButton,
+    Icon,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,11 +27,10 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '100%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -39,8 +45,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -54,9 +61,7 @@ const PartTable = () => {
         const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post(
-                    '/storage/view/' + 'storage-list'
-                )
+                const res = await axiosSuperAdminPrexo.post('/storage/view')
                 if (res.status === 200) {
                     setstorage_name(res.data.data)
                     setIsLoading(false)
@@ -89,7 +94,7 @@ const PartTable = () => {
     const editMaster = async (id) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/storage/oneData/' + id + '/storage-list'
+                '/storage/oneData/' + id
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -122,33 +127,24 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                   
-                        let obj={
-                            id:id,
-                           
-                            page:"storage-list"
-                        }
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/storage/delete',obj
-                            
-                        )
-                        console.log(response);
-                        if (response.status == 200) {
-                            
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Storage has been Deleted.',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } 
-                   
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/storage/delete/' + id
+                    )
+                    console.log(response)
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Your Storage has been Deleted.',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -163,32 +159,55 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Name</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: true,
@@ -200,7 +219,11 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -237,9 +260,7 @@ const PartTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Storage', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Storage', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -252,36 +273,36 @@ const PartTable = () => {
 
             <ScrollableTableContainer>
                 <ProductTable>
-                <MUIDataTable
-                title={'Manage Storage'}
-                data={storage_name}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'Manage Storage'}
+                        data={storage_name}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </ScrollableTableContainer>
-           
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

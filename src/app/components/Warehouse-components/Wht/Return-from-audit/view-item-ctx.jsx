@@ -22,7 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '150%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -37,8 +37,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [trayItem, setTrayItem] = useState([])
@@ -69,25 +70,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'uic',
-            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
             },
@@ -95,21 +103,25 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Audit Status</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Audit Status
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.stage,
@@ -117,7 +129,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Original Grade</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Original Grade
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.orgGrade,
@@ -125,7 +141,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Auditor Final Grade</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Auditor Final Grade
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => trayItem?.tray_grade,
@@ -133,7 +153,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Reason</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Reason</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.reason,
@@ -141,7 +161,34 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'audit_report',
-            label: <Typography sx={{fontWeight:'bold'}}>Description</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Color</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.color,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Storage</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.storage_verification,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Ram</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.ram_verification,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.description,
@@ -162,45 +209,46 @@ const SimpleMuiTable = () => {
 
             <ScrollableTableContainer>
                 <ProductTable>
-                <MUIDataTable
-                title={'Tray'}
-                data={trayItem.items}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'Tray'}
+                        data={trayItem.items}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </ScrollableTableContainer>
-            
         </Container>
     )
 }

@@ -1,13 +1,12 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-storage'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import MemberEditorDialog from './add-storage'
 import Swal from 'sweetalert2'
+import { Button, IconButton, Icon, Typography,Table, TableContainer } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
- 
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -21,10 +20,11 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '100%',
-    // height:'100%',
+    height:'100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -42,22 +42,24 @@ const ProductTable = styled(Table)(() => ({
 const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;
 
-const SimpleMuiTable = () => {
+const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [trayrackList, setTrayRackList] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-    const [trayRackId, settrayRackId] = useState('')
     const [editFetchData, setEditFetchData] = useState({})
+    const [storage_name, setstorage_name] = useState([])
+    const [muicData, setMuicData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchRacks = async () => {
+        const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/storage/view/' + 'storage-list'
+                )
                 if (res.status === 200) {
+                    setstorage_name(res.data.data)
                     setIsLoading(false)
-                    setTrayRackList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -68,10 +70,10 @@ const SimpleMuiTable = () => {
                 })
             }
         }
-        fetchRacks()
+        fetchBrand()
         return () => {
             setIsAlive(false)
-            setIsLoading(true)
+            setIsLoading(false)
         }
     }, [isAlive])
 
@@ -80,30 +82,24 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = async (state) => {
-        try {
-            if (state == 'ADD') {
-                const trayId = await axiosSuperAdminPrexo.post(
-                    '/trayracks/idGen'
-                )
-                if (trayId.status == 200) {
-                    settrayRackId(trayId.data.rackID)
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    const handleDialogOpen = async () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editRack = async (trayRackId) => {
+    const editMaster = async (id) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/trayracks/one/' + trayRackId
+                '/storage/oneData/' + id + '/storage-list'
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -114,10 +110,10 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelDelete = (rack_id) => {
+    const handelDelete = (id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Rack!',
+            text: 'You Want to Delete!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -126,14 +122,23 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                   
+                        let obj={
+                            id:id,
+                           
+                            page:"storage-list"
+                        }
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deleteTrayRacks/' + rack_id
+                            '/storage/delete',obj
+                            
                         )
+                        console.log(response);
                         if (response.status == 200) {
+                            
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Tray Rack has been Deleted.',
+                                title: 'Your Storage has been Deleted.',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -142,13 +147,7 @@ const SimpleMuiTable = () => {
                                     setIsAlive((isAlive) => !isAlive)
                                 }
                             })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "This rack You Can't Delete",
-                            })
-                        }
+                        } 
                    
                 } catch (error) {
                     Swal.fire({
@@ -174,48 +173,44 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
+            name: 'name', // field name in the row object
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Description</></Typography>,             
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'creation_date',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
+            name: 'created_at',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: false,
-                sort: false,
+                sort: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
-                },
+            },
         },
         {
-            name: 'status',
+            name: '_id',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) => {
                     return (
-                        <Box 
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
+                        <>
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editRack(tableMeta.rowData[1])
+                                        editMaster(value)
                                     }}
                                     color="primary"
                                 >
@@ -224,15 +219,15 @@ const SimpleMuiTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={() => {
-                                        handelDelete(tableMeta.rowData[1])
+                                    onClick={(e) => {
+                                        handelDelete(value)
                                     }}
                                     color="error"
                                 >
                                     delete
                                 </Icon>
                             </IconButton>
-                        </Box>
+                        </>
                     )
                 },
             },
@@ -242,7 +237,9 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Storage', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Storage', path: '/' }]}
+                />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -252,11 +249,12 @@ const SimpleMuiTable = () => {
             >
                 Add Storage
             </Button>
-            <>
-                <>
+
+            <ScrollableTableContainer>
+                <ProductTable>
                 <MUIDataTable
                 title={'Manage Storage'}
-                data={trayrackList}
+                data={storage_name}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -281,22 +279,21 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </>
-            </>
-            
+                </ProductTable>
+            </ScrollableTableContainer>
+           
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
+                    muicData={muicData}
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                    trayRackId={trayRackId}
-                    settrayRackId={settrayRackId}
-                /> 
+                />
             )}
         </Container>
     )
 }
 
-export default SimpleMuiTable
+export default PartTable

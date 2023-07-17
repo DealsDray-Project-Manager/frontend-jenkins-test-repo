@@ -1,10 +1,10 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
+import MemberEditorDialog from './create-category'
 import React, { useState, useEffect } from 'react'
-import { styled } from '@mui/system'
-import MemberEditorDialog from './add-ram'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Typography,Table, TableContainer } from '@mui/material'
+import { styled } from '@mui/system'
+import { Button, IconButton, Icon, Box, Radio, Typography,Table, TableContainer  } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -19,7 +19,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
@@ -42,23 +41,22 @@ const ProductTable = styled(Table)(() => ({
 const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;
 
-const PartTable = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
+    const [categoriesList, setCategoriesList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
-    const [ramList, setramList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [categoriesId, setCategoriesId] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchBrand = async () => {
+        const fetchCategories = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post(
-                    '/ram/view/' + 'color-list'
-                )
+                const res = await axiosSuperAdminPrexo.post('/spcategories/view')
                 if (res.status === 200) {
-                    setramList(res.data.data)
                     setIsLoading(false)
+                    setCategoriesList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -69,10 +67,10 @@ const PartTable = () => {
                 })
             }
         }
-        fetchBrand()
+        fetchCategories()
         return () => {
             setIsAlive(false)
-            setIsLoading(false)
+            setIsLoading(true)
         }
     }, [isAlive])
 
@@ -81,24 +79,30 @@ const PartTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = async () => {
+    const handleDialogOpen = async (state) => {
+        try {
+            if (state == 'ADD') {
+                const trayId = await axiosSuperAdminPrexo.post(
+                    '/spcategories/idGen'
+                )
+                if (trayId.status == 200) {
+                    setCategoriesId(trayId.data.spctID)
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
         setShouldOpenEditorDialog(true)
     }
 
-    const editMaster = async (id) => {
+    const editCategories = async (categoriesId) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/ram/oneData/' + id + '/ram-list'
+                '/spcategories/one/' + categoriesId
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.data.message,
-                })
+                handleDialogOpen("Edit")
             }
         } catch (error) {
             Swal.fire({
@@ -109,10 +113,11 @@ const PartTable = () => {
         }
     }
 
-    const handelDelete = (id) => {
+
+    const handelDelete = (spcategory_id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: 'You want to Delete Category!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -121,20 +126,14 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    
-                        let obj={
-                            id:id,
-                           
-                            page:"ram-list"
-                        }
                         let response = await axiosSuperAdminPrexo.post(
-                            '/ram/delete',obj
+                            '/deleteSPcategory/' + spcategory_id
                         )
                         if (response.status == 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your RAM has been Deleted.',
+                                title: 'Your SP category has been Deleted.',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -143,7 +142,14 @@ const PartTable = () => {
                                     setIsAlive((isAlive) => !isAlive)
                                 }
                             })
-                        } 
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "This category You Can't Delete",
+                            })
+                        }
+                   
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -158,83 +164,89 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: <Typography variant="subtitle1" sx={{ fontWeight:'bold'}} ><>Record No</></Typography>,
             options: {
-                filter: false,
-                sort: false,
-                // setCellProps: () => ({ align: 'center' }),
+                filter: true,
+                sort: true,
                 customBodyRender: (rowIndex, dataIndex) =>
                 <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
         {
-            name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
+            name: 'spcategory_id', // field name in the row object
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Category ID</></Typography>, // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'category_name', // field name in the row object
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Category</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Description</></Typography>,             
             options: {
                 filter: true,
             },
         },
         {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            name: 'creation_date',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Creation Date</></Typography>, 
             options: {
                 filter: false,
-                sort: true,
+                sort: false,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
-            },
+                },
         },
         {
-            name: '_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            name: 'action',
+            label: <Typography variant="subtitle1" fontWeight='bold' ><>Action</></Typography>, 
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        editMaster(value)
-                                    }}
-                                    color="primary"
-                                >
-                                    edit
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        handelDelete(value)
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                        </>
+                        <IconButton>
+                            <Icon
+                                onClick={(e) => {
+                                    editCategories(tableMeta.rowData[1])
+                                }}
+                                color="primary"
+                            >
+                                edit
+                            </Icon>
+                        </IconButton>
+                        <IconButton>
+                            <Icon
+                                onClick={(e) => {
+                                    handelDelete(tableMeta.rowData[1])
+                                }}
+                                color="error"
+                            >
+                                delete
+                            </Icon>
+                        </IconButton>
+                    </>
                     )
                 },
             },
         },
     ]
 
-    return (
+  
+
+return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'RAM', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Sp Categories', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -242,14 +254,13 @@ const PartTable = () => {
                 color="primary"
                 onClick={() => handleDialogOpen('ADD')}
             >
-                Add RAM
+                Add New Category
             </Button>
-
-            <ScrollableTableContainer>
-                <ProductTable>
+            <>
+                <>
                 <MUIDataTable
-                title={'Manage RAM'}
-                data={ramList}
+                title={'Manage sp Categories'}
+                data={categoriesList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -274,9 +285,9 @@ const PartTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
+                </>
+            </>
+            
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -284,10 +295,12 @@ const PartTable = () => {
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                />
+                    categoriesId={categoriesId}
+                    setCategoriesId={setCategoriesId}
+                /> 
             )}
         </Container>
     )
 }
 
-export default PartTable
+export default SimpleMuiTable

@@ -523,7 +523,7 @@ const MemberEditorDialog = ({
                                     {data.name}
                                 </MenuItem>
                             ))}
-                        </TextFieldCustOm>
+                        </TextFieldCustOm> 
                         <TextFieldCustOm
                             label="Tray Category"
                             select

@@ -4,7 +4,7 @@ import { styled } from '@mui/system'
 
 import {
     Table,
-    TableContainer,
+    TableContainer, 
     TableHead,
     TableBody,
     TableRow,
@@ -204,6 +204,7 @@ const SimpleMuiTable = () => {
         
         setDisplayText('Loading...')
         const fetchOrder = async () => {
+            console.log();
             try {
                 let user = localStorage.getItem('prexo-authentication')
                 if (user) {

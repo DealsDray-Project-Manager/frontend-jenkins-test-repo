@@ -16,9 +16,11 @@ import {
     DialogActions,
     TextField,
     Typography,
+    MenuItem
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+
 import Swal from 'sweetalert2'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -54,12 +56,27 @@ const SimpleMuiTable = () => {
         register,
         formState: { errors },
     }= useForm({
-        resolver: yupResolver(schema),
+        // resolver: yupResolver(schema),
     })
 
-    const schema= Yup.object().shape({
-        rack_id: Yup.string().required('Required*').nullable(),
-    })
+    // async function getrackidData(rack_id) {
+    //     try {
+    //         let obj = {
+    //             rack_id: rack_id,
+    //         }
+    //         let response = await axiosSuperAdminPrexo.post(
+    //             '/getWarehouseByLocation',
+    //             obj
+    //         )
+    //         if (response.status == 200) {
+    //             setWarehouse(response.data.data.warehouse)
+    //         }
+    //     } catch (error) {}
+    // }
+
+    
+
+    
 
     useEffect(() => {
         try {
@@ -342,16 +359,7 @@ const SimpleMuiTable = () => {
                     }}
                 />
                 <Box sx={{ textAlign: 'right', mr: 6 }}>
-                <TextFieldCustOm 
-                    sx={{m:1}}
-                        label='Rack ID'
-                        select
-                        style={{ width: '150px'}}
-                        {...register('rack_id')}
-                        error={errors.rack_id ? true : false}
-                        helperText={errors.rack_id?.message}
-                        name="rack_id"
-                />
+                
                     <Button
                         sx={{
                             m: 1, mt:2

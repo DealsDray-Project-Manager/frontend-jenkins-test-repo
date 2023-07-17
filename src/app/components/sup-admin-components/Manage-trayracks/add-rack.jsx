@@ -261,7 +261,7 @@ return (
             <Grid item sm={6} xs={12}>
             <TextFieldCustOm
                 label="Rack ID"
-                type="text"
+                type="text" 
                 name="rack_id"
                 value={trayRackId}
                 {...register('rack_id')}

@@ -117,7 +117,7 @@ const SimpleMuiTable = () => {
     const handelDelete = (rack_id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Rack!',
+            text: 'You want to Delete Rack!', 
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

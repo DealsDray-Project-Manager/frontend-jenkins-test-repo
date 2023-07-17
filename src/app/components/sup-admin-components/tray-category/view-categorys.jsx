@@ -216,7 +216,7 @@ const SimpleMuiTable = () => {
             label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
                 filter: false,
-                sort: false,
+                sort: false, 
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>

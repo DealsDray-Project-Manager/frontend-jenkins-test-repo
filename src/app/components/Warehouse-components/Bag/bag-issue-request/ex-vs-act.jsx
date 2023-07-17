@@ -625,6 +625,8 @@ const SimpleMuiTable = () => {
     const tableDataActul = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
+                <Box sx={{display:'flex'}}>
+                    <Box>
                 <h5>ACTUAL</h5>
                 <TextField
                     sx={{ m: 1 }}
@@ -646,16 +648,14 @@ const SimpleMuiTable = () => {
                         },
                     }}
                 />
+                </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
-                            m: 2,
+                           textAlign:"right",
+                            // m: 1,
+                            mr:2,
+                            display:'flex'
                         }}
                     >
                         <Box sx={{}}>
@@ -671,12 +671,7 @@ const SimpleMuiTable = () => {
                                 /{bagData[0]?.limit}
                             </p>
                         </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            m: 2,
-                        }}
-                    >
+                    
                         <Box sx={{}}>
                             <h5>Valid</h5>
                             <p style={{ marginLeft: '19px', fontSize: '24px' }}>
@@ -690,6 +685,7 @@ const SimpleMuiTable = () => {
                             </p>
                         </Box>
                     </Box>
+                
                 </Box>
                 <TableContainer>
                     <Table
@@ -752,7 +748,7 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
+            <>
                 <Box
                     sx={{
                         height: 70,
@@ -821,7 +817,7 @@ const SimpleMuiTable = () => {
                         {tableDataActul}
                     </Grid>
                 </Grid>
-            </Card>
+            </>
             <Grid container spacing={3} sx={{ mt: 2 }}>
                 {bagData[0]?.sort_id !== 'Requested to Warehouse' ? (
                     <Grid item xs={6}>

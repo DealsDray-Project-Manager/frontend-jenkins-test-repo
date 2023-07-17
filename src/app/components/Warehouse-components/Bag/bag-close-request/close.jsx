@@ -11,6 +11,7 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -21,6 +22,13 @@ import Checkbox from '@mui/material/Checkbox'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
+
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -46,7 +54,34 @@ export default function DialogBox() {
     const [description, setDescription] = useState([])
     const [bagStatus, setBagStatus] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId,setRackId]=useState("")
     /******************************************************************************** */
+
+
+ 
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                if (res.status == 200) {
+                    console.log(res.data.data);
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -201,6 +236,7 @@ export default function DialogBox() {
                     order_id: uic.order_id,
                     order_date: uic.order_date,
                     uic: uic.uic,
+                    
                     stock_in: new Date(),
                     status: data[0].status,
                 }
@@ -274,6 +310,7 @@ export default function DialogBox() {
                         trayId: trayId,
                         description: description,
                         bagId: bagId,
+                        rackId:rackId,
                         location: location,
                     }
                     if (employeeData?.[0]?.type_taxanomy != 'BOT') {
@@ -700,6 +737,27 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm 
+                    sx={{m:1}}
+                        label='Rack ID'
+                        select
+                        style={{ width: '150px'}}
+                     
+                         
+                        name="rack_id"
+                >
+                    {rackiddrop?.map((data) => (
+                    
+                    <MenuItem
+                        onClick={(e) => {
+                            setRackId(data.rack_id)
+                        }}
+                        value={data.rack_id}
+                    >
+                        {data.rack_id}
+                    </MenuItem>
+                ))}
+                </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -734,7 +792,7 @@ export default function DialogBox() {
                         variant="contained"
                         style={{ backgroundColor: 'primery' }}
                         disabled={
-                            loading == true ||
+                            loading == true || rackId == "" ||
                             description == '' ||
                             bagStatus !== 1
                                 ? true

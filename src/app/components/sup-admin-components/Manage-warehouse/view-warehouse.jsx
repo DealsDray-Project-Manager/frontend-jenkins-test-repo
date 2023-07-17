@@ -18,7 +18,7 @@ const Container = styled('div')(({ theme }) => ({
             marginBottom: '16px',
         },
     },
-}))
+})) 
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,

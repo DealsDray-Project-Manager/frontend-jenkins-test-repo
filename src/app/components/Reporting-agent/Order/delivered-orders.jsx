@@ -6,7 +6,7 @@ import { Button, Table, TableContainer, Typography, Card, Box } from '@mui/mater
 import { axiosReportingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2' 
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 
@@ -62,6 +62,7 @@ const SimpleMuiTable = () => {
                         '/tray/' + 'For All Tray/' + 'WHT/' + location
                     )
                     if (response.status === 200) {
+                        setDataForDownload(response.data.data)
                         setIsLoading(false)
                         setWhtTray(response.data.data)
                     }

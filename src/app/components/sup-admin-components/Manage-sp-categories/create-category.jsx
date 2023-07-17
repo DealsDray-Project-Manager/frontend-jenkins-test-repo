@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
+import React, { useEffect, useState, Controller } from 'react'
+import { Dialog, Button, Grid, TextField } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
@@ -19,52 +19,64 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const AddPartOrColorAndEditDialog = ({
+const MemberEditorDialog = ({
     open,
     handleClose,
     setIsAlive,
     editFetchData,
     setEditFetchData,
-    muicData,
+    categoriesId,
+    setCategoriesId,
 }) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (Object.keys(editFetchData).length !== 0) {
-            reset({ ...editFetchData })
-            open()
+        const fetchData = async () => {
+            if (Object.keys(editFetchData).length !== 0) {
+                reset({ ...editFetchData })
+                setCategoriesId(editFetchData.categoriesId)
+                open()
+            }
         }
+        fetchData()
     }, [])
 
-    const schema = Yup.object().shape({ 
-        name: Yup.string()
-            .required('Required*')
+    const schema = Yup.object().shape({
+        spcategory_id: Yup.string().required('Required*').nullable(),
+        category_name: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
+            .required('Required*')
             .nullable(),
-
         description: Yup.string()
-            .required('Required*')
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,
+                'Please enter valid Description'
+            )
             .max(40)
+            .required('Required*')
             .nullable(),
     })
+
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
         reset,
-        getValues,
+        // getValues,
+        // setValue,
     } = useForm({
         resolver: yupResolver(schema),
+      
     })
 
     const onSubmit = async (data) => {
+        data.created_at = Date.now()
         try {
             setLoading(true)
-            data.type = 'ram-list'
             let response = await axiosSuperAdminPrexo.post(
-                '/ram/create',
+                '/spcategories/create',
                 data
             )
             if (response.status == 200) {
@@ -73,7 +85,7 @@ const AddPartOrColorAndEditDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Successfully Created',
+                    title: 'Successfully Added',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -83,8 +95,8 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
-                handleClose()
                 setLoading(false)
+                handleClose()
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -97,16 +109,16 @@ const AddPartOrColorAndEditDialog = ({
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-
+    
     const handelEdit = async (data) => {
         try {
-            data.type = 'ram-list'
             let response = await axiosSuperAdminPrexo.post(
-                '/ram/edit',
+                '/spcategories/edit',
                 data
             )
             if (response.status == 200) {
@@ -115,7 +127,7 @@ const AddPartOrColorAndEditDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Successfully Updated',
+                    title: 'Update Successfully',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -125,16 +137,20 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
+                setEditFetchData({})
+                handleClose()
                 Swal.fire({
-                    icon: 'failed',
-                    title: response.data.message,
-                    showConfirmButton: false,
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please check',
+                    confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
@@ -143,14 +159,32 @@ const AddPartOrColorAndEditDialog = ({
     return (
         <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Add RAM</H4>
+                <H4 sx={{ mb: '20px' }}>Create sp Category</H4>
+
                 <TextFieldCustOm
-                    label="Name"
+                    label="Category ID"
+                    type="text"
+                    name="spcategory_id"
+                    value={categoriesId}
+                    {...register('spcategory_id')}
+                    // disabled={Object.keys(editFetchData).length !== 0}
+                    error={errors.categoriesId ? true : false}
+                    helperText={
+                        errors.categoriesId ? errors.categoriesId?.message : ''
+                    }
+                />
+                <TextFieldCustOm
+                    label="Category Name"
                     type="text"
                     name="name"
-                    {...register('name')}
-                    error={errors.name ? true : false}
-                    helperText={errors.name ? errors.name?.message : ''}
+                    // disabled={Object.keys(editFetchData).length !== 0}
+                    {...register('category_name')}
+                    error={errors.category_name ? true : false}
+                    helperText={
+                        errors.category_name
+                            ? errors.category_name?.message
+                            : ''
+                    }
                 />
                 <TextFieldCustOm
                     label="Description"
@@ -190,4 +224,4 @@ const AddPartOrColorAndEditDialog = ({
     )
 }
 
-export default AddPartOrColorAndEditDialog
+export default MemberEditorDialog

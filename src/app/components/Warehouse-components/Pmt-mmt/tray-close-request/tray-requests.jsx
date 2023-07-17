@@ -382,14 +382,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rackid',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-
-        {
             name: 'type_taxanomy',
             label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
             options: {

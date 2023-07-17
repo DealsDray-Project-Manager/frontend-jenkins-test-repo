@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { Button, Checkbox , Typography, Table, TableContainer} from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
 
@@ -44,6 +44,7 @@ const ScrollableTableContainer = styled(TableContainer)
 `overflow-x: auto`;
 
 const SimpleMuiTable = () => {
+    const {brand,model,jack}=useParams()
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
@@ -59,8 +60,17 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/wht-tray/' + 'Closed/' + location
+                    let obj={
+                        location:location,
+                        brand:brand,
+                        model:model,
+                        jack:jack,
+                        type:"WHT",
+                        type:"Closed",
+                        type1:"Recharging"
+                    }
+                    let response = await axiosMisUser.post(
+                        '/assignToChargingScreen',obj
                     )
                     if (response.status === 200) {
                         setIsLoading(false)

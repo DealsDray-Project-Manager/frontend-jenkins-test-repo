@@ -113,6 +113,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+        {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>RDL Agent</Typography>

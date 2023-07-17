@@ -33,8 +33,12 @@ const SimpleMuiTable = () => {
                 let token = localStorage.getItem('prexo-authentication')
                 if (token) {
                     const { user_name } = jwt_decode(token)
+                    let obj={
+                        trayId:trayId,
+                        user_name:user_name,
+                    }
                     const res = await axiosRdlTwoAgent.post(
-                        '/traySummery/' + trayId + '/' + user_name
+                        '/traySummery',obj 
                     )
                     if (res.status == 200) {
                         setTrayData(res.data.data)
@@ -268,7 +272,7 @@ const SimpleMuiTable = () => {
             },
         },
     ]
-    const not_reapairable = [
+    const spTrayItems = [
         {
             name: 'index',
             label: (
@@ -287,10 +291,11 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
+       
         {
-            name: 'uic',
+            name: 'partId',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>UIC</Typography>
+                <Typography sx={{ fontWeight: 'bold',}}>Part Id</Typography>
             ),
             options: {
                 filter: false,
@@ -298,43 +303,16 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'muic',
+            name: 'selected_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>UIC</Typography>
+                <Typography sx={{ fontWeight: 'bold',  }}>Quantity</Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
             },
         },
-        {
-            name: 'rdl_repair_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Part Details</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand colum
-                customBodyRender: (value, tableMeta) => {
-                    const dataIndex = tableMeta.rowIndex
-                    const partRequired = value?.not_reapairable
-
-                    if (partRequired && partRequired.length > 0) {
-                        const partsList = partRequired.map((data, index) => {
-                            return `${index + 1}.${data?.part_name} - ${
-                                data?.part_id
-                            }`
-                        })
-
-                        return partsList.join(', ')
-                    }
-
-                    return ''
-                },
-            },
-        },
+       
     ]
     const part_not_available = [
         {
@@ -487,8 +465,10 @@ const SimpleMuiTable = () => {
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
-                            { name: 'Requests', path: '/' },
-                            { name: 'Order' },
+                           
+                            { name: 'Action',path: '/' },
+                            { name: 'Tray summary'},
+                           
                         ]}
                     />
                 </div>
@@ -506,7 +486,7 @@ const SimpleMuiTable = () => {
                             RP Tray : {trayData?.code}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
-                            SP Tray : {trayData?.rp_tray}
+                            SP Tray : {trayData?.sp_tray}
                         </Typography>
                         <Typography sx={{ ml: 5 }}>
                             BRAND : {trayData?.brand}
@@ -587,6 +567,51 @@ const SimpleMuiTable = () => {
                     </Card>
                     <br />
                     <br />
+                    <Card>
+
+                        <MUIDataTable
+                            title={`Sp tray :- ${trayData?.sp_tray}`}
+                            data={summery?.spTray?.items}
+                            columns={spTrayItems}
+                            options={{
+                                filterType: 'textField',
+                                responsive: 'simple',
+                                download: false,
+                                print: false,
+                                selectableRows: 'none', // set checkbox for each row
+                                // search: false, // set search option
+                                // filter: false, // set data filter option
+                                // download: false, // set download option
+                                // print: false, // set print option
+                                // pagination: true, //set pagination option
+                                // viewColumns: false, // set column option
+                                customSort: (data, colIndex, order) => {
+                                    return data.sort((a, b) => {
+                                        if (colIndex === 1) {
+                                            return (
+                                                (a.data[colIndex].price <
+                                                b.data[colIndex].price
+                                                    ? -1
+                                                    : 1) *
+                                                (order === 'desc' ? 1 : -1)
+                                            )
+                                        }
+                                        return (
+                                            (a.data[colIndex] < b.data[colIndex]
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    })
+                                },
+                                elevation: 0,
+                                rowsPerPageOptions: [10, 20, 40, 80, 100],
+                            }}
+                        />
+                    </Card>
+                    <br />
+                    <br />
+
                     <Card>
                         <MUIDataTable
                             title={'Used Spare Parts'}

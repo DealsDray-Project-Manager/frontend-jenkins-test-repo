@@ -67,8 +67,14 @@ const TrackItemsEach = Loadable(
     lazy(() => import('./Track-item/search-and-display/search'))
 )
 const TrackTray = Loadable(lazy(() => import('./Track-tray/trayinformation')))
+const UnVerifiedImeiReport = Loadable(lazy(() => import('./Unverified-imei-report/items')))
+
 
 const ReportingRouter = [
+    {
+        path: '/reporting/unverified-imei',
+        element: <UnVerifiedImeiReport />,
+    },
     {
         path: '/reporting/dashboard',
         element: <Dashboard />,

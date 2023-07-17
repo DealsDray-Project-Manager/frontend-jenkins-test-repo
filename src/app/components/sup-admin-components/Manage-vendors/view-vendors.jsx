@@ -260,6 +260,9 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
             },
         },
         {
@@ -278,6 +281,9 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
             },
         },
         {

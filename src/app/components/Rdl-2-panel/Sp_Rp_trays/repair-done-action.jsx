@@ -18,7 +18,7 @@ import { styled } from '@mui/system'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
 import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosRDL_oneAgent, axiosRdlTwoAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 
@@ -45,8 +45,9 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [selectReason, setSelectReason] = useState('')
+    const [loading,setLoading]=useState(false)
     const [displayContent, setDisplayContent] = useState('')
-    const { reportData, trayId, username, uic, whtTrayId } = state
+    const { reportData, uic, whtTrayId,spTray } = state
     const [description, setDescription] = useState('')
     /**************************************************************************** */
     const [selectedValue, setSelectedValue] = useState('')
@@ -54,23 +55,29 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
         const fetchDataFun = async () => {
-            alert("")
-          try {
-            const response = await axiosRDL_oneAgent.post('/rdl-fls/fetchPart/' + reportData?.muic?.muic);
-            if (response.status === 200) {
-              const fetchedData = response.data.data.map(item => ({ ...item, quantity: 1 }));
-              setPartData(partData => [...partData, ...fetchedData]);
+            try {
+                const response = await axiosRDL_oneAgent.post(
+                    '/rdl-fls/fetchPart/' + reportData?.muic?.muic
+                )
+                if (response.status === 200) {
+                    const fetchedData = response.data.data.map((item) => ({
+                        ...item,
+                        quantity: 1,
+                    }))
+
+                    setPartData(fetchedData)
+                }
+            } catch (error) {
+                // Handle error here
+                console.error('Error fetching data:', error)
             }
-          } catch (error) {
-            // Handle error here
-            console.error('Error fetching data:', error);
-          }
-        };
-        fetchDataFun();
-      }, []);
+        }
+        fetchDataFun()
+    }, [])
 
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
+        setSelectReason('')
         setSelectedValue(event.target.value)
     }
 
@@ -86,9 +93,11 @@ const SimpleMuiTable = () => {
 
     const handelSubmit = async () => {
         try {
+            setLoading(true)
             let obj = {
                 uic: uic,
                 trayId: whtTrayId,
+                spTray:spTray,
                 rdl_repair_report: {
                     status: selectedValue,
                     reason: selectReason,
@@ -378,6 +387,7 @@ const SimpleMuiTable = () => {
     ]
 
     const handelReason = (value) => {
+        setDisplayContent('')
         if (value == 'Device not repairable')
             setDisplayContent(
                 'Were the Spare parts consumed if so then please select'
@@ -394,8 +404,7 @@ const SimpleMuiTable = () => {
         setSelectReason(value)
     }
     /************************************************************************** */
-    console.log('working', selectReason)
-    // const tableExpected = useMemo(() => {
+
     return (
         <>
             <Container>
@@ -737,14 +746,17 @@ const SimpleMuiTable = () => {
                             }}
                             variant="contained"
                             disabled={
+                                loading ||
                                 selectedValue == '' ||
                                 description == '' ||
                                 (selectedValue == 'Repair Not Done' &&
                                     selectReason == '') ||
-                                isCheck.length == 0
+                                (selectedValue == 'Repair Not Done' &&
+                                    isCheck.length == 0 &&
+                                    selectReason !== 'Device not repairable')
                             }
                             onClick={(e) => {
-                                handelSubmit()
+                                handelSubmit(e)
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"

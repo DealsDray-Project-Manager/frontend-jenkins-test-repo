@@ -175,7 +175,7 @@ const dataTableRoutes = [
         element: <AssignToBqc />,
     },
     {
-        path: '/mis/assign-to-agent/bqcplanner/view-wht-tray',
+        path: '/mis/assign-to-agent/bqcplanner/view-wht-tray/:brand/:model/:jack',
         element: <Frombqcplanner/>,
     },
     {
@@ -183,7 +183,7 @@ const dataTableRoutes = [
         element: <AssignToCharging />,
     },
     {
-        path: '/mis/assign-to-agent/chargingplanner/view-wht-tray',
+        path: '/mis/assign-to-agent/chargingplanner/view-wht-tray/:brand/:model/:jack',
         element: <FromChargingplanner/>,
     },
     {

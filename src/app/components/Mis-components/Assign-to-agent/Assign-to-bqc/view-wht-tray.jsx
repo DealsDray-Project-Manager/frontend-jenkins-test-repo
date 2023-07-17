@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
 
@@ -51,6 +51,8 @@ const ScrollableTableContainer = styled(TableContainer)`
 `
 
 const SimpleMuiTable = () => {
+    const { brand, model, jack } = useParams()
+
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
@@ -66,8 +68,18 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/wht-tray/' + 'Ready to BQC/' + location
+                    let obj = {
+                        location: location,
+                        brand: brand,
+                        model: model,
+                        jack: jack,
+                        type: 'WHT',
+                        type: 'Ready to BQC',
+                        type1: 'null',
+                    }
+                    let response = await axiosMisUser.post(
+                        '/assignToChargingScreen',
+                        obj
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -359,8 +371,8 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'BQC Planner', path:'/' },
-                        { name: 'Ready-for-BQC'}
+                        { name: 'BQC Planner', path: '/' },
+                        { name: 'Ready-for-BQC' },
                     ]}
                 />
             </div>

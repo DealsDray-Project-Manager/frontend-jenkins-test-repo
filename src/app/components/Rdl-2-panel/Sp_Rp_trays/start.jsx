@@ -86,6 +86,7 @@ const SimpleMuiTable = () => {
                             username: username,
                             uic: uicCode,
                             whtTrayId: trayId,
+                            spTray:trayData?.sp_tray
                         },
                     })
                 } else {

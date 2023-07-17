@@ -74,6 +74,11 @@ const MemberEditorDialog = ({
             .max(40)
             .nullable(),
         brand_name: Yup.string().required('Required'),
+        jack_type: Yup.string()
+        .required('Required*')
+        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+        .max(40)
+        .nullable(),
     })
 
     const {
@@ -232,14 +237,14 @@ const MemberEditorDialog = ({
                             }
                         />
                         <TextFieldCustOm
-                            label="Model Name"
+                            label="Jack Type"
                             type="text"
-                            name="model_name"
-                            {...register('model_name')}
-                            error={errors.model_name ? true : false}
+                            name="jack_type"
+                            {...register('jack_type')}
+                            error={errors.jack_type ? true : false}
                             helperText={
-                                errors.model_name
-                                    ? errors.model_name.message
+                                errors.jack_type
+                                    ? errors.jack_type.message
                                     : ''
                             }
                         />
@@ -280,6 +285,18 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Model Name"
+                            type="text"
+                            name="model_name"
+                            {...register('model_name')}
+                            error={errors.model_name ? true : false}
+                            helperText={
+                                errors.model_name
+                                    ? errors.model_name.message
+                                    : ''
+                            }
+                        />
                     </Grid>
                 </Grid>
 

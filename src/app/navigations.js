@@ -1050,7 +1050,7 @@ export const navigations = [
     },
     {
         name: 'Delivery',
-        icon: 'reorder',
+        icon: 'repeat',
         children: [
             {
                 name: 'Delivered Packets',
@@ -1224,14 +1224,21 @@ export const navigations = [
     },
     {
         name: 'Month Wise Purchase',
-        icon: 'shopping_cart',
+        icon: 'report',
         path: '/reporting/month-wise-purchase-details',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Unverified imei report',
+        icon: 'report',
+        path: '/reporting/unverified-imei',
         sales: 'all',
         auth: authRoles.reporting,
     },
     {
         name: 'Track',
-        icon: 'shopping_cart',
+        icon: 'track_changes',
         children: [
             {
                 name: 'Item Track',

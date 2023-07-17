@@ -55,6 +55,7 @@ const MemberEditorDialog = ({
     const [locationDrop, setLocationDrop] = useState([])
     const [personName, setPersonName] = React.useState([])
     const [spCategory,setSpCategory]=useState([])
+    const [deals,setDeals]=useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,6 +94,9 @@ const MemberEditorDialog = ({
     useEffect(() => {
         setValue('location', personName)
     }, [personName])
+    useEffect(() => {
+        setValue('deals', deals)
+    }, [deals])
 
     const schema = Yup.object().shape({
         vendor_id: Yup.string().required('Required*').nullable(),
@@ -118,14 +122,13 @@ const MemberEditorDialog = ({
             .nullable(),
 
         mobile_one: Yup.string().required('Required*').nullable(),
-        deals: Yup.string().required('Required*').nullable(),
+        deals: Yup.array().min(1, 'Select at least one category').nullable(),
         mobile_two: Yup.string().required('Required*').nullable(),
         pincode: Yup.string().required('Required*').nullable(),
         reference: Yup.string().required('Required*').nullable(),
         location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
 
-    console.log(errors)
 
     const {
         control,
@@ -138,7 +141,9 @@ const MemberEditorDialog = ({
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            location: [], // Set initial values here
+            location: [],
+            deals:[]
+             // Set initial values here
         },
     })
 
@@ -239,6 +244,18 @@ const MemberEditorDialog = ({
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
+
+    }
+
+    const handleChangeDeals= (event) => {
+        const {
+            target: { value },
+        } = event
+        setDeals(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value
+        )
+
     }
 
     return (
@@ -403,14 +420,25 @@ const MemberEditorDialog = ({
                                 ))}
                             </Select>
                         </FormControl>
-                        <TextFieldCustOm
-                            label="Deals"
-                            select
-                            name="deals"
-                            {...register('deals')}
-                            error={errors.deals ? true : false}
+                        <FormControl sx={{ mb: 2, width: 260 }}>
+                        <InputLabel id="demo-multiple-name-label">
+                                Deals
+                            </InputLabel>
+                        <Select
+                             labelId="demo-multiple-name-label"
+                             id="demo-multiple-name"
+                             multiple
+                             value={deals}
+                             input={<OutlinedInput label="Deals" />}
+                             MenuProps={MenuProps}
+                             onChange={(e) => {
+                                handleChangeDeals(e)
+                            }}
+                            error={errors.location ? true : false}
                             helperText={
-                                errors.deals ? errors.deals?.message : ''
+                                errors.location
+                                    ? errors.location?.message
+                                    : ''
                             }
                         >
                              {spCategory.map((data) => (
@@ -421,7 +449,8 @@ const MemberEditorDialog = ({
                                     {data.category_name}
                                 </MenuItem>
                             ))}
-                            </TextFieldCustOm>
+                            </Select>
+                            </FormControl>
 
                            
                     </Grid>

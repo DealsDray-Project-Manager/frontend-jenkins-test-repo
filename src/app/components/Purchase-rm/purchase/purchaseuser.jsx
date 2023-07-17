@@ -7,7 +7,7 @@ import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Card, Box, TextField } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSpMisAgent } from '../../../../axios'
+import { axiosPurchaseAgent, axiosSpMisAgent } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let res = await axiosSpMisAgent.post('/procurment/view')
+                    let res = await axiosPurchaseAgent.post('/procurment/view')
                     if (res.status == 200) {
                         setIsLoading(false)
                         setRDLRequest(res.data.data)
@@ -184,12 +184,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'Requests', path: '/' },
-                       
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Requests', path: '/' }]} />
             </div>
             <Card>
                 <MUIDataTable

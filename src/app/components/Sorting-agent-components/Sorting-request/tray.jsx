@@ -43,7 +43,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -58,31 +58,54 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{ml:2}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ ml: 2 }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Agent Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Agent Name</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -98,7 +121,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
 
@@ -108,7 +135,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'closed_time_wharehouse_from_bot',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Date of Closure</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Date of Closure</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -121,7 +152,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status_change_time',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Assigned Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Assigned Date</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -134,7 +169,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -171,8 +210,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

@@ -33,7 +33,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
-    const { reportData, trayId, username, uic, whtTrayId } = state
+    const { reportData, trayId, username, uic, spTray } = state
 
     const columns = [
         {
@@ -94,6 +94,7 @@ const SimpleMuiTable = () => {
                 username: username,
                 whtTrayId: trayId,
                 uic: uic,
+                spTray:spTray
             },
         })
     }

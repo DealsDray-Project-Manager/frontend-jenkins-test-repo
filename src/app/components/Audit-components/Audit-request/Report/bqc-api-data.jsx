@@ -157,6 +157,7 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : null}
+                            
                             {BqcSowftwareReport?.pq_dentdevicebody > 2 ? (
                                 <TableRow
                                     key={BqcSowftwareReport?.pq_dentdevicebody}

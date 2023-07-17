@@ -87,7 +87,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
 
         {
             name: 'warehouse',

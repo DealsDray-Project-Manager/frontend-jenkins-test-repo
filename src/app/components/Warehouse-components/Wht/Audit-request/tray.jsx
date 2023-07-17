@@ -78,7 +78,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
         {
             name: 'issued_user_name',
             label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,

@@ -35,9 +35,11 @@ const MemberEditorDialog = ({
     settrayRackId,
 }) => {
     const [location, setLocation] = useState('')
+    const [warehouse, setWarehouse] = useState([])
     const [locationDrop, setLocationDrop] = useState([])
-    const [selectedCpc, setSelectedCpc] = useState('')
     const [loading, setLoading] = useState(false)
+    const [allModel, setAllModel] = useState([])
+    const [categorys, setCategorys] = useState([])
     useEffect(() => {
         const fetchData = async () => {
             if (Object.keys(editFetchData).length !== 0) {
@@ -67,6 +69,60 @@ const MemberEditorDialog = ({
         }
         fetchData()
     }, [])
+
+    useEffect(() => {
+        if (Object.keys(editFetchData).length !== 0) {
+            reset({ ...editFetchData })
+            fetchModel(editFetchData.brand)
+            let arr = []
+            let obj = {
+                name: editFetchData.warehouse,
+            }
+            let objOne = {
+                code: editFetchData.tray_grade,
+            }
+            let arrOne = []
+            arrOne.push(objOne)
+            setCategorys(arrOne)
+            arr.push(obj)
+            setWarehouse(arr)
+            open()
+        }
+    }, [])
+
+     /* Fetch model */
+     const fetchModel = async (brandName) => {
+        try {
+            let res = await axiosSuperAdminPrexo.post(
+                '/get-product-model/' + brandName
+            )
+            if (res.status == 200) {
+                setAllModel(res.data.data)
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
+
+    async function getCpcData(name, code) {
+        try {
+            let obj = {
+                name: name,
+                code: code,
+            }
+            let response = await axiosSuperAdminPrexo.post(
+                '/getWarehouseByLocation',
+                obj
+            )
+            if (response.status == 200) {
+                setWarehouse(response.data.data.warehouse)
+            }
+        } catch (error) {}
+    }
 
     const schema = Yup.object().shape({
         rack_id: Yup.string().required('Required*').nullable(),
@@ -205,7 +261,7 @@ return (
             <Grid item sm={6} xs={12}>
             <TextFieldCustOm
                 label="Rack ID"
-                type="text"
+                type="text" 
                 name="rack_id"
                 value={trayRackId}
                 {...register('rack_id')}
@@ -251,8 +307,11 @@ return (
             >
                 {locationDrop.map((data) => (
                     <MenuItem
-                        onClick={(e) => {
-                            setSelectedCpc(data.location_type)
+                        onClick={() => {
+                            getCpcData(
+                                data.code,
+                                data.location_type
+                            )
                         }}
                         value={data.code}
                     >
@@ -260,42 +319,26 @@ return (
                     </MenuItem>
                 ))}
             </TextFieldCustOm>
-            {selectedCpc == 'Processing' ? (
-                            <TextFieldCustOm
-                                label="Warehouse"
-                                select
-                                name="warehouse"
-                                {...register('warehouse')}
-                                error={errors.warehouse ? true : false}
-                                helperText={errors.warehouse?.message}
-                                defaultValue={getValues('warehouse')}
-                            >
-                                <MenuItem value="Dock">Dock</MenuItem>
-                                <MenuItem value="Processing">
-                                    Processing
-                                </MenuItem>
-                                <MenuItem value="Sales">Sales</MenuItem>
-                                <MenuItem value="Spare Part Warehouse">
-                                    Spare Part Warehouse
-                                </MenuItem>
-                            </TextFieldCustOm>
-                        ) : (
-                            <TextFieldCustOm
-                                label="Warehouse"
-                                select
-                                name="warehouse"
-                                {...register('warehouse')}
-                                error={errors.warehouse ? true : false}
-                                helperText={errors.warehouse?.message}
-                                defaultValue={getValues('warehouse')}
-                            >
-                                <MenuItem value="Dock">Dock</MenuItem>
-                                <MenuItem value="Processing">
-                                    Processing
-                                </MenuItem>
-                                <MenuItem value="Sales">Sales</MenuItem>
-                            </TextFieldCustOm>
-                        )}
+            <TextFieldCustOm
+                label="Warehouse"
+                select
+                type="text"
+                name="warehouse"
+                defaultValue={getValues('warehouse')}
+                {...register('warehouse')}
+                // disabled={
+                //     getValues('type_taxanomy') == 'WHT' &&
+                //     Object.keys(editFetchData).length !== 0
+                // }
+                error={errors.warehouse ? true : false}
+                helperText={errors.warehouse?.message}
+            >
+                {warehouse.map((data) => (
+                    <MenuItem key={data.name} value={data.name}>
+                        {data.name}
+                    </MenuItem>
+                ))}
+            </TextFieldCustOm>
             </Grid>
         </Grid>
 

@@ -210,6 +210,16 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/view-trayracks',
             },
+            {
+                name: 'Storage',
+                // icon: 'home',
+                path: '/sup-admin/view-storage',
+            },
+            {
+                name: 'RAM',
+                // icon: 'home',
+                path: '/sup-admin/view-ram',
+            },
             // {
             //     name: 'Tray Racks',
             //     // icon: 'add_shopping_cart',

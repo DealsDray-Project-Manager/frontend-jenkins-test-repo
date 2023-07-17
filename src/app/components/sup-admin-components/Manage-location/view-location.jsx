@@ -152,7 +152,7 @@ const SimpleMuiTable = () => {
             }
         })
     }
-
+ 
     const columns = [
         {
             name: 'index',

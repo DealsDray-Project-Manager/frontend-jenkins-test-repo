@@ -89,6 +89,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+        {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
             options: {

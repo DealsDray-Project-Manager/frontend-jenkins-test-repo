@@ -24,6 +24,9 @@ import AmazonDetails from './Report/amazon-data'
 import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
 import Swal from 'sweetalert2'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as Yup from 'yup'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -62,16 +65,34 @@ BootstrapDialogTitle.propTypes = {
 
 export default function DialogBox() {
     const navigate = useNavigate()
+    const [colorList, setColorList] = useState([])
     const { state } = useLocation()
+    const [color,setcolor] = useState()
     const [addButDis, setAddButDis] = useState(false)
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
     const [butDis, setButDis] = useState(false)
 
+    useEffect(() => {
+        const fetchPartList = async () => {
+            try {
+                let colorList = await axiosSuperAdminPrexo.post(
+                    '/partAndColor/view/' + 'color-list'
+                )
+                if (colorList.status == 200) {
+                    setColorList(colorList.data.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchPartList()
+    }, [])
+
     const handelAdd = async (e, stageType) => {
         if (e.keyCode !== 32) {
-            setButDis(true)
+            setButDis(true) 
             try {
                 setAddButDis(true)
                 let obj = {
@@ -299,79 +320,114 @@ export default function DialogBox() {
                         </TextField>
                         {stateData.stage === 'Accept' ? (
                             <>
-                                <TextField
-                                    label="Select Tray"
-                                    select
-                                    fullWidth
-                                    sx={{
-                                        mb: 2,
-                                    }}
-                                    onChange={handleChange}
-                                    name="tray_type"
-                                >
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade == 'A' ? (
-                                        <MenuItem value="A">
-                                            CTA - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'A' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'B' ? (
-                                        <MenuItem value="B">
-                                            CTB - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'B' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'C' ? (
-                                        <MenuItem value="C">
-                                            CTC - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'C' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'D' ? (
-                                        <MenuItem value="D">
-                                            CTD - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'D' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : null}
-                                </TextField>
-                                <TextField
-                                    label="Audit Remark"
-                                    fullWidth
-                                    onChange={handleChange}
-                                    name="description"
-                                />
+                            <TextField
+                                label="Select Tray"
+                                select
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                onChange={handleChange}
+                                name="tray_type"
+                            >
+                                {reportData?.delivery?.bqc_software_report
+                                    ?.final_grade == 'A' ? (
+                                    <MenuItem value="A">
+                                        CTA - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'A' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : reportData?.delivery?.bqc_software_report
+                                      ?.final_grade == 'B' ? (
+                                    <MenuItem value="B">
+                                        CTB - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'B' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : reportData?.delivery?.bqc_software_report
+                                      ?.final_grade == 'C' ? (
+                                    <MenuItem value="C">
+                                        CTC - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'C' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : reportData?.delivery?.bqc_software_report
+                                      ?.final_grade == 'D' ? (
+                                    <MenuItem value="D">
+                                        CTD - (
+                                        {ctxTray?.map((trayData) =>
+                                            trayData.tray_grade == 'D' &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
+                                ) : null}
+                            </TextField>
+                            <TextField
+                               
+                                label="Color"
+                                variant="outlined"
+                                select
+                               
+                                name="color"
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                            >
+                                {colorList.map((data) => (
+                                    <MenuItem value={data.name}>{data.name}</MenuItem>
+                                ))}
+                            </TextField>
+                            
+                            <TextField
+                                label="RAM"
+                                fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
+                                select
+                                onChange={handleChange}
+                                name="description"
+                            />
+                            <TextField
+                                label="Storage"
+                                fullWidth
+                                sx={{mb:2}}
+                                select
+                                onChange={handleChange} 
+                                name="description"
+                            />
+                            <textarea
+                                style={{
+                                    width: '100%',
+                                    height: '100px',
+                                    marginBottom:'10px'
+                                }}
+                                onChange={handleChange}
+                                placeholder='Audit Remark'
+                            ></textarea>
                             </>
                         ) : null}
                         {stateData.stage === 'Upgrade' ||
@@ -434,11 +490,48 @@ export default function DialogBox() {
                                             </MenuItem>
                                         </TextField>
                                         <TextField
-                                            label="Audit Remark"
+                                            defaultValue={('color')}
+                                            label="Color"
+                                            variant="outlined"
+                                            select
+                                            type="text"
                                             fullWidth
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                        >
+                                            {colorList.map((data) => (
+                                                <MenuItem value={data.name}>{data.name}</MenuItem>
+                                            ))}
+                                        </TextField>
+                                            
+                                        <TextField
+                                            label="RAM"
+                                            fullWidth
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                            select
                                             onChange={handleChange}
                                             name="description"
                                         />
+                                        <TextField
+                                            label="Storage"
+                                            fullWidth
+                                            sx={{mb:2}}
+                                            select
+                                            onChange={handleChange}
+                                            name="description"
+                                        />
+                                        <textarea
+                                            style={{
+                                                width: '100%',
+                                                height: '100px',
+                                                marginBottom:'10px'
+                                            }}
+                                            onChange={handleChange}
+                                            placeholder='Audit Remark'
+                                        ></textarea>
                                     </>
                                 ) : null}
                             </>
@@ -505,11 +598,48 @@ export default function DialogBox() {
                                             </MenuItem>
                                         </TextField>
                                         <TextField
-                                            label="Audit Remark"
+                                            defaultValue={('color')}
+                                            label="Color"
+                                            variant="outlined"
+                                            select
+                                            type="text"
                                             fullWidth
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                        >
+                                            {colorList.map((data) => (
+                                                <MenuItem value={data.name}>{data.name}</MenuItem>
+                                            ))}
+                                        </TextField>
+                                            
+                                        <TextField
+                                            label="RAM"
+                                            fullWidth
+                                            sx={{
+                                                mb: 2,
+                                            }}
+                                            select
                                             onChange={handleChange}
                                             name="description"
                                         />
+                                        <TextField
+                                            label="Storage"
+                                            fullWidth
+                                            sx={{mb:2}}
+                                            select
+                                            onChange={handleChange}
+                                            name="description"
+                                        />
+                                        <textarea
+                                            style={{
+                                                width: '100%',
+                                                height: '100px',
+                                                marginBottom:'10px'
+                                            }}
+                                            onChange={handleChange}
+                                            placeholder='Audit Remark'
+                                        ></textarea>
                                     </>
                                 ) : null}
                             </>
@@ -581,25 +711,21 @@ export default function DialogBox() {
                         stateData.stage == 'Direct Downgrade' ||
                         stateData.stage == 'Direct Upgrade' ? (
                             <>
-                                <textarea
-                                    style={{
-                                        width: '100%',
-                                        height: '100px',
-                                        marginBottom:'10px'
-                                    }}
-                                    onChange={handleChange}
-                                    placeholder='Audit Remark'
-                                ></textarea>
                             <TextField
-                                label="Color Selection"
+                                defaultValue={('color')}
+                                label="Color"
+                                variant="outlined"
+                                select
+                                type="text"
                                 fullWidth
                                 sx={{
                                     mb: 2,
                                 }}
-                                select
-                                onChange={handleChange}
-                                name="description"
-                            />
+                            >
+                                {colorList.map((data) => (
+                                    <MenuItem value={data.name}>{data.name}</MenuItem>
+                                ))}
+                            </TextField>
                             
                             <TextField
                                 label="RAM"
@@ -614,10 +740,22 @@ export default function DialogBox() {
                             <TextField
                                 label="Storage"
                                 fullWidth
+                                sx={{
+                                    mb: 2,
+                                }}
                                 select
                                 onChange={handleChange}
                                 name="description"
                             />
+                            <textarea
+                                style={{
+                                    width: '100%',
+                                    height: '100px',
+                                    marginBottom:'10px'
+                                }}
+                                onChange={handleChange}
+                                placeholder='Audit Remark'
+                            ></textarea>
                             </>
                         ) : null}
                         <TextField

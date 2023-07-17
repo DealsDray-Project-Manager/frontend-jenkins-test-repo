@@ -4,7 +4,7 @@ import { styled } from '@mui/system'
 
 import {
     Table,
-    TableContainer,
+    TableContainer, 
     TableHead,
     TableBody,
     TableRow,
@@ -81,146 +81,135 @@ const SimpleMuiTable = () => {
     const [inputSearch, setInputSearch] = useState('')
     const [refresh, setRefresh] = useState(false)
 
-    // const download = (e) => {
-    //     let arr = []
-    //     for (let x of partList) {
-    //         let obj = {
-    //             part_code: x.part_code,
-    //             name: x.name,
-    //             color: x.color,
-    //             technical_qc: x.technical_qc,
-    //             description: x.description,
-    //             available_stock: x.avl_stock,
-    //             add_stock: '0',
-    //         }
-    //         arr.push(obj)
-    //     }
-    //     const fileExtension = '.xlsx'
-    //     const fileType =
-    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    //     const ws = XLSX.utils.json_to_sheet(arr)
+    const download = (e) => {
+        let arr = []
+        for (let x of dataForDownload) {
+            let obj = {
+                'Model Name': x?.old_item_details?.replace(/:/g, ' ').toUpperCase(),
+                IMEI: x?.imei,
+                'SKU Name': x?.item_id,
+                'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
+                UIC: x?.uic_code?.code,
+                Price: x?.partner_purchase_price,
+                'Tray Location': x?.tray_location,
+                Location: x?.partner_shop,
+                'Delivery Status': x?.delivery_status,
+                'Partner ID': x?.partner_id,
+                'Item ID': x?.item_id,
+                'Brand Name': x?.brand_name,
+                'Base Discount': x?.base_discount,
+                'Diagnostic': x?.diagnostic,
+                'Partner Purchase Price': x?.partner_purchase_price,
+                'Product Name': x?.model_name,
+                'Order Status': x?.order_status,
+                'Order Id': x?.order_id,
+                'Tracking Id': x?.tracking_id,
+                'Product Name': x?.model_name,
+                'Order ID Replaced': x?.order_id_replaced,
+                'Delivered with OTP': x?.deliverd_with_otp,
+                'Delivered with Bag Exception': x?.deliverd_with_bag_exception,
+                'GC Amount Redeemed': x?.gc_amount_redeemed,
+                'GC Amount Refund': x?.gc_amount_refund,
+                'Diagnostic Status':x?.diagnstic_status,
+                'VC Eligible':x?.vc_eligible,
+                'Customer Declaration Pysical Defect Present':x?.customer_declaration_physical_defect_present,
+                'Customer Declaration Pysical Defect Type': x?.customer_declaration_physical_defect_type,
+                'Partner Price No Defect': x?.partner_price_no_defect,
+                'Revised Partner Price': x?.revised_partner_price,
+                'Delivery Fee': x?.delivery_fee,
+                'Exchange Facilitation Fee': x?.exchange_facilitation_fee,
+                'MUIC': x?.muic,
+            }
+            if(x.order_timestamp !== undefined && x?.order_timestamp !== null){
+                obj['Order TimeStamp'] = new Date(x?.order_timestamp).toLocaleString('en-GB', {
+                    hour12: true,
+                })
+            } else {
+                obj['Order TimeStamp'] = ''
+            }
+            if(x.gc_redeem_time !== undefined && x?.gc_redeem_time !== null){
+                obj['GC Redeemed Time'] = new Date(x?.gc_redeem_time).toLocaleString('en-GB', {
+                    hour12: true,
+                })
+            } else {
+                obj['GC Redeemed Time'] = ''
+            }
+            if(x.gc_amount_refund_time !== undefined && x?.gc_amount_refund_time !== null){
+                obj['GC Amount Refund Time'] = new Date(x?.gc_amount_refund_time).toLocaleString('en-GB', {
+                    hour12: true,
+                })
+            } else {
+                obj['GC Amount Refund Time'] = ''
+            }
+            if(x.created_at !== undefined && x?.created_at !== null){
+                obj['Order Imported TimeStamp'] = new Date(x?.created_at).toLocaleString('en-GB', {
+                    hour12: true,
+                })
+            } else {
+                obj['Order TimeStamp'] = ''
+            }
+            if (x?.order_date !== undefined && x?.order_date !== null) {
+                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
+                    'en-GB',
+                    {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }
+                )
+            } else {
+                obj['Order Date'] = ''
+            }
 
-    //     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-    //     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-    //     const data = new Blob([excelBuffer], { type: fileType })
-    //     FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
-    // }
+            if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
+                obj['Delivery Date'] = new Date(
+                    x?.delivery_date
+                ).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })
+            } else {
+                obj['Delivery Date'] = ''
+            }
+            if (
+                x?.assign_to_agent !== undefined &&
+                x?.assign_to_agent !== null
+            ) {
+                obj['Packet Open Date'] = new Date(
+                    x?.assign_to_agent
+                ).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                })
+            } else {
+                obj['Packet Open Date'] = ''
+            }
 
-    // const download = (e) => {
-    //     let arr = []
-    //     for (let x of dataForDownload) {
-    //         let obj = {
-    //             'Delivery Status': x?.delivery_status,
-    //             'Partner ID': x?.partner_id,
-    //             'Item ID': x?.item_id,
-    //             'Brand Name': x?.brand_name,
-    //             'Product Name': x?.model_name,
-    //             'Order ID Replaced': x?.order_id_replaced,
-    //             'Delivered with OTP': x?.deliverd_with_otp,
-    //             'Delivered with Bag Exception': x?.deliverd_with_bag_exception,
-    //             'GC Amount Redeemed': x?.gc_amount_redeemed,
-    //             'GC Amount Refund': x?.gc_amount_refund,
-    //             'GC Redeemed Time': x?.gc_redeem_time,
-    //             'GC Amount Refund Time': x?.gc_amount_refund_time,
-    //             'Diagnostic Status':x?.diagnstic_status,
-    //             'VC Eligible':x?.vc_eligible,
-    //             'Customer Declaration Pysical Defect Present':x?.customer_declaration_physical_defect_present,
-    //             'Customer Declaration Pysical Defect Type': x?.customer_declaration_physical_defect_type,
-    //             'Partner Price No Defect': x?.partner_price_no_defect,
-    //             'Revised Partner Price': x?.revised_partner_price,
-    //             'Delivery Fee': x?.delivery_fee,
-    //             'Exchange Facilitation Fee': x?.exchange_facilitation_fee,
-    //             'MUIC': x?.muic,
-    //             'Base Discount': x?.base_discount,
-    //             'Diagnostic': x?.diagnostic,
-    //             'Partner Purchase Price': x?.partner_purchase_price,
-    //             'Product Name': x?.model_name,
-    //             'Order Status': x?.order_status,
-    //             'Order Id': x?.order_id,
-    //             'Tracking Id': x?.tracking_id,
-    //             'Model Name': x?.old_item_details?.replace(/:/g, ' ').toUpperCase(),
-    //             IMEI: x?.imei,
-    //             'SKU Name': x?.item_id,
-    //             'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
-    //             UIC: x?.uic_code?.code,
-    //             Price: x?.partner_purchase_price,
-    //             'Tray Location': x?.tray_location,
-    //             Location: x?.partner_shop,
-    //         }
-    //         if(x.order_timestamp !== undefined && x?.order_timestamp !== null){
-    //             obj['Order TimeStamp'] = new Date(x?.order_timestamp).toLocaleString('en-GB', {
-    //                 hour12: true,
-    //             })
-    //         } else {
-    //             obj['Order TimeStamp'] = ''
-    //         }
-    //         if(x.created_at !== undefined && x?.created_at !== null){
-    //             obj['Order Imported TimeStamp'] = new Date(x?.created_at).toLocaleString('en-GB', {
-    //                 hour12: true,
-    //             })
-    //         } else {
-    //             obj['Order TimeStamp'] = ''
-    //         }
-    //         if (x?.order_date !== undefined && x?.order_date !== null) {
-    //             obj['Order Date'] = new Date(x?.order_date).toLocaleString(
-    //                 'en-GB',
-    //                 {
-    //                     year: 'numeric',
-    //                     month: '2-digit',
-    //                     day: '2-digit',
-    //                 }
-    //             )
-    //         } else {
-    //             obj['Order Date'] = ''
-    //         }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
 
-    //         if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
-    //             obj['Delivery Date'] = new Date(
-    //                 x?.delivery_date
-    //             ).toLocaleString('en-GB', {
-    //                 year: 'numeric',
-    //                 month: '2-digit',
-    //                 day: '2-digit',
-    //             })
-    //         } else {
-    //             obj['Delivery Date'] = ''
-    //         }
-    //         if (
-    //             x?.assign_to_agent !== undefined &&
-    //             x?.assign_to_agent !== null
-    //         ) {
-    //             obj['Packet Open Date'] = new Date(
-    //                 x?.assign_to_agent
-    //             ).toLocaleString('en-GB', {
-    //                 year: 'numeric',
-    //                 month: '2-digit',
-    //                 day: '2-digit',
-    //             })
-    //         } else {
-    //             obj['Packet Open Date'] = ''
-    //         }
-
-    //         arr.push(obj)
-    //     }
-    //     const fileExtension = '.xlsx'
-    //     const fileType =
-    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    //     const ws = XLSX.utils.json_to_sheet(arr)
-
-    //     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-    //     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-    //     const data = new Blob([excelBuffer], { type: fileType })
-    //     FileSaver.saveAs(data, 'Order Details' + fileExtension)
-    // }
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Order Details' + fileExtension)
+    }
 
     useEffect(() => {
-        setLocation(location)
+        
         setDisplayText('Loading...')
         const fetchOrder = async () => {
+            console.log();
             try {
                 let user = localStorage.getItem('prexo-authentication')
                 if (user) {
                     let { location } = jwt_decode(user)
+                    setLocation(location)
                     if (search.searchData !== '') {
                         let obj = {
                             location: location,
@@ -476,7 +465,7 @@ const SimpleMuiTable = () => {
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>MUIC</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>IMEI</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Base Discount</TableCell>
-                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diganostic</TableCell>
+                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diagnostic</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Tracking ID</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Delivery Date</TableCell>
@@ -487,7 +476,7 @@ const SimpleMuiTable = () => {
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Amount Refund</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Redeem Time</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Amount Refund Time</TableCell>
-                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diagonstic Status</TableCell>
+                        <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diagnostic Status</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>VC Eligible</TableCell>
                         <TableCell  sx={{fontWeight:'bold', fontSize:'16px', width:'400px'}}>
                             Customer Declaration Physical Defect Present
@@ -567,12 +556,12 @@ const SimpleMuiTable = () => {
                                 {data.old_item_details?.toString()}
                             </TableCell>
                             <TableCell>
-                                {data?.products[0]?.brand_name}
+                                {data?.products?.[0]?.brand_name}
                             </TableCell>
                             <TableCell>
-                                {data?.products[0]?.model_name}
+                                {data?.products?.[0]?.model_name}
                             </TableCell>
-                            <TableCell>{data?.products[0]?.muic}</TableCell>
+                            <TableCell>{data?.products?.[0]?.muic}</TableCell>
                             <TableCell>{data.imei?.toString()}</TableCell>
                             {/* <TableCell>{data.gep_order?.toString()}</TableCell> */}
                             <TableCell>
@@ -700,7 +689,7 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             searchOrders(e)
                         }}
-                        disabled={search.type == '' ? true : false}
+                        // disabled={search.type == '' ? true : false}
                         label="Search"
                         variant="outlined"
                         sx={{ ml: 2, mr:2 }}
@@ -757,7 +746,7 @@ const SimpleMuiTable = () => {
                             inputSearch == '' && stateForFilterUn == false
                         }
                         onClick={(e) => {
-                            // download(e)
+                            download(e)
                         }}
                     >
                         Download XLSX

@@ -381,8 +381,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
-
         {
             name: 'type_taxanomy',
             label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,

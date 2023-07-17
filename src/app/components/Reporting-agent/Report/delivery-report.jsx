@@ -270,7 +270,7 @@ const SimpleMuiTable = () => {
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
                     setRefresh((refresh) => !refresh)
-                } else {
+                } else { 
                     setRowsPerPage(100)
                     setPage(0)
                     let obj = {

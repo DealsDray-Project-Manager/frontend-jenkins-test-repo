@@ -186,7 +186,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,

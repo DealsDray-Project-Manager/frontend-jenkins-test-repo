@@ -7,7 +7,7 @@ import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-
+ 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -117,7 +117,7 @@ const SimpleMuiTable = () => {
     const handelDelete = (rack_id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Rack!',
+            text: 'You want to Delete Rack!', 
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -245,7 +245,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Categories', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Tray Racks', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}

@@ -87,6 +87,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'rack_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
 
         {
             name: 'warehouse',
@@ -123,7 +130,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
+                <Typography sx={{ fontWeight: 'bold', alignItems:'center'}} >
                     Request Sent Date
                 </Typography>
             ),

@@ -49,6 +49,7 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     setIsLoading(true)
@@ -56,10 +57,13 @@ const SimpleMuiTable = () => {
                     let response = await axiosWarehouseIn.post(
                         '/whtTray/' + location + '/' + 'all-wht-tray'
                     )
+                    
                     if (response.status === 200) {
                         setIsLoading(false)
                         setWhtTray(response.data.data)
+                        console.log(response);
                     }
+                    
                 } else {
                     navigate('/')
                 }
@@ -100,8 +104,16 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Category</Typography>,
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Tray Category</Typography>,
             options: {
                 filter: true,
             },

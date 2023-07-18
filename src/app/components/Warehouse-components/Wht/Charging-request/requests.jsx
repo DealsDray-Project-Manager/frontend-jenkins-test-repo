@@ -35,10 +35,13 @@ const SimpleMuiTable = () => {
                     let res = await axiosWarehouseIn.post(
                         '/request-for-assign/' + 'Send_for_charging/' + location
                     )
+                    console.log(res);
                     if (res.status == 200) {
                         setIsLoading(false)
                         setChargingRequest(res.data.data)
+                        
                     }
+                    
                 } else {
                     navigate('/')
                 }
@@ -79,15 +82,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'rack_id',
-        //     label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
-        //     options: {
-        //         filter: true,
-        //         customBodyRender: (value, tableMeta) =>
-                
-        //     },
-        // },
+        {
+            name: 'rack_id',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+               
+            },
+        },
         {
             name: 'issued_user_name',
             label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,

@@ -16,6 +16,7 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
@@ -25,8 +26,14 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import { axiosSuperAdminPrexo } from '../../../../axios'
 import { axiosSortingAgent } from '../../../../axios'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -75,8 +82,30 @@ export default function DialogBox() {
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId,setRackId]=useState("")
     /*********************************************************** */
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                if (res.status == 200) {
+                    console.log(res.data.data);
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -458,6 +487,27 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                <TextFieldCustOm 
+                    sx={{m:1}}
+                        label='Rack ID'
+                        select
+                        style={{ width: '150px'}}
+                     
+                         
+                        name="rack_id"
+                >
+                    {rackiddrop?.map((data) => (
+                    
+                    <MenuItem
+                        onClick={(e) => {
+                            setRackId(data.rack_id)
+                        }}
+                        value={data.rack_id}
+                    >
+                        {data.rack_id}
+                    </MenuItem>
+                ))}
+                </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -474,7 +524,7 @@ export default function DialogBox() {
                                 ? true
                                 : loading2 == true
                                 ? true
-                                : false
+                                : false || rackId == ""
                         }
                         style={{ backgroundColor: 'primery' }}
                         onClick={(e) => {

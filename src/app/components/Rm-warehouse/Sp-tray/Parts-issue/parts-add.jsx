@@ -4,9 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosRmUserAgent } from '../../../../../axios'
-import { Button, Box, Typography } from '@mui/material'
+import { axiosRmUserAgent, axiosSuperAdminPrexo } from '../../../../../axios'
+import { Button, Box, Typography, TextField, MenuItem } from '@mui/material'
 import Swal from 'sweetalert2'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -27,6 +32,29 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
     const [description, setDescription] = useState([])
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId,setRackId]=useState("")
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                if (res.status == 200) {
+                    console.log(res.data.data);
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         try {
@@ -268,6 +296,27 @@ const SimpleMuiTable = () => {
                 }}
             />
             <Box sx={{ float: 'right' }}>
+            <TextFieldCustOm 
+                    sx={{m:1, mt:3}}
+                        label='Rack ID'
+                        select
+                        style={{ width: '150px'}}
+                     
+                         
+                        name="rack_id"
+                >
+                    {rackiddrop?.map((data) => (
+                    
+                    <MenuItem
+                        onClick={(e) => {
+                            setRackId(data.rack_id)
+                        }}
+                        value={data.rack_id}
+                    >
+                        {data.rack_id}
+                    </MenuItem>
+                ))}
+                </TextFieldCustOm>
                 <textarea
                     onChange={(e) => {
                         setDescription(e.target.value)
@@ -288,7 +337,7 @@ const SimpleMuiTable = () => {
                     variant="contained"
                     disabled={
                         tray?.items?.length !== tray?.actual_items?.length ||
-                        description == ''
+                        description == '' || rackId == "" 
                     }
                     style={{ backgroundColor: '#206CE2' }}
                     onClick={(e) => {

@@ -84,8 +84,6 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                value?.[0]?.rack_id
                 
             },
         },
@@ -133,7 +131,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[6],
+                    value.length + '/' + tableMeta.rowData[7],
             },
         },
         {

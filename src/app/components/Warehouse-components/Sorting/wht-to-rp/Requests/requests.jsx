@@ -84,6 +84,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosWarehouseIn.post(
                         '/whtToRp/requests/' + location
                     )
+                    console.log(res);
                     if (res.status == 200) {
                         setTray(res.data.data)
                     }

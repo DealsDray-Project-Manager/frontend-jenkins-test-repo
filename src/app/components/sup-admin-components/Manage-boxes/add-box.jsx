@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
+import React, { useEffect, useState, Controller } from 'react'
+import { Dialog, Button, Grid, TextField } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import Swal from 'sweetalert2' 
+import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -19,52 +19,72 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const AddPartOrColorAndEditDialog = ({
+const MemberEditorDialog = ({
     open,
     handleClose,
     setIsAlive,
     editFetchData,
     setEditFetchData,
-    muicData,
+    boxId,
+    setboxId,
 }) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (Object.keys(editFetchData).length !== 0) {
-            reset({ ...editFetchData })
-            open()
+        const fetchData = async () => {
+            if (Object.keys(editFetchData).length !== 0) {
+                reset({ ...editFetchData })
+                setboxId(editFetchData.boxId)
+                open()
+            }
         }
+        fetchData()
     }, [])
 
-    const schema = Yup.object().shape({ 
+    const schema = Yup.object().shape({
+        box_id: Yup.string().required('Required*').nullable(),
         name: Yup.string()
-            .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
+            .required('Required*')
             .nullable(),
-
-        description: Yup.string()
+        display: Yup.string()
             .required('Required*')
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,
+                'Please enter valid display name'
+            )
+            .max(100)
+            .nullable(),
+        description: Yup.string()
+            .matches(
+                /^.*((?=.*[aA-zZ\s]){1}).*$/,
+                'Please enter valid Description'
+            )
             .max(40)
+            .required('Required*')
             .nullable(),
     })
+
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
         reset,
-        getValues,
+        // getValues,
+        // setValue,
     } = useForm({
         resolver: yupResolver(schema),
+      
     })
 
     const onSubmit = async (data) => {
+        data.created_at = Date.now()
         try {
             setLoading(true)
-            data.type = 'color-list'
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/create',
+                '/boxes/create',
                 data
             )
             if (response.status == 200) {
@@ -73,7 +93,7 @@ const AddPartOrColorAndEditDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Successfully Created',
+                    title: 'Successfully Added',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -83,8 +103,8 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
-                handleClose()
                 setLoading(false)
+                handleClose()
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -97,15 +117,16 @@ const AddPartOrColorAndEditDialog = ({
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
     }
-
+    
     const handelEdit = async (data) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/edit',
+                '/boxes/edit',
                 data
             )
             if (response.status == 200) {
@@ -114,7 +135,7 @@ const AddPartOrColorAndEditDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Successfully Updated',
+                    title: 'Update Successfully',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -124,16 +145,20 @@ const AddPartOrColorAndEditDialog = ({
                     }
                 })
             } else {
+                setEditFetchData({})
+                handleClose()
                 Swal.fire({
-                    icon: 'failed',
-                    title: response.data.message,
-                    showConfirmButton: false,
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Please check',
+                    confirmButtonText: 'Ok',
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
+                confirmButtonText: 'Ok',
                 text: error,
             })
         }
@@ -142,30 +167,42 @@ const AddPartOrColorAndEditDialog = ({
     return (
         <Dialog open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Add Color</H4>
-                {/* <TextFieldCustOm
-                    label="MUIC"
-                    type="text"
-                    select
-                    name="muic"
-                    defaultValue={getValues('muic')}
-                    {...register('muic')}
-                    error={errors.muic ? true : false}
-                    helperText={errors.muic ? errors.muic?.message : ''}
-                >
-                    {muicData?.map((data) => (
-                        <MenuItem key={data?.muic} value={data?.muic}>
-                            {data?.muic}
-                        </MenuItem>
-                    ))}
-                </TextFieldCustOm> */}
+                <H4 sx={{ mb: '20px' }}>Create Box</H4>
+
                 <TextFieldCustOm
-                    label="Name"
+                    label="Box ID"
+                    type="text"
+                    name="box_id"
+                    value={boxId}
+                    {...register('box_id')}
+                    // disabled={Object.keys(editFetchData).length !== 0}
+                    error={errors.boxId ? true : false}
+                    helperText={
+                        errors.boxId ? errors.boxId?.message : ''
+                    }
+                />
+                <TextFieldCustOm
+                    label="Box Name"
                     type="text"
                     name="name"
+                    // disabled={Object.keys(editFetchData).length !== 0}
                     {...register('name')}
                     error={errors.name ? true : false}
-                    helperText={errors.name ? errors.name?.message : ''}
+                    helperText={
+                        errors.name
+                            ? errors.name?.message
+                            : ''
+                    }
+                />
+                <TextFieldCustOm
+                    label="Box Display"
+                    type="text"
+                    name="display"
+                    {...register('display')}
+                    error={errors.display ? true : false}
+                    helperText={
+                        errors.display ? errors.display.message : ''
+                    }
                 />
                 <TextFieldCustOm
                     label="Description"
@@ -205,4 +242,4 @@ const AddPartOrColorAndEditDialog = ({
     )
 }
 
-export default AddPartOrColorAndEditDialog
+export default MemberEditorDialog

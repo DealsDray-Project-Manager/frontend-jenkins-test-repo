@@ -14,7 +14,7 @@ const TextFieldCustOm = styled(TextField)(() => ({
 }))
 
 const FormHandlerBox = styled('div')(() => ({
-    display: 'flex',
+    display: 'flex', 
     alignItems: 'center',
     justifyContent: 'space-between',
 }))

@@ -206,6 +206,26 @@ export const navigations = [
                 path: '/sup-admin/tray',
             },
             {
+                name: 'Boxes',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/view-boxes',
+            },
+            {
+                name: 'Tray Racks',
+                // icon: 'home',
+                path: '/sup-admin/view-trayracks',
+            },
+            {
+                name: 'Payments Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-payments',
+            },
+            {
+                name: 'Warranty Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-warranty',
+            },
+            {
                 name: 'Tray Racks',
                 // icon: 'home',
                 path: '/sup-admin/view-trayracks',

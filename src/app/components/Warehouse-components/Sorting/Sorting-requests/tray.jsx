@@ -31,6 +31,7 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosMisUser.post(
@@ -39,6 +40,7 @@ const SimpleMuiTable = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setBotTray(response.data.data)
+                        
                     } else {
                         setIsLoading(false)
                         Swal.fire({
@@ -48,9 +50,11 @@ const SimpleMuiTable = () => {
                             confirmButtonText: 'Ok',
                         })
                     }
+                    
                 } else {
                     navigate('/')
                 }
+                
             } catch (error) {
                 setIsLoading(false)
                 Swal.fire({

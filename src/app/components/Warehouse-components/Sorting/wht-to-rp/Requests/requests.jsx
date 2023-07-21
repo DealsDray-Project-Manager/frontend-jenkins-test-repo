@@ -84,6 +84,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosWarehouseIn.post(
                         '/whtToRp/requests/' + location
                     )
+                    console.log(res);
                     if (res.status == 200) {
                         setTray(res.data.data)
                     }
@@ -186,12 +187,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
+            name: 'rack_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value
+                },
             },
         },
        

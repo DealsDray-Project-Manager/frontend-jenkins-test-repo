@@ -11,6 +11,7 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -19,6 +20,7 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -48,7 +50,31 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId,setRackId]=useState("")
     /*********************************************************** */
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                if (res.status == 200) {
+                    console.log(res.data.data);
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -434,7 +460,7 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' ? true : false
+                            loading == true || description == '' ? true : false || rackId == ""
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

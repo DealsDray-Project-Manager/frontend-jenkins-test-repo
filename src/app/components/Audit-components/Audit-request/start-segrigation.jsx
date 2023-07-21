@@ -13,7 +13,6 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
@@ -22,11 +21,7 @@ import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { axiosAuditAgent } from '../../../../axios'
-import { axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
-
-
-
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -37,11 +32,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogActions-root': {
         padding: theme.spacing(1),
     },
-}))
-
-const TextFieldCustOm = styled(TextField)(() => ({
-    width: '100%',
-    marginBottom: '16px',
 }))
 
 const BootstrapDialogTitle = (props) => {
@@ -79,30 +69,6 @@ export default function DialogBox() {
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
     const [closeButDis, SetCloseButDis] = useState(false)
-    const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            
-            try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
-                if (res.status == 200) {
-                    console.log(res.data.data);
-                    setrackiddrop(res.data.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
-            }
-        }
-        fetchData()
-    }, [])
-    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -440,27 +406,6 @@ export default function DialogBox() {
                     }}
                 >
                     <Box>
-                        <TextFieldCustOm 
-                        sx={{m:1}}
-                            label='Rack ID'
-                            select
-                            style={{ width: '150px'}}
-
-
-                            name="rack_id"
-                    >
-                        {rackiddrop?.map((data) => (
-                        
-                        <MenuItem
-                            onClick={(e) => {
-                                setRackId(data.rack_id)
-                            }}
-                            value={data.rack_id}
-                        >
-                            {data.rack_id}
-                        </MenuItem>
-                    ))}
-                    </TextFieldCustOm>
                         <LoadingButton
                             sx={{
                                 ml: 2,
@@ -471,7 +416,7 @@ export default function DialogBox() {
                                 trayData?.wht?.items?.length !==
                                     trayData?.wht?.actual_items?.length +
                                         trayData?.wht?.temp_array?.length ||
-                                closeButDis || rackId == ""
+                                closeButDis
                             }
                             loadingPosition="end"
                             style={{ backgroundColor: 'primery' }}

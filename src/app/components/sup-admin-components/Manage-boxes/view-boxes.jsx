@@ -1,12 +1,13 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import MemberEditorDialog from './add-box'
+import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import MemberEditorDialog from './temp-add'
+import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Typography,Table, TableContainer } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-
+ 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -20,46 +21,22 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '100%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
-
-const PartTable = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [editFetchData, setEditFetchData] = useState({})
-    const [partList, setPartList] = useState([])
-    const [muicData, setMuicData] = useState([])
+    const [boxList, setBoxList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [boxId, setboxId] = useState('')
+    const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchBrand = async () => {
+        const fetchBoxes = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post(
-                    '/partAndColor/view/' + 'color-list'
-                )
+                const res = await axiosSuperAdminPrexo.post('/boxes/view')
                 if (res.status === 200) {
-                    setPartList(res.data.data)
                     setIsLoading(false)
+                    setBoxList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -70,10 +47,10 @@ const PartTable = () => {
                 })
             }
         }
-        fetchBrand()
+        fetchBoxes()
         return () => {
             setIsAlive(false)
-            setIsLoading(false)
+            setIsLoading(true)
         }
     }, [isAlive])
 
@@ -82,24 +59,30 @@ const PartTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = async () => {
+    const handleDialogOpen = async (state) => {
+        try {
+            if (state == 'ADD') {
+                const boxId = await axiosSuperAdminPrexo.post(
+                    '/boxes/idGen'
+                )
+                if (boxId.status == 200) {
+                    setboxId(boxId.data.boxID)
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
         setShouldOpenEditorDialog(true)
     }
 
-    const editMaster = async (id) => {
+    const editBox = async (boxId) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/oneData/' + id + '/color-list'
+                '/boxes/one/' + boxId
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.data.message,
-                })
+                handleDialogOpen("Edit")
             }
         } catch (error) {
             Swal.fire({
@@ -110,10 +93,10 @@ const PartTable = () => {
         }
     }
 
-    const handelDelete = (id) => {
+    const handelDelete = (box_id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: 'You want to Delete Box!', 
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -122,23 +105,14 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/color-list'
-                    )
-                    if (res.status == 200) {
-                        let obj={
-                            id:id,
-                           
-                            page:"color-list"
-                        }
                         let response = await axiosSuperAdminPrexo.post(
-                            '/partAndColor/delete',obj
+                            '/deleteBoxes/' + box_id
                         )
                         if (response.status == 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Color has been Deleted.',
+                                title: 'Your Box has been Deleted.',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -151,16 +125,10 @@ const PartTable = () => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: "This Color You Can't Delete",
+                                text: "This box You Can't Delete",
                             })
                         }
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: "This Color You Can't Delete",
-                        })
-                    }
+                   
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -184,16 +152,23 @@ const PartTable = () => {
                 <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
-        // {
-        //     name: 'muic', // field name in the row object
-        //     label: 'MUIC', // column title that will be shown in table
-        //     options: {
-        //         filter: true,
-        //     },
-        // }, 
         {
-            name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Color Name</></Typography>, // column title that will be shown in table
+            name: 'box_id',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Box ID</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Box Name</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'display',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Box Display</></Typography>,
             options: {
                 filter: true,
             },
@@ -218,18 +193,22 @@ const PartTable = () => {
             },
         },
         {
-            name: '_id',
+            name: 'status',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) => {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <>
+                        <Box 
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                            }}
+                        >
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editMaster(value)
+                                        editBox(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
@@ -238,15 +217,15 @@ const PartTable = () => {
                             </IconButton>
                             <IconButton>
                                 <Icon
-                                    onClick={(e) => {
-                                        handelDelete(value)
+                                    onClick={() => {
+                                        handelDelete(tableMeta.rowData[1])
                                     }}
                                     color="error"
                                 >
                                     delete
                                 </Icon>
                             </IconButton>
-                        </>
+                        </Box>
                     )
                 },
             },
@@ -256,9 +235,7 @@ const PartTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Color-list', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Boxes', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -266,14 +243,13 @@ const PartTable = () => {
                 color="primary"
                 onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Color
+                Add New Box
             </Button>
-
-            <ScrollableTableContainer>
-                <ProductTable>
+            <>
+                <>
                 <MUIDataTable
-                title={'All Colors'}
-                data={partList}
+                title={'Manage Boxes'}
+                data={boxList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -298,21 +274,22 @@ const PartTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
+                </>
+            </>
+            
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    muicData={muicData}
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                />
+                    boxId={boxId}
+                    setboxId={setboxId}
+                /> 
             )}
         </Container>
     )
 }
 
-export default PartTable
+export default SimpleMuiTable

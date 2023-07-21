@@ -59,6 +59,7 @@ const SimpleMuiTable = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setWhtTray(response.data.data)
+                        console.log(response.data.data);
                     }
                 } else {
                     navigate('/')
@@ -102,8 +103,12 @@ const SimpleMuiTable = () => {
         {
             name: 'rack_id',
             label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            name: 'rack_id',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
             options: {
                 filter: true,
+               
+                
             },
         },
         

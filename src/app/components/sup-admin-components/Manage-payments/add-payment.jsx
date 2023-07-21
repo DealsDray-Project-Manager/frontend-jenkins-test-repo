@@ -57,7 +57,6 @@ const MemberEditorDialog = ({
             .max(40)
             .nullable(),
     })
-    
 
     const {
         control,
@@ -71,7 +70,7 @@ const MemberEditorDialog = ({
     })
 
     const onSubmit = async (data) => {
-        data.created_at = Date.now()
+        // data.created_at = Date.now()
         try {
             setLoading(true)
             let response = await axiosSuperAdminPrexo.post(
@@ -94,8 +93,8 @@ const MemberEditorDialog = ({
                     }
                 })
             } else {
-                setLoading(false)
                 handleClose()
+                setLoading(false)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',

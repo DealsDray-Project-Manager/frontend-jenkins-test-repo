@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
-import moment from 'moment'
+import moment from 'moment' 
 
 import {
     TableCell,
@@ -203,7 +203,6 @@ const SimpleMuiTable = () => {
 
     const searchTrackItem = async (e) => {
         setInputSearch(e.target.value)
-
         e.preventDefault()
         try {
             let admin = localStorage.getItem('prexo-authentication')

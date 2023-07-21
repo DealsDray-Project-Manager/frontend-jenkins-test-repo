@@ -211,11 +211,6 @@ export const navigations = [
                 path: '/sup-admin/view-boxes',
             },
             {
-                name: 'Tray Racks',
-                // icon: 'home',
-                path: '/sup-admin/view-trayracks',
-            },
-            {
                 name: 'Payments Terms',
                 // icon: 'home',
                 path: '/sup-admin/view-payments',
@@ -240,11 +235,6 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/view-ram',
             },
-            // {
-            //     name: 'Tray Racks',
-            //     // icon: 'add_shopping_cart',
-            //     path: '/sup-admin/trayracks'
-            // },
         ],
         auth: authRoles.admin,
         sales: false,

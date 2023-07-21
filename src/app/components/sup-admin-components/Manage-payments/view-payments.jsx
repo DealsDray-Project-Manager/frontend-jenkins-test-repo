@@ -23,8 +23,8 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
+    const [payment, setpayment] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [payment, setpayment] = useState('')
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
@@ -34,8 +34,8 @@ const SimpleMuiTable = () => {
                 setIsLoading(true)
                 const res = await axiosSuperAdminPrexo.post('/payments/view')
                 if (res.status === 200) {
-                    setIsLoading(false)
                     setpayment(res.data.data)
+                    setIsLoading(false)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -65,11 +65,17 @@ const SimpleMuiTable = () => {
     const editPayment = async (payment) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/payment/one/' + payment
+                '/payments/one/' + payment 
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
             Swal.fire({

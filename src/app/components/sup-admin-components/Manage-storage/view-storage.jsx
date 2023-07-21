@@ -19,7 +19,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
+ 
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
@@ -46,7 +46,6 @@ const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [editFetchData, setEditFetchData] = useState({})
     const [storage_name, setstorage_name] = useState([])
-    const [muicData, setMuicData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
@@ -286,7 +285,6 @@ const PartTable = () => {
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    muicData={muicData}
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}

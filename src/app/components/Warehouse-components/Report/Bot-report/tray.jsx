@@ -56,9 +56,9 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         navigate('/wareshouse/tray/item/' + id)
     }
-    const handelSkuSummery = (e, id) => {
+    const handelSkuSummary = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/report/bot/sku-summery/' + id)
+        navigate('/wareshouse/report/bot/sku-summary/' + id)
     }
 
     const columns = [
@@ -160,7 +160,7 @@ const SimpleMuiTable = () => {
                                 variant="contained"
                                 style={{ backgroundColor: 'green' }}
                                 onClick={(e) => {
-                                    handelSkuSummery(e, value)
+                                    handelSkuSummary(e, value)
                                 }}
                             >
                                 View Sku

@@ -31,6 +31,7 @@ const AddPartOrColorAndEditDialog = ({
 }) => {
     const [loading, setLoading] = useState(false)
     const [colorData, setColorData] = useState([])
+    const [spCategory, setSpCategory] = useState([])
 
     useEffect(() => {
         const fetchColorData = async () => {
@@ -40,6 +41,12 @@ const AddPartOrColorAndEditDialog = ({
                 )
                 if (res.status === 200) {
                     setColorData(res.data.data)
+                }
+                const allSpCategory = await axiosSuperAdminPrexo.post(
+                    '/spcategories/view'
+                )
+                if (res.status === 200) {
+                    setSpCategory(allSpCategory.data.data)
                 }
             } catch (error) {
                 console.log(error)
@@ -67,6 +74,11 @@ const AddPartOrColorAndEditDialog = ({
             .max(500)
             .nullable(),
         color: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
+            .max(40)
+            .nullable(),
+        sp_category: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
             .max(40)
@@ -208,6 +220,27 @@ const AddPartOrColorAndEditDialog = ({
                     {colorData?.map((data) => (
                         <MenuItem key={data?.name} value={data?.name}>
                             {data?.name}
+                        </MenuItem>
+                    ))}
+                </TextFieldCustOm>
+                <TextFieldCustOm
+                    label="Category"
+                    type="text"
+                    select
+                    name="sp_category"
+                    defaultValue={getValues('sp_category')}
+                    {...register('sp_category')}
+                    error={errors.sp_category ? true : false}
+                    helperText={
+                        errors.sp_category ? errors.sp_category?.message : ''
+                    }
+                >
+                    {spCategory?.map((data) => (
+                        <MenuItem
+                            key={data?.category_name}
+                            value={data?.category_name}
+                        >
+                            {data?.category_name}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>

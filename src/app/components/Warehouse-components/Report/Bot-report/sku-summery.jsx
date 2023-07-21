@@ -61,7 +61,7 @@ const SimpleMuiTable = () => {
     const handelViewTray = (e, muic) => {
         e.preventDefault()
         navigate(
-            '/wareshouse/report/bot/sku-summery/details/' + trayId + '/' + muic
+            '/wareshouse/report/bot/sku-summary/details/' + trayId + '/' + muic
         )
     }
 

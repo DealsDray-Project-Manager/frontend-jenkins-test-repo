@@ -4,11 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosRmUserAgent, axiosWarehouseIn } from '../../../../../axios'
-import {
-    Button,
-    Typography,
-} from '@mui/material'
+import { axiosRmUserAgent } from '../../../../../axios'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -33,9 +30,9 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { user_name } = jwt_decode(admin)
+                    let { location } = jwt_decode(admin)
                     let res = await axiosRmUserAgent.post(
-                        '/spTray/' + user_name
+                        '/spTrayReturnFromRdlTwo/' + location
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
@@ -57,7 +54,7 @@ const SimpleMuiTable = () => {
 
     const handleViewParts = (e, code) => {
         e.preventDefault()
-        navigate('/sp-user/sp-tray/add-parts/' + code)
+        navigate('/sp-user/return-from-rdl-two/view/' + code)
     }
 
     const columns = [
@@ -106,11 +103,9 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'actual_items',
+            name: 'temp_array',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Item Recieved Count
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
             options: {
                 filter: true,
@@ -120,7 +115,9 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Assigned date</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned date
+                </Typography>
             ),
             options: {
                 filter: true,
@@ -148,18 +145,17 @@ const SimpleMuiTable = () => {
                                 handleViewParts(e, value)
                             }}
                         >
-                            Add Parts
+                            View
                         </Button>
                     )
                 },
             },
         },
     ]
-
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Part issue' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Return from rdl-two' }]} />
             </div>
 
             <MUIDataTable

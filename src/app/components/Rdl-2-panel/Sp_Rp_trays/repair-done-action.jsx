@@ -11,6 +11,7 @@ import {
     Radio,
     RadioGroup,
     Grid,
+    TextareaAutosize,
 } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
@@ -45,10 +46,13 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
     const [selectReason, setSelectReason] = useState('')
-    const [loading,setLoading]=useState(false)
+    const [loading, setLoading] = useState(false)
     const [displayContent, setDisplayContent] = useState('')
-    const { reportData, uic, whtTrayId,spTray } = state
+    const { reportData, uic, whtTrayId, spTray } = state
     const [description, setDescription] = useState('')
+    const [descriptionCount, setDescriptionCount] = useState([])
+    const [radioButtonCount, setRadioButtonCount] = useState([])
+    const [requredPart, setRequredPart] = useState()
     /**************************************************************************** */
     const [selectedValue, setSelectedValue] = useState('')
     const [partData, setPartData] = useState([])
@@ -64,7 +68,9 @@ const SimpleMuiTable = () => {
                         ...item,
                         quantity: 1,
                     }))
-
+                    setRequredPart(
+                        reportData?.delivery?.rdl_fls_one_report?.partRequired
+                    )
                     setPartData(fetchedData)
                 }
             } catch (error) {
@@ -78,16 +84,38 @@ const SimpleMuiTable = () => {
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
         setSelectReason('')
+        setDescriptionCount([])
+        setRadioButtonCount([])
         setSelectedValue(event.target.value)
     }
 
     const handleClick = (e, rowIndex, quantity) => {
         const { id, checked } = e.target
         setIsCheck([...isCheck, id])
-        // handleChange(quantity + 1, rowIndex)
         if (!checked) {
-            // handleChange(0, rowIndex)
             setIsCheck(isCheck.filter((item) => item !== id))
+        }
+    }
+
+    const handleChangeStatus = (rowIndex, newValue, status, uniqueId) => {
+        if (status == 'Status') {
+            if (radioButtonCount.includes(uniqueId) == false) {
+                setRadioButtonCount([...radioButtonCount, uniqueId])
+            }
+            setRequredPart((prevValues) => {
+                const updatedValues = [...prevValues]
+                updatedValues[rowIndex].rdl_two_status = newValue
+                return updatedValues
+            })
+        } else {
+            if (descriptionCount.includes(uniqueId) == false) {
+                setDescriptionCount([...descriptionCount, uniqueId])
+            }
+            setRequredPart((prevValues) => {
+                const updatedValues = [...prevValues]
+                updatedValues[rowIndex].rdl_two_description = newValue
+                return updatedValues
+            })
         }
     }
 
@@ -97,16 +125,14 @@ const SimpleMuiTable = () => {
             let obj = {
                 uic: uic,
                 trayId: whtTrayId,
-                spTray:spTray,
+                spTray: spTray,
                 rdl_repair_report: {
                     status: selectedValue,
                     reason: selectReason,
+                    description:description,
                     more_part_required: [],
-                    part_faulty: [],
-                    not_reapairable: [],
-                    part_not_available: [],
                     used_parts: [],
-                    description: description,
+                    rdl_two_part_status: requredPart,
                 },
             }
             if (selectReason == 'More part required') {
@@ -124,21 +150,13 @@ const SimpleMuiTable = () => {
                 obj.rdl_repair_report.more_part_required = arr1
             } else {
                 let arr = []
-                for (let y of reportData?.delivery?.rdl_fls_one_report
-                    ?.partRequired) {
-                    if (isCheck.includes(y.part_id)) {
+                for (let y of requredPart) {
+                    console.log(y)
+                    if (y.rdl_two_status == 'Used') {
                         arr.push(y)
                     }
                 }
-                if (selectedValue == 'Repair Done') {
-                    obj.rdl_repair_report.used_parts = arr
-                } else if (selectReason == 'Device not repairable') {
-                    obj.rdl_repair_report.not_reapairable = arr
-                } else if (selectReason == 'Spare part faulty') {
-                    obj.rdl_repair_report.part_faulty = arr
-                } else if (selectReason == 'Part not available') {
-                    obj.rdl_repair_report.part_not_available = arr
-                }
+                obj.rdl_repair_report.used_parts = arr
             }
 
             const res = await axiosRdlTwoAgent.post('/repairDone/action', obj)
@@ -306,38 +324,6 @@ const SimpleMuiTable = () => {
 
     const sprequired_data = [
         {
-            name: 'part_id',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    sx={{ fontWeight: 'bold', ml: 2 }}
-                >
-                    <>Select</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Checkbox
-                            sx={{ ml: 2 }}
-                            onClick={(e) => {
-                                handleClick(
-                                    e,
-                                    tableMeta.rowIndex,
-                                    tableMeta.rowData[5]
-                                )
-                            }}
-                            id={value}
-                            key={value}
-                            checked={isCheck.includes(value)}
-                        />
-                    )
-                },
-            },
-        },
-        {
             name: 'index',
             label: (
                 <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
@@ -384,6 +370,84 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'description',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <TextareaAutosize
+                            rowsMin={2}
+                            placeholder="Enter description"
+                            value={value}
+                            onChange={(e) => {
+                                handleChangeStatus(
+                                    tableMeta.rowIndex,
+                                    e.target.value,
+                                    'description',
+                                    tableMeta.rowData[1]
+                                )
+                            }}
+                            style={{
+                                width: '135px',
+                                minHeight: '150px',
+                                resize: 'none',
+                            }}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'action',
+            label: 'Action',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    const radioGroupName = `radio-group-${tableMeta.rowIndex}`
+                    const labels = [
+                        'Used',
+                        'Not used',
+                        'Not required',
+                        'Faulty',
+                        'Damaged',
+                    ]
+
+                    return (
+                        <RadioGroup
+                            name={radioGroupName}
+                            onChange={(e) => {
+                                handleChangeStatus(
+                                    tableMeta.rowIndex,
+                                    e.target.value,
+                                    'Status',
+                                    tableMeta.rowData[1]
+                                )
+                            }}
+                            style={{ display: 'flex', flexDirection: 'row' }}
+                        >
+                            {labels.map((label, index) => (
+                                <FormControlLabel
+                                    key={`radio-${index}`}
+                                    value={label}
+                                    control={<Radio />}
+                                    labelPlacement="end"
+                                    label={
+                                        <Typography component="span">
+                                            {label}
+                                        </Typography>
+                                    }
+                                />
+                            ))}
+                        </RadioGroup>
+                    )
+                },
+            },
+        },
     ]
 
     const handelReason = (value) => {
@@ -403,7 +467,133 @@ const SimpleMuiTable = () => {
         }
         setSelectReason(value)
     }
-    /************************************************************************** */
+
+    /*******************************USEMEMO******************************************* */
+
+    const uicDetails = useMemo(() => {
+        return (
+            <Card sx={{ width: '100%', height: '50%' }}>
+                <Box sx={{ display: 'flex', mb: 2 }}>
+                    <Box sx={{ ml: 2 }}>
+                        <Typography sx={{ mt: 2 }}>UIC : {uic}</Typography>
+                        <Typography sx={{ mt: 2 }}>
+                            MUIC : {reportData?.muic?.muic}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography sx={{ mt: 2 }}>
+                            BRAND : {reportData?.muic?.brand_name}
+                        </Typography>
+                        <Typography sx={{ mt: 2 }}>
+                            MODEL : {reportData?.muic?.model_name}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography sx={{ mt: 2 }}>
+                            Auditor Description:{' '}
+                            {reportData?.delivery?.audit_report?.description}
+                        </Typography>
+                        <Typography sx={{ mt: 2 }}>
+                            RDL 1 Description:{' '}
+                            {
+                                reportData?.delivery?.rdl_fls_one_report
+                                    ?.description
+                            }
+                        </Typography>
+                    </Box>
+                </Box>
+            </Card>
+        )
+    }, [reportData])
+
+    const BqcAndAllReport = useMemo(() => {
+        return (
+            <>
+                <Card sx={{ mt: 2, width: '100%' }}>
+                    <MUIDataTable
+                        title={'Assigned Spare Parts'}
+                        data={
+                            reportData?.delivery?.rdl_fls_one_report
+                                ?.partRequired
+                        }
+                        columns={sprequired_data_assigned}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </Card>
+
+                <Grid container spacing={3} sx={{ mt: 1 }}>
+                    <Grid item lg={6} md={12} xs={12}>
+                        <ChargingDetails
+                            Charging={reportData?.delivery?.charging}
+                            ChargeDoneDate={
+                                reportData?.delivery?.charging_done_date
+                            }
+                        />
+                    </Grid>
+                    <Grid item lg={6} md={12} xs={12}>
+                        <AuditReport
+                            AuditData={reportData?.delivery?.audit_report}
+                            otherAuditFeedBack={reportData?.otherAudFeedBack}
+                        />
+                    </Grid>
+                    <Grid
+                        // sx={{ boxShadow: 1 }}
+                        item
+                        lg={12}
+                        md={12}
+                        xs={12}
+                    >
+                        <BqcApiReport
+                            BqcSowftwareReport={
+                                reportData?.delivery?.bqc_software_report
+                            }
+                            grade={
+                                reportData?.delivery?.bqc_software_report
+                                    ?.final_grade
+                            }
+                            imei={reportData?.order?.imei}
+                        />
+                    </Grid>
+                </Grid>
+            </>
+        )
+    }, [])
+
+    console.log(descriptionCount)
+    console.log(requredPart)
+    console.log(radioButtonCount)
 
     return (
         <>
@@ -423,117 +613,9 @@ const SimpleMuiTable = () => {
                 </Box>
                 <br />
                 <>
-                    <Card sx={{ width: '100%', height: '50%' }}>
-                        <Box sx={{ display: 'flex', mb: 2 }}>
-                            <Box sx={{ ml: 2 }}>
-                                <Typography sx={{ mt: 2 }}>
-                                    UIC : {uic}
-                                </Typography>
-                                <Typography sx={{ mt: 2 }}>
-                                    MUIC : {reportData?.muic?.muic}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ ml: 5 }}>
-                                <Typography sx={{ mt: 2 }}>
-                                    BRAND : {reportData?.muic?.brand_name}
-                                </Typography>
-                                <Typography sx={{ mt: 2 }}>
-                                    MODEL : {reportData?.muic?.model_name}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ ml: 5 }}>
-                                <Typography sx={{ mt: 2 }}>
-                                    Description:{' '}
-                                    {
-                                        reportData?.delivery?.rdl_fls_one_report
-                                            ?.description
-                                    }
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Card>
+                    {uicDetails}
 
-                    <Card sx={{ mt: 2, width: '100%' }}>
-                        <MUIDataTable
-                            title={'Assigned Spare Parts'}
-                            data={
-                                reportData?.delivery?.rdl_fls_one_report
-                                    ?.partRequired
-                            }
-                            columns={sprequired_data_assigned}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
-                                            return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </Card>
-
-                    <Grid container spacing={3} sx={{ mt: 1 }}>
-                        <Grid item lg={6} md={12} xs={12}>
-                            <ChargingDetails
-                                Charging={reportData?.delivery?.charging}
-                                ChargeDoneDate={
-                                    reportData?.delivery?.charging_done_date
-                                }
-                            />
-                        </Grid>
-                        <Grid item lg={6} md={12} xs={12}>
-                            <AuditReport
-                                AuditData={reportData?.delivery?.audit_report}
-                                otherAuditFeedBack={
-                                    reportData?.otherAudFeedBack
-                                }
-                            />
-                        </Grid>
-                        <Grid
-                            // sx={{ boxShadow: 1 }}
-                            item
-                            lg={12}
-                            md={12}
-                            xs={12}
-                        >
-                            <BqcApiReport
-                                BqcSowftwareReport={
-                                    reportData?.delivery?.bqc_software_report
-                                }
-                                grade={
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade
-                                }
-                                imei={reportData?.order?.imei}
-                            />
-                        </Grid>
-                    </Grid>
+                    {BqcAndAllReport}
 
                     <Box sx={{ mt: 2 }}>
                         <Typography
@@ -751,9 +833,16 @@ const SimpleMuiTable = () => {
                                 description == '' ||
                                 (selectedValue == 'Repair Not Done' &&
                                     selectReason == '') ||
+                                (selectReason == 'More part required' &&
+                                    isCheck.length == 0) ||
                                 (selectedValue == 'Repair Not Done' &&
-                                    isCheck.length == 0 &&
-                                    selectReason !== 'Device not repairable')
+                                    selectReason !== 'More part required' &&
+                                    requredPart.length !==
+                                        descriptionCount.length) ||
+                                (selectedValue == 'Repair Not Done' &&
+                                    selectReason !== 'More part required' &&
+                                    requredPart.length !==
+                                        radioButtonCount.length)
                             }
                             onClick={(e) => {
                                 handelSubmit(e)

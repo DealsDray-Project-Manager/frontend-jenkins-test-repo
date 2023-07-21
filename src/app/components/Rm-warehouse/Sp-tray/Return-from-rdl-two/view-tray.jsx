@@ -21,7 +21,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState({})
     const { trayId } = useParams()
@@ -30,19 +29,19 @@ const SimpleMuiTable = () => {
     const [description, setDescription] = useState([])
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { user_name } = jwt_decode(admin)
-                    let obj={
-                        trayId:trayId,
-                        username:user_name,
-                        status:"Assigned to sp warehouse"
+                    let obj = {
+                        trayId: trayId,
+                        username: user_name,
+                        status: 'Closed by RDL-two',
                     }
-
                     let res = await axiosRmUserAgent.post(
-                        '/spTrayPartIssue',obj 
+                        '/spTrayPartIssue',
+                        obj
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
@@ -58,16 +57,16 @@ const SimpleMuiTable = () => {
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [refresh])
 
     const handleAdd = (partId) => {
@@ -149,17 +148,10 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'partId',
+            name: 'part_id',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Part Number</Typography>
             ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'boxid',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Box ID</Typography>,
             options: {
                 filter: true,
             },
@@ -174,7 +166,7 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'partName',
+            name: 'part_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
                     Spare Part Name
@@ -185,17 +177,23 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'selected_qty',
+            name: 'rdl_two_description',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    RDL Two Description
+                </Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            name: 'rdl_two_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    RDL Two Status
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -232,14 +230,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Part issue', path: '/' },
-                        { name: 'Add parts' },
+                        { name: 'Return from RDL Two', path: '/' },
+                        { name: 'View tray' },
                     ]}
                 />
             </div>
             <MUIDataTable
                 title={'Parts'}
-                data={tray?.items}
+                data={tray?.temp_array}
                 columns={columns}
                 options={{
                     filterType: 'textField',

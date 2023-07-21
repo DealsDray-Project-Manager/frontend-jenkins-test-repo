@@ -32,7 +32,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { user_name } = jwt_decode(admin)
                     let res = await axiosSortingAgent.post(
-                        '/sorting/wht-to-rp/assignedTray/' + user_name + "/WHT"
+                        '/sorting/wht-to-rp/assignedTray/' + user_name + '/WHT'
                     )
                     if (res.status == 200) {
                         setTray(res.data.data)
@@ -132,9 +132,9 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
@@ -178,10 +178,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Sorting request wht-rp' },
-                     
-                    ]}
+                    routeSegments={[{ name: 'Sorting request wht-rp' }]}
                 />
             </div>
             <Card>

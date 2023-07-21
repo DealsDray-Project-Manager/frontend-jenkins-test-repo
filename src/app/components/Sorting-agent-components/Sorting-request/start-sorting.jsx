@@ -114,6 +114,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
     const handleClose = () => {
         setOpen(false)
         setLoading(false)
@@ -247,7 +248,7 @@ export default function DialogBox() {
     const tableFrom = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5 style={{paddingLeft:'15px'}}>BOT TRAY ITEM</h5>
+                <h5 style={{ paddingLeft: '15px' }}>BOT TRAY ITEM</h5>
 
                 <TableContainer>
                     <Table
@@ -285,7 +286,7 @@ export default function DialogBox() {
     const tableTo = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5 style={{paddingLeft:'15px'}}>WHT TRAY</h5>
+                <h5 style={{ paddingLeft: '15px' }}>WHT TRAY</h5>
                 <TextField
                     sx={{ m: 1 }}
                     id="outlined-password-input"

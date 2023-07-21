@@ -2,16 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import {
-    Button,
-    Checkbox,
-    Typography,
-    Table,
-    TableContainer,
-} from '@mui/material'
+import { Button, Checkbox, Typography } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
 
@@ -28,31 +22,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '150%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
-
 const SimpleMuiTable = () => {
-    const { brand, model, jack } = useParams()
-
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
@@ -68,18 +38,8 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let obj = {
-                        location: location,
-                        brand: brand,
-                        model: model,
-                        jack: jack,
-                        type: 'WHT',
-                        type: 'Ready to BQC',
-                        type1: 'null',
-                    }
-                    let response = await axiosMisUser.post(
-                        '/assignToChargingScreen',
-                        obj
+                    let response = await axiosWarehouseIn.post(
+                        '/wht-tray/' + 'Ready to BQC/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -93,13 +53,12 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error,
+                    text:error,
                 })
             }
         }
         fetchData()
-        return () => {
-            setIsAlive(false)
+        return () =>{ setIsAlive(false)
             setIsLoading(false)
         }
     }, [isAlive])
@@ -140,7 +99,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error,
+                    text:error,
                 })
             }
         }
@@ -152,18 +111,10 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
-                >
-                    <>Select</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
             options: {
                 filter: false,
-                sort: false,
+                sort:false,
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -180,106 +131,55 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Record No</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
             options: {
                 filter: false,
-                sort: false,
-                customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
-                        {dataIndex.rowIndex + 1}
-                    </Typography>
-                ),
+                sort:false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
             },
         },
 
         {
             name: 'name', // field name in the row object
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Name</>
-                </Typography>
-            ), // column title that will be shown in table
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'warehouse',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Warehouse</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
-                    <>Tray Category</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        
         {
             name: 'brand',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Brand</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Model</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tary Name</>
-                </Typography>
-            ),
+            name: 'jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Jack type</></Typography>,
             options: {
                 filter: true,
             },
         },
+      
         {
             name: 'limit',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Limit</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
             options: {
                 filter: true,
                 display: false,
@@ -287,62 +187,26 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Quantity</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
             options: {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[9],
+                    value.length + '/' + tableMeta.rowData[7],
             },
         },
-        {
-            name: 'display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Display</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'sort_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Status</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'created_at',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
-                    <>Creation Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+       
         {
             name: 'code',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
-                </Typography>
-            ),
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -371,8 +235,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'BQC Planner', path: '/' },
-                        { name: 'Ready-for-BQC' },
+                        { name: 'BQC' },
                     ]}
                 />
             </div>
@@ -385,55 +248,49 @@ const SimpleMuiTable = () => {
             >
                 Assign For BQC
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
-                    <MUIDataTable
-                        title={'WHT'}
-                        data={whtTray}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
-                            },
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
-                                        return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    }
-                                    return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                })
-                            },
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                </ProductTable>
-            </ScrollableTableContainer>
+            <MUIDataTable
+                title={'WHT'}
+                data={whtTray}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download:false,
+                    print:false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

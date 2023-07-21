@@ -482,6 +482,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items, textBoxDis, uic])
+    
     return (
         <>
             <BootstrapDialog

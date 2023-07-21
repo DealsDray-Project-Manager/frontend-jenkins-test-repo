@@ -24,7 +24,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '130%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -39,11 +39,12 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
+    const [rptTray, setRpTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
@@ -53,12 +54,15 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/whtTray/' + location + '/' + 'all-wht-tray'
-                    )
+                    let obj = {
+                        location: location,
+                        type: 'RPT',
+                        status: 'All',
+                    }
+                    let response = await axiosWarehouseIn.post('/rptTray', obj)
                     if (response.status === 200) {
                         setIsLoading(false)
-                        setWhtTray(response.data.data)
+                        setRpTray(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -83,30 +87,37 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'rack_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
             options: {
                 filter: true,
             },
         },
-        
+
         {
             name: 'actual_items',
             label: 'acutual_items',
@@ -125,7 +136,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
@@ -142,14 +155,18 @@ const SimpleMuiTable = () => {
 
         {
             name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Name</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Name</Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -157,35 +174,43 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray display</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Tray display
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography sx={{fontWeight:'bold'}}>Creation Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Creation Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -196,7 +221,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -224,60 +249,61 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'WHT-Tray' },
+                        { name: 'RPT', path: '/' },
+                        { name: 'Rpt-Tray' },
                     ]}
                 />
             </div>
 
             <ScrollableTableContainer>
                 <ProductTable>
-                <MUIDataTable
-                title={'Tray'}
-                data={whtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'Tray'}
+                        data={rptTray}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </ScrollableTableContainer>
-           
         </Container>
     )
 }

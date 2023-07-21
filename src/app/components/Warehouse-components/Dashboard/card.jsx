@@ -163,7 +163,7 @@ const StatCard3 = () => {
             icon: 'shopping_cart',
             amount: count.rdl2Request,
             title: 'RDL-two Requests',
-            path: '/wareshouse/wht/rdl-two-request',
+            path: '/wareshouse/rpt/rdl-two-request',
             sales: false,
         },
         {

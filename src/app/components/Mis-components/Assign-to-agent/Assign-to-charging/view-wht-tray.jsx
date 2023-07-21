@@ -2,10 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox , Typography, Table, TableContainer} from '@mui/material'
+import { Button, Checkbox , Typography} from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { useNavigate,useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
 
@@ -22,29 +22,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '130%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
-
 const SimpleMuiTable = () => {
-    const {brand,model,jack}=useParams()
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
     const [isCheck, setIsCheck] = useState([])
@@ -60,17 +38,8 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let obj={
-                        location:location,
-                        brand:brand,
-                        model:model,
-                        jack:jack,
-                        type:"WHT",
-                        type:"Closed",
-                        type1:"Recharging"
-                    }
-                    let response = await axiosMisUser.post(
-                        '/assignToChargingScreen',obj
+                    let response = await axiosWarehouseIn.post(
+                        '/wht-tray/' + 'Closed/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -188,13 +157,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Category</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'brand',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
@@ -205,6 +168,13 @@ const SimpleMuiTable = () => {
         {
             name: 'model',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'jack',
+            label: <Typography variant="subtitle1" fontWeight='bold'><>Jack Type</></Typography>,
             options: {
                 filter: true,
             },
@@ -235,26 +205,8 @@ const SimpleMuiTable = () => {
                     value.length + '/' + tableMeta.rowData[8],
             },
         },
-        {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+        
+        
         {
             name: 'code',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
@@ -286,8 +238,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging Planner', path:'/' },
-                        { name: 'Ready-for-Charging'}
+                        { name: 'Charging' },
                     ]}
                 />
             </div>
@@ -300,9 +251,7 @@ const SimpleMuiTable = () => {
             >
                 Assign For Charging
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
-                <MUIDataTable
+            <MUIDataTable
                 title={'WHT'}
                 data={whtTray}
                 columns={columns}
@@ -345,9 +294,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

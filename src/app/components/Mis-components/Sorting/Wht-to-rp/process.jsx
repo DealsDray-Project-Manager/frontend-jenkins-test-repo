@@ -90,6 +90,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const navigate = useNavigate()
+    const [selectedQtySp,setSelectedQtySp]=useState(0)
     const { brand, model } = useParams()
     const { logout, user } = useAuth()
     const [requrementList, setRequrementList] = useState({
@@ -142,6 +143,7 @@ const SimpleMuiTable = () => {
                 isCheck: isCheck,
                 partList: partData,
                 checked: checked,
+                selectedQtySp:selectedQtySp,
                 uic: uic,
             }
             if (!checked) {
@@ -154,6 +156,7 @@ const SimpleMuiTable = () => {
             if (res.status == 200) {
                 setCheckBoxDis(false)
                 setIsCheck(res.data.data)
+                setSelectedQtySp(res.data.countofStock)
                 if (checked) {
                     setSelectedUic([...selectedUic, uic])
                 }
@@ -180,6 +183,7 @@ const SimpleMuiTable = () => {
             sortingAgent: [],
         })
         setSelectedUic([])
+        setSelectedQtySp(0)
         setShouldOpenEditorDialog(false)
     }
 
@@ -191,6 +195,7 @@ const SimpleMuiTable = () => {
                 model: model,
                 uicLength: selectedUic.length,
                 isCheck: isCheck.length,
+                selectedQtySp:selectedQtySp
             }
             const res = await axiosMisUser.post(
                 '/assignForRepiar/getTheRequrements',

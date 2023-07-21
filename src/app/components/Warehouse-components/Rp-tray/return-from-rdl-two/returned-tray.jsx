@@ -3,21 +3,23 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import PropTypes from 'prop-types'
-import CloseIcon from '@mui/icons-material/Close'
-import Swal from 'sweetalert2'
 import {
+    Button,
     Dialog,
     DialogTitle,
     IconButton,
     DialogContent,
     DialogActions,
     TextField,
-    Button,
-    Typography
+    Table,
+    TableContainer,
+    Typography,
 } from '@mui/material'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import { axiosWarehouseIn } from '../../../../../axios'
+import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -31,6 +33,29 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '110%',
+    height: '100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -65,30 +90,29 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
-
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true)
-    const [bot, setBot] = useState([])
-    const [trayId, setTrayId] = useState('')
+    const [tray, setTray] = useState([])
+    const [open, setOpen] = useState(false)
     const [counts, setCounts] = useState('')
+    const [trayId, setTrayId] = useState('')
+    const [receiveBut, setReceiveBut] = useState(false)
+    const [refresh, setRefresh] = useState(refresh)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
-    const [open, setOpen] = React.useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let botTray = await axiosWarehouseIn.post(
-                        '/closeBotTray/' + location
+                    let res = await axiosWarehouseIn.post(
+                        '/rptReturnFromRdlTwo/' + location
                     )
-                    if (botTray.status == 200) {
+                    if (res.status == 200) {
                         setIsLoading(false)
-                        setBot(botTray.data.data)
+                        setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
@@ -104,48 +128,35 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-        return () => {
-            setIsAlive(false)
-            setIsLoading(false)
-        }
-    }, [isAlive])
+    }, [refresh])
 
-    const handelViewTray = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/tray/item/' + id)
-    }
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/bot-done/tray-close/' + id)
-    }
-    const handelViewSummery = (e, id) => {
-        e.preventDefault()
-        navigate('/wareshouse/bag/bag-close-requests/summary/' + id)
+        navigate('/warehouse/rpt/return-from-rdl-two/close/' + id)
     }
 
     const handelTrayReceived = async () => {
-        setLoading(true)
         try {
+            setReceiveBut(true)
             let obj = {
                 trayId: trayId,
-                count: counts,
+                counts: counts,
+                type: 'Closed by RDL-two',
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
-                setLoading(false)
-
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setReceiveBut(false)
                 setOpen(false)
-                setIsAlive((isAlive) => !isAlive)
+                setRefresh((refresh) => !refresh)
             } else {
-                setLoading(false)
+                setReceiveBut(false)
                 setOpen(false)
-
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -167,146 +178,145 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
+    const handelViewTray = (e, id) => {
+        e.preventDefault()
+        navigate('/wareshouse/wht/tray/item/' + id)
+    }
+
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:1}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) => value?.[0]?.bag_id,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'status_change_time',
-            label: <Typography sx={{fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'closed_time_bot',
-            label: <Typography sx={{fontWeight:'bold'}}>Closed Date</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+
+        {
+            name: 'brand',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            name: 'model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+
+        {
+            name: 'track_tray',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Rdl Two Done Date
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(
+                        value?.rdl_two_done_closed_by_agent
+                    ).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                disabled={value === 'Closed By Bot'}
-                                style={{ backgroundColor: '#21b6ae' }}
-                                onClick={(e) => {
-                                    handelViewSummery(
-                                        e,
-                                        tableMeta.rowData[2]?.[0]?.bag_id
-                                    )
-                                }}
-                            >
-                                Summary
-                            </Button>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                disabled={value === 'Closed By Bot'}
-                                style={{ backgroundColor: '#206CE2' }}
-                                onClick={(e) => {
-                                    handelViewTray(e, tableMeta.rowData[1])
-                                }}
-                            >
-                                View
-                            </Button>
-
-                            {value !== 'Received From BOT' ? (
+                            {tableMeta.rowData[2] != 'Received from RDL-two' ? (
                                 <Button
                                     sx={{
                                         m: 1,
                                     }}
-                                    disabled={loading}
                                     variant="contained"
                                     style={{ backgroundColor: 'green' }}
                                     onClick={(e) => {
                                         setOpen(true)
-                                        setTrayId(tableMeta.rowData[1])
+                                        setTrayId(value)
                                     }}
                                 >
                                     RECEIVE
                                 </Button>
                             ) : (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'red' }}
-                                    onClick={(e) => {
-                                        handelViewDetailTray(
-                                            e,
-                                            tableMeta.rowData[1]
-                                        )
-                                    }}
-                                >
-                                    Close
-                                </Button>
+                                <>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: '#206CE2' }}
+                                        onClick={(e) => {
+                                            handelViewTray(e, value)
+                                        }}
+                                    >
+                                        View
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
                             )}
                         </>
                     )
@@ -351,8 +361,8 @@ const SimpleMuiTable = () => {
                         sx={{
                             m: 1,
                         }}
+                        disabled={counts === '' || receiveBut}
                         variant="contained"
-                        disabled={counts === '' || loading}
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             handelTrayReceived(e)
@@ -365,55 +375,61 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Bag', path: '/' },
-                        { name: 'Bag-Close-Request' },
+                        { name: 'RPT', path: '/' },
+                        { name: 'Return-from-rdl-two' },
                     ]}
                 />
             </div>
 
-            <MUIDataTable
-                title={'Requests'}
-                data={bot}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+            <ScrollableTableContainer>
+                <ProductTable>
+                    <MUIDataTable
+                        title={'Tray'}
+                        data={tray}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTable>
+            </ScrollableTableContainer>
         </Container>
     )
 }

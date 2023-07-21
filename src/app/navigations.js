@@ -158,21 +158,6 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/warehouse',
             },
-            {
-                name: 'Vendors',
-                // icon: 'home',
-                path: '/sup-admin/view-vendors',
-            },
-            {
-                name: 'SP Categories',
-                // icon: 'home',
-                path: '/sup-admin/view-categories',
-            },
-            {
-                name: 'Tray Category',
-                // icon: 'category',
-                path: '/sup-admin/Category',
-            },
 
             {
                 name: 'Brands',
@@ -184,13 +169,26 @@ export const navigations = [
                 // icon: 'shopping_cart',
                 path: '/sup-admin/products',
             },
+
+            {
+                name: 'SP Categories',
+                // icon: 'home',
+                path: '/sup-admin/view-categories',
+            },
+
+            {
+                name: 'Vendors',
+                // icon: 'home',
+                path: '/sup-admin/view-vendors',
+            },
+
             {
                 name: 'Color List',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/view-color-list',
             },
             {
-                name: 'Part List',
+                name: 'Sp Part List',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/view-part-list',
             },
@@ -199,6 +197,11 @@ export const navigations = [
                 name: 'Bags',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/bag',
+            },
+            {
+                name: 'Tray Category',
+                // icon: 'category',
+                path: '/sup-admin/Category',
             },
             {
                 name: 'Trays',
@@ -455,12 +458,12 @@ export const navigations = [
             },
             {
                 name: 'Assign to Charging Planner',
-                path: '/mis/assign-to-agent/chargingplanner',
+                path: '/mis/assign-to-agent/charging',
                 iconText: 'NP',
             },
             {
                 name: 'Assign to Bqc Planner',
-                path: '/mis/assign-to-agent/bqcplanner',
+                path: '/mis/assign-to-agent/bqc',
                 iconText: 'NP',
             },
             {
@@ -707,9 +710,27 @@ export const navigations = [
                 path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
+        ],
+        auth: authRoles.Warehouse,
+        sales: false,
+    },
+    {
+        name: 'RPT',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'RPT Tray',
+                path: '/warehouse/rpt-tray',
+                iconText: 'VP',
+            },
             {
                 name: 'RDL-two Request',
-                path: '/wareshouse/wht/rdl-two-request',
+                path: '/wareshouse/rpt/rdl-two-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return from RDL-two',
+                path: '/warehouse/rpt/return-from-rdl-two',
                 iconText: 'VP',
             },
         ],
@@ -1000,7 +1021,6 @@ export const navigations = [
         auth: authRoles.sorting,
         sales: false,
     },
-  
 
     {
         name: 'Charging Request',
@@ -1305,7 +1325,7 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
         sales: false,
     },
-   
+
     {
         name: 'Dummy Panel',
         icon: 'class',
@@ -1329,8 +1349,12 @@ export const navigations = [
                 path: '/sp-user/sp-tray',
             },
             {
-                name: 'Issue to rdl-two',
+                name: 'Issue to Rdl-two',
                 path: '/sp-user/ready-to-rdl-two',
+            },
+            {
+                name: 'Return from Rdl-two',
+                path: '/sp-user/return-from-rdl-two',
             },
         ],
         sales: 'all',

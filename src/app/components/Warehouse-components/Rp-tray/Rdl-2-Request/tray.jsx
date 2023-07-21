@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/rdl-two-request/approve/' + trayId)
+        navigate('/wareshouse/rpt/rdl-two-request/approve/' + trayId)
     }
 
     const columns = [
@@ -88,15 +88,7 @@ const SimpleMuiTable = () => {
             },
         },
 
-        {
-            name: 'warehouse',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
@@ -123,7 +115,7 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RDL Agent</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>RDL Two Agent</Typography>
             ),
             options: {
                 filter: true,
@@ -133,7 +125,7 @@ const SimpleMuiTable = () => {
             name: 'requested_date',
             label: (
                 <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
-                    Request Sent Date
+                   Assigned date
                 </Typography>
             ),
             options: {
@@ -154,7 +146,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[5],
+                    items?.length + '/' + tableMeta.rowData[4],
             },
         },
         {

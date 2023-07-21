@@ -175,7 +175,7 @@ export default function DialogBox() {
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    navigate('/wareshouse/wht/rdl-two-request')
+                    navigate('/wareshouse/rpt/rdl-two-request')
                     setLoading(false)
                 } else {
                     Swal.fire({

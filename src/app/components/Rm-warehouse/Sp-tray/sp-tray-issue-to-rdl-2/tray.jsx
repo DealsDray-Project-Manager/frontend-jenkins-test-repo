@@ -129,7 +129,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'actual_items',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
@@ -172,12 +172,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                       
-                        { name: 'Issue to Rdl-two' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Issue to Rdl-two' }]} />
             </div>
 
             <MUIDataTable

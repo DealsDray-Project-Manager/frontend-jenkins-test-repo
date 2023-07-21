@@ -42,12 +42,26 @@ const AuditReport = ({ AuditData, otherAuditFeedBack }) => {
                         <TableCell sx={{ pl: 2 }}> Reason :</TableCell>
                         <TableCell>{AuditData?.reason}</TableCell>
                     </TableRow>
+                    <TableRow key={AuditData?.color}>
+                        <TableCell sx={{ pl: 2 }}> Color :</TableCell>
+                        <TableCell>{AuditData?.color}</TableCell>
+                    </TableRow>
+                    <TableRow key={AuditData?.storage_verification}>
+                        <TableCell sx={{ pl: 2 }}> Storage :</TableCell>
+                        <TableCell>{AuditData?.storage_verification}</TableCell>
+                    </TableRow>
+                    <TableRow key={AuditData?.ram_verification}>
+                        <TableCell sx={{ pl: 2 }}> RAM :</TableCell>
+                        <TableCell>{AuditData?.ram_verification}</TableCell>
+                    </TableRow>
                     <TableRow key={AuditData?.description}>
-                        <TableCell sx={{ pl: 2 }}> Description :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Auditor Description :
+                        </TableCell>
                         <TableCell>{AuditData?.description}</TableCell>
                     </TableRow>
                     {AuditData?.stage == undefined ||
-                    AuditData?.stage == 'BQC Not Done' ? (
+                    AuditData?.stage == 'BQC Not Done / Unverified imei' ? (
                         <TableRow key={otherAuditFeedBack}>
                             <TableCell sx={{ pl: 2 }}>
                                 {' '}

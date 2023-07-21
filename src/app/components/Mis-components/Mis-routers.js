@@ -65,9 +65,7 @@ const SortingBotTowht = Loadable(
 const SortingWhtTorp = Loadable(
     lazy(() => import('./Sorting/Wht-to-rp/wht-tray'))
 )
-const Process = Loadable(
-    lazy(() => import('./Sorting/Wht-to-rp/process'))
-)
+const Process = Loadable(lazy(() => import('./Sorting/Wht-to-rp/process')))
 const SortingBotTowhtViewItem = Loadable(
     lazy(() => import('./Sorting/Bot-to-wht/view-clubed-item'))
 )
@@ -105,8 +103,12 @@ const CtxToStxAssignToSorting = Loadable(
 const StxMerging = Loadable(lazy(() => import('./Merge/Stx-merging/tray')))
 const BilledBin = Loadable(lazy(() => import('./BilledBin/items')))
 const BilledBinReport = Loadable(lazy(() => import('./Report/billed-bin')))
-const ViewRpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-rp')))
-const ViewSpTray = Loadable(lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp')))
+const ViewRpTray = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-rp'))
+)
+const ViewSpTray = Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp'))
+)
 
 const dataTableRoutes = [
     {
@@ -121,7 +123,7 @@ const dataTableRoutes = [
         path: '/mis/dashboard',
         element: <Dashboard />,
     },
-   
+
     {
         path: '/mis/orders',
         element: <Orders />,
@@ -171,20 +173,20 @@ const dataTableRoutes = [
         element: <AssignToBotUicGen />,
     },
     {
-        path: '/mis/assign-to-agent/bqcplanner',
-        element: <AssignToBqc />,
+        path: '/mis/assign-to-agent/bqc',
+        element: <Frombqcplanner />,
     },
     {
         path: '/mis/assign-to-agent/bqcplanner/view-wht-tray/:brand/:model/:jack',
-        element: <Frombqcplanner/>,
+        element: <Frombqcplanner />,
     },
     {
-        path: '/mis/assign-to-agent/chargingplanner',
-        element: <AssignToCharging />,
+        path: '/mis/assign-to-agent/charging',
+        element: <FromChargingplanner />,
     },
     {
         path: '/mis/assign-to-agent/chargingplanner/view-wht-tray/:brand/:model/:jack',
-        element: <FromChargingplanner/>,
+        element: <FromChargingplanner />,
     },
     {
         path: '/mis/assign-to-agent/audit',

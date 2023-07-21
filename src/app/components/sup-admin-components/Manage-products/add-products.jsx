@@ -75,10 +75,10 @@ const MemberEditorDialog = ({
             .nullable(),
         brand_name: Yup.string().required('Required'),
         jack_type: Yup.string()
-        .required('Required*')
-        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-        .max(40)
-        .nullable(),
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
     })
 
     const {
@@ -182,7 +182,7 @@ const MemberEditorDialog = ({
                 handleClose()
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'failed',
+                    icon: 'error',
                     title: response.data.message,
                     showConfirmButton: false,
                 })
@@ -238,16 +238,19 @@ const MemberEditorDialog = ({
                         />
                         <TextFieldCustOm
                             label="Jack Type"
-                            type="text"
+                            select
                             name="jack_type"
+                            defaultValue={getValues('jack_type')}
                             {...register('jack_type')}
                             error={errors.jack_type ? true : false}
                             helperText={
-                                errors.jack_type
-                                    ? errors.jack_type.message
-                                    : ''
+                                errors.jack_type ? errors.jack_type.message : ''
                             }
-                        />
+                        >
+                            <MenuItem value="Micro USB">Micro USB</MenuItem>
+                            <MenuItem value="Type C">Type C</MenuItem>
+                            <MenuItem value="lightning">lightning</MenuItem>
+                        </TextFieldCustOm>
                     </Grid>
 
                     <Grid item sm={6} xs={12}>

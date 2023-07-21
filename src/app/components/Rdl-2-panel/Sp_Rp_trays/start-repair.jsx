@@ -139,13 +139,21 @@ const SimpleMuiTable = () => {
                             </Box>
                             <Box sx={{ ml: 5 }}>
                                 <Typography sx={{ mt: 2 }}>
-                                    Description:{' '}
+                                   Auditor Description:{' '}
+                                    {
+                                        reportData?.delivery?.audit_report
+                                            ?.description
+                                    }
+                                </Typography>
+                                <Typography sx={{ mt: 2 }}>
+                                   RDL 1 Description:{' '}
                                     {
                                         reportData?.delivery?.rdl_fls_one_report
                                             ?.description
                                     }
                                 </Typography>
                             </Box>
+                            
                         </Box>
                     </Card>
 

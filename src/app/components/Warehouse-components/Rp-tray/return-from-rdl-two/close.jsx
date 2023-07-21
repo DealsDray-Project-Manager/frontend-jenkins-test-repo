@@ -60,7 +60,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Received from RDL-FLS/' +
+                            'Received from RDL-two/' +
                             location
                     )
                     if (response.status === 200) {
@@ -166,10 +166,9 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     sortId: trayData?.sort_id,
-                    screen: 'return-from-rdl-fls',
                 }
                 let res = await axiosWarehouseIn.post(
-                    '/rdl-fls/closedByWh',
+                    '/rdl-two/closedByWh',
                     obj
                 )
                 if (res.status == 200) {
@@ -252,8 +251,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand </TableCell>
+                                <TableCell>Model </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -264,8 +263,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -338,8 +337,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand </TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -351,8 +350,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -367,8 +366,8 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'Return-From-RDL-FLS', path: '/' },
+                        { name: 'RPT', path: '/' },
+                        { name: 'Return-From-RDL-Two', path: '/' },
                         { name: 'Tray Close' },
                     ]}
                 />
@@ -413,15 +412,11 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <TextFieldCustOm
-                        label="Rack ID"
-                        select
-                        type="text"
-                        style={{
-                            width: '150px',
-                            marginRight: '20px',
-                            marginTop: '15px',
-                        }}
+                <TextFieldCustOm
+                    label='Rack ID'
+                    select
+                    type='text'
+                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
                     />
                     <textarea
                         onChange={(e) => {

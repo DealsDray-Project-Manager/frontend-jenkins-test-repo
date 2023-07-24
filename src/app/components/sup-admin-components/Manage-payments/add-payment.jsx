@@ -73,6 +73,7 @@ const MemberEditorDialog = ({
         // data.created_at = Date.now()
         try {
             setLoading(true)
+            data.type = 'payment-list'
             let response = await axiosSuperAdminPrexo.post(
                 '/payments/create',
                 data

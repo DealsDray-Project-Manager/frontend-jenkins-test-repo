@@ -23,20 +23,22 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [trayrackList, setTrayRackList] = useState([])
+    const [warranty, setwarranty] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [trayRackId, settrayRackId] = useState('')
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
-        const fetchRacks = async () => {
+        const fetchWarranty = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/warranty/view/' + 'warranty-list'
+                )
+                console.log(res);
                 if (res.status === 200) {
+                    setwarranty(res.data.data)
                     setIsLoading(false)
-                    setTrayRackList(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -47,7 +49,7 @@ const SimpleMuiTable = () => {
                 })
             }
         }
-        fetchRacks()
+        fetchWarranty()
         return () => {
             setIsAlive(false)
             setIsLoading(true)
@@ -59,30 +61,24 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(false)
     }
 
-    const handleDialogOpen = async (state) => {
-        try {
-            if (state == 'ADD') {
-                const trayId = await axiosSuperAdminPrexo.post(
-                    '/trayracks/idGen'
-                )
-                if (trayId.status == 200) {
-                    settrayRackId(trayId.data.rackID)
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    const handleDialogOpen = async () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editRack = async (trayRackId) => {
+    const editWarranty = async (name) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/trayracks/one/' + trayRackId
+                '/warranty/one/' + name + '/warranty-list' 
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -93,10 +89,10 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelDelete = (rack_id) => {
+    const handelDelete = (name) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Rack!', 
+            text: 'You want to Delete Warranty!', 
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -104,15 +100,15 @@ const SimpleMuiTable = () => {
             confirmButtonText: 'Yes, Delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                try {
+                try {      
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deleteTrayRacks/' + rack_id
+                            '/deleteWarranty/'+name
                         )
                         if (response.status == 200) {
                             Swal.fire({
                                 position: 'top-center',
                                 icon: 'success',
-                                title: 'Your Tray Box has been Deleted.',
+                                title: 'Your Warranty has been Deleted.',
                                 confirmButtonText: 'Ok',
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
@@ -121,15 +117,8 @@ const SimpleMuiTable = () => {
                                     setIsAlive((isAlive) => !isAlive)
                                 }
                             })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "This box You Can't Delete",
-                            })
-                        }
-                   
-                } catch (error) {
+                        } 
+                  }catch (error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -194,7 +183,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editRack(tableMeta.rowData[1])
+                                        editWarranty(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
@@ -221,7 +210,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray Racks', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Payments', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -229,13 +218,13 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => handleDialogOpen('ADD')}
             >
-                Add New Rack
+                Add Warranty
             </Button>
             <>
                 <>
                 <MUIDataTable
-                title={'Manage Racks'}
-                data={trayrackList}
+                title={'Manage Warranty'}
+                data={warranty}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -270,8 +259,6 @@ const SimpleMuiTable = () => {
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                    trayRackId={trayRackId}
-                    settrayRackId={settrayRackId}
                 /> 
             )}
         </Container>

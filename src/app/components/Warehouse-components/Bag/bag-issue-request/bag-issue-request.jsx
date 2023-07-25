@@ -67,61 +67,74 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:1}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 1 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography sx={{fontWeight:'bold'}}>Name</Typography>, // column title that will be shown in table
+            label: <Typography sx={{ fontWeight: 'bold' }}>Name</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
-       
+
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Bag ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}} noWrap>Agent Name</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Agent Name
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: <Typography sx={{fontWeight:'bold'}}>Max</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Max</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Valid</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Valid</Typography>,
             options: {
                 filter: true,
 
@@ -133,7 +146,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Total</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Total</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.length,
@@ -141,7 +154,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => {

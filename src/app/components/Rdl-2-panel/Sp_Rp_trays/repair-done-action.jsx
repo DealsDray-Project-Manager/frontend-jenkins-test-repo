@@ -79,6 +79,10 @@ const SimpleMuiTable = () => {
             }
         }
         fetchDataFun()
+        return () => {
+            setDescriptionCount([])
+            setRadioButtonCount([])
+        }
     }, [])
 
     const handleChange = (event) => {
@@ -129,7 +133,7 @@ const SimpleMuiTable = () => {
                 rdl_repair_report: {
                     status: selectedValue,
                     reason: selectReason,
-                    description:description,
+                    description: description,
                     more_part_required: [],
                     used_parts: [],
                     rdl_two_part_status: requredPart,
@@ -151,7 +155,6 @@ const SimpleMuiTable = () => {
             } else {
                 let arr = []
                 for (let y of requredPart) {
-                    console.log(y)
                     if (y.rdl_two_status == 'Used') {
                         arr.push(y)
                     }
@@ -370,37 +373,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'description',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <TextareaAutosize
-                            rowsMin={2}
-                            placeholder="Enter description"
-                            value={value}
-                            onChange={(e) => {
-                                handleChangeStatus(
-                                    tableMeta.rowIndex,
-                                    e.target.value,
-                                    'description',
-                                    tableMeta.rowData[1]
-                                )
-                            }}
-                            style={{
-                                width: '135px',
-                                minHeight: '150px',
-                                resize: 'none',
-                            }}
-                        />
-                    )
-                },
-            },
-        },
+
         {
             name: 'action',
             label: 'Action',
@@ -409,13 +382,25 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     const radioGroupName = `radio-group-${tableMeta.rowIndex}`
-                    const labels = [
-                        'Used',
-                        'Not used',
-                        'Not required',
-                        'Faulty',
-                        'Damaged',
-                    ]
+                    let labels
+                    if (selectedValue === 'Repair Done') {
+                        labels = ['Used', 'Not used', 'Not required']
+                    } else if (selectReason == 'Part not available') {
+                        labels = [
+                            'Used',
+                            'Not used',
+                            'Not required',
+                            'Not available',
+                        ]
+                    } else {
+                        labels = [
+                            'Used',
+                            'Not used',
+                            'Not required',
+                            'Faulty',
+                            'Damaged',
+                        ]
+                    }
 
                     return (
                         <RadioGroup
@@ -444,6 +429,37 @@ const SimpleMuiTable = () => {
                                 />
                             ))}
                         </RadioGroup>
+                    )
+                },
+            },
+        },
+        {
+            name: 'description',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <TextareaAutosize
+                            rowsMin={2}
+                            placeholder="Enter description"
+                            value={value}
+                            onChange={(e) => {
+                                handleChangeStatus(
+                                    tableMeta.rowIndex,
+                                    e.target.value,
+                                    'description',
+                                    tableMeta.rowData[1]
+                                )
+                            }}
+                            style={{
+                                width: '135px',
+                                minHeight: '150px',
+                                resize: 'none',
+                            }}
+                        />
                     )
                 },
             },
@@ -591,10 +607,6 @@ const SimpleMuiTable = () => {
         )
     }, [])
 
-    console.log(descriptionCount)
-    console.log(requredPart)
-    console.log(radioButtonCount)
-
     return (
         <>
             <Container>
@@ -718,8 +730,7 @@ const SimpleMuiTable = () => {
                                 }}
                             ></textarea>
                         </Box>
-                        {selectedValue !== '' &&
-                        selectReason !== 'More part required' ? (
+                        {selectedValue !== '' ? (
                             <MUIDataTable
                                 title={displayContent}
                                 data={
@@ -765,9 +776,9 @@ const SimpleMuiTable = () => {
                             />
                         ) : null}
                     </Box>
-
-                    <Box sx={{ mt: 2 }}>
-                        {selectReason == 'More part required' ? (
+                    {selectedValue !== '' &&
+                    selectReason == 'More part required' ? (
+                        <Box sx={{ mt: 2 }}>
                             <>
                                 <MUIDataTable
                                     title={
@@ -817,10 +828,11 @@ const SimpleMuiTable = () => {
                                     }}
                                 />
                             </>
-                        ) : null}
 
-                        <br />
-                    </Box>
+                            <br />
+                        </Box>
+                    ) : null}
+
                     <Box sx={{ textAlign: 'right' }}>
                         <Button
                             sx={{
@@ -835,14 +847,9 @@ const SimpleMuiTable = () => {
                                     selectReason == '') ||
                                 (selectReason == 'More part required' &&
                                     isCheck.length == 0) ||
-                                (selectedValue == 'Repair Not Done' &&
-                                    selectReason !== 'More part required' &&
-                                    requredPart.length !==
-                                        descriptionCount.length) ||
-                                (selectedValue == 'Repair Not Done' &&
-                                    selectReason !== 'More part required' &&
-                                    requredPart.length !==
-                                        radioButtonCount.length)
+                                requredPart.length !==
+                                    descriptionCount.length ||
+                                requredPart.length !== radioButtonCount.length
                             }
                             onClick={(e) => {
                                 handelSubmit(e)

@@ -11,8 +11,9 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem
+    MenuItem,
 } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
@@ -40,6 +41,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -50,17 +52,17 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
+    const [rackId, setRackId] = useState('')
     /*********************************************************** */
 
     useEffect(() => {
-
         const fetchData = async () => {
-            
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                    console.log(res.data.data);
+                    console.log(res.data.data)
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -86,7 +88,6 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     setTrayData(response.data.data)
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -110,11 +111,10 @@ export default function DialogBox() {
     /************************************************************************** */
     const addActualitem = async (obj) => {
         if (trayData?.actual_items?.length < trayData?.items.length) {
-           
             Swal.fire({
                 position: 'top-center',
                 icon: 'success',
-                title:"All Items Are Verified",
+                title: 'All Items Are Verified',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -133,7 +133,6 @@ export default function DialogBox() {
                     setRefresh((refresh) => !refresh)
                     setUic('')
                 } else {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -157,11 +156,10 @@ export default function DialogBox() {
         try {
             setLoading(true)
             if (description == '') {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Please Add Description",
+                    title: 'Please Add Description',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -170,13 +168,13 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     type: 'Ready to audit',
+                    rackId: rackId,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/close-wht-tray-ready-to-next',
                     obj
                 )
                 if (res.status == 200) {
-                  
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -187,7 +185,7 @@ export default function DialogBox() {
                     navigate('/wareshouse/wht/return-from-bqc')
                 } else {
                     setLoading(false)
-              
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -223,7 +221,7 @@ export default function DialogBox() {
                 } else {
                     setUic('')
                     setTextDisable(false)
-              
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -248,42 +246,50 @@ export default function DialogBox() {
                 <Box
                     sx={{
                         display: 'flex',
-                        justifyContent: 'space-between'
-                       
+                        justifyContent: 'space-between',
                     }}
                 >
-                    <Box sx={{ml:2 }}>
-                    <h5>EXPECTED</h5>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>EXPECTED</h5>
                     </Box>
-                    
-                    <Box sx={{justifyContent:'end', display: 'flex'}}>
-                    <Box
-                        sx={{
-                            m: 0,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5 style={{marginLeft:'18px'}}>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {trayData?.actual_items?.length}/
-                                {trayData?.limit}
-                            </p>
+
+                    <Box sx={{ justifyContent: 'end', display: 'flex' }}>
+                        <Box
+                            sx={{
+                                m: 0,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '18px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        paddingLeft: '5px',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}/
+                                    {trayData?.limit}
+                                </p>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '14px' }}>Valid</h5>
+                                <p
+                                    style={{
+                                        marginLeft: '14px',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {trayData?.actual_items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
-                    <Box
-                        sx={{
-                            mr: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5 style={{marginLeft:'14px'}}>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '22px' }}>
-                                {trayData?.actual_items?.length}
-                            </p>
-                        </Box>
-                    </Box>
-                    </Box>
-                    
                 </Box>
                 <TableContainer>
                     <Table
@@ -294,7 +300,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -305,7 +311,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -319,68 +327,77 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items])
-    
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{justifyContent:'space-between', display:'flex'}}>
-                <Box sx={{ml:2}}>
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ mt: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    name="doorsteps_diagnostics"
-                    disabled={textDisable}
-                    label="SCAN UIC"
-                    value={uic}
-                    onChange={(e) => {
-                        setUic(e.target.value)
-                        handelUic(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-                </Box>
-                
+                <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
+                    <Box sx={{ ml: 2 }}>
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ mt: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            disabled={textDisable}
+                            label="SCAN UIC"
+                            value={uic}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
-                            m: 0,
+                            display: 'flex',
+                            justifyContent: 'end',
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5 style={{marginLeft:'16px'}}>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {trayData?.items?.length}/{trayData?.limit}
-                            </p>
+                        <Box
+                            sx={{
+                                m: 0,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '16px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        marginLeft: '5px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}/{trayData?.limit}
+                                </p>
+                            </Box>
                         </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            mr: 2,
-                        }}
-                    >
-                        <Box sx={{}}>
-                            <h5 style={{marginLeft:'16px'}}>Valid</h5>
-                            <p style={{ marginLeft: '19px', fontSize: '24px' }}>
-                                {trayData?.items?.length}
-                            </p>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ marginLeft: '16px' }}>Valid</h5>
+                                <p
+                                    style={{
+                                        marginLeft: '19px',
+                                        fontSize: '24px',
+                                    }}
+                                >
+                                    {trayData?.items?.length}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
-                </Box>
-                
+
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
@@ -390,7 +407,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -402,7 +419,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -423,16 +442,16 @@ export default function DialogBox() {
                     routeSegments={[
                         { name: 'WHT', path: '/' },
                         { name: 'Return-From-BQC ', path: '/' },
-                        { name: 'Tray Close'}
+                        { name: 'Tray Close' },
                     ]}
                 />
             </div>
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -476,28 +495,25 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm 
-                    sx={{m:1}}
-                        label='Rack ID'
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
                         select
-                        style={{ width: '150px'}}
-                     
-                        
+                        style={{ width: '150px' }}
                         name="rack_id"
-                >
-                    {rackiddrop?.map((data) => (
-                    
-                    <MenuItem
-                        onClick={(e) => {
-                            setRackId(data.rack_id)
-                        }}
-                        value={data.rack_id}
                     >
-                        {data.rack_id}
-                    </MenuItem>
-                ))}
-                </TextFieldCustOm>
-                
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
+
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -511,7 +527,9 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             trayData?.items?.length !==
-                                trayData?.actual_items?.length || loading || rackId == ''
+                                trayData?.actual_items?.length ||
+                            loading ||
+                            rackId == ''
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

@@ -43,6 +43,7 @@ const SpTrayReturnFromRdlTwo  = Loadable(lazy(() => import('./Sp-tray/Return-fro
 const SpTrayReturnFromRdlTwoView  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-two/view-tray')))
 
 
+
 const RmWarehouse = [
     {
         path: '/sp-user/return-from-rdl-two/view/:trayId',

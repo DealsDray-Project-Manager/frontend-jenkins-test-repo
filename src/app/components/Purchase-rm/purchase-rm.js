@@ -18,7 +18,7 @@ const PurchaseUser=[
         element: <Purchase />,
     },
     {
-        path: '/purchase-user/purchase/order',
+        path: '/purchase-user/purchase/order/:spnNumber/:muic',
         element: <Order />,
     },
 ]

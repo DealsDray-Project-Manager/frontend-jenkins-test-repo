@@ -3,13 +3,14 @@ import {
     Dialog,
     Button,
     Grid,
-    TextField, 
+    TextField,
     MenuItem,
     Checkbox,
     Select,
     FormControl,
     InputLabel,
 } from '@mui/material'
+
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
@@ -48,19 +49,18 @@ const MemberEditorDialog = ({
     editFetchData,
     setEditFetchData,
     vendorId,
-    setVendorId,
 }) => {
     const [loading, setLoading] = useState(false)
     const theme = useTheme()
     const [locationDrop, setLocationDrop] = useState([])
     const [personName, setPersonName] = React.useState([])
-    const [spCategory,setSpCategory]=useState([])
-    const [deals,setDeals]=useState([])
+    const [spCategory, setSpCategory] = useState([])
+    const [deals, setDeals] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
-            const res=await axiosSuperAdminPrexo.post("/spcategories/view")
-            if(res.status == 200){
+            const res = await axiosSuperAdminPrexo.post('/spcategories/view')
+            if (res.status == 200) {
                 setSpCategory(res.data.data)
             }
         }
@@ -68,7 +68,7 @@ const MemberEditorDialog = ({
         if (Object.keys(editFetchData).length !== 0) {
             reset({ ...editFetchData })
             setPersonName(editFetchData.location)
-            setVendorId(editFetchData.vendor_id)
+            setDeals(editFetchData.deals)
             open()
         }
     }, [])
@@ -76,7 +76,9 @@ const MemberEditorDialog = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/getLocation')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/getLocationProcessing/' + 'Processing'
+                )
                 if (res.status == 200) {
                     setLocationDrop(res.data.data)
                 }
@@ -129,7 +131,6 @@ const MemberEditorDialog = ({
         location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
 
-
     const {
         control,
         register,
@@ -142,8 +143,8 @@ const MemberEditorDialog = ({
         resolver: yupResolver(schema),
         defaultValues: {
             location: [],
-            deals:[]
-             // Set initial values here
+            deals: [],
+            // Set initial values here
         },
     })
 
@@ -244,10 +245,9 @@ const MemberEditorDialog = ({
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
-
     }
 
-    const handleChangeDeals= (event) => {
+    const handleChangeDeals = (event) => {
         const {
             target: { value },
         } = event
@@ -255,7 +255,6 @@ const MemberEditorDialog = ({
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
-
     }
 
     return (
@@ -421,38 +420,33 @@ const MemberEditorDialog = ({
                             </Select>
                         </FormControl>
                         <FormControl sx={{ mb: 2, width: 260 }}>
-                        <InputLabel id="demo-multiple-name-label">
+                            <InputLabel id="demo-multiple-name-label">
                                 Deals
                             </InputLabel>
-                        <Select
-                             labelId="demo-multiple-name-label"
-                             id="demo-multiple-name"
-                             multiple
-                             value={deals}
-                             input={<OutlinedInput label="Deals" />}
-                             MenuProps={MenuProps}
-                             onChange={(e) => {
-                                handleChangeDeals(e)
-                            }}
-                            error={errors.location ? true : false}
-                            helperText={
-                                errors.location
-                                    ? errors.location?.message
-                                    : ''
-                            }
-                        >
-                             {spCategory.map((data) => (
-                                <MenuItem
-                                   
-                                    value={data.category_name}
-                                >
-                                    {data.category_name}
-                                </MenuItem>
-                            ))}
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                value={deals}
+                                input={<OutlinedInput label="Deals" />}
+                                MenuProps={MenuProps}
+                                onChange={(e) => {
+                                    handleChangeDeals(e)
+                                }}
+                                error={errors.location ? true : false}
+                                helperText={
+                                    errors.location
+                                        ? errors.location?.message
+                                        : ''
+                                }
+                            >
+                                {spCategory.map((data) => (
+                                    <MenuItem value={data.category_name}>
+                                        {data.category_name}
+                                    </MenuItem>
+                                ))}
                             </Select>
-                            </FormControl>
-
-                           
+                        </FormControl>
                     </Grid>
                 </Grid>
                 <FormHandlerBox>

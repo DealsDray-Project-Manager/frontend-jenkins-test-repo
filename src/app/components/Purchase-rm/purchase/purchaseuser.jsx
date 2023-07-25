@@ -55,8 +55,8 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-    const handleplace = () => {
-        navigate('/purchase-user/purchase/order')
+    const handleplace = (id,muic) => {
+        navigate('/purchase-user/purchase/order/' + id + "/" + muic)
     }
 
     const columns = [
@@ -153,7 +153,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
+            name: 'spare_part_number',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Action</>
@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
                                 m: 0,
                             }}
                             variant="contained"
-                            onClick={() => handleplace()}
+                            onClick={() => handleplace(value,tableMeta.rowData[5])}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >

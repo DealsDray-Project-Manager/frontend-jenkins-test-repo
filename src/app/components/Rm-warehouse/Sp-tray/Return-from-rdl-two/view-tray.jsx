@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import { axiosRmUserAgent } from '../../../../../axios'
 import { Button, Box, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
+import AddToBox from './dialogbox'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,7 +27,10 @@ const SimpleMuiTable = () => {
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const [partDetails, setPartDetails] = useState({})
     const [description, setDescription] = useState([])
+    const [objId,setObjId]=useState("")
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,45 +73,13 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [refresh])
 
-    const handleAdd = (partId) => {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be add this part!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, add!',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    let response = await axiosRmUserAgent.post(
-                        '/spTray/addParts/' + partId + '/' + trayId
-                    )
-                    if (response.status == 200) {
-                        setRefresh((isAlive) => !isAlive)
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: response?.data?.message,
-                            confirmButtonText: 'Ok',
-                        })
-                    }
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: error,
-                    })
-                }
-            }
-        })
-    }
-
     const handleViewSpIssue = async (e, code) => {
         e.preventDefault()
         try {
-            const res = await axiosRmUserAgent.post('/spTray/close/' + trayId)
+            let obj = {
+                spTrayId: trayId,
+            }
+            const res = await axiosRmUserAgent.post('/rdlTwoDoneCloseSP', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -115,7 +87,7 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/sp-user/sp-tray')
+                navigate('/sp-user/return-from-rdl-two')
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -126,6 +98,19 @@ const SimpleMuiTable = () => {
         } catch (error) {
             alert(error)
         }
+    }
+
+    const handleDialogClose = () => {
+        setPartDetails({})
+        setShouldOpenEditorDialog(false)
+        setObjId("")
+        
+    }
+
+    const handleDialogOpen = (details,selObjId) => {
+        setPartDetails(details)
+        setObjId(selObjId)
+        setShouldOpenEditorDialog(true)
     }
 
     const columns = [
@@ -187,6 +172,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+      
         {
             name: 'rdl_two_status',
             label: (
@@ -199,7 +185,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'partId',
+            name: 'part_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
@@ -210,14 +196,13 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
-                            disabled={tableMeta.rowData[6] == 'Added'}
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handleAdd(value)
+                                handleDialogOpen(value,tableMeta.rowData[5])
                             }}
                         >
-                            Add
+                            Add to Box
                         </Button>
                     )
                 },
@@ -291,8 +276,7 @@ const SimpleMuiTable = () => {
                     }}
                     variant="contained"
                     disabled={
-                        tray?.items?.length !== tray?.temp_array?.length ||
-                        description == ''
+                        tray?.temp_array?.length !== 0 || description == ''
                     }
                     style={{ backgroundColor: '#206CE2' }}
                     onClick={(e) => {
@@ -302,6 +286,16 @@ const SimpleMuiTable = () => {
                     Close
                 </Button>
             </Box>
+            {shouldOpenEditorDialog && (
+                <AddToBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setRefresh={setRefresh}
+                    trayId={trayId}
+                    partDetails={partDetails}
+                    objId={objId}
+                />
+            )}
         </Container>
     )
 }

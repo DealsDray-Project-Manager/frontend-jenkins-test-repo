@@ -39,7 +39,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/wht-tray/' + 'Ready to BQC/' + location
+                        '/plannerPage/' + 'Ready to BQC/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -53,12 +53,13 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
         fetchData()
-        return () =>{ setIsAlive(false)
+        return () => {
+            setIsAlive(false)
             setIsLoading(false)
         }
     }, [isAlive])
@@ -99,7 +100,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:error,
+                    text: error,
                 })
             }
         }
@@ -111,10 +112,18 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Select</>
+                </Typography>
+            ),
             options: {
                 filter: false,
-                sort:false,
+                sort: false,
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -131,55 +140,86 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
-                sort:false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
 
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Name</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        
+
         {
             name: 'brand',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'jack',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Jack type</></Typography>,
+            name: 'jack_type',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Jack type</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-      
+
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Limit</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 display: false,
@@ -187,7 +227,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
 
@@ -195,18 +239,26 @@ const SimpleMuiTable = () => {
                     value.length + '/' + tableMeta.rowData[7],
             },
         },
-       
+
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-       
+
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -255,8 +307,8 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download:false,
-                    print:false,
+                    download: false,
+                    print: false,
                     textLabels: {
                         body: {
                             noMatch: isLoading

@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -26,6 +28,7 @@ const TextFieldCustOm = styled(TextField)(() => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -42,7 +45,9 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
                     console.log(res.data.data)
                     setrackiddrop(res.data.data)

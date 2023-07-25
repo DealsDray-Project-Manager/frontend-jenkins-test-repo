@@ -95,15 +95,7 @@ const SimpleMuiTable = () => {
                     value?.[0]?.botTray?.join(', '),
             },
         },
-        {
-            name: 'rack_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) =>
-                    botTray[0].tray[0].rack_id
-            },
-        },
+       
         {
             name: '_id',
             label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
@@ -183,7 +175,7 @@ const SimpleMuiTable = () => {
                             onClick={(e) =>
                                 handelViewTrayForSorting(
                                     e,
-                                    tableMeta.rowData[3]
+                                    tableMeta.rowData[2]
                                 )
                             }
                             style={{ backgroundColor: 'green' }}

@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -11,7 +13,7 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem
+    MenuItem,
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -40,6 +42,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -50,17 +53,17 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
+    const [rackId, setRackId] = useState('')
     /*********************************************************** */
 
     useEffect(() => {
-
         const fetchData = async () => {
-            
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                    console.log(res.data.data);
+                    console.log(res.data.data)
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -155,10 +158,7 @@ export default function DialogBox() {
     const handelIssue = async (e) => {
         e.preventDefault()
         try {
-            setLoading(true)
-
             setLoading(false)
-
             let obj = {
                 trayId: trayId,
                 description: description,
@@ -166,6 +166,7 @@ export default function DialogBox() {
                 length: trayData?.items?.length,
                 limit: trayData?.limit,
                 trayType: trayData?.type_taxanomy,
+                rackId: rackId,
             }
             let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
             if (res.status == 200) {
@@ -486,27 +487,24 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm 
-                    sx={{m:1}}
-                        label='Rack ID'
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
                         select
-                        style={{ width: '150px'}}
-                     
-                         
+                        style={{ width: '150px' }}
                         name="rack_id"
-                >
-                    {rackiddrop?.map((data) => (
-                    
-                    <MenuItem
-                        onClick={(e) => {
-                            setRackId(data.rack_id)
-                        }}
-                        value={data.rack_id}
                     >
-                        {data.rack_id}
-                    </MenuItem>
-                ))}
-                </TextFieldCustOm>
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -521,7 +519,9 @@ export default function DialogBox() {
                         disabled={
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
-                            loading || description == '' ||
+                            rackId == '' ||
+                            loading ||
+                            description == '' ||
                             trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}

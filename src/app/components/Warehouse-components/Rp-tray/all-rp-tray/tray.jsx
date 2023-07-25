@@ -154,25 +154,6 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'warehouse',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Tray Name</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-
-        {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
@@ -186,17 +167,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'display',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Tray display
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'sort_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
@@ -255,8 +226,7 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
+            
                     <MUIDataTable
                         title={'Tray'}
                         data={rptTray}
@@ -302,8 +272,7 @@ const SimpleMuiTable = () => {
                             rowsPerPageOptions: [10, 20, 40, 80, 100],
                         }}
                     />
-                </ProductTable>
-            </ScrollableTableContainer>
+             
         </Container>
     )
 }

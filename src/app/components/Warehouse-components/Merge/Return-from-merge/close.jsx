@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -40,6 +42,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [tray, setTray] = useState([])
     const { trayId } = useParams()
@@ -58,9 +61,8 @@ export default function DialogBox() {
         const fetchData = async () => {
             
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view'  + user.warehouse )
                 if (res.status == 200) {
-                    console.log(res.data.data);
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -219,6 +221,7 @@ export default function DialogBox() {
                     length: length,
                     limit: limit,
                     status: status,
+                    rackId:rackId
                 }
                 if (type == 'MMT') {
                     obj.fromTray = tray[0].from_merge

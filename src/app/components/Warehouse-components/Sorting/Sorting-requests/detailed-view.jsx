@@ -153,6 +153,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'type_taxanomy',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
@@ -177,7 +184,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta.rowData[3],
+                    value?.length + '/' + tableMeta.rowData[4],
             },
         },
         {
@@ -187,12 +194,12 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return value == 'Sorting Request Sent To Warehouse' &&
-                        tableMeta.rowData[6] == 'BOT'
+                        tableMeta.rowData[7] == 'BOT'
                         ? 'Not Issued'
-                        : tableMeta.rowData[6] == 'WHT' &&
-                          tableMeta.rowData[4]?.length !== 0
+                        : tableMeta.rowData[7] == 'WHT' &&
+                          tableMeta.rowData[5]?.length !== 0
                         ? 'Not Issued'
-                        : tableMeta.rowData[6] == 'WHT'
+                        : tableMeta.rowData[5] == 'WHT'
                         ? 'New WHT'
                         : 'Issued'
                 },
@@ -205,14 +212,14 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort_id: false,
                 customBodyRender: (value, tableMeta) => {
-                    return tableMeta.rowData[6] == 'BOT' ||
-                        (tableMeta.rowData[6] == 'WHT' &&
-                            tableMeta.rowData[4]?.length !== 0) ? (
+                    return tableMeta.rowData[7] == 'BOT' ||
+                        (tableMeta.rowData[7] == 'WHT' &&
+                            tableMeta.rowData[5]?.length !== 0) ? (
                         <Button
                             variant="contained"
                             disabled={
-                                tableMeta.rowData[4]?.length ===
-                                tableMeta.rowData[7]?.length
+                                tableMeta.rowData[5]?.length ===
+                                tableMeta.rowData[8]?.length
                                     ? true
                                     : false
                             }
@@ -222,8 +229,8 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'primery' }}
                             component="span"
                         >
-                            {tableMeta.rowData[4]?.length ===
-                            tableMeta.rowData[7]?.length
+                            {tableMeta.rowData[5]?.length ===
+                            tableMeta.rowData[8]?.length
                                 ? 'Scanned'
                                 : ' Issue Now'}
                         </Button>

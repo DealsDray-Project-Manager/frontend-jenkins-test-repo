@@ -218,21 +218,17 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/view-trayracks',
             },
-            {
-                name: 'Payments Terms',
-                // icon: 'home',
-                path: '/sup-admin/view-payments',
-            },
-            {
-                name: 'Warranty Terms',
-                // icon: 'home',
-                path: '/sup-admin/view-warranty',
-            },
-            {
-                name: 'Tray Racks',
-                // icon: 'home',
-                path: '/sup-admin/view-trayracks',
-            },
+            // {
+            //     name: 'Payments Terms',
+            //     // icon: 'home',
+            //     path: '/sup-admin/view-payments',
+            // },
+            // {
+            //     name: 'Warranty Terms',
+            //     // icon: 'home',
+            //     path: '/sup-admin/view-warranty',
+            // },
+           
             {
                 name: 'Storage',
                 // icon: 'home',

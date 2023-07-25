@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -11,7 +13,7 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem
+    MenuItem,
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -41,6 +43,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -51,17 +54,17 @@ export default function DialogBox() {
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
+    const [rackId, setRackId] = useState('')
     /*********************************************************** */
 
     useEffect(() => {
-
         const fetchData = async () => {
-            
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                    console.log(res.data.data);
+                    console.log(res.data.data)
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -74,7 +77,6 @@ export default function DialogBox() {
         }
         fetchData()
     }, [])
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -193,6 +195,7 @@ export default function DialogBox() {
                     description: description,
                     sortId: trayData?.sort_id,
                     screen: 'return-from-rdl-fls',
+                    rackId:rackId
                 }
                 let res = await axiosWarehouseIn.post(
                     '/rdl-fls/closedByWh',
@@ -440,15 +443,23 @@ export default function DialogBox() {
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
                     <TextFieldCustOm
+                        sx={{ m: 1 }}
                         label="Rack ID"
                         select
-                        type="text"
-                        style={{
-                            width: '150px',
-                            marginRight: '20px',
-                            marginTop: '15px',
-                        }}
-                    />
+                        style={{ width: '150px' }}
+                        name="rack_id"
+                    >
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -460,7 +471,9 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' ? true : false || rackId == ""
+                            loading == true || rackId == '' || description == ''
+                                ? true
+                                : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

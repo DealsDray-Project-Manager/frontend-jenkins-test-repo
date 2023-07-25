@@ -147,8 +147,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
@@ -163,8 +163,8 @@ const SimpleMuiTable = () => {
                 <Typography sx={{ fontWeight: 'bold', ml: 2 }}>UIC</Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
@@ -173,8 +173,8 @@ const SimpleMuiTable = () => {
                 <Typography sx={{ fontWeight: 'bold', ml: 2 }}>MUIC</Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
@@ -216,8 +216,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
@@ -231,8 +231,8 @@ const SimpleMuiTable = () => {
             name: 'part_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Part Id</Typography>,
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
@@ -241,8 +241,8 @@ const SimpleMuiTable = () => {
                 <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
@@ -251,8 +251,8 @@ const SimpleMuiTable = () => {
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
@@ -261,16 +261,16 @@ const SimpleMuiTable = () => {
                 <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
         {
             name: 'rdl_two_status',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
             },
         },
     ]

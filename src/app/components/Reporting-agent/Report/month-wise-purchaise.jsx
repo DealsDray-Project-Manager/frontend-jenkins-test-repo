@@ -113,6 +113,7 @@ const SimpleMuiTable = () => {
                                 '/' +
                                 rowsPerPage
                         )
+                        console.log(res);
                         if (res.status == 200) {
                             setDisplayText('')
                             setCount(res.data.count)
@@ -330,6 +331,7 @@ const SimpleMuiTable = () => {
                 '/monthWiseReport/item/filter',
                 filterData
             )
+            console.log(res);
             if (res.status === 200) {
                 setDisplayText('')
                 setCount(res.data.count)

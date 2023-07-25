@@ -49,7 +49,6 @@ const SimpleMuiTable = () => {
     const [stateForFilterUn, setFilterUn] = useState(false)
     const [count, setCount] = useState(0)
     const [dataForDownload, setDataForDownload] = useState([])
-    const [partList, setPartList] = useState([])
     const [isAlive, setIsAlive] = useState(true)
     const [rowsPerPage, setRowsPerPage] = useState(50)
     const [page, setPage] = useState(0)
@@ -219,7 +218,7 @@ const SimpleMuiTable = () => {
                             rowsPerPage: rowsPerPage,
                         }
                         let res = await axiosMisUser.post('/ordersSearch', obj)
-
+                        
                         if (res.status == 200) {
                             setDisplayText('')
                             setItem(res.data.data)
@@ -244,8 +243,10 @@ const SimpleMuiTable = () => {
                                 '/' +
                                 rowsPerPage
                         )
+                        console.log(res);
                         if (res.status == 200) {
                             setDisplayText('')
+                            setOrderCount(res.data.count)
                             setItem(res.data.data)
                         }
                     }
@@ -298,13 +299,13 @@ const SimpleMuiTable = () => {
         setPage(newPage)
     }
 
-    const handleStartDateChange = (date) => {
-        setSearch((prevState) => ({ ...prevState, startDate: date }));
-      };
+    // const handleStartDateChange = (date) => {
+    //     setSearch((prevState) => ({ ...prevState, startDate: date }));
+    //   };
     
-      const handleEndDateChange = (date) => {
-        setSearch((prevState) => ({ ...prevState, endDate: date }));
-      };
+    //   const handleEndDateChange = (date) => {
+    //     setSearch((prevState) => ({ ...prevState, endDate: date }));
+    //   };
 
     //   const handleApplyFilter = () => {
     //     // Perform filtering logic using startDate and endDate values
@@ -316,7 +317,7 @@ const SimpleMuiTable = () => {
         try {
             let admin = localStorage.getItem('prexo-authentication')
             if (admin) {
-                setSearch((p) => ({ ...p, searchData: e.target.value }))
+                // setSearch((p) => ({ ...p, searchData: e.target.value }))
                 setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
@@ -406,19 +407,22 @@ const SimpleMuiTable = () => {
             filterData.page = page
             filterData.type = searchType
             filterData.size = rowsPerPage
+            filterData.totalCount = count
             setDisplayText('Please wait...')
             setFilterUn(true)
             const res = await axiosReportingAgent.post(
                 '/orderDateReport/item/filter',
                 filterData
             )
+            console.log(res);
             if (res.status === 200) { 
                 setDisplayText('')
-                setCount(res.data.count)
+                setOrderCount(res.data.count)
                 setDataForDownload(res.data.forXlsx)
                 setItem(res.data.data)
             } else {
                 setItem(res.data.data)
+                setOrderCount(res.data.count)
                 setDataForDownload(res.data.forXlsx)
                 setDisplayText('Sorry noo data found')
             }

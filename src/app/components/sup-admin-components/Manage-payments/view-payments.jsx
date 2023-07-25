@@ -23,8 +23,8 @@ const Container = styled('div')(({ theme }) => ({
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
+    const [payment, setpayment] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [payment, setpayment] = useState('')
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
@@ -32,10 +32,13 @@ const SimpleMuiTable = () => {
         const fetchPayments = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/payments/view')
+                const res = await axiosSuperAdminPrexo.post(
+                    '/payments/view/' + 'payment-list'
+                )
+                console.log(res);
                 if (res.status === 200) {
-                    setIsLoading(false)
                     setpayment(res.data.data)
+                    setIsLoading(false)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -62,14 +65,20 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const editPayment = async (payment) => {
+    const editPayment = async (name) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/payment/one/' + payment
+                '/payments/one/' + name + '/payment-list' 
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -91,9 +100,9 @@ const SimpleMuiTable = () => {
             confirmButtonText: 'Yes, Delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                try {
+                try {      
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deletePayments/' + name
+                            '/deletePayments/'+name
                         )
                         if (response.status == 200) {
                             Swal.fire({
@@ -108,15 +117,8 @@ const SimpleMuiTable = () => {
                                     setIsAlive((isAlive) => !isAlive)
                                 }
                             })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "This Payment You Can't Delete",
-                            })
-                        }
-                   
-                } catch (error) {
+                        } 
+                  }catch (error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',

@@ -43,13 +43,13 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+`overflow-x: scroll;
 
-// /* Hide the scrollbar in webkit-based browsers */
-// ::-webkit-scrollbar {
-//   display: none;
-// }
-// `;
+/* Hide the scrollbar in webkit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+`;
 
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -410,7 +410,7 @@ const UserTable = () => {
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'simple',
+                    responsive: 'scroll',
                     download: false,
                     print: false,
                     textLabels: {

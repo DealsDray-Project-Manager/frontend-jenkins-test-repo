@@ -239,11 +239,6 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/view-ram',
             },
-            // {
-            //     name: 'Tray Racks',
-            //     // icon: 'add_shopping_cart',
-            //     path: '/sup-admin/trayracks'
-            // },
         ],
         auth: authRoles.admin,
         sales: false,

@@ -7,7 +7,7 @@ import { axiosWarehouseIn } from 'axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Card, Box, TextField } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSpMisAgent } from '../../../../axios'
+import { axiosPurchaseAgent, axiosSpMisAgent } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let res = await axiosSpMisAgent.post('/procurment/view')
+                    let res = await axiosPurchaseAgent.post('/procurment/view/' + "all")
                     if (res.status == 200) {
                         setIsLoading(false)
                         setRDLRequest(res.data.data)
@@ -55,8 +55,8 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-    const handleplace = () => {
-        navigate('/purchase-user/purchase/order')
+    const handleplace = (id, muic) => {
+        navigate('/purchase-user/purchase/order/' + id + '/' + muic)
     }
 
     const columns = [
@@ -153,7 +153,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
+            name: 'spare_part_number',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Action</>
@@ -169,7 +169,10 @@ const SimpleMuiTable = () => {
                                 m: 0,
                             }}
                             variant="contained"
-                            onClick={() => handleplace()}
+                            disabled={tableMeta.rowData[7] != 'Pending'}
+                            onClick={() =>
+                                handleplace(value, tableMeta.rowData[5])
+                            }
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
@@ -184,12 +187,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'Requests', path: '/' },
-                       
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Requests', path: '/' }]} />
             </div>
             <Card>
                 <MUIDataTable

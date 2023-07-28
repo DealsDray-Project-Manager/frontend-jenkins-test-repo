@@ -33,7 +33,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
-    const { reportData, trayId, username, uic, whtTrayId } = state
+    const { reportData, trayId, username, uic, spTray } = state
 
     const columns = [
         {
@@ -94,6 +94,7 @@ const SimpleMuiTable = () => {
                 username: username,
                 whtTrayId: trayId,
                 uic: uic,
+                spTray:spTray
             },
         })
     }
@@ -138,13 +139,21 @@ const SimpleMuiTable = () => {
                             </Box>
                             <Box sx={{ ml: 5 }}>
                                 <Typography sx={{ mt: 2 }}>
-                                    Description:{' '}
+                                   Auditor Description:{' '}
+                                    {
+                                        reportData?.delivery?.audit_report
+                                            ?.description
+                                    }
+                                </Typography>
+                                <Typography sx={{ mt: 2 }}>
+                                   RDL 1 Description:{' '}
                                     {
                                         reportData?.delivery?.rdl_fls_one_report
                                             ?.description
                                     }
                                 </Typography>
                             </Box>
+                            
                         </Box>
                     </Card>
 

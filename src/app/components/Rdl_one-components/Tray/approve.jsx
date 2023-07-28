@@ -11,7 +11,9 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem,
 } from '@mui/material'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -21,6 +23,7 @@ import {
     axiosWarehouseIn,
     axiosRDL_oneAgent,
     axiosAuditAgent,
+    axiosSuperAdminPrexo,
 } from '../../../../axios'
 
 export default function DialogBox() {
@@ -40,6 +43,11 @@ export default function DialogBox() {
         let { user_name } = jwt_decode(admin)
         user_name1 = user_name
     }
+
+    const TextFieldCustOm = styled(TextField)(() => ({
+        width: '100%',
+        marginBottom: '16px',
+    }))
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,7 +104,6 @@ export default function DialogBox() {
                                 uic: uicCode,
                                 ctxTray: trayData?.otherTray,
                                 whtTrayId: trayId,
-                                
                             },
                         }
                     )
@@ -198,7 +205,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -208,7 +215,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -283,7 +292,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -294,7 +303,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>

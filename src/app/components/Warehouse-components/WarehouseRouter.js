@@ -15,7 +15,7 @@ const BagCloseRequests = Loadable(
 const BotDoneCloseTray = Loadable(
     lazy(() => import('./Bag/bag-close-request/close'))
 )
-const BagCloseRequestsSummery = Loadable(
+const BagCloseRequestsSummary = Loadable(
     lazy(() => import('./Bag/bag-close-request/summer'))
 )
 const BagCloseRequestsViewItem = Loadable(
@@ -199,24 +199,52 @@ const SortingDoneCtxOrStxTrayClose = Loadable(
     lazy(() => import('./Sorting/Return-from-sorting-ctx/close'))
 )
 
-
-
-const WhttoRpRequests= Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/Requests/requests')))
-const WhtToRpScanEach= Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/Requests/scan-each-tray')))
-const WhtToRpScanActVsExt= Loadable(
-    lazy(() => import('./Sorting/wht-to-rp/Requests/act-ext')))
-
+const WhttoRpRequests = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/requests'))
+)
+const WhtToRpScanEach = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/scan-each-tray'))
+)
+const WhtToRpScanActVsExt = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Requests/act-ext'))
+)
 const AllStxTray = Loadable(lazy(() => import('./Stx-tray/Stx/tray')))
-const RDL2Request = Loadable(lazy(() => import('./Wht/Rdl-2-Request/tray')))
-const RDL2RequestApprove = Loadable(lazy(() => import('./Wht/Rdl-2-Request/approve')))
-const BilledBin = Loadable(lazy(() => import('../Mis-components/BilledBin/items')))
-const ReturnFromWhtToRp = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/tray')))
-const ReturnFromWhtToRpClose = Loadable(lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close')))
-
+const RDL2Request = Loadable(lazy(() => import('./Rp-tray/Rdl-2-Request/tray')))
+const RDL2RequestApprove = Loadable(
+    lazy(() => import('./Rp-tray/Rdl-2-Request/approve'))
+)
+const BilledBin = Loadable(
+    lazy(() => import('../Mis-components/BilledBin/items'))
+)
+const ReturnFromWhtToRp = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/tray'))
+)
+const ReturnFromWhtToRpClose = Loadable(
+    lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close'))
+)
+const AllRptTray = Loadable(
+    lazy(() => import('./Rp-tray/all-rp-tray/tray'))
+)
+const ReturnFromRdlTwo = Loadable(
+    lazy(() => import('./Rp-tray/return-from-rdl-two/returned-tray'))
+)
+const ReturnFromRdlTwoClosePage = Loadable(
+    lazy(() => import('./Rp-tray/return-from-rdl-two/close'))
+)
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rpt/return-from-rdl-two/close/:trayId',
+        element: <ReturnFromRdlTwoClosePage />,
+    },
+    {
+        path: '/warehouse/rpt/return-from-rdl-two',
+        element: <ReturnFromRdlTwo />,
+    },
+    {
+        path: '/warehouse/rpt-tray',
+        element: <AllRptTray />,
+    },
     {
         path: '/warehouse/sorting/return-from-wht-to-rp',
         element: <ReturnFromWhtToRp />,
@@ -246,8 +274,8 @@ const WarehoueRouter = [
         element: <BagCloseRequests />,
     },
     {
-        path: '/wareshouse/bag/bag-close-requests/summery/:bagId',
-        element: <BagCloseRequestsSummery />,
+        path: '/wareshouse/bag/bag-close-requests/summary/:bagId',
+        element: <BagCloseRequestsSummary />,
     },
     {
         path: '/wareshouse/tray/item/:trayId',
@@ -417,7 +445,7 @@ const WarehoueRouter = [
         path: '/wareshouse/sorting/wht-to-rp/scan/:trayId',
         element: <WhtToRpScanActVsExt />,
     },
-    
+
     {
         path: '/wareshouse/sorting/ctx-to-stx/return-from-sorting/close/:trayId',
         element: <SortingDoneCtxOrStxTrayClose />,
@@ -447,11 +475,11 @@ const WarehoueRouter = [
         element: <SalesBinItem />,
     },
     {
-        path: '/wareshouse/report/bot/sku-summery/:trayId',
+        path: '/wareshouse/report/bot/sku-summary/:trayId',
         element: <BotReportSkuSum />,
     },
     {
-        path: '/wareshouse/report/bot/sku-summery/details/:trayId/:muic',
+        path: '/wareshouse/report/bot/sku-summary/details/:trayId/:muic',
         element: <BotReportSkuSumView />,
     },
     {
@@ -548,14 +576,13 @@ const WarehoueRouter = [
         element: <PickupDoneClose />,
     },
     {
-        path: '/wareshouse/wht/rdl-two-request',
+        path: '/wareshouse/rpt/rdl-two-request',
         element: <RDL2Request />,
     },
     {
-        path: '/wareshouse/wht/rdl-two-request/approve/:trayId',
+        path: '/wareshouse/rpt/rdl-two-request/approve/:trayId',
         element: <RDL2RequestApprove />,
     },
-   
 ]
 
 export default WarehoueRouter

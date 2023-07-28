@@ -7,16 +7,8 @@ import jwt_decode from 'jwt-decode'
 import { axiosRmUserAgent, axiosWarehouseIn } from '../../../../../axios'
 import {
     Button,
-    Dialog,
-    DialogTitle,
-    IconButton,
-    DialogContent,
-    DialogActions,
-    TextField,
     Typography,
 } from '@mui/material'
-import PropTypes from 'prop-types'
-import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -114,7 +106,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'actual_items',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
                     Item Recieved Count
@@ -128,7 +120,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Issued date</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Assigned date</Typography>
             ),
             options: {
                 filter: true,

@@ -59,26 +59,43 @@ const SimpleMuiTable = () => {
 
     const handlesend = async () => {
         try {
-            let obj = {
-                spList: spList,
-                brand: brand,
-                model: model,
+            let flag = false
+            for (let x of spList) {
+                if (Number(x.required_qty) <= 0 || isNaN(x.required_qty)) {
+                    flag = true
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${x.part_id} -Please check the quantity`,
+                    })
+                    break
+                }
             }
-            const res = await axiosSpMisAgent.post('/procurment/request', obj)
-            if (res.status == 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-                navigate('/sp-mis/procurement')
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res?.data?.message,
-                })
+            if (flag == false) {
+                let obj = {
+                    spList: spList,
+                    brand: brand,
+                    model: model,
+                }
+                const res = await axiosSpMisAgent.post(
+                    '/procurment/request',
+                    obj
+                )
+                if (res.status == 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                    navigate('/sp-mis/procurement')
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res?.data?.message,
+                    })
+                }
             }
         } catch (error) {
             alert(error)
@@ -157,7 +174,7 @@ const SimpleMuiTable = () => {
         {
             name: 'aval_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' , mr:10}} noWrap>
+                <Typography sx={{ fontWeight: 'bold', mr: 10 }} noWrap>
                     Available Quantity
                 </Typography>
             ),
@@ -169,7 +186,7 @@ const SimpleMuiTable = () => {
             name: 'requested_qtc',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                   Purchase request created
+                    Purchase request created
                 </Typography>
             ),
             options: {
@@ -180,7 +197,7 @@ const SimpleMuiTable = () => {
             name: 'required_qty',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }} noWrap>
-                    Required Quantity
+                    Update Required Quantity
                 </Typography>
             ),
             options: {

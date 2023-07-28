@@ -79,7 +79,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+        {
+            name: 'rack_id',
+            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
         // {
         //     name: 'issued_user_name',
         //     label: 'Agent Name',
@@ -143,7 +149,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[5],
+                    items?.length + '/' + tableMeta.rowData[6],
             },
         },
         {

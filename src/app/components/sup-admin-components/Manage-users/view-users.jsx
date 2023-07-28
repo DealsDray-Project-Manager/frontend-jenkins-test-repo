@@ -42,8 +42,8 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)`
-overflow-x: scroll;
+const ScrollableTableContainer = styled(TableContainer)
+`overflow-x: scroll;
 
 /* Hide the scrollbar in webkit-based browsers */
 ::-webkit-scrollbar {
@@ -404,17 +404,13 @@ const UserTable = () => {
             </Button>
             <ScrollableTableContainer>
             <ProductTable>
-            <Box  sx={{overflowX:'auto',width:'100%'}}>
             <MUIDataTable
                 title={'User Report'}
                 data={userList}
                 columns={columns}
                 options={{
-                    // options,
-                    style: { tableLayout: 'auto'},
                     filterType: 'textField',
-                    
-                    // minWidth:'100',
+                    responsive: 'scroll',
                     download: false,
                     print: false,
                     textLabels: {
@@ -436,7 +432,7 @@ const UserTable = () => {
                 }}
                 
             />
-            </Box>
+            
             </ProductTable>
             </ScrollableTableContainer>
             {shouldOpenEditorDialog && (

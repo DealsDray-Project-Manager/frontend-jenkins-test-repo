@@ -399,6 +399,7 @@ const AddBulkPart = () => {
                             <TableRow>
                                 <TableCell>Sl No</TableCell>
                                 <TableCell>Part Name</TableCell>
+                                <TableCell>Category</TableCell>
                                 <TableCell>Color</TableCell>
                                 <TableCell>Technical QC</TableCell>
                                 <TableCell>Part Description</TableCell>
@@ -448,6 +449,40 @@ const AddBulkPart = () => {
                                               data.part_name == '') ? (
                                             <p style={{ color: 'red' }}>
                                                 Part Name Reqiured
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            onChange={updateFieldChanged(
+                                                data.id
+                                            )}
+                                            id="outlined-password-input"
+                                            type="text"
+                                            name="sp_category"
+                                            value={data.sp_category?.toString()}
+                                        />
+                                        {err?.sp_category_not_exists?.includes(
+                                            data.sp_category?.toString()
+                                        ) ? (
+                                            <ClearIcon
+                                                style={{ color: 'red' }}
+                                            />
+                                        ) : Object.keys(err).length != 0 ? (
+                                            <DoneIcon
+                                                style={{ color: 'green' }}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+
+                                        {err?.sp_category_not_exists?.includes(
+                                            data.sp_category?.toString()
+                                        ) ? (
+                                            <p style={{ color: 'red' }}>
+                                                Category not exists
                                             </p>
                                         ) : (
                                             ''
@@ -549,6 +584,9 @@ const AddBulkPart = () => {
                                         {err?.duplicate_part_name?.includes(
                                             data.code?.toString()
                                         ) == true ||
+                                        err?.sp_category_not_exists?.includes(
+                                            data.sp_category?.toString()
+                                        ) ||
                                         err?.technical_qc?.includes(
                                             data.technical_qc?.toString()
                                         ) ||

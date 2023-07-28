@@ -11,14 +11,23 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem,
 } from '@mui/material'
 import jwt_decode from 'jwt-decode'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { styled } from '@mui/system'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
+
 export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
@@ -30,7 +39,9 @@ export default function DialogBox() {
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [userCpcType, setUserCpcType] = useState()
+  
     /*********************************************************** */
+  
 
     useEffect(() => {
         const fetchData = async () => {
@@ -369,6 +380,7 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                   
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -385,7 +397,7 @@ export default function DialogBox() {
                                 trayData?.items?.length ||
                             description == ''
                                 ? true
-                                : false
+                                : false 
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

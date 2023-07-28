@@ -28,7 +28,7 @@ import {
     FormControl,
     InputLabel,
     Select,
-    OutlinedInput
+    OutlinedInput,
 } from '@mui/material'
 
 const ITEM_HEIGHT = 48
@@ -130,6 +130,23 @@ const ProductTableRdlOne = styled(Table)(() => ({
         paddingLeft: '16px !important',
     },
 }))
+const ProductTableRdlTwo = styled(Table)(() => ({
+    minWidth: 750,
+    width: '110%',
+    height: '100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+}))
 
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
@@ -145,7 +162,7 @@ const PickupPage = () => {
     const [location, setLoaction] = useState('')
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
-    const [selectedStatus, setSelectedStatus] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState([])
 
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
@@ -269,23 +286,20 @@ const PickupPage = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const handleChangeDate = ({ target: {  value } }) => {
-        console.log(value);
-        setSelectedStatus( typeof value === 'string' ? value.split(',') : value)
+    const handleChangeDate = ({ target: { value } }) => {
+        console.log(value)
+        setSelectedStatus(typeof value === 'string' ? value.split(',') : value)
     }
     const dataFilter = async () => {
         try {
-            let obj={
-                selectedStatus:selectedStatus,
-                location:location,
-                type:value
+            let obj = {
+                selectedStatus: selectedStatus,
+                location: location,
+                type: value,
             }
-          
+
             setIsLoading(true)
-            const res = await axiosMisUser.post(
-                '/pickup/dateFilter',
-                obj
-            )
+            const res = await axiosMisUser.post('/pickup/dateFilter', obj)
             if (res.status === 200) {
                 setIsLoading(false)
                 setItem(res.data.data)
@@ -326,7 +340,6 @@ const PickupPage = () => {
             alert(error)
         }
     }
-   
 
     const handelSortingAgent = async () => {
         try {
@@ -1700,61 +1713,6 @@ const PickupPage = () => {
                     value?.rdl_fls_report?.color || '',
             },
         },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part List Count</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_count || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part One</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_1 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Two</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_2 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Three</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_3 || '',
-        //     },
-        // },
-        // {
-        //     name: 'items',
-        //     label: <Typography variant="subtitle1" fontWeight='bold'><>RDL 1 Added Part Four</></Typography>,
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) =>
-        //             value?.rdl_fls_report?.part_list_4 || '',
-        //     },
-        // },
         {
             name: 'items',
             label: (
@@ -1842,6 +1800,247 @@ const PickupPage = () => {
 
                 customBodyRender: (value, dataIndex) =>
                     value?.rdl_fls_report?.description || '',
+            },
+        },
+    ]
+    const columnsForRdlTwo = [
+        {
+            name: 'items',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Select</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                setCellProps: () => ({ style: { width: '100px' } }),
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value.uic}
+                            key={value.uic}
+                            checked={isCheck.includes(value.uic)}
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'index',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
+            },
+        },
+
+        {
+            name: 'items', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>UIC</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) => value.uic || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Order ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) => value.order_id || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>IMEI</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) => value.imei || '',
+            },
+        },
+
+        {
+            name: 'brand',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+            },
+        },
+        {
+            name: 'model',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>MUIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) => value.muic || '',
+            },
+        },
+        {
+            name: 'code',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL two status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_repair_report?.status || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rdl two repair not done reason</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_repair_report?.reason || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rdl two description</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_repair_report?.description || '',
+            },
+        },
+
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Part required</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_fls_report?.partRequired
+
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            }`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
+                },
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Other parts status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired =
+                        value?.rdl_repair_report?.rdl_two_part_status
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            } status :- ${data?.rdl_two_status}`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
+                },
             },
         },
     ]
@@ -2416,8 +2615,144 @@ const PickupPage = () => {
         )
     }, [item, columnsForRdlOne, isLoading])
 
+    const tableDataForRdl2 = useMemo(() => {
+        return (
+            <>
+                <ProductTableRdlOne>
+                    <MUIDataTable
+                        title={'UNITS'}
+                        data={item}
+                        columns={columnsForRdlTwo}
+                        options={{
+                            filterType: 'multiselect',
+                            responsive: 'standared',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            showFirstButton: 'true',
+                            showLastButton: 'true',
+                            selectableRows: 'none',
+                            customSort: (data, colIndex, order) => {
+                                const columnProperties = {
+                                    1: 'price',
+                                    2: 'uic',
+                                    3: 'order_id',
+                                    4: 'imei',
+                                    7: 'muic',
+                                    9: 'rdl_repair_report.status',
+                                    10: 'rdl_repair_report.reason',
+                                    11: 'rdl_repair_report.description',
+                                    12: 'rdl_fls_report.partRequired',
+                                    13: 'rdl_repair_report.rdl_two_part_status',
+                                }
 
-    console.log(selectedStatus);
+                                const property = columnProperties[colIndex]
+
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
+
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    let value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+
+                                    if (
+                                        properties[0] === 'rdl_fls_report' &&
+                                        properties[1] === 'partRequired' &&
+                                        properties[2] === 'length'
+                                    ) {
+                                        value = value || 0
+                                    }
+
+                                    return value !== undefined ? value : ''
+                                }
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTableRdlOne>
+            </>
+        )
+    }, [item, columnsForRdlTwo, isLoading])
 
     return (
         <Container>
@@ -2453,8 +2788,13 @@ const PickupPage = () => {
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL 1 Done Unit's"
+                                label="RDL FLS Done Unit's"
                                 value="Ready to RDL-Repair"
+                            />
+                            <Tab
+                                disabled={isLoading}
+                                label="RDL Two Done Unit's"
+                                value="RDL two done closed by warehouse"
                             />
                         </TabList>
                     </Box>
@@ -2530,7 +2870,7 @@ const PickupPage = () => {
                         </Box>
                         <Box sx={{ mt: 1 }}>
                             {value == 'Audit Done' ? (
-                                    <FormControl sx={{ mb: 2, width: 260 }}>
+                                <FormControl sx={{ mb: 2, width: 260 }}>
                                     <InputLabel id="demo-multiple-name-label">
                                         Auditor status
                                     </InputLabel>
@@ -2539,80 +2879,95 @@ const PickupPage = () => {
                                         id="demo-multiple-name"
                                         multiple
                                         value={selectedStatus}
-                                        input={<OutlinedInput label="Auditor status" />}
+                                        input={
+                                            <OutlinedInput label="Auditor status" />
+                                        }
                                         MenuProps={MenuProps}
                                         onChange={(e) => {
-                                          handleChangeDate(e)
+                                            handleChangeDate(e)
                                         }}
-                                       
                                     >
-                                    <MenuItem value="Accept">Accept</MenuItem>
-                                    <MenuItem value="Upgrade">Upgrade</MenuItem>
-                                    <MenuItem value="Downgrade">
-                                        Downgrade
-                                    </MenuItem>
-                                    <MenuItem value="Direct Upgrade">
-                                        Direct Upgrade
-                                    </MenuItem>
-                                    <MenuItem value="Direct Downgrade">
-                                        Direct Downgrade
-                                    </MenuItem>
-                                    <MenuItem value="Repair">Repair</MenuItem>
-                                    <MenuItem value="BQC Not Done">BQC Not Done</MenuItem>
+                                        <MenuItem value="Accept">
+                                            Accept
+                                        </MenuItem>
+                                        <MenuItem value="Upgrade">
+                                            Upgrade
+                                        </MenuItem>
+                                        <MenuItem value="Downgrade">
+                                            Downgrade
+                                        </MenuItem>
+                                        <MenuItem value="Direct Upgrade">
+                                            Direct Upgrade
+                                        </MenuItem>
+                                        <MenuItem value="Direct Downgrade">
+                                            Direct Downgrade
+                                        </MenuItem>
+                                        <MenuItem value="Repair">
+                                            Repair
+                                        </MenuItem>
+                                        <MenuItem value="BQC Not Done">
+                                            BQC Not Done
+                                        </MenuItem>
                                     </Select>
-                        </FormControl>
+                                </FormControl>
                             ) : null}
                             {value == 'Ready to RDL-Repair' ? (
-                                  <FormControl sx={{ mb: 2, width: 260 }}>
-                                  <InputLabel id="demo-multiple-name-label">
-                                      Rdl 1 status
-                                  </InputLabel>
-                                  <Select
-                                      labelId="demo-multiple-name-label"
-                                      id="demo-multiple-name"
-                                      multiple
-                                      value={selectedStatus}
-                                      input={<OutlinedInput label=" Rdl 1 status" />}
-                                      MenuProps={MenuProps}
-                                      onChange={(e) => {
-                                        handleChangeDate(e)
-                                      }}
-                                     
-                                  >
-                                    <MenuItem value="Battery Boosted" >Battery Boosted</MenuItem>
-                                    <MenuItem value="Charge jack Replaced & Boosted">
-                                    Charge jack Replaced & Boosted
-                                    </MenuItem>
-                                    <MenuItem value="Battery Damage">Battery Damage</MenuItem>
-                                    <MenuItem value="Repair Required">Repair Required</MenuItem>
-                                    <MenuItem value="Accept Auditor Feedback">Accept Auditor Feedback</MenuItem>
-                                    <MenuItem value="Unlocked">Unlocked</MenuItem>
-                                    <MenuItem value="Issue Resolved Through Software">
-                                        Issue Resolved Through Software
-                                    </MenuItem>
-                                    <MenuItem value="Dead">Dead</MenuItem>
+                                <FormControl sx={{ mb: 2, width: 260 }}>
+                                    <InputLabel id="demo-multiple-name-label">
+                                        Rdl 1 status
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={selectedStatus}
+                                        input={
+                                            <OutlinedInput label=" Rdl 1 status" />
+                                        }
+                                        MenuProps={MenuProps}
+                                        onChange={(e) => {
+                                            handleChangeDate(e)
+                                        }}
+                                    >
+                                        <MenuItem value="Battery Boosted">
+                                            Battery Boosted
+                                        </MenuItem>
+                                        <MenuItem value="Charge jack Replaced & Boosted">
+                                            Charge jack Replaced & Boosted
+                                        </MenuItem>
+                                        <MenuItem value="Battery Damage">
+                                            Battery Damage
+                                        </MenuItem>
+                                        <MenuItem value="Repair Required">
+                                            Repair Required
+                                        </MenuItem>
+                                        <MenuItem value="Accept Auditor Feedback">
+                                            Accept Auditor Feedback
+                                        </MenuItem>
+                                        <MenuItem value="Unlocked">
+                                            Unlocked
+                                        </MenuItem>
+                                        <MenuItem value="Issue Resolved Through Software">
+                                            Issue Resolved Through Software
+                                        </MenuItem>
+                                        <MenuItem value="Dead">Dead</MenuItem>
                                     </Select>
-                        </FormControl>
+                                </FormControl>
                             ) : null}
-                            {
-                               value == 'Ready to RDL-Repair' ||  value == 'Audit Done' ?
-
-                            <Button
-                                sx={{ ml: 2, mr: 3 }}
-                                variant="contained"
-                                disabled={
-                                    selectedStatus.length ==0
-                                }
-                                style={{ backgroundColor: 'green' }}
-                                onClick={(e) => {
-                                    dataFilter(e)
-                                }}
-                            >
-                                Filter
-                            </Button>
-                            :
-                            null
-                            }
+                            {value == 'Ready to RDL-Repair' ||
+                            value == 'Audit Done' ? (
+                                <Button
+                                    sx={{ ml: 2, mr: 3 }}
+                                    variant="contained"
+                                    disabled={selectedStatus.length == 0}
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        dataFilter(e)
+                                    }}
+                                >
+                                    Filter
+                                </Button>
+                            ) : null}
 
                             <Button
                                 sx={{
@@ -2673,6 +3028,16 @@ const PickupPage = () => {
                             <ProductTableRdlOne>
                                 {tableDataForRdl1}
                             </ProductTableRdlOne>
+                        </Card>
+                    </TabPanel>
+                    <TabPanel value="RDL two done closed by warehouse">
+                        <Card
+                            sx={{ maxHeight: '100%', overflow: 'auto' }}
+                            elevation={6}
+                        >
+                            <ProductTableRdlTwo>
+                                {tableDataForRdl2}
+                            </ProductTableRdlTwo>
                         </Card>
                     </TabPanel>
                 </TabContext>

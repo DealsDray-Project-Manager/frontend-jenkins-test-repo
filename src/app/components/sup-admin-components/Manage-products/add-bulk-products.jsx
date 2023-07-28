@@ -354,6 +354,7 @@ const AddBulkProduct = () => {
                                         <TableCell>Vendor SKU ID</TableCell>
                                         <TableCell>Brand Name</TableCell>
                                         <TableCell>Model Name</TableCell>
+                                        <TableCell>Jack Type</TableCell>
                                         <TableCell>Vendor Name</TableCell>
                                         <TableCell>Action</TableCell>
                                     </TableRow>
@@ -466,6 +467,41 @@ const AddBulkProduct = () => {
                                                 ) ? (
                                                     <p style={{ color: 'red' }}>
                                                         Duplicate Model Name
+                                                    </p>
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    onChange={updateFieldChanged(
+                                                        data.muic?.toString()
+                                                    )}
+                                                    type="text"
+                                                    name="jack_type"
+                                                    value={data.jack_type?.toString()}
+                                                />
+                                                {err?.jack_type?.includes(
+                                                    data.jack_type?.toString()
+                                                ) ? (
+                                                    <ClearIcon
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                ) : Object.keys(err).length !=
+                                                  0 ? (
+                                                    <DoneIcon
+                                                        style={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    ''
+                                                )}
+                                                {err?.jack_type?.includes(
+                                                    data.jack_type?.toString()
+                                                ) ? (
+                                                    <p style={{ color: 'red' }}>
+                                                        Invalid jack type
                                                     </p>
                                                 ) : (
                                                     ''

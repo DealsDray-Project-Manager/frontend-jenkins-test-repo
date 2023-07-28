@@ -120,7 +120,7 @@ const SimpleMuiTable = () => {
     }
     const handelViewSummery = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/bag/bag-close-requests/summery/' + id)
+        navigate('/wareshouse/bag/bag-close-requests/summary/' + id)
     }
 
     const handelTrayReceived = async () => {
@@ -186,7 +186,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
         {
             name: 'items',
             label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,

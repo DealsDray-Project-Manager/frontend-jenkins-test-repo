@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -11,13 +13,19 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem,
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 import Swal from 'sweetalert2'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+    marginBottom: '16px',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -33,6 +41,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -42,8 +51,29 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId, setRackId] = useState('')
 
     /************************************************************/
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view' + user.warehouse)
+                if (res.status == 200) {
+                    console.log(res.data.data)
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -232,7 +262,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -243,7 +273,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
@@ -338,13 +370,12 @@ export default function DialogBox() {
 
     return (
         <Container>
-           
             <Box
-                // sx={{
-                //     mt: 1,
-                //     height: 70,
-                //     borderRadius: 1,
-                // }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -387,6 +418,24 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
+                        select
+                        style={{ width: '150px' }}
+                        name="rack_id"
+                    >
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -402,7 +451,8 @@ export default function DialogBox() {
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length ||
                             description == '' ||
-                            loading
+                            loading == true ||
+                            rackId == ''
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

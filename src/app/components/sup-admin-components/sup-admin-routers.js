@@ -26,6 +26,11 @@ const Warehouse = Loadable(
 const Vendors = Loadable(lazy(() => import('./Manage-vendors/view-vendors')))
 const Categories = Loadable(lazy(() => import('./Manage-sp-categories/view-categories')))
 const Trayrack = Loadable(lazy(() => import('./Manage-trayracks/view-trayracks')))
+const Storage = Loadable(lazy(() => import('./Manage-storage/view-storage')))
+const RAM = Loadable(lazy(() => import('./Manage-ram/view-ram')))
+const Boxes = Loadable(lazy(() => import('./Manage-boxes/view-boxes')))
+const Payments = Loadable(lazy(() => import('./Manage-payments/view-payments')))
+const Warranty = Loadable(lazy(() => import('./Manage-warranty/view-warranty')))
 
 const Brands = Loadable(lazy(() => import('./Manage-brands/view-brands')))
 const BulkBrand = Loadable(lazy(() => import('./Manage-brands/bulk-add-brand')))
@@ -181,6 +186,26 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/view-trayracks',
         element: <Trayrack />,
+    },
+    {
+        path: '/sup-admin/view-boxes',
+        element: <Boxes />,
+    },
+    {
+        path: '/sup-admin/view-payments',
+        element: <Payments />,
+    },
+    {
+        path: '/sup-admin/view-warranty',
+        element: <Warranty />,
+    },
+    {
+        path: '/sup-admin/view-storage',
+        element: <Storage />,
+    },
+    {
+        path: '/sup-admin/view-ram',
+        element: <RAM />,
     },
     {
         path: '/sup-admin/Category',

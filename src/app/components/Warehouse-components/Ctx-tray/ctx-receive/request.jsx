@@ -13,7 +13,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
@@ -31,6 +31,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -39,6 +40,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -61,10 +63,12 @@ const BootstrapDialogTitle = (props) => {
         </DialogTitle>
     )
 }
+
 BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
+
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const [isAlive, setIsAlive] = useState(true)
@@ -72,7 +76,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [open, setOpen] = React.useState(false)
     const [trayId, setTrayId] = useState('')
-    const [receiveButDis,setReceiveButDis]=useState(false)
+    const [receiveButDis, setReceiveButDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -118,7 +122,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
-                page:"Ctx-transfer-receive"
+                page: 'Ctx-transfer-receive',
             }
             let res = await axiosWarehouseIn.post('/ctx-transfer/receive', obj)
             if (res.status == 200) {
@@ -151,44 +155,56 @@ const SimpleMuiTable = () => {
         }
     }
 
-
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
-       
+        {
+            name: 'rack_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -205,14 +221,16 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[2] == 'Accepted From Processing' || tableMeta.rowData[2] == 'Accepted From Sales' ? (
+                            {tableMeta.rowData[3] ==
+                                'Accepted From Processing' ||
+                            tableMeta.rowData[3] == 'Accepted From Sales' ? (
                                 <Button
                                     sx={{
                                         m: 1,

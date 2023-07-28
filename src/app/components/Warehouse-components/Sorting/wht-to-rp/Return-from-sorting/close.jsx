@@ -11,6 +11,7 @@ import {
     TableHead,
     TableRow,
     Grid,
+    MenuItem,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Breadcrumb } from 'app/components'
@@ -19,6 +20,8 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../../axios'
+import { axiosSuperAdminPrexo } from '../../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -39,6 +42,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -46,9 +50,32 @@ export default function DialogBox() {
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId, setRackId] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
+                if (res.status == 200) {
+                    console.log(res.data.data)
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -95,7 +122,6 @@ export default function DialogBox() {
                     uic: e.target.value,
                     trayId: trayId,
                 }
-
                 let res = await axiosWarehouseIn.post('/check-uic', obj)
                 if (res?.status == 200) {
                     setUic('')
@@ -162,6 +188,7 @@ export default function DialogBox() {
             setLoading(true)
             let obj = {
                 trayId: trayId,
+                rackId:rackId,
                 description: description,
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',
@@ -393,12 +420,24 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm
-                    label='Rack ID'
-                    select
-                    type='text'
-                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
-                    />
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
+                        select
+                        style={{ width: '150px' }}
+                        name="rack_id"
+                    >
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -413,6 +452,7 @@ export default function DialogBox() {
                             trayData?.actual_items?.length !==
                                 trayData?.items?.length ||
                             loading == true ||
+                            rackId == '' ||
                             description == ''
                                 ? true
                                 : false

@@ -4,7 +4,16 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './temp-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Box, Radio, Typography,Table, TableContainer  } from '@mui/material'
+import {
+    Button,
+    IconButton,
+    Icon,
+    Box,
+    Radio,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -26,7 +35,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '107%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -42,13 +51,13 @@ const ProductTable = styled(Table)(() => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)`
-overflow-x: scroll;
+    overflow-x: scroll;
 
-/* Hide the scrollbar in webkit-based browsers */
-::-webkit-scrollbar {
-  display: none;
-}
-`;
+    /* Hide the scrollbar in webkit-based browsers */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`
 
 const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -229,60 +238,121 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><> Record No</> </Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <> Record No</>{' '}
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'part_code', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'  ><>Part No</></Typography>, // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'avl_stock', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Available Stock</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Part No</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'color', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Color</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Color</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Part Name</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Part Name</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sp_category',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Category</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'box_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Box Id</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Technical QC</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Technical QC</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Description</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Description</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'avl_stock', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Available Stock</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1"fontWeight='bold' noWrap><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: true,
@@ -294,15 +364,12 @@ const PartTable = () => {
         },
 
         {
-            name: 'created_by',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Created By</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -324,7 +391,11 @@ const PartTable = () => {
         },
         {
             name: '_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -336,7 +407,7 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[9] == 'Active' ? (
+                            {tableMeta.rowData[10] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')
@@ -428,38 +499,38 @@ const PartTable = () => {
                 Manage Stock
             </Button>
 
-                <ScrollableTableContainer>
-                    <ProductTable>
+            <ScrollableTableContainer>
+                <ProductTable>
                     <MUIDataTable
-                title={'Spare Part List'}
-                data={partList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-                    </ProductTable>
-                </ScrollableTableContainer>
-            
+                        title={'Spare Part List'}
+                        data={partList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTable>
+            </ScrollableTableContainer>
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

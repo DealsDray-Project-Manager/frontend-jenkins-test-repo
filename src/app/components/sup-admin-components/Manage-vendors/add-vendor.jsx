@@ -3,13 +3,14 @@ import {
     Dialog,
     Button,
     Grid,
-    TextField, 
+    TextField,
     MenuItem,
     Checkbox,
     Select,
     FormControl,
     InputLabel,
 } from '@mui/material'
+
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
@@ -48,18 +49,18 @@ const MemberEditorDialog = ({
     editFetchData,
     setEditFetchData,
     vendorId,
-    setVendorId,
 }) => {
     const [loading, setLoading] = useState(false)
     const theme = useTheme()
     const [locationDrop, setLocationDrop] = useState([])
     const [personName, setPersonName] = React.useState([])
-    const [spCategory,setSpCategory]=useState([])
+    const [spCategory, setSpCategory] = useState([])
+    const [deals, setDeals] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
-            const res=await axiosSuperAdminPrexo.post("/spcategories/view")
-            if(res.status == 200){
+            const res = await axiosSuperAdminPrexo.post('/spcategories/view')
+            if (res.status == 200) {
                 setSpCategory(res.data.data)
             }
         }
@@ -67,7 +68,7 @@ const MemberEditorDialog = ({
         if (Object.keys(editFetchData).length !== 0) {
             reset({ ...editFetchData })
             setPersonName(editFetchData.location)
-            setVendorId(editFetchData.vendor_id)
+            setDeals(editFetchData.deals)
             open()
         }
     }, [])
@@ -75,7 +76,9 @@ const MemberEditorDialog = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/getLocation')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/getLocationProcessing/' + 'Processing'
+                )
                 if (res.status == 200) {
                     setLocationDrop(res.data.data)
                 }
@@ -93,6 +96,9 @@ const MemberEditorDialog = ({
     useEffect(() => {
         setValue('location', personName)
     }, [personName])
+    useEffect(() => {
+        setValue('deals', deals)
+    }, [deals])
 
     const schema = Yup.object().shape({
         vendor_id: Yup.string().required('Required*').nullable(),
@@ -118,14 +124,12 @@ const MemberEditorDialog = ({
             .nullable(),
 
         mobile_one: Yup.string().required('Required*').nullable(),
-        deals: Yup.string().required('Required*').nullable(),
+        deals: Yup.array().min(1, 'Select at least one category').nullable(),
         mobile_two: Yup.string().required('Required*').nullable(),
         pincode: Yup.string().required('Required*').nullable(),
         reference: Yup.string().required('Required*').nullable(),
         location: Yup.array().min(1, 'Select at least one location').nullable(),
     })
-
-    console.log(errors)
 
     const {
         control,
@@ -138,7 +142,9 @@ const MemberEditorDialog = ({
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            location: [], // Set initial values here
+            location: [],
+            deals: [],
+            // Set initial values here
         },
     })
 
@@ -236,6 +242,16 @@ const MemberEditorDialog = ({
             target: { value },
         } = event
         setPersonName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value
+        )
+    }
+
+    const handleChangeDeals = (event) => {
+        const {
+            target: { value },
+        } = event
+        setDeals(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
@@ -403,27 +419,34 @@ const MemberEditorDialog = ({
                                 ))}
                             </Select>
                         </FormControl>
-                        <TextFieldCustOm
-                            label="Deals"
-                            select
-                            name="deals"
-                            {...register('deals')}
-                            error={errors.deals ? true : false}
-                            helperText={
-                                errors.deals ? errors.deals?.message : ''
-                            }
-                        >
-                             {spCategory.map((data) => (
-                                <MenuItem
-                                   
-                                    value={data.category_name}
-                                >
-                                    {data.category_name}
-                                </MenuItem>
-                            ))}
-                            </TextFieldCustOm>
-
-                           
+                        <FormControl sx={{ mb: 2, width: 260 }}>
+                            <InputLabel id="demo-multiple-name-label">
+                                Deals
+                            </InputLabel>
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                value={deals}
+                                input={<OutlinedInput label="Deals" />}
+                                MenuProps={MenuProps}
+                                onChange={(e) => {
+                                    handleChangeDeals(e)
+                                }}
+                                error={errors.location ? true : false}
+                                helperText={
+                                    errors.location
+                                        ? errors.location?.message
+                                        : ''
+                                }
+                            >
+                                {spCategory.map((data) => (
+                                    <MenuItem value={data.category_name}>
+                                        {data.category_name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
                 </Grid>
                 <FormHandlerBox>

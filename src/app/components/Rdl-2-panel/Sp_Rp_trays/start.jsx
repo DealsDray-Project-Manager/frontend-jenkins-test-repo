@@ -86,6 +86,7 @@ const SimpleMuiTable = () => {
                             username: username,
                             uic: uicCode,
                             whtTrayId: trayId,
+                            spTray:trayData?.sp_tray
                         },
                     })
                 } else {
@@ -106,8 +107,8 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelSummery = () => {
-        navigate('/rdl-two/tray/tray/summery/' + trayId)
+    const handelSummary = () => {
+        navigate('/rdl-two/tray/tray/summary/' + trayId)
     }
 
     const columns = [
@@ -178,10 +179,11 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: '',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            name: 'rdl_repair_report',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.description,
             },
         },
     ]
@@ -295,7 +297,7 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             disabled={trayData?.items?.length !== 0}
                             onClick={(e) => {
-                                handelSummery()
+                                handelSummary()
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"

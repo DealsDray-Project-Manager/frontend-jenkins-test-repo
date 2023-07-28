@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { H1, H3, H4 } from 'app/components/Typography'
-import { axiosAuditAgent, axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosAuditAgent } from '../../../../axios'
 import ChargingDetails from './Report/charging-user-report'
 import Botuser from './Report/bot-user-rport'
 import BqcUserReport from './Report/bqc-user-report'
@@ -62,12 +62,36 @@ BootstrapDialogTitle.propTypes = {
 
 export default function DialogBox() {
     const navigate = useNavigate()
+    const [allDropDwon, setAllDropDwon] = useState({
+        color: [],
+        ram: [],
+        storage: [],
+    })
     const { state } = useLocation()
+    const [color, setcolor] = useState()
     const [addButDis, setAddButDis] = useState(false)
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
     const [butDis, setButDis] = useState(false)
+
+    useEffect(() => {
+        const fetchPartList = async () => {
+            try {
+                let res = await axiosAuditAgent.post('/getColorStorageRam')
+                if (res.status == 200) {
+                    setAllDropDwon({
+                        ram: res.data.data.ram,
+                        storage: res.data.data.storage,
+                        color: res.data.data.color,
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchPartList()
+    }, [])
 
     const handelAdd = async (e, stageType) => {
         if (e.keyCode !== 32) {
@@ -78,7 +102,10 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
-                    stage: 'BQC Not Done / Imei not verified',
+                    color: stateData.color,
+                    storage_verification: stateData.storage_verification,
+                    ram_verification: stateData.ram_verification,
+                    stage: 'BQC Not Done / Unverified imei',
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -151,8 +178,13 @@ export default function DialogBox() {
         if (name === 'stage') {
             setStateData({
                 [name]: value,
+                description: stateData.description,
+                storage_verification: stateData.storage_verification,
+                ram_verification: stateData.ram_verification,
+                color: stateData.color,
             })
         } else {
+            console.log('working')
             setStateData({
                 ...stateData,
                 [name]: value,
@@ -166,6 +198,7 @@ export default function DialogBox() {
     const handleOpen = () => {
         setOpen(true)
     }
+
     const handelCloseTray = async (id, from) => {
         try {
             let res = await axiosAuditAgent.post('/trayClose/' + id)
@@ -243,6 +276,8 @@ export default function DialogBox() {
             </Grid>
         )
     }, [reportData])
+
+    console.log(stateData)
 
     return (
         <>
@@ -366,12 +401,6 @@ export default function DialogBox() {
                                         </MenuItem>
                                     ) : null}
                                 </TextField>
-                                <TextField
-                                    label="Audit Remark"
-                                    fullWidth
-                                    onChange={handleChange}
-                                    name="description"
-                                />
                             </>
                         ) : null}
                         {stateData.stage === 'Upgrade' ||
@@ -433,12 +462,6 @@ export default function DialogBox() {
                                                 Other
                                             </MenuItem>
                                         </TextField>
-                                        <TextField
-                                            label="Audit Remark"
-                                            fullWidth
-                                            onChange={handleChange}
-                                            name="description"
-                                        />
                                     </>
                                 ) : null}
                             </>
@@ -504,12 +527,6 @@ export default function DialogBox() {
                                                 Other
                                             </MenuItem>
                                         </TextField>
-                                        <TextField
-                                            label="Audit Remark"
-                                            fullWidth
-                                            onChange={handleChange}
-                                            name="description"
-                                        />
                                     </>
                                 ) : null}
                             </>
@@ -577,49 +594,7 @@ export default function DialogBox() {
                                 ) : null}
                             </TextField>
                         ) : null}
-                        {stateData.stage == 'Repair' ||
-                        stateData.stage == 'Direct Downgrade' ||
-                        stateData.stage == 'Direct Upgrade' ? (
-                            <>
-                                <textarea
-                                    style={{
-                                        width: '100%',
-                                        height: '100px',
-                                        marginBottom:'10px'
-                                    }}
-                                    onChange={handleChange}
-                                    placeholder='Audit Remark'
-                                ></textarea>
-                            <TextField
-                                label="Color Selection"
-                                fullWidth
-                                sx={{
-                                    mb: 2,
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="description"
-                            />
-                            
-                            <TextField
-                                label="RAM"
-                                fullWidth
-                                sx={{
-                                    mb: 2,
-                                }}
-                                select
-                                onChange={handleChange}
-                                name="description"
-                            />
-                            <TextField
-                                label="Storage"
-                                fullWidth
-                                select
-                                onChange={handleChange}
-                                name="description"
-                            />
-                            </>
-                        ) : null}
+
                         <TextField
                             label="Select color"
                             fullWidth
@@ -628,9 +603,13 @@ export default function DialogBox() {
                                 mb: 2,
                             }}
                             onChange={handleChange}
-                            name="color_selection"
+                            name="color"
                         >
-                            <MenuItem value="Dummy">Dummy</MenuItem>
+                            {allDropDwon?.color?.map((data) => (
+                                <MenuItem value={data?.name}>
+                                    {data?.name}
+                                </MenuItem>
+                            ))}
                         </TextField>
                         <TextField
                             label="Select Ram"
@@ -640,29 +619,53 @@ export default function DialogBox() {
                                 mb: 2,
                             }}
                             onChange={handleChange}
+                            value={stateData?.ram_verification}
                             name="ram_verification"
                         >
-                            <MenuItem value="Dummy">Dummy</MenuItem>
+                            {allDropDwon?.ram?.map((data) => (
+                                <MenuItem value={data?.name}>
+                                    {data?.name}
+                                </MenuItem>
+                            ))}
                         </TextField>
                         <TextField
                             label="Select storage"
                             fullWidth
                             select
+                            value={stateData?.storage_verification}
                             sx={{
                                 mb: 2,
                             }}
                             onChange={handleChange}
                             name="storage_verification"
                         >
-                            <MenuItem value="Dummy">Dummy</MenuItem>
+                            {allDropDwon?.storage?.map((data) => (
+                                <MenuItem value={data?.name}>
+                                    {data?.name}
+                                </MenuItem>
+                            ))}
                         </TextField>
+                        <TextField
+                            label="Audit Remark"
+                            fullWidth
+                            onChange={handleChange}
+                            name="description"
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button
                             sx={{ ml: 2 }}
                             disabled={
                                 stateData.stage == undefined ||
+                                stateData.color == undefined ||
+                                stateData.description == undefined ||
+                                stateData.storage_verification == undefined ||
+                                stateData.ram_verification == undefined ||
                                 (stateData.stage == 'Accept' &&
+                                    stateData.tray_type == undefined) ||
+                                (stateData.stage == 'Direct Downgrade' &&
+                                    stateData.tray_type == undefined) ||
+                                (stateData.stage == 'Direct Upgrade' &&
                                     stateData.tray_type == undefined) ||
                                 (stateData.stage == 'Upgrade' &&
                                     stateData.tray_grade == undefined) ||
@@ -672,16 +675,10 @@ export default function DialogBox() {
                                     stateData.tray_grade == undefined) ||
                                 (stateData.stage == 'Upgrade' &&
                                     stateData.reason == undefined) ||
-                                (stateData.stage == 'Upgrade' &&
-                                    stateData.description == undefined) ||
                                 (stateData.stage == 'Downgrade' &&
                                     stateData.tray_grade == undefined) ||
                                 (stateData.stage == 'Downgrade' &&
                                     stateData.reason == undefined) ||
-                                (stateData.stage == 'Downgrade' &&
-                                    stateData.description == undefined) ||
-                                (stateData.stage == 'Repair' &&
-                                    stateData.description == undefined) ||
                                 addButDis
                             }
                             onClick={(e) =>

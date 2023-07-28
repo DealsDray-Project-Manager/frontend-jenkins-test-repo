@@ -71,6 +71,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: 'Rack Id',
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'type_taxanomy',
             label: 'Tray Category',
             options: {
@@ -101,10 +108,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         (value.length == 0
-                            ? tableMeta.rowData[3].length
+                            ? tableMeta.rowData[4].length
                             : value.length) +
                         '/' +
-                        tableMeta.rowData[4]
+                        tableMeta.rowData[5]
                     )
                 },
             },

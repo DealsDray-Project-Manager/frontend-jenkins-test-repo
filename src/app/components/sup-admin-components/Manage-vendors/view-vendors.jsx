@@ -3,8 +3,17 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
-import { styled } from '@mui/system' 
-import { Button, IconButton, Icon, Box, Radio, Typography,Table, TableContainer  } from '@mui/material'
+import { styled } from '@mui/system'
+import {
+    Button,
+    IconButton,
+    Icon,
+    Box,
+    Radio,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -23,7 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '145%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -38,8 +47,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -170,17 +180,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" sx={{ fontWeight:'bold'}} noWrap><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: 'bold' }}
+                    noWrap
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'vendor_id', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Vendor ID</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Vendor ID</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -260,11 +285,18 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
             },
         },
         {
             name: 'reference',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Reference</></Typography>, 
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Reference</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -278,6 +310,9 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value?.join(',')
+                },
             },
         },
         {
@@ -403,36 +438,36 @@ const SimpleMuiTable = () => {
             </Button>
             <ScrollableTableContainer>
                 <ProductTable>
-                <MUIDataTable
-                title={'All Vendors'}
-                data={warehouseList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'All Vendors'}
+                        data={warehouseList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </ScrollableTableContainer>
-            
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -441,10 +476,9 @@ const SimpleMuiTable = () => {
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
                     vendorId={vendorId}
-                    setVendorId={setVendorId}
                 />
             )}
-        </Container> 
+        </Container>
     )
 }
 

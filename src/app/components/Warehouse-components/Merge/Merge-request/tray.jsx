@@ -63,18 +63,25 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -88,9 +95,12 @@ const SimpleMuiTable = () => {
                 display: false,
             },
         },
+       
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+            ),
             options: {
                 filter: true,
 
@@ -100,28 +110,36 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sorting Agent
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'to_merge',
-            label: <Typography sx={{fontWeight:'bold'}}>To Tray</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>To Tray</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status_change_time',
-            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -132,7 +150,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) => {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Typography, Box, TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { axiosMisUser } from 'axios'
+import { axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 
@@ -31,45 +31,57 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
- 
 
-    const handelViewItem = (brand,model) => {
-        navigate('/mis/sorting/wht-to-rp/process/' + brand + "/" + model)
+    const handelViewItem = (brand, model, jack) => {
+        navigate(
+            '/mis/assign-to-agent/bqcplanner/view-wht-tray/' +
+                brand +
+                '/' +
+                model +
+                '/' +
+                jack
+        )
     }
 
-    // useEffect(() => {
-    //     let admin = localStorage.getItem('prexo-authentication')
-    //     if (admin) {
-    //         setIsLoading(true)
-    //         const { location } = jwt_decode(admin)
-    //         const fetchData = async () => {
-    //             try {
-    //                 let res = await axiosMisUser.post(
-    //                     '/whToRp/muicList/repair/' + location
-    //                 )
-    //                 if (res.status === 200) {
-    //                     setIsLoading(false)
-    //                     setItem(res.data.data)
-    //                 }
-    //             } catch (error) {
-    //                 setIsLoading(false)
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'Oops...',
-    //                     confirmButtonText: 'Ok',
-    //                     text: error,
-    //                 })
-    //             }
-    //         }
-    //         fetchData()
-    //     } else {
-    //         navigate('/')
-    //     }
-    //     return () => {
-    //         setIsAlive(false)
-    //         setIsLoading(false)
-    //     }
-    // }, [isAlive])
+    useEffect(() => {
+        let admin = localStorage.getItem('prexo-authentication')
+        if (admin) {
+            setIsLoading(true)
+            const { location } = jwt_decode(admin)
+            const fetchData = async () => {
+                try {
+                    let obj = {
+                        location: location,
+                        type: 'Ready to BQC',
+                        type1: 'null',
+                    }
+                    let res = await axiosMisUser.post(
+                        '/plannerPage/charging',
+                        obj
+                    )
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setItem(res.data.data)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    })
+                }
+            }
+            fetchData()
+        } else {
+            navigate('/')
+        }
+        return () => {
+            setIsAlive(false)
+            setIsLoading(false)
+        }
+    }, [isAlive])
 
     const columns = [
         {
@@ -94,7 +106,33 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'type',
+            name: '_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.brand || '',
+                // customBodyRender: (value, dataIndex) => value?.muic || '',
+            },
+        },
+        {
+            name: '_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.model || '',
+                // customBodyRender: (value, dataIndex) => value?.muic || '',
+            },
+        },
+        {
+            name: '_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Jack Type</>
@@ -102,12 +140,12 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                // customBodyRender: (value, dataIndex) => value?.muic || '',
-
+                customBodyRender: (value, dataIndex) =>
+                    value?.charging_jack_type?.[0] || '',
             },
         },
         {
-            name: 'tray',
+            name: 'count',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>WHT Tray</>
@@ -115,7 +153,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                // customBodyRender: (value, dataIndex) => value?.brand || '',
             },
         },
         {
@@ -132,15 +169,20 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value,tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={()=>{
-                                navigate('/mis/assign-to-agent/bqcplanner/view-wht-tray')
+                            onClick={(e) => {
+                                handelViewItem(
+                                    tableMeta.rowData[1]?.brand,
+                                    tableMeta.rowData[2]?.model,
+                                    tableMeta.rowData[3]
+                                        ?.charging_jack_type?.[0]
+                                )
                             }}
                             style={{ backgroundColor: 'green' }}
                             component="span"
@@ -150,21 +192,6 @@ const SimpleMuiTable = () => {
                     )
                 },
             },
-        },
-    ]
-
-    const columns1 = [
-        {
-            type:'Type C',
-            tray:'50/2',
-        },
-        {
-            type:'Type N',
-            tray:'25/3',
-        },
-        {
-            type:'Lightning',
-            tray:'90/4',
         },
     ]
 
@@ -179,41 +206,40 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <Box sx={{display:'flex'}}>
+            {/* <Box sx={{ display: 'flex' }}>
                 <Typography>Filter :</Typography>
                 <TextFieldCustOm
-                sx={{ml:1}}
-                    label='Brand'
+                    sx={{ ml: 1 }}
+                    label="Brand"
                     select
-                    type='text'
-                    style={{ width: '150px'}}
+                    type="text"
+                    style={{ width: '150px' }}
                 />
                 <TextFieldCustOm
-                sx={{ml:2}}
-                    label='Model'
+                    sx={{ ml: 2 }}
+                    label="Model"
                     select
-                    type='text'
+                    type="text"
                     style={{ width: '150px' }}
                 />
                 <Box>
-                <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            // onClick={() => handelViewItem(tableMeta.rowData[2]?.brand,tableMeta.rowData[3]?.model)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Submit
-                        </Button>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        variant="contained"
+                        // onClick={() => handelViewItem(tableMeta.rowData[2]?.brand,tableMeta.rowData[3]?.model)}
+                        style={{ backgroundColor: 'green' }}
+                        component="span"
+                    >
+                        Submit
+                    </Button>
                 </Box>
-
-            </Box>
+            </Box> */}
 
             <MUIDataTable
-                title={'Planner for Charging'}
-                data={columns1}
+                title={'Planner for BQC'}
+                data={item}
                 columns={columns}
                 options={{
                     filterType: 'textField',

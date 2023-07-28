@@ -261,6 +261,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'jack_type',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Jack type</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'vendor_name',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -325,7 +336,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editProductData(tableMeta.rowData[6])
+                                        editProductData(tableMeta.rowData[7])
                                     }}
                                     color="primary"
                                 >
@@ -335,7 +346,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        handelDelete(tableMeta.rowData[6])
+                                        handelDelete(tableMeta.rowData[7])
                                     }}
                                     color="error"
                                 >
@@ -345,7 +356,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        editImage(tableMeta.rowData[6])
+                                        editImage(tableMeta.rowData[7])
                                     }}
                                     color="primary"
                                 >
@@ -357,7 +368,7 @@ const SimpleMuiTable = () => {
                                     onClick={() =>
                                         navigate(
                                             '/sup-admin/products/muiclist/' +
-                                                tableMeta.rowData[6]
+                                                tableMeta.rowData[7]
                                         )
                                     }
                                     color="default"

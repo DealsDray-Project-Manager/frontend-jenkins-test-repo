@@ -21,6 +21,7 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -44,6 +45,8 @@ export default function DialogBox() {
     const [userAgent, setUserAgent] = useState('')
     /**************************************************************************** */
     const [uic, setUic] = useState('')
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId, setRackId] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
@@ -58,6 +61,25 @@ export default function DialogBox() {
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     /*********************************************************** */
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+    //             if (res.status == 200) {
+    //                 console.log(res.data.data)
+    //                 setrackiddrop(res.data.data)
+    //             }
+    //         } catch (error) {
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: error,
+    //             })
+    //         }
+    //     }
+    //     fetchData()
+    // }, [])
 
     useEffect(() => {
         const fetchData = async () => {

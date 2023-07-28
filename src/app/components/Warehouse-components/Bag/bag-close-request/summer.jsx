@@ -32,7 +32,7 @@ const SimpleMuiTable = () => {
                 setIsLoading(false)
 
                 let botTray = await axiosWarehouseIn.post(
-                    '/summeryBotTrayBag/' + bagId
+                    '/summaryBotTrayBag/' + bagId
                 )
                 if (botTray.status == 200) {
                     setIsLoading(false)

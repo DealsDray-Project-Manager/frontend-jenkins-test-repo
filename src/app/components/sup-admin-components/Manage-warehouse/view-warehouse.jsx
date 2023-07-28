@@ -18,7 +18,7 @@ const Container = styled('div')(({ theme }) => ({
             marginBottom: '16px',
         },
     },
-}))
+})) 
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
@@ -178,7 +178,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
+        { 
             name: 'parent_id',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
             options: {

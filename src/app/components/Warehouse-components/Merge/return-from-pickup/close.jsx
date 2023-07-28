@@ -16,7 +16,10 @@ import {
 import { useParams } from 'react-router-dom'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
+import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -29,13 +32,36 @@ export default function DialogBox() {
     const { trayId } = useParams()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
-
+    const { user } = useAuth()
     const [description, setDescription] = useState([])
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
     const [stage, setStage] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId,setRackId]=useState("")
     /******************************************************************************** */
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            
+            try {
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
+                if (res.status == 200) {
+                   
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,6 +136,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     stage: tray[0].pickup_type,
                     length: length,
+                    rackId:rackId
                 }
                 if (tray?.[0]?.to_tray_for_pickup == null) {
                     obj.stage = tray[0]?.pickup_next_stage
@@ -324,12 +351,27 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm
-                    label='Rack ID'
-                    select
-                    type='text'
-                    style={{ width: '150px', marginRight:'20px', marginTop:'15px' }}
-                    />
+                <TextFieldCustOm 
+                    sx={{m:1}}
+                        label='Rack ID'
+                        select
+                        style={{ width: '150px'}}
+                     
+                         
+                        name="rack_id"
+                >
+                    {rackiddrop?.map((data) => (
+                    
+                    <MenuItem
+                        onClick={(e) => {
+                            setRackId(data.rack_id)
+                        }}
+                        value={data.rack_id}
+                    >
+                        {data.rack_id}
+                    </MenuItem>
+                ))}
+                </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -364,7 +406,7 @@ export default function DialogBox() {
                             tray[0]?.actual_items?.length !==
                                 tray[0]?.items?.length
                                 ? true
-                                : false
+                                : false || rackId == ""
                         }
                         onClick={(e) => {
                             handelIssue(

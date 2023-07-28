@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox , Typography, Table, TableContainer} from '@mui/material'
+import { Button, Checkbox, Typography } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -22,27 +22,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '130%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
-
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [whtTray, setWhtTray] = useState([])
@@ -60,7 +39,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/wht-tray/' + 'Closed/' + location
+                        '/plannerPage/' + 'Closed/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -134,8 +113,16 @@ const SimpleMuiTable = () => {
 
     const columns = [
         {
-            name: 'code', 
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
+            name: 'code',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Select</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
@@ -155,60 +142,97 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
 
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Category</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
+            name: 'jack_type',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Jack Type</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Name</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Limit</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -217,7 +241,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
 
@@ -225,29 +253,14 @@ const SimpleMuiTable = () => {
                     value.length + '/' + tableMeta.rowData[8],
             },
         },
-        {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
 
         {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -276,8 +289,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging Planner', path:'/' },
-                        { name: 'Ready-for-Charging'}
+                        { name: 'Charging' },
                     ]}
                 />
             </div>
@@ -290,9 +302,7 @@ const SimpleMuiTable = () => {
             >
                 Assign For Charging
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
-                <MUIDataTable
+            <MUIDataTable
                 title={'WHT'}
                 data={whtTray}
                 columns={columns}
@@ -335,9 +345,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-           
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

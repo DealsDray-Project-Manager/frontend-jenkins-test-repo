@@ -59,7 +59,8 @@ export const AuthProvider = ({ children }) => {
                         avatar: res.data.data.data.profile,
                         email: res.data.data.data.email,
                         role: res.data.data.data.user_type,
-                        cpc_type:res.data.data.data.cpc_type
+                        cpc_type:res.data.data.data.cpc_type,
+                        warehouse:res.data.data.data.warehouse,
                     },
                 },
             })
@@ -91,7 +92,8 @@ export const AuthProvider = ({ children }) => {
                         avatar: user.profile,
                         email: user.email,
                         role: user.user_type,
-                        cpc_type:user.cpc_type
+                        cpc_type:user.cpc_type,
+                        warehouse:user.warehouse,
                     },
                 },
             })

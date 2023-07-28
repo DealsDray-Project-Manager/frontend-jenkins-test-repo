@@ -161,9 +161,24 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
-            amount: count.rdl2Request,
+            amount: count.allRpTray,
+            title: 'RPT Tray',
+            path: '/warehouse/rpt-tray',
+            sales: false,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rdlTwoRequests,
             title: 'RDL-two Requests',
-            path: '/wareshouse/wht/rdl-two-request',
+            path: '/wareshouse/rpt/rdl-two-request',
+            sales: false,
+        },
+      
+        {
+            icon: 'shopping_cart',
+            amount: count.returnFromRdlTwo,
+            title: 'Return from RDL-two',
+            path: '/warehouse/rpt/return-from-rdl-two',
             sales: false,
         },
         {
@@ -185,6 +200,20 @@ const StatCard3 = () => {
             amount: count.returnFromSorting,
             title: 'Sorting Done (WHT)',
             path: '/wareshouse/sorting/return-from-sorting',
+            sales: false,
+        },
+        {
+            icon: 'sort',
+            amount: count.whtToRpSortingRequest,
+            title: 'Sorting Request (WHT to RP)',
+            path: '/wareshouse/sorting/wht-to-rp',
+            sales: false,
+        },
+        {
+            icon: 'sort',
+            amount: count.returnFromWhtToRpSorting,
+            title: 'Sorting Done (WHT to RP)',
+            path: '/warehouse/sorting/return-from-wht-to-rp',
             sales: false,
         },
         {

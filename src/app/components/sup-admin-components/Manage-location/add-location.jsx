@@ -250,7 +250,7 @@ const MemberEditorDialog = ({
                         />
                         <TextFieldCustOm
                             label="City"
-                            type="text"
+                            type="text" 
                             name="city"
                             {...register('city')}
                             error={errors.city ? true : false}

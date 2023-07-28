@@ -219,13 +219,7 @@ const PartTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'avl_stock', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold' noWrap>Available Stock</Typography>, // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+        
         {
             name: 'color', // field name in the row object
             label: <Typography fontSize='16px' fontWeight='bold'>Color</Typography>, // column title that will be shown in table
@@ -241,6 +235,17 @@ const PartTable = () => {
             },
         },
         {
+            name: 'sp_category',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Category</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'technical_qc', // field name in the row object
             label: <Typography fontSize='16px' fontWeight='bold'>Technical QC</Typography>,// column title that will be shown in table
             options: {
@@ -250,6 +255,13 @@ const PartTable = () => {
         {
             name: 'description',
             label: <Typography fontSize='16px' fontWeight='bold'>Description</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'avl_stock', // field name in the row object
+            label: <Typography fontSize='16px' fontWeight='bold' noWrap>Available Stock</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },

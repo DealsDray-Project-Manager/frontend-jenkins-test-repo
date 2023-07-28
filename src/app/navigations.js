@@ -140,6 +140,13 @@ export const navigations = [
         auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
+        name: 'Order Details',
+        path: '/purchase-user/order-details',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
         name: 'Masters',
         icon: 'fiber_manual_record',
         children: [
@@ -158,21 +165,6 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/warehouse',
             },
-            {
-                name: 'Vendors',
-                // icon: 'home',
-                path: '/sup-admin/view-vendors',
-            },
-            {
-                name: 'SP Categories',
-                // icon: 'home',
-                path: '/sup-admin/view-categories',
-            },
-            {
-                name: 'Tray Category',
-                // icon: 'category',
-                path: '/sup-admin/Category',
-            },
 
             {
                 name: 'Brands',
@@ -184,13 +176,26 @@ export const navigations = [
                 // icon: 'shopping_cart',
                 path: '/sup-admin/products',
             },
+
+            {
+                name: 'SP Categories',
+                // icon: 'home',
+                path: '/sup-admin/view-categories',
+            },
+
+            {
+                name: 'Vendors',
+                // icon: 'home',
+                path: '/sup-admin/view-vendors',
+            },
+
             {
                 name: 'Color List',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/view-color-list',
             },
             {
-                name: 'Part List',
+                name: 'Sp Part List',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/view-part-list',
             },
@@ -201,20 +206,46 @@ export const navigations = [
                 path: '/sup-admin/bag',
             },
             {
+                name: 'Tray Category',
+                // icon: 'category',
+                path: '/sup-admin/Category',
+            },
+            {
                 name: 'Trays',
                 // icon: 'add_shopping_cart',
                 path: '/sup-admin/tray',
+            },
+            {
+                name: 'Boxes',
+                // icon: 'add_shopping_cart',
+                path: '/sup-admin/view-boxes',
             },
             {
                 name: 'Tray Racks',
                 // icon: 'home',
                 path: '/sup-admin/view-trayracks',
             },
-            // {
-            //     name: 'Tray Racks',
-            //     // icon: 'add_shopping_cart',
-            //     path: '/sup-admin/trayracks'
-            // },
+            {
+                name: 'Payments Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-payments',
+            },
+            {
+                name: 'Warranty Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-warranty',
+            },
+           
+            {
+                name: 'Storage',
+                // icon: 'home',
+                path: '/sup-admin/view-storage',
+            },
+            {
+                name: 'RAM',
+                // icon: 'home',
+                path: '/sup-admin/view-ram',
+            },
         ],
         auth: authRoles.admin,
         sales: false,
@@ -445,12 +476,12 @@ export const navigations = [
             },
             {
                 name: 'Assign to Charging Planner',
-                path: '/mis/assign-to-agent/chargingplanner',
+                path: '/mis/assign-to-agent/charging',
                 iconText: 'NP',
             },
             {
                 name: 'Assign to Bqc Planner',
-                path: '/mis/assign-to-agent/bqcplanner',
+                path: '/mis/assign-to-agent/bqc',
                 iconText: 'NP',
             },
             {
@@ -697,9 +728,27 @@ export const navigations = [
                 path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
+        ],
+        auth: authRoles.Warehouse,
+        sales: false,
+    },
+    {
+        name: 'RPT',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'RPT Tray',
+                path: '/warehouse/rpt-tray',
+                iconText: 'VP',
+            },
             {
                 name: 'RDL-two Request',
-                path: '/wareshouse/wht/rdl-two-request',
+                path: '/wareshouse/rpt/rdl-two-request',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return from RDL-two',
+                path: '/warehouse/rpt/return-from-rdl-two',
                 iconText: 'VP',
             },
         ],
@@ -990,7 +1039,6 @@ export const navigations = [
         auth: authRoles.sorting,
         sales: false,
     },
-  
 
     {
         name: 'Charging Request',
@@ -1050,7 +1098,7 @@ export const navigations = [
     },
     {
         name: 'Delivery',
-        icon: 'reorder',
+        icon: 'repeat',
         children: [
             {
                 name: 'Delivered Packets',
@@ -1224,14 +1272,21 @@ export const navigations = [
     },
     {
         name: 'Month Wise Purchase',
-        icon: 'shopping_cart',
+        icon: 'report',
         path: '/reporting/month-wise-purchase-details',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
+        name: 'Unverified imei report',
+        icon: 'report',
+        path: '/reporting/unverified-imei',
         sales: 'all',
         auth: authRoles.reporting,
     },
     {
         name: 'Track',
-        icon: 'shopping_cart',
+        icon: 'track_changes',
         children: [
             {
                 name: 'Item Track',
@@ -1288,7 +1343,7 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
         sales: false,
     },
-   
+
     {
         name: 'Dummy Panel',
         icon: 'class',
@@ -1312,8 +1367,12 @@ export const navigations = [
                 path: '/sp-user/sp-tray',
             },
             {
-                name: 'Issue to rdl-two',
+                name: 'Issue to Rdl-two',
                 path: '/sp-user/ready-to-rdl-two',
+            },
+            {
+                name: 'Return from Rdl-two',
+                path: '/sp-user/return-from-rdl-two',
             },
         ],
         sales: 'all',

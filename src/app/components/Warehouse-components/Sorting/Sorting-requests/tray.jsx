@@ -24,12 +24,14 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [botTray, setBotTray] = useState([])
     const navigate = useNavigate()
+    console.log(botTray);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
+                    
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosMisUser.post(
@@ -38,6 +40,7 @@ const SimpleMuiTable = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setBotTray(response.data.data)
+                        
                     } else {
                         setIsLoading(false)
                         Swal.fire({
@@ -47,9 +50,11 @@ const SimpleMuiTable = () => {
                             confirmButtonText: 'Ok',
                         })
                     }
+                    
                 } else {
                     navigate('/')
                 }
+                
             } catch (error) {
                 setIsLoading(false)
                 Swal.fire({
@@ -64,6 +69,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewTrayForSorting = (e, code) => {
+    
         e.preventDefault()
         navigate('/wareshouse/sorting/request/approve/' + code)
     }

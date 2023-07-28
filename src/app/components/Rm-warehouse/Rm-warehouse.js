@@ -39,8 +39,17 @@ const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray
 const SptrayReadyForAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/sp-tray')))
 const SptrayAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/parts-add')))
 const SptrayIssueToRdlRepair  = Loadable(lazy(() => import('./Sp-tray/sp-tray-issue-to-rdl-2/tray')))
-
+const SpTrayReturnFromRdlTwo  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-two/tray')))
+const SpTrayReturnFromRdlTwoView  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-two/view-tray')))
 const RmWarehouse = [
+    {
+        path: '/sp-user/return-from-rdl-two/view/:trayId',
+        element: <SpTrayReturnFromRdlTwoView />,
+    },
+    {
+        path: '/sp-user/return-from-rdl-two',
+        element: <SpTrayReturnFromRdlTwo />,
+    },
     {
         path: '/sp-user/ready-to-rdl-two',
         element: <SptrayIssueToRdlRepair />,

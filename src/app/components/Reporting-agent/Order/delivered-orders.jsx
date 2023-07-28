@@ -6,7 +6,7 @@ import { Button, Table, TableContainer, Typography, Card, Box } from '@mui/mater
 import { axiosReportingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2' 
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 
@@ -62,6 +62,7 @@ const SimpleMuiTable = () => {
                         '/tray/' + 'For All Tray/' + 'WHT/' + location
                     )
                     if (response.status === 200) {
+                        setDataForDownload(response.data.data)
                         setIsLoading(false)
                         setWhtTray(response.data.data)
                     }
@@ -88,6 +89,7 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
 
+    
 
     const download = (e) => {
         let arr = []
@@ -112,7 +114,7 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'manage-sotck' + fileExtension)
+        FileSaver.saveAs(data, 'Delivered Packets' + fileExtension)
     }
 
     const columns = [
@@ -230,7 +232,7 @@ const SimpleMuiTable = () => {
                             sx={{}}
                             variant="contained"
                             color="success"
-                            // onClick={(e) => download(e)}
+                            onClick={(e) => download(e)}
                         >
                             Download XLSX
                         </Button>

@@ -3,7 +3,15 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-rack'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
+import {
+    Button,
+    Box,
+    IconButton,
+    Icon,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -39,8 +47,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -103,7 +112,7 @@ const SimpleMuiTable = () => {
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
-                handleDialogOpen("Edit")
+                handleDialogOpen('Edit')
             }
         } catch (error) {
             Swal.fire({
@@ -126,30 +135,29 @@ const SimpleMuiTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/deleteTrayRacks/' + rack_id
-                        )
-                        if (response.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Tray Rack has been Deleted.',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "This rack You Can't Delete",
-                            })
-                        }
-                   
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/deleteTrayRacks/' + rack_id
+                    )
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Your Tray Rack has been Deleted.',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "This rack You Can't Delete",
+                        })
+                    }
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -164,52 +172,104 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
-      
+        {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Name</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Display</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'parent_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Location</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Warehouse</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Limit</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box 
+                        <Box
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -245,7 +305,9 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Categories', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Tray Racks', path: '/' }]}
+                />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -257,36 +319,36 @@ const SimpleMuiTable = () => {
             </Button>
             <>
                 <>
-                <MUIDataTable
-                title={'Manage Racks'}
-                data={trayrackList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'Manage Racks'}
+                        data={trayrackList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </>
             </>
-            
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -296,7 +358,7 @@ const SimpleMuiTable = () => {
                     setEditFetchData={setEditFetchData}
                     trayRackId={trayRackId}
                     settrayRackId={settrayRackId}
-                /> 
+                />
             )}
         </Container>
     )

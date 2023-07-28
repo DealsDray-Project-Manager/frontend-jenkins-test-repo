@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../../axios'
+
 import {
     Button,
     Dialog,
@@ -84,6 +85,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosWarehouseIn.post(
                         '/whtToRp/requests/' + location
                     )
+                    console.log(res)
                     if (res.status == 200) {
                         setTray(res.data.data)
                     }
@@ -188,26 +190,23 @@ const SimpleMuiTable = () => {
         {
             name: 'code',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>RP tray Id</Typography>
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return value
+                },
             },
         },
-       
         {
-            name: 'requested_date',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned Date
-                </Typography>
-            ),
+            name: 'rack_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                customBodyRender: (value, tableMeta) => {
+                    return value
+                },
             },
         },
         {
@@ -231,6 +230,21 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned Date
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
@@ -307,7 +321,9 @@ const SimpleMuiTable = () => {
                 </DialogActions>
             </BootstrapDialog>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Sorting request wht-rp' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Sorting request wht-rp' }]}
+                />
             </div>
 
             <MUIDataTable

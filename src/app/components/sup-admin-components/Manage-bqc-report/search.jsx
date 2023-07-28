@@ -7,7 +7,7 @@ import BqcReport from './BqcReport'
 import BqcUserReport from './BqcUserReport'
 import AmazonDetails from './AmazonDetails'
 import BotUserReprt from './Bot-user-report'
-import BqcApiSummery from './Bqc-api-data-summery'
+import BqcApiSummery from './Bqc-api-data-summary'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
 

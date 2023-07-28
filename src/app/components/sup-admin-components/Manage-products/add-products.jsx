@@ -74,6 +74,11 @@ const MemberEditorDialog = ({
             .max(40)
             .nullable(),
         brand_name: Yup.string().required('Required'),
+        jack_type: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
+            .max(40)
+            .nullable(),
     })
 
     const {
@@ -177,7 +182,7 @@ const MemberEditorDialog = ({
                 handleClose()
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'failed',
+                    icon: 'error',
                     title: response.data.message,
                     showConfirmButton: false,
                 })
@@ -232,17 +237,20 @@ const MemberEditorDialog = ({
                             }
                         />
                         <TextFieldCustOm
-                            label="Model Name"
-                            type="text"
-                            name="model_name"
-                            {...register('model_name')}
-                            error={errors.model_name ? true : false}
+                            label="Jack Type"
+                            select
+                            name="jack_type"
+                            defaultValue={getValues('jack_type')}
+                            {...register('jack_type')}
+                            error={errors.jack_type ? true : false}
                             helperText={
-                                errors.model_name
-                                    ? errors.model_name.message
-                                    : ''
+                                errors.jack_type ? errors.jack_type.message : ''
                             }
-                        />
+                        >
+                            <MenuItem value="Micro USB">Micro USB</MenuItem>
+                            <MenuItem value="Type C">Type C</MenuItem>
+                            <MenuItem value="lightning">lightning</MenuItem>
+                        </TextFieldCustOm>
                     </Grid>
 
                     <Grid item sm={6} xs={12}>
@@ -280,6 +288,18 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Model Name"
+                            type="text"
+                            name="model_name"
+                            {...register('model_name')}
+                            error={errors.model_name ? true : false}
+                            helperText={
+                                errors.model_name
+                                    ? errors.model_name.message
+                                    : ''
+                            }
+                        />
                     </Grid>
                 </Grid>
 

@@ -35,6 +35,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -113,6 +114,7 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
+
     const handleClose = () => {
         setOpen(false)
         setLoading(false)
@@ -246,7 +248,7 @@ export default function DialogBox() {
     const tableFrom = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>BOT TRAY ITEM</h5>
+                <h5 style={{ paddingLeft: '15px' }}>BOT TRAY ITEM</h5>
 
                 <TableContainer>
                     <Table
@@ -257,7 +259,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>IMEI</TableCell>
                                 <TableCell>MUIC</TableCell>
@@ -266,7 +268,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.bot?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
@@ -282,7 +286,7 @@ export default function DialogBox() {
     const tableTo = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>WHT TRAY</h5>
+                <h5 style={{ paddingLeft: '15px' }}>WHT TRAY</h5>
                 <TextField
                     sx={{ m: 1 }}
                     id="outlined-password-input"
@@ -312,7 +316,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>WHT TRay ID</TableCell>
                                 <TableCell>Brand</TableCell>
                                 <TableCell>Model</TableCell>
@@ -324,7 +328,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.wht?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.code}</TableCell>
                                     <TableCell>{data?.brand}</TableCell>
                                     <TableCell>{data?.model}</TableCell>

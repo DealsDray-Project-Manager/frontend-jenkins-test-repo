@@ -157,9 +157,7 @@ const MUIClist = () => {
                 />
             </div>
             <Card sx={{ p: 3 }}>
-            
                 <Box sx={{display: 'flex', alignItems:'center' }}>
-
                     <Box sx={{mt:2}}>
                         <Image
                             src={
@@ -173,7 +171,6 @@ const MUIClist = () => {
                             width="100%"
                         />
                     </Box>
-
                     <Box sx={{ml:5}}>
                             <Typography>
                                 MUIC:{productData?.[0]?.muic}
@@ -190,7 +187,6 @@ const MUIClist = () => {
                             </Typography>
                             <Typography>Vendor:{productData?.[0]?.vendor_name}</Typography>
                         </Box>
-
                         <Box sx={{margin: 'auto',textAlign:'end', mb:23, mr:2}}>
                         <Button
                                 variant="contained"
@@ -201,11 +197,7 @@ const MUIClist = () => {
                                 Back to MUIC list
                             </Button>
                         </Box>
-
                 </Box>
-                   
-                
-                
                 <Box sx={{  margin: 'auto', mt:4, mr:2 ,mb:3, textAlign:'end'}}>
                     <Button
                         variant="contained"
@@ -222,7 +214,6 @@ const MUIClist = () => {
                         Associate Parts
                     </Button>
                 </Box>
-
                 <MUIDataTable
                     title={'Associated Parts'}
                     data={productData?.[0]?.parts}

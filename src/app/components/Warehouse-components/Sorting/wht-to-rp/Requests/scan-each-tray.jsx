@@ -16,10 +16,19 @@ import {
     DialogActions,
     TextField,
     Typography,
+    MenuItem
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
+
 import Swal from 'sweetalert2'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { useForm } from 'react-hook-form'
+
+const TextFieldCustOm = styled(TextField)(() => ({
+    width: '100%',
+}))
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,6 +51,32 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
     const [receiveButDis, setReceiveButDis] = useState(false)
+
+    const {
+        register,
+        formState: { errors },
+    }= useForm({
+        // resolver: yupResolver(schema),
+    })
+
+    // async function getrackidData(rack_id) {
+    //     try {
+    //         let obj = {
+    //             rack_id: rack_id,
+    //         }
+    //         let response = await axiosSuperAdminPrexo.post(
+    //             '/getWarehouseByLocation',
+    //             obj
+    //         )
+    //         if (response.status == 200) {
+    //             setWarehouse(response.data.data.warehouse)
+    //         }
+    //     } catch (error) {}
+    // }
+
+    
+
+    
 
     useEffect(() => {
         try {
@@ -324,9 +359,10 @@ const SimpleMuiTable = () => {
                     }}
                 />
                 <Box sx={{ textAlign: 'right', mr: 6 }}>
+                
                     <Button
                         sx={{
-                            m: 1,
+                            m: 1, mt:2
                         }}
                         variant="contained"
                         style={{ backgroundColor: '#206CE2' }}

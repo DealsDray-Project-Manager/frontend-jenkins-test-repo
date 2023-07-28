@@ -92,7 +92,7 @@ const MemberEditorDialog = ({
                 let categorys = await axiosSuperAdminPrexo.get(
                     '/getCtxTrayCategory'
                 )
-                if (categorys.status == 200) {
+                if (categorys.status == 200) { 
                     setCategorys(categorys.data)
                 }
             } else {
@@ -523,7 +523,7 @@ const MemberEditorDialog = ({
                                     {data.name}
                                 </MenuItem>
                             ))}
-                        </TextFieldCustOm>
+                        </TextFieldCustOm> 
                         <TextFieldCustOm
                             label="Tray Category"
                             select

@@ -78,18 +78,19 @@ const ProductTable1 = styled(Table)(() => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)`
-overflow-x: scroll;
+    overflow-x: scroll;
 
-/* Hide the scrollbar in webkit-based browsers */
-::-webkit-scrollbar {
-  display: none;
-}
-`;
+    /* Hide the scrollbar in webkit-based browsers */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const navigate = useNavigate()
+    const [selectedQtySp, setSelectedQtySp] = useState(0)
     const { brand, model } = useParams()
     const { logout, user } = useAuth()
     const [requrementList, setRequrementList] = useState({
@@ -142,6 +143,7 @@ const SimpleMuiTable = () => {
                 isCheck: isCheck,
                 partList: partData,
                 checked: checked,
+                selectedQtySp: selectedQtySp,
                 uic: uic,
             }
             if (!checked) {
@@ -154,6 +156,7 @@ const SimpleMuiTable = () => {
             if (res.status == 200) {
                 setCheckBoxDis(false)
                 setIsCheck(res.data.data)
+                setSelectedQtySp(res.data.countofStock)
                 if (checked) {
                     setSelectedUic([...selectedUic, uic])
                 }
@@ -180,6 +183,7 @@ const SimpleMuiTable = () => {
             sortingAgent: [],
         })
         setSelectedUic([])
+        setSelectedQtySp(0)
         setShouldOpenEditorDialog(false)
     }
 
@@ -191,6 +195,7 @@ const SimpleMuiTable = () => {
                 model: model,
                 uicLength: selectedUic.length,
                 isCheck: isCheck.length,
+                selectedQtySp: selectedQtySp,
             }
             const res = await axiosMisUser.post(
                 '/assignForRepiar/getTheRequrements',
@@ -250,7 +255,12 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap sx={{mr:8}}>
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    noWrap
+                    sx={{ mr: 8 }}
+                >
                     <>Record No</>
                 </Typography>
             ),
@@ -332,24 +342,29 @@ const SimpleMuiTable = () => {
         {
             name: 'items',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    // sx={{ ml: 5 }}
-                >
-                    <>Repair Item</>
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Repair item</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => {
-                    return value?.rdl_fls_report?.partRequired?.map(
-                        (data, index) => (
-                            <p>
-                                {index + 1}.{data?.part_name} - {data?.part_id},
-                            </p>
-                        )
-                    )
+                filterType: 'textField',
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_fls_report?.partRequired
+
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            }`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
                 },
             },
         },
@@ -456,55 +471,55 @@ const SimpleMuiTable = () => {
             >
                 <ScrollableTableContainer>
                     <ProductTable>
-
-                    <MUIDataTable
-                    // title={'Assign for Repairs'}
-                    sx={{ borderTop: '0px' }}
-                    data={unitsData}
-                    columns={columns}
-                    options={{
-                        filterType: 'textField',
-                        responsive: 'simple',
-                        download: false,
-                        print: false,
-                        textLabels: {
-                            body: {
-                                noMatch: isLoading
-                                    ? 'Loading...'
-                                    : 'Sorry, there is no matching data to display',
-                            },
-                        },
-                        selectableRows: 'none', // set checkbox for each row
-                        // search: false, // set search option
-                        // filter: false, // set data filter option
-                        // download: false, // set download option
-                        // print: false, // set print option
-                        //  pagination: false, //set pagination option
-                        // viewColumns: false, // set column option
-                        customSort: (data, colIndex, order) => {
-                            return data.sort((a, b) => {
-                                if (colIndex === 1) {
-                                    return (
-                                        (a.data[colIndex].price <
-                                        b.data[colIndex].price
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                }
-                                return (
-                                    (a.data[colIndex] < b.data[colIndex]
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            })
-                        },
-                        // elevation: 0,
-                        // rowsPerPageOptions: [10, 20, 40, 80, 100],
-                    }}
-                />
+                        <MUIDataTable
+                            // title={'Assign for Repairs'}
+                            sx={{ borderTop: '0px' }}
+                            data={unitsData}
+                            columns={columns}
+                            options={{
+                                filterType: 'textField',
+                                responsive: 'simple',
+                                download: false,
+                                print: false,
+                                textLabels: {
+                                    body: {
+                                        noMatch: isLoading
+                                            ? 'Loading...'
+                                            : 'Sorry, there is no matching data to display',
+                                    },
+                                },
+                                selectableRows: 'none', // set checkbox for each row
+                                // search: false, // set search option
+                                // filter: false, // set data filter option
+                                // download: false, // set download option
+                                // print: false, // set print option
+                                //  pagination: false, //set pagination option
+                                // viewColumns: false, // set column option
+                                customSort: (data, colIndex, order) => {
+                                    return data.sort((a, b) => {
+                                        if (colIndex === 1) {
+                                            return (
+                                                (a.data[colIndex].price <
+                                                b.data[colIndex].price
+                                                    ? -1
+                                                    : 1) *
+                                                (order === 'desc' ? 1 : -1)
+                                            )
+                                        }
+                                        return (
+                                            (a.data[colIndex] < b.data[colIndex]
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    })
+                                },
+                                // elevation: 0,
+                                // rowsPerPageOptions: [10, 20, 40, 80, 100],
+                            }}
+                        />
                     </ProductTable>
                 </ScrollableTableContainer>
-                
             </StyledTable>
         )
     }, [unitsData, columns])
@@ -604,13 +619,12 @@ const SimpleMuiTable = () => {
                     >
                         <Typography sx={{ ml: 2 }}>Model : {model}</Typography>
                         <Box>
-
-                        <Typography sx={{ mr: 4 }}>
-                            Selected UIC's : {selectedUic?.length}
-                        </Typography>
-                        <Typography sx={{ mr: 4 }}>
-                            Total : {unitsData?.length}
-                        </Typography>
+                            <Typography sx={{ mr: 4 }}>
+                                Selected UIC's : {selectedUic?.length}
+                            </Typography>
+                            <Typography sx={{ mr: 4 }}>
+                                Total : {unitsData?.length}
+                            </Typography>
                         </Box>
                     </Box>
 

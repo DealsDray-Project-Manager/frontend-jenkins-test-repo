@@ -190,7 +190,7 @@ const PartTable = () => {
         //     options: {
         //         filter: true,
         //     },
-        // },
+        // }, 
         {
             name: 'name', // field name in the row object
             label: <Typography variant="subtitle1" fontWeight='bold'><>Color Name</></Typography>, // column title that will be shown in table

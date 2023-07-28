@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import { axiosRmUserAgent, axiosSuperAdminPrexo } from '../../../../../axios'
 import { Button, Box, Typography, TextField, MenuItem } from '@mui/material'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -27,6 +28,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    const { user } = useAuth()
     const [tray, setTray] = useState({})
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
@@ -38,7 +40,9 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
                     setrackiddrop(res.data.data)
                 }
@@ -132,7 +136,11 @@ const SimpleMuiTable = () => {
     const handleViewSpIssue = async (e, code) => {
         e.preventDefault()
         try {
-            const res = await axiosRmUserAgent.post('/spTray/close/' + trayId)
+            let obj = {
+                trayId: trayId,
+                rackId: rackId,
+            }
+            const res = await axiosRmUserAgent.post('spTrayClose', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -182,7 +190,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'boxid',
+            name: 'box_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Box ID</Typography>,
             options: {
                 filter: true,
@@ -336,6 +344,7 @@ const SimpleMuiTable = () => {
                     variant="contained"
                     disabled={
                         tray?.items?.length !== tray?.temp_array?.length ||
+                        rackId == '' ||
                         description == ''
                     }
                     style={{ backgroundColor: '#206CE2' }}

@@ -140,6 +140,13 @@ export const navigations = [
         auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
+        name: 'Order Details',
+        path: '/purchase-user/order-details',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
         name: 'Masters',
         icon: 'fiber_manual_record',
         children: [
@@ -218,16 +225,16 @@ export const navigations = [
                 // icon: 'home',
                 path: '/sup-admin/view-trayracks',
             },
-            // {
-            //     name: 'Payments Terms',
-            //     // icon: 'home',
-            //     path: '/sup-admin/view-payments',
-            // },
-            // {
-            //     name: 'Warranty Terms',
-            //     // icon: 'home',
-            //     path: '/sup-admin/view-warranty',
-            // },
+            {
+                name: 'Payments Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-payments',
+            },
+            {
+                name: 'Warranty Terms',
+                // icon: 'home',
+                path: '/sup-admin/view-warranty',
+            },
            
             {
                 name: 'Storage',

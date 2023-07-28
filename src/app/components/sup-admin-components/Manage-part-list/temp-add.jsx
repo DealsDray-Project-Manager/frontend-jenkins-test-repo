@@ -32,6 +32,7 @@ const AddPartOrColorAndEditDialog = ({
     const [loading, setLoading] = useState(false)
     const [colorData, setColorData] = useState([])
     const [spCategory, setSpCategory] = useState([])
+    const [boxData, setBoxData] = useState([])
 
     useEffect(() => {
         const fetchColorData = async () => {
@@ -45,8 +46,13 @@ const AddPartOrColorAndEditDialog = ({
                 const allSpCategory = await axiosSuperAdminPrexo.post(
                     '/spcategories/view'
                 )
+
                 if (res.status === 200) {
                     setSpCategory(allSpCategory.data.data)
+                }
+                const boxRes = await axiosSuperAdminPrexo.post('/boxes/view')
+                if (boxRes.status == 200) {
+                    setBoxData(boxRes.data.data)
                 }
             } catch (error) {
                 console.log(error)
@@ -66,7 +72,7 @@ const AddPartOrColorAndEditDialog = ({
         name: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-            .max(40)
+            .max(500)
             .nullable(),
         description: Yup.string()
             .required('Required*')
@@ -79,6 +85,11 @@ const AddPartOrColorAndEditDialog = ({
             .max(40)
             .nullable(),
         sp_category: Yup.string()
+            .required('Required*')
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
+            .max(40)
+            .nullable(),
+            box_id: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
             .max(40)
@@ -241,6 +252,27 @@ const AddPartOrColorAndEditDialog = ({
                             value={data?.category_name}
                         >
                             {data?.category_name}
+                        </MenuItem>
+                    ))}
+                </TextFieldCustOm>
+                <TextFieldCustOm
+                    label="Box id"
+                    type="text"
+                    select
+                    name="box_id"
+                    defaultValue={getValues('box_id')}
+                    {...register('box_id')}
+                    error={errors.box_id ? true : false}
+                    helperText={
+                        errors.box_id ? errors.box_id?.message : ''
+                    }
+                >
+                    {boxData?.map((data) => (
+                        <MenuItem
+                            key={data?.box_id}
+                            value={data?.box_id}
+                        >
+                            {data?.box_id}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>

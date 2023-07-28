@@ -228,9 +228,9 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[2] ==
+                            {tableMeta.rowData[3] ==
                                 'Accepted From Processing' ||
-                            tableMeta.rowData[2] == 'Accepted From Sales' ? (
+                            tableMeta.rowData[3] == 'Accepted From Sales' ? (
                                 <Button
                                     sx={{
                                         m: 1,

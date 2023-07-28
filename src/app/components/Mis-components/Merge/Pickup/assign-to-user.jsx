@@ -50,6 +50,8 @@ const MemberEditorDialog = ({
                 setLoading(false)
                 alert(res.data.message)
             }
+
+            
         } catch (error) {
             alert(error)
         }
@@ -96,7 +98,22 @@ const MemberEditorDialog = ({
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
-                {value !== 'Ready to RDL-Repair' ? (
+                {value == 'RDL two done closed by warehouse' ? (
+                    <TextFieldCustOm
+                        label="Select Next Stage"
+                        fullWidth
+                        select
+                        name="stage"
+                        onChange={(e) => {
+                            setNextStage(e.target.value)
+                        }}
+                    >
+                        <MenuItem value="Recharge">Recharge</MenuItem>
+                        <MenuItem value="Charge Done">Re-BQC</MenuItem>
+                        <MenuItem value="BQC Done">Re-Audit</MenuItem>
+                        <MenuItem value="Ready to RDL">Re-RDL FLS</MenuItem>
+                    </TextFieldCustOm>
+                ) : value !== 'Ready to RDL-Repair' ? (
                     <TextFieldCustOm
                         label="Select Next Stage"
                         fullWidth
@@ -121,7 +138,7 @@ const MemberEditorDialog = ({
                             setNextStage(e.target.value)
                         }}
                     >
-                         <MenuItem value="Inuse">In Use</MenuItem>
+                        <MenuItem value="Inuse">In Use</MenuItem>
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL-Repair">

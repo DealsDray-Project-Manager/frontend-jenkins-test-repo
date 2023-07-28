@@ -303,6 +303,17 @@ const PartTable = () => {
             },
         },
         {
+            name: 'box_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                    <>Box Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'technical_qc', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold" noWrap>
@@ -396,7 +407,7 @@ const PartTable = () => {
                                 flexDirection: 'row',
                             }}
                         >
-                            {tableMeta.rowData[9] == 'Active' ? (
+                            {tableMeta.rowData[10] == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
                                         handelActive(value, 'Deactive')

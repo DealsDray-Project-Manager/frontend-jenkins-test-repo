@@ -29,7 +29,8 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [partDetails, setPartDetails] = useState({})
     const [description, setDescription] = useState([])
-    const [objId,setObjId]=useState("")
+    const [objId, setObjId] = useState('')
+    const [uniqueid, setUniqueId] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const SimpleMuiTable = () => {
                     let obj = {
                         trayId: trayId,
                         username: user_name,
-                        status: 'Closed by RDL-two',
+                        status: 'Received from RDL-two',
                     }
                     let res = await axiosRmUserAgent.post(
                         '/spTrayPartIssue',
@@ -103,13 +104,14 @@ const SimpleMuiTable = () => {
     const handleDialogClose = () => {
         setPartDetails({})
         setShouldOpenEditorDialog(false)
-        setObjId("")
-        
+        setObjId('')
+        setUniqueId('')
     }
 
-    const handleDialogOpen = (details,selObjId) => {
+    const handleDialogOpen = (details, selObjId, uniId) => {
         setPartDetails(details)
         setObjId(selObjId)
+        setUniqueId(uniId)
         setShouldOpenEditorDialog(true)
     }
 
@@ -145,11 +147,18 @@ const SimpleMuiTable = () => {
             name: 'limit',
             label: 'Tray',
             options: {
-                filter: true,
+                filter: false,
                 display: false,
             },
         },
-
+        {
+            name: 'unique_id_gen',
+            label: 'Tray',
+            options: {
+                filter: false,
+                display: false,
+            },
+        },
         {
             name: 'part_name',
             label: (
@@ -172,7 +181,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-      
+
         {
             name: 'rdl_two_status',
             label: (
@@ -199,7 +208,11 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handleDialogOpen(value,tableMeta.rowData[5])
+                                handleDialogOpen(
+                                    value,
+                                    tableMeta.rowData[6],
+                                    tableMeta.rowData[3]
+                                )
                             }}
                         >
                             Add to Box
@@ -294,6 +307,7 @@ const SimpleMuiTable = () => {
                     trayId={trayId}
                     partDetails={partDetails}
                     objId={objId}
+                    uniqueid={uniqueid}
                 />
             )}
         </Container>

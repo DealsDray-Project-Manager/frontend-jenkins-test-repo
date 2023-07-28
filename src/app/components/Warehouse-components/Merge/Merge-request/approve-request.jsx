@@ -206,6 +206,7 @@ export default function StickyHeadTable({ props }) {
                                     <TableRow >
                                         <TableCell sx={{fontWeight:'bold', fontSize:'16px', p:2}}>Record.No</TableCell>
                                         <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Tray Id</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Rack Id</TableCell>
                                         <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Tray Type</TableCell>
                                         <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Quantity</TableCell>
                                         <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Status</TableCell>
@@ -221,6 +222,7 @@ export default function StickyHeadTable({ props }) {
                                         >
                                             <TableCell sx={{p:4}}>{index + 1}</TableCell>
                                             <TableCell>{data.code}</TableCell>
+                                            <TableCell>{data.rack_id}</TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}
                                             </TableCell>

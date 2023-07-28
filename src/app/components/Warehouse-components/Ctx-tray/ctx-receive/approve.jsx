@@ -19,6 +19,7 @@ import jwt_decode from 'jwt-decode'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 
@@ -40,6 +41,7 @@ const TextFieldCustOm = styled(TextField)(() => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -55,7 +57,7 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
                 if (res.status == 200) {
                     console.log(res.data.data)
                     setrackiddrop(res.data.data)

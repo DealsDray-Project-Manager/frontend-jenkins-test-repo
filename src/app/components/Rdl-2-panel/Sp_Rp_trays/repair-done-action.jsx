@@ -102,12 +102,21 @@ const SimpleMuiTable = () => {
     }
 
     const handleChangeStatus = (rowIndex, newValue, status, uniqueId) => {
+        // Use Date.now() to get a timestamp in milliseconds (13 digits)
+        const timestamp = Date.now().toString()
+
+        // Use Math.random() to get a random number (16 digits) and remove the leading "0."
+        const randomNumber = Math.random().toString().substring(2, 18)
+
+        // Combine the timestamp and random number to create a unique ID
+        const newId = `${timestamp}-${randomNumber}`
         if (status == 'Status') {
             if (radioButtonCount.includes(uniqueId) == false) {
                 setRadioButtonCount([...radioButtonCount, uniqueId])
             }
             setRequredPart((prevValues) => {
                 const updatedValues = [...prevValues]
+                updatedValues[rowIndex]['unique_id_gen'] = newId
                 updatedValues[rowIndex].rdl_two_status = newValue
                 return updatedValues
             })
@@ -152,7 +161,7 @@ const SimpleMuiTable = () => {
                     }
                 }
                 obj.rdl_repair_report.more_part_required = arr1
-            } else {
+            } 
                 let arr = []
                 for (let y of requredPart) {
                     if (y.rdl_two_status == 'Used') {
@@ -160,8 +169,6 @@ const SimpleMuiTable = () => {
                     }
                 }
                 obj.rdl_repair_report.used_parts = arr
-            }
-
             const res = await axiosRdlTwoAgent.post('/repairDone/action', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -170,6 +177,8 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+
+                
                 navigate('/rdl-two/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({

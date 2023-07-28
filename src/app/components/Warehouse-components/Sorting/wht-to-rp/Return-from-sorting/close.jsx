@@ -21,6 +21,7 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../../axios'
 import { axiosSuperAdminPrexo } from '../../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -41,6 +42,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -57,7 +59,9 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
                     console.log(res.data.data)
                     setrackiddrop(res.data.data)
@@ -184,6 +188,7 @@ export default function DialogBox() {
             setLoading(true)
             let obj = {
                 trayId: trayId,
+                rackId:rackId,
                 description: description,
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',

@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem
+    MenuItem,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
@@ -22,7 +22,8 @@ import jwt_decode from 'jwt-decode'
 import {
     axiosWarehouseIn,
     axiosRDL_oneAgent,
-    axiosAuditAgent, axiosSuperAdminPrexo
+    axiosAuditAgent,
+    axiosSuperAdminPrexo,
 } from '../../../../axios'
 
 export default function DialogBox() {
@@ -35,8 +36,6 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
 
     let admin = localStorage.getItem('prexo-authentication')
     let user_name1
@@ -45,32 +44,10 @@ export default function DialogBox() {
         user_name1 = user_name
     }
 
-    
-const TextFieldCustOm = styled(TextField)(() => ({
-    width: '100%',
-    marginBottom: '16px',
-}))
-
-useEffect(() => {
-
-    const fetchData = async () => {
-        
-        try {
-            let res = await axiosSuperAdminPrexo.post('/trayracks/view')
-            if (res.status == 200) {
-                console.log(res.data.data);
-                setrackiddrop(res.data.data)
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
-    fetchData()
-}, [])
+    const TextFieldCustOm = styled(TextField)(() => ({
+        width: '100%',
+        marginBottom: '16px',
+    }))
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,7 +104,6 @@ useEffect(() => {
                                 uic: uicCode,
                                 ctxTray: trayData?.otherTray,
                                 whtTrayId: trayId,
-                                
                             },
                         }
                     )
@@ -229,7 +205,7 @@ useEffect(() => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -239,7 +215,9 @@ useEffect(() => {
                         <TableBody>
                             {trayData?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -314,7 +292,7 @@ useEffect(() => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -325,7 +303,9 @@ useEffect(() => {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -387,27 +367,6 @@ useEffect(() => {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm 
-                    sx={{m:1}}
-                        label='Rack ID'
-                        select
-                        style={{ width: '150px'}}
-                     
-                         
-                        name="rack_id"
-                >
-                    {rackiddrop?.map((data) => (
-                    
-                    <MenuItem
-                        onClick={(e) => {
-                            setRackId(data.rack_id)
-                        }}
-                        value={data.rack_id}
-                    >
-                        {data.rack_id}
-                    </MenuItem>
-                ))}
-                </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -421,7 +380,7 @@ useEffect(() => {
                         disabled={
                             loading == true ||
                             trayData?.actual_items?.length !==
-                                trayData?.items?.length || rackId == "" ||
+                                trayData?.items?.length ||
                             description == ''
                                 ? true
                                 : false

@@ -68,7 +68,7 @@ const SimpleMuiTable = () => {
     const editPayment = async (name) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/payments/one/' + name + '/payment-list' 
+                '/payments/one/' + name 
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -139,6 +139,15 @@ const SimpleMuiTable = () => {
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) =>
                 <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+            },
+        },
+        {
+            name: '_id',
+         
+            options: {
+                filter: false,
+                sort:false,
+                display:false
             },
         },
         {

@@ -1,10 +1,5 @@
 import React, { useEffect, useState, Controller } from 'react'
-import {
-    Dialog,
-    Button,
-    Grid,
-    TextField,MenuItem 
-} from '@mui/material'
+import { Dialog, Button, Grid, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
@@ -36,15 +31,14 @@ const MemberEditorDialog = ({
 
     useEffect(() => {
         // const fetchData = async () => {
-            if (Object.keys(editFetchData).length !== 0) {
-                reset({ ...editFetchData })
-                open()
-            }
+        if (Object.keys(editFetchData).length !== 0) {
+            reset({ ...editFetchData })
+            open()
+        }
         // }
         // fetchData()
     }, [])
 
-    
     const schema = Yup.object().shape({
         name: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
@@ -116,6 +110,7 @@ const MemberEditorDialog = ({
 
     const handelEdit = async (data) => {
         try {
+            data._id=editFetchData._id
             let response = await axiosSuperAdminPrexo.post(
                 '/warranty/edit',
                 data
@@ -151,12 +146,12 @@ const MemberEditorDialog = ({
         }
     }
 
-return (
-    <Dialog open={open}>
-    <Box p={3}>
-        <H4 sx={{ mb: '20px' }}>Warranty</H4>
+    return (
+        <Dialog open={open}>
+            <Box p={3}>
+                <H4 sx={{ mb: '20px' }}>Warranty</H4>
 
-            <TextFieldCustOm
+                <TextFieldCustOm
                     label="Name"
                     type="text"
                     name="name"
@@ -164,7 +159,7 @@ return (
                     error={errors.name ? true : false}
                     helperText={errors.name ? errors.name?.message : ''}
                 />
-            <TextFieldCustOm
+                <TextFieldCustOm
                     label="Description"
                     type="text"
                     name="description"
@@ -175,35 +170,31 @@ return (
                     }
                 />
 
-        <FormHandlerBox>
-            <Button
-                variant="contained"
-                disabled={loading}
-                onClick={
-                    Object.keys(editFetchData).length !== 0
-                        ? handleSubmit(handelEdit)
-                        : handleSubmit(onSubmit)
-                }
-                color="primary"
-                type="submit"
-            >
-                Save
-            </Button>
-            <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => handleClose()}
-            >
-                Cancel
-            </Button>
-        </FormHandlerBox>
-    </Box>
-    </Dialog>
+                <FormHandlerBox>
+                    <Button
+                        variant="contained"
+                        disabled={loading}
+                        onClick={
+                            Object.keys(editFetchData).length !== 0
+                                ? handleSubmit(handelEdit)
+                                : handleSubmit(onSubmit)
+                        }
+                        color="primary"
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleClose()}
+                    >
+                        Cancel
+                    </Button>
+                </FormHandlerBox>
+            </Box>
+        </Dialog>
     )
 }
 
 export default MemberEditorDialog
-
-
-
-

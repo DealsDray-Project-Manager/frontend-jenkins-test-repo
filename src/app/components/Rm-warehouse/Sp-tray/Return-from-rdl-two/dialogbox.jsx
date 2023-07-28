@@ -26,16 +26,20 @@ const MemberEditorDialog = ({
     setRefresh,
     trayId,
     partDetails,
-    objId
+    objId,
+    uniqueid
 }) => {
     const [boxList, setBoxList] = useState([])
     const [loading, setLoading] = useState(false)
     const [boxName, setBoxName] = useState('')
 
+
     useEffect(() => {
         const fetchBoxes = async () => {
             try {
-                const res = await axiosSuperAdminPrexo.post('/boxes/view')
+                const res = await axiosRmUserAgent.post(
+                    '/boxesView/' + partDetails
+                )
                 if (res.status === 200) {
                     setBoxList(res.data.data)
                 }
@@ -56,8 +60,9 @@ const MemberEditorDialog = ({
             let obj = {
                 partDetails: partDetails,
                 spTrayId: trayId,
-                boxName:boxName,
-                objId:objId
+                boxName: boxName,
+                objId: objId,
+                uniqueid:uniqueid
             }
             let res = await axiosRmUserAgent.post('/addIntoBox', obj)
             if (res.status == 200) {

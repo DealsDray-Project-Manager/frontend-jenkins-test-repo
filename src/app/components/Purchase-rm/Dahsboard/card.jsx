@@ -41,8 +41,14 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count.purchaseCount,
-            title: 'Procurement requests',
+            title: 'Purchase request',
             path: '/purchase-user/purchase',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count.orderDetails,
+            title: 'Order Details',
+            path: '/purchase-user/order-details',
         },
     ]
     const { palette } = useTheme()

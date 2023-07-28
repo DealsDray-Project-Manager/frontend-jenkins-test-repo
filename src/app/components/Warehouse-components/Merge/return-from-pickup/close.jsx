@@ -18,6 +18,8 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -30,7 +32,7 @@ export default function DialogBox() {
     const { trayId } = useParams()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
-
+    const { user } = useAuth()
     const [description, setDescription] = useState([])
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
@@ -45,9 +47,9 @@ export default function DialogBox() {
         const fetchData = async () => {
             
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
                 if (res.status == 200) {
-                    console.log(res.data.data);
+                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -134,6 +136,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     stage: tray[0].pickup_type,
                     length: length,
+                    rackId:rackId
                 }
                 if (tray?.[0]?.to_tray_for_pickup == null) {
                     obj.stage = tray[0]?.pickup_next_stage

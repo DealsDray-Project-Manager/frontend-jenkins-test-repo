@@ -43,9 +43,10 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const { spnNumber, muic } = useParams()
-    const [textDisable, setTextDisable] = useState(false)
     const [pageData, setPageData] = useState({})
-    const [selectedDate, setSelectedDate] = React.useState(null)
+    const [totalAmount, setTotalAmount] = useState('')
+    const [per_unit, setPer_unit] = useState('')
+    const [warrantyAndTerms, setWarrantyAndTerms] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,8 +54,15 @@ const SimpleMuiTable = () => {
                 let res = await axiosPurchaseAgent.post(
                     '/placeOrderScreen/' + spnNumber + '/' + muic
                 )
+
                 if (res.status == 200) {
                     setPageData(res.data.data)
+                    let getDrop = await axiosPurchaseAgent.post(
+                        '/getWarrantyAndTerms'
+                    )
+                    if (getDrop.status == 200) {
+                        setWarrantyAndTerms(getDrop.data.data)
+                    }
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -71,11 +79,17 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
+    useEffect(() => {
+        setValue('quantity', pageData?.purchaseRequest?.requred_qty)
+    }, [pageData])
+
     const schema = Yup.object().shape({
-        brand_name: Yup.string()
+        vendor_id: Yup.string().required('Required*').nullable(),
+        payment_terms: Yup.string().required('Required*').nullable(),
+        warranty_terms: Yup.string().required('Required*').nullable(),
+        quantity: Yup.number()
+            .min(1, 'Minimum quantity is 1')
             .required('Required*')
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
-            .max(40)
             .nullable(),
     })
     const {
@@ -84,13 +98,10 @@ const SimpleMuiTable = () => {
         formState: { errors },
         reset,
         getValues,
+        setValue,
     } = useForm({
         resolver: yupResolver(schema),
     })
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date)
-    }
 
     const columns = [
         {
@@ -112,7 +123,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'id',
+            name: 'vendor_id',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Vendor ID
@@ -129,15 +140,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'category',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Category</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'address',
             label: <Typography sx={{ fontWeight: 'bold' }}>Address</Typography>,
@@ -153,7 +156,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'mob',
+            name: 'mobile_one',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Mobile 1</Typography>
             ),
@@ -190,14 +193,14 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'date',
+            name: 'placed_date',
             label: <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'id',
+            name: 'vendor_id',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Vendor ID</Typography>
             ),
@@ -206,7 +209,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'qty',
+            name: 'quanitity',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
@@ -215,7 +218,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'price',
+            name: 'per_unit',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Price (Per)</Typography>
             ),
@@ -224,7 +227,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'total',
+            name: 'total_price',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
                     Total Amount
@@ -238,20 +241,29 @@ const SimpleMuiTable = () => {
 
     const onSubmit = async (data) => {
         try {
+            data.per_unit = per_unit
+            data.muic = muic
+            data.total_price = totalAmount
+            data.spn_number = spnNumber
+            data.placed_date = Date.now()
             setLoading(true)
-            let response = await axiosPurchaseAgent.post('/placeOrder', data)
+            let obj = {
+                dataOfOrder: data,
+                muic: muic,
+                spnNumber: spnNumber,
+            }
+            let response = await axiosPurchaseAgent.post('/placeOrder', obj)
             if (response.status == 200) {
                 setLoading(false)
-
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'Successfully Created',
+                    title: response.data.message,
                     confirmButtonText: 'Ok',
                 })
+                navigate('/purchase-user/purchase')
             } else {
                 setLoading(false)
-
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -267,6 +279,11 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
+    }
+
+    const handelCalculateTotal = (value) => {
+        setPer_unit(value)
+        setTotalAmount(getValues('quantity') * value)
     }
 
     /************************************************************************** */
@@ -313,7 +330,7 @@ const SimpleMuiTable = () => {
                         >
                             <Box sx={{ ml: 2 }}>
                                 <Typography>
-                                    Sare Part Number : {spnNumber}
+                                    Spare Part Number : {spnNumber}
                                 </Typography>
                                 <Typography>
                                     Technical Qc :{' '}
@@ -328,7 +345,7 @@ const SimpleMuiTable = () => {
                             </Box>
                             <Box sx={{ mr: 2 }}>
                                 <Typography>
-                                    Quantity :{' '}
+                                    Requested Quantity :{' '}
                                     {pageData?.purchaseRequest?.requred_qty}
                                 </Typography>
                                 <Typography sx={{ mt: 1 }}>
@@ -342,7 +359,6 @@ const SimpleMuiTable = () => {
                             </Box>
                         </Box>
                     </Card>
-
                     <Card sx={{ width: '53%' }}>
                         <MUIDataTable
                             title={'Vendors'}
@@ -438,41 +454,46 @@ const SimpleMuiTable = () => {
                             label="Select Vendor"
                             select
                             type="text"
+                            {...register('vendor_id')}
+                            error={errors.vendor_id ? true : false}
+                            helperText={
+                                errors.vendor_id
+                                    ? errors.vendor_id?.message
+                                    : ''
+                            }
+                            style={{ width: '200px', marginRight: '20px' }}
+                        >
+                            {pageData?.vendor?.map((data) => (
+                                <MenuItem value={data.name}>
+                                    {data.name}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+
+                        <TextFieldCustOm
+                            label="Quantity"
+                            type="number"
+                            {...register('quantity')}
+                            error={errors.quantity ? true : false}
+                            helperText={
+                                errors.quantity ? errors.quantity?.message : ''
+                            }
                             style={{ width: '200px', marginRight: '20px' }}
                         />
 
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                label="Date"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="outlined"
-                                        style={{
-                                            width: '200px',
-                                            marginRight: '20px',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </LocalizationProvider>
-
                         <TextFieldCustOm
                             label="Unit Price"
-                            type="number"
+                            type="text"
                             style={{ width: '200px', marginRight: '20px' }}
-                            {...register('per_unit')}
-                            error={errors.per_unit ? true : false}
-                            helperText={
-                                errors.per_unit ? errors.per_unit?.message : ''
-                            }
+                            onChange={(e) => {
+                                handelCalculateTotal(e.target.value)
+                            }}
                         />
 
                         <TextFieldCustOm
                             label="Total"
                             type="number"
+                            value={totalAmount}
                             {...register('total_price')}
                             error={errors.total_price ? true : false}
                             helperText={
@@ -496,8 +517,11 @@ const SimpleMuiTable = () => {
                                     : ''
                             }
                         >
-                            <MenuItem>Yes</MenuItem>
-                            <MenuItem>No</MenuItem>
+                            {warrantyAndTerms?.payments?.map((data) => (
+                                <MenuItem value={data.name}>
+                                    {data.name}
+                                </MenuItem>
+                            ))}
                         </TextFieldCustOm>
 
                         <TextFieldCustOm
@@ -513,8 +537,11 @@ const SimpleMuiTable = () => {
                                     : ''
                             }
                         >
-                            <MenuItem>Yes</MenuItem>
-                            <MenuItem>No</MenuItem>
+                            {warrantyAndTerms?.warranty?.map((data) => (
+                                <MenuItem value={data.name}>
+                                    {data.name}
+                                </MenuItem>
+                            ))}
                         </TextFieldCustOm>
                     </Box>
                     <Button

@@ -34,7 +34,9 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let res = await axiosPurchaseAgent.post('/procurment/view/' + "all")
+                    let res = await axiosPurchaseAgent.post(
+                        '/procurment/view/' + 'Order Placed'
+                    )
                     if (res.status == 200) {
                         setIsLoading(false)
                         setRDLRequest(res.data.data)
@@ -79,24 +81,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'request_id',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Request ID</Typography>
-            ),
+            name: 'poid',
+            label: <Typography sx={{ fontWeight: 'bold' }}>POID</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return value?.join(',')
-                },
             },
         },
         {
-            name: 'request_date',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Request Date
-                </Typography>
-            ),
+            name: 'spn_number',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'placed_date',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -106,80 +106,41 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'spare_part_number',
+            name: 'vendor_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
-                    Spare Part Number
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Vendor Name</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'spare_part_name',
+            name: 'quanitity',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
-                    Spare Part Name
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'muic',
-            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'requred_qty',
+            name: 'per_unit',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
-                    Required Quantity
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Price (Per)</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'spare_part_number',
+            name: 'total_price',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Total Amount
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 0,
-                            }}
-                            variant="contained"
-                            disabled={tableMeta.rowData[7] != 'Pending'}
-                            onClick={() =>
-                                handleplace(value, tableMeta.rowData[5])
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Place order
-                        </Button>
-                    )
-                },
+                filter: true,
             },
         },
     ]
@@ -187,11 +148,13 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Requests', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Order placed', path: '/' }]}
+                />
             </div>
             <Card>
                 <MUIDataTable
-                    title={'Procurement Requests'}
+                    title={'Order details'}
                     data={RDLRequest}
                     columns={columns}
                     options={{

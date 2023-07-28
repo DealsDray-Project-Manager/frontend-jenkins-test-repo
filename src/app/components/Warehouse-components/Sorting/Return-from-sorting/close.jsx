@@ -155,6 +155,7 @@ export default function DialogBox() {
         try {
             setLoading(true)
             trayData.description = description
+            trayData.rackId=rackId
             let res = await axiosWarehouseIn.post(
                 '/wht-tray-close-from-sorting',
                 trayData

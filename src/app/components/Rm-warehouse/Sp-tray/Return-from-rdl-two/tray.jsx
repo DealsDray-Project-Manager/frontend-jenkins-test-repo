@@ -4,8 +4,20 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosRmUserAgent } from '../../../../../axios'
-import { Button, Typography } from '@mui/material'
+import { axiosRmUserAgent, axiosWarehouseIn } from '../../../../../axios'
+import {
+    Button,
+    Typography,
+    Dialog,
+    TableContainer,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    TextField,
+    DialogActions,
+} from '@mui/material'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -21,8 +33,48 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
+
 const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
+    const [counts, setCounts] = useState('')
+    const [trayId, setTrayId] = useState('')
+    const [open, setOpen] = useState(false)
+    const [refresh, setRefresh] = useState(refresh)
+    const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -50,11 +102,54 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
     const handleViewParts = (e, code) => {
         e.preventDefault()
         navigate('/sp-user/return-from-rdl-two/view/' + code)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handelTrayReceived = async () => {
+        try {
+            setReceiveBut(true)
+            let obj = {
+                trayId: trayId,
+                counts: counts,
+                type: 'Closed by RDL-two-sp',
+            }
+            let res = await axiosWarehouseIn.post('/receivedTray', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setReceiveBut(false)
+                setOpen(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                setReceiveBut(false)
+                setOpen(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     const columns = [
@@ -86,10 +181,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rp_tray',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RP Tray ID</Typography>
-            ),
+            name: 'sort_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
@@ -102,6 +195,7 @@ const SimpleMuiTable = () => {
                 display: false,
             },
         },
+
         {
             name: 'temp_array',
             label: (
@@ -135,18 +229,36 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: '#206CE2' }}
-                            onClick={(e) => {
-                                handleViewParts(e, value)
-                            }}
-                        >
-                            View
-                        </Button>
+                        <>
+                            {tableMeta.rowData[2] == 'Closed by RDL-two' ? (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: '#206CE2' }}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        setTrayId(value)
+                                    }}
+                                >
+                                    RECEIVE
+                                </Button>
+                            ) : (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'red' }}
+                                    onClick={(e) => {
+                                        handleViewParts(e, value)
+                                    }}
+                                >
+                                    Close
+                                </Button>
+                            )}
+                        </>
                     )
                 },
             },
@@ -154,6 +266,51 @@ const SimpleMuiTable = () => {
     ]
     return (
         <Container>
+            <BootstrapDialog
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                fullWidth
+                maxWidth="xs"
+            >
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                >
+                    Please verify the count of - {trayId}
+                </BootstrapDialogTitle>
+                <DialogContent dividers>
+                    <TextField
+                        label="Enter Item Count"
+                        variant="outlined"
+                        onChange={(e) => {
+                            setCounts(e.target.value)
+                        }}
+                        inputProps={{ maxLength: 3 }}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
+                            }
+                        }}
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{
+                            m: 1,
+                        }}
+                        disabled={counts === '' || receiveBut}
+                        variant="contained"
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            handelTrayReceived(e)
+                        }}
+                    >
+                        RECEIVED
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: 'Return from rdl-two' }]} />
             </div>

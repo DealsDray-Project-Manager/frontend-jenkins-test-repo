@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -40,6 +41,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -57,7 +59,7 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view')
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse )
                 if (res.status == 200) {
                     setrackiddrop(res.data.data)
                 }

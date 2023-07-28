@@ -68,7 +68,7 @@ const SimpleMuiTable = () => {
     const editWarranty = async (name) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/warranty/one/' + name + '/warranty-list' 
+                '/warranty/one/' + name  
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -142,6 +142,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: '_id',
+          
+            options: {
+                filter: false,
+                sort:false,
+                display:false
+            },
+        },
+        {
             name: 'name',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
             options: {
@@ -210,7 +219,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Payments', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Warranty', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}

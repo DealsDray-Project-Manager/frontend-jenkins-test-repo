@@ -116,6 +116,7 @@ const MemberEditorDialog = ({
 
     const handelEdit = async (data) => {
         try {
+            data._id=editFetchData._id
             let response = await axiosSuperAdminPrexo.post(
                 '/payments/edit',
                 data

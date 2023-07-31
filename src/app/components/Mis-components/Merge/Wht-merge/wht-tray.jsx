@@ -40,7 +40,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '170%',
+    width: '140%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -314,7 +314,7 @@ const SimpleMuiTable = () => {
         {
             name: 'name',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Tray Display Name</>
                 </Typography>
             ),
@@ -417,7 +417,7 @@ const SimpleMuiTable = () => {
         {
             name: 'code',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" sx={{ml:4}}>
                     <>Actions</>
                 </Typography>
             ),
@@ -426,7 +426,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ ml:4 }}>
                             <Button
                                 sx={{
                                     width: '74px',

@@ -27,7 +27,7 @@ import Swal from 'sweetalert2'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '130%',
+    width: '100%',
     height:'100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -304,7 +304,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'closed_time_wharehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold' ><>Closed Time Warehouse</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Closed Time Warehouse</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -315,13 +315,13 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Actions</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold' sx={{ml:5}}><>Actions</></Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{textAlign:'center'}}>
+                        <Box sx={{ml:5}}>
                             <Button
                                 sx={{
                                     width:'74px',

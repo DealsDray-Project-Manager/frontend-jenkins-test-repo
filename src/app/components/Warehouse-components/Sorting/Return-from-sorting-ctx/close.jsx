@@ -59,7 +59,7 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view' + user.warehouse)
+                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
                 if (res.status == 200) {
                     console.log(res.data.data)
                     setrackiddrop(res.data.data)
@@ -162,6 +162,7 @@ export default function DialogBox() {
                 limit: trayData.limit,
                 type: trayData.type_taxanomy,
                 description: description,
+                rackId:rackId
             }
             let res = await axiosWarehouseIn.post(
                 '/sorting/returnFromSortingCtxStx/close',

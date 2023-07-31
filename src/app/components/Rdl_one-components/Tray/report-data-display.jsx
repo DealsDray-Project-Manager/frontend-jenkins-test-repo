@@ -266,7 +266,7 @@ export default function DialogBox() {
                             reportData?.delivery?.bqc_software_report
                                 ?.final_grade
                         }
-                        imei={reportData?.order?.imei}
+                        imei={reportData?.delivery?.imei}
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>

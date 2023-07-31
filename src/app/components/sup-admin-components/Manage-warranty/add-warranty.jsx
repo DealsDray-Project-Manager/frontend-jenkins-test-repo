@@ -107,10 +107,9 @@ const MemberEditorDialog = ({
             })
         }
     }
-
     const handelEdit = async (data) => {
         try {
-            data._id=editFetchData._id
+            data._id = editFetchData._id
             let response = await axiosSuperAdminPrexo.post(
                 '/warranty/edit',
                 data
@@ -132,7 +131,7 @@ const MemberEditorDialog = ({
                 })
             } else {
                 Swal.fire({
-                    icon: 'failed',
+                    icon: 'error',
                     title: response.data.message,
                     showConfirmButton: false,
                 })

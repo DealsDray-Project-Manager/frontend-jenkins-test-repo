@@ -21,7 +21,7 @@ const MemberEditorDialog = ({
     open,
     setIsAlive,
     RDLUsers,
-    isCheckk,
+    isCheck,
 }) => {
     const [RDLUserName, setRDL] = useState('')
     const [loading, setLoading] = useState(false)
@@ -30,10 +30,11 @@ const MemberEditorDialog = ({
         try {
             setLoading(true)
             let obj = {
-                tray: isCheckk,
+                tray: isCheck,
                 user_name: RDLUserName,
                 sortId: 'Send for RDL-FLS',
             }
+            
             let res = await axiosMisUser.post(
                 '/assignToAgent/rdl-fls/sentToWarehouse',
                 obj

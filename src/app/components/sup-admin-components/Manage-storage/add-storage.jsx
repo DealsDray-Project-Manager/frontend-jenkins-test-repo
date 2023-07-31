@@ -18,7 +18,7 @@ const FormHandlerBox = styled('div')(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
 }))
- 
+
 const AddPartOrColorAndEditDialog = ({
     open,
     handleClose,
@@ -36,13 +36,13 @@ const AddPartOrColorAndEditDialog = ({
         }
     }, [])
 
-    const schema = Yup.object().shape({ 
+    const schema = Yup.object().shape({
         name: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
- 
+
         description: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')

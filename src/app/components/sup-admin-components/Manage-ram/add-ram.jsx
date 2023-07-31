@@ -126,7 +126,7 @@ const AddPartOrColorAndEditDialog = ({
                 })
             } else {
                 Swal.fire({
-                    icon: 'failed',
+                    icon: 'error',
                     title: response.data.message,
                     showConfirmButton: false,
                 })

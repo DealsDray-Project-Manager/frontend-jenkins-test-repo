@@ -10,7 +10,7 @@ import {
     Box,
     Button,
     Card,
-    Typography
+    Typography,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -19,7 +19,6 @@ import { Breadcrumb } from 'app/components'
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -168,34 +167,43 @@ export default function StickyHeadTable({ props }) {
                 }}
             >
                 <Card>
-                    <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                    <Box sx={{ml:3}}>
-                    <Typography sx={{fontSize:'20px', fontWeight:'bold'}}>Tray</Typography>
-                    </Box>
                     <Box
-                    sx={{
-                        float: 'right',
-                        mr:2
-                    }}
-                >
-                    <h4>
-                        Assigned Date -{' '}
-                        {new Date(
-                            mmtTray[0]?.status_change_time
-                        ).toLocaleString('en-GB', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        })}
-                    </h4>
-                    <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
-                </Box>
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Box sx={{ ml: 3 }}>
+                            <Typography
+                                sx={{ fontSize: '20px', fontWeight: 'bold' }}
+                            >
+                                Tray
+                            </Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                float: 'right',
+                                mr: 2,
+                            }}
+                        >
+                            <h4>
+                                Assigned Date -{' '}
+                                {new Date(
+                                    mmtTray[0]?.status_change_time
+                                ).toLocaleString('en-GB', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                })}
+                            </h4>
+                            <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
+                        </Box>
                     </Box>
 
-                    
-                <Box sx={{}}>
-                    {/* <Paper sx={{ width: '100%', overflow: 'auto' }}> */}
-                    
+                    <Box sx={{}}>
+                        {/* <Paper sx={{ width: '100%', overflow: 'auto' }}> */}
+
                         <TableContainer>
                             <Table
                                 id="example"
@@ -203,14 +211,64 @@ export default function StickyHeadTable({ props }) {
                                 aria-label="sticky table"
                             >
                                 <TableHead>
-                                    <TableRow >
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', p:2}}>Record.No</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Tray Id</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Rack Id</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Tray Type</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Quantity</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Status</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:'16px' }}>Action</TableCell>
+                                    <TableRow>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                                p: 2,
+                                            }}
+                                        >
+                                            Record.No
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Tray Id
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Rack Id
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Tray Type
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Quantity
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Status
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
+                                            Action
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -220,9 +278,13 @@ export default function StickyHeadTable({ props }) {
                                             role="checkbox"
                                             tabIndex={-1}
                                         >
-                                            <TableCell sx={{p:4}}>{index + 1}</TableCell>
+                                            <TableCell sx={{ p: 4 }}>
+                                                {index + 1}
+                                            </TableCell>
                                             <TableCell>{data.code}</TableCell>
-                                            <TableCell>{data.rack_id}</TableCell>
+                                            <TableCell>
+                                                {data.rack_id}
+                                            </TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}
                                             </TableCell>
@@ -275,23 +337,23 @@ export default function StickyHeadTable({ props }) {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    {/* </Paper> */}
-                </Box>
-                <div style={{ float: 'right' }}>
-                    <Box sx={{ float: 'right' }}>
-                        <Button
-                            sx={{ m: 3, mb: 9 }}
-                            variant="contained"
-                            disabled={loading}
-                            style={{ backgroundColor: 'green' }}
-                            onClick={(e) => {
-                                handelIssue(e, 'Assigned to sorting agent')
-                            }}
-                        >
-                            Issue To Agent
-                        </Button>
+                        {/* </Paper> */}
                     </Box>
-                </div>
+                    <div style={{ float: 'right' }}>
+                        <Box sx={{ float: 'right' }}>
+                            <Button
+                                sx={{ m: 3, mb: 9 }}
+                                variant="contained"
+                                disabled={loading}
+                                style={{ backgroundColor: 'green' }}
+                                onClick={(e) => {
+                                    handelIssue(e, 'Assigned to sorting agent')
+                                }}
+                            >
+                                Issue To Agent
+                            </Button>
+                        </Box>
+                    </div>
                 </Card>
             </Box>
         </Container>

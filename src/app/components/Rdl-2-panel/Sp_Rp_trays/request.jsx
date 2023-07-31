@@ -132,7 +132,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span style={{ marginLeft: '8px' }}>{value}</span>,
+                            <span style={{ marginLeft: '8px' }}>{value}</span>
                             <br />
                             <Button
                                 sx={{

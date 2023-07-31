@@ -240,7 +240,7 @@ export default function DialogBox() {
                             reportData?.delivery?.bqc_software_report
                                 ?.final_grade
                         }
-                        imei={reportData?.order?.imei}
+                        imei={reportData?.delivery?.imei}
                     />
                 </Grid>
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>

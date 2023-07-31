@@ -161,14 +161,14 @@ const SimpleMuiTable = () => {
                     }
                 }
                 obj.rdl_repair_report.more_part_required = arr1
-            } 
-                let arr = []
-                for (let y of requredPart) {
-                    if (y.rdl_two_status == 'Used') {
-                        arr.push(y)
-                    }
+            }
+            let arr = []
+            for (let y of requredPart) {
+                if (y.rdl_two_status == 'Used') {
+                    arr.push(y)
                 }
-                obj.rdl_repair_report.used_parts = arr
+            }
+            obj.rdl_repair_report.used_parts = arr
             const res = await axiosRdlTwoAgent.post('/repairDone/action', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -178,7 +178,6 @@ const SimpleMuiTable = () => {
                     confirmButtonText: 'Ok',
                 })
 
-                
                 navigate('/rdl-two/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({
@@ -608,7 +607,7 @@ const SimpleMuiTable = () => {
                                 reportData?.delivery?.bqc_software_report
                                     ?.final_grade
                             }
-                            imei={reportData?.order?.imei}
+                            imei={reportData?.delivery?.imei}
                         />
                     </Grid>
                 </Grid>

@@ -89,7 +89,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'spn_number',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Part Id</Typography>,
             options: {
                 filter: true,
             },
@@ -115,7 +115,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'quanitity',
+            name: 'quantity',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),

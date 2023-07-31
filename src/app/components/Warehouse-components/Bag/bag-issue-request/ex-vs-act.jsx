@@ -626,37 +626,37 @@ const SimpleMuiTable = () => {
     const tableDataActul = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{display:'flex'}}>
+                <Box sx={{ display: 'flex' }}>
                     <Box>
-                <h5>ACTUAL</h5>
-                <TextField
-                    sx={{ m: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    disabled={textBoxDis}
-                    inputRef={(input) => input && input.focus()}
-                    name="doorsteps_diagnostics"
-                    label="SCAN AWBN"
-                    value={awbn}
-                    // onChange={(e) => setAwbn(e.target.value)}
-                    onChange={(e) => {
-                        setAwbn(e.target.value)
-                        handelAwbn(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-                </Box>
+                        <h5>ACTUAL</h5>
+                        <TextField
+                            sx={{ m: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            disabled={textBoxDis}
+                            inputRef={(input) => input && input.focus()}
+                            name="doorsteps_diagnostics"
+                            label="SCAN AWBN"
+                            value={awbn}
+                            // onChange={(e) => setAwbn(e.target.value)}
+                            onChange={(e) => {
+                                setAwbn(e.target.value)
+                                handelAwbn(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
 
                     <Box
                         sx={{
-                           textAlign:"right",
+                            textAlign: 'right',
                             // m: 1,
-                            mr:2,
-                            display:'flex'
+                            mr: 2,
+                            display: 'flex',
                         }}
                     >
                         <Box sx={{}}>
@@ -672,7 +672,7 @@ const SimpleMuiTable = () => {
                                 /{bagData[0]?.limit}
                             </p>
                         </Box>
-                    
+
                         <Box sx={{}}>
                             <h5>Valid</h5>
                             <p style={{ marginLeft: '19px', fontSize: '24px' }}>
@@ -686,7 +686,6 @@ const SimpleMuiTable = () => {
                             </p>
                         </Box>
                     </Box>
-                
                 </Box>
                 <TableContainer>
                     <Table

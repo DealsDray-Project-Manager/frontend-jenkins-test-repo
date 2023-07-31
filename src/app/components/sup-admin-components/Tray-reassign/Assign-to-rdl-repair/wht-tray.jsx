@@ -41,7 +41,7 @@ const SimpleMuiTable = () => {
             try {
                 setIsLoading(true)
                 let obj = {
-                    trayType: 'WHT',
+                    trayType: 'RPT',
                     sort_id: 'Send for RDL-two',
                 }
                 let response = await axiosSuperAdminPrexo.post(
@@ -332,7 +332,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign-to-agent', path: '/' },
-                        { name: 'Charging' },
+                        { name: 'RDL-two' },
                     ]}
                 />
             </div>

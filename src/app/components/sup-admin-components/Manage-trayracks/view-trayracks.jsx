@@ -259,6 +259,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'bag_or_tray',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Count</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (items, tableMeta) => items?.length,
+            },
+        },
+        {
             name: 'status',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">

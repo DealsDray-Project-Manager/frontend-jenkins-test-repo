@@ -14,7 +14,7 @@ import {
     TableFooter,
     Typography,
     Box,
-   TableContainer
+    TableContainer,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -33,9 +33,9 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const TrackItem = () => {
     const [page, setPage] = React.useState(0)
@@ -203,75 +203,594 @@ const TrackItem = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'120px'}}>Record No</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Delivery Status</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Order ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Uic Status</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>UIC</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Item ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'170px'}}>Stockin Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Bag ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Stockin Status</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>Bag close Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'160px'}}>BOT Agent Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Assigned to BOT Agent Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'100px'}}>Tray ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'100px'}}>Tray Type</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'190px'}}>Tray Status</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'140px'}}>Tray Location</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Tray Closed Time BOT</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'360px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '120px',
+                            }}
+                        >
+                            Record No
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Delivery Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Tracking ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Order ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Uic Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            UIC
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            IMEI
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Item ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '170px',
+                            }}
+                        >
+                            Stockin Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Bag ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Stockin Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            Bag close Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '160px',
+                            }}
+                        >
+                            BOT Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Assigned to BOT Agent Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '100px',
+                            }}
+                        >
+                            Tray ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '100px',
+                            }}
+                        >
+                            Tray Type
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '190px',
+                            }}
+                        >
+                            Tray Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '140px',
+                            }}
+                        >
+                            Tray Location
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Tray Closed Time BOT
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '360px',
+                            }}
+                        >
                             Tray Received From BOT Time Warehouse
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Tray Closed Time Warehouse</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Sorting Agent Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Handover to Sorting Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'100px'}}>WHT Tray</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>WHT Tray Assigned Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'300px'}}>WHT Tray Received From Sorting</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'280px'}}>WHT Tray Closed After Sorting</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Charging Username</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Charging Assigned Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Charge In Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Charge Done Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'380px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Tray Closed Time Warehouse
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Sorting Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Handover to Sorting Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '100px',
+                            }}
+                        >
+                            WHT Tray
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            WHT Tray Assigned Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '300px',
+                            }}
+                        >
+                            WHT Tray Received From Sorting
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '280px',
+                            }}
+                        >
+                            WHT Tray Closed After Sorting
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Charging Username
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Charging Assigned Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Charge In Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Charge Done Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '380px',
+                            }}
+                        >
                             Tray Received From Charging Time Warehouse
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'380px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '380px',
+                            }}
+                        >
                             Charging Done Tray Closed Time Warehouse
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>BQC Agent Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Assigned to BQC</TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            BQC Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Assigned to BQC
+                        </TableCell>
 
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>BQC Done Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'340px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            BQC Done Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '340px',
+                            }}
+                        >
                             Tray Received From BQC Time Warehouse
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'340px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '340px',
+                            }}
+                        >
                             Bqc Done Tray Closed Time Warehouse
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Issued to Audit Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Audit Agnet Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>Audit Done Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'300px'}}>Audit Done Tray Recieved Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'340px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Issued to Audit Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Audit Agnet Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            Audit Done Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '300px',
+                            }}
+                        >
+                            Audit Done Tray Recieved Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '340px',
+                            }}
+                        >
                             Audit Done Tray Closed By Warehouse Date
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>CTX Tray Id</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'200px'}}>RDL FLS Agent name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Tray Issued to RDL FLS Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Tray Closed By RDL FLS Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'300px'}}>Tray Received From RDL FLS Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'300px'}}>RDL FLS Done Closed By Warehouse</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'300px'}}>CTX Tray Transfer to Sales Date</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'440px'}}>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            CTX Tray Id
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                            }}
+                        >
+                            RDL FLS Agent name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Tray Issued to RDL FLS Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Tray Closed By RDL FLS Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '300px',
+                            }}
+                        >
+                            Tray Received From RDL FLS Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '300px',
+                            }}
+                        >
+                            RDL FLS Done Closed By Warehouse
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '300px',
+                            }}
+                        >
+                            CTX Tray Transfer to Sales Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '440px',
+                            }}
+                        >
                             CTX Tray Received From Processing and Close By WH
                             Date
                         </TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', pl:10, width:'240px'}}>STX Tray Id</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'240px'}}>Item Moved to Billed Bin</TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                pl: 10,
+                                width: '240px',
+                            }}
+                        >
+                            STX Tray Id
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '240px',
+                            }}
+                        >
+                            Item Moved to Billed Bin
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Issued to Sorting (WHT TO RP)
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Sorting Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Sorting Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Rp Tray
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Sorting Done Closed by Agent
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Received from Sorting By WH
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Sorting Closed By WH
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Issued to RDL-Two
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            RDL-Two Username
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            RDL-Two Done Closed By Agent
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            RDL-Two Done Received By WH
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            RDL-Two Done Closed By WH
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -629,7 +1148,123 @@ const TrackItem = () => {
                                     : ''}
                             </TableCell>
                             <TableCell>{data?.delivery.stx_tray_id}</TableCell>
-                            <TableCell>{data?.delivery.item_moved_to_billed_bin}</TableCell>
+                            <TableCell>
+                                {data?.delivery.item_moved_to_billed_bin}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.issued_to_wht_to_rp !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.issued_to_wht_to_rp
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.wht_to_rp_sorting_agent}
+                            </TableCell>
+                            <TableCell>{data?.delivery?.rp_tray}</TableCell>
+                            <TableCell>
+                                {data?.delivery?.wht_to_rp_sorting_done !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.wht_to_rp_sorting_done
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    ?.wht_to_rp_sorting_done_received !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.wht_to_rp_sorting_done_received
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    ?.wht_to_rp_sorting_done_received !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.wht_to_rp_sorting_done_received
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    ?.wht_to_rp_sorting_done_wh_closed !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.wht_to_rp_sorting_done_wh_closed
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.issued_to_rdl_two_date !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.issued_to_rdl_two_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_two_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_two_user_name}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_two_closed_date !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.rdl_two_closed_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.rdl_two_closed_date !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.rdl_two_closed_date
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.received_from_rdl_two !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.received_from_rdl_two
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery
+                                    ?.rdl_two_done_close_by_warehouse !=
+                                undefined
+                                    ? new Date(
+                                          data?.delivery?.rdl_two_done_close_by_warehouse
+                                      ).toLocaleString('en-GB', {
+                                          hour12: true,
+                                      })
+                                    : ''}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -678,7 +1313,7 @@ const TrackItem = () => {
                 {tableData}
             </Card>
             <TableFooter>
-                <TableRow> 
+                <TableRow>
                     <TablePagination
                         sx={{ px: 2 }}
                         rowsPerPageOptions={[100, 150, 200]}

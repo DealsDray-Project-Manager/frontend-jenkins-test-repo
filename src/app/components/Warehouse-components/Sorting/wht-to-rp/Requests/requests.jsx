@@ -199,16 +199,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        {
-            name: 'rack_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return value
-                },
-            },
-        },
+
         {
             name: 'issued_user_name',
             label: (

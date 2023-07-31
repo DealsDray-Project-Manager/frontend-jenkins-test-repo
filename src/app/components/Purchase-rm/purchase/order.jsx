@@ -8,9 +8,6 @@ import {
     Typography,
     MenuItem,
 } from '@mui/material'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DatePicker from '@mui/lab/DatePicker'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -99,9 +96,15 @@ const SimpleMuiTable = () => {
         reset,
         getValues,
         setValue,
+        watch,
     } = useForm({
         resolver: yupResolver(schema),
     })
+    const quantityWatch = watch('quantity')
+
+    useEffect(() => {
+        setTotalAmount(getValues('quantity') * per_unit)
+    }, [quantityWatch])
 
     const columns = [
         {
@@ -241,34 +244,44 @@ const SimpleMuiTable = () => {
 
     const onSubmit = async (data) => {
         try {
-            data.per_unit = per_unit
-            data.muic = muic
-            data.total_price = totalAmount
-            data.spn_number = spnNumber
-            data.placed_date = Date.now()
-            setLoading(true)
-            let obj = {
-                dataOfOrder: data,
-                muic: muic,
-                spnNumber: spnNumber,
-            }
-            let response = await axiosPurchaseAgent.post('/placeOrder', obj)
-            if (response.status == 200) {
-                setLoading(false)
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: response.data.message,
-                    confirmButtonText: 'Ok',
-                })
-                navigate('/purchase-user/purchase')
+            console.log(per_unit)
+            if (per_unit !== '') {
+                data.per_unit = per_unit
+                data.muic = muic
+                data.total_price = totalAmount
+                data.spn_number = spnNumber
+                data.placed_date = Date.now()
+                setLoading(true)
+                let obj = {
+                    dataOfOrder: data,
+                    muic: muic,
+                    spnNumber: spnNumber,
+                }
+
+                let response = await axiosPurchaseAgent.post('/placeOrder', obj)
+                if (response.status == 200) {
+                    setLoading(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: response.data.message,
+                        confirmButtonText: 'Ok',
+                    })
+                    navigate('/purchase-user/purchase')
+                } else {
+                    setLoading(false)
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: response.data.message,
+                        showConfirmButton: false,
+                    })
+                }
             } else {
-                setLoading(false)
                 Swal.fire({
-                    position: 'top-center',
                     icon: 'error',
-                    title: response.data.message,
-                    showConfirmButton: false,
+                    title: 'Oops...',
+                    text: 'Please check unit price',
                 })
             }
         } catch (error) {
@@ -478,6 +491,18 @@ const SimpleMuiTable = () => {
                             helperText={
                                 errors.quantity ? errors.quantity?.message : ''
                             }
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onPaste={(e) => {
+                                e.preventDefault()
+                                return false
+                            }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
                             style={{ width: '200px', marginRight: '20px' }}
                         />
 
@@ -487,6 +512,15 @@ const SimpleMuiTable = () => {
                             style={{ width: '200px', marginRight: '20px' }}
                             onChange={(e) => {
                                 handelCalculateTotal(e.target.value)
+                            }}
+                            onPaste={(e) => {
+                                e.preventDefault()
+                                return false
+                            }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
                             }}
                         />
 

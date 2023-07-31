@@ -181,13 +181,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'rack_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
+      
         {
             name: 'sort_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
@@ -228,9 +222,9 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[3] ==
+                            {tableMeta.rowData[2] ==
                                 'Accepted From Processing' ||
-                            tableMeta.rowData[3] == 'Accepted From Sales' ? (
+                            tableMeta.rowData[2] == 'Accepted From Sales' ? (
                                 <Button
                                     sx={{
                                         m: 1,

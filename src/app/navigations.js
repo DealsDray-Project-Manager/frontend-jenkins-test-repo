@@ -322,7 +322,7 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-repair',
+                name: 'Assigned to rdl-two',
                 path: '/sup-admin/tray-reassign/rdl-repair',
                 iconText: 'PL',
             },

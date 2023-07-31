@@ -119,7 +119,7 @@ export default function CenteredTabs() {
                                 reportData?.delivery?.bqc_software_report
                                     ?.final_grade
                             }
-                            imei={reportData?.order?.imei}
+                            imei={reportData?.delivery?.imei}
                         />
                     </Grid>
                 </Grid>

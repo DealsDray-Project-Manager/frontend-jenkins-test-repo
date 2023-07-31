@@ -2951,6 +2951,21 @@ const PickupPage = () => {
                                             Issue Resolved Through Software
                                         </MenuItem>
                                         <MenuItem value="Dead">Dead</MenuItem>
+                                        <MenuItem value="Re BQC Required">
+                                            Re BQC Required
+                                        </MenuItem>
+                                        <MenuItem value="Software Installation">
+                                            Software Installation
+                                        </MenuItem>
+                                        <MenuItem value="Motherboard Work">
+                                            Motherboard Work
+                                        </MenuItem>
+                                        <MenuItem value="Repaired Without Part">
+                                            Repaired Without Part
+                                        </MenuItem>
+                                        <MenuItem value="Parts Replaced & Repaired">
+                                            Parts Replaced & Repaired
+                                        </MenuItem>
                                     </Select>
                                 </FormControl>
                             ) : null}

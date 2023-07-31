@@ -27,12 +27,11 @@ const MemberEditorDialog = ({
     trayId,
     partDetails,
     objId,
-    uniqueid
+    uniqueid,
 }) => {
     const [boxList, setBoxList] = useState([])
     const [loading, setLoading] = useState(false)
     const [boxName, setBoxName] = useState('')
-
 
     useEffect(() => {
         const fetchBoxes = async () => {
@@ -62,7 +61,7 @@ const MemberEditorDialog = ({
                 spTrayId: trayId,
                 boxName: boxName,
                 objId: objId,
-                uniqueid:uniqueid
+                uniqueid: uniqueid,
             }
             let res = await axiosRmUserAgent.post('/addIntoBox', obj)
             if (res.status == 200) {
@@ -105,13 +104,13 @@ const MemberEditorDialog = ({
                 >
                     {boxList.map((data) => (
                         <MenuItem
-                            key={data.name}
-                            value={data.name}
+                            key={data.box_id}
+                            value={data.box_id}
                             onClick={(e) => {
-                                setBoxName(data.name)
+                                setBoxName(data.box_id)
                             }}
                         >
-                            {data.name}
+                            {data.box_id}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>

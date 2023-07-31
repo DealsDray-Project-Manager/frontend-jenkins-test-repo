@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSpMisAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box, TextField } from '@mui/material'
+import { Button, Typography, Card, Box, TextField, Table, TableContainer } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,6 +20,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '120%',
+    height: '100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [location, setLocation] = useState('')
@@ -112,7 +134,7 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                <Typography sx={{ fontWeight: 'bold', ml: 1 }}>
                     Record No
                 </Typography>
             ),
@@ -121,7 +143,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
+                    <Typography sx={{ pl: 2 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -185,7 +207,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_qtc',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
                     Purchase request created
                 </Typography>
             ),
@@ -245,6 +267,8 @@ const SimpleMuiTable = () => {
                         Model : {model}
                     </Typography>
                 </Box>
+                <ScrollableTableContainer>
+                <ProductTable>
                 <MUIDataTable
                     sx={{ mt: 0 }}
                     // title={'Pre Purchase Requests'}
@@ -290,6 +314,8 @@ const SimpleMuiTable = () => {
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
+                </ProductTable>
+                </ScrollableTableContainer>
                 <br />
                 <Box>
                     <Button

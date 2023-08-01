@@ -34,7 +34,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '107%',
+    width: '115%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {

@@ -4,27 +4,26 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio,Typography,Table, TableContainer } from '@mui/material'
+import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
-
+import Avatar from '@mui/material/Avatar'
+import './customDataTableStyles.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
-      margin: '16px',
+        margin: '16px',
     },
     '& .breadcrumb': {
-      marginBottom: '30px',
-      [theme.breakpoints.down('sm')]: {
-        marginBottom: '16px',
-      },
-    }
-  }));
-  
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+})) 
 
-  const ProductTable = styled(Table)(() => ({
+const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '150%',
     height:'100%',
@@ -43,15 +42,9 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: scroll;
+  `overflow-x: auto`;
 
-/* Hide the scrollbar in webkit-based browsers */
-::-webkit-scrollbar {
-  display: none;
-}
-`;
-
-const UserTable = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
@@ -88,9 +81,11 @@ const UserTable = () => {
         setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
+
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
+
     const editUser = async (empId) => {
         try {
             let response = await axiosSuperAdminPrexo.get(
@@ -113,7 +108,7 @@ const UserTable = () => {
         e.preventDefault()
         navigate('/sup-admin/user-history/' + username)
     }
-
+    
     const handelDeactive = (userId) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -183,10 +178,8 @@ const UserTable = () => {
         }) 
     }
 
-    const options = {
-        // Other table options...
-        setTableProps: () => ({ style: { tableLayout: 'auto'} }),
-      };
+
+ 
     
     const columns = [
         {
@@ -198,7 +191,10 @@ const UserTable = () => {
                 
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>,
+                setCellProps: () => ({
+                    style: { width: '10%' }, // Set the width of the column as needed
+                  }),
             },
             
         },
@@ -212,6 +208,9 @@ const UserTable = () => {
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
+                setCellProps: () => ({
+                    style: { width: '15%' }, // Set the width of the column as needed
+                  }),
             },
              
         },
@@ -389,28 +388,33 @@ const UserTable = () => {
         },
     
     ]
+
     return (
         <Container>
-            <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Users', path: '/' }]} />
+            <div className="breadcrumb"> 
+                <Breadcrumb
+                    routeSegments={[{ name: 'Users', path: '/' }]}
+                />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => handleDialogOpen()}
+                onClick={() => setShouldOpenEditorDialog(true)}
             >
-                Add New Member
+                Add New User
             </Button>
-            <ScrollableTableContainer>
-            <ProductTable>
-            <MUIDataTable
-                title={'User Report'}
+            {/* <ScrollableTableContainer> */}
+                {/* <ProductTable> */}
+                <div className="custom-table-container">
+
+                <MUIDataTable
+                title={'All Users'}
                 data={userList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'scroll',
+                    responsive: 'simple',
                     download: false,
                     print: false,
                     textLabels: {
@@ -428,13 +432,13 @@ const UserTable = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    rowsPerPageOptions: [10, 15, 40, 80, 100],
                 }}
-                
             />
+            </div>
+                {/* </ProductTable> */}
+            {/* </ScrollableTableContainer> */}
             
-            </ProductTable>
-            </ScrollableTableContainer>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -443,10 +447,9 @@ const UserTable = () => {
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
                 />
-                
             )}
         </Container>
     )
 }
 
-export default UserTable
+export default SimpleMuiTable

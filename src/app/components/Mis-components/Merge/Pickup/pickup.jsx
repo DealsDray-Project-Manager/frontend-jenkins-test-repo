@@ -64,7 +64,7 @@ const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '150%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'none',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -82,7 +82,7 @@ const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
     width: '187%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'none',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -100,7 +100,7 @@ const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
     width: '212%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'none',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -117,7 +117,7 @@ const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
     width: '240%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'none',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -132,9 +132,9 @@ const ProductTableRdlOne = styled(Table)(() => ({
 }))
 const ProductTableRdlTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '110%',
+    width: '108%',
     height: '100%',
-    whiteSpace: 'pre',
+    whiteSpace: 'none',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -1293,7 +1293,7 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" sx={{mr:5}}>
                     <>Record No</>
                 </Typography>
             ),

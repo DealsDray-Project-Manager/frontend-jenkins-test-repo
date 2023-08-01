@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode'
 import { Button, Typography, Card, Box, TextField, Table, TableContainer } from '@mui/material'
 import Swal from 'sweetalert2'
 
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -152,7 +153,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                <Typography sx={{ fontWeight: 'bold', mr:2 }} noWrap>
                     Spare Part Number
                 </Typography>
             ),
@@ -207,7 +208,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_qtc',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                <Typography sx={{ fontWeight: 'bold', mr:12 }} noWrap>
                     Purchase request created
                 </Typography>
             ),
@@ -218,7 +219,7 @@ const SimpleMuiTable = () => {
         {
             name: 'required_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                <Typography sx={{ fontWeight: 'bold', mr:2 }} noWrap>
                     Update Required Quantity
                 </Typography>
             ),

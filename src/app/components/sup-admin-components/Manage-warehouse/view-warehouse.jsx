@@ -150,7 +150,7 @@ const SimpleMuiTable = () => {
             }
         })
     }
-
+ 
     
     const columns = [
         {
@@ -313,7 +313,7 @@ const SimpleMuiTable = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    rowsPerPageOptions: [10, 15, 40, 80, 100],
                 }}
             />
                 </ProductTable>

@@ -240,10 +240,10 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <h4>EXPECTED</h4>
+                    <h4 style={{marginLeft:'15px'}}>EXPECTED</h4>
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -277,7 +277,7 @@ export default function DialogBox() {
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
                                     </TableCell>
-                                    <TableCell>{data?.uic}</TableCell>
+                                    <TableCell sx={{pl:3}}>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -294,15 +294,12 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h4>ACTUAL</h4>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}
-                >
+                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                <Box>
+                <h4 style={{marginLeft:'15px'}}>ACTUAL</h4>
+                
                     <TextField
-                        sx={{ mt: 1, ml: 2 }}
+                        sx={{ mt: 1, ml: 2, mb:1  }}
                         id="outlined-password-input"
                         type="text"
                         inputRef={(input) => input && input.focus()}
@@ -321,14 +318,14 @@ export default function DialogBox() {
                             },
                         }}
                     />
-
+                </Box>
                     <Box
                         sx={{
                             mr: 2,
                         }}
                     >
                         <h5 style={{ marginLeft: '12px' }}>Total</h5>
-                        <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                        <p style={{ marginLeft: '5px', fontSize: '22px' }}>
                             {trayData?.actual_items?.length}/{trayData?.limit}
                         </p>
                     </Box>
@@ -342,7 +339,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell>S.NO</TableCell>
+                                <TableCell sx={{pl:2}}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -354,7 +351,7 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>

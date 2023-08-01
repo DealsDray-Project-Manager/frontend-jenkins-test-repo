@@ -34,6 +34,7 @@ import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-da
 import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
 import AuditReport from './Report/Audit-report'
 import Swal from 'sweetalert2'
+import { Breadcrumb } from 'app/components'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -316,6 +317,15 @@ export default function DialogBox() {
 
     return (
         <>
+         <div className="breadcrumb" style={{marginTop:'20px', marginLeft:'15px'}}>
+                <Breadcrumb 
+                    routeSegments={[
+                        { name: 'RDL-Requests', path: '/' },
+                        { name: 'Verification', path: '/'},
+                        { name: 'Report'}
+                    ]}
+                />
+            </div>
             <Box>
                 <BootstrapDialog
                     aria-labelledby="customized-dialog-title"

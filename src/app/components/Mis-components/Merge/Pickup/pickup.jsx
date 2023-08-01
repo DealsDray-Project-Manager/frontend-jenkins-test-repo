@@ -950,7 +950,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -966,7 +966,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -998,14 +998,14 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='105px'>
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:4}}>{value?.bqc_report?.bqc_incomplete_reason || ''}</Typography>,

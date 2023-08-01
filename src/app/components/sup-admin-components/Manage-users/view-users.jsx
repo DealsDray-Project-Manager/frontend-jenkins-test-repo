@@ -184,42 +184,45 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
             options: {
                 
                 filter: false,
                 
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '38%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>,
-                setCellProps: () => ({
-                    style: { width: '10%' }, // Set the width of the column as needed
-                  }),
+                <Typography noWrap sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
+                
             },
             
         },
         {
             name: 'profile',
-            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Profile</></Typography>,
             options: {
                 
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
-                setCellProps: () => ({
-                    style: { width: '15%' }, // Set the width of the column as needed
-                  }),
             },
              
         },
         {
             name: 'creation_date',
-            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' noWrap><>Creation Date</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
-                
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -229,89 +232,122 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'email',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Email</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'contact',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Mobile No</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '33%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'user_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'user_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'cpc_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Device Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'device_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
              
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '26%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
@@ -331,11 +367,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
              
             options: {
                 sort: false,
                 filter: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box

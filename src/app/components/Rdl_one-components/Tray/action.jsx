@@ -464,15 +464,24 @@ const Actionfunction = () => {
                 ''
             )}
             <br />
-            <TextField
-                defaultValue={getValues('description')}
+            {/* <TextField
+                defaultValue={getValues('description')} 
                 sx={{ width: '180px', mt: 1 }}
                 label="Description"
                 type="text"
                 {...register('description')}
                 error={errors.description ? true : false}
                 helperText={errors.description?.message}
-            ></TextField>
+            ></TextField> */}
+
+            <textarea
+                style={{
+                    marginLeft: '5px',
+                    width: '100%',
+                    height: '100px',
+                }}
+                placeholder="Description"
+            ></textarea>
 
             <br />
             <Box sx={{ textAlign: 'right' }}>

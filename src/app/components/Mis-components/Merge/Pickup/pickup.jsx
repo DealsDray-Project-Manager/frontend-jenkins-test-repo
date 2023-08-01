@@ -61,7 +61,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
+    // minWidth: 550,
     width: '150%',
     height: '100%',
     whiteSpace: 'none',
@@ -378,7 +378,7 @@ const PickupPage = () => {
                 <Typography noWrap
                     variant="subtitle1"
                     fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
+                    // sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
                 </Typography>
@@ -386,6 +386,9 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -403,15 +406,18 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginLeft='20px'>
                     <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 4 }}>
+                    <Typography noWrap sx={{ pl: 7 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -424,41 +430,54 @@ const PickupPage = () => {
                 <Typography noWrap
                     variant="subtitle1"
                     fontWeight="bold"
-                    marginLeft="20px"
+                    marginRight="50px"
                 >
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
 
             options: {
-                filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) => value.uic,
+                filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
+                customBodyRender: (value, dataIndex) => (
+                <Typography sx={{ ml:3 }}>
+                      {value.uic} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                )
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight="45px">
                     <>Order ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.order_id,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
                     <>IMEI</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -466,50 +485,67 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
                     <>Brand</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
-                sort: true,
+                sort: true
             },
         },
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
                     <>Model</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
                     <>MUIC</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
                     <>Tray ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:1 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
@@ -522,8 +558,11 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.battery_status || '',
+                    <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
             },
         },
         {
@@ -536,20 +575,26 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charge_percentage || '',
+                    <Typography sx={{ml:3}}>{value?.charging?.charge_percentage || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
                     <>Body Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '8%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -557,13 +602,16 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='100px'>
                     <>Display Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '10%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => {
                     const displayCondition = value?.charging?.display_condition
                     if (!displayCondition) {
@@ -578,13 +626,16 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
                     <>Lock Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.lock_status || '',
             },
@@ -592,15 +643,18 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
                     <>Charging Jack</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charging_jack_type || '',
+                    <Typography sx={{ml:3}}>{value?.charging?.charging_jack_type || ''}</Typography>,
             },
         },
         {
@@ -613,8 +667,11 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.boady_part_missing || '',
+                    <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
             },
         },
     ]
@@ -625,7 +682,7 @@ const PickupPage = () => {
                 <Typography noWrap
                     variant="subtitle1"
                     fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
+                    // sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
                 </Typography>
@@ -633,6 +690,9 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '2%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -650,15 +710,18 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginLeft='5px'>
                     <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 4 }}>
+                    <Typography noWrap sx={{ pl: 7 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -668,36 +731,53 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold"  marginRight='20px'>
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value.uic || '',
+                sort:true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
+                customBodyRender: (value, dataIndex) => (
+                    <Typography sx={{ ml:5 }}>
+                          {value.uic || ''} {/* Apply the desired alignment, 'center' in this case */}
+                        </Typography>
+                    )
             },
+            
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight="35px">
                     <>Order ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort:true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='60px'>
                     <>IMEI</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort:true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -705,83 +785,116 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
                     <>Brand</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
+                sort:true,
             },
         },
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='90px'>
                     <>Model</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
+                sort:true,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>MUIC</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort:true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>Tray ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort:true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:1 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='29px'>
                     <>Battery Status</>
                 </Typography>
             ),
             options: {
+                sort:true,
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.battery_status || '',
+                    <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='39px'>
                     <>Charge Percentage</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charge_percentage || '',
+                    <Typography sx={{ml:3}}>{value?.charging?.charge_percentage || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='70px'>
                     <>Body Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -789,77 +902,95 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='100px'>
                     <>Display Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.display_condition || '',
+                    <Typography sx={{ml:2}}>{value?.charging?.display_condition || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='50px'>
                     <>Lock Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.lock_status || '',
+                    <Typography sx={{ml:6}}>{value?.charging?.lock_status || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='80px'>
                     <>Charging Jack</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.charging_jack_type || '',
+                    <Typography sx={{ml:6}}>{value?.charging?.charging_jack_type || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
                     <>Body Missing Part</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.charging?.boady_part_missing || '',
+                    <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>Blanco QC Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.blancoo_qc_status || '',
+                    <Typography sx={{ml:4}}>{value?.bqc_report?.blancoo_qc_status || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>Factory Reset Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.factory_reset_status || '',
             },
@@ -867,40 +998,49 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.bqc_incomplete_reason || '',
+                    <Typography sx={{ml:4}}>{value?.bqc_report?.bqc_incomplete_reason || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>Technical Issue</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.technical_issue || '',
+                    <Typography sx={{ml:4}}>{value?.bqc_report?.technical_issue || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
                     <>BQC User Remark</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, dataIndex) =>
-                    value?.bqc_report?.other || '',
+                   <Typography sx={{ml:4}}>{ value?.bqc_report?.other || ''}</Typography>,
             },
         },
     ]

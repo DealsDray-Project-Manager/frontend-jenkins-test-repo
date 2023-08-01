@@ -34,7 +34,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '107%',
+    width: '115%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -240,7 +240,7 @@ const PartTable = () => {
             name: 'index',
             label: (
                 <Typography
-                    variant="subtitle1"
+                    variant="subtitle1" marginBottom='15px'
                     fontWeight="bold"
                     sx={{ marginLeft: '7px' }}
                 >
@@ -250,9 +250,11 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '20%' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 2 }}>
+                    <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -261,101 +263,143 @@ const PartTable = () => {
         {
             name: 'part_code', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
                     <>Part No</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '18%' }}>{columnMeta.label}</th>
+                  ),
             },
         },
         {
             name: 'color', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
                     <>Color</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '10%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Part Name</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:2 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'sp_category',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Category</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'box_id',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Box Id</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Technical QC</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:6 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'description',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Description</>
                 </Typography>
             ),
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Available Stock</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:6 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'created_at',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
                     <>Creation Date</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -366,22 +410,25 @@ const PartTable = () => {
         {
             name: 'status',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
                     <>Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '17%' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
-                            <div style={{ color: 'green', fontWeight: 'bold' }}>
+                            <div style={{ color: 'green', fontWeight: 'bold', marginLeft:'15px' }}>
                                 {value}
                             </div>
                         )
                     } else {
                         return (
-                            <div style={{ color: 'red', fontWeight: 'bold' }}>
+                            <div style={{ color: 'red', fontWeight: 'bold', marginLeft:'15px' }}>
                                 {value}
                             </div>
                         )
@@ -392,13 +439,16 @@ const PartTable = () => {
         {
             name: '_id',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
                     <>Actions</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box

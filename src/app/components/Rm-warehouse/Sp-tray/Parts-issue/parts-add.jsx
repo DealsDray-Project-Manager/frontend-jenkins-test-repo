@@ -174,14 +174,16 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                <Typography sx={{ fontWeight: 'bold' }}>
                     Record No
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '9%' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -223,7 +225,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-            },
+            }, 
         },
         {
             name: 'selected_qty',
@@ -241,6 +243,11 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:6 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
@@ -378,3 +385,4 @@ const SimpleMuiTable = () => {
 }
 
 export default SimpleMuiTable
+ 

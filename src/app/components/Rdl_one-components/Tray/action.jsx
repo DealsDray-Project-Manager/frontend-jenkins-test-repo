@@ -12,6 +12,7 @@ import * as Yup from 'yup'
 import useAuth from 'app/hooks/useAuth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { Breadcrumb } from 'app/components'
 
 const NumberInput = ({ digit, onChange }) => {
     const increaseNumber = () => {
@@ -296,6 +297,7 @@ const Actionfunction = () => {
 
     const tableData = useMemo(() => {
         return (
+            
             <MUIDataTable
                 title={'Repair Required Parts'}
                 columns={columns}
@@ -332,7 +334,18 @@ const Actionfunction = () => {
         },
     }
     return (
+        
         <Box sx={{ p: 2 }}>
+             <div className="breadcrumb" style={{marginTop:'15px', marginBottom:'15px'}}>
+                <Breadcrumb 
+                    routeSegments={[
+                        { name: 'RDL-Requests', path: '/' },
+                        { name: 'Verification', path: '/'},
+                        { name: 'Report', path: '/'},
+                        { name: 'Action'}
+                    ]}
+                />
+            </div>
             <H3>MUIC Detail:{muic}</H3>
             <H3>UIC Detail:{allData?.uic}</H3>
             <br />
@@ -464,15 +477,23 @@ const Actionfunction = () => {
                 ''
             )}
             <br />
-            <TextField
-                defaultValue={getValues('description')}
+            {/* <TextField
+                defaultValue={getValues('description')} 
                 sx={{ width: '180px', mt: 1 }}
                 label="Description"
                 type="text"
                 {...register('description')}
                 error={errors.description ? true : false}
                 helperText={errors.description?.message}
-            ></TextField>
+            ></TextField> */}
+
+            <textarea
+                style={{
+                    width: '100%',
+                    height: '100px',
+                }}
+                placeholder="Description"
+            ></textarea>
 
             <br />
             <Box sx={{ textAlign: 'right' }}>

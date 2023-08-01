@@ -18,7 +18,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-
+import { Breadcrumb } from 'app/components'
 import {
     axiosWarehouseIn,
     axiosRDL_oneAgent,
@@ -321,6 +321,14 @@ export default function DialogBox() {
 
     return (
         <>
+        <div className="breadcrumb" style={{marginTop:'20px', marginLeft:'10px'}}>
+                <Breadcrumb 
+                    routeSegments={[
+                        { name: 'RDL-Requests', path: '/' },
+                        { name: 'Verification'}
+                    ]}
+                />
+            </div>
             <Box
                 sx={{
                     mt: 1,

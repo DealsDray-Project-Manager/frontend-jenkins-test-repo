@@ -4,27 +4,26 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon, Box, Radio,Typography,Table, TableContainer } from '@mui/material'
+import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
-import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
-
+import Avatar from '@mui/material/Avatar'
+import './customDataTableStyles.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
-      margin: '16px',
+        margin: '16px',
     },
     '& .breadcrumb': {
-      marginBottom: '30px',
-      [theme.breakpoints.down('sm')]: {
-        marginBottom: '16px',
-      },
-    }
-  }));
-  
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+})) 
 
-  const ProductTable = styled(Table)(() => ({
+const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '150%',
     height:'100%',
@@ -43,15 +42,9 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: scroll;
+  `overflow-x: auto`;
 
-/* Hide the scrollbar in webkit-based browsers */
-::-webkit-scrollbar {
-  display: none;
-}
-`;
-
-const UserTable = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
@@ -88,9 +81,11 @@ const UserTable = () => {
         setEditFetchData({})
         setShouldOpenEditorDialog(false)
     }
+
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
+
     const editUser = async (empId) => {
         try {
             let response = await axiosSuperAdminPrexo.get(
@@ -113,7 +108,7 @@ const UserTable = () => {
         e.preventDefault()
         navigate('/sup-admin/user-history/' + username)
     }
-
+    
     const handelDeactive = (userId) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -183,32 +178,37 @@ const UserTable = () => {
         }) 
     }
 
-    const options = {
-        // Other table options...
-        setTableProps: () => ({ style: { tableLayout: 'auto'} }),
-      };
+
+ 
     
     const columns = [
         {
             name: 'index',
-            label: <Typography className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
             options: {
                 
                 filter: false,
                 
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '38%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                <Typography noWrap sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
+                
             },
             
         },
         {
             name: 'profile',
-            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Profile</></Typography>,
             options: {
                 
                 filter: false,
                 sort: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
                 },
@@ -217,10 +217,12 @@ const UserTable = () => {
         },
         {
             name: 'creation_date',
-            label: <Typography className='table-class'  variant="subtitle1" fontWeight='bold' noWrap><>Creation Date</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
-                
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -230,89 +232,122 @@ const UserTable = () => {
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'email',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Email</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'contact',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Mobile No</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '33%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'user_name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'user_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
              
         },
         {
             name: 'cpc_type',
-            label: <Typography variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'device_name',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Device Name</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'device_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
             options: {
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 filter: true,
             },
             
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
              
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '26%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
@@ -332,11 +367,14 @@ const UserTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
              
             options: {
                 sort: false,
                 filter: false,
+                customHeadRender: (columnMeta) => (
+                    <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                  ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -389,28 +427,33 @@ const UserTable = () => {
         },
     
     ]
+
     return (
         <Container>
-            <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Users', path: '/' }]} />
+            <div className="breadcrumb"> 
+                <Breadcrumb
+                    routeSegments={[{ name: 'Users', path: '/' }]}
+                />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => handleDialogOpen()}
+                onClick={() => setShouldOpenEditorDialog(true)}
             >
-                Add New Member
+                Add New User
             </Button>
-            <ScrollableTableContainer>
-            <ProductTable>
-            <MUIDataTable
-                title={'User Report'}
+            {/* <ScrollableTableContainer> */}
+                {/* <ProductTable> */}
+                <div className="custom-table-container">
+
+                <MUIDataTable
+                title={'All Users'}
                 data={userList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'scroll',
+                    responsive: 'simple',
                     download: false,
                     print: false,
                     textLabels: {
@@ -428,13 +471,13 @@ const UserTable = () => {
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
                     elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    rowsPerPageOptions: [10, 15, 40, 80, 100],
                 }}
-                
             />
+            </div>
+                {/* </ProductTable> */}
+            {/* </ScrollableTableContainer> */}
             
-            </ProductTable>
-            </ScrollableTableContainer>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -443,10 +486,9 @@ const UserTable = () => {
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
                 />
-                
             )}
         </Container>
     )
 }
 
-export default UserTable
+export default SimpleMuiTable

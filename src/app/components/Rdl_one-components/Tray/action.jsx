@@ -488,11 +488,15 @@ const Actionfunction = () => {
             ></TextField> */}
 
             <textarea
+            defaultValue={getValues('description')} 
                 style={{
                     width: '100%',
                     height: '100px',
                 }}
                 placeholder="Description"
+                {...register('description')}
+                error={errors.description ? true : false}
+                helperText={errors.description?.message}
             ></textarea>
 
             <br />

@@ -250,9 +250,9 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '20%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '20%' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -263,15 +263,15 @@ const PartTable = () => {
         {
             name: 'part_code', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:1}}>
                     <>Part No</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '18%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '18%' }}>{columnMeta.label}</th>
+                //   ),
             },
         },
         {
@@ -282,9 +282,9 @@ const PartTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '10%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '10%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
             },
         },
@@ -296,12 +296,12 @@ const PartTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:2 }}>
+                    <Typography >
                       {value} {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
                   ),
@@ -315,9 +315,9 @@ const PartTable = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
             },
         },
@@ -329,9 +329,9 @@ const PartTable = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
             },
         },
@@ -343,9 +343,9 @@ const PartTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 customBodyRender: (value) => (
                     <Typography sx={{ ml:6 }}>
@@ -362,9 +362,9 @@ const PartTable = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
             },
         },
@@ -376,9 +376,9 @@ const PartTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 customBodyRender: (value) => (
                     <Typography sx={{ ml:6 }}>
@@ -390,16 +390,16 @@ const PartTable = () => {
         {
             name: 'created_at',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:3}} noWrap>
                     <>Creation Date</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -410,15 +410,15 @@ const PartTable = () => {
         {
             name: 'status',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
+                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:2}}>
                     <>Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '17%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '17%' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
@@ -446,14 +446,14 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
                             sx={{
-                                display: 'flex',
+                                // display: 'flex',
                                 flexDirection: 'row',
                             }}
                         >

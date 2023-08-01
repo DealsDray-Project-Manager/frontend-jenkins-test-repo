@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customHeadRender: (columnMeta) => (
-                    <th style={{ width: '9%' }}>{columnMeta.label}</th>
+                    <th style={{ width: '9%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                   ),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>

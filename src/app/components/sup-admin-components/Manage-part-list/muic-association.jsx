@@ -280,38 +280,48 @@ const Association = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{ ml: 3 }}>Record No</Typography>,
+            label: <Typography fontWeight='bold' fontSize='16px' sx={{ ml: 3 }}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                    <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'muic', // field name in the row object
-            label: <Typography sx={{ ml: 3 }}>MUIC</Typography>, // column title that will be shown in table
+            label: <Typography fontWeight='bold' fontSize='16px' sx={{ ml: 3 }}>MUIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:3 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'brand', // field name in the row object
-            label: <Typography sx={{ ml: 3 }}>Brand</Typography>, // column title that will be shown in table
+            label: <Typography fontWeight='bold' fontSize='16px' sx={{ ml: 3 }}>Brand</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:3 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
             name: 'model', // field name in the row object
-            label: <Typography sx={{ ml: 3 }}>Model</Typography>, // column title that will be shown in table
+            label: <Typography fontWeight='bold' fontSize='16px' sx={{ ml: 3 }}>Model</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography sx={{ ml: 3 }}>Actions</Typography>,
+            label: <Typography fontWeight='bold' fontSize='16px' sx={{ ml: 3 }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -321,6 +331,7 @@ const Association = () => {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
+                                alignItems:'cenetr'
                             }}
                         >
                             <IconButton>
@@ -371,7 +382,7 @@ const Association = () => {
                                         fontSize: '16px',
                                     }}
                                 >
-                                    PART NUMBER:{partData?.part_code}
+                                    PART NUMBER: {partData?.part_code}
                                 </Typography>
 
                                 <Button

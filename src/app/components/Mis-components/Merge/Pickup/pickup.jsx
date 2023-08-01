@@ -385,9 +385,9 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -405,18 +405,18 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginLeft='20px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold" >
                     <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 7 }}>
+                    <Typography noWrap sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -429,7 +429,7 @@ const PickupPage = () => {
                 <Typography noWrap
                     variant="subtitle1"
                     fontWeight="bold"
-                    marginRight="50px"
+                    // marginRight="50px"
                 >
                     <>UIC</>
                 </Typography>
@@ -438,11 +438,11 @@ const PickupPage = () => {
             options: {
                 sort: true,
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => (
-                <Typography sx={{ ml:3 }}>
+                <Typography >
                       {value.uic} {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
                 )
@@ -458,9 +458,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.order_id,
             },
         },
@@ -474,9 +474,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -489,9 +489,9 @@ const PickupPage = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 sort: true
             },
@@ -506,9 +506,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
             },
         },
         {
@@ -521,9 +521,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
@@ -537,9 +537,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value) => (
                     <Typography sx={{ ml:1 }}>
                       {value} {/* Apply the desired alignment, 'center' in this case */}
@@ -557,9 +557,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
             },
@@ -574,26 +574,26 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:3}}>{value?.charging?.charge_percentage || ''}</Typography>,
+                    <Typography>{value?.charging?.charge_percentage || ''}</Typography>,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold">
                     <>Body Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '8%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '8%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -601,16 +601,16 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='100px'>
+                <Typography noWrap variant="subtitle1" fontWeight="bold" >
                     <>Display Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '10%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '10%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => {
                     const displayCondition = value?.charging?.display_condition
                     if (!displayCondition) {
@@ -632,9 +632,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.lock_status || '',
             },
@@ -649,9 +649,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:3}}>{value?.charging?.charging_jack_type || ''}</Typography>,
             },
@@ -666,9 +666,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
             },
@@ -689,9 +689,9 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '2%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '2%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -716,9 +716,9 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography noWrap sx={{ pl: 7 }}>
                         {dataIndex.rowIndex + 1}
@@ -737,9 +737,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort:true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => (
                     <Typography sx={{ ml:5 }}>
                           {value.uic || ''} {/* Apply the desired alignment, 'center' in this case */}
@@ -758,9 +758,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort:true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
@@ -774,9 +774,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort:true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -789,9 +789,9 @@ const PickupPage = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 sort:true,
             },
@@ -804,9 +804,9 @@ const PickupPage = () => {
                 </Typography>
             ),
             options: {
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 filter: true,
                 sort:true,
             },
@@ -821,9 +821,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort:true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
@@ -837,9 +837,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort:true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value) => (
                     <Typography sx={{ ml:1 }}>
                       {value} {/* Apply the desired alignment, 'center' in this case */}
@@ -857,9 +857,9 @@ const PickupPage = () => {
             options: {
                 sort:true,
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
             },
@@ -874,9 +874,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:3}}>{value?.charging?.charge_percentage || ''}</Typography>,
             },
@@ -891,9 +891,9 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -907,9 +907,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:2}}>{value?.charging?.display_condition || ''}</Typography>,
             },
@@ -923,9 +923,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:6}}>{value?.charging?.lock_status || ''}</Typography>,
             },
@@ -939,9 +939,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:6}}>{value?.charging?.charging_jack_type || ''}</Typography>,
             },
@@ -955,9 +955,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
             },
@@ -971,11 +971,10 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
-                customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:4}}>{value?.bqc_report?.blancoo_qc_status || ''}</Typography>,
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
+                customBodyRender: (value, dataIndex) =>value?.bqc_report?.blancoo_qc_status || ''
             },
         },
         {
@@ -987,9 +986,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.factory_reset_status || '',
             },
@@ -1003,9 +1002,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                     <Typography sx={{ml:4}}>{value?.bqc_report?.bqc_incomplete_reason || ''}</Typography>,
             },
@@ -1019,11 +1018,10 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
-                customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:4}}>{value?.bqc_report?.technical_issue || ''}</Typography>,
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
+                customBodyRender: (value, dataIndex) =>value?.bqc_report?.technical_issue || ''
             },
         },
         {
@@ -1035,9 +1033,9 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
-                customHeadRender: (columnMeta) => (
-                    <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
                 customBodyRender: (value, dataIndex) =>
                    <Typography sx={{ml:4}}>{ value?.bqc_report?.other || ''}</Typography>,
             },
@@ -2197,6 +2195,7 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
+                            sort:true,
                             print: false,
                             showFirstButton: 'true',
                             showLastButton: 'true',
@@ -2331,7 +2330,7 @@ const PickupPage = () => {
                             responsive: 'standared',
                             download: false,
                             print: false,
-
+                            sort: true,
                             showFirstButton: 'true',
                             showLastButton: 'true',
                             textLabels: {
@@ -2467,6 +2466,7 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
+                            sort: true,
                             print: false,
                             textLabels: {
                                 body: {
@@ -2609,6 +2609,7 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
+                            sort: true,
                             print: false,
                             textLabels: {
                                 body: {

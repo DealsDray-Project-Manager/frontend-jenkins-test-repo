@@ -356,12 +356,12 @@ const SimpleMuiTable = () => {
 
                     if (partRequired && partRequired.length > 0) {
                         const partsList = partRequired.map((data, index) => {
-                            return `${index + 1}.${data?.part_name} - ${
+                            return `${index + 1}. ${data?.part_name} - ${
                                 data?.part_id
-                            }`
+                            }  (${data?.avl_qty})`
                         })
 
-                        return partsList.join(', ')
+                        return partsList.join('\n') // Use '\n' to join the parts with newlines
                     }
 
                     return ''

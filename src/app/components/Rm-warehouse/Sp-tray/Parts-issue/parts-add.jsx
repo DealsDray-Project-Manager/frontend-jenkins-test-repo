@@ -33,6 +33,7 @@ const SimpleMuiTable = () => {
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const [loading,setloading]=useState(false)
     const [description, setDescription] = useState([])
     const [rackiddrop, setrackiddrop] = useState([])
     const [rackId, setRackId] = useState('')
@@ -98,7 +99,7 @@ const SimpleMuiTable = () => {
         }
     }, [refresh])
 
-    const handleAdd = (partId) => {
+    const handleAdd = (partId, boxId) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be add this part!",
@@ -111,7 +112,12 @@ const SimpleMuiTable = () => {
             if (result.isConfirmed) {
                 try {
                     let response = await axiosRmUserAgent.post(
-                        '/spTray/addParts/' + partId + '/' + trayId
+                        '/spTray/addParts/' +
+                            partId +
+                            '/' +
+                            trayId +
+                            '/' +
+                            boxId
                     )
                     if (response.status == 200) {
                         setRefresh((isAlive) => !isAlive)
@@ -136,6 +142,7 @@ const SimpleMuiTable = () => {
     const handleViewSpIssue = async (e, code) => {
         e.preventDefault()
         try {
+            setloading(true)
             let obj = {
                 trayId: trayId,
                 rackId: rackId,
@@ -148,8 +155,10 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
+                setloading(false)
                 navigate('/sp-user/sp-tray')
             } else {
+                setloading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -219,7 +228,16 @@ const SimpleMuiTable = () => {
         {
             name: 'selected_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Qty to be Picked</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'avl_qty_box',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Avl stock</Typography>
             ),
             options: {
                 filter: true,
@@ -244,11 +262,11 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
-                            disabled={tableMeta.rowData[6] == 'Added'}
+                            disabled={tableMeta.rowData[7] == 'Added'}
                             variant="contained"
                             style={{ backgroundColor: '#206CE2' }}
                             onClick={(e) => {
-                                handleAdd(value)
+                                handleAdd(value, tableMeta.rowData[2])
                             }}
                         >
                             Add
@@ -345,7 +363,7 @@ const SimpleMuiTable = () => {
                     disabled={
                         tray?.items?.length !== tray?.temp_array?.length ||
                         rackId == '' ||
-                        description == ''
+                        description == '' || loading
                     }
                     style={{ backgroundColor: '#206CE2' }}
                     onClick={(e) => {

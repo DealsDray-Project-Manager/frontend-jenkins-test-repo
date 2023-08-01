@@ -63,7 +63,7 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                    console.log(res.data.data)
+                  
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {

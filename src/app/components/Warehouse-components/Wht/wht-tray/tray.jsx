@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setWhtTray(response.data.data)
-                        console.log(response.data.data)
+                       
                     }
                 } else {
                     navigate('/')

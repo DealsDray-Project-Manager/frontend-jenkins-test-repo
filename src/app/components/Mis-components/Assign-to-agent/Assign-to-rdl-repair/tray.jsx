@@ -236,7 +236,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value?.[0].code}</span>,<br />
+                            <span>{value?.[0].code}</span><br />
                             <span>{value?.[0]?.sort_id}</span><br />
                             <Button
                                 sx={{
@@ -266,7 +266,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value}</span>,<br />
+                            <span>{value}</span><br />
                             <span>{tableMeta?.rowData[9]}</span><br />
                             <Button
                                 sx={{

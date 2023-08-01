@@ -61,7 +61,7 @@ export default function DialogBox() {
             try {
                 let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
                 if (res.status == 200) {
-                    console.log(res.data.data)
+                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {

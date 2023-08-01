@@ -271,39 +271,39 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>, // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Display Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            label: 'Tray Id',
             options: {
                 filter: false,
                 sort: false,
@@ -312,104 +312,100 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
-            },
-        },
-        {
-            name: 'tray_grade',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Type</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Grade</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray Display</></Typography>,
-            options: {
-                filter: true,
+                    value?.length + '/' + tableMeta?.rowData[2],
             },
         },
         {
             name: 'brand',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            name: 'type_taxanomy',
+
             options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                filter: false,
+                display: false,
+                sort: false,
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{textAlign:'center'}}>
+                        <Box sx={{ textAlign: 'center' }}>
                             <Button
                                 sx={{
-                                    width:'74px',
-                                    mb:2,
-                                    display:'block'
+                                    width: '74px',
+                                    mb: 2,
+                                    display: 'block',
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
                                     handelViewTray(e, value)
                                 }}
-                                style={{ backgroundColor: 'primery' }}
+                                style={{ backgroundColor: 'primary' }}
                             >
                                 View
                             </Button>
                             <Button
                                 sx={{
-                                    display:'block'
+                                    display: 'block',
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[10],
-                                        tableMeta.rowData[9],
+                                        tableMeta.rowData[5],
+                                        tableMeta.rowData[4],
                                         value,
-                                        tableMeta.rowData[5]?.length,
-                                        tableMeta.rowData[11],
-                                        tableMeta.rowData[7],
-                                        tableMeta.rowData[6]
+                                        tableMeta.rowData[3]?.length,
+                                        tableMeta.rowData[6],
+                                        tableMeta.rowData[7]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
@@ -523,8 +519,7 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
+           
                 <MUIDataTable
                 title={'CTX Tray'}
                 data={tray}
@@ -568,8 +563,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
+           
 
            
         </Container>

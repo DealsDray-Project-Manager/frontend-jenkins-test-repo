@@ -35,7 +35,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosWarehouseIn.post(
                         '/request-for-assign/' + 'Send_for_charging/' + location
                     )
-                    console.log(res);
+                 
                     if (res.status == 200) {
                         setIsLoading(false)
                         setChargingRequest(res.data.data)

@@ -280,8 +280,8 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
+            {/* <ScrollableTableContainer>
+                <ProductTable> */}
                 <MUIDataTable
                 title={'Bot Bag'}
                 data={bagList}
@@ -326,8 +326,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
+                {/* </ProductTable>
+            </ScrollableTableContainer> */}
             
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

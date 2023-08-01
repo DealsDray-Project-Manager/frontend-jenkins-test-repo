@@ -141,6 +141,20 @@ const PaginationTable = () => {
             accumulator.created_at = Date.now()
             accumulator[key.toLowerCase()?.split(' ').join('_')] = obj[key]
             accumulator.delet_id = id
+        
+            if (key == 'Order Date') {
+                if (accumulator.order_date.includes('-')) {
+                    // Date is in "DD-MM-YYYY" format
+                    const [day, month, year] = accumulator.order_date.split('-');
+                    const formattedDateStr = `${month}/${day}/${year}`;
+                    accumulator.order_date = new Date(formattedDateStr);
+                   
+                  } else {
+                    // Date is in "MM/DD/YYYY" format
+                    accumulator.order_date = new Date(accumulator.order_date);
+                    
+                  }
+            }
             return accumulator
         }, {})
     }
@@ -389,7 +403,7 @@ const PaginationTable = () => {
         }))
     }
 
-    console.log(err?.order_date)
+   
 
     return (
         <Container>

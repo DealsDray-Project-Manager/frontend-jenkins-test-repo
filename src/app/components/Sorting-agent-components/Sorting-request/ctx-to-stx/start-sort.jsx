@@ -66,15 +66,10 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
-    const handleClose = () => {
-        setOpen(false)
-        setLoading(false)
-        setAwbn('')
-    }
-
     const handelAwbn = async (e) => {
         if (e.target.value.length === 11) {
             try {
+                setLoading(true)
                 let obj = {
                     uic: e.target.value,
                     trayId: trayId,
@@ -88,6 +83,7 @@ export default function DialogBox() {
                     addActualitem(res.data.data)
                     setOpen(true)
                 } else {
+                    setLoading(false)
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -120,7 +116,6 @@ export default function DialogBox() {
             if (res?.status === 200) {
                 setRefresh((refresh) => !refresh)
                 setAwbn('')
-                handleClose()
                 setLoading(false)
             } else {
                 Swal.fire({
@@ -272,6 +267,7 @@ export default function DialogBox() {
                         setAwbn(e.target.value)
                         handelAwbn(e)
                     }}
+                    disabled={loading}
                     inputProps={{
                         style: {
                             width: 'auto',

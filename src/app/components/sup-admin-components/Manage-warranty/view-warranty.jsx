@@ -35,7 +35,7 @@ const SimpleMuiTable = () => {
                 const res = await axiosSuperAdminPrexo.post(
                     '/warranty/view/' + 'warranty-list'
                 )
-                console.log(res);
+              
                 if (res.status === 200) {
                     setwarranty(res.data.data)
                     setIsLoading(false)

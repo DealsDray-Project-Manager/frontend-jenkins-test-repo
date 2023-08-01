@@ -207,16 +207,16 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'requested_date',
+            name: 'track_tray',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned date
+                    Closed date
                 </Typography>
             ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
+                    new Date(value?.rdl_two_done_closed_by_agent).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },

@@ -234,6 +234,11 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value) => (
+                    <Typography sx={{ ml:6 }}>
+                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    </Typography>
+                  ),
             },
         },
         {
@@ -244,7 +249,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:6 }}>
+                    <Typography sx={{ ml:3 }}>
                       {value} {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
                   ),

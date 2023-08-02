@@ -61,10 +61,10 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const ProductTable = styled(Table)(() => ({
-    // minWidth: 550,
+    minWidth: 750,
     width: '150%',
     height: '100%',
-    whiteSpace: 'none',
+    whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -82,7 +82,7 @@ const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
     width: '187%',
     height: '100%',
-    whiteSpace: 'none',
+    whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -100,7 +100,7 @@ const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
     width: '212%',
     height: '100%',
-    whiteSpace: 'none',
+    whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -117,7 +117,7 @@ const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
     width: '240%',
     height: '100%',
-    whiteSpace: 'none',
+    whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -132,9 +132,9 @@ const ProductTableRdlOne = styled(Table)(() => ({
 }))
 const ProductTableRdlTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '108%',
+    width: '110%',
     height: '100%',
-    whiteSpace: 'none',
+    whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
             paddingLeft: 16,
@@ -374,10 +374,10 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
-                    // sx={{ marginLeft: '7px' }}
+                    sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
                 </Typography>
@@ -385,9 +385,6 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -405,18 +402,15 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 4 }}>
+                    <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -426,57 +420,44 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
-                    // marginRight="50px"
+                    marginLeft="20px"
                 >
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
 
             options: {
-                sort: true,
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value, dataIndex) => (
-                <Typography >
-                      {value.uic} {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                )
+                sort: true,
+                customBodyRender: (value, dataIndex) => value.uic,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight="45px">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Order ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.order_id,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>IMEI</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '7%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -484,116 +465,90 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                sort: true
+                sort: true,
             },
         },
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='35px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value) => (
-                    <Typography sx={{ ml:1 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                  ),
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Battery Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
+                    value?.charging?.battery_status || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charge Percentage</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography>{value?.charging?.charge_percentage || ''}</Typography>,
+                    value?.charging?.charge_percentage || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '8%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -601,16 +556,13 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Display Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '10%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => {
                     const displayCondition = value?.charging?.display_condition
                     if (!displayCondition) {
@@ -625,16 +577,13 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Lock Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.lock_status || '',
             },
@@ -642,35 +591,29 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='40px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charging Jack</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:3}}>{value?.charging?.charging_jack_type || ''}</Typography>,
+                    value?.charging?.charging_jack_type || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Part Missing</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
+                    value?.charging?.boady_part_missing || '',
             },
         },
     ]
@@ -678,10 +621,10 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
-                    // sx={{ marginLeft: '7px' }}
+                    sx={{ marginLeft: '7px' }}
                 >
                     <>Select</>
                 </Typography>
@@ -689,9 +632,6 @@ const PickupPage = () => {
             options: {
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '2%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => {
                     return (
                         <Checkbox
@@ -709,18 +649,15 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginLeft='5px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 7 }}>
+                    <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -730,53 +667,36 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold"  marginRight='20px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                sort:true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value, dataIndex) => (
-                    <Typography sx={{ ml:5 }}>
-                          {value.uic || ''} {/* Apply the desired alignment, 'center' in this case */}
-                        </Typography>
-                    )
+                customBodyRender: (value, dataIndex) => value.uic || '',
             },
-            
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight="35px">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Order ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort:true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.order_id || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='60px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>IMEI</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort:true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.imei || '',
             },
         },
@@ -784,116 +704,83 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='55px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                sort:true,
             },
         },
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='90px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                sort:true,
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort:true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '2.5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort:true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value) => (
-                    <Typography sx={{ ml:1 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                  ),
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='29px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Battery Status</>
                 </Typography>
             ),
             options: {
-                sort:true,
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '3%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:3}}>{value?.charging?.battery_status || ''}</Typography>,
+                    value?.charging?.battery_status || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='39px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charge Percentage</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:3}}>{value?.charging?.charge_percentage || ''}</Typography>,
+                    value?.charging?.charge_percentage || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='70px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.charging?.body_condition || '',
             },
@@ -901,94 +788,77 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='100px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Display Condition</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:2}}>{value?.charging?.display_condition || ''}</Typography>,
+                    value?.charging?.display_condition || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='50px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Lock Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:6}}>{value?.charging?.lock_status || ''}</Typography>,
+                    value?.charging?.lock_status || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='80px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charging Jack</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:6}}>{value?.charging?.charging_jack_type || ''}</Typography>,
+                    value?.charging?.charging_jack_type || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Missing Part</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:6}}>{value?.charging?.boady_part_missing || ''}</Typography>,
+                    value?.charging?.boady_part_missing || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='95px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Blanco QC Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value, dataIndex) =>value?.bqc_report?.blancoo_qc_status || ''
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.blancoo_qc_status || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Factory Reset Status</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
                     value?.bqc_report?.factory_reset_status || '',
             },
@@ -996,48 +866,40 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='105px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '6%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                    <Typography sx={{ml:4}}>{value?.bqc_report?.bqc_incomplete_reason || ''}</Typography>,
+                    value?.bqc_report?.bqc_incomplete_reason || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Technical Issue</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '4%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                customBodyRender: (value, dataIndex) =>value?.bqc_report?.technical_issue || ''
+                customBodyRender: (value, dataIndex) =>
+                    value?.bqc_report?.technical_issue || '',
             },
         },
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" marginRight='75px'>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC User Remark</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '5%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, dataIndex) =>
-                   <Typography sx={{ml:4}}>{ value?.bqc_report?.other || ''}</Typography>,
+                    value?.bqc_report?.other || '',
             },
         },
     ]
@@ -1045,7 +907,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
                     sx={{ marginLeft: '7px' }}
@@ -1074,7 +936,7 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
@@ -1082,7 +944,7 @@ const PickupPage = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 4 }}>
+                    <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -1092,7 +954,7 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -1104,7 +966,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Order ID</>
                 </Typography>
             ),
@@ -1116,7 +978,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>IMEI</>
                 </Typography>
             ),
@@ -1129,7 +991,7 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
@@ -1140,7 +1002,7 @@ const PickupPage = () => {
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
                 </Typography>
             ),
@@ -1151,7 +1013,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
                 </Typography>
             ),
@@ -1163,7 +1025,7 @@ const PickupPage = () => {
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray ID</>
                 </Typography>
             ),
@@ -1174,7 +1036,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Battery Status</>
                 </Typography>
             ),
@@ -1187,7 +1049,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -1200,7 +1062,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Condition</>
                 </Typography>
             ),
@@ -1213,7 +1075,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Display Condition</>
                 </Typography>
             ),
@@ -1226,7 +1088,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Lock Status</>
                 </Typography>
             ),
@@ -1240,7 +1102,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charging Jack</>
                 </Typography>
             ),
@@ -1253,7 +1115,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -1266,7 +1128,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -1279,7 +1141,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Factory Reset Status</>
                 </Typography>
             ),
@@ -1292,7 +1154,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
@@ -1305,7 +1167,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Technical Issue</>
                 </Typography>
             ),
@@ -1319,7 +1181,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC User Remark</>
                 </Typography>
             ),
@@ -1332,7 +1194,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Original Grade</>
                 </Typography>
             ),
@@ -1345,7 +1207,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Audit Recommend Grade</>
                 </Typography>
             ),
@@ -1358,7 +1220,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Stage</>
                 </Typography>
             ),
@@ -1372,7 +1234,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Reason</>
                 </Typography>
             ),
@@ -1386,7 +1248,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Description</>
                 </Typography>
             ),
@@ -1401,7 +1263,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
                     sx={{ marginLeft: '7px' }}
@@ -1430,7 +1292,7 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold" sx={{mr:5}}>
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
@@ -1439,7 +1301,7 @@ const PickupPage = () => {
                 sort: false,
 
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 2 }}>
+                    <Typography sx={{ pl: 2 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -1449,7 +1311,7 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -1462,7 +1324,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Order ID</>
                 </Typography>
             ),
@@ -1475,7 +1337,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>IMEI</>
                 </Typography>
             ),
@@ -1489,7 +1351,7 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
@@ -1501,7 +1363,7 @@ const PickupPage = () => {
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
                 </Typography>
             ),
@@ -1513,7 +1375,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
                 </Typography>
             ),
@@ -1526,7 +1388,7 @@ const PickupPage = () => {
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray ID</>
                 </Typography>
             ),
@@ -1538,7 +1400,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Battery Status</>
                 </Typography>
             ),
@@ -1552,7 +1414,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charge Percentage</>
                 </Typography>
             ),
@@ -1567,7 +1429,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Condition</>
                 </Typography>
             ),
@@ -1582,7 +1444,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Display Condition</>
                 </Typography>
             ),
@@ -1597,7 +1459,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Lock Status</>
                 </Typography>
             ),
@@ -1612,7 +1474,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Charging Jack</>
                 </Typography>
             ),
@@ -1627,7 +1489,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Body Missing Part</>
                 </Typography>
             ),
@@ -1642,7 +1504,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Blanco QC Status</>
                 </Typography>
             ),
@@ -1657,7 +1519,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Factory Reset Status</>
                 </Typography>
             ),
@@ -1672,7 +1534,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC Incomplete Reason</>
                 </Typography>
             ),
@@ -1687,7 +1549,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Technical Issue</>
                 </Typography>
             ),
@@ -1702,7 +1564,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>BQC User Remark</>
                 </Typography>
             ),
@@ -1717,7 +1579,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Original Grade</>
                 </Typography>
             ),
@@ -1732,7 +1594,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Audit Recommend Grade</>
                 </Typography>
             ),
@@ -1747,7 +1609,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Stage</>
                 </Typography>
             ),
@@ -1762,7 +1624,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Reason</>
                 </Typography>
             ),
@@ -1778,7 +1640,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Description</>
                 </Typography>
             ),
@@ -1793,7 +1655,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Username</>
                 </Typography>
             ),
@@ -1807,7 +1669,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Status</>
                 </Typography>
             ),
@@ -1823,7 +1685,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Added Model</>
                 </Typography>
             ),
@@ -1838,7 +1700,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Added Color</>
                 </Typography>
             ),
@@ -1853,7 +1715,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Added Part List</>
                 </Typography>
             ),
@@ -1882,7 +1744,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Added Part List</>
                 </Typography>
             ),
@@ -1911,7 +1773,7 @@ const PickupPage = () => {
         {
             name: 'closed_date_agent',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Done Date</>
                 </Typography>
             ),
@@ -1927,7 +1789,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Description</>
                 </Typography>
             ),
@@ -1944,7 +1806,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap
+                <Typography
                     variant="subtitle1"
                     fontWeight="bold"
                     sx={{ marginLeft: '7px' }}
@@ -1973,7 +1835,7 @@ const PickupPage = () => {
         {
             name: 'index',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
@@ -1982,7 +1844,7 @@ const PickupPage = () => {
                 sort: false,
 
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography noWrap sx={{ pl: 2 }}>
+                    <Typography sx={{ pl: 2 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -1992,7 +1854,7 @@ const PickupPage = () => {
         {
             name: 'items', // field name in the row object
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>UIC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -2005,7 +1867,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Order ID</>
                 </Typography>
             ),
@@ -2018,7 +1880,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>IMEI</>
                 </Typography>
             ),
@@ -2032,7 +1894,7 @@ const PickupPage = () => {
         {
             name: 'brand',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
@@ -2044,7 +1906,7 @@ const PickupPage = () => {
         {
             name: 'model',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
                 </Typography>
             ),
@@ -2056,7 +1918,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
                 </Typography>
             ),
@@ -2069,7 +1931,7 @@ const PickupPage = () => {
         {
             name: 'code',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray ID</>
                 </Typography>
             ),
@@ -2081,7 +1943,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL two status</>
                 </Typography>
             ),
@@ -2095,7 +1957,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Rdl two repair not done reason</>
                 </Typography>
             ),
@@ -2110,7 +1972,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Rdl two description</>
                 </Typography>
             ),
@@ -2126,7 +1988,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Part required</>
                 </Typography>
             ),
@@ -2155,7 +2017,7 @@ const PickupPage = () => {
         {
             name: 'items',
             label: (
-                <Typography noWrap variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Other parts status</>
                 </Typography>
             ),
@@ -2195,7 +2057,6 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
-                            sort:true,
                             print: false,
                             showFirstButton: 'true',
                             showLastButton: 'true',
@@ -2330,7 +2191,7 @@ const PickupPage = () => {
                             responsive: 'standared',
                             download: false,
                             print: false,
-                            sort: true,
+
                             showFirstButton: 'true',
                             showLastButton: 'true',
                             textLabels: {
@@ -2466,7 +2327,6 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
-                            sort: true,
                             print: false,
                             textLabels: {
                                 body: {
@@ -2609,7 +2469,6 @@ const PickupPage = () => {
                             filterType: 'multiselect',
                             responsive: 'standared',
                             download: false,
-                            sort: true,
                             print: false,
                             textLabels: {
                                 body: {

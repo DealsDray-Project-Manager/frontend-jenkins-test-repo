@@ -949,24 +949,24 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: true,
     },
-    // {
-    //     name: 'STX Utility',
-    //     icon: 'search',
-    //     children: [
-    //         {
-    //             name: 'Scan Uic',
-    //             path: '/mis/stx-utility',
-    //             iconText: 'VP',
-    //         },
-    //         {
-    //             name: 'Tray',
-    //             path: '/mis/stx-utility-tray-view',
-    //             iconText: 'VP',
-    //         },
-    //     ],
-    //     auth: authRoles.Mis,
-    //     sales: true,
-    // },
+    {
+        name: 'STX Utility',
+        icon: 'search',
+        children: [
+            {
+                name: 'Scan Uic',
+                path: '/mis/stx-utility',
+                iconText: 'VP',
+            },
+            {
+                name: 'Tray',
+                path: '/mis/stx-utility-tray-view',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: true,
+    },
     {
         name: 'Report',
         icon: 'search',

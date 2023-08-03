@@ -33,6 +33,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
         padding: theme.spacing(1),
     },
 }))
+
 const BootstrapDialogTitle = (props) => {
     const { children, onClose, ...other } = props
     return (
@@ -184,7 +185,6 @@ export default function DialogBox() {
                 color: stateData.color,
             })
         } else {
-            console.log('working')
             setStateData({
                 ...stateData,
                 [name]: value,
@@ -276,8 +276,6 @@ export default function DialogBox() {
             </Grid>
         )
     }, [reportData])
-
-    console.log(stateData)
 
     return (
         <>

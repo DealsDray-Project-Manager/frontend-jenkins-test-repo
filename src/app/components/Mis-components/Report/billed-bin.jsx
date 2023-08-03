@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/billedBin/report/' + location
+                        '/billedBinReport'
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -55,8 +55,6 @@ const SimpleMuiTable = () => {
         }
         fetchData()
     }, [refresh])
-
-  
 
     const columns = [
         {
@@ -134,9 +132,9 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                new Date(value).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {
@@ -144,7 +142,6 @@ const SimpleMuiTable = () => {
             label: 'Moved By Agent',
             options: {
                 filter: true,
-                
             },
         },
     ]
@@ -153,8 +150,10 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Report', path: '/' },
-                    { name: 'Billed Bin' },]}
+                    routeSegments={[
+                        { name: 'Report', path: '/' },
+                        { name: 'Billed Bin' },
+                    ]}
                 />
             </div>
 

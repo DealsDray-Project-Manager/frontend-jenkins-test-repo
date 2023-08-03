@@ -109,8 +109,29 @@ const ViewRpTray = Loadable(
 const ViewSpTray = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp'))
 )
+const StxUtilityPage = Loadable(
+    lazy(() => import('./Stx-utility/scan-uic'))
+)
+const StxUtilityInprogressTray = Loadable(
+    lazy(() => import('./Stx-utility/tray'))
+)
+const StxTrayUtilityInProgressClose= Loadable(
+    lazy(() => import('./Stx-utility/close'))
+)
 
 const dataTableRoutes = [
+    {
+        path: '/mis/stx-utility/tray-view/close/:trayId',
+        element: <StxTrayUtilityInProgressClose />,
+    },
+    {
+        path: '/mis/stx-utility-tray-view',
+        element: <StxUtilityInprogressTray />,
+    },
+    {
+        path: '/mis/stx-utility',
+        element: <StxUtilityPage />,
+    },
     {
         path: '/mis/assign-to-agent/rdl-two/view-rp/:trayId',
         element: <ViewRpTray />,

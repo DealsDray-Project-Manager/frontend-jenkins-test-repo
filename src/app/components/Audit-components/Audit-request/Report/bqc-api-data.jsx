@@ -18,7 +18,6 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
-    console.log(BqcSowftwareReport)
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summary</H4>

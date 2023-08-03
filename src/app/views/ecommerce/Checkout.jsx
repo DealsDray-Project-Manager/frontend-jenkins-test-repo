@@ -41,7 +41,7 @@ const Checkout = () => {
         setState({ ...state, [event.target.name]: event.target.value })
     }
     const handleSubmit = () => {
-        console.log(state)
+     
         toggleDialog()
     }
     const toggleDialog = () => {

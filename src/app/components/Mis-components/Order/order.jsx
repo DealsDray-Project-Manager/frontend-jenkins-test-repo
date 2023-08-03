@@ -342,6 +342,7 @@ const SimpleMuiTable = () => {
                                               hour12: true,
                                           })}
                                 </TableCell>
+
                                 <TableCell>
                                     {data.order_status?.toString()}
                                 </TableCell>
@@ -404,10 +405,10 @@ const SimpleMuiTable = () => {
                                           })}
                                 </TableCell>
                                 <TableCell>
-                                    {data.gc_amount_refund_time == null
+                                    {data.gc_refund_time == null
                                         ? ''
                                         : new Date(
-                                              data.gc_amount_refund_time
+                                              data.gc_refund_time
                                           ).toLocaleString('en-GB', {
                                               hour12: true,
                                           })}

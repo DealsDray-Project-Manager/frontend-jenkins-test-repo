@@ -32,7 +32,7 @@ const InputField = styled(TextField)(() => ({
 
 const PropertyListingForm = () => {
     const [date, setDate] = useState(new Date())
-    console.log(date)
+    
 
     return (
         <StyledCard>

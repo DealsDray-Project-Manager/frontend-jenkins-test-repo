@@ -1,0 +1,4 @@
+/* Hide the default scrollbar for the MUIDataTable */
+.custom-table-container {
+  overflow: hidden;
+}

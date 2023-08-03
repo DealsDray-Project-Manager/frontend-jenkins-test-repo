@@ -2,7 +2,13 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography, Table, TableContainer } from '@mui/material'
+import {
+    Button,
+    Checkbox,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -25,7 +31,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '130%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -40,8 +46,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -135,7 +142,15 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Select</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Select</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
@@ -155,60 +170,64 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
 
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Tray ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Category</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Brand</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Model</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Name</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Limit</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Limit</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -217,45 +236,41 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
+                    value.length + '/' + tableMeta.rowData[5],
             },
         },
-        {
-            name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Tray Display</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold' noWrap><>Creation Date</></Typography>,
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Action</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value) => { 
+                customBodyRender: (value) => {
                     return (
                         <Button
                             sx={{
@@ -293,9 +308,8 @@ const SimpleMuiTable = () => {
             >
                 Assign For Audit
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
-                <MUIDataTable
+
+            <MUIDataTable
                 title={'WHT'}
                 data={whtTray}
                 columns={columns}
@@ -338,9 +352,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
-            
+
             {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}

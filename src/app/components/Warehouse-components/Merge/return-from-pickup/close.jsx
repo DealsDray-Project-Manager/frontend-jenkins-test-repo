@@ -163,7 +163,8 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
+                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                <h5 style={{marginLeft:'15px'}}>EXPECTED</h5>
 
                 <Box
                     sx={{
@@ -173,7 +174,7 @@ export default function DialogBox() {
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
@@ -188,6 +189,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
+                </Box>
                 </Box>
                 <TableContainer>
                     <Table
@@ -225,7 +227,9 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <h5>ACTUAL</h5>
+                <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                <Box>
+                <h5 style={{marginLeft:'15px'}}>ACTUAL</h5>
                 <TextField
                     sx={{ m: 1 }}
                     id="outlined-password-input"
@@ -245,7 +249,7 @@ export default function DialogBox() {
                         },
                     }}
                 />
-
+                </Box>
                 <Box
                     sx={{
                         display: 'flex',
@@ -254,12 +258,12 @@ export default function DialogBox() {
                 >
                     <Box
                         sx={{
-                            m: 2,
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
                             <h5 style={{ paddingLeft: '18px' }}>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
+                            <p style={{ marginLeft: '5px', fontSize: '22px' }}>
                                 {
                                     tray[0]?.actual_items?.filter(function (
                                         item
@@ -271,6 +275,7 @@ export default function DialogBox() {
                             </p>
                         </Box>
                     </Box>
+                </Box>
                 </Box>
                 <TableContainer>
                     <Table

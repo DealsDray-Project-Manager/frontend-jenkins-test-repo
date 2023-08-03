@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -55,31 +55,31 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: <Typography fontWeight='bold' variant='subtitle1' marginLeft='7px'>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                    <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
             },
         },
         {
             name: 'code',
-            label: 'Tray Id',
+            label: <Typography fontWeight='bold' variant='subtitle1'>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'rack_id',
-            label: 'Rack Id',
+            label: <Typography fontWeight='bold' variant='subtitle1' sx={{mr:1}}>Rack ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Category',
+            label: <Typography fontWeight='bold' variant='subtitle1' noWrap >Tray Category</Typography>,
             options: {
                 filter: true,
             },
@@ -102,7 +102,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: <Typography fontWeight='bold' variant='subtitle1' sx={{ml:2}}>Quantity</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
@@ -119,14 +119,14 @@ const SimpleMuiTable = () => {
 
         {
             name: 'issued_user_name',
-            label: 'Agent Name',
+            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Agent Name</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: 'Tray Name',
+            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Tray Name</Typography>,
             options: {
                 filter: true,
             },
@@ -134,35 +134,35 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography fontWeight='bold' variant='subtitle1'>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography fontWeight='bold' variant='subtitle1'>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: 'Tray Display',
+            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Tray Display</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: <Typography fontWeight='bold' variant='subtitle1'>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: 'Creation Date',
+            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Creation Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: <Typography fontWeight='bold' variant='subtitle1'>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

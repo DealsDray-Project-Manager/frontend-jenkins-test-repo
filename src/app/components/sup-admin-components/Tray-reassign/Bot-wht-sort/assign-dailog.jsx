@@ -37,7 +37,7 @@ const MemberEditorDialog = ({
             }
 
             let res = await axiosMisUser.post('/assign-to-sorting-agent', obj)
-            console.log(res)
+           
             if (res.status === 200) {
                 setLoading(false)
                 handleClose()

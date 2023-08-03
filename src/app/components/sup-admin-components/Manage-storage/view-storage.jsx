@@ -129,7 +129,7 @@ const PartTable = () => {
                     let response = await axiosSuperAdminPrexo.post(
                         '/storage/delete/' + id
                     )
-                    console.log(response)
+                
                     if (response.status == 200) {
                         Swal.fire({
                             position: 'top-center',

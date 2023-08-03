@@ -10,7 +10,7 @@ import {
     Box,
     Button,
 } from '@mui/material'
-
+import { Breadcrumb } from 'app/components'
 import { axiosWarehouseIn } from '../../../../../axios'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -137,6 +137,14 @@ export default function StickyHeadTable({ props }) {
 
     return (
         <>
+        <div className="breadcrumb" style={{marginLeft:'25px', marginTop:'25px'}}>
+                <Breadcrumb 
+                    routeSegments={[
+                        { name: 'Sorting', path: '/' },
+                        { name: 'Request-Approve' },
+                    ]}
+                />
+            </div>
             <Box
                 sx={{
                     mb: 3,
@@ -160,21 +168,21 @@ export default function StickyHeadTable({ props }) {
                     <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
                 </Box>
                 <Box sx={{ m: 1 }}>
-                    <Paper sx={{ width: '100%', overflow: 'auto' }}>
+                    <Paper sx={{ width: '100%', overflow: 'auto', ml:2 }}>
                         <TableContainer>
                             <Table
                                 id="example"
                                 style={{ width: '100%' }}
                                 aria-label="sticky table"
-                            >
+                            > 
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Record.NO</TableCell>
-                                        <TableCell>Tray Id</TableCell>
-                                        <TableCell>Tray Type</TableCell>
-                                        <TableCell>Quantity</TableCell>
-                                        <TableCell>Status</TableCell>
-                                        <TableCell>Action</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15, pl:2}}>Record No</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Tray ID</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Tray Type</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Quantity</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Status</TableCell>
+                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Action</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -184,7 +192,7 @@ export default function StickyHeadTable({ props }) {
                                             role="checkbox"
                                             tabIndex={-1}
                                         >
-                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell sx={{pl:4}}>{index + 1}</TableCell>
                                             <TableCell>{data.code}</TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}

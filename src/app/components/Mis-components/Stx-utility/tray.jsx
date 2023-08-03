@@ -5,8 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography } from '@mui/material'
-import { axiosRDL_oneAgent } from '../../../../axios'
-import Swal from 'sweetalert2'
+import { axiosMisUser } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,7 +20,8 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
+    const [tray, setTray] = useState([])
+    const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -29,123 +29,120 @@ const SimpleMuiTable = () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { user_name } = jwt_decode(admin)
-                    let res = await axiosRDL_oneAgent.post(
-                        '/assigned-tray/' + user_name
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosMisUser.post(
+                        '/getStxUtilityInProgress/' + location
                     )
-                    if (res.status == 200) {
-                        setRDLRequest(res.data.data)
+                    if (response.status === 200) {
+                        setTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
+                alert(error)
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
-    const handelDetailPage = (e, trayId) => {
-        e.preventDefault()
-        navigate('/rdl-fls/tray/approve/' + trayId)
+    const handelClose = async (e, code) => {
+        navigate('/mis/stx-utility/tray-view/close/' + code)
     }
 
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1"fontWeight='bold' sx={{ml:3}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ ml: 2 }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Tray ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'requested_date',
-            label: <Typography variant="subtitle1"fontWeight='bold'><>Assigned Date</></Typography>,
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'warehouse',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Warehouse</></Typography>,
+            name: 'sort_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'brand',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Brand</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Model</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'limit',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Limit</></Typography>,
+            label: 'Tray Id',
             options: {
                 filter: false,
                 sort: false,
                 display: false,
             },
         },
-
         {
             name: 'items',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Quantity</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
-                customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[6],
+
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[3],
             },
         },
+
         {
             name: 'code',
-            label: <Typography variant="subtitle1"fontWeight='bold' ><>Action</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) => {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Approve
-                        </Button>
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={(e) => handelClose(e, value)}
+                                style={{ backgroundColor: 'red' }}
+                                component="span"
+                            >
+                                Close
+                            </Button>
+                        </>
                     )
                 },
             },
@@ -157,14 +154,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RDL-Requests', path: '/' },
+                        { name: 'Stx Utility In-progress tray', path: '/' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
-                data={RDLRequest}
+                title={'Tray'}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

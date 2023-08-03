@@ -40,7 +40,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '170%',
+    width: '140%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -299,29 +299,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
-        {
-            name: 'warehouse',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Warehouse</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Display Name</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
         {
             name: 'limit',
             label: 'Tray Id',
@@ -341,29 +318,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Type</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Display</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
+                    value?.length + '/' + tableMeta?.rowData[2],
             },
         },
         {
@@ -400,24 +355,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Creation Date</>
-                </Typography>
-            ),
+            name: 'type_taxanomy',
+
             options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                filter: false,
+                display: false,
+                sort: false,
             },
         },
         {
             name: 'code',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="subtitle1" fontWeight="bold" sx={{ml:4}}>
                     <>Actions</>
                 </Typography>
             ),
@@ -426,7 +375,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ ml:4 }}>
                             <Button
                                 sx={{
                                     width: '74px',
@@ -449,12 +398,12 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[9],
-                                        tableMeta.rowData[8],
+                                        tableMeta.rowData[5],
+                                        tableMeta.rowData[4],
                                         value,
-                                        tableMeta.rowData[5]?.length,
-                                        tableMeta.rowData[10],
-                                        tableMeta.rowData[6]
+                                        tableMeta.rowData[3]?.length,
+                                        tableMeta.rowData[6],
+                                        tableMeta.rowData[7]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
@@ -568,55 +517,49 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
-                    <MUIDataTable
-                        title={'Wht Tray'}
-                        data={whtTray}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
-                            },
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
-                                        return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    }
-                                    return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                })
-                            },
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                </ProductTable>
-            </ScrollableTableContainer>
+            <MUIDataTable
+                title={'Wht Tray'}
+                data={whtTray}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
         </Container>
     )
 }

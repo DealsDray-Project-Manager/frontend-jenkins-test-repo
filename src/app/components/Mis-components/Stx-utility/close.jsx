@@ -19,7 +19,7 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
+import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -59,9 +59,10 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -82,7 +83,7 @@ export default function DialogBox() {
                     '/charging-done-recieved/' +
                         trayId +
                         '/' +
-                        'Received From Sorting Agent After Ctx to Stx'
+                        'STX-Utility In-progress'
                 )
                 if (response.status === 200) {
                     setTrayData(response.data.data)
@@ -162,7 +163,7 @@ export default function DialogBox() {
                 limit: trayData.limit,
                 type: trayData.type_taxanomy,
                 description: description,
-                rackId:rackId
+                rackId: rackId,
             }
             let res = await axiosWarehouseIn.post(
                 '/sorting/returnFromSortingCtxStx/close',
@@ -176,7 +177,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/sorting/ctx-to-stx/return-from-sorting')
+                navigate('/mis/stx-utility-tray-view')
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -240,7 +241,7 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <h4 style={{marginLeft:'15px'}}>EXPECTED</h4>
+                    <h4 style={{ marginLeft: '15px' }}>EXPECTED</h4>
                     <Box
                         sx={{
                             mr: 2,
@@ -265,8 +266,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>IMEI</TableCell>
                                 <TableCell>Brand Name</TableCell>
                                 <TableCell>Model Name</TableCell>
                             </TableRow>
@@ -277,9 +276,7 @@ export default function DialogBox() {
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
                                     </TableCell>
-                                    <TableCell sx={{pl:3}}>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.imei}</TableCell>
+                                    <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -294,31 +291,31 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <Box>
-                <h4 style={{marginLeft:'15px'}}>ACTUAL</h4>
-                
-                    <TextField
-                        sx={{ mt: 1, ml: 2, mb:1  }}
-                        id="outlined-password-input"
-                        type="text"
-                        inputRef={(input) => input && input.focus()}
-                        disabled={textDisable}
-                        name="doorsteps_diagnostics"
-                        label="Please Enter UIC"
-                        value={uic}
-                        // onChange={(e) => setAwbn(e.target.value)}
-                        onChange={(e) => {
-                            setUic(e.target.value)
-                            handelUic(e)
-                        }}
-                        inputProps={{
-                            style: {
-                                width: 'auto',
-                            },
-                        }}
-                    />
-                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box>
+                        <h4 style={{ marginLeft: '15px' }}>ACTUAL</h4>
+
+                        <TextField
+                            sx={{ mt: 1, ml: 2, mb: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            name="doorsteps_diagnostics"
+                            label="Please Enter UIC"
+                            value={uic}
+                            // onChange={(e) => setAwbn(e.target.value)}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
                     <Box
                         sx={{
                             mr: 2,
@@ -339,10 +336,9 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>IMEI</TableCell>
+
                                 <TableCell>Brand Name</TableCell>
                                 <TableCell>Model Name</TableCell>
                             </TableRow>
@@ -351,10 +347,11 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.imei}</TableCell>
+
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -381,23 +378,12 @@ export default function DialogBox() {
                     }}
                 >
                     <h4 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h4>
-                    <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
-                    </h4>
                 </Box>
                 <Box
                     sx={{
                         float: 'right',
                     }}
                 >
-                    <h4 style={{ marginRight: '13px' }}>
-                        Closed On --{' '}
-                        {new Date(
-                            trayData?.closed_time_sorting_agent
-                        ).toLocaleString('en-GB', {
-                            hour12: true,
-                        })}
-                    </h4>
                     <h4 style={{ marginRight: '13px' }}>
                         Brand -- {trayData?.brand}
                     </h4>

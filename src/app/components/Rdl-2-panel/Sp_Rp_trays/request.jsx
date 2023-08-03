@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
                             <span style={{ marginLeft: '8px' }}>
                                 {value?.[0]?.code}
                             </span>
-                            ,<br />
+                            <br />
                             <Button
                                 sx={{
                                     m: 1,

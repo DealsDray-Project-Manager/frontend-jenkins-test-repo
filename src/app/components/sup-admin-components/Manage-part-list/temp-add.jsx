@@ -89,11 +89,7 @@ const AddPartOrColorAndEditDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
             .max(40)
             .nullable(),
-            box_id: Yup.string()
-            .required('Required*')
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please Select - option')
-            .max(40)
-            .nullable(),
+        box_id: Yup.string(),
         technical_qc: Yup.string()
             .required('Required*')
             .matches(/^[YN]$/, 'Please enter either Y or N')
@@ -263,15 +259,10 @@ const AddPartOrColorAndEditDialog = ({
                     defaultValue={getValues('box_id')}
                     {...register('box_id')}
                     error={errors.box_id ? true : false}
-                    helperText={
-                        errors.box_id ? errors.box_id?.message : ''
-                    }
+                    helperText={errors.box_id ? errors.box_id?.message : ''}
                 >
                     {boxData?.map((data) => (
-                        <MenuItem
-                            key={data?.box_id}
-                            value={data?.box_id}
-                        >
+                        <MenuItem key={data?.box_id} value={data?.box_id}>
                             {data?.box_id}
                         </MenuItem>
                     ))}

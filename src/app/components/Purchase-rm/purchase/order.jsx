@@ -244,7 +244,6 @@ const SimpleMuiTable = () => {
 
     const onSubmit = async (data) => {
         try {
-            console.log(per_unit)
             if (per_unit !== '') {
                 data.per_unit = per_unit
                 data.muic = muic

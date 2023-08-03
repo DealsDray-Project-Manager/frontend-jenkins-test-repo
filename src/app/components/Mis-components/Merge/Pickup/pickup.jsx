@@ -287,7 +287,6 @@ const PickupPage = () => {
     }
 
     const handleChangeDate = ({ target: { value } }) => {
-        console.log(value)
         setSelectedStatus(typeof value === 'string' ? value.split(',') : value)
     }
     const dataFilter = async () => {

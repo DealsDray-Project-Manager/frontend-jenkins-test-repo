@@ -143,9 +143,9 @@ const PaginationTable = () => {
             accumulator.delet_id = id
         
             if (key == 'Order Date') {
-                if (accumulator.order_date.includes('-')) {
+                if (accumulator.order_date?.includes('-')) {
                     // Date is in "DD-MM-YYYY" format
-                    const [day, month, year] = accumulator.order_date.split('-');
+                    const [day, month, year] = accumulator.order_date?.split('-');
                     const formattedDateStr = `${month}/${day}/${year}`;
                     accumulator.order_date = new Date(formattedDateStr);
                    
@@ -155,6 +155,59 @@ const PaginationTable = () => {
                     
                   }
             }
+            if (key === 'Order Timestamp') {
+                if (accumulator.order_timestamp?.includes('-')) {
+                  // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+                  const [datePart, timePart] = accumulator.order_timestamp?.split(' ');
+                  const [day, month, year] = datePart?.split('-');
+                  const [hours, minutes, seconds] = timePart?.split(':');
+                  const formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+                  accumulator.order_timestamp = new Date(formattedTimestampStr);
+                } else {
+                  // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
+                  accumulator.order_timestamp = new Date(accumulator.order_timestamp);
+                }
+            }
+            if (key === 'Gc Redeem Time') {
+                if (accumulator.gc_redeem_time?.includes('-')) {
+                  // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+                  const [datePart, timePart] = accumulator.gc_redeem_time?.split(' ');
+                  const [day, month, year] = datePart?.split('-');
+                  const [hours, minutes, seconds] = timePart?.split(':');
+                  const formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+                  accumulator.gc_redeem_time = new Date(formattedTimestampStr);
+                } else {
+                  // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
+                  accumulator.gc_redeem_time= new Date(accumulator.gc_redeem_time);
+                }
+            }
+            if (key === 'Delivery Date') {
+                if (accumulator?.delivery_date?.includes('-')) {
+                  // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+                  const [datePart, timePart] = accumulator.delivery_date?.split(' ');
+                  const [day, month, year] = datePart?.split('-');
+                  const [hours, minutes, seconds] = timePart?.split(':');
+                  const formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+                  accumulator.delivery_date = new Date(formattedTimestampStr);
+                } else {
+                  // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
+                  accumulator.delivery_date= new Date(accumulator.delivery_date);
+                }
+            }
+            if (key === 'GC Refund Time') {
+                if (accumulator?.gc_refund_time?.includes('-')) {
+                  // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+                  const [datePart, timePart] = accumulator.gc_refund_time?.split(' ');
+                  const [day, month, year] = datePart.split('-');
+                  const [hours, minutes, seconds] = timePart?.split(':');
+                  const formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+                  accumulator.gc_refund_time = new Date(formattedTimestampStr);
+                } else {
+                  // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
+                  accumulator.gc_refund_time= new Date(accumulator.gc_refund_time);
+                }
+            }
+           
             return accumulator
         }, {})
     }
@@ -353,8 +406,9 @@ const PaginationTable = () => {
                 }
                 data.order_date = new Date(data.order_date)
                 data.order_timestamp = new Date(data.order_timestamp)
-                data.delivery_date = new Date(data.gc_redeem_time)
+                data.delivery_date = new Date(data.delivery_date)
                 data.gc_redeem_time = new Date(data.gc_redeem_time)
+                data.gc_refund_time = new Date(data.gc_refund_time)
                 data.base_discount = data?.base_discount?.toString()
                 data.order_id_replaced = data.order_id_replaced?.toString()
                 data.gc_amount_redeemed = data.gc_amount_redeemed?.toString()
@@ -403,6 +457,8 @@ const PaginationTable = () => {
         }))
     }
 
+
+   
    
 
     return (
@@ -557,7 +613,7 @@ const PaginationTable = () => {
                                                 GC Redeem Time
                                             </TableCell>
                                             <TableCell>
-                                                GC Amount Refund Time
+                                                GC Refund Time
                                             </TableCell>
                                             <TableCell>
                                                 Diagonstic Status
@@ -661,9 +717,7 @@ const PaginationTable = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <TextField
-                                                        onChange={updateFieldChanged(
-                                                            data.delet_id
-                                                        )}
+                                                       
                                                         name="order_date"
                                                         value={new Date(
                                                             data?.order_date
@@ -711,12 +765,18 @@ const PaginationTable = () => {
 
                                                 <TableCell>
                                                     <TextField
-                                                        onChange={updateFieldChanged(
-                                                            data.delet_id
-                                                        )}
+                                                       
                                                         name="order_timestamp"
                                                         value={
-                                                            data.order_timestamp
+                                                            new Date(
+                                                                data.order_timestamp
+                                                            ).toLocaleString(
+                                                                'en-GB',
+                                                                {
+                                                                    hour12: true,
+                                                                }
+                                                            )
+                                                            
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -1386,13 +1446,19 @@ const PaginationTable = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <TextField
-                                                        onChange={updateFieldChanged(
-                                                            data.delet_id
-                                                        )}
+                                                      
                                                         id="outlined-password-input"
                                                         name="delivery_date"
                                                         value={
-                                                            data.delivery_date
+                                                            new Date(
+                                                                data.delivery_date
+                                                            ).toLocaleString(
+                                                                'en-GB',
+                                                                {
+                                                                    hour12: true,
+                                                                }
+                                                            )
+                                                            
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -1514,12 +1580,18 @@ const PaginationTable = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <TextField
-                                                        onChange={updateFieldChanged(
-                                                            data.delet_id
-                                                        )}
+                                                       
                                                         name="gc_redeem_time"
                                                         value={
-                                                            data.gc_redeem_time
+                                                            new Date(
+                                                                data.gc_redeem_time
+                                                            ).toLocaleString(
+                                                                'en-GB',
+                                                                {
+                                                                    hour12: true,
+                                                                }
+                                                            )
+                                                            
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -1561,12 +1633,18 @@ const PaginationTable = () => {
                                                 </TableCell>
                                                 <TableCell>
                                                     <TextField
-                                                        onChange={updateFieldChanged(
-                                                            data.delet_id
-                                                        )}
-                                                        name="gc_amount_refund_time"
+                                                      
+                                                        name="gc_refund_time"
                                                         value={
-                                                            data.gc_amount_refund_time
+                                                            new Date(
+                                                                data.gc_refund_time
+                                                            ).toLocaleString(
+                                                                'en-GB',
+                                                                {
+                                                                    hour12: true,
+                                                                }
+                                                            )
+                                                            
                                                         }
                                                         inputProps={{
                                                             style: {

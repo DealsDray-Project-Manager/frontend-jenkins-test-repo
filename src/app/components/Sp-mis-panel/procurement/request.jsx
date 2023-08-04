@@ -84,7 +84,7 @@ const SimpleMuiTable = () => {
         try {
             let flag = false
             for (let x of spList) {
-                if (Number(x.required_qty) <= 0 || isNaN(x.required_qty)) {
+                if (Number(x.required_qty) < 0 || isNaN(x.required_qty)) {
                     flag = true
                     Swal.fire({
                         icon: 'error',
@@ -197,7 +197,7 @@ const SimpleMuiTable = () => {
         {
             name: 'aval_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold', mr: 10 }} noWrap>
+                <Typography sx={{ fontWeight: 'bold' }} >
                     Available Quantity
                 </Typography>
             ),
@@ -208,7 +208,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_qtc',
             label: (
-                <Typography sx={{ fontWeight: 'bold', mr:12 }} noWrap>
+                <Typography sx={{ fontWeight: 'bold' }} >
                     Purchase request created
                 </Typography>
             ),
@@ -219,7 +219,7 @@ const SimpleMuiTable = () => {
         {
             name: 'required_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold', mr:2 }} noWrap>
+                <Typography sx={{ fontWeight: 'bold'}} >
                     Update Required Quantity
                 </Typography>
             ),
@@ -268,8 +268,7 @@ const SimpleMuiTable = () => {
                         Model : {model}
                     </Typography>
                 </Box>
-                <ScrollableTableContainer>
-                <ProductTable>
+              
                 <MUIDataTable
                     sx={{ mt: 0 }}
                     // title={'Pre Purchase Requests'}
@@ -315,8 +314,7 @@ const SimpleMuiTable = () => {
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
-                </ProductTable>
-                </ScrollableTableContainer>
+               
                 <br />
                 <Box>
                     <Button

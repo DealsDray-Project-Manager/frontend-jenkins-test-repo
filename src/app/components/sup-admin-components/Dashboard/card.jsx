@@ -51,40 +51,10 @@ const StatCard3 = () => {
             link: '/sup-admin/warehouse',
         },
         {
-            icon: 'home',
-            amount: count.vendor,
-            title: 'Vendors',
-            link: '/sup-admin/view-vendors',
-        },
-        {
-            icon: 'branding_watermark',
-            amount: count.ctxCategory,
-            title: 'Tray Category',
-            link: '/sup-admin/category',
-        },
-        {
-            icon: 'branding_watermark',
-            amount: count.spcategories,
-            title: 'Spare Category',
-            link: '/sup-admin/view-categories',
-        },
-        {
             icon: 'branding_watermark',
             amount: count.brand,
             title: 'Brands',
             link: '/sup-admin/brands',
-        },
-        {
-            icon: 'shopping_cart',
-            amount: count.partList,
-            title: 'Part List',
-            link: '/sup-admin/view-part-list',
-        },
-        {
-            icon: 'shopping_cart',
-            amount: count.colorList,
-            title: 'Color List',
-            link: '/sup-admin/view-color-list',
         },
         {
             icon: 'shopping_cart',
@@ -93,10 +63,40 @@ const StatCard3 = () => {
             link: '/sup-admin/products',
         },
         {
-            icon: 'add_shopping_cart',
+            icon: 'branding_watermark',
+            amount: count.spcategories,
+            title: 'SP Categories',
+            link: '/sup-admin/view-categories',
+        },
+        {
+            icon: 'nature_people',
+            amount: count.vendor,
+            title: 'Vendors',
+            link: '/sup-admin/view-vendors',
+        },
+        {
+            icon: 'color_lens',
+            amount: count.colorList,
+            title: 'Color List',
+            link: '/sup-admin/view-color-list',
+        },
+        {
+            icon: 'party_mode',
+            amount: count.partList,
+            title: 'Sp Part List',
+            link: '/sup-admin/view-part-list',
+        },
+        {
+            icon: 'shopping_basket',
             amount: count.bag,
             title: 'Bags',
             link: '/sup-admin/bag',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count.ctxCategory,
+            title: 'Tray Category',
+            link: '/sup-admin/category',
         },
         {
             icon: 'add_shopping_cart',
@@ -104,6 +104,43 @@ const StatCard3 = () => {
             title: 'Trays',
             link: '/sup-admin/tray',
         },
+        {
+            icon: 'add_box',
+            amount: count.boxList,
+            title: 'Boxes',
+            link: '/sup-admin/view-boxes',
+        },
+        {
+            icon: 'track_changes',
+            amount: count.trayRacks,
+            title: 'Tray Racks',
+            link: '/sup-admin/view-trayracks',
+        },
+        {
+            icon: 'payment',
+            amount: count.paymentList,
+            title: 'Payments Terms',
+            link: '/sup-admin/view-payments',
+        },
+        {
+            icon: 'arrow_upward',
+            amount: count.warrantyList,
+            title: 'Warranty Terms',
+            link: '/sup-admin/view-warranty',
+        },
+        {
+            icon: 'sd_storage',
+            amount: count.storageList,
+            title: 'Storage',
+            link: '/sup-admin/view-storage',
+        },
+        {
+            icon: 'filter_frames',
+            amount: count.ramList,
+            title: 'RAM',
+            link: '/sup-admin/view-ram',
+        },
+
         {
             icon: 'battery_charging_full',
             amount: count.readyForChargingInuse,

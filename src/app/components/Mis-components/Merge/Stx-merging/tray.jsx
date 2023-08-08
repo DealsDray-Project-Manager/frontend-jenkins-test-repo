@@ -15,7 +15,7 @@ import {
     Select,
     MenuItem,
     Typography,
-    Box
+    Box,
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
@@ -343,6 +343,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'tray_grade',
+
+            options: {
+                filter: false,
+                display: false,
+                sort: false,
+            },
+        },
+        {
             name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -382,7 +391,8 @@ const SimpleMuiTable = () => {
                                         value,
                                         tableMeta.rowData[3]?.length,
                                         tableMeta.rowData[6],
-                                        tableMeta.rowData[7]
+                                        tableMeta.rowData[7],
+                                        tableMeta.rowData[8]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}

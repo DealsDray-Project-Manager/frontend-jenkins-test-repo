@@ -15,17 +15,16 @@ const StatCard3 = () => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
-                let { user_name } = jwt_decode(user)
-             
+                let { location } = jwt_decode(user)
+
                 try {
                     let res = await axiospricingAgent.post(
-                        '/dashboard/' + user_name
+                        '/dashboard/' + location
                     )
                     if (res?.status === 200) {
                         setCount(res?.data.data)
                     }
                 } catch (error) {
-                  
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -40,9 +39,9 @@ const StatCard3 = () => {
     const statList = [
         {
             icon: 'branding_watermark',
-            amount: count?.charging,
-            title: 'Dummy panel',
-            path: '',
+            amount: count?.radyForPricing,
+            title: 'Ready for Pricing',
+            path: '/pricing/ready-for-pricing',
         },
     ]
     const { palette } = useTheme()

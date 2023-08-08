@@ -132,8 +132,15 @@ const ReassignSortingCtxToStx = Loadable(
 const ReassignSortingBotToWht = Loadable(
     lazy(() => import('./Tray-reassign/Bot-wht-sort/tray'))
 )
+const UnverifiedImeiUpdation = Loadable(
+    lazy(() => import('./Un-verified-imei-updation/units'))
+)
 
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/un-verified-imei-updation',
+        element: <UnverifiedImeiUpdation />,
+    },
     {
         path: '/sup-admin/users',
         element: <ViewAllUsers />,

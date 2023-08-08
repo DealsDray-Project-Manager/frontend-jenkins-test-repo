@@ -358,6 +358,13 @@ export const navigations = [
         sales: false,
     },
     {
+        name: 'Unverified Imei Updation',
+        icon: 'verified_user',
+        path: '/sup-admin/un-verified-imei-updation',
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
         name: 'Track item',
         icon: 'art_track',
         path: '/sup-admin/track-item',
@@ -920,6 +927,11 @@ export const navigations = [
                 path: '/wareshouse/report/sales-bin',
                 iconText: 'VP',
             },
+            {
+                name: 'Upgrade Units',
+                path: '/warehouse/rpt/report/upgrade-units',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: false,
@@ -1363,16 +1375,16 @@ export const navigations = [
     },
 
     {
-        name: 'Dummy Panel',
+        name: 'View price',
         icon: 'class',
-        path: '',
+        path: '/sales/view-price',
         auth: authRoles.Sales_Agent,
         sales: true,
     },
     {
-        name: 'Dummy Panel',
+        name: 'Ready for Pricing',
         icon: 'class',
-        path: '',
+        path: '/pricing/ready-for-pricing',
         auth: authRoles.pricing_Agent,
         sales: true,
     },

@@ -16,7 +16,7 @@ const TextFieldCustOm = styled(TextField)(() => ({
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
 }))
 
 const MemberEditorDialog = ({
@@ -74,7 +74,7 @@ const MemberEditorDialog = ({
         register,
         handleSubmit,
         getValues,
-        formState: { errors }, 
+        formState: { errors },
         reset,
     } = useForm({
         resolver: yupResolver(schema),

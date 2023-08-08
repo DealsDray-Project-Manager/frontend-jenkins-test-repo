@@ -215,6 +215,8 @@ const PartTable = () => {
                 color: x.color,
                 technical_qc: x.technical_qc,
                 description: x.description,
+                sp_category: x.sp_category,
+                box_id: x.box_id,
                 available_stock: x.avl_stock,
                 add_stock: '0',
             }
@@ -240,7 +242,8 @@ const PartTable = () => {
             name: 'index',
             label: (
                 <Typography
-                    variant="subtitle1" marginBottom='15px'
+                    variant="subtitle1"
+                    marginBottom="15px"
                     fontWeight="bold"
                     sx={{ marginLeft: '7px' }}
                 >
@@ -263,7 +266,12 @@ const PartTable = () => {
         {
             name: 'part_code', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:1}}>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    sx={{ ml: 1 }}
+                >
                     <>Part No</>
                 </Typography>
             ), // column title that will be shown in table
@@ -277,7 +285,11 @@ const PartTable = () => {
         {
             name: 'color', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                >
                     <>Color</>
                 </Typography>
             ), // column title that will be shown in table
@@ -291,7 +303,12 @@ const PartTable = () => {
         {
             name: 'name', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Part Name</>
                 </Typography>
             ), // column title that will be shown in table
@@ -301,16 +318,22 @@ const PartTable = () => {
                 //   ),
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography >
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    <Typography>
+                        {value}{' '}
+                        {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
-                  ),
+                ),
             },
         },
         {
             name: 'sp_category',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Category</>
                 </Typography>
             ),
@@ -324,7 +347,12 @@ const PartTable = () => {
         {
             name: 'box_id',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Box Id</>
                 </Typography>
             ),
@@ -338,7 +366,12 @@ const PartTable = () => {
         {
             name: 'technical_qc', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Technical QC</>
                 </Typography>
             ), // column title that will be shown in table
@@ -348,16 +381,22 @@ const PartTable = () => {
                 //   ),
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:6 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    <Typography sx={{ ml: 6 }}>
+                        {value}{' '}
+                        {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
-                  ),
+                ),
             },
         },
         {
             name: 'description',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Description</>
                 </Typography>
             ),
@@ -371,7 +410,12 @@ const PartTable = () => {
         {
             name: 'avl_stock', // field name in the row object
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    noWrap
+                >
                     <>Available Stock</>
                 </Typography>
             ), // column title that will be shown in table
@@ -381,16 +425,23 @@ const PartTable = () => {
                 //   ),
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:6 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    <Typography sx={{ ml: 6 }}>
+                        {value}{' '}
+                        {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
-                  ),
+                ),
             },
         },
         {
             name: 'created_at',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:3}} noWrap>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    sx={{ ml: 3 }}
+                    noWrap
+                >
                     <>Creation Date</>
                 </Typography>
             ),
@@ -410,7 +461,12 @@ const PartTable = () => {
         {
             name: 'status',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold" sx={{ml:2}}>
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                    sx={{ ml: 2 }}
+                >
                     <>Status</>
                 </Typography>
             ),
@@ -422,13 +478,25 @@ const PartTable = () => {
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
-                            <div style={{ color: 'green', fontWeight: 'bold', marginLeft:'15px' }}>
+                            <div
+                                style={{
+                                    color: 'green',
+                                    fontWeight: 'bold',
+                                    marginLeft: '15px',
+                                }}
+                            >
                                 {value}
                             </div>
                         )
                     } else {
                         return (
-                            <div style={{ color: 'red', fontWeight: 'bold', marginLeft:'15px' }}>
+                            <div
+                                style={{
+                                    color: 'red',
+                                    fontWeight: 'bold',
+                                    marginLeft: '15px',
+                                }}
+                            >
                                 {value}
                             </div>
                         )
@@ -439,7 +507,11 @@ const PartTable = () => {
         {
             name: '_id',
             label: (
-                <Typography variant="subtitle1" marginBottom='15px' fontWeight="bold">
+                <Typography
+                    variant="subtitle1"
+                    marginBottom="15px"
+                    fontWeight="bold"
+                >
                     <>Actions</>
                 </Typography>
             ),

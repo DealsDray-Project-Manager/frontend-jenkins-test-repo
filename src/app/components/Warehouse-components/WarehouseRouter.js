@@ -231,8 +231,15 @@ const ReturnFromRdlTwo = Loadable(
 const ReturnFromRdlTwoClosePage = Loadable(
     lazy(() => import('./Rp-tray/return-from-rdl-two/close'))
 )
+const UpgradeUnitsReport = Loadable(
+    lazy(() => import('./Report/Upgrade-units/units'))
+)
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rpt/report/upgrade-units',
+        element: <UpgradeUnitsReport />,
+    },
     {
         path: '/warehouse/rpt/return-from-rdl-two/close/:trayId',
         element: <ReturnFromRdlTwoClosePage />,

@@ -41,7 +41,7 @@ const StatCard3 = () => {
         {
             icon: 'art_track',
             amount: count?.precourmentCount,
-            title: 'Procurement creation',
+            title: 'Procurement',
             path: '/sp-mis/procurement',
             sales: false,
         },

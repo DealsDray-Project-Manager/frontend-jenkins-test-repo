@@ -20,10 +20,12 @@ import {
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
-import { axiosReportingAgent } from '../../../../axios'
+import {
+    axiosMisUser,
+    axiosReportingAgent,
+    axiosWarehouseIn,
+} from '../../../../../axios'
 import Swal from 'sweetalert2'
-import * as FileSaver from 'file-saver'
-import * as XLSX from 'xlsx'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
@@ -106,8 +108,8 @@ const SimpleMuiTable = () => {
                         page: page,
                         rowsPerPage: rowsPerPage,
                     }
-                    let res = await axiosReportingAgent.post(
-                        '/search/unverifiedImei',
+                    let res = await axiosWarehouseIn.post(
+                        '/search/upgradeReport',
                         obj
                     )
                     if (res.status == 200) {
@@ -126,8 +128,8 @@ const SimpleMuiTable = () => {
             } else {
                 const fetchData = async () => {
                     try {
-                        let res = await axiosReportingAgent.post(
-                            '/unverifiedImeiReport/' +
+                        let res = await axiosWarehouseIn.post(
+                            '/upgradeUnits/' +
                                 location +
                                 '/' +
                                 page +
@@ -153,7 +155,7 @@ const SimpleMuiTable = () => {
         } else {
             navigate('/')
         }
-    }, [refresh, page])
+    }, [refresh, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -187,8 +189,8 @@ const SimpleMuiTable = () => {
                         page: page,
                         rowsPerPage: rowsPerPage,
                     }
-                    let res = await axiosReportingAgent.post(
-                        '/search/unverifiedImei',
+                    let res = await axiosWarehouseIn.post(
+                        '/search/upgradeReport',
                         obj
                     )
                     if (res.status == 200) {
@@ -211,81 +213,6 @@ const SimpleMuiTable = () => {
             })
         }
     }
-    const download = (e) => {
-        let arr = []
-        for (let x of dataForDownload) {
-            let obj = {
-                'Order Id': x?.order_id,
-                'Tracking Id': x?.tracking_id,
-                'Model Name': x?.old_item_details
-                    ?.replace(/:/g, ' ')
-                    .toUpperCase(),
-                IMEI: x?.imei,
-                'SKU Name': x?.item_id,
-                'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
-                UIC: x?.uic_code?.code,
-                Price: x?.partner_purchase_price,
-                'Tray Location': x?.tray_location,
-                Location: x?.partner_shop,
-            }
-            if (x.tray_type == 'MMT') {
-                obj['Type'] = 'Model MisMatch MMT'
-            } else if (x.tray_type == 'PMT') {
-                obj['Type'] = 'Product MisMatch MMT'
-            } else {
-                obj['Type'] = 'Model Verified BOT'
-            }
-            if (x?.order_date !== undefined && x?.order_date !== null) {
-                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
-                    'en-GB',
-                    {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }
-                )
-            } else {
-                obj['Order Date'] = ''
-            }
-
-            if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
-                obj['Delivery Date'] = new Date(
-                    x?.delivery_date
-                ).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            } else {
-                obj['Delivery Date'] = ''
-            }
-            if (
-                x?.assign_to_agent !== undefined &&
-                x?.assign_to_agent !== null
-            ) {
-                obj['Packet Open Date'] = new Date(
-                    x?.assign_to_agent
-                ).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            } else {
-                obj['Packet Open Date'] = ''
-            }
-
-            arr.push(obj)
-        }
-        const fileExtension = '.xlsx'
-        const fileType =
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        const ws = XLSX.utils.json_to_sheet(arr)
-
-        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-        const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Month Wise Purchase Details' + fileExtension)
-    }
 
     const dataFilter = async () => {
         try {
@@ -295,8 +222,8 @@ const SimpleMuiTable = () => {
             filterData.size = rowsPerPage
             setDisplayText('Please wait...')
             setFilterUn(true)
-            const res = await axiosReportingAgent.post(
-                '/unverifiedImei/item/filter',
+            const res = await axiosWarehouseIn.post(
+                '/upgardeUnitsFilter/item/filter',
                 filterData
             )
             if (res.status === 200) {
@@ -354,7 +281,7 @@ const SimpleMuiTable = () => {
                                 width: '145px',
                             }}
                         >
-                            Delivery IMEI{' '}
+                            Auditor Name
                         </TableCell>
                         <TableCell
                             style={{
@@ -364,7 +291,7 @@ const SimpleMuiTable = () => {
                                 width: '240px',
                             }}
                         >
-                            Bqc software report RO Ril Miui IMEI 0
+                            Auditor Status
                         </TableCell>
                         <TableCell
                             style={{
@@ -374,7 +301,7 @@ const SimpleMuiTable = () => {
                                 width: '205px',
                             }}
                         >
-                            Bqc software report Mobile IMEI
+                            Original Grade
                         </TableCell>
                         <TableCell
                             style={{
@@ -384,7 +311,7 @@ const SimpleMuiTable = () => {
                                 width: '209px',
                             }}
                         >
-                            Bqc software report Mobile IMEI 2
+                            Auditor Recommended Grade
                         </TableCell>
                         <TableCell
                             style={{
@@ -394,7 +321,7 @@ const SimpleMuiTable = () => {
                                 width: '209px',
                             }}
                         >
-                            Charging user added CIMEI 1
+                            Auditor Reason
                         </TableCell>
                         <TableCell
                             style={{
@@ -404,7 +331,7 @@ const SimpleMuiTable = () => {
                                 width: '209px',
                             }}
                         >
-                            Charging user added CIMEI 2
+                            Auditor Remark
                         </TableCell>
                         <TableCell
                             style={{
@@ -414,7 +341,17 @@ const SimpleMuiTable = () => {
                                 width: '150px',
                             }}
                         >
-                            Tray status
+                            Audit Done Date
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '150px',
+                            }}
+                        >
+                            Tray Status
                         </TableCell>
                         <TableCell
                             style={{
@@ -424,27 +361,7 @@ const SimpleMuiTable = () => {
                                 width: '250px',
                             }}
                         >
-                            Wht tray id
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Ctx tray id
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Stx tray id
+                            Wht Tray
                         </TableCell>
                         <TableCell
                             style={{
@@ -489,22 +406,27 @@ const SimpleMuiTable = () => {
                                     ?.replace(/:/g, ' ')
                                     ?.toUpperCase()}
                             </TableCell>
-                            <TableCell>{data?.imei}</TableCell>
+                            <TableCell>{data?.audit_user_name}</TableCell>
+                            <TableCell>{data?.audit_report?.stage}</TableCell>
                             <TableCell>
-                                {data?.bqc_software_report?._ro_ril_miui_imei0}
+                                {data?.bqc_software_report?.final_grade}
+                            </TableCell>
+                            <TableCell>{data?.audit_report?.grade}</TableCell>
+                            <TableCell>{data?.audit_report?.reason}</TableCell>
+                            <TableCell>
+                                {data?.audit_report?.description}
                             </TableCell>
                             <TableCell>
-                                {data?.bqc_software_report?.mobile_imei}
+                                {' '}
+                                {new Date(data?.audit_done_date).toLocaleString(
+                                    'en-GB',
+                                    {
+                                        hour12: true,
+                                    }
+                                )}
                             </TableCell>
-                            <TableCell>
-                                {data?.bqc_software_report?.mobile_imei2}
-                            </TableCell>
-                            <TableCell>{data?.charging?.cimei_1}</TableCell>
-                            <TableCell>{data?.charging?.cimei_2}</TableCell>
                             <TableCell>{data?.tray_status}</TableCell>
                             <TableCell>{data?.wht_tray}</TableCell>
-                            <TableCell>{data?.ctx_tray_id}</TableCell>
-                            <TableCell>{data?.stx_tray_id}</TableCell>
                             <TableCell
                                 style={{ color: 'green', fontWeight: 'bold' }}
                             >
@@ -527,7 +449,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Unverified imei report', path: '/' },
+                        { name: 'Upgrade Units Report', path: '/' },
                     ]}
                 />
             </div>
@@ -550,33 +472,7 @@ const SimpleMuiTable = () => {
                 </Box>
                 <Box>
                     <TextField
-                        type="text"
-                        select
-                        label="Select Type"
-                        variant="outlined"
-                        name="searchType"
-                        sx={{ width: '140px' }}
-                    >
-                        <MenuItem
-                            value="Order Date"
-                            onClick={(e) => {
-                                setSearchType('Order Date')
-                            }}
-                        >
-                            Order Date
-                        </MenuItem>
-                        <MenuItem
-                            value="Delivery Date"
-                            onClick={(e) => {
-                                setSearchType('Delivery Date')
-                            }}
-                        >
-                            Delivery Date
-                        </MenuItem>
-                    </TextField>
-                    <TextField
                         type="date"
-                        disabled={searchType == ''}
                         label="From Date"
                         variant="outlined"
                         inputProps={{ max: moment().format('YYYY-MM-DD') }}
@@ -636,7 +532,7 @@ const SimpleMuiTable = () => {
             </Card>
             <TablePagination
                 sx={{ px: 2 }}
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[100, 150, 200]}
                 component="div"
                 count={count}
                 rowsPerPage={rowsPerPage}

@@ -2,10 +2,10 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import { Button, Typography, TextField, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { axiosMisUser } from '../../../../axios'
+import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Box , Table, TableContainer} from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -21,28 +21,11 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth:600,
-    width: '100%',
-    height: '100%',
-    whiteSpace: 'nowrap',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
 const SimpleMuiTable = () => {
+    const [isAlive, setIsAlive] = useState(true)
     const [item, setItem] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
@@ -51,8 +34,8 @@ const SimpleMuiTable = () => {
             const { location } = jwt_decode(admin)
             const fetchData = async () => {
                 try {
-                    let res = await axiosMisUser.post(
-                        '/procurmentRepair/' + location
+                    let res = await axiosSalsAgent.post(
+                        '/viewPrice/' + location
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
@@ -73,26 +56,26 @@ const SimpleMuiTable = () => {
             navigate('/')
         }
         return () => {
+            setIsAlive(false)
             setIsLoading(false)
         }
-    }, [])
-
-    const handelDetailPage = (brand, model) => {
-        navigate('/sp-mis/procurement/procurementlist/' + brand + '/' + model)
-    }
+    }, [isAlive])
 
     const columns = [
         {
             name: 'index',
             label: (
-                <Typography sx={{fontWeight: 'bold', ml: 2 }}>
-                    Record No
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    marginLeft="7px"
+                >
+                    <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -101,17 +84,24 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: '_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
+            name: 'muic',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>MUIC</>
+                </Typography>
+            ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => 
-                value?.muic || '',
+                customBodyRender: (value, dataIndex) => value?.[0] || '',
             },
         },
         {
             name: '_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.brand || '',
@@ -119,18 +109,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: '_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
-                
                 customBodyRender: (value, dataIndex) => value?.model || '',
             },
         },
         {
-            name: 'required_qty',
+            name: 'itemCount',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                   Required Qty
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Units</>
                 </Typography>
             ),
             options: {
@@ -138,31 +131,29 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
+            name: '_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Grade</>
+                </Typography>
+            ),
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Box>
-                        <Button
-                            sx={{ p:1, whiteSpace:'nowrap' }}
-                            variant="contained"
-                            onClick={(e) =>
-                                handelDetailPage(
-                                    tableMeta.rowData[2]?.brand,
-                                    tableMeta.rowData[3]?.model
-                                )
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Create Procurement List
-                        </Button>
-                        </Box>
-                    )
-                },
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.grade || '',
+            },
+        },
+        {
+            name: 'mrp',
+            label: <Typography sx={{ fontWeight: 'bold' }}>MRP</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sp',
+            label: <Typography sx={{ fontWeight: 'bold' }}>SP</Typography>,
+            options: {
+                filter: true,
             },
         },
     ]
@@ -171,14 +162,12 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Procurement', path: '/' },
-                    ]}
+                    routeSegments={[{ name: 'View price', path: '/' }]}
                 />
             </div>
-            <ProductTable>
+
             <MUIDataTable
-                title={'Procurement'}
+                title={'View price'}
                 data={item}
                 columns={columns}
                 options={{
@@ -195,7 +184,7 @@ const SimpleMuiTable = () => {
                     },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
-                    filter: true, // set data filter option
+                    // filter: false, // set data filter option
                     // download: false, // set download option
                     // print: false, // set print option
                     // pagination: true, //set pagination option
@@ -205,27 +194,24 @@ const SimpleMuiTable = () => {
                             1: 'muic',
                             2: 'brand',
                             3: 'model',
-                          
+                            5: 'grade',
                         }
 
                         const property = columnProperties[colIndex]
 
                         if (property) {
                             return data.sort((a, b) => {
-                                const aPropertyValue =
-                                    getValueByProperty(
-                                        a.data[colIndex],
-                                        property
-                                    )
-                                const bPropertyValue =
-                                    getValueByProperty(
-                                        b.data[colIndex],
-                                        property
-                                    )
+                                const aPropertyValue = getValueByProperty(
+                                    a.data[colIndex],
+                                    property
+                                )
+                                const bPropertyValue = getValueByProperty(
+                                    b.data[colIndex],
+                                    property
+                                )
 
                                 if (
-                                    typeof aPropertyValue ===
-                                        'string' &&
+                                    typeof aPropertyValue === 'string' &&
                                     typeof bPropertyValue === 'string'
                                 ) {
                                     return (
@@ -252,17 +238,11 @@ const SimpleMuiTable = () => {
                                 return 0
                             }
 
-                            if (
-                                aValue === null ||
-                                aValue === undefined
-                            ) {
+                            if (aValue === null || aValue === undefined) {
                                 return 1
                             }
 
-                            if (
-                                bValue === null ||
-                                bValue === undefined
-                            ) {
+                            if (bValue === null || bValue === undefined) {
                                 return -1
                             }
 
@@ -277,8 +257,7 @@ const SimpleMuiTable = () => {
                             }
 
                             return (
-                                (parseFloat(aValue) -
-                                    parseFloat(bValue)) *
+                                (parseFloat(aValue) - parseFloat(bValue)) *
                                 (order === 'desc' ? -1 : 1)
                             )
                         })
@@ -290,7 +269,6 @@ const SimpleMuiTable = () => {
                                 data
                             )
 
-                          
                             return value !== undefined ? value : ''
                         }
                     },
@@ -298,7 +276,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            </ProductTable>
         </Container>
     )
 }

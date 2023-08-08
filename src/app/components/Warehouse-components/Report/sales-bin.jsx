@@ -13,7 +13,7 @@ import {
     TextField,
     Box,
     Button,
-    Typography
+    Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -34,10 +34,38 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+const ProductTable = styled(Table)(() => ({
+    minWidth: 750,
+    width: '150%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: 'none',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '16px !important',
+    },
+    borderCollapse: 'separate',
+    borderSpacing: '0',
+    '& th, & td': {
+        borderBottom: '1px solid rgba(0, 0, 0, 0.2)', // Lighter border color
+        borderRight: '1px solid rgba(0, 0, 0, 0.2)',
+        padding: '8px',
+        textAlign: 'left',
+    },
+    '& th:last-child, & td:last-child': {
+        borderRight: 'none',
+    },
+}))
+
 const SimpleMuiTable = () => {
     const [page, setPage] = React.useState(0)
     const [item, setItem] = useState([])
-    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [data, setData] = useState([])
     const [tableMessage, setTableMessage] = useState('')
     const navigate = useNavigate()
@@ -84,14 +112,12 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-
     const download = (e) => {
-
         const fileExtension = '.xlsx'
         const fileType =
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        const ws = XLSX.utils.json_to_sheet(item, {header: []})
-       
+        const ws = XLSX.utils.json_to_sheet(item, { header: [] })
+
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
@@ -101,7 +127,6 @@ const SimpleMuiTable = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage)
     }
-
 
     const searchItem = async (inputData) => {
         try {
@@ -127,16 +152,44 @@ const SimpleMuiTable = () => {
 
     const tableData = useMemo(() => {
         return (
-            <Table id="example">
+            <ProductTable elevation={6}>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', p:2}}>Record.NO</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>UIC</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Grade</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Added Agent Name</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Added Time</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>From Tray ID</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold'}}>Description</TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold', p: 2 }}
+                        >
+                            Record.NO
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            UIC
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            Grade
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            Added Agent Name
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            Added Time
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            From Tray ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            Description
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 {tableMessage !== '' ? (
@@ -145,7 +198,9 @@ const SimpleMuiTable = () => {
                     <TableBody>
                         {data.map((data, index) => (
                             <TableRow tabIndex={-1}>
-                                <TableCell sx={{paddingLeft:'30px'}}>{data.id}</TableCell>
+                                <TableCell sx={{ paddingLeft: '30px' }}>
+                                    {data.id}
+                                </TableCell>
 
                                 <TableCell>{data.uic_code}</TableCell>
                                 <TableCell>{data.sales_bin_grade}</TableCell>
@@ -170,7 +225,7 @@ const SimpleMuiTable = () => {
                         ))}
                     </TableBody>
                 )}
-            </Table>
+            </ProductTable>
         )
     }, [item, data, tableMessage])
 

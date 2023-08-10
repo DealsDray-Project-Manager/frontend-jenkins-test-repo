@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
                     user: {
                         id: res.data.data.data._id,
                         name: res.data.data.data.name,
+                        username:res.data.data.data.user_name,
                         avatar: res.data.data.data.profile,
                         email: res.data.data.data.email,
                         role: res.data.data.data.user_type,

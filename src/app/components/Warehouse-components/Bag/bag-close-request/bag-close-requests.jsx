@@ -8,6 +8,8 @@ import jwt_decode from 'jwt-decode'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Dialog,
     DialogTitle,
@@ -16,7 +18,7 @@ import {
     DialogActions,
     TextField,
     Button,
-    Typography
+    Typography,
 } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
@@ -67,6 +69,7 @@ BootstrapDialogTitle.propTypes = {
 }
 
 const SimpleMuiTable = () => {
+    const { user } = useAuth()
     const [isAlive, setIsAlive] = useState(true)
     const [bot, setBot] = useState([])
     const [trayId, setTrayId] = useState('')
@@ -129,6 +132,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 count: counts,
+                username: user.username,
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
@@ -170,25 +174,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:1}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 1 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Bag ID</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.[0]?.bag_id,
@@ -196,21 +207,27 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'status_change_time',
-            label: <Typography sx={{fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Assigned Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -221,7 +238,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'closed_time_bot',
-            label: <Typography sx={{fontWeight:'bold'}}>Closed Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Closed Date</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -232,14 +251,16 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

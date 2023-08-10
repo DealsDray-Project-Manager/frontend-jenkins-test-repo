@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import moment from 'moment'
-
+import AssignDialogBox from './dailog'
 import {
     TableCell,
     TableHead,
@@ -20,10 +20,8 @@ import {
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
-import { axiosReportingAgent } from '../../../../axios'
+import { axiosReportingAgent, axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
-import * as FileSaver from 'file-saver'
-import * as XLSX from 'xlsx'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
@@ -67,19 +65,21 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
     const [data, setData] = useState([])
     const navigate = useNavigate()
+    const [uicData, setUicData] = useState({})
     const [stateForFilterUn, setFilterUn] = useState(false)
-    const [refresh, setRefresh] = useState(false)
+    const [isAlive, setIsAlive] = useState(true)
     const [location, setLocation] = useState('')
     const [count, setCount] = useState(0)
     const [searchType, setSearchType] = useState('')
     const [inputSearch, setInputSearch] = useState('')
-    const [dataForDownload, setDataForDownload] = useState([])
     const [displayText, setDisplayText] = useState('')
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const [filterData, setFilterData] = useState({
         fromDate: '',
         toDate: '',
@@ -126,13 +126,8 @@ const SimpleMuiTable = () => {
             } else {
                 const fetchData = async () => {
                     try {
-                        let res = await axiosReportingAgent.post(
-                            '/unverifiedImeiReport/' +
-                                location +
-                                '/' +
-                                page +
-                                '/' +
-                                rowsPerPage
+                        let res = await axiosSuperAdminPrexo.post(
+                            '/unverifiedImeiReport/' + page + '/' + rowsPerPage
                         )
                         if (res.status == 200) {
                             setDisplayText('')
@@ -153,7 +148,7 @@ const SimpleMuiTable = () => {
         } else {
             navigate('/')
         }
-    }, [refresh, page])
+    }, [isAlive, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -177,7 +172,7 @@ const SimpleMuiTable = () => {
                 setDisplayText('Searching...')
                 let { location } = jwt_decode(admin)
                 if (e.target.value == '') {
-                    setRefresh((refresh) => !refresh)
+                    setIsAlive((isAlive) => !isAlive)
                 } else {
                     setRowsPerPage(100)
                     setPage(0)
@@ -187,7 +182,7 @@ const SimpleMuiTable = () => {
                         page: page,
                         rowsPerPage: rowsPerPage,
                     }
-                    let res = await axiosReportingAgent.post(
+                    let res = await axiosSuperAdminPrexo.post(
                         '/search/unverifiedImei',
                         obj
                     )
@@ -211,81 +206,6 @@ const SimpleMuiTable = () => {
             })
         }
     }
-    const download = (e) => {
-        let arr = []
-        for (let x of dataForDownload) {
-            let obj = {
-                'Order Id': x?.order_id,
-                'Tracking Id': x?.tracking_id,
-                'Model Name': x?.old_item_details
-                    ?.replace(/:/g, ' ')
-                    .toUpperCase(),
-                IMEI: x?.imei,
-                'SKU Name': x?.item_id,
-                'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
-                UIC: x?.uic_code?.code,
-                Price: x?.partner_purchase_price,
-                'Tray Location': x?.tray_location,
-                Location: x?.partner_shop,
-            }
-            if (x.tray_type == 'MMT') {
-                obj['Type'] = 'Model MisMatch MMT'
-            } else if (x.tray_type == 'PMT') {
-                obj['Type'] = 'Product MisMatch MMT'
-            } else {
-                obj['Type'] = 'Model Verified BOT'
-            }
-            if (x?.order_date !== undefined && x?.order_date !== null) {
-                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
-                    'en-GB',
-                    {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }
-                )
-            } else {
-                obj['Order Date'] = ''
-            }
-
-            if (x?.delivery_date !== undefined && x?.delivery_date !== null) {
-                obj['Delivery Date'] = new Date(
-                    x?.delivery_date
-                ).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            } else {
-                obj['Delivery Date'] = ''
-            }
-            if (
-                x?.assign_to_agent !== undefined &&
-                x?.assign_to_agent !== null
-            ) {
-                obj['Packet Open Date'] = new Date(
-                    x?.assign_to_agent
-                ).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            } else {
-                obj['Packet Open Date'] = ''
-            }
-
-            arr.push(obj)
-        }
-        const fileExtension = '.xlsx'
-        const fileType =
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        const ws = XLSX.utils.json_to_sheet(arr)
-
-        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-        const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Month Wise Purchase Details' + fileExtension)
-    }
 
     const dataFilter = async () => {
         try {
@@ -295,7 +215,7 @@ const SimpleMuiTable = () => {
             filterData.size = rowsPerPage
             setDisplayText('Please wait...')
             setFilterUn(true)
-            const res = await axiosReportingAgent.post(
+            const res = await axiosSuperAdminPrexo.post(
                 '/unverifiedImei/item/filter',
                 filterData
             )
@@ -310,6 +230,32 @@ const SimpleMuiTable = () => {
         } catch (error) {
             alert(error)
         }
+    }
+
+    const handleDialogClose = () => {
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    //UPDATE IMEI
+    const handelUpdateImei = (
+        uic,
+        delivery_imei,
+        bqc_ro_ril_imei,
+        bqc_ro_mob_one_imei,
+        bqc_ro_mob_two_imei
+    ) => {
+        setUicData({
+            uic: uic,
+            delivery_imei:delivery_imei,
+            bqc_ro_ril_imei: bqc_ro_ril_imei,
+            bqc_ro_mob_one_imei: bqc_ro_mob_one_imei,
+            bqc_ro_mob_two_imei: bqc_ro_mob_two_imei,
+        })
+        handleDialogOpen()
     }
 
     const tableData = useMemo(() => {
@@ -466,6 +412,16 @@ const SimpleMuiTable = () => {
                         >
                             Billed Bin Status
                         </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '250px',
+                            }}
+                        >
+                            Action
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -515,6 +471,29 @@ const SimpleMuiTable = () => {
                             >
                                 {data?.item_moved_to_billed_bin}
                             </TableCell>
+                            <TableCell>
+                                <Button
+                                    sx={{
+                                        width: '113px',
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        handelUpdateImei(
+                                            data?.uic_code?.code,
+                                            data?.imei,
+                                            data?.bqc_software_report
+                                                ?._ro_ril_miui_imei0,
+                                            data?.bqc_software_report
+                                                ?.mobile_imei,
+                                            data?.bqc_software_report
+                                                ?.mobile_imei2
+                                        )
+                                    }}
+                                >
+                                    Update Imei
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -526,9 +505,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Unverified imei report', path: '/' },
-                    ]}
+                    routeSegments={[{ name: 'Unverified Imei', path: '/' }]}
                 />
             </div>
             <Box
@@ -616,19 +593,6 @@ const SimpleMuiTable = () => {
                     >
                         Filter
                     </Button>
-                    {/* <Button
-                        sx={{ ml: 2, mt: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={
-                            inputSearch == '' && stateForFilterUn == false
-                        }
-                        onClick={(e) => {
-                            download(e)
-                        }}
-                    >
-                        Download XLSX
-                    </Button> */}
                 </Box>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
@@ -654,6 +618,14 @@ const SimpleMuiTable = () => {
                     setRowsPerPage(value)
                 }
             />
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    uicData={uicData}
+                    setIsAlive={setIsAlive}
+                />
+            )}
         </Container>
     )
 }

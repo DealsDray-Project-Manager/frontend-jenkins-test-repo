@@ -23,6 +23,11 @@ import BqcUserReport from './Report/bqc-user-report'
 import AmazonDetails from './Report/amazon-data'
 import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
+import PrevChargingReport from './Report/prev-charging'
+import PrevBqcReport from './Report/pre-bqc-report'
+import RdlOneReport from './Report/rdl-one-report'
+import RdlTwoReport from './Report/rdl-two-report'
+
 import Swal from 'sweetalert2'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -252,6 +257,11 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <PrevChargingReport
+                        Charging={reportData?.delivery?.previousCharging}
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
                     <ChargingDetails
                         Charging={reportData?.delivery?.charging}
                         ChargeDoneDate={
@@ -260,10 +270,25 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <PrevBqcReport
+                        BqcUserReport={reportData?.delivery?.preBqcData}
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
                         BqcAgentName={reportData?.delivery?.agent_name_bqc}
                         BqcDoneDate={reportData?.delivery?.bqc_out_date}
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <RdlOneReport
+                        RdlOneReport={reportData?.delivery?.rdl_fls_one_report}
+                    />
+                </Grid>
+                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                    <RdlTwoReport
+                        RdlTwoReport={reportData?.delivery?.rdl_two_report}
                     />
                 </Grid>
                 <Grid sx={{ boxShadow: 1 }} item lg={12} md={12} xs={12}>

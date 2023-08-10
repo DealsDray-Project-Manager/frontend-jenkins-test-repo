@@ -106,7 +106,7 @@ const MemberEditorDialog = ({
         try {
             data.muic = muis_code
             data.created_at = Date.now()
-            data.created_by = user.name
+            data.created_by = user.username
             let formdata = new FormData()
             formdata.append('image', productImage.store)
             for (let [key, value] of Object.entries(data)) {

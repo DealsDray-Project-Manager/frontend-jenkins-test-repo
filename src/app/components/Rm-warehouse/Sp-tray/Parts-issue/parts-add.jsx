@@ -33,7 +33,7 @@ const SimpleMuiTable = () => {
     const { trayId } = useParams()
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
-    const [loading,setloading]=useState(false)
+    const [loading, setloading] = useState(false)
     const [description, setDescription] = useState([])
     const [rackiddrop, setrackiddrop] = useState([])
     const [rackId, setRackId] = useState('')
@@ -174,16 +174,16 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Record No
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Record No</Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
                 customHeadRender: (columnMeta) => (
-                    <th style={{ width: '9%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                  ),
+                    <th style={{ width: '9%', borderBottom: '1px solid #ddd' }}>
+                        {columnMeta.label}
+                    </th>
+                ),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -225,20 +225,23 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-            }, 
+            },
         },
         {
             name: 'selected_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Qty to be Picked</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Qty to be Picked
+                </Typography>
             ),
             options: {
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:6 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    <Typography sx={{ ml: 6 }}>
+                        {value}{' '}
+                        {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
-                  ),
+                ),
             },
         },
         {
@@ -249,10 +252,11 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) => (
-                    <Typography sx={{ ml:3 }}>
-                      {value} {/* Apply the desired alignment, 'center' in this case */}
+                    <Typography sx={{ ml: 3 }}>
+                        {value}{' '}
+                        {/* Apply the desired alignment, 'center' in this case */}
                     </Typography>
-                  ),
+                ),
             },
         },
         {
@@ -375,7 +379,8 @@ const SimpleMuiTable = () => {
                     disabled={
                         tray?.items?.length !== tray?.temp_array?.length ||
                         rackId == '' ||
-                        description == '' || loading
+                        description == '' ||
+                        loading
                     }
                     style={{ backgroundColor: '#206CE2' }}
                     onClick={(e) => {
@@ -390,4 +395,3 @@ const SimpleMuiTable = () => {
 }
 
 export default SimpleMuiTable
- 

@@ -360,7 +360,7 @@ export const navigations = [
     {
         name: 'Unverified Imei Updation',
         icon: 'verified_user',
-        path: '/sup-admin/un-verified-imei-updation',
+        path: '/sup-admin/unverified-imei-updation',
         auth: authRoles.admin,
         sales: false,
     },
@@ -1375,9 +1375,9 @@ export const navigations = [
     },
 
     {
-        name: 'View price',
+        name: 'Ready for sales',
         icon: 'class',
-        path: '/sales/view-price',
+        path: '/sales/ready-for-sales',
         auth: authRoles.Sales_Agent,
         sales: true,
     },
@@ -1385,6 +1385,13 @@ export const navigations = [
         name: 'Ready for Pricing',
         icon: 'class',
         path: '/pricing/ready-for-pricing',
+        auth: authRoles.pricing_Agent,
+        sales: true,
+    },
+    {
+        name: 'Ready for Sales',
+        icon: 'save',
+        path: '/pricing/ready-for-sales',
         auth: authRoles.pricing_Agent,
         sales: true,
     },

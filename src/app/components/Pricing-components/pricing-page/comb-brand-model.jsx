@@ -168,6 +168,7 @@ const SimpleMuiTable = () => {
         let obj = {
             muicDetails: addPricing,
             location: location,
+            screen:"Price creation"
         }
         if (flag == false) {
             const res = await axiospricingAgent.post('/addPrice', obj)

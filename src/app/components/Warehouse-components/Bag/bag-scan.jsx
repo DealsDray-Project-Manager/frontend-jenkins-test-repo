@@ -8,7 +8,7 @@ import {
     TextField,
     Checkbox,
 } from '@mui/material'
-
+import useAuth from 'app/hooks/useAuth'
 import React, { useState } from 'react'
 import { Box, styled } from '@mui/system'
 import { SimpleCard, Breadcrumb } from 'app/components'
@@ -49,9 +49,9 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
+/**************************************************************************** */
 const PaginationTable = () => {
     const [bagData, setBagData] = useState([])
-    /**************************************************************************** */
     const [bagId, setBagId] = useState('')
     const [bagSuccess, setbagSuccess] = useState(false)
     const [awbn, setAwbn] = useState('')
@@ -61,6 +61,8 @@ const PaginationTable = () => {
     const [goButDis, setGoButDis] = useState(false)
     const [disAwbnText, SetDisAwbText] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
+
 
     const handelCheckBagId = async (e) => {
         try {
@@ -111,7 +113,6 @@ const PaginationTable = () => {
             let response = await axiosWarehouseIn.post('/getBagItem/' + bagId)
             if (response.status === 200) {
                 setBagData(response.data.data)
-                //   dataTableFun()
             } else if (response.status == 201) {
                 setBagData(response.data.data)
 
@@ -218,7 +219,7 @@ const PaginationTable = () => {
                         order_date: awbn.order_date,
                         status: status,
                         sotckin_date: Date.now(),
-                        old_item_details:awbn.old_item_details
+                        old_item_details: awbn.old_item_details,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/stockInToWarehouse',
@@ -296,6 +297,7 @@ const PaginationTable = () => {
                     uic: uic,
                     sleaves: sleaves,
                     stage: 'Closed',
+                    username:user.name
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
@@ -401,6 +403,7 @@ const PaginationTable = () => {
                             type="text"
                             label="Bag ID"
                             onChange={(e) => setBagId(e.target.value)}
+                            autoComplete="off" // Disable autocomplete suggestions
                         />
                         <Button
                             sx={{ ml: 2, mb: 1, mt: 1, mr: 2, height: '37px' }}
@@ -409,6 +412,7 @@ const PaginationTable = () => {
                             size="small"
                             disabled={bagId == '' || goButDis}
                             onClick={handelCheckBagId}
+                          
                         >
                             GO
                         </Button>
@@ -421,6 +425,7 @@ const PaginationTable = () => {
                                     name="doorsteps_diagnostics"
                                     label="SCAN AWBN"
                                     value={awbn}
+                                    autoComplete="off" // Disable autocomplete suggestions
                                     disabled={disAwbnText}
                                     onChange={(e) => {
                                         setAwbn(e.target.value)
@@ -540,11 +545,31 @@ const PaginationTable = () => {
                 <StyledTable>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>S.NO</TableCell>
-                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>AWBN Number</TableCell>
-                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Order ID</TableCell>
-                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Order Date</TableCell>
-                            <TableCell sx={{fontWeight:'bold', fontSize:'14px'}}>Status</TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                            >
+                                S.NO
+                            </TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                            >
+                                AWBN Number
+                            </TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                            >
+                                Order ID
+                            </TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                            >
+                                Order Date
+                            </TableCell>
+                            <TableCell
+                                sx={{ fontWeight: 'bold', fontSize: '14px' }}
+                            >
+                                Status
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

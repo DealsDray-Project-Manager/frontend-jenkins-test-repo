@@ -32,61 +32,72 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 }))
 
-const BqcUserReportPage = ({ BqcUserReport, BqcAgentName, BqcDoneDate }) => {
+const BqcUserReportPage = ({ BqcUserReport }) => {
     return (
         <Card elevation={3}>
-            <H4 sx={{ p: 2 }}>Latest BQC User Report</H4>
+            <H4 sx={{ p: 2 }}>Previous BQC User Report</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
-                    <TableRow key={BqcUserReport?.bqc_status}>
+                    <TableRow key={BqcUserReport?.report?.bqc_status}>
                         <TableCell sx={{ pl: 2 }}>Status :</TableCell>
-                        <TableCell>{BqcUserReport?.bqc_status}</TableCell>
+                        <TableCell>
+                            {BqcUserReport?.report?.bqc_status}
+                        </TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.blancoo_qc_status}>
+                    <TableRow key={BqcUserReport?.report?.blancoo_qc_status}>
                         <TableCell sx={{ pl: 2 }}>
                             Blancco QC Status :
                         </TableCell>
                         <TableCell>
-                            {BqcUserReport?.blancoo_qc_status}
+                            {BqcUserReport?.report?.blancoo_qc_status}
                         </TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.bqc_incomplete_reason}>
+                    <TableRow
+                        key={BqcUserReport?.report?.bqc_incomplete_reason}
+                    >
                         <TableCell sx={{ pl: 2 }}>
                             BQC Incomplete Reason :
                         </TableCell>
                         <TableCell>
-                            {BqcUserReport?.bqc_incomplete_reason}
+                            {BqcUserReport?.report?.bqc_incomplete_reason}
                         </TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.technical_issue}>
+                    <TableRow key={BqcUserReport?.report?.technical_issue}>
                         <TableCell sx={{ pl: 2 }}>Technical Issue :</TableCell>
-                        <TableCell>{BqcUserReport?.technical_issue}</TableCell>
+                        <TableCell>
+                            {BqcUserReport?.report?.technical_issue}
+                        </TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.other}>
+                    <TableRow key={BqcUserReport?.report?.other}>
                         <TableCell sx={{ pl: 2 }}>BQC User Remark :</TableCell>
-                        <TableCell>{BqcUserReport?.other}</TableCell>
+                        <TableCell>{BqcUserReport?.report?.other}</TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.factory_reset_status}>
+                    <TableRow key={BqcUserReport?.report?.factory_reset_status}>
                         <TableCell sx={{ pl: 2 }}>
                             Factory reset status :
                         </TableCell>
                         <TableCell>
-                            {BqcUserReport?.factory_reset_status}
+                            {BqcUserReport?.report?.factory_reset_status}
                         </TableCell>
                     </TableRow>
-                    <TableRow key={BqcAgentName}>
+                    <TableRow key={BqcUserReport?.user_name_of_action}>
                         <TableCell sx={{ pl: 2 }}>
                             BQC Operator Name :
                         </TableCell>
-                        <TableCell>{BqcAgentName}</TableCell>
+                        <TableCell>
+                            {BqcUserReport?.user_name_of_action}
+                        </TableCell>
                     </TableRow>
-                    <TableRow key={BqcDoneDate}>
+                    <TableRow key={BqcUserReport?.created_at}>
                         <TableCell sx={{ pl: 2 }}>BQC Done Date :</TableCell>
                         <TableCell>
-                            {new Date(BqcDoneDate).toLocaleString('en-GB', {
-                                hour12: true,
-                            })}
+                            {new Date(BqcUserReport?.created_at).toLocaleString(
+                                'en-GB',
+                                {
+                                    hour12: true,
+                                }
+                            )}
                         </TableCell>
                     </TableRow>
                 </TableBody>

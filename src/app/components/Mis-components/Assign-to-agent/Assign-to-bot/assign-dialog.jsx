@@ -5,6 +5,7 @@ import { H4 } from 'app/components/Typography'
 import Swal from 'sweetalert2'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -28,6 +29,7 @@ const MemberEditorDialog = ({
 }) => {
     const [botName, setBotName] = useState()
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
@@ -36,6 +38,7 @@ const MemberEditorDialog = ({
             let obj = {
                 bagId: bagId,
                 bot_name: botName,
+                username: user.username,
             }
             let res = await axiosMisUser.post('/issueRequestSend', obj)
             if (res.status == 200) {

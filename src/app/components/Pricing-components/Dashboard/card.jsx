@@ -38,10 +38,16 @@ const StatCard3 = () => {
 
     const statList = [
         {
-            icon: 'branding_watermark',
+            icon: 'class',
             amount: count?.radyForPricing,
             title: 'Ready for Pricing',
             path: '/pricing/ready-for-pricing',
+        },
+        {
+            icon: 'save',
+            amount: count?.viewPriceCount,
+            title: 'Ready for Sales',
+            path: '/pricing/ready-for-sales',
         },
     ]
     const { palette } = useTheme()

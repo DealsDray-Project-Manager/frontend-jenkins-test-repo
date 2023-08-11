@@ -70,10 +70,10 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handleQtyChange = (muic, field, value, grade,price_creation_date) => {
+    const handleQtyChange = (muic, field, value, grade) => {
         // Find the item in the state based on the 'muic'
         const updatedItem = item.find(
-            (item) => item.muic_one === muic && item?._id?.grade === grade && item.price_creation_date == price_creation_date
+            (item) => item.muic_one === muic && item?._id?.grade === grade
         )
         if (
             field === 'sp' &&
@@ -96,7 +96,7 @@ const SimpleMuiTable = () => {
                 // Update the 'item' state with the modified item
                 setItem((prevItems) =>
                     prevItems.map((item) =>
-                        item.muic_one === muic && item?._id?.grade == grade && item.price_creation_date == price_creation_date
+                        item.muic_one === muic && item?._id?.grade == grade
                             ? updatedItem
                             : item
                     )
@@ -104,31 +104,43 @@ const SimpleMuiTable = () => {
 
                 // Check if the 'muic' is already in 'addPricing' list
                 const existingItemIndex = addPricing.findIndex(
-                    (item) => item.muic === muic && item.grade == grade && item?.price_creation_date
+                    (item) =>
+                        item.muic === muic &&
+                        item.grade == grade
                 )
 
                 // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
                 if (field === 'mrp' && existingItemIndex === -1) {
-                    if (existingItemIndex !== -1) {
-                        setAddPricing((prevPricing) =>
-                            prevPricing.filter(
-                                (item, index) => index !== existingItemIndex
-                            )
-                        )
-                    }
+                    setAddPricing((prevPricing) => [
+                        ...prevPricing,
+                        {
+                            grade,
+                            muic,
+                            mrp: value,
+                            sp: updatedItem.sp,
+                        },
+                    ])
                 } else {
                     // If the 'muic' is not already in the 'addPricing' list, add it
                     if (existingItemIndex === -1) {
-                      
                         setAddPricing((prevPricing) => [
                             ...prevPricing,
-                            { grade, muic, [field]: value ,price_creation_date},
+                            {
+                                grade,
+                                muic,
+                                sp: value,
+                                mrp: updatedItem.mrp,
+                            },
                         ])
                     } else {
                         // If the 'muic' already exists in 'addPricing', update the 'mrp' or 'sp' field
                         const updatedPricing = addPricing.map((item, index) =>
                             index === existingItemIndex
-                                ? { ...item, grade: grade,price_creation_date:price_creation_date, [field]: value }
+                                ? {
+                                      ...item,
+                                      grade: grade,
+                                      [field]: value,
+                                  }
                                 : item
                         )
                         setAddPricing(updatedPricing)
@@ -143,14 +155,16 @@ const SimpleMuiTable = () => {
         setLoading(true)
         let flag = false
         for (let x of addPricing) {
-            console.log(x);
+            console.log(x)
             if (
                 isNaN(Number(x.mrp)) ||
                 Number(x.mrp) < 0 ||
                 isNaN(Number(x.sp)) ||
                 Number(x.sp) < 0 ||
                 x.sp == undefined ||
-                x.mrp == undefined
+                x.mrp == undefined ||
+                x.mrp == '' ||
+                x.sp == ''
             ) {
                 Swal.fire({
                     position: 'top-center',
@@ -288,24 +302,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.grade || '',
             },
         },
-        {
-            name: 'price_creation_date',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Creation Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }),
-            },
-        },
+
         {
             name: 'price_updation_date',
             label: (
@@ -333,12 +330,11 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     const muic = tableMeta.rowData[1]
                     const grade = tableMeta.rowData[5]?.grade
-                    const price_creation_date= tableMeta.rowData[6]
 
                     const updatedItem = item.find(
                         (item) =>
-                        item.muic_one === muic && item?._id?.grade === grade && item.price_creation_date == price_creation_date
-                        )
+                            item.muic_one === muic && item?._id?.grade === grade
+                    )
 
                     return (
                         <TextField
@@ -350,8 +346,7 @@ const SimpleMuiTable = () => {
                                     muic,
                                     'mrp',
                                     e.target.value,
-                                    grade,
-                                    price_creation_date
+                                    grade
                                 )
                             }
                         />
@@ -368,10 +363,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     const muic = tableMeta.rowData[1]
                     const grade = tableMeta.rowData[5]?.grade
-                    const price_creation_date= tableMeta.rowData[6]
+
                     const updatedItem = item.find(
                         (item) =>
-                            item.muic_one === muic && item?._id?.grade === grade && item.price_creation_date == price_creation_date
+                            item.muic_one === muic && item?._id?.grade === grade
                     )
 
                     return (
@@ -384,8 +379,7 @@ const SimpleMuiTable = () => {
                                     muic,
                                     'sp',
                                     e.target.value,
-                                    grade,
-                                    price_creation_date
+                                    grade
                                 )
                             }
                         />

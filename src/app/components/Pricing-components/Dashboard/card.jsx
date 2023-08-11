@@ -41,12 +41,14 @@ const StatCard3 = () => {
             icon: 'class',
             amount: count?.radyForPricing,
             title: 'Ready for Pricing',
+            units: count?.unitsCount,
             path: '/pricing/ready-for-pricing',
         },
         {
             icon: 'save',
             amount: count?.viewPriceCount,
             title: 'Ready for Sales',
+            units: count?.unitsCountSales,
             path: '/pricing/ready-for-sales',
         },
     ]
@@ -85,6 +87,9 @@ const StatCard3 = () => {
                                 </H3>
                                 <Paragraph sx={{ m: 0, color: textMuted }}>
                                     {item?.title}
+                                </Paragraph>
+                                <Paragraph sx={{ m: 0, color: textMuted }}>
+                                    Units : {item?.units}
                                 </Paragraph>
                             </Box>
                         </Card>

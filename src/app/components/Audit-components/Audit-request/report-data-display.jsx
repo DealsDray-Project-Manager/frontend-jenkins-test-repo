@@ -236,7 +236,7 @@ export default function DialogBox() {
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
-                <Grid item sx={{ boxShadow: 1 }} lg={12} md={12} xs={12}>
+                <Grid item lg={12} md={12} xs={12}>
                     <BqcApiReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
@@ -248,7 +248,7 @@ export default function DialogBox() {
                         imei={reportData?.delivery?.imei}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <AmazonDetails Order={reportData?.order} />
                     <Botuser
                         BOt={reportData?.delivery?.bot_report}
@@ -256,12 +256,12 @@ export default function DialogBox() {
                         BotDoneDate={reportData?.delivery?.tray_closed_by_bot}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <PrevChargingReport
-                        Charging={reportData?.delivery?.previousCharging}
+                        Charging={reportData?.preChargeData}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <ChargingDetails
                         Charging={reportData?.delivery?.charging}
                         ChargeDoneDate={
@@ -269,29 +269,29 @@ export default function DialogBox() {
                         }
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <PrevBqcReport
-                        BqcUserReport={reportData?.delivery?.preBqcData}
+                        BqcUserReport={reportData?.preBqcData}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
                         BqcAgentName={reportData?.delivery?.agent_name_bqc}
                         BqcDoneDate={reportData?.delivery?.bqc_out_date}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <RdlOneReport
                         RdlOneReport={reportData?.delivery?.rdl_fls_one_report}
                     />
                 </Grid>
-                <Grid item sx={{ boxShadow: 1 }} lg={4} md={6} xs={12}>
+                <Grid item lg={4} md={6} xs={12}>
                     <RdlTwoReport
                         RdlTwoReport={reportData?.delivery?.rdl_two_report}
                     />
                 </Grid>
-                <Grid sx={{ boxShadow: 1 }} item lg={12} md={12} xs={12}>
+                <Grid item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report

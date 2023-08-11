@@ -1100,7 +1100,7 @@ export const navigations = [
     },
 
     {
-        name: 'RDL FLS Requests',
+        name: 'RDL One Requests',
         icon: 'class',
         path: '/rdl-fls/tray',
         auth: authRoles.RDL_FLS,

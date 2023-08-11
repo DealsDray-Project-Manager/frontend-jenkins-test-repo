@@ -112,7 +112,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
-                        <MenuItem value="Ready to RDL">Re-RDL FLS</MenuItem>
+                        <MenuItem value="Ready to RDL">Re-RDL One</MenuItem>
                     </TextFieldCustOm>
                 ) : value !== 'Ready to RDL-Repair' ? (
                     <TextFieldCustOm
@@ -143,7 +143,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL-Repair">
-                            RDL FLS Done
+                            RDL One Done
                         </MenuItem>
                     </TextFieldCustOm>
                 )}

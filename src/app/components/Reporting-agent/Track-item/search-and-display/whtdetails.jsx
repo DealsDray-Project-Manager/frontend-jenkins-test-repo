@@ -272,14 +272,14 @@ const WHTdetails = ({ WhtTrayDetails }) => {
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
                             {' '}
-                            Rdl fls username:
+                            Rdl One username:
                             {WhtTrayDetails?.rdl_fls_one_user_name}
                         </Typography>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
                             {' '}
-                            Issued to Rdl fls:
+                            Issued to Rdl One:
                             {WhtTrayDetails?.rdl_fls_issued_date != undefined
                                 ? new Date(
                                       WhtTrayDetails?.rdl_fls_issued_date
@@ -292,7 +292,7 @@ const WHTdetails = ({ WhtTrayDetails }) => {
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
                             {' '}
-                            Rdl fls Done:
+                            Rdl One Done:
                             {WhtTrayDetails?.rdl_fls_closed_date != undefined
                                 ? new Date(
                                       WhtTrayDetails?.rdl_fls_closed_date
@@ -305,7 +305,7 @@ const WHTdetails = ({ WhtTrayDetails }) => {
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
                             {' '}
-                            Received from Rdl fls :
+                            Received from Rdl One
                             {WhtTrayDetails?.rdl_fls_done_recieved_date !=
                             undefined
                                 ? new Date(
@@ -319,7 +319,7 @@ const WHTdetails = ({ WhtTrayDetails }) => {
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
                             {' '}
-                            Rdl fls Done Closed by WH:
+                            Rdl One Done Closed by WH:
                             {WhtTrayDetails?.rdl_fls_done_closed_wh != undefined
                                 ? new Date(
                                       WhtTrayDetails?.rdl_fls_done_closed_wh

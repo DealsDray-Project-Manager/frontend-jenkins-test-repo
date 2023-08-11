@@ -92,13 +92,15 @@ const SimpleMuiTable = () => {
                 // Update the 'item' state with the modified item
                 setItem((prevItems) =>
                     prevItems.map((item) =>
-                        item.muic_one === muic && item?._id?.grade == grade ? updatedItem : item
+                        item.muic_one === muic && item?._id?.grade == grade
+                            ? updatedItem
+                            : item
                     )
                 )
 
                 // Check if the 'muic' is already in 'addPricing' list
                 const existingItemIndex = addPricing.findIndex(
-                    (item) => item.muic === muic  && item.grade == grade
+                    (item) => item.muic === muic && item.grade == grade
                 )
 
                 // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
@@ -121,7 +123,7 @@ const SimpleMuiTable = () => {
                         // If the 'muic' already exists in 'addPricing', update the 'mrp' or 'sp' field
                         const updatedPricing = addPricing.map((item, index) =>
                             index === existingItemIndex
-                                ? { ...item,grade:grade, [field]: value }
+                                ? { ...item, grade: grade, [field]: value }
                                 : item
                         )
                         setAddPricing(updatedPricing)
@@ -142,7 +144,9 @@ const SimpleMuiTable = () => {
                 isNaN(Number(x.sp)) ||
                 Number(x.sp) < 0 ||
                 x.sp == undefined ||
-                x.mrp == undefined
+                x.mrp == undefined ||
+                x.sp == '' ||
+                x.mrp == ''
             ) {
                 Swal.fire({
                     position: 'top-center',
@@ -168,7 +172,7 @@ const SimpleMuiTable = () => {
         let obj = {
             muicDetails: addPricing,
             location: location,
-            screen:"Price creation"
+            screen: 'Price creation',
         }
         if (flag == false) {
             const res = await axiospricingAgent.post('/addPrice', obj)
@@ -198,9 +202,7 @@ const SimpleMuiTable = () => {
             }
         }
     }
-   
 
-  
     const columns = [
         {
             name: 'index',
@@ -286,50 +288,66 @@ const SimpleMuiTable = () => {
             name: 'mrp',
             label: <Typography sx={{ fontWeight: 'bold' }}>MRP</Typography>,
             options: {
-              filter: false,
-              sort: false,
-              customBodyRender: (value, tableMeta, rowIndex) => {
-                const muic = tableMeta.rowData[1];
-                const grade = tableMeta.rowData[5]?.grade;
-                const updatedItem = item.find(
-                  (item) => item.muic_one === muic && item?._id?.grade === grade
-                );
-        
-                return (
-                  <TextField
-                    value={updatedItem?.mrp || ''}
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => handleQtyChange(muic, 'mrp', e.target.value, grade)}
-                  />
-                );
-              },
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta, rowIndex) => {
+                    const muic = tableMeta.rowData[1]
+                    const grade = tableMeta.rowData[5]?.grade
+                    const updatedItem = item.find(
+                        (item) =>
+                            item.muic_one === muic && item?._id?.grade === grade
+                    )
+
+                    return (
+                        <TextField
+                            value={updatedItem?.mrp || ''}
+                            variant="outlined"
+                            size="small"
+                            onChange={(e) =>
+                                handleQtyChange(
+                                    muic,
+                                    'mrp',
+                                    e.target.value,
+                                    grade
+                                )
+                            }
+                        />
+                    )
+                },
             },
-          },
-          {
+        },
+        {
             name: 'sp',
             label: <Typography sx={{ fontWeight: 'bold' }}>SP</Typography>,
             options: {
-              filter: false,
-              sort: false,
-              customBodyRender: (value, tableMeta, rowIndex) => {
-                const muic = tableMeta.rowData[1];
-                const grade = tableMeta.rowData[5]?.grade;
-                const updatedItem = item.find(
-                  (item) => item.muic_one === muic && item?._id?.grade === grade
-                );
-        
-                return (
-                  <TextField
-                    value={updatedItem?.sp || ''}
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => handleQtyChange(muic, 'sp', e.target.value, grade)}
-                  />
-                );
-              },
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta, rowIndex) => {
+                    const muic = tableMeta.rowData[1]
+                    const grade = tableMeta.rowData[5]?.grade
+                    const updatedItem = item.find(
+                        (item) =>
+                            item.muic_one === muic && item?._id?.grade === grade
+                    )
+
+                    return (
+                        <TextField
+                            value={updatedItem?.sp || ''}
+                            variant="outlined"
+                            size="small"
+                            onChange={(e) =>
+                                handleQtyChange(
+                                    muic,
+                                    'sp',
+                                    e.target.value,
+                                    grade
+                                )
+                            }
+                        />
+                    )
+                },
             },
-          },
+        },
     ]
 
     return (

@@ -1,6 +1,6 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './new-users'
+import MemberEditorDialog from './new-buyer'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
@@ -8,7 +8,7 @@ import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } fr
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
-import './customDataTableStyles.css'
+// import './customDataTableStyles.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -47,6 +47,8 @@ const ScrollableTableContainer = styled(TableContainer)
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
+
+    const [userData, setUserData] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -60,6 +62,7 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setIsLoading(false)
                     setUserList(res.data.data.user)
+                 
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -76,6 +79,12 @@ const SimpleMuiTable = () => {
             setIsLoading(false)
         }
     }, [isAlive])
+
+    useEffect(() => {
+        console.log(userList);
+    },[userList])
+
+    const filterData = userList.filter(user => user.user_type === "Buyer")
 
     const handleDialogClose = () => {
         setEditFetchData({})
@@ -102,13 +111,7 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }
-
-    const handelHistory = (e, username) => {
-        e.preventDefault()
-        navigate('/sup-admin/user-history/' + username)
-    }
-    
+    }  
     const handelDeactive = (userId) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -229,7 +232,7 @@ const SimpleMuiTable = () => {
              
         },
         {
-            name: 'name', // field name in the row object
+            name: 'name', 
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
             options: {
                 // customHeadRender: (columnMeta) => (
@@ -305,6 +308,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'sales_users', 
+            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Sales Users</></Typography>,
+            options: {
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
+                filter: true,
+            },
+             
+        },
+        {
             name: 'warehouse',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
             options: {
@@ -315,28 +329,28 @@ const SimpleMuiTable = () => {
             },
             
         },
-        {
-            name: 'device_name',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
-            options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                filter: true,
-            },
+        // {
+        //     name: 'device_name',
+        //     label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
+        //     options: {
+        //         // customHeadRender: (columnMeta) => (
+        //         //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+        //         //   ),
+        //         filter: true,
+        //     },
             
-        },
-        {
-            name: 'device_id',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
-            options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
-                filter: true,
-            },
+        // },
+        // {
+        //     name: 'device_id',
+        //     label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
+        //     options: {
+        //         // customHeadRender: (columnMeta) => (
+        //         //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+        //         //   ),
+        //         filter: true,
+        //     },
             
-        },
+        // },
         {
             name: 'status',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
@@ -408,7 +422,7 @@ const SimpleMuiTable = () => {
                                     edit
                                 </Icon>
                             </IconButton>
-                            <IconButton>
+                            {/* <IconButton>
                                 <Icon
                                     onClick={(e) => {
                                         handelHistory(e, tableMeta.rowData[6])
@@ -417,7 +431,7 @@ const SimpleMuiTable = () => {
                                 >
                                     history
                                 </Icon>
-                            </IconButton>
+                            </IconButton> */}
                         </Box>
                     )
                 },
@@ -430,7 +444,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb"> 
                 <Breadcrumb
-                    routeSegments={[{ name: 'Users', path: '/' }]}
+                    routeSegments={[{ name: 'Buyer', path: '/' }]}
                 />
             </div>
             <Button
@@ -439,15 +453,15 @@ const SimpleMuiTable = () => {
                 color="primary"
                 onClick={() => setShouldOpenEditorDialog(true)}
             >
-                Add New User
+                Add New Buyer
             </Button>
             <ScrollableTableContainer>
                 <ProductTable>
                 {/* <div className="custom-table-container"> */}
 
                 <MUIDataTable
-                title={'All Users'}
-                data={userList}
+                title={'All Buyers'}
+                data={filterData}
                 columns={columns}
                 options={{
                     filterType: 'textField',

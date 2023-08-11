@@ -14,7 +14,8 @@ export const authRoles = {
     RDL_2: ['RDL-two'],
     RMWAREHOUSE: ['SP User'],
     SPMIS:['Sp mis'],
-    PURCHASERM:['Purchase RM']
+    PURCHASERM:['Purchase RM'],
+    Buyer:['Buyer'],
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

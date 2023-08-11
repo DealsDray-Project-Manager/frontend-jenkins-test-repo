@@ -110,6 +110,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/buyer/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.Buyer,
+    },
+    {
+        name: 'Dashboard',
         path: '/pricing/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -154,6 +161,11 @@ export const navigations = [
                 name: 'Users',
                 // icon: 'people',
                 path: '/sup-admin/users',
+            },
+            {
+                name: 'Buyer',
+                // icon: 'people',
+                path: '/sup-admin/buyer',
             },
             {
                 name: 'Locations',
@@ -614,7 +626,6 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: 'all',
     },
-
     {
         name: 'Bag',
         icon: 'class',
@@ -1378,6 +1389,13 @@ export const navigations = [
         name: 'Ready for sales',
         icon: 'class',
         path: '/sales/ready-for-sales',
+        auth: authRoles.Sales_Agent,
+        sales: true,
+    },
+    {
+        name: 'Buyer',
+        icon: 'class',
+        path: '/sales/Buyer-con-sales',
         auth: authRoles.Sales_Agent,
         sales: true,
     },

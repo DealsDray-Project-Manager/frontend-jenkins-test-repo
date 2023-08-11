@@ -1,5 +1,4 @@
-
-import React from 'react'
+import React, { useEffect } from 'react'
 import StatCard3 from './card'
 import { H3 } from 'app/components/Typography'
 import { styled } from '@mui/system'
@@ -31,3 +30,5 @@ const Analytics2 = () => {
 }
 
 export default Analytics2
+
+

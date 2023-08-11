@@ -2,6 +2,7 @@ import React, { lazy } from 'react'
 import Loadable from 'app/components/Loadable/Loadable'
 
 const ViewAllUsers = Loadable(lazy(() => import('./Manage-users/view-users')))
+const ViewAllBuyer = Loadable(lazy(() => import('./Manage-buyer/view-buyer')))
 const ViewUserEditHistory = Loadable(
     lazy(() => import('./Manage-users/user-history'))
 )
@@ -13,7 +14,6 @@ const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
-
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -144,6 +144,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
         element: <ViewAllUsers />,
+    },
+    {
+        path: '/sup-admin/buyer',
+        element: <ViewAllBuyer/>,
     },
     {
         path: '/sup-admin/products',

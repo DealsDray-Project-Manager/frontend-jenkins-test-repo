@@ -47,8 +47,6 @@ const ScrollableTableContainer = styled(TableContainer)
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
-
-    const [userData, setUserData] = useState([])
     const [editFetchData, setEditFetchData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -58,7 +56,7 @@ const SimpleMuiTable = () => {
         const fetchUser = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/getUsers')
+                const res = await axiosSuperAdminPrexo.post('/getBuyers')
                 if (res.status === 200) {
                     setIsLoading(false)
                     setUserList(res.data.data.user)
@@ -83,8 +81,6 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         console.log(userList);
     },[userList])
-
-    const filterData = userList.filter(user => user.user_type === "Buyer")
 
     const handleDialogClose = () => {
         setEditFetchData({})
@@ -189,11 +185,7 @@ const SimpleMuiTable = () => {
             options: {
                 
                 filter: false,
-                
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '38%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (rowIndex, dataIndex) =>
                 <Typography noWrap sx={{pl:3}}>{dataIndex.rowIndex + 1}</Typography>,
                 
@@ -202,14 +194,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'profile',
-            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold' sx={{ml:4}}><>Profile</></Typography>,
+            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold' sx={{ml:4}}><>Profile</></Typography>,
             options: {
                 
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" sx={{ml:4}} src={value} />
                 },
@@ -221,9 +210,6 @@ const SimpleMuiTable = () => {
             label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -235,20 +221,13 @@ const SimpleMuiTable = () => {
             name: 'name', 
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-            },
-             
+            },     
         },
         {
             name: 'email',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
              
@@ -257,20 +236,13 @@ const SimpleMuiTable = () => {
             name: 'contact',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '33%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-            },
-             
+            },     
         },
         {
             name: 'user_name',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
              
@@ -279,9 +251,6 @@ const SimpleMuiTable = () => {
             name: 'user_type',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
              
@@ -290,9 +259,6 @@ const SimpleMuiTable = () => {
             name: 'cpc',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
              
@@ -301,9 +267,6 @@ const SimpleMuiTable = () => {
             name: 'cpc_type',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
         },
@@ -311,9 +274,6 @@ const SimpleMuiTable = () => {
             name: 'sales_users', 
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Sales Users</></Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
              
@@ -322,44 +282,16 @@ const SimpleMuiTable = () => {
             name: 'warehouse',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
             
         },
-        // {
-        //     name: 'device_name',
-        //     label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
-        //     options: {
-        //         // customHeadRender: (columnMeta) => (
-        //         //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-        //         //   ),
-        //         filter: true,
-        //     },
-            
-        // },
-        // {
-        //     name: 'device_id',
-        //     label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
-        //     options: {
-        //         // customHeadRender: (columnMeta) => (
-        //         //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-        //         //   ),
-        //         filter: true,
-        //     },
-            
-        // },
         {
             name: 'status',
             label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
              
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '26%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
@@ -384,9 +316,6 @@ const SimpleMuiTable = () => {
             options: {
                 sort: false,
                 filter: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
-                //   ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -422,16 +351,6 @@ const SimpleMuiTable = () => {
                                     edit
                                 </Icon>
                             </IconButton>
-                            {/* <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        handelHistory(e, tableMeta.rowData[6])
-                                    }}
-                                    color="secondary"
-                                >
-                                    history
-                                </Icon>
-                            </IconButton> */}
                         </Box>
                     )
                 },
@@ -457,11 +376,9 @@ const SimpleMuiTable = () => {
             </Button>
             <ScrollableTableContainer>
                 <ProductTable>
-                {/* <div className="custom-table-container"> */}
-
                 <MUIDataTable
                 title={'All Buyers'}
-                data={filterData}
+                data={userList}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -475,19 +392,12 @@ const SimpleMuiTable = () => {
                                 : 'Sorry, there is no matching data to display',
                         },
                     },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
+                    selectableRows: 'none', 
                     elevation: 0,
                     rowsPerPageOptions: [10, 15, 40, 80, 100],
                     sort:true,
                 }}
             />
-            {/* </div> */}
                 </ProductTable>
             </ScrollableTableContainer>
             

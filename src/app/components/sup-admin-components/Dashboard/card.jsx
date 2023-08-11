@@ -177,6 +177,12 @@ const StatCard3 = () => {
             title: 'Track Item',
             link: '/sup-admin/track-item',
         },
+        {
+            icon: 'people',
+            amount: count.buyerCount,
+            title: 'Buyer',
+            link: '/sup-admin/view-buyer',
+        },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

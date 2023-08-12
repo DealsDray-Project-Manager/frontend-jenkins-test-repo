@@ -254,9 +254,9 @@ const MemberEditorDialog = ({
         <Dialog open={open}>
             <Box p={3}>
                 {Object.keys(editFetchData).length !== 0 ? (
-                    <H4 sx={{ mb: '20px' }}>Update Member</H4>
+                    <H4 sx={{ mb: '20px' }}>Update Buyer</H4>
                 ) : (
-                    <H4 sx={{ mb: '20px' }}>ADD Member</H4>
+                    <H4 sx={{ mb: '20px' }}>ADD Buyer</H4>
                 )}
                 <Avatar
                     src={profile?.preview}
@@ -431,9 +431,6 @@ const MemberEditorDialog = ({
                             error={errors.cpassword ? true : false}
                             helperText={errors.cpassword?.message}
                         />
-                      
-                        
-                    
                     </Grid>
                 </Grid>
 

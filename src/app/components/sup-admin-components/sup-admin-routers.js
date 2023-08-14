@@ -138,7 +138,7 @@ const UnverifiedImeiUpdation = Loadable(
 
 const SuperAdminRouter = [
     {
-        path: '/sup-admin/un-verified-imei-updation',
+        path: '/sup-admin/unverified-imei-updation',
         element: <UnverifiedImeiUpdation />,
     },
     {

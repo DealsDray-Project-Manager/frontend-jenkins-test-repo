@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import TrayAssignDialogBox from './trayAssignMent'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
 import { axiosSuperAdminPrexo } from '../../../../../axios'
@@ -45,7 +46,7 @@ export default function DialogBox() {
     const [userAgent, setUserAgent] = useState('')
     /**************************************************************************** */
     const [uic, setUic] = useState('')
-    const [rackiddrop, setrackiddrop] = useState([])
+    const { user } = useAuth()
     const [rackId, setRackId] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
@@ -59,27 +60,6 @@ export default function DialogBox() {
     })
 
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
-
-    /*********************************************************** */
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             let res = await axiosSuperAdminPrexo.post('/trayracks/view')
-    //             if (res.status == 200) {
-    //                 console.log(res.data.data)
-    //                 setrackiddrop(res.data.data)
-    //             }
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 text: error,
-    //             })
-    //         }
-    //     }
-    //     fetchData()
-    // }, [])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -201,41 +181,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'success',
-                title: 'All Items Scanned ',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextDisable(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-    }
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -266,6 +212,7 @@ export default function DialogBox() {
                         trayId: Object.values(otherTrayAssign),
                         description: description,
                         username: trayData.issued_user_name,
+                        actioUser: user.username,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/auditTrayIssueToAgent',

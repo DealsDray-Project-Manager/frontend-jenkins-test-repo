@@ -167,7 +167,7 @@ const Actionfunction = () => {
                 }
                 values.partRequired = arr
             }
-            values.username = user.name
+            values.username = user.username
             let objData = {
                 trayId: whtTrayId,
                 rdl_fls_report: values,
@@ -297,7 +297,6 @@ const Actionfunction = () => {
 
     const tableData = useMemo(() => {
         return (
-            
             <MUIDataTable
                 title={'Repair Required Parts'}
                 columns={columns}
@@ -334,15 +333,17 @@ const Actionfunction = () => {
         },
     }
     return (
-        
         <Box sx={{ p: 2 }}>
-             <div className="breadcrumb" style={{marginTop:'15px', marginBottom:'15px'}}>
-                <Breadcrumb 
+            <div
+                className="breadcrumb"
+                style={{ marginTop: '15px', marginBottom: '15px' }}
+            >
+                <Breadcrumb
                     routeSegments={[
                         { name: 'RDL-Requests', path: '/' },
-                        { name: 'Verification', path: '/'},
-                        { name: 'Report', path: '/'},
-                        { name: 'Action'}
+                        { name: 'Verification', path: '/' },
+                        { name: 'Report', path: '/' },
+                        { name: 'Action' },
                     ]}
                 />
             </div>
@@ -488,7 +489,7 @@ const Actionfunction = () => {
             ></TextField> */}
 
             <textarea
-            defaultValue={getValues('description')} 
+                defaultValue={getValues('description')}
                 style={{
                     width: '100%',
                     height: '100px',

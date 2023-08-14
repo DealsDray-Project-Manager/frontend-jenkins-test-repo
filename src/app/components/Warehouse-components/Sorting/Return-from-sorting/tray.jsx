@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import { axiosWarehouseIn } from '../../../../../axios'
 import {
     Button,
@@ -73,6 +74,7 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [receiveButDis,setReceiveButDis]=useState(false)
 
     useEffect(() => {
@@ -107,6 +109,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
+                username:user.username
             }
             setReceiveButDis(true)
             let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)

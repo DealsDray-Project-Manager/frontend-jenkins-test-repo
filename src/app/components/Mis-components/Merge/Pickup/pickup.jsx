@@ -1999,17 +1999,14 @@ const PickupPage = () => {
                 customBodyRender: (value, tableMeta) => {
                     const dataIndex = tableMeta.rowIndex
                     const partRequired = value?.rdl_fls_report?.partRequired
-
                     if (partRequired && partRequired.length > 0) {
                         const partsList = partRequired.map((data, index) => {
                             return `${index + 1}.${data?.part_name} - ${
                                 data?.part_id
                             }`
                         })
-
                         return partsList.join(', ')
                     }
-
                     return ''
                 },
             },
@@ -2787,7 +2784,7 @@ const PickupPage = () => {
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL FLS Done Unit's"
+                                label="RDL One Done Unit's"
                                 value="Ready to RDL-Repair"
                             />
                             <Tab

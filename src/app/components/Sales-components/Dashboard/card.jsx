@@ -40,8 +40,8 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.viewPriceCount,
-            title: 'View Price',
-            path: '/sales/view-price',
+            title: 'Ready for sales',
+            path: '/sales/ready-for-sales',
         },
         {
             icon: 'branding_watermark',

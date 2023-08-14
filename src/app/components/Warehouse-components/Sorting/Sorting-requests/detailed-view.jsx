@@ -5,6 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { Button, Box, Card, Typography } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -21,6 +22,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
+    const { user } = useAuth()
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
     const [loading, setLoading] = useState(false)
@@ -75,6 +77,7 @@ const SimpleMuiTable = () => {
                     let obj = {
                         allTray: botTray,
                         type: type,
+                        actionUser:user.username,
                         username: botTray[0]?.issued_user_name,
                     }
                     let res = await axiosWarehouseIn.post(

@@ -1,6 +1,7 @@
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
+import useAuth from 'app/hooks/useAuth'
 import {
     Table,
     TableHead,
@@ -43,6 +44,7 @@ const SimpleMuiTable = () => {
     const [bagData, setBagData] = useState([])
     const { bagId } = useParams()
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
     /**************************************************************************** */
     const [awbn, setAwbn] = useState('')
     const [uic, setUic] = useState(false)
@@ -327,6 +329,7 @@ const SimpleMuiTable = () => {
                     uic: uic,
                     try: [pmtTray, mmtTray, botTray],
                     status: type,
+                    username: user.username,
                 }
 
                 let res = await axiosWarehouseIn.post('/issueToBot', obj)
@@ -526,48 +529,28 @@ const SimpleMuiTable = () => {
             })
         }
     }
-
     const tabelDataExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <h5>EXPECTED</h5>
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
+                <Box sx={{}}>
                     <Box
                         sx={{
-                            m: 2,
+                            float: 'left',
+                            ml: 2,
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    bagData[0]?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{bagData[0]?.limit}
-                            </p>
-                        </Box>
+                        <h5>EXPECTED</h5>
                     </Box>
                     <Box
                         sx={{
-                            m: 2,
+                            float: 'right',
+                            mr: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p style={{ marginLeft: '14px', fontSize: '24px' }}>
-                                {
-                                    bagData[0]?.items?.filter(function (item) {
-                                        return item.status == 'Valid'
-                                    }).length
-                                }
+                            <h5 style={{ marginLeft: '14px' }}>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                                {bagData[0]?.items?.length}/{bagData[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -575,7 +558,6 @@ const SimpleMuiTable = () => {
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
-                        id="example"
                         stickyHeader
                         aria-label="sticky table"
                     >
@@ -585,12 +567,16 @@ const SimpleMuiTable = () => {
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
-                                <TableCell>Status</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {bagData[0]?.items?.map((data, index) => (
-                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                <TableRow
+                                    hover
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={index}
+                                >
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
                                     </TableCell>
@@ -604,15 +590,6 @@ const SimpleMuiTable = () => {
                                             month: '2-digit',
                                             day: '2-digit',
                                         })}
-                                    </TableCell>
-                                    <TableCell
-                                        style={
-                                            data.status == 'Valid'
-                                                ? { color: 'green' }
-                                                : { color: 'red' }
-                                        }
-                                    >
-                                        {data.status}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -626,11 +603,18 @@ const SimpleMuiTable = () => {
     const tableDataActul = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{ display: 'flex' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center', // Added alignment
+                        p: 2, // Added padding
+                    }}
+                >
                     <Box>
                         <h5>ACTUAL</h5>
                         <TextField
-                            sx={{ m: 1 }}
+                            sx={{ width: '100%' }} // Added width
                             id="outlined-password-input"
                             type="text"
                             disabled={textBoxDis}
@@ -638,15 +622,9 @@ const SimpleMuiTable = () => {
                             name="doorsteps_diagnostics"
                             label="SCAN AWBN"
                             value={awbn}
-                            // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setAwbn(e.target.value)
                                 handelAwbn(e)
-                            }}
-                            inputProps={{
-                                style: {
-                                    width: 'auto',
-                                },
                             }}
                         />
                     </Box>
@@ -654,35 +632,15 @@ const SimpleMuiTable = () => {
                     <Box
                         sx={{
                             textAlign: 'right',
-                            // m: 1,
-                            mr: 2,
                             display: 'flex',
+                            alignItems: 'center', // Added alignment
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {
-                                    bagData[0]?.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{bagData[0]?.limit}
-                            </p>
-                        </Box>
-
-                        <Box sx={{}}>
-                            <h5>Valid</h5>
-                            <p style={{ marginLeft: '19px', fontSize: '24px' }}>
-                                {
-                                    bagData[0]?.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status == 'Valid'
-                                    }).length
-                                }
+                        <Box>
+                            <h5 style={{ marginRight: '14px' }}>Total</h5>
+                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
+                                {bagData[0]?.actual_items?.length}/
+                                {bagData[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -690,24 +648,26 @@ const SimpleMuiTable = () => {
                 <TableContainer>
                     <Table
                         style={{ width: '100%' }}
-                        id="example"
                         stickyHeader
                         aria-label="sticky table"
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 3 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
-                                <TableCell>Status</TableCell>
                             </TableRow>
                         </TableHead>
-
                         <TableBody>
                             {bagData[0]?.actual_items?.map((data, index) => (
-                                <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{ pl: 3 }}>
+                                <TableRow
+                                    hover
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={index}
+                                >
+                                    <TableCell sx={{ pl: 4 }}>
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
@@ -720,15 +680,6 @@ const SimpleMuiTable = () => {
                                             month: '2-digit',
                                             day: '2-digit',
                                         })}
-                                    </TableCell>
-                                    <TableCell
-                                        style={
-                                            data.status == 'Valid'
-                                                ? { color: 'green' }
-                                                : { color: 'red' }
-                                        }
-                                    >
-                                        {data.status}
                                     </TableCell>
                                 </TableRow>
                             ))}

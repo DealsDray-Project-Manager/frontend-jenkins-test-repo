@@ -5,13 +5,13 @@ import { H4 } from 'app/components/Typography'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Swal from 'sweetalert2'
-import { useForm } from 'react-hook-form' 
+import { useForm } from 'react-hook-form'
 import { axiosSuperAdminPrexo } from '../../../../axios'
- 
+
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
-})) 
+}))
 
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
@@ -196,6 +196,7 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Name"
                             type="text"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             name="name"
                             {...register('name')}
                             error={errors.name ? true : false}
@@ -246,7 +247,6 @@ const MemberEditorDialog = ({
 
                         <TextFieldCustOm
                             label="Pincode"
-                            
                             name="pincode"
                             inputProps={{ maxLength: 6 }}
                             onKeyPress={(event) => {

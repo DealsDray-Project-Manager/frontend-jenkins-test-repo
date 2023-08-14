@@ -607,7 +607,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL FLS Agent name
+                            RDL One Agent name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -616,7 +616,7 @@ const TrackItem = () => {
                                 width: '240px',
                             }}
                         >
-                            Tray Issued to RDL FLS Date
+                            Tray Issued to RDL One Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -625,7 +625,7 @@ const TrackItem = () => {
                                 width: '240px',
                             }}
                         >
-                            Tray Closed By RDL FLS Date
+                            Tray Closed By RDL One Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -634,7 +634,7 @@ const TrackItem = () => {
                                 width: '300px',
                             }}
                         >
-                            Tray Received From RDL FLS Date
+                            Tray Received From RDL One Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -643,7 +643,7 @@ const TrackItem = () => {
                                 width: '300px',
                             }}
                         >
-                            RDL FLS Done Closed By Warehouse
+                            RDL One Done Closed By Warehouse
                         </TableCell>
                         <TableCell
                             sx={{

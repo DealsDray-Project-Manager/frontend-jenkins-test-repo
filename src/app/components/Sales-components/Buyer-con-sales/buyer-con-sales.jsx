@@ -6,7 +6,7 @@ import { styled } from '@mui/system'
 import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
-
+import jwt_decode from 'jwt-decode'
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -20,42 +20,24 @@ const Container = styled('div')(({ theme }) => ({
     },
 })) 
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '140%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-  `overflow-x: auto`;
-
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/buyerConSalesMis')
-                if (res.status === 200) {
-                    setIsLoading(false)
-                    setUserList(res.data.data.user)
-                 
+                let admin = localStorage.getItem('prexo-authentication')
+                if(admin){
+                    let { user_name } = jwt_decode(admin)
+                    setIsLoading(true)
+                    const res = await axiosSuperAdminPrexo.post('/buyerConSalesAgent/' + user_name)
+                    console.log("res",res)
+                    if (res.status === 200) {
+                        setIsLoading(false)
+                        setUserList(res.data.data.buyer)
+                    }
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -73,10 +55,13 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
+    useEffect(() => {console.log(userList)},[userList])
+
+
     const columns = [
         {
             name: 'index',
-            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
+            label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold' marginLeft='7px'><>Record No</></Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -86,7 +71,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'creation_date',
-            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -97,14 +82,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name', 
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
+            label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
             options: {
                 filter: true,
             },    
         },
         {
             name: 'email',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
+            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
             options: {
                 filter: true,
             },
@@ -112,34 +97,41 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'contact',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
+            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
             options: {
                 filter: true,
             },     
         },
         {
             name: 'user_name',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
+            label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
                 filter: true,
             },
              
         },
         {
-            name: 'cpc',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
+            name: 'status',
+            label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    if (value == 'Active') {
+                        return (
+                            <div style={{ color: 'green', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <div style={{ color: 'red', fontWeight: 'bold' }}>
+                                {value}
+                            </div>
+                        )
+                    }
+                },
             },
-             
         },
-        {
-            name: 'cpc_type',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
-            options: {
-                filter: true,
-            },
-        },  
     ]
 
     return (
@@ -149,8 +141,6 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Buyer', path: '/' }]}
                 />
             </div>
-            <ScrollableTableContainer>
-                <ProductTable>
                 <MUIDataTable
                 title={'All Buyers'}
                 data={userList}
@@ -173,8 +163,6 @@ const SimpleMuiTable = () => {
                     sort:true,
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
           
         </Container>
     )

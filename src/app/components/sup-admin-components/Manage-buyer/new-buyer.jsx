@@ -108,6 +108,7 @@ const MemberEditorDialog = ({
 
     const onSubmit = async (values) => {
         try {
+            values.user_type = 'Buyer';
             let formdata = new FormData()
             formdata.append('profile', profile.store)
             for (let [key, value] of Object.entries(values)) {
@@ -253,9 +254,9 @@ const MemberEditorDialog = ({
         <Dialog open={open}>
             <Box p={3}>
                 {Object.keys(editFetchData).length !== 0 ? (
-                    <H4 sx={{ mb: '20px' }}>Update Member</H4>
+                    <H4 sx={{ mb: '20px' }}>Update Buyer</H4>
                 ) : (
-                    <H4 sx={{ mb: '20px' }}>ADD Member</H4>
+                    <H4 sx={{ mb: '20px' }}>ADD Buyer</H4>
                 )}
                 <Avatar
                     src={profile?.preview}
@@ -430,20 +431,6 @@ const MemberEditorDialog = ({
                             error={errors.cpassword ? true : false}
                             helperText={errors.cpassword?.message}
                         />
-                      
-                            <TextFieldCustOm
-                                label="User Type"
-                                select
-                                name="user_type"
-                                disabled={Object.keys(editFetchData).length !== 0}
-                                defaultValue={getValues('user_type')}
-                                {...register('user_type')}
-                                error={errors.user_type ? true : false}
-                                helperText={errors.user_type?.message}
-                            >
-                                <MenuItem value="Buyer">Buyer</MenuItem>
-                            </TextFieldCustOm>
-                    
                     </Grid>
                 </Grid>
 

@@ -15,11 +15,11 @@ const StatCard3 = () => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
-                let { location } = jwt_decode(user)
+                let { location,user_name } = jwt_decode(user)
 
                 try {
                     let res = await axiosSalsAgent.post(
-                        '/dashboard/' + location
+                        `/dashboard/${location}/${user_name}`
                     )
                     if (res?.status === 200) {
                         setCount(res?.data.data)
@@ -42,6 +42,12 @@ const StatCard3 = () => {
             amount: count?.viewPriceCount,
             title: 'Ready for sales',
             path: '/sales/ready-for-sales',
+        },
+        {
+            icon: 'branding_watermark',
+            amount:count.buyerCount,
+            title: 'Buyer',
+            path: '/sales/Buyer-con-sales',
         },
     ]
     const { palette } = useTheme()

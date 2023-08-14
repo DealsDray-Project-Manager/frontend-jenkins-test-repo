@@ -102,41 +102,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.limit <= trayData?.actual_items?.length) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'success',
-                title: 'All Items Scanned',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            resDataUic.remark = description
-            try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextBoxDis(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextBoxDis(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
-            }
-        }
-    }
+  
     /************************************************************************** */
     const handelIssue = async (e) => {
         try {

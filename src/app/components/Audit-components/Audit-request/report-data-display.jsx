@@ -257,9 +257,7 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
-                    <PrevChargingReport
-                        Charging={reportData?.preChargeData}
-                    />
+                    <PrevChargingReport Charging={reportData?.preChargeData} />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
                     <ChargingDetails
@@ -270,9 +268,7 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
-                    <PrevBqcReport
-                        BqcUserReport={reportData?.preBqcData}
-                    />
+                    <PrevBqcReport BqcUserReport={reportData?.preBqcData} />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
                     <BqcUserReport

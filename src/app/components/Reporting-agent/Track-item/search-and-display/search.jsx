@@ -181,37 +181,7 @@ const Search = () => {
                 />
             )}
             <WHTdetails
-                WhtTrayDetails={{
-                    wht_tray: result?.[0]?.wht_tray,
-                    wht_tray_assigned_date: result?.[0]?.wht_tray_assigned_date,
-                    received_from_sorting: result?.[0]?.received_from_sorting,
-                    closed_from_sorting: result?.[0]?.closed_from_sorting,
-                    agent_name_charging: result?.[0]?.agent_name_charging,
-                    assign_to_agent_charging:
-                        result?.[0]?.assign_to_agent_charging,
-                    charging_in_date: result?.[0]?.charging_in_date,
-                    charging_done_date: result?.[0]?.charging_done_date,
-                    charging_done_received: result?.[0]?.charging_done_received,
-                    charging_done_close: result?.[0]?.charging_done_close,
-                    agent_name_bqc: result?.[0]?.agent_name_bqc,
-                    assign_to_agent_bqc: result?.[0]?.assign_to_agent_bqc,
-                    bqc_out_date: result?.[0]?.bqc_out_date,
-                    bqc_done_received: result?.[0]?.bqc_done_received,
-                    bqc_done_close: result?.[0]?.bqc_done_close,
-                    issued_to_audit: result?.[0]?.issued_to_audit,
-                    audit_user_name: result?.[0]?.audit_user_name,
-                    audit_done_date: result?.[0]?.audit_done_date,
-                    audit_done_recieved: result?.[0]?.audit_done_recieved,
-                    audit_done_close: result?.[0]?.audit_done_close,
-                    rdl_fls_one_user_name: result?.[0]?.rdl_fls_one_user_name,
-                    rdl_fls_issued_date: result?.[0]?.rdl_fls_issued_date,
-                    rdl_fls_closed_date: result?.[0]?.rdl_fls_closed_date,
-                    rdl_fls_done_recieved_date:
-                        result?.[0]?.rdl_fls_done_recieved_date,
-                    rdl_fls_done_closed_wh: result?.[0]?.rdl_fls_done_closed_wh,
-                    tray_status:result?.[0]?.tray_status,
-                    tray_location:result?.[0]?.tray_location
-                }}
+                WhtTrayDetails={result?.[0]?.uic_history}
             />
         </Container>
     )

@@ -366,7 +366,11 @@ const SimpleMuiTable = () => {
         {
             name: 'code',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" sx={{ml:4}}>
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ ml: 4 }}
+                >
                     <>Actions</>
                 </Typography>
             ),
@@ -375,7 +379,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{ ml:4 }}>
+                        <Box sx={{ ml: 4 }}>
                             <Button
                                 sx={{
                                     width: '74px',

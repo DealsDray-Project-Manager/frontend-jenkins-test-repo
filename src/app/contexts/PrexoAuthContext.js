@@ -95,6 +95,7 @@ export const AuthProvider = ({ children }) => {
                         role: user.user_type,
                         cpc_type:user.cpc_type,
                         warehouse:user.warehouse,
+                        username:user.user_name,
                     },
                 },
             })

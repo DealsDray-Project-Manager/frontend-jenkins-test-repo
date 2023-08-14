@@ -62,7 +62,7 @@ const PaginationTable = () => {
     const [disAwbnText, SetDisAwbText] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
-
+    console.log(user)
 
     const handelCheckBagId = async (e) => {
         try {
@@ -297,7 +297,7 @@ const PaginationTable = () => {
                     uic: uic,
                     sleaves: sleaves,
                     stage: 'Closed',
-                    username:user.name
+                    username: user.username,
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
@@ -323,6 +323,7 @@ const PaginationTable = () => {
                     uic: uic,
                     sleaves: sleaves,
                     stage: 'Pre-closure',
+                    username: user.username,
                 }
                 let res = await axiosWarehouseIn.post('/bagClosing', obj)
                 if (res.status == 200) {
@@ -412,7 +413,6 @@ const PaginationTable = () => {
                             size="small"
                             disabled={bagId == '' || goButDis}
                             onClick={handelCheckBagId}
-                          
                         >
                             GO
                         </Button>

@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import Checkbox from '@mui/material/Checkbox'
+import useAuth from 'app/hooks/useAuth'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -69,6 +69,7 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 }
 const SimpleMuiTable = () => {
+    const {user } = useAuth()
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
@@ -121,6 +122,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
+                actioUser:user.username
             }
             let res = await axiosWarehouseIn.post('/recievedFromOtherTray', obj)
             if (res.status == 200) {

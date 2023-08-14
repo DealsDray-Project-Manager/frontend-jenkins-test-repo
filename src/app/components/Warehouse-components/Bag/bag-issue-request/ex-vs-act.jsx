@@ -329,9 +329,8 @@ const SimpleMuiTable = () => {
                     uic: uic,
                     try: [pmtTray, mmtTray, botTray],
                     status: type,
-                    username:user.username
+                    username: user.username,
                 }
-
 
                 let res = await axiosWarehouseIn.post('/issueToBot', obj)
                 if (res.status == 200) {
@@ -615,7 +614,7 @@ const SimpleMuiTable = () => {
                     <Box>
                         <h5>ACTUAL</h5>
                         <TextField
-                            sx={{width: '100%' }} // Added width
+                            sx={{ width: '100%' }} // Added width
                             id="outlined-password-input"
                             type="text"
                             disabled={textBoxDis}
@@ -654,7 +653,7 @@ const SimpleMuiTable = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ pl: 2 }} >S.NO</TableCell>
+                                <TableCell sx={{ pl: 3 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Order Date</TableCell>
@@ -668,7 +667,9 @@ const SimpleMuiTable = () => {
                                     tabIndex={-1}
                                     key={index}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 4 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.awbn_number}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>

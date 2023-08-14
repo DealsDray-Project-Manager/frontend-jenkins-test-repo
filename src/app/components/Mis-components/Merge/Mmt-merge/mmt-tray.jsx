@@ -25,26 +25,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '100%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -351,13 +331,21 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{ml:5}}><>Actions</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ ml: 5 }}
+                >
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box sx={{ml:5}}>
+                        <Box sx={{ ml: 5 }}>
                             <Button
                                 sx={{
                                     width: '74px',
@@ -380,8 +368,8 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[5],
-                                        tableMeta.rowData[4],
+                                        tableMeta.rowData[1],
+                                        tableMeta.rowData[3].length,
                                         value,
                                         tableMeta.rowData[3]?.length,
                                         tableMeta.rowData[6],
@@ -498,8 +486,8 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-                    
-                        <MUIDataTable
+
+            <MUIDataTable
                 title={'Mmt Tray'}
                 data={mmtTray}
                 columns={columns}
@@ -542,8 +530,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                    
-            
         </Container>
     )
 }

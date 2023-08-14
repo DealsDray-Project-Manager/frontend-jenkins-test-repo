@@ -66,7 +66,6 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                 
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -235,7 +234,7 @@ export default function DialogBox() {
                     order_id: uic.order_id,
                     order_date: uic.order_date,
                     uic: uic.uic,
-
+                    username: user.username,
                     stock_in: new Date(),
                     status: data[0].status,
                 }
@@ -311,6 +310,7 @@ export default function DialogBox() {
                         bagId: bagId,
                         rackId: rackId,
                         location: location,
+                        username: user.username,
                     }
                     if (employeeData?.[0]?.type_taxanomy != 'BOT') {
                         let res = await axiosWarehouseIn.post('/trayclose', obj)

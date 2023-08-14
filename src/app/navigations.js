@@ -1384,7 +1384,6 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
         sales: false,
     },
-
     {
         name: 'View price',
         icon: 'class',
@@ -1396,6 +1395,13 @@ export const navigations = [
         name: 'Buyer',
         icon: 'class',
         path: '/sales/Buyer-con-sales',
+        auth: authRoles.Sales_Agent,
+        sales: true,
+    },
+    {
+        name: 'Ready for sales units',
+        icon: 'class',
+        path: '/sales/ready-for-sales-units',
         auth: authRoles.Sales_Agent,
         sales: true,
     },

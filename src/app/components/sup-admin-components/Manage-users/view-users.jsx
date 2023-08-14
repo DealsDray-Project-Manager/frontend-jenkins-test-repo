@@ -178,8 +178,6 @@ const SimpleMuiTable = () => {
         }) 
     }
 
-
- 
     
     const columns = [
         {

@@ -63,7 +63,6 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                 
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -167,6 +166,7 @@ export default function DialogBox() {
                 limit: trayData?.limit,
                 trayType: trayData?.type_taxanomy,
                 rackId: rackId,
+                actioUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/auditDoneClose', obj)
             if (res.status == 200) {

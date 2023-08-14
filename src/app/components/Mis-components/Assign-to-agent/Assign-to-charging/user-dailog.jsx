@@ -3,6 +3,7 @@ import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 import Swal from 'sweetalert2'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -24,6 +25,7 @@ const MemberEditorDialog = ({
     isCheck,
 }) => {
     const [chargingUserName, setCharging] = useState('')
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
@@ -32,6 +34,7 @@ const MemberEditorDialog = ({
             let obj = {
                 tray: isCheck,
                 user_name: chargingUserName,
+                actionUser: user.username,
                 sort_id: 'Send for charging',
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)

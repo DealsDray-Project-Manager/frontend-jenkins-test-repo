@@ -83,13 +83,7 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
-        {
-            name: 'name', // field name in the row object
-            label: <Typography sx={{ fontWeight: 'bold' }}>Name</Typography>, // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+       
 
         {
             name: 'code',
@@ -102,7 +96,7 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }} noWrap>
-                    Agent Name
+                   BOT Agent Name
                 </Typography>
             ),
             options: {
@@ -116,15 +110,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'warehouse',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        
         {
             name: 'limit',
             label: <Typography sx={{ fontWeight: 'bold' }}>Max</Typography>,
@@ -150,6 +136,17 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value.length,
+            },
+        },
+        {
+            name: 'track_tray',
+            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value?.bag_assign_to_bot).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {

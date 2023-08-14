@@ -61,6 +61,19 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
+    const handelViewItem = (brand, model, grade, date) => {
+        navigate(
+            '/sales/ready-for-sales/view-units/' +
+                brand +
+                '/' +
+                model +
+                '/' +
+                grade +
+                '/' +
+                date
+        )
+    }
+
     const columns = [
         {
             name: 'index',
@@ -156,18 +169,92 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'price_creation_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }),
+            },
+        },
+        {
+            name: 'price_updation_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Updation Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }),
+            },
+        },
+        {
+            name: 'code',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    marginLeft="8px"
+                >
+                    <>Action</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            variant="contained"
+                            onClick={() =>
+                                handelViewItem(
+                                    tableMeta.rowData[2]?.brand,
+                                    tableMeta.rowData[3]?.model,
+                                    tableMeta.rowData[5]?.grade,
+                                    tableMeta.rowData[8]
+                                )
+                            }
+                            style={{ backgroundColor: 'green' }}
+                            component="span"
+                        >
+                            View
+                        </Button>
+                    )
+                },
+            },
+        },
     ]
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'View price', path: '/' }]}
+                    routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
 
             <MUIDataTable
-                title={'View price'}
+                title={'Ready for sales'}
                 data={item}
                 columns={columns}
                 options={{

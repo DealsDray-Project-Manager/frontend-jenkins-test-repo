@@ -35,7 +35,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const BqcUserReportPage = ({ BqcUserReport, BqcAgentName, BqcDoneDate }) => {
     return (
         <Card elevation={3}>
-            <H4 sx={{ p: 2 }}>BQC User Report</H4>
+            <H4 sx={{ p: 2 }}>Latest BQC User Report</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>

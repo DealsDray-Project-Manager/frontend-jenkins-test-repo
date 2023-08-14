@@ -1,9 +1,4 @@
 
-
-
-
-
-
 import React from 'react'
 import StatCard3 from './card'
 import { H3 } from 'app/components/Typography'
@@ -22,9 +17,6 @@ const FlexBox = styled('div')(({ theme }) => ({
     justifyContent: 'space-between',
     marginBottom: '24px',
 }))
-
-
-
 
 
 const Analytics2 = () => {

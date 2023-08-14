@@ -49,7 +49,6 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                  
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -158,6 +157,7 @@ export default function DialogBox() {
                     description: description,
                     type: 'Ready to bqc',
                     sort_id: trayData?.sort_id,
+                    actioUser: user.username,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/close-wht-tray-ready-to-next',

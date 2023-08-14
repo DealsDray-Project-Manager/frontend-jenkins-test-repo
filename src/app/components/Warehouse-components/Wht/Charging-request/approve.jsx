@@ -18,6 +18,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -43,6 +44,7 @@ export default function DialogBox() {
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
+    const { user } = useAuth()
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
@@ -119,41 +121,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'success',
-                title: 'All Items Scanned',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextDisable(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-    }
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -163,6 +131,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     sortId: trayData?.sort_id,
+                    actionUser: user.username,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/issue-to-agent-wht',

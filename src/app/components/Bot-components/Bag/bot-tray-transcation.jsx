@@ -549,11 +549,12 @@ export default function DialogBox() {
                                     id="example"
                                     stickyHeader
                                     aria-label="sticky table"
-                                    
                                 >
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell pl={{pl:2}}>S.NO</TableCell>
+                                            <TableCell pl={{ pl: 2 }}>
+                                                S.NO
+                                            </TableCell>
                                             <TableCell>AWBN Number</TableCell>
                                             <TableCell>Order ID</TableCell>
                                             <TableCell>Order Date</TableCell>
@@ -567,7 +568,7 @@ export default function DialogBox() {
                                                 role="checkbox"
                                                 tabIndex={-1}
                                             >
-                                                <TableCell sx={{pl:3}}>
+                                                <TableCell sx={{ pl: 3 }}>
                                                     {index + 1}
                                                 </TableCell>
                                                 <TableCell>

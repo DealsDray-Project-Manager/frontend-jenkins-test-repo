@@ -11,7 +11,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
-})) 
+}))
 
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
@@ -171,6 +171,7 @@ const MemberEditorDialog = ({
                             label="Name"
                             type="text"
                             name="name"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('name')}
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name?.message : ''}
@@ -192,7 +193,7 @@ const MemberEditorDialog = ({
                             {...register('location_type')}
                             error={errors.location_type ? true : false}
                             helperText={errors.location_type?.message}
-                            defaultValue={getValues("location_type")}
+                            defaultValue={getValues('location_type')}
                         >
                             <MenuItem value="Dock">Dock</MenuItem>
                             <MenuItem value="Processing">Processing</MenuItem>
@@ -250,7 +251,7 @@ const MemberEditorDialog = ({
                         />
                         <TextFieldCustOm
                             label="City"
-                            type="text" 
+                            type="text"
                             name="city"
                             {...register('city')}
                             error={errors.city ? true : false}

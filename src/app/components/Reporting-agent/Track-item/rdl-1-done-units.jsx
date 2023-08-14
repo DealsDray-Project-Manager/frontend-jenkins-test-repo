@@ -240,7 +240,7 @@ const TrackItem = () => {
 
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>Audit Done Date</TableCell>
 
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>RDL FLS Agent name</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'180px'}}>RDL One Agent name</TableCell>
 
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>RDL 1 Status</TableCell>
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'160px'}}>RDL 1 Added Model</TableCell>
@@ -252,7 +252,7 @@ const TrackItem = () => {
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Four</TableCell>
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Part Five</TableCell>
                         <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'190px'}}>RDL 1 Added Description</TableCell>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>Tray Closed By RDL FLS Date</TableCell>
+                        <TableCell sx={{fontSize:'16px', fontWeight:'bold',  width:'250px'}}>Tray Closed By RDL One Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

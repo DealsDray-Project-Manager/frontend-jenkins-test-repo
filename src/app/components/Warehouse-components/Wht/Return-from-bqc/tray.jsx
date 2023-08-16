@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import {
     Button,
     Dialog,
@@ -71,6 +72,7 @@ const SimpleMuiTable = () => {
     const [open, setOpen] = React.useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [counts, setCounts] = useState('')
+    const { user } = useAuth()
     const [trayId, setTrayId] = useState('')
     const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
@@ -116,6 +118,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
+                actioUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/recieved-from-bqc', obj)
             if (res.status == 200) {

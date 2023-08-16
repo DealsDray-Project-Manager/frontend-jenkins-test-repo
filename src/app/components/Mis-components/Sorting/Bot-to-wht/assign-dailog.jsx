@@ -5,6 +5,8 @@ import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -27,6 +29,7 @@ const MemberEditorDialog = ({
     const [sortingAgentName, setSortingAgentName] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     const handelSendRequestConfirm = async () => {
         try {
@@ -34,6 +37,7 @@ const MemberEditorDialog = ({
             let obj = {
                 agent_name: sortingAgentName,
                 trayId: isCheck,
+                username:user.username
             }
             let checkReadyForSorting = await axiosMisUser.post(
                 '/check-all-wht-inuse-for-sorting',

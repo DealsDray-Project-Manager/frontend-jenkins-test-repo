@@ -4,6 +4,8 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -24,6 +26,7 @@ const MemberEditorDialog = ({
     isCheckk,
 }) => {
     const [RDLUserName, setRDL] = useState('')
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
 
     const handelSendRequestConfirm = async () => {
@@ -33,6 +36,7 @@ const MemberEditorDialog = ({
                 tray: isCheckk,
                 user_name: RDLUserName,
                 sortId: 'Send for RDL-two',
+                actUser: user.username,
             }
             let res = await axiosMisUser.post(
                 '/assignToAgent/rdl-fls/sentToWarehouse',

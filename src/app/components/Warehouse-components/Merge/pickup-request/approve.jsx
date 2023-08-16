@@ -14,10 +14,12 @@ import { axiosWarehouseIn } from '../../../../../axios'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
+import useAuth from 'app/hooks/useAuth'
 
 export default function StickyHeadTable({ props }) {
     const [tray, setTray] = useState([])
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
     const navigate = useNavigate()
     const { trayId } = useParams()
     useEffect(() => {
@@ -73,6 +75,7 @@ export default function StickyHeadTable({ props }) {
                         fromTray: tray[0].code,
                         toTray: tray[1].code,
                         username: tray[0]?.issued_user_name,
+                        actUser: user.username,
                     }
 
                     let res = await axiosWarehouseIn.post(

@@ -22,6 +22,7 @@ import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -79,6 +80,7 @@ const CtxToStxPage = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [submitButDis, setSubmitButDis] = useState(false)
+    const { user } = useAuth()
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -218,6 +220,7 @@ const CtxToStxPage = () => {
         e.preventDefault()
         try {
             setSubmitButDis(true)
+            mergreData.actionUser = user.username
             let res = await axiosMisUser.post(
                 '/sorting/ctxToStx/request/sendToWh',
                 mergreData

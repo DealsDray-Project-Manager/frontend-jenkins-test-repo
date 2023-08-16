@@ -5,6 +5,8 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Button,
     Dialog,
@@ -69,6 +71,7 @@ const SimpleMuiTable = () => {
     const [tray, setTray] = useState([])
     const [counts, setCounts] = useState('')
     const [open, setOpen] = React.useState(false)
+    const { user } = useAuth()
     const [trayId, setTrayId] = useState('')
     const [receiveButDis, setReceiveButDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -110,6 +113,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
+                username: user.username,
             }
             setReceiveButDis(true)
             let res = await axiosWarehouseIn.post('/recieved-from-sorting', obj)

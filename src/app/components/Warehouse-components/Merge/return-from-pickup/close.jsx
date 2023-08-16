@@ -20,7 +20,6 @@ import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
@@ -39,17 +38,16 @@ export default function DialogBox() {
     const [stage, setStage] = useState('')
     const [refresh, setRefresh] = useState(false)
     const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId,setRackId]=useState("")
+    const [rackId, setRackId] = useState('')
     /******************************************************************************** */
 
     useEffect(() => {
-
         const fetchData = async () => {
-            
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -136,7 +134,8 @@ export default function DialogBox() {
                     trayId: trayId,
                     stage: tray[0].pickup_type,
                     length: length,
-                    rackId:rackId
+                    rackId: rackId,
+                    actUser: user.username,
                 }
                 if (tray?.[0]?.to_tray_for_pickup == null) {
                     obj.stage = tray[0]?.pickup_next_stage
@@ -163,33 +162,38 @@ export default function DialogBox() {
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <h5 style={{marginLeft:'15px'}}>EXPECTED</h5>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h5 style={{ marginLeft: '15px' }}>EXPECTED</h5>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
                     <Box
                         sx={{
-                            mr: 2,
+                            display: 'flex',
+                            justifyContent: 'end',
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5 style={{ paddingLeft: '18px' }}>Total</h5>
-                            <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    tray[0]?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{tray[0]?.limit}
-                            </p>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ paddingLeft: '18px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        paddingLeft: '5px',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {
+                                        tray[0]?.items?.filter(function (item) {
+                                            return item.status != 'Duplicate'
+                                        }).length
+                                    }
+                                    /{tray[0]?.limit}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
                 </Box>
                 <TableContainer>
                     <Table
@@ -227,55 +231,60 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <Box>
-                <h5 style={{marginLeft:'15px'}}>ACTUAL</h5>
-                <TextField
-                    sx={{ m: 1 }}
-                    id="outlined-password-input"
-                    type="text"
-                    inputRef={(input) => input && input.focus()}
-                    disabled={textDisable}
-                    name="doorsteps_diagnostics"
-                    label="SCAN UIC"
-                    value={awbn}
-                    onChange={(e) => {
-                        setAwbn(e.target.value)
-                        handelAwbn(e)
-                    }}
-                    inputProps={{
-                        style: {
-                            width: 'auto',
-                        },
-                    }}
-                />
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                    }}
-                >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box>
+                        <h5 style={{ marginLeft: '15px' }}>ACTUAL</h5>
+                        <TextField
+                            sx={{ m: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            name="doorsteps_diagnostics"
+                            label="SCAN UIC"
+                            value={awbn}
+                            onChange={(e) => {
+                                setAwbn(e.target.value)
+                                handelAwbn(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
                     <Box
                         sx={{
-                            mr: 2,
+                            display: 'flex',
+                            justifyContent: 'end',
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5 style={{ paddingLeft: '18px' }}>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    tray[0]?.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{tray[0]?.limit}
-                            </p>
+                        <Box
+                            sx={{
+                                mr: 2,
+                            }}
+                        >
+                            <Box sx={{}}>
+                                <h5 style={{ paddingLeft: '18px' }}>Total</h5>
+                                <p
+                                    style={{
+                                        marginLeft: '5px',
+                                        fontSize: '22px',
+                                    }}
+                                >
+                                    {
+                                        tray[0]?.actual_items?.filter(function (
+                                            item
+                                        ) {
+                                            return item.status != 'Duplicate'
+                                        }).length
+                                    }
+                                    /{tray[0]?.limit}
+                                </p>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
                 </Box>
                 <TableContainer>
                     <Table
@@ -356,27 +365,24 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                <TextFieldCustOm 
-                    sx={{m:1}}
-                        label='Rack ID'
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
                         select
-                        style={{ width: '150px'}}
-                     
-                         
+                        style={{ width: '150px' }}
                         name="rack_id"
-                >
-                    {rackiddrop?.map((data) => (
-                    
-                    <MenuItem
-                        onClick={(e) => {
-                            setRackId(data.rack_id)
-                        }}
-                        value={data.rack_id}
                     >
-                        {data.rack_id}
-                    </MenuItem>
-                ))}
-                </TextFieldCustOm>
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -411,7 +417,7 @@ export default function DialogBox() {
                             tray[0]?.actual_items?.length !==
                                 tray[0]?.items?.length
                                 ? true
-                                : false || rackId == ""
+                                : false || rackId == ''
                         }
                         onClick={(e) => {
                             handelIssue(

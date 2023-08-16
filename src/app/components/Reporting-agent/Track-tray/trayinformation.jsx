@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import {
     Card,
     TextField,
-    Grid,
-    Input,
-    Label,
     Box,
     Divider,
     Stack,
@@ -73,7 +70,7 @@ const Trayinformation = () => {
             alert(error)
         }
     }
-
+    console.log(result);
     return (
         <Container>
             <h3>Tray Details</h3>
@@ -138,17 +135,17 @@ const Trayinformation = () => {
                 </Card>
             </div>
 
-            <SimpleTable
+            {/* <SimpleTable
                 Items={
                     result?.items?.length == 0
                         ? result?.actual_items
                         : result?.items
                 }
+            /> */}
+            <Trayjourney
+                TrayMovement={result?.actual_items}
+                
             />
-            <Trayjourney TrayMovement={result?.track_tray}
-             TrayType={result?.type_taxanomy}
-
-             />
             {/* <Trayjourneytable /> */}
         </Container>
     )

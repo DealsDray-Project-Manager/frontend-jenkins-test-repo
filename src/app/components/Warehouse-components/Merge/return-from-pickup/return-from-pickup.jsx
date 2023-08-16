@@ -16,6 +16,7 @@ import {
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import { axiosWarehouseIn } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -73,6 +74,7 @@ const SimpleMuiTable = () => {
     const [open, setOpen] = React.useState(false)
     const [receiveBut, setReceiveBut] = useState(false)
     const [refresh, setRefresh] = useState(false)
+    const { user } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
 
@@ -111,6 +113,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
                 type: 'Merging Done',
+                actUser:user.username
             }
             let res = await axiosWarehouseIn.post('/pickup/recieve', obj)
             if (res.status == 200) {

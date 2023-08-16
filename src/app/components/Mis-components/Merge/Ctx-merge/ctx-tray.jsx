@@ -2,6 +2,8 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Table,
     TableContainer,
@@ -38,26 +40,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '170%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -102,6 +85,7 @@ const SimpleMuiTable = () => {
     const [toWhtTray, setToWhatTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const { user } = useAuth()
     const [submitDis, setSubmitDis] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
@@ -244,6 +228,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         try {
             setSubmitDis(true)
+            mergreData.actionUser=user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData
@@ -366,6 +351,16 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'tray_grade',
+
+            options: {
+                filter: false,
+                display: false,
+                sort: false,
+            },
+        },
+
+        {
             name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -405,7 +400,8 @@ const SimpleMuiTable = () => {
                                         value,
                                         tableMeta.rowData[3]?.length,
                                         tableMeta.rowData[6],
-                                        tableMeta.rowData[7]
+                                        tableMeta.rowData[7],
+                                        tableMeta.rowData[8],
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}

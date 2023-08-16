@@ -4,6 +4,7 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -23,8 +24,9 @@ const MemberEditorDialog = ({
     RDLUsers,
     isCheckk,
 }) => {
-    const [RDLUserName, setRDL] = useState("")
+    const [RDLUserName, setRDL] = useState('')
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
 
     const handelSendRequestConfirm = async () => {
         try {
@@ -33,8 +35,12 @@ const MemberEditorDialog = ({
                 tray: isCheckk,
                 user_name: RDLUserName,
                 sortId: 'Send for RDL-FLS',
+                actUser: user.username,
             }
-            let res = await axiosMisUser.post('/assignToAgent/rdl-fls/sentToWarehouse', obj)
+            let res = await axiosMisUser.post(
+                '/assignToAgent/rdl-fls/sentToWarehouse',
+                obj
+            )
             if (res.status == 200) {
                 handleClose()
                 setLoading(false)
@@ -43,22 +49,21 @@ const MemberEditorDialog = ({
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setRDL("")
+                setRDL('')
                 setIsAlive((isAlive) => !isAlive)
-              
             } else {
                 // setLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text:res?.data?.message,
+                    text: res?.data?.message,
                 })
             }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text:error,
+                text: error,
             })
         }
     }

@@ -78,10 +78,6 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    useEffect(() => {
-        console.log(userList);
-    },[userList])
-
     const handleDialogClose = () => {
         setEditFetchData({})
         setShouldOpenEditorDialog(false)
@@ -254,21 +250,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
              
-        },
-        {
-            name: 'cpc',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
-            options: {
-                filter: true,
-            },
-             
-        },
-        {
-            name: 'cpc_type',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
-            options: {
-                filter: true,
-            },
         },
         {
             name: 'sales_users', 

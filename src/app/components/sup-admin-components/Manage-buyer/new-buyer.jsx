@@ -407,6 +407,9 @@ const MemberEditorDialog = ({
                             label="Mobile No"
                             name="contact"
                             {...register('contact')}
+                            onInput={(e) => {
+                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                            }}
                             inputProps={{ maxLength: 10 }}
                             error={errors.contact ? true : false}
                             helperText={

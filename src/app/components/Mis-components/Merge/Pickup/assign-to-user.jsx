@@ -3,6 +3,7 @@ import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -28,6 +29,7 @@ const MemberEditorDialog = ({
     const [whtTrayCode, setWhtTrayCode] = useState('')
     const [nextStage, setNextStage] = useState('')
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
 
     const handelSendRequestConfirm = async () => {
         try {
@@ -39,6 +41,7 @@ const MemberEditorDialog = ({
                 toTray: whtTrayCode,
                 value: value,
                 nextStage: nextStage,
+                actUser: user.username,
             }
             let res = await axiosMisUser.post('/pickup/requestSendToWh', obj)
             if (res.status == 200) {
@@ -50,8 +53,6 @@ const MemberEditorDialog = ({
                 setLoading(false)
                 alert(res.data.message)
             }
-
-            
         } catch (error) {
             alert(error)
         }
@@ -108,7 +109,7 @@ const MemberEditorDialog = ({
                             setNextStage(e.target.value)
                         }}
                     >
-                         <MenuItem value="Inuse">In Use</MenuItem>
+                        <MenuItem value="Inuse">In Use</MenuItem>
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>

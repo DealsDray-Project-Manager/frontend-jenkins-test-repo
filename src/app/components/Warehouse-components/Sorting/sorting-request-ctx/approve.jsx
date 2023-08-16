@@ -16,12 +16,13 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 export default function StickyHeadTable({ props }) {
     const [mmtTray, setMmtTray] = useState([])
     const [loading, setLoading] = useState(false)
-    const [userAgent, setUserAgent] = useState('')
     const navigate = useNavigate()
+    const { user } = useAuth()
     const { trayId } = useParams()
     useEffect(() => {
         const fetchData = async () => {
@@ -85,6 +86,7 @@ export default function StickyHeadTable({ props }) {
                         fromTray: mmtTray[0].code,
                         toTray: mmtTray[1].code,
                         username: mmtTray[0]?.issued_user_name,
+                        actionUser: user.username,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/mmtTraySendToSorting',
@@ -137,8 +139,11 @@ export default function StickyHeadTable({ props }) {
 
     return (
         <>
-        <div className="breadcrumb" style={{marginLeft:'25px', marginTop:'25px'}}>
-                <Breadcrumb 
+            <div
+                className="breadcrumb"
+                style={{ marginLeft: '25px', marginTop: '25px' }}
+            >
+                <Breadcrumb
                     routeSegments={[
                         { name: 'Sorting', path: '/' },
                         { name: 'Request-Approve' },
@@ -168,21 +173,64 @@ export default function StickyHeadTable({ props }) {
                     <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
                 </Box>
                 <Box sx={{ m: 1 }}>
-                    <Paper sx={{ width: '100%', overflow: 'auto', ml:2 }}>
+                    <Paper sx={{ width: '100%', overflow: 'auto', ml: 2 }}>
                         <TableContainer>
                             <Table
                                 id="example"
                                 style={{ width: '100%' }}
                                 aria-label="sticky table"
-                            > 
+                            >
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15, pl:2}}>Record No</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Tray ID</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Tray Type</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Quantity</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Status</TableCell>
-                                        <TableCell sx={{fontWeight:'bold', fontSize:15}}>Action</TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                                pl: 2,
+                                            }}
+                                        >
+                                            Record No
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Tray ID
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Tray Type
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Quantity
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Status
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Action
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -192,7 +240,9 @@ export default function StickyHeadTable({ props }) {
                                             role="checkbox"
                                             tabIndex={-1}
                                         >
-                                            <TableCell sx={{pl:4}}>{index + 1}</TableCell>
+                                            <TableCell sx={{ pl: 4 }}>
+                                                {index + 1}
+                                            </TableCell>
                                             <TableCell>{data.code}</TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}

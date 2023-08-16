@@ -240,7 +240,9 @@ export default function DialogBox() {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h4 style={{marginLeft:'15px'}}>FROM TRAY ITEMS - {tray[0]?.code}</h4>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        FROM TRAY ITEMS - {tray[0]?.code}
+                    </h4>
                     <Box sx={{ mr: 4 }}>
                         <h4 style={{ marginLeft: '10px' }}>Total</h4>
                         <p style={{ fontSize: '21px', textAlign: 'center' }}>
@@ -258,7 +260,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Brand</TableCell>
                                 <TableCell>Model</TableCell>
@@ -267,7 +269,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.temp_array?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
@@ -284,7 +288,9 @@ export default function DialogBox() {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h4 style={{marginLeft:'15px'}}>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        TO TRAY ITEMS - {tray?.[1]?.code}
+                    </h4>
                     <Box sx={{ mr: 4 }}>
                         <h4 style={{ marginLeft: '5px' }}>Total</h4>
                         <p style={{ fontSize: '21px', textAlign: 'center' }}>
@@ -302,7 +308,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Model</TableCell>
                                 <TableCell>Brand</TableCell>
@@ -312,7 +318,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.[1]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>

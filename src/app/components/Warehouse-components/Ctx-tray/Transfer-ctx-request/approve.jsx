@@ -117,40 +117,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'success',
-                title: 'All Items Scanned',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextDisable(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-    }
+   
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {

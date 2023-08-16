@@ -2,6 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import useAuth from 'app/hooks/useAuth'
 import {
     Button,
     Box,
@@ -77,6 +78,7 @@ BootstrapDialogTitle.propTypes = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [mmtTray, setMmtTray] = useState([])
     const [open, setOpen] = useState(false)
     const [submitDis, setSubmitDis] = useState(false)
@@ -203,6 +205,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         try {
             setSubmitDis(true)
+            mergreData.actionUser=user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData

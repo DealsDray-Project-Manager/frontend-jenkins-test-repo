@@ -18,6 +18,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -76,6 +78,8 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -118,6 +122,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
                 type: 'Merging Done',
+                actionUser:user.username,
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {

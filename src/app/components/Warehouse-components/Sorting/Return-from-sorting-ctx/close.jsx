@@ -59,9 +59,10 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -162,7 +163,8 @@ export default function DialogBox() {
                 limit: trayData.limit,
                 type: trayData.type_taxanomy,
                 description: description,
-                rackId:rackId
+                rackId: rackId,
+                actUser: user.username,
             }
             let res = await axiosWarehouseIn.post(
                 '/sorting/returnFromSortingCtxStx/close',
@@ -240,7 +242,7 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <h4 style={{marginLeft:'15px'}}>EXPECTED</h4>
+                    <h4 style={{ marginLeft: '15px' }}>EXPECTED</h4>
                     <Box
                         sx={{
                             mr: 2,
@@ -277,7 +279,9 @@ export default function DialogBox() {
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
                                     </TableCell>
-                                    <TableCell sx={{pl:3}}>{data?.uic}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {data?.uic}
+                                    </TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
@@ -294,31 +298,31 @@ export default function DialogBox() {
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <Box>
-                <h4 style={{marginLeft:'15px'}}>ACTUAL</h4>
-                
-                    <TextField
-                        sx={{ mt: 1, ml: 2, mb:1  }}
-                        id="outlined-password-input"
-                        type="text"
-                        inputRef={(input) => input && input.focus()}
-                        disabled={textDisable}
-                        name="doorsteps_diagnostics"
-                        label="Please Enter UIC"
-                        value={uic}
-                        // onChange={(e) => setAwbn(e.target.value)}
-                        onChange={(e) => {
-                            setUic(e.target.value)
-                            handelUic(e)
-                        }}
-                        inputProps={{
-                            style: {
-                                width: 'auto',
-                            },
-                        }}
-                    />
-                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box>
+                        <h4 style={{ marginLeft: '15px' }}>ACTUAL</h4>
+
+                        <TextField
+                            sx={{ mt: 1, ml: 2, mb: 1 }}
+                            id="outlined-password-input"
+                            type="text"
+                            inputRef={(input) => input && input.focus()}
+                            disabled={textDisable}
+                            name="doorsteps_diagnostics"
+                            label="Please Enter UIC"
+                            value={uic}
+                            // onChange={(e) => setAwbn(e.target.value)}
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
+                            inputProps={{
+                                style: {
+                                    width: 'auto',
+                                },
+                            }}
+                        />
+                    </Box>
                     <Box
                         sx={{
                             mr: 2,
@@ -339,7 +343,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>IMEI</TableCell>
@@ -351,7 +355,9 @@ export default function DialogBox() {
                         <TableBody>
                             {trayData?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.imei}</TableCell>

@@ -24,6 +24,8 @@ import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -37,28 +39,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '140%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -103,6 +83,7 @@ const SimpleMuiTable = () => {
     const [sortingAgent, setSortingAgent] = useState([])
     const [toWhtTray, setToWhatTray] = useState([])
     const [open, setOpen] = useState(false)
+    const { user } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
@@ -241,6 +222,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         try {
             setSubmitDis(true)
+            mergreData.actionUser=user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData

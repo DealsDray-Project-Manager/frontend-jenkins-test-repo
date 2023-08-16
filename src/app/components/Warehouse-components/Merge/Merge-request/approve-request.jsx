@@ -17,6 +17,7 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import { Breadcrumb } from 'app/components'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
@@ -36,6 +37,7 @@ const Container = styled('div')(({ theme }) => ({
 export default function StickyHeadTable({ props }) {
     const [mmtTray, setMmtTray] = useState([])
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
     const [userAgent, setUserAgent] = useState('')
     const navigate = useNavigate()
     const { mmtTrayId } = useParams()
@@ -101,6 +103,7 @@ export default function StickyHeadTable({ props }) {
                         fromTray: mmtTray[0].code,
                         toTray: mmtTray[1].code,
                         username: mmtTray[0]?.issued_user_name,
+                        actionUser: user.username,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/mmtTraySendToSorting',

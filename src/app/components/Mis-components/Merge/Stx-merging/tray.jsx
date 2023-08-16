@@ -17,7 +17,7 @@ import {
     Typography,
     Box,
 } from '@mui/material'
-
+import useAuth from 'app/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -83,6 +83,7 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [submitDis, setSubmitDis] = useState(false)
     const [open, setOpen] = useState(false)
+    const { user } = useAuth()
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -221,6 +222,7 @@ const SimpleMuiTable = () => {
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
+            mergreData.actionUser=user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData

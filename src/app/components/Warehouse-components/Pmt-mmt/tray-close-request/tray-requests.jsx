@@ -18,6 +18,7 @@ import {
     Typography,
     InputAdornment,
 } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import * as Yup from 'yup'
@@ -78,6 +79,7 @@ BootstrapDialogTitle.propTypes = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [open, setOpen] = React.useState(false)
     const [assingNewTray, setAssignNewTray] = useState(false)
     const [trayData, setTrayData] = useState([])
@@ -207,6 +209,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 count: counts,
+                username: user.username,
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {

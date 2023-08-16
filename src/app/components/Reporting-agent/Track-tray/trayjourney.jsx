@@ -1,387 +1,172 @@
-import * as React from 'react'
-import Timeline from '@mui/lab/Timeline'
-import TimelineItem from '@mui/lab/TimelineItem'
-import TimelineSeparator from '@mui/lab/TimelineSeparator'
-import TimelineConnector from '@mui/lab/TimelineConnector'
-import TimelineContent from '@mui/lab/TimelineContent'
-import TimelineDot from '@mui/lab/TimelineDot'
-import { Box } from '@mui/material'
+import { Box, Card, Divider, Stack, Typography, Grid } from '@mui/material'
+import React, { useState } from 'react'
+import MUIDataTable from 'mui-datatables'
 
-const Trayjourney = ({ TrayMovement,TrayType }) => {
-   
+const WHTdetails = ({ TrayMovement }) => {
+    const [isLoading, setIsLoading] = useState(false)
+
+    const columns = [
+        {
+            name: 'index',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    marginLeft="7px"
+                >
+                    <>Record No</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
+            },
+        },
+        {
+            name: 'description',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'user_type',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Department</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'created_at',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Date / Time</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+
+        {
+            name: 'tray_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'action_type',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+    ]
     return (
-        <div>
-            <h3 style={{ marginTop: '30px' }}>Tray Journey</h3>
-            <Box
-                marginBottom="50px"
-                boxShadow={1}
+        <Card
+            sx={{
+                marginTop: '40px',
+                marginBottom: '40px',
+                border: '1px solid black',
+            }}
+        >
+            <br />
+            <Typography
                 sx={{
-                    border: '0.5px solid #78909c',
-                    borderRadius: '8px',
-                    background: 'white',
+                    margin: '0px 0px 15px 33px',
+                    fontSize: '20px',
+                    fontWeight: 'bold',
                 }}
-                overflow="auto"
             >
-                <Timeline position="alternate">
-                    {TrayMovement?.bag_tray_issue_to_bot !== undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineDot
-                                    sx={{ color: '#4caf50' }}
-                                    variant="outlined"
-                                />
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Warehouse user Issued to BOT at-{' '}
-                                {new Date(
-                                    TrayMovement?.bag_tray_issue_to_bot
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-
-                    {TrayMovement?.bot_done_tray_close_wh != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Bot done and item verification done and closed
-                                by warehouse at-{' '}
-                                {new Date(
-                                    TrayMovement?.bot_done_tray_close_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-
-                    {TrayMovement?.wh_issue_to_sorting != undefined  && TrayType !=="ST" && TrayType !=="CT" ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Warehouse user issued to sorting at -{' '}
-                                {new Date(
-                                    TrayMovement?.wh_issue_to_sorting
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.sorting_agent_close_bot_wht != undefined && TrayType !=="ST"  && TrayType !=="CT" ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Sorting done item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.sorting_agent_close_bot_wht
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.issue_to_merging != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to merging at -{' '}
-                                {new Date(
-                                    TrayMovement?.issue_to_merging
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.merging_done_close_sorting != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Merging done item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.merging_done_close_sorting
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.issued_to_charging != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to charging at -{' '}
-                                {new Date(
-                                    TrayMovement?.issued_to_charging
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.charging_done_close_wh != undefined &&
-                    TrayMovement?.charging_done_close_wh !== null ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Charge done item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.charging_done_close_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.issued_to_recharging != undefined ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to recharging -{' '}
-                                {new Date(
-                                    TrayMovement?.issued_to_recharging
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.recharging_done_close_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Recharging done item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.recharging_done_close_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.recharging_done_close_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Recharging done item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.recharging_done_close_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.issued_to_bqc_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to bqc at -{' '}
-                                {new Date(
-                                    TrayMovement?.issued_to_bqc_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.bqc_done_close_by_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Bqc done and item validated and closed by
-                                warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.bqc_done_close_by_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.issue_to_audit_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issue to audit at -{' '}
-                                {new Date(
-                                    TrayMovement?.issue_to_audit_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-
-                    {TrayMovement?.audit_done_close_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Audit done and item validated and close by
-                                warhouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.audit_done_close_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
+                Tray Journey
+            </Typography>
+            <Divider />
+            <Stack
+                justifyContent="space-between"
+                sx={{ px: 2, py: 1, bgcolor: 'background.default' }}
+            >
+                <Box
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <MUIDataTable
                     
-                    {TrayMovement?.issued_rdl_1_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to RDL-FLS at -{' '}
-                                {new Date(
-                                    TrayMovement?.issued_rdl_1_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.rdl_1_done_close_by_wh ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                RDL-FLS done and item validated and close by
-                                warhouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.rdl_1_done_close_by_wh
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.ctx_transfer_to_sales ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Ctx tray transfferd to sales at -{' '}
-                                {new Date(
-                                    TrayMovement?.ctx_transfer_to_sales
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                   
-                     {TrayMovement?.ctx_issued_sorting && TrayType =="ST"  || TrayMovement?.ctx_sorting_done && TrayType =="CT" ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Issued to Sorting (Ctx to stx) at -{' '}
-                                {new Date(
-                                    TrayMovement?.ctx_issued_sorting
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    
-                     {TrayMovement?.ctx_sorting_done && TrayType =="ST" || TrayMovement?.ctx_sorting_done && TrayType =="CT" ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Sorting done item  item validated and close by
-                                warhouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.ctx_sorting_done
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                    {TrayMovement?.ctx_transfer_to_processing  ? (
-                        <TimelineItem>
-                            <TimelineSeparator>
-                                <TimelineConnector />
-                                <TimelineDot />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                Ctx tray transfferd to processing warehouse at -{' '}
-                                {new Date(
-                                    TrayMovement?.ctx_transfer_to_processing
-                                ).toLocaleString('en-GB', {
-                                    hour12: true,
-                                })}{' '}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ) : null}
-                </Timeline>
-            </Box>
-        </div>
+                        data={TrayMovement}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </Box>
+            </Stack>
+        </Card>
     )
 }
-export default Trayjourney
+
+export default WHTdetails

@@ -221,7 +221,9 @@ export default function DialogBox() {
                     length: length,
                     limit: limit,
                     status: status,
-                    rackId:rackId
+                    rackId:rackId,
+                    actionUser: user.username,
+
                 }
                 if (type == 'MMT') {
                     obj.fromTray = tray[0].from_merge

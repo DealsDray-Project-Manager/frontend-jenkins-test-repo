@@ -5,6 +5,8 @@ import { styled } from '@mui/system'
 import { useNavigate, useLocation } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Button,
     Card,
@@ -16,7 +18,7 @@ import {
     DialogActions,
     TextField,
     Typography,
-    MenuItem
+    MenuItem,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -47,6 +49,7 @@ const SimpleMuiTable = () => {
     const { state } = useLocation()
     const { whtTray, rpTray } = state
     const [tray, setTray] = useState([])
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
@@ -55,7 +58,7 @@ const SimpleMuiTable = () => {
     const {
         register,
         formState: { errors },
-    }= useForm({
+    } = useForm({
         // resolver: yupResolver(schema),
     })
 
@@ -73,10 +76,6 @@ const SimpleMuiTable = () => {
     //         }
     //     } catch (error) {}
     // }
-
-    
-
-    
 
     useEffect(() => {
         try {
@@ -135,6 +134,7 @@ const SimpleMuiTable = () => {
                     let obj = {
                         whtTray: whtTray,
                         rpTray: rpTray,
+                        actUser: user.username,
                     }
                     const res = await axiosWarehouseIn.post(
                         '/whtToRp/issueToAgent',
@@ -366,10 +366,10 @@ const SimpleMuiTable = () => {
                     }}
                 />
                 <Box sx={{ textAlign: 'right', mr: 6 }}>
-                
                     <Button
                         sx={{
-                            m: 1, mt:2
+                            m: 1,
+                            mt: 2,
                         }}
                         variant="contained"
                         style={{ backgroundColor: '#206CE2' }}

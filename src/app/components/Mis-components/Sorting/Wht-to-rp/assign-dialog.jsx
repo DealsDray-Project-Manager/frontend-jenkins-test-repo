@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -28,6 +29,7 @@ const MemberEditorDialog = ({
     isCheck,
 }) => {
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
     const schema = Yup.object().shape({
         rpTray: Yup.string().required('Required*').nullable(),
         spTray: Yup.string().required('Required*').nullable(),
@@ -50,6 +52,8 @@ const MemberEditorDialog = ({
             setLoading(true)
             values.spDetails = isCheck
             values.selectedUic = selectedUic
+            values.actUser = user.username
+
             let res = await axiosMisUser.post('/whtToRpSorting/assign', values)
             if (res.status == 200) {
                 Swal.fire({

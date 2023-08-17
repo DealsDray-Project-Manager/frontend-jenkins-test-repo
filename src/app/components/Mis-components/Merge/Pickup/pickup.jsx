@@ -112,7 +112,7 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: '85%',
+    width: '185%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -129,7 +129,7 @@ const ProductTableRdlOne = styled(Table)(() => ({
 }))
 const ProductTableRdlTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '110%',
+    width: '74%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {

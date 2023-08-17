@@ -51,7 +51,7 @@ const StatCard3 = () => {
         },
         {
             icon: 'branding_watermark',
-            amount:count.readyForSalesCount,
+            amount: count.readyForSalesCount,
             title: 'Ready for sales uint',
             path: '/sales/ready-for-sales-units',
         },

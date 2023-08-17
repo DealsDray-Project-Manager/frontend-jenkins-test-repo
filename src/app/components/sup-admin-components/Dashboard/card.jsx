@@ -41,7 +41,7 @@ const StatCard3 = () => {
         {
             icon: 'people',
             amount: count.buyerCount,
-            title: 'Buyer',
+            title: 'Buyers',
             link: '/sup-admin/buyer',
         },
         {

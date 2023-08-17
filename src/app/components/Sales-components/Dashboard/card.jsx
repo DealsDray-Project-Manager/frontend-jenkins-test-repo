@@ -46,7 +46,7 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount:count.buyerCount,
-            title: 'Buyer',
+            title: 'Buyers',
             path: '/sales/Buyer-con-sales',
         },
         {

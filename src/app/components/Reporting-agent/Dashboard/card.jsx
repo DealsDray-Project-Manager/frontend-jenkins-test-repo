@@ -229,7 +229,7 @@ const StatCard3 = () => {
             amount: count.readyToRdlFls,
             itemCount: count?.readyToRdlFlsItemCount?.[0]?.totalItemCount,
 
-            title: 'Rdl 1 Pending',
+            title: 'Rdl One Pending',
             path: '/reporting/wht/ready-for-rdl-fls',
             sales: false,
         },
@@ -238,7 +238,7 @@ const StatCard3 = () => {
             amount: count.inRdlFls,
             itemCount: count?.inRdlFlsItemCount?.[0]?.totalItemCount,
 
-            title: 'RDL 1 In progress',
+            title: 'RDL One In progress',
             path: '/reporting/wht/in-rdl-fls',
             sales: false,
         },

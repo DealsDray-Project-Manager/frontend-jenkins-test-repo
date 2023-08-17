@@ -134,7 +134,7 @@ const StatCard3 = () => {
         {
             icon: 'art_track',
             amount: count.rdl,
-            title: 'Assign To RDL-FLS',
+            title: 'Assign To RDL-One',
             path: '/mis/assign-to-agent/Rdl-fls',
             sales: false,
         },

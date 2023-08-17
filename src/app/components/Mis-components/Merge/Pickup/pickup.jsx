@@ -42,9 +42,6 @@ const MenuProps = {
     },
 }
 
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -62,7 +59,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '132%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -80,7 +77,7 @@ const ProductTable = styled(Table)(() => ({
 
 const ProductTableTwo = styled(Table)(() => ({
     minWidth: 750,
-    width: '187%',
+    width: '149%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -98,7 +95,7 @@ const ProductTableTwo = styled(Table)(() => ({
 
 const ProductTableThere = styled(Table)(() => ({
     minWidth: 750,
-    width: '212%',
+    width: '167%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -115,7 +112,7 @@ const ProductTableThere = styled(Table)(() => ({
 }))
 const ProductTableRdlOne = styled(Table)(() => ({
     minWidth: 750,
-    width: '240%',
+    width: '85%',
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {

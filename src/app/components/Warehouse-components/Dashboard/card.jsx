@@ -148,14 +148,14 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.rdlFlsRequest,
-            title: 'RDL-FLS Requests',
+            title: 'RDL-One Requests',
             path: '/wareshouse/wht/rdl-fls-request',
             sales: false,
         },
         {
             icon: 'shopping_cart',
             amount: count.returnFromRdlFls,
-            title: 'Return from RDL-FLS',
+            title: 'Return from RDL-One',
             path: '/wareshouse/wht/return-from-rdl-fls',
             sales: false,
         },

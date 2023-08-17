@@ -332,7 +332,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Tray-Reassign', path: '/' },
-                        { name: 'RDL-FLS' },
+                        { name: 'RDL-One' },
                     ]}
                 />
             </div>
@@ -343,7 +343,7 @@ const SimpleMuiTable = () => {
                 disabled={isCheck.length == 0}
                 onClick={() => handelGetChargingUser(true)}
             >
-                Reassign For rdl-fls
+                Reassign For RDL-One
             </Button>
             <MUIDataTable
                 title={'WHT'}

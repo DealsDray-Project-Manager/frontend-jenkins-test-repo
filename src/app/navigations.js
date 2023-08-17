@@ -329,7 +329,7 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-fls',
+                name: 'Assigned to rdl-one',
                 path: '/sup-admin/tray-reassign/rdl-fls',
                 iconText: 'PL',
             },
@@ -356,7 +356,7 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for RDL-FLS',
+        name: 'Ready for RDL-One',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
         auth: authRoles.admin,
@@ -509,7 +509,7 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-Fls',
+                name: 'Assign to RDL-One',
                 path: '/mis/assign-to-agent/Rdl-fls',
                 iconText: 'NP',
             },
@@ -737,12 +737,12 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-FLS Request',
+                name: 'RDL-One Request',
                 path: '/wareshouse/wht/rdl-fls-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return From RDL-FLS',
+                name: 'Return From RDL-One',
                 path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
@@ -1280,11 +1280,11 @@ export const navigations = [
                 path: '/reporting/wht/in-audit',
             },
             {
-                name: 'Rdl 1 Pending',
+                name: 'Rdl OnePending',
                 path: '/reporting/wht/ready-for-rdl-fls',
             },
             {
-                name: 'RDL 1 In Progress',
+                name: 'RDL One In Progress',
                 path: '/reporting/wht/in-rdl-fls',
             },
         ],

@@ -181,7 +181,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Wht', path: '/' },
-                        { name: 'Ready for Rdl-fls' },
+                        { name: 'Ready for Rdl-One' },
                     ]}
                 />
             </div>

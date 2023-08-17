@@ -59,7 +59,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Issued to RDL-FLS/' +
+                            'Issued to RDL-One/' +
                             location
                     )
                     if (response.status === 200) {

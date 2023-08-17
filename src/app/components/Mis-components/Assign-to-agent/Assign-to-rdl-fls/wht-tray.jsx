@@ -103,7 +103,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/assignToAgent/rdl-fls/users/' + 'RDL-FLS/' + location
+                        '/assignToAgent/rdl-fls/users/' + 'RDL-One/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)
@@ -301,8 +301,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign-to-RDL-fls', path: '/' },
-                        { name: 'RDL-fls' },
+                        { name: 'Assign-to-RDL-One', path: '/' },
+                        { name: 'RDL-One' },
                     ]}
                 />
             </div>
@@ -315,7 +315,7 @@ const SimpleMuiTable = () => {
                     handelReadyForRdl(e)
                 }}
             >
-                Assign For RDL-FLS
+                Assign For RDL-One
             </Button>
 
             <MUIDataTable

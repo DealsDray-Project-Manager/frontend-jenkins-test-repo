@@ -39,6 +39,12 @@ const StatCard3 = () => {
             link: '/sup-admin/users',
         },
         {
+            icon: 'people',
+            amount: count.buyerCount,
+            title: 'Buyer',
+            link: '/sup-admin/buyer',
+        },
+        {
             icon: 'location_on_outlined',
             amount: count.location,
             title: 'Locations',
@@ -177,12 +183,7 @@ const StatCard3 = () => {
             title: 'Track Item',
             link: '/sup-admin/track-item',
         },
-        {
-            icon: 'people',
-            amount: count.buyerCount,
-            title: 'Buyer',
-            link: '/sup-admin/view-buyer',
-        },
+       
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

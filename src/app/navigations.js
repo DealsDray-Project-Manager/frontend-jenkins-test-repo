@@ -1400,7 +1400,7 @@ export const navigations = [
     },
     {
         name: 'Ready for sales units',
-        icon: 'class',
+        icon: 'transform',
         path: '/sales/ready-for-sales-units',
         auth: authRoles.Sales_Agent,
         sales: true,

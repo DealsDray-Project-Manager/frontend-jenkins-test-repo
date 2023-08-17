@@ -50,9 +50,9 @@ const StatCard3 = () => {
             path: '/sales/Buyer-con-sales',
         },
         {
-            icon: 'branding_watermark',
+            icon: 'transform',
             amount:count.readyForSalesCount,
-            title: 'Ready for sales uint',
+            title: 'Ready for sales units',
             path: '/sales/ready-for-sales-units',
         },
     ]

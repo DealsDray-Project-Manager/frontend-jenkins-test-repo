@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -69,6 +71,33 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
+    const download = (e) => {
+        let arr = []
+        for (let i = 0; i < item.length; i++) {
+            let obj = {
+                Record_N0: i + 1,
+                uic: item[i].uic,
+                muic: item[i].muic,
+                brand_name: item[i].brand_name,
+                model_name: item[i].model_name,
+                tray :item[i].code,
+                tray_grade: item[i].tray_grade,
+                mrp_price: item[i].mrp_price,
+                sp_price: item[i].sp_price,
+               
+            };
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Units' + fileExtension)
+    }
+
     const columns = [
         {
             name: 'index', // Use a unique name for the column
@@ -86,7 +115,7 @@ const SimpleMuiTable = () => {
                     );
                 },
                 customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold">
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1}}>
                         Record No
                     </Typography>
                 ),
@@ -203,7 +232,14 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
-
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="success"
+                onClick={(e) => download(e)}
+            >
+                Download 
+            </Button>
             <MUIDataTable
                 title={'Ready for sales'}
                 data={item}
@@ -221,9 +257,9 @@ const SimpleMuiTable = () => {
                         },
                     },
                     selectableRows: 'none', // set checkbox for each row
+                    download: false, // set download option
                     // search: false, // set search option
                     // filter: false, // set data filter option
-                    // download: false, // set download option
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option

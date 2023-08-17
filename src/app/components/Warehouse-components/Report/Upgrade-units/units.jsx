@@ -291,7 +291,7 @@ const SimpleMuiTable = () => {
                                 width: '240px',
                             }}
                         >
-                            Auditor Status
+                            Auditor Statusss
                         </TableCell>
                         <TableCell
                             style={{
@@ -382,6 +382,46 @@ const SimpleMuiTable = () => {
                             }}
                         >
                             Billed Bin Status
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '250px',
+                            }}
+                        >
+                           RDL 1 Done Date
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '250px',
+                            }}
+                        >
+                            RDL 1 Username
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '250px',
+                            }}
+                        >
+                            RDL 1 User Remarks
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+
+                                width: '250px',
+                            }}
+                        >
+                           Repair item
                         </TableCell>
                     </TableRow>
                 </TableHead>

@@ -3,11 +3,23 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
+import { H1, H3, H4 } from 'app/components/Typography'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box, TextField } from '@mui/material'
+import {
+    Button,
+    Typography,
+    Card,
+    Box,
+    TextField,
+    MenuItem,
+} from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosPurchaseAgent, axiosSpMisAgent } from '../../../../axios'
+import moment from 'moment'
+import {
+    axiosPurchaseAgent,
+    axiosSpMisAgent,
+    axiosSuperAdminPrexo,
+} from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,6 +38,13 @@ const SimpleMuiTable = () => {
     const [RDLRequest, setRDLRequest] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const [vendors, setVendors] = useState([])
+    const [totalPrice, setTotalPrice] = useState('')
+    const [filterData, setFilterData] = useState({
+        fromDate: '',
+        toDate: '',
+        vendors: '',
+    })
 
     useEffect(() => {
         try {
@@ -56,9 +75,42 @@ const SimpleMuiTable = () => {
             })
         }
     }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post('/vendorMaster/view')
+                if (res.status == 200) {
+                    setVendors(res.data.data)
+                }
+            } catch (error) {
+                alert(error)
+            }
+        }
+        fetchData()
+    }, [])
 
-    const handleplace = (id, muic) => {
-        navigate('/purchase-user/purchase/order/' + id + '/' + muic)
+    const handleChangeSort = ({ target: { name, value } }) => {
+        setFilterData({
+            ...filterData,
+            [name]: value,
+        })
+    }
+    const dataFilter = async (type) => {
+        try {
+            filterData.type = type
+            setIsLoading(true)
+            const res = await axiosPurchaseAgent.post(
+                '/placeOrderDateFilter',
+                filterData
+            )
+            if (res.status === 200) {
+                setIsLoading(false)
+                setRDLRequest(res.data.data)
+                setTotalPrice(res.data.totalPrice)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const columns = [
@@ -152,7 +204,89 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Order placed', path: '/' }]}
                 />
             </div>
-            <Card>
+            {totalPrice !== '' ? (
+                <Box sx={{ mb: 1 }}>
+                    <H3>Total Amount : ₹{totalPrice?.toFixed(1)}</H3>
+                </Box>
+            ) : null}
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <TextField
+                        label="Select Vendor"
+                        select
+                        type="text"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        name="vendors"
+                        style={{ width: '200px', marginRight: '20px' }}
+                    >
+                        {vendors?.map((data) => (
+                            <MenuItem value={data.name}>{data.name}</MenuItem>
+                        ))}
+                    </TextField>
+                    <Button
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        disabled={filterData.vendors == ''}
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            dataFilter('Vendor')
+                        }}
+                    >
+                        Search
+                    </Button>
+                </Box>
+                <Box>
+                    <TextField
+                        type="date"
+                        label="From Date"
+                        variant="outlined"
+                        inputProps={{ max: moment().format('YYYY-MM-DD') }}
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 3 }}
+                        name="fromDate"
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        type="date"
+                        label="To Date"
+                        name="toDate"
+                        inputProps={{
+                            min: filterData?.fromDate,
+                            max: moment().format('YYYY-MM-DD'),
+                        }}
+                        disabled={filterData.fromDate == ''}
+                        variant="outlined"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 3 }}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <Button
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        disabled={
+                            filterData.fromDate == '' || filterData.toDate == ''
+                        }
+                        style={{ backgroundColor: 'green' }}
+                        onClick={(e) => {
+                            dataFilter('Date')
+                        }}
+                    >
+                        Filter
+                    </Button>
+                </Box>
+            </Box>
+            <Card sx={{ mt: 1 }}>
                 <MUIDataTable
                     title={'Order details'}
                     data={RDLRequest}

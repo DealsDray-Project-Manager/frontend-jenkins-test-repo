@@ -343,7 +343,7 @@ const SimpleMuiTable = () => {
                 disabled={isCheck.length == 0}
                 onClick={() => handelGetChargingUser(true)}
             >
-                Assign For Charging
+                Assign For RDl Two
             </Button>
             <MUIDataTable
                 title={'WHT'}

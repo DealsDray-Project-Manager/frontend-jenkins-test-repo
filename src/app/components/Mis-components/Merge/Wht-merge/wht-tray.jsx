@@ -179,7 +179,6 @@ const SimpleMuiTable = () => {
                     type: type,
                     sortId: 'Audit Done Closed By Warehouse',
                 }
-
                 let res = await axiosMisUser.post('/toWhtTrayForMerge', obj)
                 if (res.status === 200) {
                     setOpen(true)

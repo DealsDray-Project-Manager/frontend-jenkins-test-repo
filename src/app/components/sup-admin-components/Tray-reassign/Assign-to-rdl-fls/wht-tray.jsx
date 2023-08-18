@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
         const fetchData = async () => {
             try {
                 let res = await axiosMisUser.post(
-                    '/get-charging-users/' + 'RDL-FLS/' + location
+                    '/get-charging-users/' + 'RDL-One/' + location
                 )
                 if (res.status == 200) {
                     setRDLUsers(res.data.data)

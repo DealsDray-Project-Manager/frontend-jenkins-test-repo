@@ -120,7 +120,7 @@ const download = (e) => {
                 },
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1}}>
-                        Record No
+                        Record NO
                     </Typography>
                 ),
             },

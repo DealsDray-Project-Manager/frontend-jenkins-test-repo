@@ -32,7 +32,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
 }))
 
-const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
+const CustomerBillings = ({ Charging, ChargeDoneDate }) => {
     return (
         <Card elevation={3}>
             <H4 sx={{ p: 2 }}>Latest Charging User Report</H4>
@@ -44,7 +44,9 @@ const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
                         <TableCell>{Charging?.battery_status}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.charge_percentage}>
-                        <TableCell sx={{ pl: 2 }}>Charge Percentage :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Charge Percentage :
+                        </TableCell>
                         <TableCell>{Charging?.charge_percentage}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.body_condition}>
@@ -52,7 +54,9 @@ const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
                         <TableCell>{Charging?.body_condition}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.display_condition}>
-                        <TableCell sx={{ pl: 2 }}>Display Condition :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Display Condition :
+                        </TableCell>
                         <TableCell>{Charging?.display_condition}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.lock_status}>
@@ -60,7 +64,9 @@ const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
                         <TableCell>{Charging?.lock_status}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.charging_jack_type}>
-                        <TableCell sx={{ pl: 2 }}>Charging Jack Type :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>
+                            Charging Jack Type :
+                        </TableCell>
                         <TableCell>{Charging?.charging_jack_type}</TableCell>
                     </TableRow>
                     <TableRow key={Charging?.boady_part_missing}>
@@ -75,14 +81,21 @@ const CustomerBillings = ({ Charging,ChargeDoneDate }) => {
                         </TableCell>
                         <TableCell>{Charging?.part_name}</TableCell>
                     </TableRow>
-                    <TableRow key={ChargeDoneDate}>
-                        <TableCell sx={{ pl: 2 }}>
-                           Last Charge Done Date :
-                        </TableCell>
-                        <TableCell>{  new Date(ChargeDoneDate).toLocaleString('en-GB', {
-                        hour12: true,
-                    })}</TableCell>
-                    </TableRow>
+                    {ChargeDoneDate !== undefined ? (
+                        <TableRow key={ChargeDoneDate}>
+                            <TableCell sx={{ pl: 2 }}>
+                                Last Charge Done Date :
+                            </TableCell>
+                            <TableCell>
+                                {new Date(ChargeDoneDate).toLocaleString(
+                                    'en-GB',
+                                    {
+                                        hour12: true,
+                                    }
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
                 </TableBody>
             </Table>
         </Card>

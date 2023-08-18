@@ -143,13 +143,18 @@ const Trayinformation = () => {
                                     Current item count:{' '}
                                     <b>{result?.items?.length}</b>{' '}
                                 </p>
-
-                                {Object.entries(result?.otherDetails).map(
-                                    ([key, value]) => (
-                                        <p key={key}>
-                                            {key}: <b>{value}</b>
-                                        </p>
-                                    )
+                                {result !== '' ? (
+                                    <>
+                                        {Object.entries(
+                                            result?.otherDetails
+                                        ).map(([key, value]) => (
+                                            <p key={key}>
+                                                {key}: <b>{value}</b>
+                                            </p>
+                                        ))}
+                                    </>
+                                ) : (
+                                    ''
                                 )}
                             </div>
                         </Box>

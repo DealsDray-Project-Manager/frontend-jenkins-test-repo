@@ -176,103 +176,146 @@ const SimpleMuiTable = () => {
     
     const columns = [
         {
-            name: 'index',
-            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold'  marginLeft='7px' ><>Record No</></Typography>,
+            name: 'index', // Use a unique name for the column
+            label: "Record No",
             options: {
-                
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography noWrap sx={{pl:3}}>{dataIndex.rowIndex + 1}</Typography>,
-                
+                display: 'true', // Set this column to always be visible
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    const rowIndex = tableMeta.rowIndex;
+                    return (
+                        <Typography sx={{ pl: 2 }} >
+                            {rowIndex + 1}
+                        </Typography>
+                    );
+                },
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold"  sx={{ pl: 1}}>
+                        Record <br />No
+                    </Typography>
+                ),
             },
-            
         },
         {
             name: 'profile',
-            label: <Typography marginBottom='15px' noWrap className='table-class' variant="subtitle1" fontWeight='bold' sx={{ml:4}}><>Profile</></Typography>,
+            label: "Profile",
             options: {
-                
-                filter: false,
-                sort: false,
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Profile
+                    </Typography>
+                ),
                 customBodyRender: (value) => {
-                    return <Avatar variant="rounded" sx={{ml:4}} src={value} />
-                },
+                    return <Avatar variant="rounded" src={value} />
+                }, 
             },
-             
         },
         {
             name: 'creation_date',
-            label: <Typography marginBottom='15px' noWrap className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: "Creation Date",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Creation <br />Date
+                    </Typography>
+                ),
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
-             
         },
         {
-            name: 'name', 
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
+            name: 'name',
+            label: "Name",
             options: {
                 filter: true,
-            },     
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Name
+                    </Typography>
+                ),
+               
+            },
         },
         {
             name: 'email',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
+            label: "Email",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Email
+                    </Typography>
+                ),
+               
             },
-             
         },
         {
             name: 'contact',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
+            label: "Mobile No",
             options: {
                 filter: true,
-            },     
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Mobile<br />No
+                    </Typography>
+                ),
+               
+            },
         },
         {
             name: 'user_name',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
+            label: "User Name",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      User <br />Name
+                    </Typography>
+                ),
+               
             },
-             
         },
         {
-            name: 'user_type',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
+            name: 'sales_users',
+            label: "Sales User",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Sales  <br />User
+                    </Typography>
+                ),
+               
             },
-             
-        },
-        {
-            name: 'sales_users', 
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Sales Users</></Typography>,
-            options: {
-                filter: true,
-            },
-             
         },
         {
             name: 'warehouse',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
+            label: "Warehouse",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Warehouse
+                    </Typography>
+                ),
+               
             },
-            
         },
         {
             name: 'status',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
-             
+            label: "Status",
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Status
+                    </Typography>
+                ),
                 customBodyRender: (value) => {
                     if (value == 'Active') {
                         return (
@@ -292,11 +335,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
-             
+            label: "Actions",
             options: {
-                sort: false,
-                filter: false,
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Actions
+                    </Typography>
+                ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
@@ -337,7 +383,6 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-    
     ]
 
     return (
@@ -355,8 +400,7 @@ const SimpleMuiTable = () => {
             >
                 Add New Buyer
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
+           
                 <MUIDataTable
                 title={'All Buyers'}
                 data={userList}
@@ -379,8 +423,6 @@ const SimpleMuiTable = () => {
                     sort:true,
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
             
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog

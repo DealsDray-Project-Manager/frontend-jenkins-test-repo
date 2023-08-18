@@ -19,7 +19,7 @@ const StatCard3 = () => {
 
                 try {
                     let res = await axiosSalsAgent.post(
-                        `/dashboard/${location}/${user_name}`
+                        '/dashboard/' + location
                     )
                     if (res?.status === 200) {
                         setCount(res?.data.data)

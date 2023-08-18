@@ -163,7 +163,7 @@ export const navigations = [
                 path: '/sup-admin/users',
             },
             {
-                name: 'Buyer',
+                name: 'Buyers',
                 // icon: 'people',
                 path: '/sup-admin/buyer',
             },
@@ -1392,7 +1392,7 @@ export const navigations = [
         sales: true,
     },
     {
-        name: 'Buyer',
+        name: 'Buyers',
         icon: 'class',
         path: '/sales/Buyer-con-sales',
         auth: authRoles.Sales_Agent,
@@ -1400,7 +1400,7 @@ export const navigations = [
     },
     {
         name: 'Ready for sales units',
-        icon: 'class',
+        icon: 'transform',
         path: '/sales/ready-for-sales-units',
         auth: authRoles.Sales_Agent,
         sales: true,

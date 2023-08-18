@@ -77,24 +77,25 @@ useEffect(() =>
 
 const download = (e) => {
     let arr = []
-    for (let x of item) {
+    for (let i = 0; i < item.length; i++) {
         let obj = {
-            uic: x.uic,
-            muic: x.muic,
-            brand_name: x.brand_name,
-            model_name: x.model_name,
-            tray :x.code,
-            tray_grade: x.tray_grade,
-            mrp_price: x.mrp_price,
-            sp_price: x.sp_price,
-        }
+            Record_N0: i + 1,
+            uic: item[i].uic,
+            muic: item[i].muic,
+            brand_name: item[i].brand_name,
+            model_name: item[i].model_name,
+            tray :item[i].code,
+            tray_grade: item[i].tray_grade,
+            mrp_price: item[i].mrp_price,
+            sp_price: item[i].sp_price,
+           
+        };
         arr.push(obj)
     }
     const fileExtension = '.xlsx'
     const fileType =
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
     const ws = XLSX.utils.json_to_sheet(arr)
-
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
     const data = new Blob([excelBuffer], { type: fileType })
@@ -118,7 +119,7 @@ const download = (e) => {
                     );
                 },
                 customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold">
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1}}>
                         Record No
                     </Typography>
                 ),
@@ -236,7 +237,7 @@ const download = (e) => {
                 />
             </div>
             <Button
-                sx={{ mb: 2, ml: 2 }}
+                sx={{ mb: 2 }}
                 variant="contained"
                 color="success"
                 onClick={(e) => download(e)}
@@ -249,8 +250,7 @@ const download = (e) => {
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'simple',
-                   
+                    responsive: 'simple',   
                     print: false,
                     textLabels: {
                         body: {
@@ -262,10 +262,26 @@ const download = (e) => {
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
-                    // download: false, // set download option
+                    download: false, // set download option
                     // print: false, // set print option
                     // pagination: true, //set pagination option
                     // viewColumns: false, // set column option
+                    // customSort: (data, colIndex, order) => {
+                    //     return data.sort((a, b) => {
+                    //         if (colIndex === 1) {
+                    //             return (
+                    //                 (a.data[colIndex].price <
+                    //                 b.data[colIndex].price
+                    //                     ? -1
+                    //                     : 1) * (order === 'desc' ? 1 : -1)
+                    //             )
+                    //         }
+                    //         return (
+                    //             (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                    //             (order === 'desc' ? 1 : -1)
+                    //         )
+                    //     })
+                    // },
                     customSort: (data, colIndex, order) => {
                         return data.sort((a, b) => {
                             if (colIndex === 1) {

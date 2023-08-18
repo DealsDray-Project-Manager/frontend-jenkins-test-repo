@@ -339,7 +339,6 @@ const PickupPage = () => {
             alert(error)
         }
     }
-
     const handelSortingAgent = async () => {
         try {
             let token = localStorage.getItem('prexo-authentication')

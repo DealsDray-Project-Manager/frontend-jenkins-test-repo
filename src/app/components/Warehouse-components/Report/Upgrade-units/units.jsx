@@ -136,6 +136,7 @@ const SimpleMuiTable = () => {
                                 '/' +
                                 rowsPerPage
                         )
+                        console.log("res:",res);
                         if (res.status == 200) {
                             setDisplayText('')
                             setCount(res.data.count)
@@ -156,6 +157,10 @@ const SimpleMuiTable = () => {
             navigate('/')
         }
     }, [refresh, page, rowsPerPage])
+
+useEffect(()=>{
+    console.log(data)
+},[data])
 
     useEffect(() => {
         setData((_) =>
@@ -223,7 +228,7 @@ const SimpleMuiTable = () => {
             setDisplayText('Please wait...')
             setFilterUn(true)
             const res = await axiosWarehouseIn.post(
-                '/upgardeUnitsFilter/item/filter',
+                '/search/upgradeReport',
                 filterData
             )
             if (res.status === 200) {
@@ -251,7 +256,7 @@ const SimpleMuiTable = () => {
                                 width: '150px',
                             }}
                         >
-                            Record.NO
+                            Record NO
                         </TableCell>
                         <TableCell
                             style={{
@@ -261,7 +266,7 @@ const SimpleMuiTable = () => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Uic
+                            UIC
                         </TableCell>
 
                         <TableCell
@@ -291,13 +296,12 @@ const SimpleMuiTable = () => {
                                 width: '240px',
                             }}
                         >
-                            Auditor Statusss
+                            Auditor Status
                         </TableCell>
                         <TableCell
                             style={{
                                 fontSize: '16px',
                                 fontWeight: 'bold',
-
                                 width: '205px',
                             }}
                         >
@@ -476,6 +480,27 @@ const SimpleMuiTable = () => {
                                 style={{ color: 'green', fontWeight: 'bold' }}
                             >
                                 {data?.item_moved_to_billed_bin}
+                            </TableCell>
+                            <TableCell>
+                            {' '}
+                                {new Date(data?.rdl_fls_closed_date).toLocaleString(
+                                    'en-GB',
+                                    {
+                                        hour12: true,
+                                    }
+                                )}</TableCell>
+                            <TableCell>{data?.rdl_fls_one_user_name}</TableCell>
+                            <TableCell>
+                                {data?.rdl_fls_one_report?.description}
+                            </TableCell>
+                            <TableCell>
+                                {data?.rdl_fls_one_report?.partRequired?.map(
+                                    (part, index) => (
+                                        `${index + 1}.${part?.part_name} - ${
+                                            part?.part_id
+                                        }`
+                                    )
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

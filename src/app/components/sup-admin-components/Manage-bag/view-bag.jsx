@@ -94,7 +94,7 @@ const SimpleMuiTable = () => {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
+            confirmButtonText: 'Yes, Deleted it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {

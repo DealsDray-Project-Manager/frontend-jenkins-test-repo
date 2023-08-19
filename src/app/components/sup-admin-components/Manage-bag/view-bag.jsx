@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-bag'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography,Table, TableContainer  } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography,Table, TableContainer,TableCell  } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
@@ -207,13 +207,38 @@ const SimpleMuiTable = () => {
             label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <TableCell
+                        key={columnMeta.index}
+                        style={{
+                            maxWidth: '80px',
+                            overflow: 'hidden', 
+                            whiteSpace: 'normal',
+                              textOverflow: 'ellipsis'
+                           
+                        }}
+                    >
+                        <Typography variant="subtitle1" fontWeight='bold'>Warehouse</Typography>
+                    </TableCell>
+                ),
             },
         },
         {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Display Name</></Typography>,
+            label: "Bag Display Name",
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <TableCell
+                        key={columnMeta.index}
+                        style={{
+                            width: '250px', 
+                            // paddingLeft: '10px', 
+                        }}
+                    >
+                        <Typography variant="subtitle1" fontWeight='bold'>Bag Display Name</Typography>
+                    </TableCell>
+                ),
             },
         },
         {
@@ -228,6 +253,17 @@ const SimpleMuiTable = () => {
             label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Display</></Typography>,
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <TableCell
+                        key={columnMeta.index}
+                        style={{
+                            width: '250px', 
+                            // padding: '5px', 
+                        }}
+                    >
+                        <Typography variant="subtitle1" fontWeight='bold'>Bag Display</Typography>
+                    </TableCell>
+                ),
             },
         },
         {
@@ -304,6 +340,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
+        
     ]
 
     return (

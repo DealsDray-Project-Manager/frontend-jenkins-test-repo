@@ -130,13 +130,13 @@ const SimpleMuiTable = () => {
                     try {
                         let res = await axiosWarehouseIn.post(
                             '/upgradeUnits/' +
-                                location +
-                                '/' +
-                                page +
-                                '/' +
-                                rowsPerPage
+                            location +
+                            '/' +
+                            page +
+                            '/' +
+                            rowsPerPage
                         )
-                        console.log("res:",res);
+                        console.log("res:", res);
                         if (res.status == 200) {
                             setDisplayText('')
                             setCount(res.data.count)
@@ -158,9 +158,9 @@ const SimpleMuiTable = () => {
         }
     }, [refresh, page, rowsPerPage])
 
-useEffect(()=>{
-    console.log(data)
-},[data])
+    useEffect(() => {
+        console.log(data)
+    }, [data])
 
     useEffect(() => {
         setData((_) =>
@@ -266,6 +266,17 @@ useEffect(()=>{
                                 cursor: 'pointer',
                             }}
                         >
+                            Audit Tray ID
+                        </TableCell>
+
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '110px',
+                                cursor: 'pointer',
+                            }}
+                        >
                             UIC
                         </TableCell>
 
@@ -355,7 +366,7 @@ useEffect(()=>{
                                 width: '150px',
                             }}
                         >
-                            Tray Status
+                            Current Tray Status
                         </TableCell>
                         <TableCell
                             style={{
@@ -365,7 +376,7 @@ useEffect(()=>{
                                 width: '250px',
                             }}
                         >
-                            Wht Tray
+                            Current Tray ID
                         </TableCell>
                         <TableCell
                             style={{
@@ -395,7 +406,7 @@ useEffect(()=>{
                                 width: '250px',
                             }}
                         >
-                           RDL 1 Done Date
+                            RDL 1 Done Date
                         </TableCell>
                         <TableCell
                             style={{
@@ -425,7 +436,7 @@ useEffect(()=>{
                                 width: '250px',
                             }}
                         >
-                           Repair item
+                            Repair item
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -444,6 +455,7 @@ useEffect(()=>{
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
                             <TableCell>{data.id}</TableCell>
+                            <TableCell>{data?.audit_report?.wht_tray}</TableCell>
                             <TableCell>{data?.uic_code?.code}</TableCell>
                             <TableCell>
                                 {data?.old_item_details
@@ -468,6 +480,7 @@ useEffect(()=>{
                                         hour12: true,
                                     }
                                 )}
+                                
                             </TableCell>
                             <TableCell>{data?.tray_status}</TableCell>
                             <TableCell>{data?.wht_tray}</TableCell>
@@ -482,13 +495,14 @@ useEffect(()=>{
                                 {data?.item_moved_to_billed_bin}
                             </TableCell>
                             <TableCell>
-                            {' '}
-                                {new Date(data?.rdl_fls_closed_date).toLocaleString(
-                                    'en-GB',
-                                    {
+                                {data?.rdl_fls_closed_date ? (
+                                    new Date(data.rdl_fls_closed_date).toLocaleString('en-GB', {
                                         hour12: true,
-                                    }
-                                )}</TableCell>
+                                    })
+                                ) : (
+                                    ''
+                                )}
+                            </TableCell>
                             <TableCell>{data?.rdl_fls_one_user_name}</TableCell>
                             <TableCell>
                                 {data?.rdl_fls_one_report?.description}
@@ -496,8 +510,7 @@ useEffect(()=>{
                             <TableCell>
                                 {data?.rdl_fls_one_report?.partRequired?.map(
                                     (part, index) => (
-                                        `${index + 1}.${part?.part_name} - ${
-                                            part?.part_id
+                                        `${index + 1}.${part?.part_name} - ${part?.part_id
                                         }`
                                     )
                                 )}

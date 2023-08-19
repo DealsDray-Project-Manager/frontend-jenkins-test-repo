@@ -4,10 +4,12 @@ import { Box, Button, Grid } from '@mui/material'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import Swal from 'sweetalert2'
+import { H1, H3, H4 } from 'app/components/Typography'
 import { axiosBqc } from '../../../../axios'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-one-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-two-report'
+import { result } from 'lodash'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -72,6 +74,8 @@ export default function DialogBox() {
                 borderRadius: 1,
             }}
         >
+            <H3>UIC: {resDataUic?.uic}</H3>
+            <H3>Model: {resDataUic?.model_name}</H3>
             <Grid container spacing={3}>
                 <Grid item lg={6} md={12} xs={12}>
                     <ChargingDetails Charging={resDataUic?.charging} state="Bqc" />

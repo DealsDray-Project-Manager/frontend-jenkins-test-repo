@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -56,6 +57,7 @@ const SimpleMuiTable = () => {
     const [ctxTrayList, setCtxTrayList] = useState([])
     const [userCpcType, setUserCpcType] = useState('')
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchWht = async () => {
@@ -99,6 +101,8 @@ const SimpleMuiTable = () => {
             let obj = {
                 ischeck: isCheck,
                 page: 'Mis-ctx-receive',
+                userCpcType:userCpcType,
+                actUser:user.username
             }
             if (userCpcType == 'Sales') {
                 obj.sortId = 'Accepted From Processing'

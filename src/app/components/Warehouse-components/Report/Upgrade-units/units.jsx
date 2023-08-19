@@ -228,7 +228,7 @@ useEffect(()=>{
             setDisplayText('Please wait...')
             setFilterUn(true)
             const res = await axiosWarehouseIn.post(
-                '/search/upgradeReport',
+                '/upgardeUnitsFilter/item/filter',
                 filterData
             )
             if (res.status === 200) {

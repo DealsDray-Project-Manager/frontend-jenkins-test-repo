@@ -26,6 +26,7 @@ const Trayinformation = () => {
     const [result, setResult] = useState('')
     const [location, setLocation] = useState('')
     const [searchInput, setSearchInput] = useState('')
+    const [otherDetails, setOtherDetails] = useState({})
 
     useEffect(() => {
         let user = localStorage.getItem('prexo-authentication')
@@ -45,6 +46,7 @@ const Trayinformation = () => {
             }
             const res = await axiosReportingAgent.post('/track-tray', obj)
             if (res.status == 200) {
+                setOtherDetails(res.data.otherDetails)
                 setResult(res.data.data)
             } else {
                 Swal.fire({
@@ -63,7 +65,7 @@ const Trayinformation = () => {
             alert(error)
         }
     }
-    console.log(result)
+    console.log(otherDetails)
     return (
         <Container>
             <h3>Tray Details</h3>
@@ -143,21 +145,15 @@ const Trayinformation = () => {
                                     Current item count:{' '}
                                     <b>{result?.items?.length}</b>{' '}
                                 </p>
-                                {result !== '' && result?.otherDetails ? (
+
+                                {Object.keys(otherDetails).length !== 0 ? (
                                     <>
-                                        {Object.keys(result.otherDetails)
-                                            .length !== 0 ? (
-                                            <>
-                                                {Object.entries(
-                                                    result.otherDetails
-                                                ).map(([key, value]) => (
-                                                    <p key={key}>
-                                                        {key}: <b>{value}</b>
-                                                    </p>
-                                                ))}
-                                            </>
-                                        ) : (
-                                            ''
+                                        {Object.entries(otherDetails).map(
+                                            ([key, value]) => (
+                                                <p key={key}>
+                                                    {key}: <b>{value}</b>
+                                                </p>
+                                            )
                                         )}
                                     </>
                                 ) : (

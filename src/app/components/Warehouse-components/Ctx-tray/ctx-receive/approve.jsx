@@ -53,6 +53,8 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [rackiddrop, setrackiddrop] = useState([])
     const [rackId, setRackId] = useState('')
+    const [userCpcType, setUserCpcType] = useState()
+
     /*********************************************************** */
     useEffect(() => {
         const fetchData = async () => {
@@ -78,7 +80,8 @@ export default function DialogBox() {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { location } = jwt_decode(admin)
+                    let { location,cpc_type } = jwt_decode(admin)
+                    setUserCpcType(cpc_type)
                     let response = await axiosWarehouseIn.post(
                         '/getWhtTrayItem/' +
                             trayId +
@@ -145,41 +148,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const addActualitem = async (obj) => {
-        if (trayData.items.length < trayData?.actual_items?.length) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'success',
-                title: 'All Items Scanned',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            try {
-                let objData = {
-                    trayId: trayId,
-                    item: obj,
-                }
-                setTextDisable(true)
-                let res = await axiosWarehouseIn.post(
-                    '/wht-add-actual-item',
-                    objData
-                )
-                if (res.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-    }
+   
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -193,6 +162,8 @@ export default function DialogBox() {
                 length: trayData?.items?.length,
                 limit: trayData?.limit,
                 rackId: rackId,
+                userCpcType:userCpcType,
+                actUser:user.username
             }
             let res = await axiosWarehouseIn.post(
                 '/ctx/transferRequest/approve',

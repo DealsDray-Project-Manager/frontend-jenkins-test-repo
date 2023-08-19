@@ -9,6 +9,8 @@ import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -97,6 +99,35 @@ const SimpleMuiTable = () => {
         const data = new Blob([excelBuffer], { type: fileType })
         FileSaver.saveAs(data, 'Units' + fileExtension)
     }
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(16);
+        doc.text("Ready For Sales ", 15, 10);
+        const downloadTime = new Date().toLocaleString();
+        doc.setFontSize(10);
+        doc.text(`Downloaded on: ${downloadTime}`, 15, 20);
+        const headers = ['Record No', 'UIC', 'MUIC', 'Brand', 'Model', 'Tray Id', 'Grade', 'MRP', 'SP'];
+        const data = item.map((item, index) => [
+            index + 1,
+            item.uic,
+            item.muic,
+            item.brand_name,
+            item.model_name,
+            item.code,
+            item.tray_grade,
+            item.mrp_price,
+            item.sp_price
+        ]);
+    
+        doc.autoTable({
+            head: [headers],
+            body: data,
+            startY: 30,
+            theme: "grid",
+            showHead: "firstPage",
+        });
+        doc.save('ReadyForSales.pdf');
+    };
 
     const columns = [
         {
@@ -238,7 +269,15 @@ const SimpleMuiTable = () => {
                 color="success"
                 onClick={(e) => download(e)}
             >
-                Download 
+                Download Excel
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={downloadPDF}
+            >
+                Download PDF
             </Button>
             <MUIDataTable
                 title={'Ready for sales'}

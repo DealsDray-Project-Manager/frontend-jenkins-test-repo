@@ -52,7 +52,7 @@ const StatCard3 = () => {
         {
             icon: 'transform',
             amount:count.readyForSalesCount,
-            title: 'Ready for sales units',
+            title: 'Ready For Sales Units',
             path: '/sales/ready-for-sales-units',
         },
     ]

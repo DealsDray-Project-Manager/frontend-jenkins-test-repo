@@ -270,6 +270,13 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <Typography style={{ textAlign: 'left', marginLeft: '15px', padding: '0' }}>
+                            {value}
+                        </Typography>
+                    );
+                },
             },
         },
         {
@@ -281,7 +288,13 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.grade || '',
+               customBodyRender: (value,dataIndex) => {
+                    return (
+                        <Typography style={{ textAlign: 'left', marginLeft: '15px', padding: '0' }}>
+                            {value?.grade || ''}
+                        </Typography>
+                    );
+                },
             },
         },
         {

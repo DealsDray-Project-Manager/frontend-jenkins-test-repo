@@ -114,7 +114,13 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => value?.length,
+                customBodyRender: (value,tableMeta) => {
+                    return (
+                        <Typography style={{ marginLeft: '35px' }}>
+                            {value?.length}
+                        </Typography>
+                    );
+                },
             },
         },
         {

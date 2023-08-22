@@ -227,6 +227,13 @@ const SimpleMuiTable = () => {
                       Grade
                     </Typography>
                 ),
+                customBodyRender: (value) => {
+                    return (
+                        <Typography style={{ textAlign: 'left', marginLeft: '15px', padding: '0' }}>
+                            {value}
+                        </Typography>
+                    );
+                },
             },
         },
         {
@@ -286,7 +293,6 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                   
                     print: false,
                     textLabels: {
                         body: {

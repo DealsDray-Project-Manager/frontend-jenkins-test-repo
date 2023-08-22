@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useRef } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box,IconButton,Icon } from '@mui/material'
+import { Button, Typography, TextField, Box,IconButton,Icon,TableCell } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -31,8 +31,6 @@ const SimpleMuiTable = () => {
     const { brand, model, grade, date } = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
-    const [pdfLoading, setPdfLoading] = useState(false);
-    const tableRef = useRef(null);
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication');
@@ -47,7 +45,6 @@ const SimpleMuiTable = () => {
                     let res = await axiosSalsAgent.post(
                         '/ReadyForSalesUnits', obj
                     );
-                    console.log('Fetched Data:', res.data.data);
                     if (res.status === 200) {
                         setIsLoading(false);
                         setItem(res.data.data);
@@ -73,20 +70,14 @@ const SimpleMuiTable = () => {
     }, [isAlive]);
 
 
-    useEffect(() => { console.log(item) }
-        , [item])
-
-
     const downloadExcel = (e) => {
         let arr = []
         for (let i = 0; i < item.length; i++) {
             let obj = {
                 Record_N0: i + 1,
-                uic: item[i].uic,
                 muic: item[i].muic,
                 brand_name: item[i].brand_name,
                 model_name: item[i].model_name,
-                tray: item[i].code,
                 tray_grade: item[i].tray_grade,
                 mrp_price: item[i].mrp_price,
                 sp_price: item[i].sp_price,
@@ -111,14 +102,12 @@ const SimpleMuiTable = () => {
         const downloadTime = new Date().toLocaleString();
         doc.setFontSize(10);
         doc.text(`Downloaded on: ${downloadTime}`, 15, 20);
-        const headers = ['Record No', 'UIC', 'MUIC', 'Brand', 'Model', 'Tray Id', 'Grade', 'MRP', 'SP'];
+        const headers = ['Record No',  'MUIC', 'Brand', 'Model',  'Grade', 'MRP', 'SP'];
         const data = item.map((item, index) => [
             index + 1,
-            item.uic,
             item.muic,
             item.brand_name,
             item.model_name,
-            item.code,
             item.tray_grade,
             item.mrp_price,
             item.sp_price
@@ -134,15 +123,19 @@ const SimpleMuiTable = () => {
         doc.save('ReadyForSalesUnits.pdf');
     };
     
-
     const columns = [
         {
             name: 'index', // Use a unique name for the column
-            label: "Record No",
+            label: "Record NO",
             options: {
                 filter: false,
                 sort: false,
                 display: 'true', // Set this column to always be visible
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1 }}>
+                        Record No
+                    </Typography>
+                ),
                 customBodyRender: (value, tableMeta, updateValue) => {
                     const rowIndex = tableMeta.rowIndex;
                     return (
@@ -151,11 +144,6 @@ const SimpleMuiTable = () => {
                         </Typography>
                     );
                 },
-                customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1 }}>
-                        Record NO
-                    </Typography>
-                ),
             },
         },
         {
@@ -168,8 +156,8 @@ const SimpleMuiTable = () => {
                         UIC
                     </Typography>
                 ),
-
             },
+            
         },
         {
             name: 'muic',
@@ -181,8 +169,6 @@ const SimpleMuiTable = () => {
                         MUIC
                     </Typography>
                 ),
-
-
             },
         },
         {
@@ -195,7 +181,6 @@ const SimpleMuiTable = () => {
                         Brand
                     </Typography>
                 ),
-
             },
         },
         {
@@ -203,12 +188,18 @@ const SimpleMuiTable = () => {
             label: "Model",
             options: {
                 filter: true,
-                customHeadLabelRender: () => (
+                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                        Model
+                       Model
                     </Typography>
                 ),
-
+                // customBodyRender: (value) => {
+                //     return (
+                //         <Typography style={{ textAlign: 'left', marginLeft: '15px', padding: '0' }}>
+                //             {value}
+                //         </Typography>
+                //     );
+                // },
             },
         },
         {
@@ -230,9 +221,16 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                        Grade
+                       Grade
                     </Typography>
                 ),
+                customBodyRender: (value) => {
+                    return (
+                        <Typography style={{ textAlign: 'left', marginLeft: '15px', padding: '0' }}>
+                            {value}
+                        </Typography>
+                    );
+                },
             },
         },
         {
@@ -259,7 +257,6 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
-
     ]
 
     return (
@@ -342,7 +339,6 @@ const SimpleMuiTable = () => {
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
-                ref={tableRef}
             />
         </Container>
     )

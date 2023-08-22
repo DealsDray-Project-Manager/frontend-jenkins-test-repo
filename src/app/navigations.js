@@ -1398,13 +1398,13 @@ export const navigations = [
         auth: authRoles.Sales_Agent,
         sales: true,
     },
-    {
-        name: 'Ready for sales units',
-        icon: 'transform',
-        path: '/sales/ready-for-sales-units',
-        auth: authRoles.Sales_Agent,
-        sales: true,
-    },
+    // {
+    //     name: 'Ready for sales units',
+    //     icon: 'transform',
+    //     path: '/sales/ready-for-sales-units',
+    //     auth: authRoles.Sales_Agent,
+    //     sales: true,
+    // },
     {
         name: 'Ready for Pricing',
         icon: 'class',

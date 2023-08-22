@@ -49,12 +49,12 @@ const StatCard3 = () => {
             title: 'Buyers',
             path: '/sales/Buyer-con-sales',
         },
-        {
-            icon: 'transform',
-            amount:count.readyForSalesCount,
-            title: 'Ready For Sales Units',
-            path: '/sales/ready-for-sales-units',
-        },
+        // {
+        //     icon: 'transform',
+        //     amount:count.readyForSalesCount,
+        //     title: 'Ready for sales units',
+        //     path: '/sales/ready-for-sales-units',
+        // },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

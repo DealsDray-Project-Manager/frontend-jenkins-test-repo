@@ -20,6 +20,27 @@ const Container = styled('div')(({ theme }) => ({
     },
 })) 
 
+const ProductTable = styled(Table)(() => ({
+    minWidth: 950,
+    width: '180%',
+    height:'100%',
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
+
+const ScrollableTableContainer = styled(TableContainer)
+  `overflow-x: auto`;
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
@@ -33,7 +54,6 @@ const SimpleMuiTable = () => {
                     let { user_name } = jwt_decode(admin)
                     setIsLoading(true)
                     const res = await axiosSuperAdminPrexo.post('/buyerConSalesAgent/' + user_name)
-                    console.log("res",res)
                     if (res.status === 200) {
                         setIsLoading(false)
                         setUserList(res.data.data.buyer)
@@ -54,8 +74,6 @@ const SimpleMuiTable = () => {
             setIsLoading(false)
         }
     }, [isAlive])
-
-    useEffect(() => {console.log(userList)},[userList])
 
 
     const columns = [
@@ -103,12 +121,129 @@ const SimpleMuiTable = () => {
             },     
         },
         {
-            name: 'user_name',
+            name: 'buyer_name',
             label: <Typography marginBottom='15px' variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
             options: {
                 filter: true,
             },
              
+        },
+        {
+            name: 'billing_address',
+            label: "Address",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Address
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'city',
+            label: "City",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     City
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'state',
+            label: "State",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      State
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'country',
+            label: "Country",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Country
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'pincode',
+            label: "Pincode",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     Pincode
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'gstin',
+            label: "GSTIN",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      GSTIN
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'pan_card_number',
+            label: "Pan Number",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Pan Number
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'mobile_verification_status',
+            label: "Mobile Status",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Mobile Status
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'email_verification_status',
+            label: "Email Status",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Email Status
+                    </Typography>
+                ),
+               
+            },
         },
         {
             name: 'status',
@@ -141,6 +276,8 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Buyer', path: '/' }]}
                 />
             </div>
+            <ScrollableTableContainer>
+            <ProductTable>
                 <MUIDataTable
                 title={'All Buyers'}
                 data={userList}
@@ -163,6 +300,8 @@ const SimpleMuiTable = () => {
                     sort:true,
                 }}
             />
+           </ProductTable>
+            </ScrollableTableContainer>
           
         </Container>
     )

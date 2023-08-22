@@ -82,11 +82,11 @@ export default function DialogBox() {
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
                     <RdlOneReport
-                        RdlOneReport={resDataUic?.rdl_fls_one_report}
+                        RdlOneReport={resDataUic?.rdl_fls_report}
                     />
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
-                    <RdlTwoReport RdlTwoReport={resDataUic?.rdl_two_report} />
+                    <RdlTwoReport RdlTwoReport={resDataUic?.rdl_repair_report} />
                 </Grid>
             </Grid>
 

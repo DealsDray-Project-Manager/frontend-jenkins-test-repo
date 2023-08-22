@@ -1,15 +1,16 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box } from '@mui/material'
+import { Button, Typography, TextField, Box,IconButton,Icon } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -30,77 +31,109 @@ const SimpleMuiTable = () => {
     const { brand, model, grade, date } = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [pdfLoading, setPdfLoading] = useState(false);
+    const tableRef = useRef(null);
 
-   useEffect(() => {
-    let admin = localStorage.getItem('prexo-authentication');
-    if (admin) {
-        setIsLoading(true);
-        const { location } = jwt_decode(admin);
-        const fetchData = async () => {
-            try {
-                let obj ={
-                    location:location
-                }
-                let res = await axiosSalsAgent.post(
-                    '/ReadyForSalesUnits',obj
-                );
-                console.log('Fetched Data:', res.data.data); 
-                if (res.status === 200) {
+    useEffect(() => {
+        let admin = localStorage.getItem('prexo-authentication');
+        if (admin) {
+            setIsLoading(true);
+            const { location } = jwt_decode(admin);
+            const fetchData = async () => {
+                try {
+                    let obj = {
+                        location: location
+                    }
+                    let res = await axiosSalsAgent.post(
+                        '/ReadyForSalesUnits', obj
+                    );
+                    console.log('Fetched Data:', res.data.data);
+                    if (res.status === 200) {
+                        setIsLoading(false);
+                        setItem(res.data.data);
+                    }
+                } catch (error) {
                     setIsLoading(false);
-                    setItem(res.data.data);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: error,
+                    });
                 }
-            } catch (error) {
-                setIsLoading(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                });
-            }
+            };
+            fetchData();
+        } else {
+            // navigate('/');
+        }
+        return () => {
+            setIsAlive(false);
+            setIsLoading(false);
         };
-        fetchData();
-    } else {
-        // navigate('/');
+    }, [isAlive]);
+
+
+    useEffect(() => { console.log(item) }
+        , [item])
+
+
+    const downloadExcel = (e) => {
+        let arr = []
+        for (let i = 0; i < item.length; i++) {
+            let obj = {
+                Record_N0: i + 1,
+                uic: item[i].uic,
+                muic: item[i].muic,
+                brand_name: item[i].brand_name,
+                model_name: item[i].model_name,
+                tray: item[i].code,
+                tray_grade: item[i].tray_grade,
+                mrp_price: item[i].mrp_price,
+                sp_price: item[i].sp_price,
+
+            };
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Units' + fileExtension)
     }
-    return () => {
-        setIsAlive(false);
-        setIsLoading(false);
+    
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(16);
+        doc.text("Ready For Sales Units", 15, 10);
+        const downloadTime = new Date().toLocaleString();
+        doc.setFontSize(10);
+        doc.text(`Downloaded on: ${downloadTime}`, 15, 20);
+        const headers = ['Record No', 'UIC', 'MUIC', 'Brand', 'Model', 'Tray Id', 'Grade', 'MRP', 'SP'];
+        const data = item.map((item, index) => [
+            index + 1,
+            item.uic,
+            item.muic,
+            item.brand_name,
+            item.model_name,
+            item.code,
+            item.tray_grade,
+            item.mrp_price,
+            item.sp_price
+        ]);
+    
+        doc.autoTable({
+            head: [headers],
+            body: data,
+            startY: 30,
+            theme: "grid",
+            showHead: "firstPage",
+        });
+        doc.save('ReadyForSalesUnits.pdf');
     };
-}, [isAlive]);
-
-
-useEffect(() =>
-{console.log(item)}
-,[item])
-
-
-const download = (e) => {
-    let arr = []
-    for (let i = 0; i < item.length; i++) {
-        let obj = {
-            Record_N0: i + 1,
-            uic: item[i].uic,
-            muic: item[i].muic,
-            brand_name: item[i].brand_name,
-            model_name: item[i].model_name,
-            tray :item[i].code,
-            tray_grade: item[i].tray_grade,
-            mrp_price: item[i].mrp_price,
-            sp_price: item[i].sp_price,
-           
-        };
-        arr.push(obj)
-    }
-    const fileExtension = '.xlsx'
-    const fileType =
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    const ws = XLSX.utils.json_to_sheet(arr)
-    const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-    const data = new Blob([excelBuffer], { type: fileType })
-    FileSaver.saveAs(data, 'Units' + fileExtension)
-}
+    
 
     const columns = [
         {
@@ -119,7 +152,7 @@ const download = (e) => {
                     );
                 },
                 customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1}}>
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ pl: 1 }}>
                         Record NO
                     </Typography>
                 ),
@@ -132,10 +165,10 @@ const download = (e) => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      UIC
+                        UIC
                     </Typography>
                 ),
-               
+
             },
         },
         {
@@ -145,47 +178,47 @@ const download = (e) => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      MUIC
+                        MUIC
                     </Typography>
                 ),
-                
+
 
             },
         },
         {
             name: 'brand_name',
-            label:"Brand",
+            label: "Brand",
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Brand
+                        Brand
                     </Typography>
                 ),
-               
+
             },
         },
         {
             name: 'model_name',
-            label:"Model",
+            label: "Model",
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Model
+                        Model
                     </Typography>
                 ),
-                
+
             },
         },
         {
             name: 'code',
-            label:"Tray Id",
+            label: "Tray Id",
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Tray Id
+                        Tray Id
                     </Typography>
                 ),
             },
@@ -197,7 +230,7 @@ const download = (e) => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Grade
+                        Grade
                     </Typography>
                 ),
             },
@@ -209,7 +242,7 @@ const download = (e) => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      MRP
+                        MRP
                     </Typography>
                 ),
             },
@@ -221,12 +254,12 @@ const download = (e) => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      SP
+                        SP
                     </Typography>
                 ),
             },
         },
-       
+
     ]
 
     return (
@@ -240,9 +273,17 @@ const download = (e) => {
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="success"
-                onClick={(e) => download(e)}
+                onClick={(e) => downloadExcel(e)}
             >
-                Download 
+                Download Excel
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={downloadPDF}
+            >
+                Download PDF
             </Button>
             <MUIDataTable
                 title={'Ready for sales units'}
@@ -250,7 +291,7 @@ const download = (e) => {
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'simple',   
+                    responsive: 'simple',
                     print: false,
                     textLabels: {
                         body: {
@@ -287,7 +328,7 @@ const download = (e) => {
                             if (colIndex === 1) {
                                 return (
                                     (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                        b.data[colIndex].price
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
@@ -301,6 +342,7 @@ const download = (e) => {
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
+                ref={tableRef}
             />
         </Container>
     )

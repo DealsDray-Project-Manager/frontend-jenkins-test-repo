@@ -4,6 +4,8 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -23,8 +25,11 @@ const MemberEditorDialog = ({
     auditUsers,
     isCheck,
 }) => {
+    
     const [auditUserName, setAuditUsername] = useState('')
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
+
 
     const handelSendRequestConfirm = async () => {
         try {
@@ -33,6 +38,7 @@ const MemberEditorDialog = ({
                 tray: isCheck,
                 user_name: auditUserName,
                 sort_id: 'Send for Audit',
+                actionUser: user.username,
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {

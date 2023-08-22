@@ -1,4 +1,5 @@
 import jwt_decode from 'jwt-decode'
+import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
@@ -29,7 +30,8 @@ import Swal from 'sweetalert2'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '200%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -37,21 +39,10 @@ const ProductTable = styled(Table)(() => ({
         },
     },
     '& td': {
-        borderBottom: 'none',
+        borderBottom: '1px solid #ddd',
     },
     '& td:first-of-type': {
         paddingLeft: '16px !important',
-    },
-    borderCollapse: 'separate',
-    borderSpacing: '0',
-    '& th, & td': {
-        borderBottom: '1px solid rgba(0, 0, 0, 0.2)', // Lighter border color
-        borderRight: '1px solid rgba(0, 0, 0, 0.2)',
-        padding: '8px',
-        textAlign: 'left',
-    },
-    '& th:last-child, & td:last-child': {
-        borderRight: 'none',
     },
 }))
 
@@ -69,19 +60,13 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [page, setPage] = React.useState(0)
-    const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
-    const [data, setData] = useState([])
     const navigate = useNavigate()
     const [stateForFilterUn, setFilterUn] = useState(false)
-    const [refresh, setRefresh] = useState(false)
     const [location, setLocation] = useState('')
-    const [count, setCount] = useState(0)
-    const [searchType, setSearchType] = useState('')
-    const [inputSearch, setInputSearch] = useState('')
-    const [dataForDownload, setDataForDownload] = useState([])
-    const [displayText, setDisplayText] = useState('')
+
+    const [isLoading, setIsLoading] = useState(false)
+
     const [filterData, setFilterData] = useState({
         fromDate: '',
         toDate: '',
@@ -98,48 +83,18 @@ const SimpleMuiTable = () => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
             const { location } = jwt_decode(admin)
-            setDisplayText('Loading...')
             setLocation(location)
-            if (inputSearch !== '') {
-                const pageSearch = async () => {
-                    let obj = {
-                        location: location,
-                        searchData: inputSearch,
-                        page: page,
-                        rowsPerPage: rowsPerPage,
-                    }
-                    let res = await axiosWarehouseIn.post(
-                        '/search/upgradeReport',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setCount(res.data.count)
-                        setItem(res.data.data)
-                    } else {
-                        setItem(res.data.data)
-                        setCount(res.data.count)
-                        setDisplayText('Sorry no data found')
-                    }
-                }
-                pageSearch()
-            } else if (stateForFilterUn == true) {
+            setIsLoading(true)
+            if (stateForFilterUn == true) {
                 dataFilter()
             } else {
                 const fetchData = async () => {
                     try {
                         let res = await axiosWarehouseIn.post(
-                            '/upgradeUnits/' +
-                            location +
-                            '/' +
-                            page +
-                            '/' +
-                            rowsPerPage
+                            '/upgradeUnits/' + location
                         )
-                        console.log("res:", res);
                         if (res.status == 200) {
-                            setDisplayText('')
-                            setCount(res.data.count)
+                            setIsLoading(false)
                             setItem(res.data.data)
                         }
                     } catch (error) {
@@ -156,371 +111,285 @@ const SimpleMuiTable = () => {
         } else {
             navigate('/')
         }
-    }, [refresh, page, rowsPerPage])
-
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
-    useEffect(() => {
-        setData((_) =>
-            item.map((d, index) => {
-                d.id = page * rowsPerPage + index + 1
-                return d
-            })
-        )
-    }, [page, item, rowsPerPage])
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage)
-    }
-
-    const searchTrackItem = async (e) => {
-        setInputSearch(e.target.value)
-        e.preventDefault()
-        try {
-            let admin = localStorage.getItem('prexo-authentication')
-            if (admin) {
-                setDisplayText('Searching...')
-                let { location } = jwt_decode(admin)
-                if (e.target.value == '') {
-                    setRefresh((refresh) => !refresh)
-                } else {
-                    setRowsPerPage(100)
-                    setPage(0)
-                    let obj = {
-                        location: location,
-                        searchData: e.target.value,
-                        page: page,
-                        rowsPerPage: rowsPerPage,
-                    }
-                    let res = await axiosWarehouseIn.post(
-                        '/search/upgradeReport',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setCount(res.data.count)
-                        setItem(res.data.data)
-                    } else {
-                        setItem(res.data.data)
-                        setCount(res.data.count)
-                        setDisplayText('Sorry no data found')
-                    }
-                }
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }
+    }, [])
 
     const dataFilter = async () => {
         try {
             filterData.location = location
-            filterData.page = page
-            filterData.type = searchType
-            filterData.size = rowsPerPage
-            setDisplayText('Please wait...')
+            setIsLoading(true)
             setFilterUn(true)
             const res = await axiosWarehouseIn.post(
                 '/upgardeUnitsFilter/item/filter',
                 filterData
             )
             if (res.status === 200) {
-                setDisplayText('')
-                setCount(res.data.count)
+                setIsLoading(false)
                 setItem(res.data.data)
             } else {
+                setIsLoading(false)
                 setItem(res.data.data)
-                setDisplayText('Sorry no data found')
             }
         } catch (error) {
             alert(error)
         }
     }
 
-    const tableData = useMemo(() => {
-        return (
-            <ProductTable elevation={6}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell
-                            sx={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '150px',
-                            }}
-                        >
-                            Record NO
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '110px',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            Audit Tray ID
-                        </TableCell>
+    const columns = [
+        {
+            name: 'index',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
+            },
+        },
+        {
+            name: 'audit_report', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Audit Tray ID</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.wht_tray || '',
+            },
+        },
 
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '110px',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            UIC
-                        </TableCell>
-
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                cursor: 'pointer',
-                                width: '150px',
-                            }}
-                        >
-                            Brand and model
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '145px',
-                            }}
-                        >
-                            Auditor Name
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '240px',
-                            }}
-                        >
-                            Auditor Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '205px',
-                            }}
-                        >
-                            Original Grade
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Auditor Recommended Grade
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Auditor Reason
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Auditor Remark
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '150px',
-                            }}
-                        >
-                            Audit Done Date
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '150px',
-                            }}
-                        >
-                            Current Tray Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Current Tray ID
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Sales Bin Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Billed Bin Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            RDL 1 Done Date
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            RDL 1 Username
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            RDL 1 User Remarks
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Repair item
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {displayText !== '' ? (
-                        <TableCell
-                            colSpan={8}
-                            align="center"
-                            sx={{ verticalAlign: 'top' }}
-                        >
-                            <Typography variant="p" gutterBottom>
-                                {displayText}
-                            </Typography>
-                        </TableCell>
-                    ) : null}
-                    {data.map((data, index) => (
-                        <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
-                            <TableCell>{data?.audit_report?.wht_tray}</TableCell>
-                            <TableCell>{data?.uic_code?.code}</TableCell>
-                            <TableCell>
-                                {data?.old_item_details
-                                    ?.replace(/:/g, ' ')
-                                    ?.toUpperCase()}
-                            </TableCell>
-                            <TableCell>{data?.audit_user_name}</TableCell>
-                            <TableCell>{data?.audit_report?.stage}</TableCell>
-                            <TableCell>
-                                {data?.bqc_software_report?.final_grade}
-                            </TableCell>
-                            <TableCell>{data?.audit_report?.grade}</TableCell>
-                            <TableCell>{data?.audit_report?.reason}</TableCell>
-                            <TableCell>
-                                {data?.audit_report?.description}
-                            </TableCell>
-                            <TableCell>
-                                {' '}
-                                {new Date(data?.audit_done_date).toLocaleString(
-                                    'en-GB',
-                                    {
-                                        hour12: true,
-                                    }
-                                )}
-                                
-                            </TableCell>
-                            <TableCell>{data?.tray_status}</TableCell>
-                            <TableCell>{data?.wht_tray}</TableCell>
-                            <TableCell
-                                style={{ color: 'green', fontWeight: 'bold' }}
-                            >
-                                {data?.sales_bin_status}
-                            </TableCell>
-                            <TableCell
-                                style={{ color: 'green', fontWeight: 'bold' }}
-                            >
-                                {data?.item_moved_to_billed_bin}
-                            </TableCell>
-                            <TableCell>
-                                {data?.rdl_fls_closed_date ? (
-                                    new Date(data.rdl_fls_closed_date).toLocaleString('en-GB', {
-                                        hour12: true,
-                                    })
-                                ) : (
-                                    ''
-                                )}
-                            </TableCell>
-                            <TableCell>{data?.rdl_fls_one_user_name}</TableCell>
-                            <TableCell>
-                                {data?.rdl_fls_one_report?.description}
-                            </TableCell>
-                            <TableCell>
-                                {data?.rdl_fls_one_report?.partRequired?.map(
-                                    (part, index) => (
-                                        `${index + 1}.${part?.part_name} - ${part?.part_id
-                                        }`
-                                    )
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </ProductTable>
-        )
-    }, [item, data, displayText])
+        {
+            name: 'uic_code',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>UIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.code || '',
+            },
+        },
+        {
+            name: 'old_item_details',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand and model</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'audit_user_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Name</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.stage || '',
+            },
+        },
+        {
+            name: 'bqc_software_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <> Original Grade</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.final_grade || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Recommended Grade</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.grade || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Reason</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.reason || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Remark</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.description || '',
+            },
+        },
+        {
+            name: 'audit_done_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Audit Done Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'tray_status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Current Tray Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'wht_tray',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Current Tray ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sales_bin_status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Sales Bin Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'item_moved_to_billed_bin',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Billed Bin Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rdl_fls_closed_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 1 Done Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value !== undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : '',
+            },
+        },
+        {
+            name: 'rdl_fls_one_user_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 1 Username</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rdl_fls_one_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 1 User Remarks</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.description || '',
+            },
+        },
+        {
+            name: 'rdl_fls_one_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Repair item</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_fls_report?.partRequired
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            }`
+                        })
+                        return partsList.join(', ')
+                    }
+                    return ''
+                },
+            },
+        },
+    ]
 
     return (
         <Container>
@@ -535,19 +404,9 @@ const SimpleMuiTable = () => {
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
+                    mb: 1,
                 }}
             >
-                <Box>
-                    <TextField
-                        onChange={(e) => {
-                            searchTrackItem(e)
-                        }}
-                        // disabled={search.type == '' ? true : false}
-                        label="Search"
-                        variant="outlined"
-                        sx={{ mb: 1 }}
-                    />
-                </Box>
                 <Box>
                     <TextField
                         type="date"
@@ -557,7 +416,6 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             handleChangeSort(e)
                         }}
-                        sx={{ ml: 3 }}
                         name="fromDate"
                         InputLabelProps={{ shrink: true }}
                     />
@@ -590,44 +448,140 @@ const SimpleMuiTable = () => {
                     >
                         Filter
                     </Button>
-                    {/* <Button
-                        sx={{ ml: 2, mt: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={
-                            inputSearch == '' && stateForFilterUn == false
-                        }
-                        onClick={(e) => {
-                            download(e)
-                        }}
-                    >
-                        Download XLSX
-                    </Button> */}
                 </Box>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-                {tableData}
+                <ProductTable>
+                    <MUIDataTable
+                        title={'Upgrade Units'}
+                        data={item}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                console.log('Sorting data:', data)
+                                const columnProperties = {
+                                    1: 'wht_tray',
+                                    2: 'code',
+                                    5: 'stage',
+                                    6: 'final_grade',
+                                    7: 'grade',
+                                    8: 'reason',
+                                    9: 'description',
+                                    17: 'description',
+                                    18: 'partRequired',
+                                    // add more columns and properties here
+                                }
+                                const property = columnProperties[colIndex]
+
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+                                        return (
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
+
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
+                                        )
+                                    }
+                                    return (
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    let value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+
+                                    if (
+                                        properties[0] ===
+                                            'rdl_fls_one_report' &&
+                                        properties[1] === 'partRequired' &&
+                                        properties[2] === 'length'
+                                    ) {
+                                        value = value || 0
+                                    }
+
+                                    return value !== undefined ? value : ''
+                                }
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTable>
             </Card>
-            <TablePagination
-                sx={{ px: 2 }}
-                rowsPerPageOptions={[100, 150, 200]}
-                component="div"
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                showFirstButton="true"
-                showLastButton="true"
-                backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                }}
-                nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={({ target: { value } }) =>
-                    setRowsPerPage(value)
-                }
-            />
         </Container>
     )
 }

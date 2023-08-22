@@ -144,7 +144,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL-Repair">
-                            RDL One Done
+                            Ready to RDL-Two
                         </MenuItem>
                     </TextFieldCustOm>
                 )}

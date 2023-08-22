@@ -126,6 +126,9 @@ const ReassignMergeRequest = Loadable(
 const AssignedBag = Loadable(
     lazy(() => import('./Bag-reassign/Assign-to-bot/view-bot-bag'))
 )
+const ReAssignToPickup = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-pickup/tray'))
+)
 const ReassignSortingCtxToStx = Loadable(
     lazy(() => import('./Tray-reassign/Ctx-to-stx/ctx-tray'))
 )
@@ -394,6 +397,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/tray-reassign/sorting/bot-wht',
         element: <ReassignSortingBotToWht />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/pick-up',
+        element: <ReAssignToPickup />,
     },
 ]
 

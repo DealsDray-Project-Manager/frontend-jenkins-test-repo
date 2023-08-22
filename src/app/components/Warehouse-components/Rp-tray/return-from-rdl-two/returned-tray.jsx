@@ -20,6 +20,8 @@ import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -99,6 +101,7 @@ const SimpleMuiTable = () => {
     const [refresh, setRefresh] = useState(refresh)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -142,6 +145,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
                 type: 'Closed by RDL-two',
+                actioUser:user.username,
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {

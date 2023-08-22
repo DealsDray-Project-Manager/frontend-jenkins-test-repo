@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button, Typography, Table, TableContainer } from '@mui/material'
+import { Button, Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,9 +20,8 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
-    const [rptTray, setRpTray] = useState([])
+    const [whtTray, setWhtTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
@@ -32,15 +31,12 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let obj = {
-                        location: location,
-                        type: 'RPT',
-                        status: 'All',
-                    }
-                    let response = await axiosWarehouseIn.post('/rptTray', obj)
+                    let response = await axiosWarehouseIn.post(
+                        `/botPmtMMtTray/${location}/PMT`
+                    )
                     if (response.status === 200) {
                         setIsLoading(false)
-                        setRpTray(response.data.data)
+                        setWhtTray(response.data.data)
                     }
                 } else {
                     navigate('/')
@@ -95,6 +91,7 @@ const SimpleMuiTable = () => {
         {
             name: 'rack_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
+
             options: {
                 filter: true,
             },
@@ -117,7 +114,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'items_length',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
@@ -125,9 +122,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value.length == 0
-                            ? tableMeta.rowData[3].length
-                            : value.length) +
+                        (value == 0 ? tableMeta.rowData[3] : value) +
                         '/' +
                         tableMeta.rowData[4]
                     )
@@ -200,7 +195,7 @@ const SimpleMuiTable = () => {
                                 onClick={() => handelChangeRack(value)}
                                 component="span"
                             >
-                                Change Rack
+                                Rack Change
                             </Button>
                         </>
                     )
@@ -212,17 +207,12 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'RPT', path: '/' },
-                        { name: 'Rpt-Tray' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'PMT Tray', path: '/' }]} />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={rptTray}
+                data={whtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

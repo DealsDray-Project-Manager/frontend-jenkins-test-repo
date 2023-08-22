@@ -5,6 +5,8 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { H1, H3, H4 } from 'app/components/Typography'
 import jwt_decode from 'jwt-decode'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 import {
     Button,
     Typography,
@@ -35,7 +37,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
+    const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const [vendors, setVendors] = useState([])
@@ -58,7 +60,7 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
-                        setRDLRequest(res.data.data)
+                        setData(res.data.data)
                     }
                 } else {
                     navigate('/')
@@ -78,7 +80,9 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/vendorMaster/view')
+                let res = await axiosPurchaseAgent.post(
+                    '/vendorMasterforDrp/view'
+                )
                 if (res.status == 200) {
                     setVendors(res.data.data)
                 }
@@ -97,7 +101,6 @@ const SimpleMuiTable = () => {
     }
     const dataFilter = async (type) => {
         try {
-            filterData.type = type
             setIsLoading(true)
             const res = await axiosPurchaseAgent.post(
                 '/placeOrderDateFilter',
@@ -105,12 +108,36 @@ const SimpleMuiTable = () => {
             )
             if (res.status === 200) {
                 setIsLoading(false)
-                setRDLRequest(res.data.data)
+                setData(res.data.data)
                 setTotalPrice(res.data.totalPrice)
             }
         } catch (error) {
             alert(error)
         }
+    }
+    // EXPORT TO EXCEL
+    const downloadExcel = (e) => {
+        let arr = []
+        for (let x of data) {
+            let obj = {
+                POID: x.poid,
+                'Part Id': x.spn_number,
+                'Part Name': x?.partDetails?.[0]?.name,
+                'Vendor Id': x.vendor_id,
+                Quantity: x.quantity,
+                'Price (Per)': x.per_unit,
+                'Total Amount': x.total_price,
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const dataDown = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(dataDown, 'Order Details of RM' + fileExtension)
     }
 
     const columns = [
@@ -144,6 +171,16 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>Part Id</Typography>,
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'partDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.name,
             },
         },
         {
@@ -230,19 +267,6 @@ const SimpleMuiTable = () => {
                             <MenuItem value={data.name}>{data.name}</MenuItem>
                         ))}
                     </TextField>
-                    <Button
-                        sx={{ ml: 2, mt: 1 }}
-                        variant="contained"
-                        disabled={filterData.vendors == ''}
-                        style={{ backgroundColor: 'green' }}
-                        onClick={(e) => {
-                            dataFilter('Vendor')
-                        }}
-                    >
-                        Search
-                    </Button>
-                </Box>
-                <Box>
                     <TextField
                         type="date"
                         label="From Date"
@@ -251,7 +275,6 @@ const SimpleMuiTable = () => {
                         onChange={(e) => {
                             handleChangeSort(e)
                         }}
-                        sx={{ ml: 3 }}
                         name="fromDate"
                         InputLabelProps={{ shrink: true }}
                     />
@@ -275,9 +298,10 @@ const SimpleMuiTable = () => {
                         sx={{ ml: 2, mt: 1 }}
                         variant="contained"
                         disabled={
-                            filterData.fromDate == '' || filterData.toDate == ''
+                            filterData.fromDate == '' ||
+                            filterData.toDate == '' ||
+                            filterData.vendors == ''
                         }
-                        style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
                             dataFilter('Date')
                         }}
@@ -285,16 +309,27 @@ const SimpleMuiTable = () => {
                         Filter
                     </Button>
                 </Box>
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="success"
+                        onClick={(e) => downloadExcel(e)}
+                    >
+                        Download Excel
+                    </Button>
+                </Box>
             </Box>
             <Card sx={{ mt: 1 }}>
                 <MUIDataTable
                     title={'Order details'}
-                    data={RDLRequest}
+                    data={data}
                     columns={columns}
                     options={{
                         filterType: 'textField',
                         responsive: 'simple',
                         download: false,
+                       
                         print: false,
                         textLabels: {
                             body: {

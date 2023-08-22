@@ -32,6 +32,22 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+const ProductTable = styled(Table)(() => ({
+    minWidth: 850,
+    // width: 7100,
+    whiteSpace: 'pre',
+    '& thead': {
+        '& th:first-of-type': {
+            paddingLeft: 16,
+        },
+    },
+    '& td': {
+        borderBottom: '1px solid #ddd',
+    },
+    '& td:first-of-type': {
+        paddingLeft: '36px !important',
+    },
+}))
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -48,6 +64,7 @@ const SimpleMuiTable = () => {
     })
 
     const navigate = useNavigate()
+
 
     useEffect(() => {
         setDisplayText('Loading...')
@@ -166,22 +183,7 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const ProductTable = styled(Table)(() => ({
-        minWidth: 850,
-        // width: 7100,
-        whiteSpace: 'pre',
-        '& thead': {
-            '& th:first-of-type': {
-                paddingLeft: 16,
-            },
-        },
-        '& td': {
-            borderBottom: '1px solid #ddd',
-        },
-        '& td:first-of-type': {
-            paddingLeft: '36px !important',
-        },
-    }))
+   
 
     return (
         <Container>

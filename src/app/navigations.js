@@ -343,6 +343,11 @@ export const navigations = [
                 path: '/sup-admin/tray-reassign/sorting/ctx-stx',
                 iconText: 'PL',
             },
+            {
+                name: 'Assigned to pickup',
+                path: '/sup-admin/tray-reassign/pick-up',
+                iconText: 'PL',
+            },
         ],
         auth: authRoles.admin,
         sales: false,
@@ -627,6 +632,20 @@ export const navigations = [
         sales: 'all',
     },
     {
+        name: 'Report',
+        icon: 'report',
+        children: [
+            
+            {
+                name: 'Upgrade Units',
+                path: '/warehouse/rpt/report/upgrade-units',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
         name: 'Bag',
         icon: 'class',
         children: [
@@ -654,6 +673,16 @@ export const navigations = [
         icon: 'move_to_inbox',
         children: [
             {
+                name: 'All Pmt',
+                path: '/warehouse/all-pmt-tray',
+                iconText: 'VP',
+            },
+            {
+                name: 'All Mmt',
+                path: '/warehouse/all-mmt-tray',
+                iconText: 'VP',
+            },
+            {
                 name: 'Tray Close Request',
                 path: '/wareshouse/pmt-mmt/tray-close-request',
                 iconText: 'VP',
@@ -671,6 +700,11 @@ export const navigations = [
         name: 'BOT',
         icon: 'new_releases',
         children: [
+            {
+                name: 'BOT Tray',
+                path: '/wareshouse/all-bot-tray',
+                iconText: 'VP',
+            },
             {
                 name: 'BOT To Release',
                 path: '/wareshouse/bot/release',

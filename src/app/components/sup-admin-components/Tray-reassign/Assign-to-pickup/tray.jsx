@@ -2,7 +2,6 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-
 import {
     Button,
     Dialog,
@@ -13,22 +12,16 @@ import {
     FormControl,
     InputLabel,
     Select,
+    Typography,
     MenuItem,
     TextField,
 } from '@mui/material'
-
 import { useNavigate } from 'react-router-dom'
-import {
-    axiosWarehouseIn,
-    axiosMisUser,
-    axiosSuperAdminPrexo,
-} from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
+import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
-import useAuth from 'app/hooks/useAuth'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,6 +35,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -72,43 +66,39 @@ const BootstrapDialogTitle = (props) => {
         </DialogTitle>
     )
 }
-
 BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
 
-const CtxToStxPage = () => {
+const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
-    const [tray, setTray] = useState([])
-    const [sortingAgent, setSortingAgent] = useState([])
-    const [toStxTray, setStxTray] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate()
+    const [mmtTray, setMmtTray] = useState([])
     const [open, setOpen] = useState(false)
-    const [submitButDis, setSubmitButDis] = useState(false)
-    const { user } = useAuth()
+    const [submitDis, setSubmitDis] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [sortingAgent, setSortingAgent] = useState([])
+
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
         sort_agent: '',
+        location: '',
     })
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true)
                 let obj = {
-                    trayType: 'CT',
-                    sort_id: 'Ctx to Stx Send for Sorting',
+                    trayType: 'WHT',
+                    sort_id: 'Pickup Request sent to Warehouse',
                 }
-                let response = await axiosSuperAdminPrexo.post(
-                    '/tray/assigned',
-                    obj
-                )
-                if (response.status === 200) {
+                let res = await axiosSuperAdminPrexo.post('/tray/assigned', obj)
+                if (res.status == 200) {
                     setIsLoading(false)
-                    setTray(response.data.data)
+                    setMmtTray(res.data.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -123,17 +113,57 @@ const CtxToStxPage = () => {
         fetchData()
     }, [isAlive])
 
-    /* OPEN DIALOG BOX */
-    const handelSorting = async (e, trayId, toTray, locationData) => {
-        e.preventDefault()
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let token = localStorage.getItem('prexo-authentication')
+                if (token) {
+                    const { location } = jwt_decode(token)
+                    let res = await axiosMisUser.post(
+                        '/getSortingAgentMergeMmt/' + location
+                    )
+                    if (res.status === 200) {
+                        setSortingAgent(res.data.data)
+                    } else {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'error',
+                            title: res?.data?.message,
+                            confirmButtonText: 'Ok',
+                        })
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+        return () => setIsAlive(false)
+    }, [isAlive])
 
+    const handleClose = () => {
+        setOpen(false)
+        setSubmitDis(false)
+        setMergeData((p) => ({
+            fromTray: '',
+            toTray: '',
+            sort_agent: '',
+        }))
+    }
+    /* OPEN DIALOG BOX */
+    const handelMerge = async (e, trayId, totray, locationData) => {
+        e.preventDefault()
         try {
             let res = await axiosMisUser.post(
                 '/getSortingAgentMergeMmt/' + locationData
             )
             if (res.status === 200) {
                 setSortingAgent(res.data.data)
-                setOpen(true)
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -150,32 +180,21 @@ const CtxToStxPage = () => {
                 text: error,
             })
         }
-        setMergeData((p) => ({ ...p, fromTray: trayId, toTray: toTray }))
-    }
-    const handleClose = () => {
-        setOpen(false)
-        setSubmitButDis(false)
+        setOpen(true)
         setMergeData((p) => ({
-            fromTray: '',
-            toTray: '',
-            sort_agent: '',
+            ...p,
+            fromTray: trayId,
+            toTray: totray,
+            location: locationData,
         }))
-    }
-    /******************************************************************************* */
-    const handelViewItem = (id) => {
-        navigate('/sup-admin/tray/item-view/' + id)
     }
 
     /* REQUEST SEND TO WAREHOUSE */
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
-            setSubmitButDis(true)
-            mergreData.actionUser = user.username
-            let res = await axiosMisUser.post(
-                '/sorting/ctxToStx/request/sendToWh',
-                mergreData
-            )
+            setSubmitDis(true)
+            let res = await axiosMisUser.post('/pickup/reAssign', mergreData)
             if (res.status === 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -187,7 +206,6 @@ const CtxToStxPage = () => {
                 setIsAlive((isAlive) => !isAlive)
             }
         } catch (error) {
-            setSubmitButDis(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -197,42 +215,73 @@ const CtxToStxPage = () => {
         }
     }
 
+    const handelViewItem = (id) => {
+        navigate('/sup-admin/tray/item-view/' + id)
+    }
+
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
+            },
+        },
+        {
+            name: 'cpc', // field name in the row object
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>CPC</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
             },
         },
         {
             name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'cpc',
-            label: 'CPC',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'to_merge',
-            label: 'To Tray',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Tray ID</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
-            name: 'tray_grade',
-            label: 'Tray Grade',
+            name: 'to_tray_for_pickup', // field name in the row object
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>To Tray</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -248,53 +297,77 @@ const CtxToStxPage = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[4],
             },
         },
         {
             name: 'type_taxanomy',
-            label: 'Tray Type',
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'brand',
-            label: 'Brand',
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: 'Model',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Tray Type</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: 'Assigned to',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Assigned to</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-
         {
             name: 'code',
-            label: 'Action',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -319,11 +392,11 @@ const CtxToStxPage = () => {
                                 }}
                                 variant="contained"
                                 onClick={(e) => {
-                                    handelSorting(
+                                    handelMerge(
                                         e,
-                                        tableMeta.rowData[1],
+                                        value,
                                         tableMeta.rowData[3],
-                                        tableMeta.rowData[2]
+                                        tableMeta.rowData[1]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
@@ -367,6 +440,7 @@ const CtxToStxPage = () => {
                         margin="normal"
                         value={mergreData.toTray}
                     />
+
                     <FormControl fullWidth>
                         <InputLabel
                             sx={{ pt: 2 }}
@@ -401,7 +475,7 @@ const CtxToStxPage = () => {
                         type="submit"
                         variant="contained"
                         disabled={
-                            submitButDis ||
+                            submitDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }
@@ -418,14 +492,14 @@ const CtxToStxPage = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Tray-Reassign', path: '/' },
-                        { name: 'CTX to STX' },
+                        { name: 'Tray' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'CTX Tray'}
-                data={tray}
+                title={'Pickup'}
+                data={mmtTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
@@ -470,4 +544,4 @@ const CtxToStxPage = () => {
     )
 }
 
-export default CtxToStxPage
+export default SimpleMuiTable

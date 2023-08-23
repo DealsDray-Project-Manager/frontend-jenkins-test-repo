@@ -86,6 +86,9 @@ const SimpleMuiTable = () => {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
+useEffect(()=>{
+    console.log(userList);
+},[userList])
 
     const editUser = async (empId) => {
         try {
@@ -222,8 +225,16 @@ const SimpleMuiTable = () => {
                      Pan Proof
                     </Typography>
                 ),
-                customBodyRender: (value) => {
-                    return <Avatar variant="rounded" src={value} />
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
                 }, 
             },
         },
@@ -237,8 +248,16 @@ const SimpleMuiTable = () => {
                       Aadhar Proof
                     </Typography>
                 ),
-                customBodyRender: (value) => {
-                    return <Avatar variant="rounded" src={value} />
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
                 }, 
             },
         },
@@ -252,9 +271,22 @@ const SimpleMuiTable = () => {
                       Business Proof
                     </Typography>
                 ),
-                customBodyRender: (value) => {
-                    return <Avatar variant="rounded" src={value} />
-                }, 
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
+                },
+                // customBodyRender: (value) => {
+                //     return <Avatar variant="rounded" height="80px"
+                //     width="80px" src={value} />
+                // }, 
+                
             },
         },
         // {
@@ -326,7 +358,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'buyer_name',
+            name: 'user_name',
             label: "Buyer Name",
             options: {
                 filter: true,

@@ -331,6 +331,20 @@ useEffect(()=>{
                
             },
         },
+        
+        {
+            name: 'businessName',
+            label: "Business Name",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     Business Name
+                    </Typography>
+                ),
+               
+            },
+        },
         {
             name: 'email',
             label: "Email",

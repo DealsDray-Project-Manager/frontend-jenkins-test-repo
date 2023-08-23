@@ -2,11 +2,15 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box } from '@mui/material'
+import { Button, Typography, TextField, Box, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -60,7 +64,6 @@ const SimpleMuiTable = () => {
             setIsLoading(false)
         }
     }, [isAlive])
-
     const handelViewItem = (brand, model, grade, date) => {
         navigate(
             '/sales/ready-for-sales/view-units/' +
@@ -72,6 +75,71 @@ const SimpleMuiTable = () => {
                 '/' +
                 date
         )
+    }
+
+    const download = (e) => {
+        let arr = []
+        for (let i = 0; i < item.length; i++) {
+            let obj = {
+                Record_N0: i + 1,
+                muic: item[i].muic_one,
+                brand_name: item[i]._id.brand,
+                model_name: item[i]._id.model,
+                units: item[i].itemCount,
+                tray_grade: item[i]._id.grade,
+                mrp_price: item[i].mrp,
+                sp_price: item[i].sp,
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Units' + fileExtension)
+    }
+    const downloadPDF = () => {
+        const doc = new jsPDF()
+        doc.setFontSize(16)
+        doc.text('Ready For Sales ', 15, 10)
+        const downloadTime = new Date(Date.now()).toLocaleString('en-GB', {
+            hour12: true,
+        })
+
+        doc.setFontSize(10)
+        doc.text(`Downloaded on: ${downloadTime}`, 15, 20)
+        const headers = [
+            'Record No',
+            'MUIC',
+            'Brand',
+            'Model',
+            'Units',
+            'Grade',
+            'MRP',
+            'SP',
+        ]
+        const data = item.map((item, index) => [
+            index + 1,
+            item.muic_one,
+            item._id.brand,
+            item._id.model,
+            item.itemCount,
+            item._id.grade,
+            item.mrp,
+            item.sp,
+        ])
+
+        doc.autoTable({
+            head: [headers],
+            body: data,
+            startY: 30,
+            theme: 'grid',
+            showHead: 'firstPage',
+        })
+        doc.save('ReadyForSales.pdf')
     }
 
     const columns = [
@@ -94,6 +162,33 @@ const SimpleMuiTable = () => {
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
+            },
+        },
+        {
+            name: 'muicDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Image</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value?.[0]?.image == undefined
+                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                      value?.[0]?.vendor_sku_id +
+                                      '.jpg'
+                                    : value?.[0]?.image
+                            }
+                        />
+                    )
+                },
             },
         },
         {
@@ -141,6 +236,19 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        <Typography
+                            style={{
+                                textAlign: 'left',
+                                marginLeft: '15px',
+                                padding: '0',
+                            }}
+                        >
+                            {value}
+                        </Typography>
+                    )
+                },
             },
         },
         {
@@ -152,7 +260,17 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.grade || '',
+                customBodyRender: (value, dataIndex) => (
+                    <Typography
+                        style={{
+                            textAlign: 'left',
+                            marginLeft: '15px',
+                            padding: '0',
+                        }}
+                    >
+                        {value?.grade || ''}
+                    </Typography>
+                ),
             },
         },
         {
@@ -167,6 +285,15 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>SP</Typography>,
             options: {
                 filter: true,
+                customHeadRender: (columnMeta) => (
+                    <TableCell
+                        sx={{
+                            width: '100px',
+                        }}
+                    >
+                        {columnMeta.label}
+                    </TableCell>
+                ),
             },
         },
         {
@@ -205,44 +332,44 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'code',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    marginLeft="8px"
-                >
-                    <>Action</>
-                </Typography>
-            ),
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() =>
-                                handelViewItem(
-                                    tableMeta.rowData[2]?.brand,
-                                    tableMeta.rowData[3]?.model,
-                                    tableMeta.rowData[5]?.grade,
-                                    tableMeta.rowData[8]
-                                )
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'code',
+        //     label: (
+        //         <Typography
+        //             variant="subtitle1"
+        //             fontWeight="bold"
+        //             marginLeft="8px"
+        //         >
+        //             <>Action</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: false,
+        //         sort: false,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <Button
+        //                     sx={{
+        //                         m: 1,
+        //                     }}
+        //                     variant="contained"
+        //                     onClick={() =>
+        //                         handelViewItem(
+        //                             tableMeta.rowData[3]?.brand,
+        //                             tableMeta.rowData[4]?.model,
+        //                             tableMeta.rowData[6]?.grade,
+        //                             tableMeta.rowData[9]
+        //                         )
+        //                     }
+        //                     style={{ backgroundColor: 'green' }}
+        //                     component="span"
+        //                 >
+        //                     View
+        //                 </Button>
+        //             )
+        //         },
+        //     },
+        // },
     ]
 
     return (
@@ -252,7 +379,22 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
-
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="success"
+                onClick={(e) => download(e)}
+            >
+                Download Excel
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                onClick={downloadPDF}
+            >
+                Download PDF
+            </Button>
             <MUIDataTable
                 title={'Ready for sales'}
                 data={item}

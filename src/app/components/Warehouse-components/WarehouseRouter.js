@@ -222,9 +222,7 @@ const ReturnFromWhtToRp = Loadable(
 const ReturnFromWhtToRpClose = Loadable(
     lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close'))
 )
-const AllRptTray = Loadable(
-    lazy(() => import('./Rp-tray/all-rp-tray/tray'))
-)
+const AllRptTray = Loadable(lazy(() => import('./Rp-tray/all-rp-tray/tray')))
 const ReturnFromRdlTwo = Loadable(
     lazy(() => import('./Rp-tray/return-from-rdl-two/returned-tray'))
 )
@@ -240,14 +238,20 @@ const RackChangeClose = Loadable(
 const AllBotTray = Loadable(
     lazy(() => import('./Bot/bot-to-release/All-bot-tray/tray'))
 )
-const AllPmtTray = Loadable(
-    lazy(() => import('./Pmt-mmt/All-pmt/tray'))
-)
-const AllMmtTray = Loadable(
-    lazy(() => import('./Pmt-mmt/All-mmt/tray'))
-)
+const AllPmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-pmt/tray')))
+const AllMmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-mmt/tray')))
+const RackChangeScanOut = Loadable(lazy(() => import('./Rack-change/scan-out')))
+const RackChangeScanIn = Loadable(lazy(() => import('./Rack-change/scan-in')))
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rack-change/scan-in',
+        element: <RackChangeScanIn />,
+    },
+    {
+        path: '/warehouse/rack-change/scan-out',
+        element: <RackChangeScanOut />,
+    },
     {
         path: '/warehouse/all-mmt-tray',
         element: <AllMmtTray />,

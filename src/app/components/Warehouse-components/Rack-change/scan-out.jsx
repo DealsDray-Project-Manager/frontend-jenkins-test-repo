@@ -4,8 +4,20 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
-import { Button, Typography, Table } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    IconButton,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Typography,
+} from '@mui/material'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import { axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,26 +32,58 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
 const SimpleMuiTable = () => {
-    const [whtTray, setWhtTray] = useState([])
+    const [tray, setTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        `/botPmtMMtTray/${location}/MMT`
-                    )
-                    if (response.status === 200) {
-                        setIsLoading(false)
-                        setWhtTray(response.data.data)
-                    }
-                } else {
-                    navigate('/')
+                setIsLoading(true)
+                let obj = {
+                    screen: 'Assigned to warehouae for rack change',
+                    username: user.username,
+                }
+                let res = await axiosWarehouseIn.post('/rackChangeRequest', obj)
+                if (res.status == 200) {
+                    setIsLoading(false)
+                    setTray(res?.data?.data)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -54,11 +98,7 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
-    }
-    // CHANGE RACK
-    const handelChangeRack = async (id) => {
+    const handelChangeRack = async (e, id) => {
         navigate('/warehouse/tray/rack-change/' + id)
     }
 
@@ -90,19 +130,36 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rack_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
-
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack Id</Typography>,
             options: {
                 filter: true,
             },
         },
-
         {
-            name: 'actual_items',
-            label: 'acutual_items',
+            name: 'type_taxanomy',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
-                display: false,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rdl_2_user_temp',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Scan In Agent
+                </Typography>
+            ),
+            options: {
+                filter: true,
             },
         },
         {
@@ -114,62 +171,8 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items_length',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value == 0 ? tableMeta.rowData[3] : value) +
-                        '/' +
-                        tableMeta.rowData[4]
-                    )
-                },
-            },
-        },
-
-        {
-            name: 'brand',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-
-        {
-            name: 'sort_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'created_at',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Creation Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -181,22 +184,13 @@ const SimpleMuiTable = () => {
                                     m: 1,
                                 }}
                                 variant="contained"
-                                onClick={() => handelViewItem(value)}
-                                style={{ backgroundColor: 'green' }}
-                                component="span"
-                            >
-                                View
-                            </Button>
-                            {/* <Button
-                                sx={{
-                                    m: 1,
+                                style={{ backgroundColor: 'red' }}
+                                onClick={(e) => {
+                                    handelChangeRack(e, value)
                                 }}
-                                variant="contained"
-                                onClick={() => handelChangeRack(value)}
-                                component="span"
                             >
-                                Rack Change
-                            </Button> */}
+                                Scan Out
+                            </Button>
                         </>
                     )
                 },
@@ -207,12 +201,17 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'MMT Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Rack Change', path: '/' },
+                        { name: 'Scan out' },
+                    ]}
+                />
             </div>
 
             <MUIDataTable
                 title={'Tray'}
-                data={whtTray}
+                data={tray}
                 columns={columns}
                 options={{
                     filterType: 'textField',

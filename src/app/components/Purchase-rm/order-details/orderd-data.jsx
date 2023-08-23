@@ -329,7 +329,7 @@ const SimpleMuiTable = () => {
                         filterType: 'textField',
                         responsive: 'simple',
                         download: false,
-                       
+
                         print: false,
                         textLabels: {
                             body: {

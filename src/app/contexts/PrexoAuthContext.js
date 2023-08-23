@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }) => {
                         role: res.data.data.data.user_type,
                         cpc_type:res.data.data.data.cpc_type,
                         warehouse:res.data.data.data.warehouse,
+                        location:res.data.data.data.cpc
                     },
                 },
             })
@@ -96,6 +97,7 @@ export const AuthProvider = ({ children }) => {
                         cpc_type:user.cpc_type,
                         warehouse:user.warehouse,
                         username:user.user_name,
+                        location:user.location
                     },
                 },
             })

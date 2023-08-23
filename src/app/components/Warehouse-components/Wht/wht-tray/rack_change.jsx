@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import useAuth from 'app/hooks/useAuth'
-
 import {
     Box,
     Button,
@@ -84,7 +83,7 @@ export default function DialogBox() {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        `/rackIdUpdateGetTray/${trayId}/${location}`
+                        `/rackIdUpdateGetTray/${trayId}/${location}/${user.username}`
                     )
                     if (response.status === 200) {
                         setTrayData(response.data.data)
@@ -154,7 +153,19 @@ export default function DialogBox() {
                 let obj = {
                     trayId: trayId,
                     description: description,
-                    rackId: rackId,
+                    rackId: '',
+                    sortId: trayData?.sort_id,
+                    agentName: '',
+                    actionUser: user.username,
+                    prevStatus: '',
+                }
+                if (
+                    trayData?.sort_id == 'Assigned to warehouae for rack change'
+                ) {
+                    obj.agentName = trayData?.rdl_2_user_temp
+                } else {
+                    obj.prevStatus = trayData?.temp_status
+                    obj.rackId = rackId
                 }
                 let res = await axiosWarehouseIn.post('/updateRackId', obj)
                 if (res.status == 200) {
@@ -383,24 +394,27 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    <TextFieldCustOm
-                        sx={{ m: 1 }}
-                        label="Rack ID"
-                        select
-                        style={{ width: '150px' }}
-                        name="rack_id"
-                    >
-                        {rackiddrop?.map((data) => (
-                            <MenuItem
-                                onClick={(e) => {
-                                    setRackId(data.rack_id)
-                                }}
-                                value={data.rack_id}
-                            >
-                                {data.rack_id}
-                            </MenuItem>
-                        ))}
-                    </TextFieldCustOm>
+                    {trayData?.sort_id !==
+                    'Assigned to warehouae for rack change' ? (
+                        <TextFieldCustOm
+                            sx={{ m: 1 }}
+                            label="Rack ID"
+                            select
+                            style={{ width: '150px' }}
+                            name="rack_id"
+                        >
+                            {rackiddrop?.map((data) => (
+                                <MenuItem
+                                    onClick={(e) => {
+                                        setRackId(data.rack_id)
+                                    }}
+                                    value={data.rack_id}
+                                >
+                                    {data.rack_id}
+                                </MenuItem>
+                            ))}
+                        </TextFieldCustOm>
+                    ) : null}
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -412,7 +426,13 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || rackId == '' || description == ''
+                            loading == true ||
+                            (rackId == '' &&
+                                trayData?.sort_id !==
+                                    'Assigned to warehouae for rack change') ||
+                            description == '' ||
+                            trayData?.items?.length !==
+                                trayData?.actual_items?.length
                                 ? true
                                 : false
                         }

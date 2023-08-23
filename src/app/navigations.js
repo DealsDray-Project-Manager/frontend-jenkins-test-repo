@@ -619,6 +619,14 @@ export const navigations = [
         sales: 'all',
     },
     {
+        name: 'Rack Change',
+        icon: 'class',
+        path: '/mis/rack-change',
+        auth: authRoles.Mis,
+        sales: "all",
+    },
+
+    {
         name: 'Track',
         icon: 'art_track',
         children: [
@@ -947,6 +955,24 @@ export const navigations = [
         ],
         auth: authRoles.Warehouse,
         sales: true,
+    },
+    {
+        name: 'Rack Change',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Scan Out',
+                path: '/warehouse/rack-change/scan-out',
+                iconText: 'VP',
+            },
+            {
+                name: 'Scan In',
+                path: '/warehouse/rack-change/scan-in',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+        sales: 'all',
     },
     {
         name: 'Report',
@@ -1432,13 +1458,13 @@ export const navigations = [
         auth: authRoles.Sales_Agent,
         sales: true,
     },
-    {
-        name: 'Ready for sales units',
-        icon: 'transform',
-        path: '/sales/ready-for-sales-units',
-        auth: authRoles.Sales_Agent,
-        sales: true,
-    },
+    // {
+    //     name: 'Ready for sales units',
+    //     icon: 'transform',
+    //     path: '/sales/ready-for-sales-units',
+    //     auth: authRoles.Sales_Agent,
+    //     sales: true,
+    // },
     {
         name: 'Ready for Pricing',
         icon: 'class',

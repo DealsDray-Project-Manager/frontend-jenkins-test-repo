@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import { axiosMisUser } from '../../../../../axios'
+import { axiosMisUser } from '../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
@@ -21,26 +21,24 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    RDLUsers,
+    warehouseUser,
     isCheck,
 }) => {
-    const [RDLUserName, setRDL] = useState('')
+    const [scanOutWh, setScanOutWh] = useState('')
+    const [scanInWh, setScanInWh] = useState('')
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
-
+    console.log('ischeck', isCheck)
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
             let obj = {
                 tray: isCheck,
-                user_name: RDLUserName,
-                sortId: 'Send for RDL-two',
+                scanOutWh: scanOutWh,
+                scanInWh: scanInWh,
                 actUser: user.username,
             }
-            let res = await axiosMisUser.post(
-                '/assignToAgent/rdl-fls/sentToWarehouse',
-                obj
-            )
+            let res = await axiosMisUser.post('/assignToAgent/rackChange', obj)
             if (res.status == 200) {
                 handleClose()
                 setLoading(false)
@@ -49,7 +47,8 @@ const MemberEditorDialog = ({
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                setRDL('')
+                setScanOutWh('')
+                setScanInWh('')
                 setIsAlive((isAlive) => !isAlive)
             } else {
                 // setLoading(false)
@@ -70,29 +69,51 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select RDL 2 User</H4>
+                <H4 sx={{ mb: '20px' }}>Select RDL-One User</H4>
                 <TextFieldCustOm
-                    label="Username"
+                    label="Scan out Wh Username"
                     fullWidth
                     select
                     name="username"
                 >
-                    {RDLUsers.map((data) => (
+                    {warehouseUser.map((data) => (
                         <MenuItem
                             key={data.user_name}
                             value={data.user_name}
                             onClick={(e) => {
-                                setRDL(data.user_name)
+                                setScanOutWh(data.user_name)
                             }}
                         >
                             {data.user_name}
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
+                <TextFieldCustOm
+                    label="Scan in Wh Username"
+                    fullWidth
+                    select
+                    name="scanOut"
+                    disabled={scanOutWh === ''}
+                >
+                    {warehouseUser
+                        .filter((data) => data.user_name !== scanOutWh) // Filter out the selected value
+                        .map((data) => (
+                            <MenuItem
+                                key={data.user_name}
+                                value={data.user_name}
+                                onClick={(e) => {
+                                    setScanInWh(data.user_name)
+                                }}
+                            >
+                                {data.user_name}
+                            </MenuItem>
+                        ))}
+                </TextFieldCustOm>
+
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        disabled={loading || RDLUserName == ''}
+                        disabled={loading || scanInWh == '' || scanOutWh == ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

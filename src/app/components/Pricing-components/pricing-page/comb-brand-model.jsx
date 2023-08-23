@@ -226,6 +226,33 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'muicDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Image</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value?.[0]?.image == undefined
+                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                      value?.[0]?.vendor_sku_id +
+                                      '.jpg'
+                                    : value?.[0]?.image
+                            }
+                        />
+                    )
+                },
+            },
+        },
+        {
             name: 'muic_one',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -291,8 +318,8 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const muic = tableMeta.rowData[1]
-                    const grade = tableMeta.rowData[5]?.grade
+                    const muic = tableMeta.rowData[2]
+                    const grade = tableMeta.rowData[6]?.grade
                     const updatedItem = item.find(
                         (item) =>
                             item.muic_one === muic && item?._id?.grade === grade
@@ -323,8 +350,8 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const muic = tableMeta.rowData[1]
-                    const grade = tableMeta.rowData[5]?.grade
+                    const muic = tableMeta.rowData[2]
+                    const grade = tableMeta.rowData[6]?.grade
                     const updatedItem = item.find(
                         (item) =>
                             item.muic_one === muic && item?._id?.grade === grade
@@ -383,9 +410,9 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            2: 'brand',
-                            3: 'model',
-                            5: 'grade',
+                            3: 'brand',
+                            4: 'model',
+                            6: 'grade',
                         }
 
                         const property = columnProperties[colIndex]

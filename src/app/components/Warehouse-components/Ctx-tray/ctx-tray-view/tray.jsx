@@ -223,7 +223,7 @@ const SimpleMuiTable = () => {
                             >
                                 View
                             </Button>
-                            <Button
+                            {/* <Button
                                 sx={{
                                     m: 1,
                                 }}
@@ -232,7 +232,7 @@ const SimpleMuiTable = () => {
                                 component="span"
                             >
                                 Change Rack
-                            </Button>
+                            </Button> */}
                         </>
                     )
                 },

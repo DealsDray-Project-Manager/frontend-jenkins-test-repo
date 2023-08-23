@@ -4,9 +4,12 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
-import { Button, Typography, Table } from '@mui/material'
+import { axiosMisUser } from '../../../../axios'
+import { Button, Typography, Checkbox } from '@mui/material'
 import Swal from 'sweetalert2'
+import AssignDialogBox from './assign'
+import { Warehouse } from '@mui/icons-material'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -23,7 +26,17 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
+    const [isAlive, setIsAlive] = useState(true)
+    const [isCheck, setIsCheck] = useState([])
+    const { user } = useAuth()
+    const[trayDetails,setTrayDetails]=useState({
+        sort_id:"",
+        current_rack:""
+    })
+    const [warehouseUser, setWarehouseUser] = useState([])
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -31,8 +44,8 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        `/botPmtMMtTray/${location}/MMT`
+                    let response = await axiosMisUser.post(
+                        '/getRackTray/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -52,17 +65,70 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [isAlive])
 
-    const handelViewItem = (id) => {
-        navigate('/wareshouse/wht/tray/item/' + id)
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setWarehouseUser([])
+        setShouldOpenEditorDialog(false)
     }
-    // CHANGE RACK
-    const handelChangeRack = async (id) => {
-        navigate('/warehouse/tray/rack-change/' + id)
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
+    }
+
+    const handleClick = (e) => {
+        const { id, checked } = e.target
+
+        setIsCheck([...isCheck, id])
+        if (!checked) {
+            setIsCheck(isCheck.filter((item) => item !== id))
+        }
+    }
+    // GET WAREHOUSE AND SHOW THE DILOG BOX
+    const handelWarehouse = async () => {
+        try {
+            const res = await axiosMisUser.post(
+                `/getWarehouseUsers/${user.location}/${user.warehouse}`
+            )
+            if (res.status == 200) {
+                setWarehouseUser(res.data.data)
+                handleDialogOpen()
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const columns = [
+        {
+            name: 'code',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Select</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, dataIndex) => {
+                    return (
+                        <Checkbox
+                            onClick={(e) => {
+                                handleClick(e)
+                            }}
+                            id={value}
+                            key={value}
+                            checked={isCheck.includes(value)}
+                        />
+                    )
+                },
+            },
+        },
         {
             name: 'index',
             label: (
@@ -96,6 +162,13 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'type_taxanomy',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Type</Typography>,
+            options: {
+                filter: true,
+            },
+        },
 
         {
             name: 'actual_items',
@@ -122,9 +195,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value == 0 ? tableMeta.rowData[3] : value) +
+                        (value == 0 ? tableMeta.rowData[4] : value) +
                         '/' +
-                        tableMeta.rowData[4]
+                        tableMeta.rowData[5]
                     )
                 },
             },
@@ -152,63 +225,26 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'created_at',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Creation Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                onClick={() => handelViewItem(value)}
-                                style={{ backgroundColor: 'green' }}
-                                component="span"
-                            >
-                                View
-                            </Button>
-                            {/* <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                onClick={() => handelChangeRack(value)}
-                                component="span"
-                            >
-                                Rack Change
-                            </Button> */}
-                        </>
-                    )
-                },
-            },
-        },
     ]
 
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'MMT Tray', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[{ name: 'Rack Change', path: '/' }]}
+                />
             </div>
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="primary"
+                disabled={isCheck.length === 0}
+                onClick={(e) => {
+                    handelWarehouse(e)
+                }}
+            >
+                Assign To Warehouse
+            </Button>
 
             <MUIDataTable
                 title={'Tray'}
@@ -253,6 +289,15 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    warehouseUser={warehouseUser}
+                    isCheck={isCheck}
+                />
+            )}
         </Container>
     )
 }

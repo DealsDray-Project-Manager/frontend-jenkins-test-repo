@@ -21,7 +21,7 @@ import { Breadcrumb } from 'app/components'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
+import { axiosMisUser, axiosWarehouseIn,baseURL } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Checkbox from '@mui/material/Checkbox'
@@ -407,7 +407,7 @@ export default function DialogBox() {
                                     alt="No product image"
                                     src={
                                         productData?.[1]?.image == undefined
-                                            ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                            ? `${baseURL}/product/image/` +
                                               productData?.[1]?.vendor_sku_id +
                                               '.jpg'
                                             : productData?.[1]?.image

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Typography, TextField, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { axiosMisUser, axiospricingAgent } from '../../../../axios'
+import { axiosMisUser, axiospricingAgent, baseURL } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 
@@ -242,7 +242,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                    ? `${baseURL}/product/image/` +
                                       value?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : value?.[0]?.image

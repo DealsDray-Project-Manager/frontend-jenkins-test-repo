@@ -8,6 +8,7 @@ import {
     axiosMisUser,
     axiosSalsAgent,
     axiospricingAgent,
+    baseURL,
 } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
@@ -104,9 +105,7 @@ const SimpleMuiTable = () => {
 
                 // Check if the 'muic' is already in 'addPricing' list
                 const existingItemIndex = addPricing.findIndex(
-                    (item) =>
-                        item.muic === muic &&
-                        item.grade == grade
+                    (item) => item.muic === muic && item.grade == grade
                 )
 
                 // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
@@ -243,6 +242,7 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
+
         {
             name: 'muicDetails', // field name in the row object
             label: (
@@ -260,7 +260,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                    ? `${baseURL}/product/image/` +
                                       value?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : value?.[0]?.image

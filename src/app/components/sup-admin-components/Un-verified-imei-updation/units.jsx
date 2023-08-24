@@ -436,7 +436,7 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Record No</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -446,7 +446,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'uic_code', // field name in the row object
-            label: 'Uic', // column title that will be shown in table
+            label:<Typography sx={{ fontWeight: 'bold' }}>UIC</Typography> , // column title that will be shown in table
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -456,7 +456,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'old_item_details',
-            label: 'Brand and model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand and model</Typography> ,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -465,7 +465,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'imei',
-            label: 'Delivery IMEI',
+            label:  <Typography sx={{ fontWeight: 'bold' }}>Delivery IMEI</Typography> ,
             options: {
                 filter: true,
                 
@@ -473,7 +473,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_software_report',
-            label: 'Bqc software report RO Ril Miui IMEI 0',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Bqc software report RO Ril Miui IMEI 0</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -483,7 +483,7 @@ const SimpleMuiTable = () => {
 
         {
             name: 'bqc_software_report',
-            label: 'Bqc software report Mobile IMEI',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Bqc software report Mobile IMEI</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -492,7 +492,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bqc_software_report',
-            label: 'Bqc software report Mobile IMEI 2',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Bqc software report Mobile IMEI 2</Typography> ,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -501,7 +501,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'charging',
-            label: 'Charging user added CIMEI 1',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Charging user added CIMEI 1</Typography> ,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -510,7 +510,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'charging',
-            label: 'Charging user added CIMEI 2',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Charging user added CIMEI 2</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -519,42 +519,42 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray_status',
-            label: 'Tray status',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'wht_tray',
-            label: 'Wht tray id',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Wht tray id</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'stx_tray_id',
-            label: 'Stx tray id',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Stx tray id</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'sales_bin_status',
-            label: 'Sales Bin Status',
+            label:<Typography sx={{ fontWeight: 'bold' }}>Sales Bin Status</Typography> ,
             options: {
                 filter: true,
             },
         },
         {
             name: 'item_moved_to_billed_bin',
-            label: 'Billed Bin Status',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Billed Bin Status</Typography> ,
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: 'Action',
+            label:  <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,

@@ -7,7 +7,7 @@ import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
 import { useNavigate, useParams } from 'react-router-dom'
 import Image from 'mui-image'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosSuperAdminPrexo, baseURL } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -157,48 +157,58 @@ const MUIClist = () => {
                 />
             </div>
             <Card sx={{ p: 3 }}>
-                <Box sx={{display: 'flex', alignItems:'center' }}>
-                    <Box sx={{mt:2}}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ mt: 2 }}>
                         <Image
                             src={
                                 productData?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                    ? `${baseURL}/product/image/` +
                                       productData?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : productData?.[0]?.image
                             }
-                            height='200px'
+                            height="200px"
                             width="100%"
                         />
                     </Box>
-                    <Box sx={{ml:5}}>
-                            <Typography>
-                                MUIC:{productData?.[0]?.muic}
-                            </Typography>
-                            <br />
-                            <Typography>
-                                SKU ID:{productData?.[0]?.vendor_sku_id}
-                            </Typography>
-                            <Typography>
-                                Brand:{productData?.[0]?.brand_name}
-                            </Typography>
-                            <Typography>
-                                Model:{productData?.[0]?.model_name}
-                            </Typography>
-                            <Typography>Vendor:{productData?.[0]?.vendor_name}</Typography>
-                        </Box>
-                        <Box sx={{margin: 'auto',textAlign:'end', mb:23, mr:2}}>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography>MUIC:{productData?.[0]?.muic}</Typography>
+                        <br />
+                        <Typography>
+                            SKU ID:{productData?.[0]?.vendor_sku_id}
+                        </Typography>
+                        <Typography>
+                            Brand:{productData?.[0]?.brand_name}
+                        </Typography>
+                        <Typography>
+                            Model:{productData?.[0]?.model_name}
+                        </Typography>
+                        <Typography>
+                            Vendor:{productData?.[0]?.vendor_name}
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{ margin: 'auto', textAlign: 'end', mb: 23, mr: 2 }}
+                    >
                         <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => navigate('/sup-admin/products')}
-                                //   sx={{ margin: "auto", mt: 1, mb: 2 }}
-                            >
-                                Back to MUIC list
-                            </Button>
-                        </Box>
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/sup-admin/products')}
+                            //   sx={{ margin: "auto", mt: 1, mb: 2 }}
+                        >
+                            Back to MUIC list
+                        </Button>
+                    </Box>
                 </Box>
-                <Box sx={{  margin: 'auto', mt:4, mr:2 ,mb:3, textAlign:'end'}}>
+                <Box
+                    sx={{
+                        margin: 'auto',
+                        mt: 4,
+                        mr: 2,
+                        mb: 3,
+                        textAlign: 'end',
+                    }}
+                >
                     <Button
                         variant="contained"
                         color="primary"
@@ -242,7 +252,7 @@ const MUIClist = () => {
                     }}
                 />
             </Card>
-            <br /> 
+            <br />
         </Container>
     )
 }

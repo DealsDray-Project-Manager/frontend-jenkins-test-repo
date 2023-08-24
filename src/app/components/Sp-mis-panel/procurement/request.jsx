@@ -174,6 +174,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                
             },
         },
         {

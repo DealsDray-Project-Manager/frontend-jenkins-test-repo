@@ -24,21 +24,21 @@ const Container = styled('div')(({ theme }) => ({
 })) 
 
 const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '140%',
+    minWidth: 950,
+    width: '180%',
     height:'100%',
     whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
+    // '& thead': {
+    //     '& th:first-of-type': {
+    //         paddingLeft: 16,
+    //     },
+    // },
+    // '& td': {
+    //     borderBottom: '1px solid #ddd',
+    // },
+    // '& td:first-of-type': {
+    //     paddingLeft: '36px !important',
+    // },
 }))
 
 const ScrollableTableContainer = styled(TableContainer)
@@ -86,11 +86,14 @@ const SimpleMuiTable = () => {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
+useEffect(()=>{
+    console.log(userList);
+},[userList])
 
     const editUser = async (empId) => {
         try {
             let response = await axiosSuperAdminPrexo.get(
-                '/getEditData/' + empId
+                '/getEditBuyerData/' + empId
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -176,12 +179,12 @@ const SimpleMuiTable = () => {
     
     const columns = [
         {
-            name: 'index', // Use a unique name for the column
+            name: 'index', 
             label: "Record No",
             options: {
                 filter: false,
                 sort: false,
-                display: 'true', // Set this column to always be visible
+                display: 'true', 
                 customBodyRender: (value, tableMeta, updateValue) => {
                     const rowIndex = tableMeta.rowIndex;
                     return (
@@ -192,7 +195,7 @@ const SimpleMuiTable = () => {
                 },
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold"  sx={{ pl: 1}}>
-                        Record <br />No
+                        Record No
                     </Typography>
                 ),
             },
@@ -213,13 +216,100 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'pan_card_proof',
+            label: "Pan Proof",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     Pan Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
+                }, 
+            },
+        },
+        {
+            name: 'aadhar_proof',
+            label: "Aadhar Proof",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Aadhar Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
+                }, 
+            },
+        },
+        {
+            name: 'business_address_proof',
+            label: "Business Proof",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Business Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value 
+                            }
+                        />
+                    )
+                },
+                // customBodyRender: (value) => {
+                //     return <Avatar variant="rounded" height="80px"
+                //     width="80px" src={value} />
+                // }, 
+                
+            },
+        },
+        // {
+        //     name: 'cpc_type',
+        //     label: "cpc type",
+        //     options: {
+        //         filter: true,
+        //         display:false,
+        //         customHeadLabelRender: () => (
+        //             <Typography variant="subtitle1" fontWeight="bold">
+        //               cpc type
+        //             </Typography>
+        //         ),
+        //     },
+        // },
+        {
             name: 'creation_date',
             label: "Creation Date",
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Creation <br />Date
+                      Creation Date
                     </Typography>
                 ),
                 customBodyRender: (value) =>
@@ -261,7 +351,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Mobile<br />No
+                      Mobile No
                     </Typography>
                 ),
                
@@ -269,12 +359,12 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'user_name',
-            label: "User Name",
+            label: "Buyer Name",
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      User <br />Name
+                      Buyer Name
                     </Typography>
                 ),
                
@@ -287,7 +377,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Sales  <br />User
+                      Sales User
                     </Typography>
                 ),
                
@@ -301,6 +391,123 @@ const SimpleMuiTable = () => {
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
                       Warehouse
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'billing_address',
+            label: "Address",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Address
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'city',
+            label: "City",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     City
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'state',
+            label: "State",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      State
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'country',
+            label: "Country",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Country
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'pincode',
+            label: "Pincode",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                     Pincode
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'gstin',
+            label: "GSTIN",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      GSTIN
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'pan_card_number',
+            label: "Pan Number",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Pan Number
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'mobile_verification_status',
+            label: "Mobile Status",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Mobile Status
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'email_verification_status',
+            label: "Email Status",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Email Status
                     </Typography>
                 ),
                
@@ -400,7 +607,8 @@ const SimpleMuiTable = () => {
             >
                 Add New Buyer
             </Button>
-           
+            <ScrollableTableContainer>
+            <ProductTable>
                 <MUIDataTable
                 title={'All Buyers'}
                 data={userList}
@@ -423,7 +631,8 @@ const SimpleMuiTable = () => {
                     sort:true,
                 }}
             />
-            
+             </ProductTable>
+              </ScrollableTableContainer>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

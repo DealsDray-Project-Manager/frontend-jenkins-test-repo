@@ -620,11 +620,23 @@ export const navigations = [
     },
     {
         name: 'Rack Change',
-        icon: 'class',
-        path: '/mis/rack-change',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Create Request',
+                path: '/mis/rack-change',
+                iconText: 'VP',
+            },
+            {
+                name: 'Created Request',
+                path: '/mis/rack-change-request',
+                iconText: 'VP',
+            },
+        ],
         auth: authRoles.Mis,
-        sales: "all",
+        sales: 'all',
     },
+   
 
     {
         name: 'Track',

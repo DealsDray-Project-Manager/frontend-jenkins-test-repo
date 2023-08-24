@@ -203,6 +203,13 @@ const StatCard3 = () => {
             sales: 'all',
         },
         {
+            icon: 'shopping_cart',
+            amount: count.rackChangeRequest,
+            title: 'Rack Change Request Created',
+            path: '/mis/rack-change-request',
+            sales: 'all',
+        },
+        {
             icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',

@@ -53,7 +53,6 @@ export default function DialogBox() {
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [rackiddrop, setrackiddrop] = useState([])
-    const [rackId, setRackId] = useState('')
     /*********************************************************** */
 
     useEffect(() => {
@@ -165,7 +164,7 @@ export default function DialogBox() {
                     obj.agentName = trayData?.rdl_2_user_temp
                 } else {
                     obj.prevStatus = trayData?.temp_status
-                    obj.rackId = rackId
+                    obj.rackId = trayData?.temp_rack
                 }
                 let res = await axiosWarehouseIn.post('/updateRackId', obj)
                 if (res.status == 200) {
@@ -367,9 +366,16 @@ export default function DialogBox() {
                     }}
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
-                    <h4 style={{ marginLeft: '13px' }}>
-                        Current Rack - {trayData?.rack_id}
-                    </h4>
+                    {trayData?.sort_id ==
+                    'Assigned to warehouae for rack change' ? (
+                        <h4 style={{ marginLeft: '13px' }}>
+                            Current Rack - {trayData?.rack_id}
+                        </h4>
+                    ) : (
+                        <h4 style={{ marginLeft: '13px' }}>
+                            New Rack - {trayData?.temp_rack}
+                        </h4>
+                    )}
                 </Box>
                 <Box
                     sx={{
@@ -394,27 +400,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                    {trayData?.sort_id !==
-                    'Assigned to warehouae for rack change' ? (
-                        <TextFieldCustOm
-                            sx={{ m: 1 }}
-                            label="Rack ID"
-                            select
-                            style={{ width: '150px' }}
-                            name="rack_id"
-                        >
-                            {rackiddrop?.map((data) => (
-                                <MenuItem
-                                    onClick={(e) => {
-                                        setRackId(data.rack_id)
-                                    }}
-                                    value={data.rack_id}
-                                >
-                                    {data.rack_id}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm>
-                    ) : null}
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -427,9 +412,6 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             loading == true ||
-                            (rackId == '' &&
-                                trayData?.sort_id !==
-                                    'Assigned to warehouae for rack change') ||
                             description == '' ||
                             trayData?.items?.length !==
                                 trayData?.actual_items?.length

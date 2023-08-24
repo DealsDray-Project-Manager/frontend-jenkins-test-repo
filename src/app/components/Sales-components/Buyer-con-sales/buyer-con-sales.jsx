@@ -93,6 +93,21 @@ const SimpleMuiTable = () => {
             },    
         },
         {
+            name: 'profile',
+            label: "Profile",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Profile
+                    </Typography>
+                ),
+                customBodyRender: (value) => {
+                    return <Avatar variant="rounded" src={value} />
+                }, 
+            },
+        },
+        {
             name: 'pan_card_proof',
             label: "Pan Proof",
             options: {
@@ -326,6 +341,19 @@ const SimpleMuiTable = () => {
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
                       Mobile Status
+                    </Typography>
+                ),
+               
+            },
+        },
+        {
+            name: 'warehouse',
+            label: "Warehouse",
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Warehouse
                     </Typography>
                 ),
                

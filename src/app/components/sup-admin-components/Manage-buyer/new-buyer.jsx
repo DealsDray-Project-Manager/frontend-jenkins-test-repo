@@ -65,7 +65,7 @@ const MemberEditorDialog = ({
                 })
             }
         }
-      
+        fetchCpc()
         if (Object.keys(editFetchData).length !== 0) {
             editFetchData.cpassword = editFetchData.password
             Setprofile({
@@ -87,12 +87,23 @@ const MemberEditorDialog = ({
                 store: {},
             });
 
-            reset({ ...editFetchData 
-            });
+            reset({ ...editFetchData});
+            let arr = []
+            let obj = {
+                name: editFetchData.warehouse,
+            }
+            let objOne = {
+                code: editFetchData.location_type,
+            }
+            let arrOne = []
+            arrOne.push(objOne)
+            setSelectedCpc(arrOne)
+            arr.push(obj)
+            setWarehouse(arr)
             open()
         }
-        fetchCpc()
-    },[])
+       
+    },[editFetchData])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -150,9 +161,9 @@ const MemberEditorDialog = ({
         .max(10)
         .required('Required*')
         .nullable(),
-        // cpc_type: Yup.string().required('Required*').nullable(),
-        // warehouse: Yup.string().required('Required*').nullable(),
-        // sales_users: Yup.string().required('Required*').nullable(),
+        cpc_type: Yup.string().required('Required*').nullable(),
+        warehouse: Yup.string().required('Required*').nullable(),
+        sales_users: Yup.string().required('Required*').nullable(),
         mobile_verification_status: Yup.string().required('Required*').nullable(),
         email_verification_status: Yup.string().required('Required*').nullable(),
         // pan_card_proof: Yup.mixed().required('Pan card photo is required'),
@@ -251,7 +262,6 @@ const MemberEditorDialog = ({
             if (res.status == 200) {
                 setGetSalesUsers(res.data.data)
             }
-            console.log('Sales Users Data:', res.data);
         } catch (error) {
             alert(error)
         }
@@ -398,6 +408,7 @@ const MemberEditorDialog = ({
                             label="Profile"
                             type="file"
                             InputLabelProps={{ shrink: true }}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             name="profile"
                             onChange={(e) => {
                                 handelProfile(e)
@@ -407,6 +418,7 @@ const MemberEditorDialog = ({
                             label="Buisness Name"
                             type="text"
                             name="businessName"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('businessName')}
                             error={errors.businessName ? true : false}
                             helperText={errors.businessName ? errors.businessName.message : ''}
@@ -416,6 +428,7 @@ const MemberEditorDialog = ({
                             label="Name"
                             type="text"
                             name="name"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('name')}
                             error={errors.name ? true : false}
                             helperText={errors.name ? errors.name.message : ''}
@@ -438,6 +451,7 @@ const MemberEditorDialog = ({
                             label="City"
                             type="text"
                             name="city"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('city')}
                             error={errors.city ? true : false}
                             helperText={errors.city ? errors.city?.message : ''}
@@ -446,6 +460,7 @@ const MemberEditorDialog = ({
                             label="Country"
                             type="text"
                             name="country"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('country')}
                             error={errors.country ? true : false}
                             helperText={
@@ -456,6 +471,7 @@ const MemberEditorDialog = ({
                             label="GSTIN"
                             type="text"
                             name="gstin"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             inputProps={{ maxLength: 12 }}
                             {...register('gstin')}
                             error={errors.gstin ? true : false}
@@ -465,6 +481,7 @@ const MemberEditorDialog = ({
                             label="PAN Card Number"
                             type="text"
                             name="pan_card_number"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             inputProps={{ maxLength: 10 }}
                             {...register('pan_card_number')}
                             error={errors.pan_card_number ? true : false}
@@ -476,21 +493,20 @@ const MemberEditorDialog = ({
                             name="cpc"
                             {...register('cpc')}
                             // value={getValues('cpc')}
-                            // onChange={(e) => {
-                            //     getLocationType(e.target.value)
-                            // }}
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            onChange={(e) => {
+                                getLocationType(e.target.value)
+                            }}
                              defaultValue={getValues('cpc')}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
                             {cpc?.map((cpcData) => (
                                 <MenuItem
-                                    // key={cpcData.code}
+                                    key={cpcData.code}
                                     value={cpcData.code}
                                     onClick={() =>
-                                        getLocationType(
-                                            cpcData.code,
-                                        )
+                                        getLocationType(cpcData.code)
                                     }
                                 >
                                     {cpcData.code}
@@ -500,22 +516,22 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="CPC Type"
                             select
-                            name="location_type"
+                            name="cpc_type"
                             {...register('cpc_type')}
-                            value={getValues('cpc_type')}
+                            // value={getValues('cpc_type')}
                             disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={getValues('location_type')}
-                            onChange={(e) => {
-                                getlWarehouse(e.target.value)
-                            }}
+                            defaultValue={getValues('cpc_type')}
+                            // onChange={(e) => {
+                            //     getlWarehouse(e.target.value)
+                            // }}
                             error={errors.cpc_type ? true : false}
                             helperText={errors.cpc_type?.message}
                         >
                             {cpcType?.map((cpcData) => (
                                 <MenuItem
                                     onClick={(e) => {
-                                        setSelectedCpc(cpcData.location_type)
-                                        
+                                        setSelectedCpc(cpcData.location_type)  
+                                        getlWarehouse(cpcData.location_type)
                                     }}
                                     key={cpcData.location_type}
                                     value={cpcData.location_type}
@@ -527,15 +543,14 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Warehouse"
                             select
-                            name="code"
-                            {...register('code')}
-                            value={getValues('warehouse')}
+                            name="warehouse"
+                            {...register('warehouse')}
+                            // value={getValues('warehouse')}
                             disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={getValues('code')}
-                          
-                            onChange={(e) => {
-                                handelSlaesUsers(e.target.value)
-                            }}
+                            defaultValue={getValues('warehouse')}
+                            // onChange={(e) => {
+                            //     handelSlaesUsers(e.target.value)
+                            // }}
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >
@@ -543,12 +558,15 @@ const MemberEditorDialog = ({
                                 <MenuItem
                                     key={cpcData.code}
                                     value={cpcData.code}
+                                    onClick={() =>
+                                        handelSlaesUsers(cpcData.code)
+                                    }
                                 >
                                     {cpcData.code}
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-                        <TextFieldCustOm
+                        <TextFieldCustOm   
                             label="Sales Users"
                             select
                             name="sales_users"
@@ -598,6 +616,7 @@ const MemberEditorDialog = ({
                             type="text"
                             name="billing_address"
                             {...register('billing_address')}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.billing_address ? true : false}
                             helperText={
                                 errors.billing_address ? errors.billing_address?.message : ''
@@ -607,6 +626,7 @@ const MemberEditorDialog = ({
                             type="text"
                             name="state"
                             {...register('state')}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.state ? true : false}
                             helperText={
                                 errors.state ? errors.state?.message : ''
@@ -617,6 +637,7 @@ const MemberEditorDialog = ({
                             type="number"
                             name="pincode"
                             inputProps={{ maxLength: 6 }}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             onKeyPress={(event) => {
                                 if (!/[0-9]/.test(event.key)) {
                                     event.preventDefault()
@@ -632,7 +653,6 @@ const MemberEditorDialog = ({
                             label="Password"
                             type="password"
                             name="password"
-                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('password')}
                             error={errors.password ? true : false}
                             helperText={errors.password?.message}
@@ -641,7 +661,6 @@ const MemberEditorDialog = ({
                             label="Confirm Password"
                             type="password"
                             name="cpassword"
-                            disabled={Object.keys(editFetchData).length !== 0}
                             {...register('cpassword')}
                             error={errors.cpassword ? true : false}
                             helperText={errors.cpassword?.message}
@@ -651,6 +670,7 @@ const MemberEditorDialog = ({
                                 select
                                 name="mobile_verification_status"
                                 {...register('mobile_verification_status')}
+                                disabled={Object.keys(editFetchData).length !== 0}
                                 defaultValue={editFetchData.mobile_verification_status || ''}
                                 error={errors.mobile_verification_status ? true : false}
                                 helperText={errors.mobile_verification_status?.message}
@@ -662,6 +682,7 @@ const MemberEditorDialog = ({
                                 label="Email Verification Status"
                                 select
                                 name="email_verification_status"
+                                disabled={Object.keys(editFetchData).length !== 0}
                                 defaultValue={editFetchData.email_verification_status || ''}
                                 {...register('email_verification_status')}
                                 error={errors.email_verification_status ? true : false}
@@ -676,6 +697,7 @@ const MemberEditorDialog = ({
                             InputLabelProps={{ shrink: true }}
                             {...register('pan_card_proof')}
                             name="pan_card_proof"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.pan_card_proof ? true : false}
                             helperText={errors.pan_card_proof?.message}
                             onChange={(e) => {
@@ -687,6 +709,7 @@ const MemberEditorDialog = ({
                             label="Aadhar Photo"
                             type="file"
                             InputLabelProps={{ shrink: true }}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             name="aadhar_proof"
                             {...register('aadhar_proof')}
                             error={errors.aadhar_proof ? true : false}
@@ -698,6 +721,7 @@ const MemberEditorDialog = ({
                            <TextFieldCustOm
                             label="Business Address Proof"
                             type="file"
+                            disabled={Object.keys(editFetchData).length !== 0}
                             InputLabelProps={{ shrink: true }}
                             name="business_address_proof"
                             {...register('business_address_proof')}

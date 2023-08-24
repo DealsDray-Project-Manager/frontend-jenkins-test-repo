@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
+import MUIDataTable from 'mui-datatables'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import moment from 'moment'
@@ -25,7 +26,7 @@ import Swal from 'sweetalert2'
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '150%',
+    width: '170%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -65,7 +66,6 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(100)
     const [item, setItem] = useState([])
@@ -76,6 +76,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [location, setLocation] = useState('')
     const [count, setCount] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
     const [searchType, setSearchType] = useState('')
     const [inputSearch, setInputSearch] = useState('')
     const [displayText, setDisplayText] = useState('')
@@ -96,32 +97,9 @@ const SimpleMuiTable = () => {
         let admin = localStorage.getItem('prexo-authentication')
         if (admin) {
             const { location } = jwt_decode(admin)
-            setDisplayText('Loading...')
+            setIsLoading(true)
             setLocation(location)
-            if (inputSearch !== '') {
-                const pageSearch = async () => {
-                    let obj = {
-                        location: location,
-                        searchData: inputSearch,
-                        page: page,
-                        rowsPerPage: rowsPerPage,
-                    }
-                    let res = await axiosReportingAgent.post(
-                        '/search/unverifiedImei',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setCount(res.data.count)
-                        setItem(res.data.data)
-                    } else {
-                        setItem(res.data.data)
-                        setCount(res.data.count)
-                        setDisplayText('Sorry no data found')
-                    }
-                }
-                pageSearch()
-            } else if (stateForFilterUn == true) {
+            if (stateForFilterUn == true) {
                 dataFilter()
             } else {
                 const fetchData = async () => {
@@ -130,8 +108,7 @@ const SimpleMuiTable = () => {
                             '/unverifiedImeiReport/' + page + '/' + rowsPerPage
                         )
                         if (res.status == 200) {
-                            setDisplayText('')
-                            setCount(res.data.count)
+                            setIsLoading(false)
                             setItem(res.data.data)
                         }
                     } catch (error) {
@@ -159,53 +136,9 @@ const SimpleMuiTable = () => {
         )
     }, [page, item, rowsPerPage])
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage)
-    }
+   
 
-    const searchTrackItem = async (e) => {
-        setInputSearch(e.target.value)
-        e.preventDefault()
-        try {
-            let admin = localStorage.getItem('prexo-authentication')
-            if (admin) {
-                setDisplayText('Searching...')
-                let { location } = jwt_decode(admin)
-                if (e.target.value == '') {
-                    setIsAlive((isAlive) => !isAlive)
-                } else {
-                    setRowsPerPage(100)
-                    setPage(0)
-                    let obj = {
-                        location: location,
-                        searchData: e.target.value,
-                        page: page,
-                        rowsPerPage: rowsPerPage,
-                    }
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/search/unverifiedImei',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        setDisplayText('')
-                        setCount(res.data.count)
-                        setItem(res.data.data)
-                    } else {
-                        setItem(res.data.data)
-                        setCount(res.data.count)
-                        setDisplayText('Sorry no data found')
-                    }
-                }
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }
+  
 
     const dataFilter = async () => {
         try {
@@ -220,12 +153,11 @@ const SimpleMuiTable = () => {
                 filterData
             )
             if (res.status === 200) {
-                setDisplayText('')
-                setCount(res.data.count)
+               
                 setItem(res.data.data)
             } else {
                 setItem(res.data.data)
-                setDisplayText('Sorry no data found')
+              
             }
         } catch (error) {
             alert(error)
@@ -250,7 +182,7 @@ const SimpleMuiTable = () => {
     ) => {
         setUicData({
             uic: uic,
-            delivery_imei:delivery_imei,
+            delivery_imei: delivery_imei,
             bqc_ro_ril_imei: bqc_ro_ril_imei,
             bqc_ro_mob_one_imei: bqc_ro_mob_one_imei,
             bqc_ro_mob_two_imei: bqc_ro_mob_two_imei,
@@ -501,6 +433,158 @@ const SimpleMuiTable = () => {
         )
     }, [item, data, displayText])
 
+    const columns = [
+        {
+            name: 'index',
+            label: 'Record No',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (rowIndex, dataIndex) =>
+                    dataIndex.rowIndex + 1,
+            },
+        },
+        {
+            name: 'uic_code', // field name in the row object
+            label: 'Uic', // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?.code || '',
+            },
+        },
+
+        {
+            name: 'old_item_details',
+            label: 'Brand and model',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.replace(/:/g, ' ')?.toUpperCase(),
+            },
+        },
+        {
+            name: 'imei',
+            label: 'Delivery IMEI',
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
+            name: 'bqc_software_report',
+            label: 'Bqc software report RO Ril Miui IMEI 0',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?._ro_ril_miui_imei0 || '',
+            },
+        },
+
+        {
+            name: 'bqc_software_report',
+            label: 'Bqc software report Mobile IMEI',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?.mobile_imei || '',
+            },
+        },
+        {
+            name: 'bqc_software_report',
+            label: 'Bqc software report Mobile IMEI 2',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?.mobile_imei2 || '',
+            },
+        },
+        {
+            name: 'charging',
+            label: 'Charging user added CIMEI 1',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?.cimei_1 || '',
+            },
+        },
+        {
+            name: 'charging',
+            label: 'Charging user added CIMEI 2',
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                value?.cimei_2 || '',
+            },
+        },
+        {
+            name: 'tray_status',
+            label: 'Tray status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'wht_tray',
+            label: 'Wht tray id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'stx_tray_id',
+            label: 'Stx tray id',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sales_bin_status',
+            label: 'Sales Bin Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'item_moved_to_billed_bin',
+            label: 'Billed Bin Status',
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'code',
+            label: 'Action',
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={(e) => {
+                                    handelUpdateImei(
+                                        tableMeta.rowData[1]?.code,
+                                        tableMeta.rowData[3],
+                                        tableMeta.rowData[4]?._ro_ril_miui_imei0,
+                                        tableMeta.rowData[5]?.mobile_imei,
+                                        tableMeta.rowData[6]?.mobile_imei2
+                                    )
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                            >
+                                Update Imei
+                            </Button>
+                        </>
+                    )
+                },
+            },
+        },
+    ]
     return (
         <Container>
             <div className="breadcrumb">
@@ -508,116 +592,57 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Unverified Imei', path: '/' }]}
                 />
             </div>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Box>
-                    <TextField
-                        onChange={(e) => {
-                            searchTrackItem(e)
-                        }}
-                        // disabled={search.type == '' ? true : false}
-                        label="Search"
-                        variant="outlined"
-                        sx={{ mb: 1 }}
-                    />
-                </Box>
-                <Box>
-                    <TextField
-                        type="text"
-                        select
-                        label="Select Type"
-                        variant="outlined"
-                        name="searchType"
-                        sx={{ width: '140px' }}
-                    >
-                        <MenuItem
-                            value="Order Date"
-                            onClick={(e) => {
-                                setSearchType('Order Date')
-                            }}
-                        >
-                            Order Date
-                        </MenuItem>
-                        <MenuItem
-                            value="Delivery Date"
-                            onClick={(e) => {
-                                setSearchType('Delivery Date')
-                            }}
-                        >
-                            Delivery Date
-                        </MenuItem>
-                    </TextField>
-                    <TextField
-                        type="date"
-                        disabled={searchType == ''}
-                        label="From Date"
-                        variant="outlined"
-                        inputProps={{ max: moment().format('YYYY-MM-DD') }}
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        sx={{ ml: 3 }}
-                        name="fromDate"
-                        InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                        type="date"
-                        label="To Date"
-                        name="toDate"
-                        inputProps={{
-                            min: filterData?.fromDate,
-                            max: moment().format('YYYY-MM-DD'),
-                        }}
-                        disabled={filterData.fromDate == ''}
-                        variant="outlined"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        sx={{ ml: 3 }}
-                        InputLabelProps={{ shrink: true }}
-                    />
-                    <Button
-                        sx={{ ml: 2, mt: 1 }}
-                        variant="contained"
-                        disabled={
-                            filterData.fromDate == '' || filterData.toDate == ''
-                        }
-                        style={{ backgroundColor: 'green' }}
-                        onClick={(e) => {
-                            dataFilter(e)
-                        }}
-                    >
-                        Filter
-                    </Button>
-                </Box>
-            </Box>
+         
+            
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-                {tableData}
+                <ProductTable>
+                    <MUIDataTable
+                        title={'Unverified Units'}
+                        data={item}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
+                                        return (
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </ProductTable>
             </Card>
-            <TablePagination
-                sx={{ px: 2 }}
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                showFirstButton="true"
-                showLastButton="true"
-                backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                }}
-                nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={({ target: { value } }) =>
-                    setRowsPerPage(value)
-                }
-            />
             {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}

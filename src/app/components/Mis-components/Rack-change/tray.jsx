@@ -31,9 +31,9 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
     const { user } = useAuth()
-    const[trayDetails,setTrayDetails]=useState({
-        sort_id:"",
-        current_rack:""
+    const [trayDetails, setTrayDetails] = useState({
+        sort_id: '',
+        current_rack: '',
     })
     const [warehouseUser, setWarehouseUser] = useState([])
 
@@ -195,9 +195,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value == 0 ? tableMeta.rowData[4] : value) +
+                        (value == 0 ? tableMeta.rowData[5] : value) +
                         '/' +
-                        tableMeta.rowData[5]
+                        tableMeta.rowData[6]
                     )
                 },
             },

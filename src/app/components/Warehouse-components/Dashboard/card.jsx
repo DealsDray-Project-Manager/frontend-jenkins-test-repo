@@ -17,10 +17,10 @@ const StatCard3 = () => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
-                let { location } = jwt_decode(user)
+                let { location ,user_name} = jwt_decode(user)
                 try {
                     let res = await axiosWarehouseIn.post(
-                        '/dashboard/' + location
+                        `dashboard/${location}/${user_name}`
                     )
                     if (res.status === 200) {
                         setCount(res.data.data)
@@ -284,6 +284,20 @@ const StatCard3 = () => {
             amount: count.ctxReceiveRequest,
             title: 'CTX Receive Request',
             path: '/wareshouse/ctx/receive/request',
+            sales: 'all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rackChangeStockOut,
+            title: 'Rack Change Scan Out',
+            path: '/warehouse/rack-change/scan-out',
+            sales: 'all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rackChangeStockin,
+            title: 'Rack Change Scan In',
+            path: '/warehouse/rack-change/scan-in',
             sales: 'all',
         },
     ]

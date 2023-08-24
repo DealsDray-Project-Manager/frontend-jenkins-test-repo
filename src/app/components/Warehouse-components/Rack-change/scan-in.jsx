@@ -194,14 +194,22 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rdl_2_user_temp',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Scan out Agent
-                </Typography>
-            ),
+            name: 'display',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray Display</Typography>,
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: <Typography sx={{fontWeight:'bold'}} noWrap>Assigned Date</Typography>,
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {

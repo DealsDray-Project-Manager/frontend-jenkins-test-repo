@@ -81,17 +81,19 @@ const MemberEditorDialog = ({
                     select
                     name="username"
                 >
-                    {showRack.map((data) => (
-                        <MenuItem
-                            key={data.rack_id}
-                            value={data.rack_id}
-                            onClick={(e) => {
-                                setnewRack(data.rack_id)
-                            }}
-                        >
-                            {data.rack_id}
-                        </MenuItem>
-                    ))}
+                    {showRack
+                        .filter((dataRack) => dataRack.rack_id !== curRackId)
+                        .map((data) => (
+                            <MenuItem
+                                key={data.rack_id}
+                                value={data.rack_id}
+                                onClick={(e) => {
+                                    setnewRack(data.rack_id)
+                                }}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
                 </TextFieldCustOm>
 
                 <FormHandlerBox>

@@ -163,6 +163,33 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'display',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Tray Display
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Assigned Date
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
             name: 'limit',
             label: 'limit',
             options: {

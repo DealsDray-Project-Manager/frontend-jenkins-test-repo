@@ -28,17 +28,6 @@ const ProductTable = styled(Table)(() => ({
     width: '180%',
     height:'100%',
     whiteSpace: 'pre',
-    // '& thead': {
-    //     '& th:first-of-type': {
-    //         paddingLeft: 16,
-    //     },
-    // },
-    // '& td': {
-    //     borderBottom: '1px solid #ddd',
-    // },
-    // '& td:first-of-type': {
-    //     paddingLeft: '36px !important',
-    // },
 }))
 
 const ScrollableTableContainer = styled(TableContainer)

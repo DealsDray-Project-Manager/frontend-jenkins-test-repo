@@ -166,9 +166,7 @@ const MemberEditorDialog = ({
         sales_users: Yup.string().required('Required*').nullable(),
         mobile_verification_status: Yup.string().required('Required*').nullable(),
         email_verification_status: Yup.string().required('Required*').nullable(),
-        // pan_card_proof: Yup.mixed().required('Pan card photo is required'),
-        // pan_card_proof: Yup.mixed().required('Aadhar card Photo is required'),
-        // business_address_proof: Yup.mixed().required('Business address photo is required'),
+      
     })
     const {
         register,
@@ -180,7 +178,6 @@ const MemberEditorDialog = ({
         resolver: yupResolver(schema),
     })
 
-   
     const onSubmit = async (values) => {
         try {
             values.user_type = 'Buyer';
@@ -217,7 +214,7 @@ const MemberEditorDialog = ({
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title: 'User exist,Please check username',
+                        title: 'Buyer exist,Please check Buyername',
                         confirmButtonText: 'Ok',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
@@ -415,26 +412,18 @@ const MemberEditorDialog = ({
                             }}
                         />
                          <TextFieldCustOm
-                            label="Buisness Name"
+                            label="Buyer Name"
                             type="text"
-                            name="businessName"
+                            name="user_name"
+                            {...register('user_name')}
                             disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('businessName')}
-                            error={errors.businessName ? true : false}
-                            helperText={errors.businessName ? errors.businessName.message : ''}
+                            error={errors.user_name ? true : false}
+                            helperText={
+                                errors.user_name ? errors.user_name.message : ''
+                            }
                             inputProps={{ maxLength: 40 }}
                         />
-                        <TextFieldCustOm
-                            label="Name"
-                            type="text"
-                            name="name"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('name')}
-                            error={errors.name ? true : false}
-                            helperText={errors.name ? errors.name.message : ''}
-                            inputProps={{ maxLength: 40 }}
-                        />
-                           <TextFieldCustOm
+                            <TextFieldCustOm
                             label="Mobile No"
                             name="contact"
                             {...register('contact')}
@@ -447,26 +436,40 @@ const MemberEditorDialog = ({
                                 errors.contact ? errors.contact.message : ''
                             }
                         />
-                          <TextFieldCustOm
-                            label="City"
+                           <TextFieldCustOm
+                            label="Name"
                             type="text"
-                            name="city"
+                            name="name"
                             disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('city')}
-                            error={errors.city ? true : false}
-                            helperText={errors.city ? errors.city?.message : ''}
+                            {...register('name')}
+                            error={errors.name ? true : false}
+                            helperText={errors.name ? errors.name.message : ''}
+                            inputProps={{ maxLength: 40 }}
                         />
-                              <TextFieldCustOm
-                            label="Country"
+                            <TextFieldCustOm
+                            label="State"
                             type="text"
-                            name="country"
+                            name="state"
+                            {...register('state')}
                             disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('country')}
-                            error={errors.country ? true : false}
+                            error={errors.state ? true : false}
                             helperText={
-                                errors.country ? errors.country?.message : ''
+                                errors.state ? errors.state?.message : ''
                             }
                         />
+                         <TextFieldCustOm
+                            label="Buisness Name"
+                            type="text"
+                            name="businessName"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('businessName')}
+                            error={errors.businessName ? true : false}
+                            helperText={errors.businessName ? errors.businessName.message : ''}
+                            inputProps={{ maxLength: 40 }}
+                        />
+                     
+                     
+                         
                          <TextFieldCustOm
                             label="GSTIN"
                             type="text"
@@ -599,17 +602,52 @@ const MemberEditorDialog = ({
                                 errors.email ? errors.email.message : ''
                             }
                         />
-                        <TextFieldCustOm
-                            label="Buyer Name"
+                          <TextFieldCustOm
+                                label="Email Verification Status"
+                                select
+                                name="email_verification_status"
+                                disabled={Object.keys(editFetchData).length !== 0}
+                                defaultValue={editFetchData.email_verification_status || ''}
+                                {...register('email_verification_status')}
+                                error={errors.email_verification_status ? true : false}
+                                helperText={errors.email_verification_status?.message}
+                            >
+                                <MenuItem value="Verified">Verified</MenuItem>
+                                <MenuItem value="Unverified">Unverified</MenuItem>
+                            </TextFieldCustOm>
+                            <TextFieldCustOm
+                                label="Mobile Verification Status"
+                                select
+                                name="mobile_verification_status"
+                                {...register('mobile_verification_status')}
+                                disabled={Object.keys(editFetchData).length !== 0}
+                                defaultValue={editFetchData.mobile_verification_status || ''}
+                                error={errors.mobile_verification_status ? true : false}
+                                helperText={errors.mobile_verification_status?.message}
+                            >
+                                <MenuItem value="Verified">Verified</MenuItem>
+                                <MenuItem value="Unverified">Unverified</MenuItem>
+                            </TextFieldCustOm>
+                            
+                            <TextFieldCustOm
+                            label="Country"
                             type="text"
-                            name="user_name"
-                            {...register('user_name')}
+                            name="country"
                             disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.user_name ? true : false}
+                            {...register('country')}
+                            error={errors.country ? true : false}
                             helperText={
-                                errors.user_name ? errors.user_name.message : ''
+                                errors.country ? errors.country?.message : ''
                             }
-                            inputProps={{ maxLength: 40 }}
+                        />
+                         <TextFieldCustOm
+                            label="City"
+                            type="text"
+                            name="city"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            {...register('city')}
+                            error={errors.city ? true : false}
+                            helperText={errors.city ? errors.city?.message : ''}
                         />
                        <TextFieldCustOm
                             label="Billing Address"
@@ -621,17 +659,7 @@ const MemberEditorDialog = ({
                             helperText={
                                 errors.billing_address ? errors.billing_address?.message : ''
                             }/>
-                             <TextFieldCustOm
-                            label="State"
-                            type="text"
-                            name="state"
-                            {...register('state')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.state ? true : false}
-                            helperText={
-                                errors.state ? errors.state?.message : ''
-                            }
-                        />
+                         
                           <TextFieldCustOm
                             label="Pincode"
                             type="number"
@@ -665,45 +693,17 @@ const MemberEditorDialog = ({
                             error={errors.cpassword ? true : false}
                             helperText={errors.cpassword?.message}
                         />
-                         <TextFieldCustOm
-                                label="Mobile Verification Status"
-                                select
-                                name="mobile_verification_status"
-                                {...register('mobile_verification_status')}
-                                disabled={Object.keys(editFetchData).length !== 0}
-                                defaultValue={editFetchData.mobile_verification_status || ''}
-                                error={errors.mobile_verification_status ? true : false}
-                                helperText={errors.mobile_verification_status?.message}
-                            >
-                                <MenuItem value="Verified">Verified</MenuItem>
-                                <MenuItem value="Unverified">Unverified</MenuItem>
-                            </TextFieldCustOm>
-                            <TextFieldCustOm
-                                label="Email Verification Status"
-                                select
-                                name="email_verification_status"
-                                disabled={Object.keys(editFetchData).length !== 0}
-                                defaultValue={editFetchData.email_verification_status || ''}
-                                {...register('email_verification_status')}
-                                error={errors.email_verification_status ? true : false}
-                                helperText={errors.email_verification_status?.message}
-                            >
-                                <MenuItem value="Verified">Verified</MenuItem>
-                                <MenuItem value="Unverified">Unverified</MenuItem>
-                            </TextFieldCustOm>
+                        
+                          
                             <TextFieldCustOm
                             label="PAN Card Photo"
                             type="file"
                             InputLabelProps={{ shrink: true }}
-                            {...register('pan_card_proof')}
                             name="pan_card_proof"
                             disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.pan_card_proof ? true : false}
-                            helperText={errors.pan_card_proof?.message}
                             onChange={(e) => {
                                 handelPanCardProof(e);
                             }}
-                       
                         />
                            <TextFieldCustOm
                             label="Aadhar Photo"
@@ -711,9 +711,6 @@ const MemberEditorDialog = ({
                             InputLabelProps={{ shrink: true }}
                             disabled={Object.keys(editFetchData).length !== 0}
                             name="aadhar_proof"
-                            {...register('aadhar_proof')}
-                            error={errors.aadhar_proof ? true : false}
-                                helperText={errors.aadhar_proof?.message}
                             onChange={(e) => {
                                 handelAadharProof(e);
                             }}
@@ -724,9 +721,6 @@ const MemberEditorDialog = ({
                             disabled={Object.keys(editFetchData).length !== 0}
                             InputLabelProps={{ shrink: true }}
                             name="business_address_proof"
-                            {...register('business_address_proof')}
-                            error={errors.business_address_proof ? true : false}
-                                helperText={errors.business_address_proof?.message}
                             onChange={(e) => {
                                 handelBusinessAddressProof(e);
                             }}

@@ -136,10 +136,6 @@ const SimpleMuiTable = () => {
         )
     }, [page, item, rowsPerPage])
 
-   
-
-  
-
     const dataFilter = async () => {
         try {
             filterData.location = location
@@ -153,11 +149,9 @@ const SimpleMuiTable = () => {
                 filterData
             )
             if (res.status === 200) {
-               
                 setItem(res.data.data)
             } else {
                 setItem(res.data.data)
-              
             }
         } catch (error) {
             alert(error)
@@ -436,7 +430,9 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Record No</Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -446,17 +442,20 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'uic_code', // field name in the row object
-            label:<Typography sx={{ fontWeight: 'bold' }}>UIC</Typography> , // column title that will be shown in table
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                value?.code || '',
+                customBodyRender: (value, tableMeta) => value?.code || '',
             },
         },
 
         {
             name: 'old_item_details',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Brand and model</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Brand and model
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -465,96 +464,131 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'imei',
-            label:  <Typography sx={{ fontWeight: 'bold' }}>Delivery IMEI</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Delivery IMEI
+                </Typography>
+            ),
             options: {
                 filter: true,
-                
             },
         },
         {
             name: 'bqc_software_report',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Bqc software report RO Ril Miui IMEI 0</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Bqc software report RO Ril Miui IMEI 0
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                value?._ro_ril_miui_imei0 || '',
+                    value?._ro_ril_miui_imei0 || '',
             },
         },
 
         {
             name: 'bqc_software_report',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Bqc software report Mobile IMEI</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Bqc software report Mobile IMEI
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                value?.mobile_imei || '',
+                    value?.mobile_imei || '',
             },
         },
         {
             name: 'bqc_software_report',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Bqc software report Mobile IMEI 2</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Bqc software report Mobile IMEI 2
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                value?.mobile_imei2 || '',
+                    value?.mobile_imei2 || '',
             },
         },
         {
             name: 'charging',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Charging user added CIMEI 1</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Charging user added CIMEI 1
+                </Typography>
+            ),
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                value?.cimei_1 || '',
+                customBodyRender: (value, tableMeta) => value?.cimei_1 || '',
             },
         },
         {
             name: 'charging',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Charging user added CIMEI 2</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Charging user added CIMEI 2
+                </Typography>
+            ),
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) =>
-                value?.cimei_2 || '',
+                customBodyRender: (value, tableMeta) => value?.cimei_2 || '',
             },
         },
         {
             name: 'tray_status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Tray status</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray status</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'wht_tray',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Wht tray id</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Wht tray id</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'stx_tray_id',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Stx tray id</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Stx tray id</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sales_bin_status',
-            label:<Typography sx={{ fontWeight: 'bold' }}>Sales Bin Status</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sales Bin Status
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'item_moved_to_billed_bin',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Billed Bin Status</Typography> ,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Billed Bin Status
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label:  <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -570,7 +604,8 @@ const SimpleMuiTable = () => {
                                     handelUpdateImei(
                                         tableMeta.rowData[1]?.code,
                                         tableMeta.rowData[3],
-                                        tableMeta.rowData[4]?._ro_ril_miui_imei0,
+                                        tableMeta.rowData[4]
+                                            ?._ro_ril_miui_imei0,
                                         tableMeta.rowData[5]?.mobile_imei,
                                         tableMeta.rowData[6]?.mobile_imei2
                                     )
@@ -592,8 +627,7 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Unverified Imei', path: '/' }]}
                 />
             </div>
-         
-            
+
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
                 <ProductTable>
                     <MUIDataTable

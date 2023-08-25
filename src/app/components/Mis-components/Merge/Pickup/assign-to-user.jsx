@@ -114,8 +114,27 @@ const MemberEditorDialog = ({
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL">Re-RDL One</MenuItem>
+                        <MenuItem value="Ready to RDL-Repair">
+                            Re-RDL Two
+                        </MenuItem>
                     </TextFieldCustOm>
-                ) : value !== 'Ready to RDL-Repair' ? (
+                ) : value == 'Ready to RDL-Repair' ? (
+                    <TextFieldCustOm
+                        label="Select Next Stage"
+                        fullWidth
+                        select
+                        name="stage"
+                        onChange={(e) => {
+                            setNextStage(e.target.value)
+                        }}
+                    >
+                        <MenuItem value="Inuse">In Use</MenuItem>
+                        <MenuItem value="Recharge">Recharge</MenuItem>
+                        <MenuItem value="Charge Done">Re-BQC</MenuItem>
+                        <MenuItem value="BQC Done">Re-Audit</MenuItem>
+                        <MenuItem value="Ready to RDL">Re-RDL One</MenuItem>
+                    </TextFieldCustOm>
+                ) : value == 'Audit Done' ? (
                     <TextFieldCustOm
                         label="Select Next Stage"
                         fullWidth
@@ -130,7 +149,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                     </TextFieldCustOm>
-                ) : (
+                ) : value == 'BQC Done' ? (
                     <TextFieldCustOm
                         label="Select Next Stage"
                         fullWidth
@@ -142,11 +161,23 @@ const MemberEditorDialog = ({
                     >
                         <MenuItem value="Inuse">In Use</MenuItem>
                         <MenuItem value="Recharge">Recharge</MenuItem>
-                        <MenuItem value="BQC Done">Re-Audit</MenuItem>
-                        <MenuItem value="Ready to RDL-Repair">
-                            Ready to RDL-Two
-                        </MenuItem>
+                        <MenuItem value="Charge Done">Re-BQC</MenuItem>
                     </TextFieldCustOm>
+                ) : value == 'Charge Done' ? (
+                    <TextFieldCustOm
+                        label="Select Next Stage"
+                        fullWidth
+                        select
+                        name="stage"
+                        onChange={(e) => {
+                            setNextStage(e.target.value)
+                        }}
+                    >
+                        <MenuItem value="Inuse">In Use</MenuItem>
+                        <MenuItem value="Recharge">Recharge</MenuItem>
+                    </TextFieldCustOm>
+                ) : (
+                    ''
                 )}
 
                 <FormHandlerBox>

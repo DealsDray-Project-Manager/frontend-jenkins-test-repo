@@ -56,11 +56,12 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosPurchaseAgent.post(
-                        '/procurment/view/' + 'Order Placed'
+                        '/procurementOrderSummary'
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
                         setData(res.data.data)
+                        setTotalPrice(res.data.totalAmount)
                     }
                 } else {
                     navigate('/')
@@ -78,31 +79,6 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-    const handleChangeSort = ({ target: { name, value } }) => {
-        setFilterData({
-            ...filterData,
-            [name]: value,
-        })
-        if (name == 'toDate') {
-            handelGetVendor(filterData.fromDate, value)
-        }
-    }
-    const dataFilter = async (type) => {
-        try {
-            setIsLoading(true)
-            const res = await axiosPurchaseAgent.post(
-                '/placeOrderDateFilter',
-                filterData
-            )
-            if (res.status === 200) {
-                setIsLoading(false)
-                setData(res.data.data)
-                setTotalPrice(res.data.totalPrice)
-            }
-        } catch (error) {
-            alert(error)
-        }
-    }
     // EXPORT TO EXCEL
     const downloadExcel = (e) => {
         let arr = []
@@ -110,17 +86,14 @@ const SimpleMuiTable = () => {
         for (let x of data) {
             let obj = {
                 'Record No': i,
-                POID: x.poid,
-                'Part Id': x.spn_number,
-                Date: new Date(x.placed_date).toLocaleString('en-GB', {
+                'Last Order Placed Date': new Date(
+                    x.last_placed_date
+                ).toLocaleString('en-GB', {
                     hour12: true,
                 }),
-                'Part Name': x?.partDetails?.[0]?.name,
-                'Vendor Id': x.vendor_id,
-                Quantity: x.quantity,
-                'Price (Per)': x.per_unit,
-                'Total Amount': x.total_price,
-                'SP WH Box Id': x?.partDetails?.[0]?.box_id,
+                'Vendor Name': x.vendor_id,
+                'Total Purchase Value': x?.total_price,
+                'Total Purchase Qty': x.quantity,
             }
             arr.push(obj)
             i++
@@ -170,32 +143,12 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'poid',
-            label: <Typography sx={{ fontWeight: 'bold' }}>POID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'spn_number',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Part Id</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'partDetails',
+            name: 'last_placed_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Last Order Placed Date
+                </Typography>
             ),
-            options: {
-                filter: true,
-                customBodyRender: (value) => value?.[0]?.name,
-            },
-        },
-        {
-            name: 'placed_date',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -214,28 +167,21 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'quantity',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'per_unit',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Price (Per)</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
             name: 'total_price',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Total Amount
+                    Total Purchase Value
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'quantity',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Total Purchase Qty
                 </Typography>
             ),
             options: {
@@ -251,11 +197,7 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Order placed', path: '/' }]}
                 />
             </div>
-            {totalPrice !== '' ? (
-                <Box sx={{ mb: 1 }}>
-                    <H3>Total Amount : ₹{totalPrice?.toFixed(1)}</H3>
-                </Box>
-            ) : null}
+
             <Box
                 sx={{
                     display: 'flex',
@@ -263,66 +205,11 @@ const SimpleMuiTable = () => {
                 }}
             >
                 <Box>
-                    <TextField
-                        type="date"
-                        label="From Date"
-                        variant="outlined"
-                        inputProps={{ max: moment().format('YYYY-MM-DD') }}
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        name="fromDate"
-                        InputLabelProps={{ shrink: true }}
-                    />
-                    <TextField
-                        type="date"
-                        label="To Date"
-                        name="toDate"
-                        inputProps={{
-                            min: filterData?.fromDate,
-                            max: moment().format('YYYY-MM-DD'),
-                        }}
-                        disabled={filterData.fromDate == ''}
-                        variant="outlined"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        sx={{ ml: 3 }}
-                        InputLabelProps={{ shrink: true }}
-                    />
-
-                    <TextField
-                        label="Select Vendor"
-                        select
-                        type="text"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        name="vendors"
-                        style={{ width: '200px', marginLeft: '20px' }}
-                    >
-                        {vendors?.map((data) => (
-                            <MenuItem value={data.name}>{data.name}</MenuItem>
-                        ))}
-                    </TextField>
-                    <Button
-                        sx={{ ml: 2, mt: 1 }}
-                        variant="contained"
-                        disabled={
-                            (filterData.fromDate == '' &&
-                                filterData.toDate == '' &&
-                                filterData.vendors == '') ||
-                            (filterData.fromDate !== '' &&
-                                filterData.toDate == '') ||
-                            (filterData.fromDate == '' &&
-                                filterData.toDate !== '')
-                        }
-                        onClick={(e) => {
-                            dataFilter('Date')
-                        }}
-                    >
-                        Filter
-                    </Button>
+                    {totalPrice !== '' ? (
+                        <Box sx={{ mb: 1 }}>
+                            <H3>Total Amount : ₹{totalPrice?.toFixed(1)}</H3>
+                        </Box>
+                    ) : null}
                 </Box>
                 <Box>
                     <Button

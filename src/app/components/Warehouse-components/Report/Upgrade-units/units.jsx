@@ -190,6 +190,8 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value?.replace(/:/g, ' ')?.toUpperCase(),
             },
         },
         {

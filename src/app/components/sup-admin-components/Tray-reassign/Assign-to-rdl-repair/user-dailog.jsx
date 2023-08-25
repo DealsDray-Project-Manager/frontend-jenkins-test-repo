@@ -65,6 +65,7 @@ const MemberEditorDialog = ({
                 text: error,
             })
         }
+        
     }
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>

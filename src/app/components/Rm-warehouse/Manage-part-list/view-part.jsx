@@ -219,6 +219,13 @@ const PartTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'box_id', // field name in the row object
+            label: <Typography fontSize='16px' fontWeight='bold'>Box Id </Typography>, // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
         
         {
             name: 'color', // field name in the row object

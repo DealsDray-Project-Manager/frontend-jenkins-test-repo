@@ -19,7 +19,7 @@ const StatCard3 = () => {
 
                 try {
                     let res = await axiosSalsAgent.post(
-                        `/dashboard/${location}/${user_name}`
+                        '/dashboard/' + location + '/' + user_name
                     )
                     if (res?.status === 200) {
                         setCount(res?.data.data)
@@ -49,6 +49,12 @@ const StatCard3 = () => {
             title: 'Buyer',
             path: '/sales/Buyer-con-sales',
         },
+        // {
+        //     icon: 'branding_watermark',
+        //     amount: count.readyForSalesCount,
+        //     title: 'Ready for sales uint',
+        //     path: '/sales/ready-for-sales-units',
+        // },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

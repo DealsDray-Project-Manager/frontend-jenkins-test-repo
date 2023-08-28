@@ -131,11 +131,19 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }
-    const handleQtyChange = (newValue, rowIndex) => {
-        // Update the "required_qty" value in the data source or state
-        const updatedData = [...spList] // Replace "yourData" with your actual data source
-        updatedData[rowIndex].required_qty = newValue
-        setSpList(updatedData) // Replace "setYourData" with your state update function or data source update logic
+    const handleQtyChange = (newValue, partId) => {
+        console.log(partId);
+        const updatedData = spList.map((item) => {
+            if (item.part_id === partId) {
+                return {
+                    ...item,
+                    required_qty: newValue,
+                }
+            }
+            return item
+        })
+
+        setSpList(updatedData)
     }
 
     const columns = [
@@ -166,6 +174,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                
             },
         },
         {
@@ -231,7 +240,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     return (
                         <TextField
@@ -241,7 +251,7 @@ const SimpleMuiTable = () => {
                             onChange={(e) =>
                                 handleQtyChange(
                                     e.target.value,
-                                    tableMeta.rowIndex
+                                    tableMeta.rowData[1]
                                 )
                             }
                         />

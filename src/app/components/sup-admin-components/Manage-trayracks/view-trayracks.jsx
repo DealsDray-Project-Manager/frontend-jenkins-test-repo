@@ -259,7 +259,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'bag_or_tray',
+            name: 'rack_count',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray Count</>
@@ -267,7 +267,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (items, tableMeta) => items?.length,
+              
             },
         },
         {

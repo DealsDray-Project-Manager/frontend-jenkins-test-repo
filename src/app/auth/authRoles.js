@@ -7,7 +7,7 @@ export const authRoles = {
     charging: ['Charging'],
     bqc: ['BQC'],
     audit: ['Audit'],
-    RDL_FLS: ['RDL-FLS'],
+    RDL_FLS: ['RDL-One'],
     Sales_Agent: ['Sales Agent'],
     pricing_Agent: ['Pricing Agent'],
     reporting: ['Reporting'],

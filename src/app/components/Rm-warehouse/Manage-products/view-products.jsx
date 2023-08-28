@@ -7,7 +7,7 @@ import AddEditorDialog from './add-products'
 import { useNavigate } from 'react-router-dom'
 import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosSuperAdminPrexo,baseURL } from '../../../../axios'
 import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
@@ -203,7 +203,7 @@ const SimpleMuiTable = () => {
                             width="80px"
                             src={
                                 value == undefined
-                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                    ? `${baseURL}/product/image/` +
                                       tableMeta.rowData[2] +
                                       '.jpg'
                                     : value

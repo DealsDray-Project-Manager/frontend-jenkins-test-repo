@@ -5,8 +5,13 @@ const Dashboard = Loadable(lazy(() => import('./Dahsboard/dashboard')))
 const Purchase = Loadable(lazy(() => import('./purchase/purchaseuser')))
 const Order = Loadable(lazy(() => import('./purchase/order')))
 const OrderDetails = Loadable(lazy(() => import('./order-details/orderd-data')))
+const OrderSummary = Loadable(lazy(() => import('./Order-summary/summary')))
 
 const PurchaseUser = [
+    {
+        path: '/purchase-user/order-summary',
+        element: <OrderSummary />,
+    },
     {
         path: '/purchase-user/order-details',
         element: <OrderDetails />,

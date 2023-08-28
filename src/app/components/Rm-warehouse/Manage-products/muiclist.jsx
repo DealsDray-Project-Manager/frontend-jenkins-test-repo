@@ -7,7 +7,7 @@ import { styled } from '@mui/system'
 import Swal from 'sweetalert2'
 import { useNavigate, useParams } from 'react-router-dom'
 import Image from 'mui-image'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosSuperAdminPrexo,baseURL } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -164,7 +164,7 @@ const MUIClist = () => {
                         <Image
                             src={
                                 productData?.[0]?.image == undefined
-                                    ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                    ? `${baseURL}/product/image/` +
                                       productData?.[0]?.vendor_sku_id +
                                       '.jpg'
                                     : productData?.[0]?.image

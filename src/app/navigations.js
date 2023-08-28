@@ -154,6 +154,13 @@ export const navigations = [
         auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
+        name: 'Order Summary',
+        path: '/purchase-user/order-summary',
+        icon: 'shopping_cart',
+        sales: false,
+        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
         name: 'Masters',
         icon: 'fiber_manual_record',
         children: [
@@ -163,7 +170,7 @@ export const navigations = [
                 path: '/sup-admin/users',
             },
             {
-                name: 'Buyer',
+                name: 'Buyers',
                 // icon: 'people',
                 path: '/sup-admin/buyer',
             },
@@ -329,7 +336,7 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-fls',
+                name: 'Assigned to rdl-one',
                 path: '/sup-admin/tray-reassign/rdl-fls',
                 iconText: 'PL',
             },
@@ -341,6 +348,11 @@ export const navigations = [
             {
                 name: 'Assigned Sorting (ctx to stx)',
                 path: '/sup-admin/tray-reassign/sorting/ctx-stx',
+                iconText: 'PL',
+            },
+            {
+                name: 'Assigned to pickup',
+                path: '/sup-admin/tray-reassign/pick-up',
                 iconText: 'PL',
             },
         ],
@@ -356,7 +368,7 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for RDL-FLS',
+        name: 'Ready for RDL-One',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
         auth: authRoles.admin,
@@ -509,7 +521,7 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-Fls',
+                name: 'Assign to RDL-One',
                 path: '/mis/assign-to-agent/Rdl-fls',
                 iconText: 'NP',
             },
@@ -614,6 +626,26 @@ export const navigations = [
         sales: 'all',
     },
     {
+        name: 'Rack Change',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Create Request',
+                path: '/mis/rack-change',
+                iconText: 'VP',
+            },
+            {
+                name: 'Created Request',
+                path: '/mis/rack-change-request',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: 'all',
+    },
+   
+
+    {
         name: 'Track',
         icon: 'art_track',
         children: [
@@ -625,6 +657,20 @@ export const navigations = [
         ],
         auth: authRoles.Mis,
         sales: 'all',
+    },
+    {
+        name: 'Report',
+        icon: 'report',
+        children: [
+            
+            {
+                name: 'Upgrade Units',
+                path: '/warehouse/rpt/report/upgrade-units',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: false,
     },
     {
         name: 'Bag',
@@ -654,6 +700,16 @@ export const navigations = [
         icon: 'move_to_inbox',
         children: [
             {
+                name: 'All Pmt',
+                path: '/warehouse/all-pmt-tray',
+                iconText: 'VP',
+            },
+            {
+                name: 'All Mmt',
+                path: '/warehouse/all-mmt-tray',
+                iconText: 'VP',
+            },
+            {
                 name: 'Tray Close Request',
                 path: '/wareshouse/pmt-mmt/tray-close-request',
                 iconText: 'VP',
@@ -671,6 +727,11 @@ export const navigations = [
         name: 'BOT',
         icon: 'new_releases',
         children: [
+            {
+                name: 'BOT Tray',
+                path: '/wareshouse/all-bot-tray',
+                iconText: 'VP',
+            },
             {
                 name: 'BOT To Release',
                 path: '/wareshouse/bot/release',
@@ -737,12 +798,12 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-FLS Request',
+                name: 'RDL-One Request',
                 path: '/wareshouse/wht/rdl-fls-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return From RDL-FLS',
+                name: 'Return From RDL-One',
                 path: '/wareshouse/wht/return-from-rdl-fls',
                 iconText: 'VP',
             },
@@ -913,6 +974,24 @@ export const navigations = [
         ],
         auth: authRoles.Warehouse,
         sales: true,
+    },
+    {
+        name: 'Rack Change',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Scan Out',
+                path: '/warehouse/rack-change/scan-out',
+                iconText: 'VP',
+            },
+            {
+                name: 'Scan In',
+                path: '/warehouse/rack-change/scan-in',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+        sales: 'all',
     },
     {
         name: 'Report',
@@ -1280,11 +1359,11 @@ export const navigations = [
                 path: '/reporting/wht/in-audit',
             },
             {
-                name: 'Rdl 1 Pending',
+                name: 'Rdl OnePending',
                 path: '/reporting/wht/ready-for-rdl-fls',
             },
             {
-                name: 'RDL 1 In Progress',
+                name: 'RDL One In Progress',
                 path: '/reporting/wht/in-rdl-fls',
             },
         ],
@@ -1384,7 +1463,6 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
         sales: false,
     },
-
     {
         name: 'Ready for sales',
         icon: 'class',
@@ -1393,12 +1471,19 @@ export const navigations = [
         sales: true,
     },
     {
-        name: 'Buyer',
+        name: 'Buyers',
         icon: 'class',
         path: '/sales/Buyer-con-sales',
         auth: authRoles.Sales_Agent,
         sales: true,
     },
+    // {
+    //     name: 'Ready for sales units',
+    //     icon: 'transform',
+    //     path: '/sales/ready-for-sales-units',
+    //     auth: authRoles.Sales_Agent,
+    //     sales: true,
+    // },
     {
         name: 'Ready for Pricing',
         icon: 'class',

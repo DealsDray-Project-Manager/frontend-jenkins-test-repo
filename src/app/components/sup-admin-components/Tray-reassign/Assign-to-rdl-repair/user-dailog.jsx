@@ -4,12 +4,12 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
-
 const FormHandlerBox = styled('div')(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -21,18 +21,20 @@ const MemberEditorDialog = ({
     open,
     setIsAlive,
     RDLUsers,
-    isCheckk,
+    isCheck,
 }) => {
     const [RDLUserName, setRDL] = useState('')
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
 
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
             let obj = {
-                tray: isCheckk,
+                tray: isCheck,
                 user_name: RDLUserName,
                 sortId: 'Send for RDL-two',
+                actUser: user.username,
             }
             let res = await axiosMisUser.post(
                 '/assignToAgent/rdl-fls/sentToWarehouse',
@@ -63,6 +65,7 @@ const MemberEditorDialog = ({
                 text: error,
             })
         }
+        
     }
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>

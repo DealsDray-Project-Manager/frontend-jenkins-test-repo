@@ -287,7 +287,7 @@ const SimpleMuiTable = () => {
                 columns={columns}
                 options={{
                     filterType: 'textField',
-                    responsive: 'scroll',
+                    responsive: 'simple',
                     download: false,
                     print: false,
                     textLabels: {

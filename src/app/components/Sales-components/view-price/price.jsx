@@ -2,11 +2,15 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box } from '@mui/material'
+import { Button, Typography, TextField, Box, Checkbox } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
+import { axiosSalsAgent, axiospricingAgent, baseURL } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -25,6 +29,9 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [item, setItem] = useState([])
     const navigate = useNavigate()
+    const [isTableSorted, setIsTableSorted] = useState(false)
+    const [filteredData, setFilteredData] = useState([])
+    const [selectedItems, setSelectedItems] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -61,18 +68,103 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handelViewItem = (brand, model, grade, date) => {
-        navigate(
-            '/sales/ready-for-sales/view-units/' +
-                brand +
-                '/' +
-                model +
-                '/' +
-                grade +
-                '/' +
-                date
-        )
+    const isSelected = (index) => selectedItems.indexOf(index) !== -1
+
+    const handleRowSelect = (index) => {
+        const selectedIndex = selectedItems.indexOf(index)
+        let newSelected = []
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selectedItems, index)
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selectedItems.slice(1))
+        } else if (selectedIndex === selectedItems.length - 1) {
+            newSelected = newSelected.concat(selectedItems.slice(0, -1))
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selectedItems.slice(0, selectedIndex),
+                selectedItems.slice(selectedIndex + 1)
+            )
+        }
+
+        setSelectedItems(newSelected)
     }
+
+    const handleSelectAll = () => {
+        if (selectedItems.length === item.length) {
+            setSelectedItems([])
+        } else {
+            setSelectedItems([...Array(item.length).keys()])
+        }
+    }
+
+    const download = (e) => {
+        const selectedData = selectedItems.map((index) => item[index])
+        let arr = selectedData.map((selectedItem, i) => {
+            return {
+                'Record N0': i + 1,
+                MUIC: selectedItem.muic_one,
+                Brand: selectedItem._id.brand,
+                Model: selectedItem._id.model,
+                Units: selectedItem.itemCount,
+                Grade: selectedItem._id.grade,
+                // mrp_price: selectedItem.mrp,
+                SP: selectedItem.sp,
+            }
+        })
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Ready For Sales ' + fileExtension)
+    }
+    const downloadPDF = () => {
+        const selectedData = selectedItems.map((index) => item[index])
+
+        const doc = new jsPDF()
+        doc.setFontSize(16)
+        doc.text('Ready For Sales ', 15, 10)
+        const downloadTime = new Date(Date.now()).toLocaleString('en-GB', {
+            hour12: true,
+        })
+
+        doc.setFontSize(10)
+        doc.text(`Downloaded on: ${downloadTime}`, 15, 20)
+        const headers = [
+            'Record No',
+            'MUIC',
+            'Brand',
+            'Model',
+            'Units',
+            'Grade',
+            // 'MRP',
+            'SP',
+        ]
+        const data = selectedData.map((item, index) => [
+            index + 1,
+            item.muic_one,
+            item._id.brand,
+            item._id.model,
+            item.itemCount,
+            item._id.grade,
+            // item.mrp,
+            item.sp,
+        ])
+
+        doc.autoTable({
+            head: [headers],
+            body: data,
+            startY: 30,
+            theme: 'grid',
+            showHead: 'firstPage',
+        })
+        doc.save('ReadyForSales.pdf')
+    }
+
+    console.log(selectedItems)
 
     const columns = [
         {
@@ -97,7 +189,61 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'muic',
+            name: 'index',
+            label: (
+                <Checkbox
+                    color="primary"
+                    indeterminate={
+                        selectedItems.length > 0 &&
+                        selectedItems.length < item.length
+                    }
+                    checked={selectedItems.length === item.length}
+                    onChange={() => handleSelectAll()}
+                />
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => (
+                    <Checkbox
+                        color="primary"
+                        checked={isSelected(tableMeta.rowIndex)}
+                        onChange={(event) =>
+                            handleRowSelect(tableMeta.rowIndex, event)
+                        }
+                    />
+                ),
+            },
+        },
+        {
+            name: 'muicDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Image</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <img
+                            height="80px"
+                            width="80px"
+                            src={
+                                value?.[0]?.image == undefined
+                                    ? `${baseURL}/product/image/` +
+                                      value?.[0]?.vendor_sku_id +
+                                      '.jpg'
+                                    : value?.[0]?.image
+                            }
+                        />
+                    )
+                },
+            },
+        },
+        {
+            name: 'muic_one',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
@@ -105,7 +251,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.[0] || '',
             },
         },
         {
@@ -205,44 +350,6 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'code',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    marginLeft="8px"
-                >
-                    <>Action</>
-                </Typography>
-            ),
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() =>
-                                handelViewItem(
-                                    tableMeta.rowData[2]?.brand,
-                                    tableMeta.rowData[3]?.model,
-                                    tableMeta.rowData[5]?.grade,
-                                    tableMeta.rowData[8]
-                                )
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
-                    )
-                },
-            },
-        },
     ]
 
     return (
@@ -252,7 +359,24 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
-
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="success"
+                disabled={selectedItems.length == 0 || isTableSorted}
+                onClick={(e) => download(e)}
+            >
+                Download Excel
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                disabled={selectedItems.length == 0 || isTableSorted}
+                onClick={downloadPDF}
+            >
+                Download PDF
+            </Button>
             <MUIDataTable
                 title={'Ready for sales'}
                 data={item}
@@ -262,6 +386,22 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    selectableRows: 'multiple',
+                    selectableRowsOnClick: true,
+                    selectableRowsHeader: false,
+                    selectedRows: selectedItems,
+                    isRowSelectable: (dataIndex) => {
+                        return (
+                            filteredData.findIndex(
+                                (item) => item === dataIndex
+                            ) !== -1
+                        )
+                    },
+                    onRowsSelect: (currentRowsSelected, allRowsSelected) => {
+                        setSelectedItems(
+                            allRowsSelected.map((row) => row.index)
+                        )
+                    },
                     textLabels: {
                         body: {
                             noMatch: isLoading
@@ -278,15 +418,15 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            1: 'muic',
-                            2: 'brand',
-                            3: 'model',
-                            5: 'grade',
+                            4: 'brand',
+                            5: 'model',
+                            7: 'grade',
                         }
 
                         const property = columnProperties[colIndex]
 
                         if (property) {
+                            setIsTableSorted(true) // Add this line
                             return data.sort((a, b) => {
                                 const aPropertyValue = getValueByProperty(
                                     a.data[colIndex],

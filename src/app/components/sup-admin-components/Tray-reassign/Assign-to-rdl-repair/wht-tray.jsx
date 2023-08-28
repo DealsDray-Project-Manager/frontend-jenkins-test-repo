@@ -69,6 +69,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleClick = (e, locationAdd) => {
+        console.log(locationAdd);
         const { id, checked } = e.target
         setIsCheck([...isCheck, id])
         if (!checked && isCheck.length == 1) {
@@ -148,11 +149,11 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) => {
+                customBodyRender: (value,tableMeta) => {
                     return (
                         <Checkbox
                             onClick={(e) => {
-                                handleClick(e)
+                                handleClick(e,tableMeta.rowData[3])
                             }}
                             id={value}
                             key={value}
@@ -343,7 +344,7 @@ const SimpleMuiTable = () => {
                 disabled={isCheck.length == 0}
                 onClick={() => handelGetChargingUser(true)}
             >
-                Assign For Charging
+                Assign For RDl Two
             </Button>
             <MUIDataTable
                 title={'WHT'}

@@ -16,6 +16,8 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams, useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -38,6 +40,8 @@ export default function DialogBox() {
     const [textDisable, setTextDisable] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
+    const { user } = useAuth()
+
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
     useEffect(() => {
@@ -126,6 +130,8 @@ export default function DialogBox() {
                     fromTray: trayData.code,
                     toTray: trayData.to_tray_for_pickup,
                     username: trayData.issued_user_name,
+                    actUser: user.username,
+
                 }
 
                 let res = await axiosWarehouseIn.post(

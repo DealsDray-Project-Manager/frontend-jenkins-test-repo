@@ -21,28 +21,6 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '130%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
-
 const SimpleMuiTable = () => {
     const [rptTray, setRpTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -82,6 +60,10 @@ const SimpleMuiTable = () => {
 
     const handelViewItem = (id) => {
         navigate('/wareshouse/wht/tray/item/' + id)
+    }
+    // CHANGE RACK
+    const handelChangeRack = async (id) => {
+        navigate('/warehouse/tray/rack-change/' + id)
     }
 
     const columns = [
@@ -198,17 +180,29 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() => handelViewItem(value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={() => handelViewItem(value)}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                View
+                            </Button>
+                            {/* <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={() => handelChangeRack(value)}
+                                component="span"
+                            >
+                                Change Rack
+                            </Button> */}
+                        </>
                     )
                 },
             },
@@ -226,53 +220,49 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            
-                    <MUIDataTable
-                        title={'Tray'}
-                        data={rptTray}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
-                            },
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
-                                        return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    }
-                                    return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                })
-                            },
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-             
+            <MUIDataTable
+                title={'Tray'}
+                data={rptTray}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download: false,
+                    print: false,
+                    textLabels: {
+                        body: {
+                            noMatch: isLoading
+                                ? 'Loading...'
+                                : 'Sorry, there is no matching data to display',
+                        },
+                    },
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
         </Container>
     )
 }

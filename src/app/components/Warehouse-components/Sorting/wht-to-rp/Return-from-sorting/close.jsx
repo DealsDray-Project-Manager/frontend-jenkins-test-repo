@@ -192,6 +192,7 @@ export default function DialogBox() {
                 description: description,
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',
+                actUser:user.username
             }
             let res = await axiosWarehouseIn.post('/rdl-fls/closedByWh', obj)
             if (res.status == 200) {

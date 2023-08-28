@@ -118,8 +118,22 @@ const StxUtilityInprogressTray = Loadable(
 const StxTrayUtilityInProgressClose= Loadable(
     lazy(() => import('./Stx-utility/close'))
 )
+const RackChangeAssignement = Loadable(
+    lazy(() => import('./Rack-change/tray'))
+)
+const RackRequestCreated = Loadable(
+    lazy(() => import('./Rack-change/rack-change-request-created/tray'))
+)
 
 const dataTableRoutes = [
+    {
+        path: '/mis/rack-change-request',
+        element: <RackRequestCreated />,
+    },
+    {
+        path: '/mis/rack-change',
+        element: <RackChangeAssignement />,
+    },
     {
         path: '/mis/stx-utility/tray-view/close/:trayId',
         element: <StxTrayUtilityInProgressClose />,

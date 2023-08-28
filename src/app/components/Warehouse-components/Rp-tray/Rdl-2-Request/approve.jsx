@@ -132,7 +132,7 @@ export default function DialogBox() {
                     trayId: trayId,
                     description: description,
                     sortId: trayData?.sort_id,
-                    actioUser: user.username,
+                    actionUser: user.username,
                 }
                 let res = await axiosWarehouseIn.post(
                     '/issue-to-agent-wht',

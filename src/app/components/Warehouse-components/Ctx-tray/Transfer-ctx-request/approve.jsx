@@ -22,6 +22,7 @@ import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -39,9 +40,9 @@ export default function DialogBox() {
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [userCpcType, setUserCpcType] = useState()
-  
+    const { user } = useAuth()
+
     /*********************************************************** */
-  
 
     useEffect(() => {
         const fetchData = async () => {
@@ -117,7 +118,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-   
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -127,6 +128,8 @@ export default function DialogBox() {
                 description: description,
                 sales_location: trayData?.recommend_location,
                 page: 'Warehouse-approve',
+                userCpcType: userCpcType,
+                actUser: user.username,
             }
             if (userCpcType == 'Sales') {
                 obj.sortId = 'Transferred to Processing'
@@ -347,7 +350,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                   
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -364,7 +366,7 @@ export default function DialogBox() {
                                 trayData?.items?.length ||
                             description == ''
                                 ? true
-                                : false 
+                                : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

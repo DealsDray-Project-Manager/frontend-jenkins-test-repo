@@ -39,9 +39,9 @@ const CustomerBillings = ({ RdlTwoReport }) => {
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
-                    <TableRow key={RdlTwoReport?.selected_status}>
+                    <TableRow key={RdlTwoReport?.status}>
                         <TableCell sx={{ pl: 2 }}>Rdl Two status :</TableCell>
-                        <TableCell>{RdlTwoReport?.selected_status}</TableCell>
+                        <TableCell>{RdlTwoReport?.status}</TableCell>
                     </TableRow>
 
                     <TableRow key={RdlTwoReport?.reason}>

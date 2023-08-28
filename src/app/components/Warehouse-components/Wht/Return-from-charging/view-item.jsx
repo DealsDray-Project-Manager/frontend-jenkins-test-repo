@@ -119,7 +119,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'charging',
-            label: 'Body Condiation',
+            label: 'Body Condition',
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -129,7 +129,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'charging',
-            label: 'Display Condiation',
+            label: 'Display Condition',
             options: {
                 filter: true,
                 customBodyRender: (value) => {

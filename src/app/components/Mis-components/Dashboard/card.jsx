@@ -134,7 +134,7 @@ const StatCard3 = () => {
         {
             icon: 'art_track',
             amount: count.rdl,
-            title: 'Assign To RDL-FLS',
+            title: 'Assign To RDL-One',
             path: '/mis/assign-to-agent/Rdl-fls',
             sales: false,
         },
@@ -200,6 +200,13 @@ const StatCard3 = () => {
             amount: count.receiveCtx,
             title: 'Receive CTX',
             path: '/mis/ctx/receive',
+            sales: 'all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rackChangeRequest,
+            title: 'Rack Change Request Created',
+            path: '/mis/rack-change-request',
             sales: 'all',
         },
         {

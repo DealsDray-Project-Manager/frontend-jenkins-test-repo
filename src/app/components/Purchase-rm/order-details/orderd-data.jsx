@@ -3,11 +3,25 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from 'axios'
+import { H1, H3, H4 } from 'app/components/Typography'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box, TextField } from '@mui/material'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import {
+    Button,
+    Typography,
+    Card,
+    Box,
+    TextField,
+    MenuItem,
+} from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosPurchaseAgent, axiosSpMisAgent } from '../../../../axios'
+import moment from 'moment'
+import {
+    axiosPurchaseAgent,
+    axiosSpMisAgent,
+    axiosSuperAdminPrexo,
+} from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -23,9 +37,16 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
+    const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const [vendors, setVendors] = useState([])
+    const [totalPrice, setTotalPrice] = useState('')
+    const [filterData, setFilterData] = useState({
+        fromDate: '',
+        toDate: '',
+        vendors: '',
+    })
 
     useEffect(() => {
         try {
@@ -39,7 +60,7 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
-                        setRDLRequest(res.data.data)
+                        setData(res.data.data)
                     }
                 } else {
                     navigate('/')
@@ -57,8 +78,76 @@ const SimpleMuiTable = () => {
         }
     }, [])
 
-    const handleplace = (id, muic) => {
-        navigate('/purchase-user/purchase/order/' + id + '/' + muic)
+    const handleChangeSort = ({ target: { name, value } }) => {
+        setFilterData({
+            ...filterData,
+            [name]: value,
+        })
+        if (name == 'toDate') {
+            handelGetVendor(filterData.fromDate, value)
+        }
+    }
+    const dataFilter = async (type) => {
+        try {
+            setIsLoading(true)
+            const res = await axiosPurchaseAgent.post(
+                '/placeOrderDateFilter',
+                filterData
+            )
+            if (res.status === 200) {
+                setIsLoading(false)
+                setData(res.data.data)
+                setTotalPrice(res.data.totalPrice)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+    // EXPORT TO EXCEL
+    const downloadExcel = (e) => {
+        let arr = []
+        let i = 1
+        for (let x of data) {
+            let obj = {
+                'Record No': i,
+                POID: x.poid,
+                'Part Id': x.spn_number,
+                Date: new Date(x.placed_date).toLocaleString('en-GB', {
+                    hour12: true,
+                }),
+                'Part Name': x?.partDetails?.[0]?.name,
+                'Vendor Id': x.vendor_id,
+                Quantity: x.quantity,
+                'Price (Per)': x.per_unit,
+                'Total Amount': x.total_price,
+                'SP WH Box Id': x?.partDetails?.[0]?.box_id,
+            }
+            arr.push(obj)
+            i++
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const dataDown = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(dataDown, 'Order Details of RM' + fileExtension)
+    }
+
+    // HANDEL GET VENDOR
+    const handelGetVendor = async (fromDate, toDate) => {
+        let obj = {
+            fromDate: fromDate,
+            toDate: toDate,
+        }
+        const res = await axiosPurchaseAgent.post(
+            '/vendorMasterforDrp/view',
+            obj
+        )
+        if (res.status == 200) {
+            setVendors(res.data.data)
+        }
     }
 
     const columns = [
@@ -92,6 +181,16 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>Part Id</Typography>,
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'partDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.name,
             },
         },
         {
@@ -143,6 +242,19 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'partDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Box Id
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.box_id,
+
+            },
+        },
     ]
 
     return (
@@ -152,15 +264,100 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Order placed', path: '/' }]}
                 />
             </div>
-            <Card>
+            {totalPrice !== '' ? (
+                <Box sx={{ mb: 1 }}>
+                    <H3>Total Amount : ₹{totalPrice?.toFixed(1)}</H3>
+                </Box>
+            ) : null}
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <TextField
+                        type="date"
+                        label="From Date"
+                        variant="outlined"
+                        inputProps={{ max: moment().format('YYYY-MM-DD') }}
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        name="fromDate"
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        type="date"
+                        label="To Date"
+                        name="toDate"
+                        inputProps={{
+                            min: filterData?.fromDate,
+                            max: moment().format('YYYY-MM-DD'),
+                        }}
+                        disabled={filterData.fromDate == ''}
+                        variant="outlined"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 3 }}
+                        InputLabelProps={{ shrink: true }}
+                    />
+
+                    <TextField
+                        label="Select Vendor"
+                        select
+                        type="text"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        name="vendors"
+                        style={{ width: '200px', marginLeft: '20px' }}
+                    >
+                        {vendors?.map((data) => (
+                            <MenuItem value={data.name}>{data.name}</MenuItem>
+                        ))}
+                    </TextField>
+                    <Button
+                        sx={{ ml: 2, mt: 1 }}
+                        variant="contained"
+                        disabled={
+                            (filterData.fromDate == '' &&
+                                filterData.toDate == '' &&
+                                filterData.vendors == '') ||
+                            (filterData.fromDate !== '' &&
+                                filterData.toDate == '') ||
+                            (filterData.fromDate == '' &&
+                                filterData.toDate !== '')
+                        }
+                        onClick={(e) => {
+                            dataFilter('Date')
+                        }}
+                    >
+                        Filter
+                    </Button>
+                </Box>
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="success"
+                        onClick={(e) => downloadExcel(e)}
+                    >
+                        Download Excel
+                    </Button>
+                </Box>
+            </Box>
+            <Card sx={{ mt: 1 }}>
                 <MUIDataTable
                     title={'Order details'}
-                    data={RDLRequest}
+                    data={data}
                     columns={columns}
                     options={{
                         filterType: 'textField',
                         responsive: 'simple',
                         download: false,
+
                         print: false,
                         textLabels: {
                             body: {

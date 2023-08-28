@@ -18,6 +18,7 @@ import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosWarehouseIn } from '../../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -65,6 +66,7 @@ BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
 }
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
@@ -74,6 +76,7 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [receiveBut, setReceiveBut] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -116,6 +119,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
+                actUser: user.username,
             }
             let res = await axiosWarehouseIn.post(
                 '/recieved-from-sortingWhtToRp',
@@ -345,7 +349,6 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Return from sorting wht-rp', path: '/' },
-                       
                     ]}
                 />
             </div>

@@ -26,9 +26,10 @@ const MemberEditorDialog = ({ handleClose, open, uicData, setIsAlive }) => {
     const schema = Yup.object().shape({
         uic: Yup.string().required('Required*'),
         delivery_imei: Yup.string().required('Required*').nullable(),
-        bqc_ro_ril_imei: Yup.string().required('Required*').nullable(),
-        bqc_ro_mob_one_imei: Yup.string().required('Required*').nullable(),
-        bqc_ro_mob_two_imei: Yup.string().required('Required*').nullable(),
+      
+        bqc_ro_mob_one_imei: Yup.string().min(15).nullable(),
+       
+      
     })
 
     const {

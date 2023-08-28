@@ -40,7 +40,7 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.charging,
-            title: 'RDL-FLS Request',
+            title: 'RDL-One Request',
             path: '/rdl-fls/tray',
         },
     ]

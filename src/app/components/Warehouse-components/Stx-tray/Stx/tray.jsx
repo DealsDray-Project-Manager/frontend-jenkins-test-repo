@@ -51,39 +51,60 @@ const SimpleMuiTable = () => {
     const handelViewItem = (id) => {
         navigate('/wareshouse/tray/view-item/' + id)
     }
+    // CHANGE RACK
+    const handelChangeRack = async (id) => {
+        navigate('/warehouse/tray/rack-change/' + id)
+    }
 
     const columns = [
         {
             name: 'index',
-            label: <Typography fontWeight='bold' variant='subtitle1' marginLeft='7px'>Record No</Typography>,
+            label: (
+                <Typography
+                    fontWeight="bold"
+                    variant="subtitle1"
+                    marginLeft="7px"
+                >
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                    <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography fontWeight='bold' variant='subtitle1'>Tray ID</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Tray ID
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'rack_id',
-            label: <Typography fontWeight='bold' variant='subtitle1' sx={{mr:1}}>Rack ID</Typography>,
+            label: (
+                <Typography
+                    fontWeight="bold"
+                    variant="subtitle1"
+                    sx={{ mr: 1 }}
+                >
+                    Rack ID
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: <Typography fontWeight='bold' variant='subtitle1' noWrap >Tray Category</Typography>,
-            options: {
-                filter: true,
-            },
-        },
+        
         {
             name: 'actual_items',
             label: 'acutual_items',
@@ -102,16 +123,24 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: <Typography fontWeight='bold' variant='subtitle1' sx={{ml:2}}>Quantity</Typography>,
+            label: (
+                <Typography
+                    fontWeight="bold"
+                    variant="subtitle1"
+                  
+                >
+                    Quantity
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         (value.length == 0
-                            ? tableMeta.rowData[4].length
+                            ? tableMeta.rowData[3].length
                             : value.length) +
                         '/' +
-                        tableMeta.rowData[5]
+                        tableMeta.rowData[4]
                     )
                 },
             },
@@ -119,14 +148,22 @@ const SimpleMuiTable = () => {
 
         {
             name: 'issued_user_name',
-            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Agent Name</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                    Agent Name
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'name',
-            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Tray Name</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                    Tray Name
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -134,35 +171,45 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand',
-            label: <Typography fontWeight='bold' variant='subtitle1'>Brand</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Brand
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography fontWeight='bold' variant='subtitle1'>Model</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Model
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'display',
-            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Tray Display</Typography>,
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'sort_id',
-            label: <Typography fontWeight='bold' variant='subtitle1'>Status</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Status
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography fontWeight='bold' variant='subtitle1' noWrap>Creation Date</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                    Creation Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -173,23 +220,39 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography fontWeight='bold' variant='subtitle1'>Action</Typography>,
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Action
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={() => handelViewItem(value)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            View
-                        </Button>
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={() => handelViewItem(value)}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                View
+                            </Button>
+                            {/* <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={() => handelChangeRack(value)}
+                                component="span"
+                            >
+                                Change Rack
+                            </Button> */}
+                        </>
                     )
                 },
             },

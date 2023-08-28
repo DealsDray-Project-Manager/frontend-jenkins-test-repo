@@ -115,9 +115,7 @@ const SimpleMuiTable = () => {
                         '/spTray/addParts/' +
                             partId +
                             '/' +
-                            trayId +
-                            '/' +
-                            boxId
+                            trayId 
                     )
                     if (response.status == 200) {
                         setRefresh((isAlive) => !isAlive)

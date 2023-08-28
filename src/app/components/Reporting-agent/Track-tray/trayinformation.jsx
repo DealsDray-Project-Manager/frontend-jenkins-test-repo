@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-    Card,
-    TextField,
-    Box,
-    Divider,
-    Stack,
-    Button,
-} from '@mui/material'
+import { Card, TextField, Box, Divider, Stack, Button } from '@mui/material'
 import SimpleTable from './table'
 import Trayjourney from './trayjourney'
 import Trayjourneytable from './trayjourneytable'
@@ -33,6 +26,7 @@ const Trayinformation = () => {
     const [result, setResult] = useState('')
     const [location, setLocation] = useState('')
     const [searchInput, setSearchInput] = useState('')
+    const [otherDetails, setOtherDetails] = useState({})
 
     useEffect(() => {
         let user = localStorage.getItem('prexo-authentication')
@@ -52,6 +46,7 @@ const Trayinformation = () => {
             }
             const res = await axiosReportingAgent.post('/track-tray', obj)
             if (res.status == 200) {
+                setOtherDetails(res.data.otherDetails)
                 setResult(res.data.data)
             } else {
                 Swal.fire({
@@ -70,7 +65,7 @@ const Trayinformation = () => {
             alert(error)
         }
     }
-    console.log(result);
+    console.log(otherDetails)
     return (
         <Container>
             <h3>Tray Details</h3>
@@ -134,6 +129,41 @@ const Trayinformation = () => {
                     </Stack>
                 </Card>
             </div>
+            <div>
+                <Card
+                    style={{ marginTop: '40px', border: '0.5px solid #78909c' }}
+                >
+                    <h3 style={{ marginLeft: '33px' }}>Unit Details</h3>
+                    <Divider />
+                    <Stack
+                        justifyContent="space-between"
+                        sx={{ px: 2, py: 1, bgcolor: 'background.white' }}
+                    >
+                        <Box sx={{ p: 2, display: 'flex' }}>
+                            <div style={{ fontSize: '16px' }}>
+                                <p>
+                                    Current item count:{' '}
+                                    <b>{result?.items?.length}</b>{' '}
+                                </p>
+
+                                {Object.keys(otherDetails).length !== 0 ? (
+                                    <>
+                                        {Object.entries(otherDetails).map(
+                                            ([key, value]) => (
+                                                <p key={key}>
+                                                    {key}: <b>{value}</b>
+                                                </p>
+                                            )
+                                        )}
+                                    </>
+                                ) : (
+                                    ''
+                                )}
+                            </div>
+                        </Box>
+                    </Stack>
+                </Card>
+            </div>
 
             {/* <SimpleTable
                 Items={
@@ -142,10 +172,7 @@ const Trayinformation = () => {
                         : result?.items
                 }
             /> */}
-            <Trayjourney
-                TrayMovement={result?.actual_items}
-                
-            />
+            <Trayjourney TrayMovement={result?.actual_items} />
             {/* <Trayjourneytable /> */}
         </Container>
     )

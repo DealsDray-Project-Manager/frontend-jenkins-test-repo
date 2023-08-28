@@ -222,9 +222,7 @@ const ReturnFromWhtToRp = Loadable(
 const ReturnFromWhtToRpClose = Loadable(
     lazy(() => import('./Sorting/wht-to-rp/Return-from-sorting/close'))
 )
-const AllRptTray = Loadable(
-    lazy(() => import('./Rp-tray/all-rp-tray/tray'))
-)
+const AllRptTray = Loadable(lazy(() => import('./Rp-tray/all-rp-tray/tray')))
 const ReturnFromRdlTwo = Loadable(
     lazy(() => import('./Rp-tray/return-from-rdl-two/returned-tray'))
 )
@@ -234,8 +232,38 @@ const ReturnFromRdlTwoClosePage = Loadable(
 const UpgradeUnitsReport = Loadable(
     lazy(() => import('./Report/Upgrade-units/units'))
 )
+const RackChangeClose = Loadable(
+    lazy(() => import('./Wht/wht-tray/rack_change'))
+)
+const AllBotTray = Loadable(
+    lazy(() => import('./Bot/bot-to-release/All-bot-tray/tray'))
+)
+const AllPmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-pmt/tray')))
+const AllMmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-mmt/tray')))
+const RackChangeScanOut = Loadable(lazy(() => import('./Rack-change/scan-out')))
+const RackChangeScanIn = Loadable(lazy(() => import('./Rack-change/scan-in')))
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rack-change/scan-in',
+        element: <RackChangeScanIn />,
+    },
+    {
+        path: '/warehouse/rack-change/scan-out',
+        element: <RackChangeScanOut />,
+    },
+    {
+        path: '/warehouse/all-mmt-tray',
+        element: <AllMmtTray />,
+    },
+    {
+        path: '/warehouse/all-pmt-tray',
+        element: <AllPmtTray />,
+    },
+    {
+        path: '/warehouse/tray/rack-change/:trayId',
+        element: <RackChangeClose />,
+    },
     {
         path: '/warehouse/rpt/report/upgrade-units',
         element: <UpgradeUnitsReport />,
@@ -307,6 +335,10 @@ const WarehoueRouter = [
     {
         path: '/wareshouse/bot/release',
         element: <BotToRelease />,
+    },
+    {
+        path: '/wareshouse/all-bot-tray',
+        element: <AllBotTray />,
     },
     {
         path: '/wareshouse/bot/release/view-item/:trayId',

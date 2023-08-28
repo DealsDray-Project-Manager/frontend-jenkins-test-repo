@@ -2,7 +2,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useMemo } from 'react'
 import { styled } from '@mui/system'
 import Typography from '@mui/material/Typography'
-import { axiosMisUser } from '../../../../axios'
+import { axiosMisUser ,baseURL} from '../../../../axios'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 
@@ -950,7 +950,7 @@ function Search() {
                                     src={
                                         tempDelivery?.[0]?.products[0]?.image ==
                                         undefined
-                                            ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                            ? `${baseURL}/product/image/` +
                                               tempDelivery?.[0]?.products[0]
                                                   ?.vendor_sku_id +
                                               '.jpg'

@@ -407,7 +407,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="BQC">BQC</MenuItem>
                                 <MenuItem value="Charging">Charging</MenuItem>
                                 <MenuItem value="MIS">MIS</MenuItem>
-                                <MenuItem value="RDL-FLS">RDL-One</MenuItem>
+                                <MenuItem value="RDL-One">RDL-One</MenuItem>
                                 <MenuItem value="RDL-two">RDL-two</MenuItem>
 
                                 <MenuItem value="Reporting">Reporting</MenuItem>

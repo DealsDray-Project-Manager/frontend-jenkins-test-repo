@@ -32,7 +32,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { axiosBot } from '../../../../axios'
+import { axiosBot, baseURL } from '../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
@@ -712,7 +712,7 @@ export default function DialogBox() {
                                     src={
                                         awabnDetails?.[0]?.products.image ==
                                         undefined
-                                            ? 'https://prexo-v8-5-dev-api.dealsdray.com/product/image/' +
+                                            ? `${baseURL}/product/image/` +
                                               awabnDetails?.[0]?.products
                                                   .vendor_sku_id +
                                               '.jpg'

@@ -301,7 +301,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For RDL-FLS', path: '/' }]}
+                    routeSegments={[{ name: 'Ready For RDL-One', path: '/' }]}
                 />
             </div>
             <Button
@@ -313,7 +313,7 @@ const SimpleMuiTable = () => {
                     handelReadyForRdl(e)
                 }}
             >
-                Ready For RDL-FLS
+                Ready For RDL-One
             </Button>
             <ScrollableTableContainer>
                 <ProductTable>

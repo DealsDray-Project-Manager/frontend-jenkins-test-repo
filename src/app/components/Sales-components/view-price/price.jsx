@@ -191,9 +191,15 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Select</>
-                </Typography>
+                <Checkbox
+                    color="primary"
+                    indeterminate={
+                        selectedItems.length > 0 &&
+                        selectedItems.length < item.length
+                    }
+                    checked={selectedItems.length === item.length}
+                    onChange={() => handleSelectAll()}
+                />
             ),
             options: {
                 filter: false,
@@ -378,23 +384,23 @@ const SimpleMuiTable = () => {
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
-                    download: true,
+                    download: false,
                     print: false,
                     selectableRows: 'multiple',
                     selectableRowsOnClick: true,
                     selectableRowsHeader: false,
                     selectedRows: selectedItems,
+                    isRowSelectable: (dataIndex) => {
+                        return (
+                            filteredData.findIndex(
+                                (item) => item === dataIndex
+                            ) !== -1
+                        )
+                    },
                     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
                         setSelectedItems(
                             allRowsSelected.map((row) => row.index)
                         )
-                    },
-                    onSelectAll: (
-                        isAllSelected,
-                        rowsSelected,
-                        rowsExpanded
-                    ) => {
-                        handleSelectAll(isAllSelected)
                     },
                     textLabels: {
                         body: {
@@ -492,7 +498,6 @@ const SimpleMuiTable = () => {
 
                             return value !== undefined ? value : ''
                         }
-                      
                     },
                     elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],

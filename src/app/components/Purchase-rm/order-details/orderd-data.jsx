@@ -242,6 +242,19 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'partDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Box Id
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.box_id,
+
+            },
+        },
     ]
 
     return (

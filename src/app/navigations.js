@@ -154,7 +154,7 @@ export const navigations = [
         auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
-        name: 'Order Summery',
+        name: 'Order Summary',
         path: '/purchase-user/order-summary',
         icon: 'shopping_cart',
         sales: false,

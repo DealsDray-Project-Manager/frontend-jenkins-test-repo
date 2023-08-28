@@ -105,7 +105,7 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const dataDown = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(dataDown, 'Order Details of RM' + fileExtension)
+        FileSaver.saveAs(dataDown, 'Order Summary of RM' + fileExtension)
     }
 
     // HANDEL GET VENDOR
@@ -194,7 +194,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Order placed', path: '/' }]}
+                    routeSegments={[{ name: 'Order Summary', path: '/' }]}
                 />
             </div>
 

@@ -30,6 +30,8 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -83,11 +85,13 @@ BootstrapDialogTitle.propTypes = {
 }
 
 export default function DialogBox() {
+    
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
+    const { user } = useAuth()
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const [addButDis, setAddButDis] = useState(false)
@@ -558,6 +562,18 @@ export default function DialogBox() {
                         inputRef={(input) => input && input.focus()}
                         autoFocus
                         value={uic}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
                         onChange={(e) => {
                             setUic(e.target.value)
                             handelUic(e)

@@ -18,6 +18,7 @@ import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 import { axiosSortingAgent, axiosWarehouseIn } from '../../../../../axios'
 
 export default function DialogBox() {
@@ -31,6 +32,7 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
+    const { user } = useAuth()
     /*********************************************************** */
 
     useEffect(() => {
@@ -193,9 +195,11 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <h4 style={{marginLeft:'15px'}}>FROM TRAY ITEMS - {tray[0]?.code}</h4>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        FROM TRAY ITEMS - {tray[0]?.code}
+                    </h4>
 
-                    <Box sx={{mr:2}}>
+                    <Box sx={{ mr: 2 }}>
                         <h5 style={{ marginLeft: '14px' }}>Total</h5>
                         <p style={{ margin: '5px', fontSize: '22px' }}>
                             {tray?.[0]?.actual_items?.length}/{tray?.[0]?.limit}
@@ -212,7 +216,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Order Id</TableCell>
                                 <TableCell>AWBN</TableCell>
@@ -221,7 +225,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -247,8 +253,10 @@ export default function DialogBox() {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <h4 style={{marginLeft:'15px'}}>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
-                    <Box sx={{mr:2}}>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        TO TRAY ITEMS - {tray?.[1]?.code}
+                    </h4>
+                    <Box sx={{ mr: 2 }}>
                         <h5 style={{ marginLeft: '14px' }}>Total</h5>
                         <p style={{ margin: '5px', fontSize: '22px' }}>
                             {tray?.[1]?.items?.length}/{tray?.[1]?.limit}
@@ -260,12 +268,24 @@ export default function DialogBox() {
                     id="outlined-password-input"
                     type="text"
                     name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
+                    label="Scan UIC"
                     value={awbn}
                     // onChange={(e) => setAwbn(e.target.value)}
                     onChange={(e) => {
                         setAwbn(e.target.value)
                         handelAwbn(e)
+                    }}
+                    onKeyPress={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
+                    }}
+                    onPaste={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
                     }}
                     disabled={loading}
                     inputProps={{
@@ -284,7 +304,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Order Id</TableCell>
                                 <TableCell>AWBN</TableCell>
@@ -294,7 +314,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.[1]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:3}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 3 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>

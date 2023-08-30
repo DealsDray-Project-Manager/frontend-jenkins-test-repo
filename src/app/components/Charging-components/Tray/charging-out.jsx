@@ -37,6 +37,8 @@ import { useForm } from 'react-hook-form'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -86,10 +88,12 @@ export default function DialogBox() {
     const [loading, setlLoading] = useState(false)
     const [textBoxDis, setTextBoxDis] = useState(false)
     const [charge, setCharge] = useState('')
+    const { user } = useAuth()
     const handleClose = () => {
         reset({})
         setOpen(false)
     }
+    
     /************************************************************************** */
     const schema = Yup.object().shape({
         battery_status: Yup.string().required('Required*').nullable(),
@@ -446,6 +450,18 @@ export default function DialogBox() {
                             disabled={textBoxDis}
                             inputRef={(input) => input && input.focus()}
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setUic(e.target.value)

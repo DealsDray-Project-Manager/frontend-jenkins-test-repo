@@ -241,6 +241,18 @@ export default function DialogBox() {
                             label="SCAN UIC"
                             inputRef={(input) => input && input.focus()}
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setUic(e.target.value)

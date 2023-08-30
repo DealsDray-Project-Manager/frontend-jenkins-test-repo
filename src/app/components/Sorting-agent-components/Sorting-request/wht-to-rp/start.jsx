@@ -25,6 +25,8 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -86,6 +88,7 @@ export default function DialogBox() {
     const [loading2, setLoading2] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
+    const { user } = useAuth()
     const [refresh, setRefresh] = useState(false)
     /*********************************************************** */
     useEffect(() => {
@@ -363,6 +366,18 @@ export default function DialogBox() {
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelAwbn(e)
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                             inputProps={{
                                 style: {

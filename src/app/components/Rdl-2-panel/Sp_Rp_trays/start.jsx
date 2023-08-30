@@ -7,6 +7,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { axiosRdlTwoAgent, axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -32,6 +34,7 @@ const SimpleMuiTable = () => {
     const { trayId } = useParams()
     const [username, setUsername] = useState('')
     const [uic, setUic] = useState('')
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -247,6 +250,18 @@ const SimpleMuiTable = () => {
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e.target.value)
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                             inputRef={(input) => input && input.focus()}
                         />

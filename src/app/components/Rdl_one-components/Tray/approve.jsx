@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { Breadcrumb } from 'app/components'
+import useAuth from 'app/hooks/useAuth'
 import {
     axiosWarehouseIn,
     axiosRDL_oneAgent,
@@ -36,7 +37,7 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-
+    const { user } = useAuth()
     let admin = localStorage.getItem('prexo-authentication')
     let user_name1
     if (admin) {
@@ -254,6 +255,18 @@ export default function DialogBox() {
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e.target.value)
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                             inputProps={{
                                 style: {

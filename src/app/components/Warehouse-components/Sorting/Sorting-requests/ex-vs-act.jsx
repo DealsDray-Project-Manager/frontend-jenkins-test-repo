@@ -17,6 +17,8 @@ import { styled } from '@mui/system'
 import { useParams, useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,6 +41,8 @@ export default function DialogBox() {
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const { user } = useAuth()
+    
     /*********************************************************** */
     useEffect(() => {
         const fetchData = async () => {
@@ -253,6 +257,18 @@ export default function DialogBox() {
                             disabled={textDisable}
                             label="SCAN UIC"
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { styled } from '@mui/material/styles'
-
+import useAuth from 'app/hooks/useAuth'
 import {
     Box,
     Button,
@@ -88,6 +88,7 @@ export default function DialogBox() {
     const handleClose = () => {
         setOpen(false)
     }
+    const { user } = useAuth()
     /************************************************************************** */
     const schema = Yup.object().shape({
         blancoo_qc_status: Yup.string().required('Required*').nullable(),
@@ -391,6 +392,18 @@ export default function DialogBox() {
                             name="doorsteps_diagnostics"
                             label="SCAN UIC"
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setUic(e.target.value)

@@ -22,6 +22,8 @@ import { useNavigate } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { axiosAuditAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -69,6 +71,7 @@ export default function DialogBox() {
     const [username, setUserName] = useState('')
     const [uic, setUic] = useState('')
     const [closeButDis, SetCloseButDis] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -386,6 +389,18 @@ export default function DialogBox() {
                         onChange={(e) => {
                             setUic(e.target.value)
                             handelUic(e.target.value)
+                        }}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
                         }}
                         inputProps={{
                             style: {

@@ -24,6 +24,8 @@ import Swal from 'sweetalert2'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -83,7 +85,7 @@ function Search() {
     const [stxTray, setStxTray] = useState([])
     const [muicDetails, setMuicDetails] = useState({})
     const [butDiss, setButDiss] = useState(false)
-
+    const { user } = useAuth()
     const schema = Yup.object().shape({
         stXTrayId: Yup.string().required('Required*').nullable(),
     })
@@ -318,6 +320,18 @@ function Search() {
                         variant="outlined"
                         onChange={(e) => {
                             setUic(e.target.value)
+                        }}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
                         }}
                     />
                 </Box>

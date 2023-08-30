@@ -370,6 +370,18 @@ export default function DialogBox() {
                             name="doorsteps_diagnostics"
                             label="SCAN UIC"
                             value={awbn}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             onChange={(e) => {
                                 setAwbn(e.target.value)
                                 handelAwbn(e)

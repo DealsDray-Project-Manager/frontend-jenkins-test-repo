@@ -290,7 +290,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'items_length',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Quantity</>
@@ -299,7 +299,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
+                    value + '/' + tableMeta?.rowData[2],
             },
         },
         {
@@ -386,7 +386,7 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[5],
                                         tableMeta.rowData[4],
                                         value,
-                                        tableMeta.rowData[3]?.length,
+                                        tableMeta.rowData[3],
                                         tableMeta.rowData[6],
                                         tableMeta.rowData[7]
                                     )

@@ -13,6 +13,7 @@ import {
     Grid,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
+import useAuth from 'app/hooks/useAuth'
 // import jwt from "jsonwebtoken"
 import Swal from 'sweetalert2'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
@@ -29,6 +30,7 @@ export default function DialogBox() {
     const [resDataUic, setResDataUic] = useState({})
     const [loading, setLoading] = useState(false)
     const [textBoxDis, setTextBoxDis] = useState(false)
+    const { user } = useAuth()
 
     /*********************************************************** */
 

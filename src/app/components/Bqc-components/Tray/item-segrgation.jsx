@@ -25,6 +25,8 @@ import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosBqc } from '../../../../axios'
+import useAuth from 'app/hooks/useAuth'
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -75,6 +77,7 @@ export default function DialogBox() {
     const [resDataUic, setResDataUic] = useState({})
     const [loading, setLoading] = useState(false)
     const [deviceButDis, setDeviceButDis] = useState(false)
+    const { user } = useAuth()
 
     const handleClose = () => {
         setTextBoxDis(false)

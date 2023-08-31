@@ -19,6 +19,8 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,6 +44,7 @@ export default function DialogBox() {
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const [refresh, setRefresh] = useState(false)
+    const { user } = useAuth()
     /*********************************************************** */
 
     useEffect(() => {

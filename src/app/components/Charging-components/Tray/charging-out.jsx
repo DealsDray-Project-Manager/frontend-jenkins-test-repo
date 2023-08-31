@@ -122,15 +122,16 @@ export default function DialogBox() {
         charging_jack_type: Yup.string().required('Required*').nullable(),
         cimei_1: Yup.string()
             .when(
-                ['battery_status', 'lock_status'],
-                (battery_status, lock_status, schema) => {
+                ['battery_status', 'lock_status','display_condition'],
+                (battery_status, lock_status,display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
                         battery_status !== 'No-battery' &&
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
-                        lock_status !== 'iCloud Locked'
+                        lock_status !== 'iCloud Locked'&&
+                        display_condition !== "Touch Not Working"
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -139,15 +140,16 @@ export default function DialogBox() {
             .nullable(),
         cimei_2: Yup.string()
             .when(
-                ['battery_status', 'lock_status'],
-                (battery_status, lock_status, schema) => {
+                ['battery_status', 'lock_status','display_condition'],
+                (battery_status, lock_status,display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
                         battery_status !== 'No-battery' &&
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
-                        lock_status !== 'iCloud Locked'
+                        lock_status !== 'iCloud Locked' &&
+                        display_condition !== "Touch Not Working"
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -680,6 +682,7 @@ export default function DialogBox() {
                                 <MenuItem value="Body with major scratches">
                                     Body with major scratches
                                 </MenuItem>
+                               
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
@@ -713,6 +716,9 @@ export default function DialogBox() {
                                 </MenuItem>
                                 <MenuItem value="Display With Major Scratches">
                                     Display With Major scratches
+                                </MenuItem>
+                                <MenuItem value="Touch Not Working">
+                                    Touch Not Working
                                 </MenuItem>
                             </Select>
                         </FormControl>

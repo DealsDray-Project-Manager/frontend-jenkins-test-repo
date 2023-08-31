@@ -389,7 +389,7 @@ export default function DialogBox() {
                         variant="contained"
                         disabled={
                             tray?.[0]?.actual_items?.length !== 0 &&
-                            tray?.[0]?.type_taxanomy == 'MMT'
+                            tray?.[1]?.items?.length < tray?.[1]?.limit
                                 ? true
                                 : loading2 == true
                                 ? true

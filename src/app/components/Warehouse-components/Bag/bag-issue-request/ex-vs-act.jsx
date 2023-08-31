@@ -621,6 +621,18 @@ const SimpleMuiTable = () => {
                             inputRef={(input) => input && input.focus()}
                             name="doorsteps_diagnostics"
                             label="SCAN AWBN"
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             value={awbn}
                             onChange={(e) => {
                                 setAwbn(e.target.value)

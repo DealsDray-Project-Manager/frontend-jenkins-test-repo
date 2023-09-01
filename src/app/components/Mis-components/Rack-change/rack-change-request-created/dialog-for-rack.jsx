@@ -66,7 +66,7 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select RDL-One User</H4>
+                <H4 sx={{ mb: '20px' }}>Select RDL One</H4>
                 <TextFieldCustOm
                     label="Current Rack Id"
                     fullWidth

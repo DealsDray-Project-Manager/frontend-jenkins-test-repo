@@ -28,7 +28,7 @@ const MemberEditorDialog = ({
     const [scanInWh, setScanInWh] = useState('')
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
-    console.log('ischeck', isCheck)
+    
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)

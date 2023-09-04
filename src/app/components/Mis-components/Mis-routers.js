@@ -124,8 +124,15 @@ const RackChangeAssignement = Loadable(
 const RackRequestCreated = Loadable(
     lazy(() => import('./Rack-change/rack-change-request-created/tray'))
 )
+const BagTransffer = Loadable(
+    lazy(() => import('./bag-transffer/bag-send/bag-send'))
+)
 
 const dataTableRoutes = [
+    {
+        path: '/mis/bag-transfer',
+        element: <BagTransffer />,
+    },
     {
         path: '/mis/rack-change-request',
         element: <RackRequestCreated />,

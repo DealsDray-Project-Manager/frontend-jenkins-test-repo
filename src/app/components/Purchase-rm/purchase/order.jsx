@@ -212,7 +212,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'quanitity',
+            name: 'quantity',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),

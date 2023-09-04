@@ -495,6 +495,25 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: false,
     },
+    {
+        name: 'Bag Transfer',
+        icon: 'transfer_within_a_station',
+        children: [
+            {
+                name: 'Transfer',
+                path: '/mis/bag-transfer',
+                iconText: 'PL',
+            },
+            {
+                name: 'Receive',
+                path: '/mis/bag-receive',
+                iconText: 'PL',
+            },
+            
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
 
     {
         name: 'Assign to Agent',
@@ -584,7 +603,6 @@ export const navigations = [
                 path: '/mis/merge/ctx',
                 iconText: 'NP',
             },
-
             {
                 name: 'Pickup',
                 path: '/mis/merge/pickup',
@@ -627,7 +645,7 @@ export const navigations = [
     },
     {
         name: 'Rack Change',
-        icon: 'shopping_cart',
+        icon: 'track_changes',
         children: [
             {
                 name: 'Create Request',

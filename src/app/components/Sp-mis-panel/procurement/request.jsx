@@ -132,7 +132,7 @@ const SimpleMuiTable = () => {
         }
     }
     const handleQtyChange = (newValue, partId) => {
-        console.log(partId);
+        console.log(partId)
         const updatedData = spList.map((item) => {
             if (item.part_id === partId) {
                 return {
@@ -174,7 +174,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                
             },
         },
         {

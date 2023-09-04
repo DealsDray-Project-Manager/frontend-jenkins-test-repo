@@ -200,6 +200,10 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
         {

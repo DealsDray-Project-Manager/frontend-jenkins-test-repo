@@ -260,7 +260,6 @@ const SimpleMuiTable = () => {
                     muic: muic,
                     spnNumber: spnNumber,
                 }
-
                 let response = await axiosPurchaseAgent.post('/placeOrder', obj)
                 if (response.status == 200) {
                     setLoading(false)

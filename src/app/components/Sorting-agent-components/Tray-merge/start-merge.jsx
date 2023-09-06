@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 import { axiosSortingAgent, axiosWarehouseIn } from '../../../../axios'
 
@@ -31,6 +32,7 @@ export default function DialogBox() {
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
+    const { user } = useAuth()
     const [textDisable, setTextDisable] = useState(false)
 
     /*********************************************************** */
@@ -270,13 +272,25 @@ export default function DialogBox() {
                     id="outlined-password-input"
                     type="text"
                     name="doorsteps_diagnostics"
-                    label="Please Enter UIC"
+                    label="Scan UIC"
                     value={awbn}
                     disabled={textDisable}
                     // onChange={(e) => setAwbn(e.target.value)}
                     onChange={(e) => {
                         setAwbn(e.target.value)
                         handelAwbn(e)
+                    }}
+                    onKeyPress={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
+                    }}
+                    onPaste={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
                     }}
                     inputProps={{
                         style: {

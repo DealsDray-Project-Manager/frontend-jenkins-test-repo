@@ -12,15 +12,14 @@ import {
     TableRow,
     Grid,
 } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
 import { styled } from '@mui/system'
 import { Breadcrumb } from 'app/components'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
-
 import { axiosWarehouseIn } from '../../../../../../axios'
-
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -49,6 +48,7 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const { user } = useAuth()
     /*********************************************************** */
 
     useEffect(() => {
@@ -231,7 +231,7 @@ export default function DialogBox() {
                         sx={{
                             float: 'left',
                             ml: 2,
-                            mb:2
+                            mb: 2,
                         }}
                     >
                         <h5>ACTUAL</h5>
@@ -244,6 +244,18 @@ export default function DialogBox() {
                             inputRef={(input) => input && input.focus()}
                             label="SCAN UIC"
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e)
@@ -356,7 +368,6 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
-                
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"

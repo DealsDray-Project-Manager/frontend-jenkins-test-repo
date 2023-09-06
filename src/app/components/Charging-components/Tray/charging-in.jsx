@@ -13,6 +13,7 @@ import {
     Grid,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
+import useAuth from 'app/hooks/useAuth'
 // import jwt from "jsonwebtoken"
 import Swal from 'sweetalert2'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
@@ -29,6 +30,7 @@ export default function DialogBox() {
     const [resDataUic, setResDataUic] = useState({})
     const [loading, setLoading] = useState(false)
     const [textBoxDis, setTextBoxDis] = useState(false)
+    const { user } = useAuth()
 
     /*********************************************************** */
 
@@ -241,6 +243,18 @@ export default function DialogBox() {
                             label="SCAN UIC"
                             inputRef={(input) => input && input.focus()}
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setUic(e.target.value)

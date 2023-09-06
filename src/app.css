@@ -1,0 +1,14 @@
+/* Change table header color */
+.head-cell {
+    background-color: blue;
+    color: white; /* Change text color to white for better readability */
+  }
+  
+  /* Customize row and column lines */
+  .cell {
+    border: 1px solid #ccc; /* Set a 1px solid gray border for all cells */
+  }
+  .row-cell {
+    /* Customize row-specific styling here if needed */
+  }
+  

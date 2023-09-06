@@ -766,17 +766,17 @@ export default function DialogBox() {
                             //         'failed') ||
                             reportData?.delivery?.bqc_software_report
                                 ?.final_grade == undefined ||
-                            (reportData?.order?.imei
+                            (reportData?.delivery?.imei
                                 ?.match(/[0-9]/g)
                                 ?.join('') !==
                                 reportData?.delivery?.bqc_software_report
                                     ?.mobile_imei &&
-                                reportData?.order?.imei
+                                reportData?.delivery?.imei
                                     ?.match(/[0-9]/g)
                                     ?.join('') !==
                                     reportData?.delivery?.bqc_software_report
                                         ?.mobile_imei2 &&
-                                reportData?.order?.imei
+                                reportData?.delivery?.imei
                                     ?.match(/[0-9]/g)
                                     ?.join('') !==
                                     reportData?.delivery?.bqc_software_report

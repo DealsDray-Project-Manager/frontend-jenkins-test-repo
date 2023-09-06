@@ -95,6 +95,12 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport }) => {
                             {BqcSowftwareReport?.device_color}
                         </TableCell>
                     </TableRow>
+                    <TableRow key={BqcSowftwareReport?.find_my_iphone}>
+                        <TableCell sx={{ pl: 2 }}>Find My Iphone :</TableCell>
+                        <TableCell>
+                            {BqcSowftwareReport?.find_my_iphone}
+                        </TableCell>
+                    </TableRow>
                     <TableRow key={BqcSowftwareReport?.bq_batterychargerange}>
                         <TableCell sx={{ pl: 2 }}>
                             Bq Battery Charge Range

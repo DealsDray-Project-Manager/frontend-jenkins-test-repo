@@ -36,6 +36,7 @@ import { axiosBot, baseURL } from '../../../../axios'
 import Checkbox from '@mui/material/Checkbox'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -84,6 +85,7 @@ export default function DialogBox() {
     const [bagData, setBagData] = useState([])
     const { bagId } = useParams()
     const [count, setCount] = useState(0)
+    const { user } = useAuth()
     /**************************************************************************** */
     const [awabnDetails, setAwbnDetails] = useState([])
     /***************************************************************************************** */
@@ -1234,6 +1236,18 @@ export default function DialogBox() {
                             onChange={(e) => {
                                 setAwbn(e.target.value)
                                 handelAwbn(e)
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                             inputProps={{
                                 style: {

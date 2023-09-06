@@ -18,7 +18,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
-
+import useAuth from 'app/hooks/useAuth'
 import { useParams } from 'react-router-dom'
 // import jwt from "jsonwebtoken"
 import jwt_decode from 'jwt-decode'
@@ -76,6 +76,7 @@ export default function DialogBox() {
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
+    const { user } = useAuth()
 
     /*********************************************************** */
 
@@ -436,6 +437,18 @@ export default function DialogBox() {
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
                         disabled={textDisable}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
                         // inputRef={(input) => input && input.focus()}
                         value={awbn}
                         onChange={(e) => {

@@ -64,9 +64,7 @@ const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const [stateForFilterUn, setFilterUn] = useState(false)
     const [location, setLocation] = useState('')
-
     const [isLoading, setIsLoading] = useState(false)
-
     const [filterData, setFilterData] = useState({
         fromDate: '',
         toDate: '',

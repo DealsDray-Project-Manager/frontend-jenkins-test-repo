@@ -37,6 +37,8 @@ import { useForm } from 'react-hook-form'
 import CloseIcon from '@mui/icons-material/Close'
 import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -86,10 +88,12 @@ export default function DialogBox() {
     const [loading, setlLoading] = useState(false)
     const [textBoxDis, setTextBoxDis] = useState(false)
     const [charge, setCharge] = useState('')
+    const { user } = useAuth()
     const handleClose = () => {
         reset({})
         setOpen(false)
     }
+    
     /************************************************************************** */
     const schema = Yup.object().shape({
         battery_status: Yup.string().required('Required*').nullable(),
@@ -118,15 +122,16 @@ export default function DialogBox() {
         charging_jack_type: Yup.string().required('Required*').nullable(),
         cimei_1: Yup.string()
             .when(
-                ['battery_status', 'lock_status'],
-                (battery_status, lock_status, schema) => {
+                ['battery_status', 'lock_status','display_condition'],
+                (battery_status, lock_status,display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
                         battery_status !== 'No-battery' &&
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
-                        lock_status !== 'iCloud Locked'
+                        lock_status !== 'iCloud Locked'&&
+                        display_condition !== "Touch Not Working"
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -135,15 +140,16 @@ export default function DialogBox() {
             .nullable(),
         cimei_2: Yup.string()
             .when(
-                ['battery_status', 'lock_status'],
-                (battery_status, lock_status, schema) => {
+                ['battery_status', 'lock_status','display_condition'],
+                (battery_status, lock_status,display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
                         battery_status !== 'No-battery' &&
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
-                        lock_status !== 'iCloud Locked'
+                        lock_status !== 'iCloud Locked' &&
+                        display_condition !== "Touch Not Working"
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -446,6 +452,18 @@ export default function DialogBox() {
                             disabled={textBoxDis}
                             inputRef={(input) => input && input.focus()}
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
                                 setUic(e.target.value)
@@ -664,6 +682,7 @@ export default function DialogBox() {
                                 <MenuItem value="Body with major scratches">
                                     Body with major scratches
                                 </MenuItem>
+                               
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
@@ -697,6 +716,9 @@ export default function DialogBox() {
                                 </MenuItem>
                                 <MenuItem value="Display With Major Scratches">
                                     Display With Major scratches
+                                </MenuItem>
+                                <MenuItem value="Touch Not Working">
+                                    Touch Not Working
                                 </MenuItem>
                             </Select>
                         </FormControl>

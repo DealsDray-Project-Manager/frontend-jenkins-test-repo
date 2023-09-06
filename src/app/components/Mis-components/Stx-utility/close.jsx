@@ -303,12 +303,24 @@ export default function DialogBox() {
                             inputRef={(input) => input && input.focus()}
                             disabled={textDisable}
                             name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
                             value={uic}
                             // onChange={(e) => setAwbn(e.target.value)}
+                            label="Scan UIC"
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e)
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                             inputProps={{
                                 style: {

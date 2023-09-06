@@ -304,6 +304,18 @@ export default function DialogBox() {
                             disabled={textDisable}
                             name="doorsteps_diagnostics"
                             label="SCAN UIC"
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             value={uic}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {

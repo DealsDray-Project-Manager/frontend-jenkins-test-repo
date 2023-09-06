@@ -334,6 +334,18 @@ export default function DialogBox() {
                             disabled={textDisable}
                             label="SCAN UIC"
                             value={uic}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             onChange={(e) => {
                                 setUic(e.target.value)
                                 handelUic(e)

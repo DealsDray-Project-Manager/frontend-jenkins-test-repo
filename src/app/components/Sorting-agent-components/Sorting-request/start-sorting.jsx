@@ -25,6 +25,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 import { axiosSortingAgent } from '../../../../axios'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -76,7 +78,7 @@ export default function DialogBox() {
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-
+    const { user } = useAuth()
     /*********************************************************** */
 
     useEffect(() => {
@@ -299,6 +301,18 @@ export default function DialogBox() {
                     onChange={(e) => {
                         setAwbn(e.target.value)
                         handelAwbn(e)
+                    }}
+                    onKeyPress={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
+                    }}
+                    onPaste={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
                     }}
                     inputProps={{
                         style: {

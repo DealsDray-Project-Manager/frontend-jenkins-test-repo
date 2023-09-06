@@ -16,6 +16,7 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
+
 const MemberEditorDialog = ({
     handleClose,
     open,
@@ -65,7 +66,6 @@ const MemberEditorDialog = ({
                 text: error,
             })
         }
-        
     }
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>

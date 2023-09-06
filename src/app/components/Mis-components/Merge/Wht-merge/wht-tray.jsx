@@ -26,7 +26,6 @@ import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -221,7 +220,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         try {
             setSubmitDis(true)
-            mergreData.actionUser=user.username
+            mergreData.actionUser = user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData
@@ -290,7 +289,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'items_length',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Quantity</>
@@ -299,7 +298,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[2],
+                    value + '/' + tableMeta?.rowData[2],
             },
         },
         {
@@ -386,7 +385,7 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[5],
                                         tableMeta.rowData[4],
                                         value,
-                                        tableMeta.rowData[3]?.length,
+                                        tableMeta.rowData[3],
                                         tableMeta.rowData[6],
                                         tableMeta.rowData[7]
                                     )

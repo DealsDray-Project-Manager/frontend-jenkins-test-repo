@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }) => {
             password: password,
         })
         if (res.status == 200) {
+         
             dispatch({
                 type: 'AUTH_STATE_CHANGED',
                 payload: {
@@ -56,13 +57,14 @@ export const AuthProvider = ({ children }) => {
                     user: {
                         id: res.data.data.data._id,
                         name: res.data.data.data.name,
-                        username:res.data.data.data.user_name,
+                        username: res.data.data.data.user_name,
                         avatar: res.data.data.data.profile,
                         email: res.data.data.data.email,
                         role: res.data.data.data.user_type,
-                        cpc_type:res.data.data.data.cpc_type,
-                        warehouse:res.data.data.data.warehouse,
-                        location:res.data.data.data.cpc
+                        cpc_type: res.data.data.data.cpc_type,
+                        warehouse: res.data.data.data.warehouse,
+                        location: res.data.data.data.cpc,
+                        serverType: res.data.data.serverType,
                     },
                 },
             })
@@ -84,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         let userExists = localStorage.getItem('prexo-authentication')
         if (userExists) {
             let user = jwt_decode(userExists)
+           
             dispatch({
                 type: 'AUTH_STATE_CHANGED',
                 payload: {
@@ -94,10 +97,11 @@ export const AuthProvider = ({ children }) => {
                         avatar: user.profile,
                         email: user.email,
                         role: user.user_type,
-                        cpc_type:user.cpc_type,
-                        warehouse:user.warehouse,
-                        username:user.user_name,
-                        location:user.location
+                        cpc_type: user.cpc_type,
+                        warehouse: user.warehouse,
+                        username: user.user_name,
+                        location: user.location,
+                        serverType: user.serverType,
                     },
                 },
             })
@@ -109,7 +113,7 @@ export const AuthProvider = ({ children }) => {
                     user: null,
                 },
             })
-        }  
+        }
         return
     }, [dispatch])
 

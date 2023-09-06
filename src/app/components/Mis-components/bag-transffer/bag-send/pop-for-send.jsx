@@ -21,7 +21,7 @@ const FormHandlerBox = styled('div')(() => ({
 }))
 
 const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
-    const [chargingUserName, setCharging] = useState('')
+    const [deliveryType, setDeliveryType] = useState('')
     const { user } = useAuth()
     const [loading, setLoading] = useState(false)
 
@@ -36,6 +36,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
         tracking_url: Yup.string().required('Required*').nullable(),
         hand_name_of_the_person: Yup.string().required('Required*').nullable(),
         received_by: Yup.string().required('Required*').nullable(),
+        awbn:Yup.string().required('Required*').nullable(),
     })
 
     const {
@@ -48,35 +49,29 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
         resolver: yupResolver(schema),
     })
 
-    const handelSendRequestConfirm = async () => {
+    const onSubmit = async () => {
         try {
             setLoading(true)
-            let obj = {
-                tray: isCheck,
-                actionUser: user.username,
-                sort_id: 'Send for charging',
-            }
-            let res = await axiosMisUser.post('/bagTransferSend', obj)
-            if (res.status == 200) {
-                setLoading(false)
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-                setCharging('')
-                setIsAlive((isAlive) => !isAlive)
-                handleClose()
-            } else {
-                setLoading(false)
 
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res?.data?.message,
-                })
-            }
+            // let res = await axiosMisUser.post('/bagTransferSend')
+            // if (res.status == 200) {
+            //     setLoading(false)
+            //     Swal.fire({
+            //         position: 'top-center',
+            //         icon: 'success',
+            //         title: res?.data?.message,
+            //         confirmButtonText: 'Ok',
+            //     })
+            //     setIsAlive((isAlive) => !isAlive)
+            //     handleClose()
+            // } else {
+            //     setLoading(false)
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Oops...',
+            //         text: res?.data?.message,
+            //     })
+            // }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -85,6 +80,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
             })
         }
     }
+
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
@@ -93,35 +89,67 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                     label="Name of courier"
                     fullWidth
                     name="name_of_courier"
+                    {...register('name_of_courier')}
+                    error={errors.name_of_courier ? true : false}
+                    helperText={errors.name_of_courier?.message}
                 />
                 <TextFieldCustOm
                     label="Date of courier"
                     fullWidth
+                    type="date"
                     name="date_of_courier"
+                    {...register('date_of_courier')}
+                    error={errors.date_of_courier ? true : false}
+                    helperText={errors.date_of_courier?.message}
                 />
                 <TextFieldCustOm
                     label="Tracking URL"
                     fullWidth
                     name="tracking_url"
+                    {...register('tracking_url')}
+                    error={errors.tracking_url ? true : false}
+                    helperText={errors.tracking_url?.message}
                 />
-                <TextFieldCustOm label="Awbn no" fullWidth name="awbn_no" />
+                <TextFieldCustOm
+                    label="Awbn no"
+                    fullWidth
+                    name="awbn_no"
+                    {...register('awbn')}
+                    error={errors.awbn ? true : false}
+                    helperText={errors.awbn?.message}
+                />
                 <TextFieldCustOm
                     label="Name of the person"
                     fullWidth
                     name="hand_name_of_the_person"
+                    {...register('hand_name_of_the_person')}
+                    error={errors.hand_name_of_the_person ? true : false}
+                    helperText={errors.hand_name_of_the_person?.message}
                 />
                 <TextFieldCustOm
                     label="Date of delivery"
                     fullWidth
+                    type="date"
                     name="date_of_delivery"
+                    {...register('hand_name_of_the_person')}
+                    error={errors.hand_name_of_the_person ? true : false}
+                    helperText={errors.hand_name_of_the_person?.message}
                 />
                 <TextFieldCustOm
                     label="Received by"
                     fullWidth
                     name="received_by"
+                    {...register('received_by')}
+                    error={errors.received_by ? true : false}
+                    helperText={errors.received_by?.message}
                 />
                 <FormHandlerBox>
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button
+                        variant="contained"
+                        onClick={handleSubmit(onSubmit)}
+                        color="primary"
+                        type="submit"
+                    >
                         Submit
                     </Button>
                     <Button

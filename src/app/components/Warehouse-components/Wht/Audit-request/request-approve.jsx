@@ -11,6 +11,8 @@ import {
     TableHead,
     TableRow,
     Grid,
+    Card,
+    Typography,
 } from '@mui/material'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -21,6 +23,7 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import useAuth from 'app/hooks/useAuth'
 // import jwt from "jsonwebtoken"
+import { H1, H3, H4 } from 'app/components/Typography'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { axiosSuperAdminPrexo } from '../../../../../axios'
 
@@ -47,18 +50,12 @@ export default function DialogBox() {
     /**************************************************************************** */
     const [uic, setUic] = useState('')
     const { user } = useAuth()
-    const [rackId, setRackId] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [trayIdNotChangeAble, setTrayIdNotChangeAble] = useState({})
-    const [otherTrayAssign, setOtherTrayAssign] = useState({
-        A: '',
-        B: '',
-        C: '',
-        D: '',
-        WHT: '',
-    })
-
+    const [validatedCtx, setValidatedCtx] = useState([])
+    const [ctxGrade, setCtxGrade] = useState([])
+    const [issuedCtx, setIssuedCtx] = useState([])
+    const [alReadyIssuedTrayGrade, setAlReadyIssuedTrayGrade] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -121,14 +118,8 @@ export default function DialogBox() {
                     obj2
                 )
                 if (trayFetch.status == 200) {
-                    setOtherTrayAssign({
-                        A: trayFetch.data.data.A,
-                        B: trayFetch.data.data.B,
-                        C: trayFetch.data.data.C,
-                        D: trayFetch.data.data.D,
-                        WHT: trayId,
-                    })
-                    setTrayIdNotChangeAble(trayFetch.data.data)
+                    setIssuedCtx(trayFetch.data.grade)
+                    setAlReadyIssuedTrayGrade(trayFetch.data.tray)
                 }
                 if (res.status === 200) {
                     setUserAgent(res.data.data)
@@ -186,17 +177,17 @@ export default function DialogBox() {
     const handelIssue = async (e, sortId) => {
         try {
             if (userAgent !== 'User is free') {
-                alert(userAgent)
-            } else if (
-                otherTrayAssign.A == '' ||
-                otherTrayAssign.B == '' ||
-                otherTrayAssign.C == '' ||
-                otherTrayAssign.D == ''
-            ) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: userAgent,
+                })
+            } else if (validatedCtx?.length !== ctxGrade?.length) {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: 'Please Assign other tray',
+                    title: 'Please Assign ctx tray',
                     confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -209,10 +200,12 @@ export default function DialogBox() {
                 if (trayData?.actual_items?.length == trayData?.items?.length) {
                     setLoading(true)
                     let obj = {
-                        trayId: Object.values(otherTrayAssign),
+                        trayId: validatedCtx,
                         description: description,
                         username: trayData.issued_user_name,
                         actioUser: user.username,
+                        whtTray:trayId
+                        
                     }
                     let res = await axiosWarehouseIn.post(
                         '/auditTrayIssueToAgent',
@@ -261,6 +254,7 @@ export default function DialogBox() {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
+    console.log(ctxGrade)
 
     const tableExpected = useMemo(() => {
         return (
@@ -305,8 +299,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -317,8 +309,6 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -392,8 +382,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -405,8 +393,6 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -427,57 +413,62 @@ export default function DialogBox() {
                     ]}
                 />
             </div>
-            <Box
-                sx={
-                    {
-                        // mt: 1,
-                        // height: 70,
-                        // borderRadius: 1,
-                    }
-                }
-            >
-                <Box
-                    sx={{
-                        float: 'left',
-                    }}
-                >
-                    <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
-                    <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
-                    </h4>
+            <Card>
+                <Box display="flex" justifyContent="space-between">
+                    <Box>
+                        <Box sx={{ display: 'flex' }}>
+                            <Typography sx={{ ml: 2 }}>
+                                TRAY ID :- {trayId}
+                            </Typography>
+                            <Typography sx={{ ml: 2 }}>
+                                AGENT NAME :- {trayData?.issued_user_name}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex' }}>
+                            <Typography sx={{ ml: 2, mt: 1 }}>
+                                Brand :- {trayData?.brand}
+                            </Typography>
+                            <Typography sx={{ ml: 2, mt: 1 }}>
+                                Model :- {trayData?.model}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex' }}>
+                            <Typography sx={{ ml: 2, mt: 1 }}>
+                                Already Issued Trays :-{' '}
+                                {issuedCtx?.map((item, index) => (
+                                    <span key={index}>
+                                        {item},{' '}
+                                        {(index + 1) % 2 === 0 ? <br /> : ' '}
+                                    </span>
+                                ))}
+                            </Typography>
+                        </Box>
+                    </Box>
+
                     <Button
-                        sx={{ m: 2 }}
+                        sx={{ height: '42px', m: 1 }}
                         variant="contained"
                         color="primary"
+                        disabled={validatedCtx?.length !== 0}
                         onClick={() => handleDialogOpen()}
                     >
-                        Assign Other Tray
+                        Add Ctx Tray
                     </Button>
                 </Box>
-                <Box
-                    sx={{
-                        float: 'right',
-                    }}
-                >
-                    <h4 style={{ marginRight: '13px' }}>
-                        Brand -- {trayData?.brand}
-                    </h4>
-                    <h4 style={{ marginRight: '13px' }}>
-                        Model -- {trayData?.model}
-                    </h4>
-                </Box>
+
                 {shouldOpenEditorDialog && (
                     <TrayAssignDialogBox
                         handleClose={handleDialogClose}
                         open={handleDialogOpen}
-                        setOtherTrayAssign={setOtherTrayAssign}
-                        otherTrayAssign={otherTrayAssign}
-                        trayIdNotChangeAble={trayIdNotChangeAble}
+                        setValidatedCtx={setValidatedCtx}
                         brand={trayData?.brand}
                         model={trayData?.model}
+                        ctxGrade={ctxGrade}
+                        setCtxGrade={setCtxGrade}
+                        alReadyIssuedTrayGrade={alReadyIssuedTrayGrade}
                     />
                 )}
-            </Box>
+            </Card>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     {tableExpected}

@@ -254,7 +254,7 @@ export default function DialogBox() {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
-    console.log(ctxGrade)
+  
 
     const tableExpected = useMemo(() => {
         return (

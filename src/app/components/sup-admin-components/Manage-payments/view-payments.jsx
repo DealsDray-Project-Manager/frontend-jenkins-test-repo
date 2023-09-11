@@ -35,7 +35,7 @@ const SimpleMuiTable = () => {
                 const res = await axiosSuperAdminPrexo.post(
                     '/payments/view/' + 'payment-list'
                 )
-                console.log(res);
+              
                 if (res.status === 200) {
                     setpayment(res.data.data)
                     setIsLoading(false)

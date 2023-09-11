@@ -59,7 +59,7 @@ const SimpleMuiTable = () => {
                         '/plannerPage/charging',obj 
                     )
                     if (res.status === 200) {
-                        console.log(res.data.data);
+                       
                         setIsLoading(false)
                         setItem(res.data.data)
                     }

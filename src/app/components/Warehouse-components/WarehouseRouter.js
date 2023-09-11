@@ -244,6 +244,8 @@ const RackChangeScanOut = Loadable(lazy(() => import('./Rack-change/scan-out')))
 const RackChangeScanIn = Loadable(lazy(() => import('./Rack-change/scan-in')))
 
 const WarehoueRouter = [
+   
+    
     {
         path: '/warehouse/rack-change/scan-in',
         element: <RackChangeScanIn />,

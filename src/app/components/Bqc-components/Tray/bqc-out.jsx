@@ -217,6 +217,7 @@ export default function DialogBox() {
                 text: 'All Items Scanned',
             })
         } else {
+            handleClose()
             setAddButDis(true)
             if (value.blancoo_qc_status == 'BQC Finished') {
                 value.bqc_incomplete_reason = ''
@@ -225,7 +226,6 @@ export default function DialogBox() {
             } else {
                 value.factory_reset_status = ''
             }
-
             try {
                 let objData = {
                     trayId: trayId,
@@ -243,7 +243,6 @@ export default function DialogBox() {
                     setTextBoxDis(false)
                     setAddButDis(false)
                     setRefresh((refresh) => !refresh)
-                    handleClose()
                 }
             } catch (error) {
                 Swal.fire({
@@ -349,8 +348,7 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                               
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -361,8 +359,7 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                  
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -429,8 +426,7 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                               
                             </TableRow>
                         </TableHead>
 
@@ -442,8 +438,7 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                  
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -452,7 +447,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items, textBoxDis, uic])
-    
+
     return (
         <>
             <BootstrapDialog

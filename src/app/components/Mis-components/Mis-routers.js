@@ -124,6 +124,8 @@ const RackChangeAssignement = Loadable(
 const RackRequestCreated = Loadable(
     lazy(() => import('./Rack-change/rack-change-request-created/tray'))
 )
+const StxToStxUtilityScanUic = Loadable(lazy(() => import('./Stx-utility/stx-to-stx-utility')))
+
 
 const dataTableRoutes = [
     {
@@ -138,7 +140,10 @@ const dataTableRoutes = [
         path: '/mis/stx-utility/tray-view/close/:trayId',
         element: <StxTrayUtilityInProgressClose />,
     },
-   
+    {
+        path: '/mis/stx-to-stx-utility',
+        element: <StxToStxUtilityScanUic />,
+    },
     {
         path: '/mis/stx-utility-tray-view',
         element: <StxUtilityInprogressTray />,

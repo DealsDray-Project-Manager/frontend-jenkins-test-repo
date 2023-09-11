@@ -566,7 +566,7 @@ export default function DialogBox() {
                             tray[0]?.actual_items?.length !==
                                 tray[0]?.items?.length
                                 ? true
-                                : false || rackId == ""
+                                : false || rackId == "" 
                         }
                         onClick={(e) => {
                             handelIssue(

@@ -69,7 +69,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleClick = (e, locationAdd) => {
-        console.log(locationAdd);
+      
         const { id, checked } = e.target
         setIsCheck([...isCheck, id])
         if (!checked && isCheck.length == 1) {

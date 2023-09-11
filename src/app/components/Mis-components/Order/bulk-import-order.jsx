@@ -5,8 +5,6 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Icon,
-    Card,
     Button,
     TextField,
 } from '@mui/material'
@@ -21,6 +19,7 @@ import * as XLSX from 'xlsx'
 import { axiosMisUser } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
+const { format, isValid, parse } = require('date-fns')
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -76,6 +75,7 @@ const PaginationTable = () => {
     const [loading, setLoading] = useState(false)
     const [item, setItem] = useState([])
     const [err, setErr] = useState({})
+    const [fileExt, setFileExt] = useState('')
     const [exFile, setExfile] = useState(null)
     const [pagination, setPagination] = useState({
         page: 0,
@@ -83,7 +83,6 @@ const PaginationTable = () => {
         item: [],
         totalPage: 0,
     })
-    console.log(item)
 
     useEffect(() => {
         setItem((_) =>
@@ -121,7 +120,10 @@ const PaginationTable = () => {
                 const wb = XLSX.read(bufferArray, { cellDates: true })
                 const wsname = wb.SheetNames[0]
                 const ws = wb.Sheets[wsname]
-                const data = XLSX.utils.sheet_to_json(ws, { raw: false })
+                const data = XLSX.utils.sheet_to_json(ws, {
+                    raw: false,
+                    dateNF: 'dd/mm/yyyy',
+                })
                 resolve(data)
             }
             filReader.onerror = (error) => {
@@ -129,6 +131,7 @@ const PaginationTable = () => {
             }
         })
         const data = await promise
+    
         setPagination((p) => ({
             ...p,
             page: 1,
@@ -142,8 +145,8 @@ const PaginationTable = () => {
             accumulator.created_at = Date.now()
             accumulator[key.toLowerCase()?.split(' ').join('_')] = obj[key]
             accumulator.delet_id = id
-
             if (key == 'Order Date') {
+              
                 if (accumulator.order_date?.includes('-')) {
                     // Date is in "DD-MM-YYYY" format
                     const [day, month, year] =
@@ -152,99 +155,96 @@ const PaginationTable = () => {
                     accumulator.order_date = new Date(formattedDateStr)
                 } else {
                     // Date is in "MM/DD/YYYY" format
-                    accumulator.order_date = new Date(accumulator.order_date)
+                    if (fileExt == 'csv') {
+                        const parsedDate = parse(
+                            accumulator.order_date,
+                            'MM/dd/yyyy',
+                            new Date()
+                        )
+
+                        if (isValid(parsedDate)) {
+                            accumulator.order_date = format(
+                                parsedDate,
+                                'dd/MM/yyyy'
+                            )
+                        } else {
+                            console.error(
+                                'Invalid date:',
+                                accumulator.order_date
+                            )
+                            // Handle the invalid date case here
+                            accumulator.order_date = accumulator.order_date
+                        }
+                    } else {
+                        const parsedDate = parse(
+                            accumulator.order_date,
+                            'MM/dd/yyyy HH:mm:ss',
+                            new Date()
+                        )
+
+                        if (isValid(parsedDate)) {
+                            accumulator.order_date = format(
+                                parsedDate,
+                                'dd/MM/yyyy HH:mm:ss'
+                            )
+                        } else {
+                            console.error(
+                                'Invalid date:',
+                                accumulator.order_date
+                            )
+                            // Handle the invalid date case here
+                            accumulator.order_date = accumulator.order_date
+                        }
+                    }
                 }
             }
             if (key === 'Order Timestamp') {
-                if (accumulator.order_timestamp?.includes('-')) {
-                    console.log(accumulator.order_timestamp)
-                    // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
-                    const [datePart, timePart] =
-                        accumulator.order_timestamp?.split(' ')
-                    const [day, month, year] = datePart?.split('-')
-                    const [hours, minutes, seconds] = timePart?.split(':')
-                    let formattedTimestampStr
-                    if (seconds) {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
-                    } else {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
-                    }
-                    accumulator.order_timestamp = new Date(
-                        formattedTimestampStr
-                    )
-                } else {
-                    // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
-                    accumulator.order_timestamp = new Date(
-                        accumulator.order_timestamp
-                    )
-                }
+                accumulator.order_timestamp = forDateFormat(
+                    accumulator?.order_timestamp
+                )
             }
             if (key === 'Gc Redeem Time') {
-                if (accumulator.gc_redeem_time?.includes('-')) {
-                    // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
-                    const [datePart, timePart] =
-                        accumulator.gc_redeem_time?.split(' ')
-                    const [day, month, year] = datePart?.split('-')
-                    const [hours, minutes, seconds] = timePart?.split(':')
-                    let formattedTimestampStr
-                    if (seconds) {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
-                    } else {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
-                    }
-                    accumulator.gc_redeem_time = new Date(formattedTimestampStr)
-                } else {
-                    // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
-                    accumulator.gc_redeem_time = new Date(
-                        accumulator.gc_redeem_time
-                    )
-                }
+                accumulator.gc_redeem_time = forDateFormat(
+                    accumulator?.gc_redeem_time
+                )
             }
             if (key === 'Delivery Date') {
-                if (accumulator?.delivery_date?.includes('-')) {
-                    // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
-                    const [datePart, timePart] =
-                        accumulator.delivery_date?.split(' ')
-                    const [day, month, year] = datePart?.split('-')
-                    const [hours, minutes, seconds] = timePart?.split(':')
-                    let formattedTimestampStr
-                    if (seconds) {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
-                    } else {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
-                    }
-                    accumulator.delivery_date = new Date(formattedTimestampStr)
-                } else {
-                    // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
-                    accumulator.delivery_date = new Date(
-                        accumulator.delivery_date
-                    )
-                }
+                accumulator.delivery_date = forDateFormat(
+                    accumulator?.delivery_date
+                )
             }
             if (key === 'GC Refund Time') {
-                if (accumulator?.gc_refund_time?.includes('-')) {
-                    // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
-                    const [datePart, timePart] =
-                        accumulator.gc_refund_time?.split(' ')
-                    const [day, month, year] = datePart.split('-')
-                    const [hours, minutes, seconds] = timePart?.split(':')
-                    let formattedTimestampStr
-                    if (seconds) {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
-                    } else {
-                        formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
-                    }
-                    accumulator.gc_refund_time = new Date(formattedTimestampStr)
-                } else {
-                    // Timestamp is in "MM/DD/YYYY HH:mm:ss" format
-                    accumulator.gc_refund_time = new Date(
-                        accumulator.gc_refund_time
-                    )
-                }
+                accumulator.gc_refund_time = forDateFormat(
+                    accumulator.gc_refund_time
+                )
             }
 
             return accumulator
         }, {})
+    }
+    const forDateFormat = (field) => {
+        if (field?.includes('-')) {
+            // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+            const [datePart, timePart] = field.split(' ')
+            const [day, month, year] = datePart.split('-')
+            const [hours, minutes, seconds] = timePart?.split(':')
+            let formattedTimestampStr
+            if (seconds) {
+                formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
+            } else {
+                formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
+            }
+            return new Date(formattedTimestampStr)
+        } else {
+            const parsedDate = parse(field, 'MM/dd/yyyy', new Date())
+            if (isValid(parsedDate)) {
+                return format(parsedDate, 'dd/MM/yyyy')
+            } else {
+                console.error('Invalid date:', field)
+                // Handle the invalid date case here
+                return field
+            }
+        }
     }
     // Validate the data
     const handelValidate = async (e) => {
@@ -489,6 +489,14 @@ const PaginationTable = () => {
             item: pagination.item.filter((item) => item.delet_id != delet_id),
         }))
     }
+    const addFileData = (fileData) => {
+        setExfile(fileData)
+        const fileName = fileData.name
+        const fileExtension = fileName.split('.').pop() // Get the last part as the extension
+       
+        setFileExt(fileExtension)
+    }
+  
 
     return (
         <Container>
@@ -543,7 +551,7 @@ const PaginationTable = () => {
                     <TextField
                         size="small"
                         onChange={(e) => {
-                            setExfile(e.target.files[0])
+                            addFileData(e.target.files[0])
                         }}
                         variant="outlined"
                         type="file"

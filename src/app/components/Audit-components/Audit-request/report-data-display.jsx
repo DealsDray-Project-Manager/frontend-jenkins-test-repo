@@ -194,7 +194,7 @@ export default function DialogBox() {
     }
 
     const handleChange = ({ target: { name, value } }) => {
-        console.log(value)
+      
         if (name === 'stage') {
             setStateData({
                 [name]: value,

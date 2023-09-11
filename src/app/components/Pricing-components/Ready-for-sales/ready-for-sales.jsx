@@ -154,7 +154,7 @@ const SimpleMuiTable = () => {
         setLoading(true)
         let flag = false
         for (let x of addPricing) {
-            console.log(x)
+         
             if (
                 isNaN(Number(x.mrp)) ||
                 Number(x.mrp) < 0 ||

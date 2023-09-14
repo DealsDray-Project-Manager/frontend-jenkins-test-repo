@@ -28,7 +28,7 @@ export default function DialogBox() {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
-                    title: 'All Items Scaanned',
+                    title: 'All Items Scanned',
                     confirmButtonText: 'Ok',
                 })
             } else {
@@ -78,15 +78,18 @@ export default function DialogBox() {
             <H3>Model: {resDataUic?.model_name}</H3>
             <Grid container spacing={3}>
                 <Grid item lg={6} md={12} xs={12}>
-                    <ChargingDetails Charging={resDataUic?.charging} state="Bqc" />
-                </Grid>
-                <Grid item lg={6} md={6} xs={12}>
-                    <RdlOneReport
-                        RdlOneReport={resDataUic?.rdl_fls_report}
+                    <ChargingDetails
+                        Charging={resDataUic?.charging}
+                        state="Bqc"
                     />
                 </Grid>
                 <Grid item lg={6} md={6} xs={12}>
-                    <RdlTwoReport RdlTwoReport={resDataUic?.rdl_repair_report} />
+                    <RdlOneReport RdlOneReport={resDataUic?.rdl_fls_report} />
+                </Grid>
+                <Grid item lg={6} md={6} xs={12}>
+                    <RdlTwoReport
+                        RdlTwoReport={resDataUic?.rdl_repair_report}
+                    />
                 </Grid>
             </Grid>
 

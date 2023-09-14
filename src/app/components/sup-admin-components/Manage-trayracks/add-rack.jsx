@@ -39,13 +39,21 @@ const MemberEditorDialog = ({
         const fetchData = async () => {
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
-                // setPersonName(editFetchData.location)
+                let arr = []
+               
+                let obj = {
+                    code: editFetchData.warehouse,
+                }
+                
+                arr.push(obj)
+                setWarehouse(arr)
                 settrayRackId(editFetchData.trayRackId)
                 open()
             }
         }
         fetchData()
     }, [])
+    console.log(warehouse)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,14 +79,8 @@ const MemberEditorDialog = ({
             fetchModel(editFetchData.brand)
             let arr = []
             let obj = {
-                name: editFetchData.warehouse,
+                code: editFetchData.warehouse,
             }
-            let objOne = {
-                code: editFetchData.tray_grade,
-            }
-            let arrOne = []
-            arrOne.push(objOne)
-            setCategorys(arrOne)
             arr.push(obj)
             setWarehouse(arr)
             open()
@@ -144,8 +146,6 @@ const MemberEditorDialog = ({
         warehouse: Yup.string().required('Required*').nullable(),
     })
 
-    // console.log(errors)
-
     const {
         control,
         register,
@@ -156,9 +156,6 @@ const MemberEditorDialog = ({
         // setValue,
     } = useForm({
         resolver: yupResolver(schema),
-        // defaultValues: {
-        //     location: [], // Set initial values here
-        // },
     })
 
     const onSubmit = async (data) => {
@@ -239,7 +236,7 @@ const MemberEditorDialog = ({
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: 'Please check',
+                    title: response.data.message,
                     confirmButtonText: 'Ok',
                 })
             }
@@ -266,7 +263,10 @@ const MemberEditorDialog = ({
                             name="rack_id"
                             value={trayRackId}
                             {...register('rack_id')}
-                            disabled={Object.keys(editFetchData).length !== 0}
+                            disabled={
+                              
+                                Object.keys(editFetchData).length !== 0
+                            }
                             error={errors.trayRackId ? true : false}
                             helperText={
                                 errors.trayRackId
@@ -303,6 +303,7 @@ const MemberEditorDialog = ({
                             name="parent_id"
                             {...register('parent_id')}
                             error={errors.parent_id ? true : false}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             helperText={errors.parent_id?.message}
                             defaultValue={getValues('parent_id')}
                         >
@@ -327,10 +328,7 @@ const MemberEditorDialog = ({
                             name="warehouse"
                             defaultValue={getValues('warehouse')}
                             {...register('warehouse')}
-                            // disabled={
-                            //     getValues('type_taxanomy') == 'WHT' &&
-                            //     Object.keys(editFetchData).length !== 0
-                            // }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.warehouse ? true : false}
                             helperText={errors.warehouse?.message}
                         >

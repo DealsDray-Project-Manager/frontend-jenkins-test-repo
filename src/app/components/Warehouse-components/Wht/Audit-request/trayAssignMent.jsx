@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Dialog,
     Button,
@@ -8,7 +8,11 @@ import {
 } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
+import {
+    axiosMisUser,
+    axiosSuperAdminPrexo,
+    axiosWarehouseIn,
+} from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
@@ -27,58 +31,81 @@ const FormHandlerBox = styled('div')(() => ({
 const MemberEditorDialog = ({
     handleClose,
     open,
-    setOtherTrayAssign,
-    otherTrayAssign,
-    trayIdNotChangeAble,
+    setValidatedCtx,
     brand,
     model,
+    ctxGrade,
+    setCtxGrade,
+    alReadyIssuedTrayGrade,
 }) => {
-    const [err, setErr] = useState({
-        CTA: '',
-        CTB: '',
-        CTC: '',
-        CTD: '',
-    })
-    const [trayId, setTrayId] = useState({
-        cta: '',
-        ctb: '',
-        ctc: '',
-        ctd: '',
-    })
+    const [validationState, setValidationState] = useState(false)
+    const [otherTrayAssign, setOtherTrayAssign] = useState([])
+
+    useEffect(() => {
+        const fetchCtxTray = async () => {
+            try {
+                const res = await axiosWarehouseIn.post(
+                    '/getCtxCategorysForIssue',
+                    alReadyIssuedTrayGrade
+                )
+                if (res.status === 200) {
+                    setCtxGrade(res?.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchCtxTray()
+        return () => {}
+    }, [])
+    // HANDEL ADD TO STATE
+    const handelAddTrayId = (e, grade, value) => {
+        e.preventDefault()
+        let updateInput = otherTrayAssign.find((item) =>
+            Object.keys(item).includes(grade)
+        )
+
+        if (updateInput) {
+            updateInput[grade] = value
+            setOtherTrayAssign((prevData) => {
+                return prevData.map((itemDet) =>
+                    itemDet.grade === grade ? updateInput : itemDet
+                )
+            })
+        } else {
+            setOtherTrayAssign((prevAddedTray) => [
+                ...prevAddedTray,
+                { [grade]: value },
+            ])
+        }
+    }
 
     const handelTrayId = async (trayId, trayType) => {
         try {
             const user = localStorage.getItem('prexo-authentication')
             if (user) {
                 const { location } = jwt_decode(user)
-                let obj={
-                    trayId:trayId,
-                    trayType:trayType,
-                    location:location,
-                    brand:brand,
-                    model:model
+                let obj = {
+                    trayId: otherTrayAssign,
+                    trayType: trayType,
+                    location: location,
+                    brand: brand,
+                    model: model,
                 }
                 let res = await axiosWarehouseIn.post(
-                    '/trayIdCheckAuditApprovePage',obj
+                    '/trayIdCheckAuditApprovePage',
+                    obj
                 )
                 if (res.status == 200) {
-                    // Swal.fire({
-                    //     position: 'top',
-                    //     icon: 'success',
-                    //     title: res?.data?.message,
-                    //     confirmButtonText: 'Ok',
-                    // })
-                    alert(res?.data?.message)
-                    setOtherTrayAssign((otherTrayAssign) => ({
-                        ...otherTrayAssign,
-                        [trayType]: res.data.trayId,
-                    }))
-                    setErr((err) => ({ ...err, [trayType]: '' }))
+                    setValidationState(true)
+                    setValidatedCtx(otherTrayAssign)
+                    alert(res.data.message)
                 } else {
-                    setErr((err) => ({ ...err, [trayType]: res.data.message }))
-                    alert(res?.data?.message)
-
-                    // alert(res?.data?.message)
+                    alert(res.data.message)
                 }
             }
         } catch (error) {
@@ -95,134 +122,43 @@ const MemberEditorDialog = ({
         <Dialog fullWidth maxWidth="xs" open={open}>
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Assign Tray</H4>
-
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            cta: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.A !== ''}
-                    value={trayId.cta || otherTrayAssign.A}
-                    error={err.CTA !== ''}
-                    helperText={err.CTA}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    disabled={trayId.cta == ''}
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.cta, 'A')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="CTA Tray"
-                    fullWidth
-                    name="cta"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            ctb: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.B !== ''}
-                    value={trayId.ctb || otherTrayAssign.B}
-                    error={err.CTB !== ''}
-                    helperText={err.CTB}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    disabled={trayId.ctb == ''}
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.ctb, 'B')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="CTB Tray"
-                    fullWidth
-                    name="ctb"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            ctc: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.C !== ''}
-                    value={trayId.ctc || otherTrayAssign.C}
-                    error={err.CTC !== ''}
-                    helperText={err.CTC}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    disabled={trayId.ctc == ''}
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.ctc, 'C')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="CTC Tray"
-                    fullWidth
-                    name="ctc"
-                />
-                <TextFieldCustOm
-                    onChange={(e) => {
-                        setTrayId((trayId) => ({
-                            ...trayId,
-                            ctd: e.target.value,
-                        }))
-                    }}
-                    disabled={trayIdNotChangeAble.D !== ''}
-                    value={trayId.ctd || otherTrayAssign.D}
-                    error={err.CTD !== ''}
-                    helperText={err.CTD}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    disabled={trayId.ctd == ''}
-                                    onClick={(e) => {
-                                        handelTrayId(trayId.ctd, 'D')
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    label="CTD Tray"
-                    fullWidth
-                    name="ctd"
-                />
-                <FormHandlerBox>
-                    <Button
-                        variant="contained"
-                        onClick={(e) => {
-                            handleClose()
+                {ctxGrade?.map((data) => (
+                    <TextFieldCustOm
+                        onChange={(e) => {
+                            handelAddTrayId(e, data?.code, e.target.value)
                         }}
-                        color="primary"
-                        type="submit"
-                    >
-                        Confirm
-                    </Button>
+                        label={`CT${data?.code}`}
+                        fullWidth
+                        name="cta"
+                    />
+                ))}
+                <FormHandlerBox>
+                    {validationState == true ? (
+                        <Button
+                            variant="contained"
+                            onClick={(e) => {
+                                handleClose()
+                            }}
+                            color="primary"
+                            type="submit"
+                        >
+                            Submit
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            onClick={(e) => {
+                                handelTrayId()
+                            }}
+                            disabled={
+                                otherTrayAssign?.length !== ctxGrade?.length
+                            }
+                            color="primary"
+                            type="submit"
+                        >
+                            Validate The Trays
+                        </Button>
+                    )}
                     <Button
                         variant="outlined"
                         color="secondary"

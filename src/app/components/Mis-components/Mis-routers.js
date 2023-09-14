@@ -145,7 +145,6 @@ const dataTableRoutes = [
         path: '/mis/stx-utility/tray-view/close/:trayId',
         element: <StxTrayUtilityInProgressClose />,
     },
-   
     {
         path: '/mis/stx-utility-tray-view',
         element: <StxUtilityInprogressTray />,

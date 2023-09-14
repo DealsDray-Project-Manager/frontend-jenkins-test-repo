@@ -45,7 +45,7 @@ const StyledTextField = styled(TextField)(() => ({
 const CustomerForm = () => {
     const [tabIndex, setTabIndex] = useState(0)
     const handleSubmit = async (values, { isSubmitting }) => {
-        console.log(values)
+      
     }
     const handleTabChange = (e, value) => {
         setTabIndex(value)

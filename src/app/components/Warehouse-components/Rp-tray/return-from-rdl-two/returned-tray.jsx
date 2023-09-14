@@ -385,8 +385,7 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
+          
                     <MUIDataTable
                         title={'Tray'}
                         data={tray}
@@ -432,8 +431,7 @@ const SimpleMuiTable = () => {
                             rowsPerPageOptions: [10, 20, 40, 80, 100],
                         }}
                     />
-                </ProductTable>
-            </ScrollableTableContainer>
+               
         </Container>
     )
 }

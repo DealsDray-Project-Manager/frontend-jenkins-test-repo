@@ -189,12 +189,7 @@ const PickupPage = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setItem(response.data.data)
-                        // if (response.data.type == valueRef.current) {
-                        //     console.log("----------------");
-                        //     console.log(value);
-                        // } else {
-                        //     fetchData()
-                        // }
+                       
                     } else {
                         setItem(response.data.data)
                         setIsLoading(false)

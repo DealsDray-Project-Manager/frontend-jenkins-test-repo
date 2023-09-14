@@ -164,7 +164,7 @@ const SimpleMuiTable = () => {
         doc.save('ReadyForSales.pdf')
     }
 
-    console.log(selectedItems)
+   
 
     const columns = [
         {

@@ -113,6 +113,12 @@ const SimpleMuiTable = () => {
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
                 handleDialogOpen('Edit')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response?.data?.message,
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -155,7 +161,7 @@ const SimpleMuiTable = () => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "This rack You Can't Delete",
+                            text: response?.data?.message,
                         })
                     }
                 } catch (error) {
@@ -267,7 +273,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-              
             },
         },
         {

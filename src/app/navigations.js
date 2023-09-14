@@ -661,7 +661,6 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: 'all',
     },
-   
 
     {
         name: 'Track',
@@ -680,7 +679,6 @@ export const navigations = [
         name: 'Report',
         icon: 'report',
         children: [
-            
             {
                 name: 'Upgrade Units',
                 path: '/warehouse/rpt/report/upgrade-units',
@@ -993,6 +991,7 @@ export const navigations = [
         auth: authRoles.Warehouse,
         sales: true,
     },
+
     {
         name: 'Rack Change',
         icon: 'shopping_cart',
@@ -1074,8 +1073,13 @@ export const navigations = [
         icon: 'search',
         children: [
             {
-                name: 'Scan Uic',
+                name: 'Ctx to Stx Scan Uic',
                 path: '/mis/stx-utility',
+                iconText: 'VP',
+            },
+            {
+                name: 'Stx to Stx Scan Uic',
+                path: '/mis/stx-to-stx-utility',
                 iconText: 'VP',
             },
             {
@@ -1084,7 +1088,7 @@ export const navigations = [
                 iconText: 'VP',
             },
         ],
-        auth: authRoles.Mis,
+        auth: authRoles.Warehouse,
         sales: true,
     },
     {

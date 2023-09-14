@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
+import { axiosSuperAdminPrexo, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
@@ -31,6 +31,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
     const [state, setState] = useState({})
     const [err, setErr] = useState('')
     const [assignButDIs, setAssignButDis] = useState(true)
+    const [dynmicGrade, setDynamicGrade] = useState([])
     const [trayStatus, setTrayStatus] = useState('')
     const handleChange = ({ target: { name, value } }) => {
         setState({
@@ -48,6 +49,24 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                 location: location,
             })
         }
+    }, [])
+
+    useEffect(() => {
+        const fetchCtxTray = async () => {
+            try {
+                const res = await axiosSuperAdminPrexo.post('/getCtxCategorys')
+                if (res.status === 200) {
+                    setDynamicGrade(res?.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchCtxTray()
     }, [])
 
     const handelSendRequestConfirm = async () => {
@@ -112,7 +131,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
             <Box p={3}>
                 <H4 sx={{ mb: '20px' }}>Assign Tray</H4>
                 <TextFieldCustOm
-                    label="Username"
+                    label="Audit Username"
                     fullWidth
                     select
                     name="username"
@@ -137,10 +156,12 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, auditUsers }) => {
                     name="tray_type"
                     onChange={handleChange}
                 >
-                    <MenuItem value={'A'}>CTA</MenuItem>
-                    <MenuItem value={'B'}>CTB</MenuItem>
-                    <MenuItem value={'C'}>CTC</MenuItem>
-                    <MenuItem value={'D'}>CTD</MenuItem>
+                    {dynmicGrade?.map((data) => (
+                        <MenuItem
+                            key={data?.code}
+                            value={data?.code}
+                        >{`CT${data?.code}`}</MenuItem>
+                    ))}
                 </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Tray Id"

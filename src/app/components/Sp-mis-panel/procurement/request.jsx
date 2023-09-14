@@ -5,16 +5,9 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSpMisAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
-import {
-    Button,
-    Typography,
-    Card,
-    Box,
-    TextField,
-    Table,
-    TableContainer,
-} from '@mui/material'
+import { Button, Typography, Card, Box, TextField, Table, TableContainer } from '@mui/material'
 import Swal from 'sweetalert2'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -131,19 +124,11 @@ const SimpleMuiTable = () => {
             alert(error)
         }
     }
-    const handleQtyChange = (newValue, partId) => {
-        console.log(partId)
-        const updatedData = spList.map((item) => {
-            if (item.part_id === partId) {
-                return {
-                    ...item,
-                    required_qty: newValue,
-                }
-            }
-            return item
-        })
-
-        setSpList(updatedData)
+    const handleQtyChange = (newValue, rowIndex) => {
+        // Update the "required_qty" value in the data source or state
+        const updatedData = [...spList] // Replace "yourData" with your actual data source
+        updatedData[rowIndex].required_qty = newValue
+        setSpList(updatedData) // Replace "setYourData" with your state update function or data source update logic
     }
 
     const columns = [
@@ -168,7 +153,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold', mr: 2 }} noWrap>
+                <Typography sx={{ fontWeight: 'bold', mr:2 }} noWrap>
                     Spare Part Number
                 </Typography>
             ),
@@ -212,7 +197,7 @@ const SimpleMuiTable = () => {
         {
             name: 'aval_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} >
                     Available Quantity
                 </Typography>
             ),
@@ -223,7 +208,7 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_qtc',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography sx={{ fontWeight: 'bold' }} >
                     Purchase request created
                 </Typography>
             ),
@@ -234,13 +219,12 @@ const SimpleMuiTable = () => {
         {
             name: 'required_qty',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Short Quantity
+                <Typography sx={{ fontWeight: 'bold'}} >
+                    Update Required Quantity
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     return (
                         <TextField
@@ -250,7 +234,7 @@ const SimpleMuiTable = () => {
                             onChange={(e) =>
                                 handleQtyChange(
                                     e.target.value,
-                                    tableMeta.rowData[1]
+                                    tableMeta.rowIndex
                                 )
                             }
                         />
@@ -284,7 +268,7 @@ const SimpleMuiTable = () => {
                         Model : {model}
                     </Typography>
                 </Box>
-
+              
                 <MUIDataTable
                     sx={{ mt: 0 }}
                     // title={'Pre Purchase Requests'}
@@ -330,7 +314,7 @@ const SimpleMuiTable = () => {
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
-
+               
                 <br />
                 <Box>
                     <Button

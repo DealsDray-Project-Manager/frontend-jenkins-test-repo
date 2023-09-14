@@ -41,8 +41,13 @@ export default function DialogBox() {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
+                    let obj={
+                        location:location,
+                        fromTray:trayId,
+                        type:"tray-merging-page"
+                    }
                     let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo/' + location + '/' + trayId
+                        '/viewTrayFromAndTo',obj
                     )
                     if (response.status === 200) {
                         setTray(response.data.data)

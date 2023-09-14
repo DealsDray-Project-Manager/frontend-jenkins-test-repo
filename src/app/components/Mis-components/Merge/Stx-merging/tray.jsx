@@ -222,7 +222,7 @@ const SimpleMuiTable = () => {
     const handelSendRequest = async (e) => {
         e.preventDefault()
         try {
-            mergreData.actionUser=user.username
+            mergreData.actionUser = user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData

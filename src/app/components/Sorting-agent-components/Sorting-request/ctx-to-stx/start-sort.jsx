@@ -19,7 +19,11 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
-import { axiosSortingAgent, axiosWarehouseIn } from '../../../../../axios'
+import {
+    axiosSortingAgent,
+    axiosWarehouseIn,
+    axiosSuperAdminPrexo,
+} from '../../../../../axios'
 
 export default function DialogBox() {
     const navigate = useNavigate()
@@ -41,8 +45,14 @@ export default function DialogBox() {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
+                    let obj = {
+                        location: location,
+                        fromTray: trayId,
+                        type: 'ctx-to-stx-sorting-page',
+                    }
                     let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo/' + location + '/' + trayId
+                        '/viewTrayFromAndTo',
+                        obj
                     )
                     if (response.status === 200) {
                         setTray(response.data.data)
@@ -186,6 +196,41 @@ export default function DialogBox() {
         }
     }
 
+    /*-------------------------------------------------------------------------*/
+    const handelDuplicateRemove = async (id, arrayType, tray) => {
+        try {
+            let obj = {
+                trayId: tray,
+                id: id,
+                arrayType: arrayType,
+            }
+            const res = await axiosSuperAdminPrexo.post(
+                '/globeDuplicateRemove',
+                obj
+            )
+            if (res.status == 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: res?.data?.message,
+                    showConfirmButton: true,
+                })
+                setRefresh((refresh) => !refresh)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
+
     const tableFrom = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
@@ -235,6 +280,36 @@ export default function DialogBox() {
                                             ? data?.tracking_id
                                             : data?.awbn_number}
                                     </TableCell>
+                                    {data?.dup_uic_status !==
+                                    'Duplicate' ? null : (
+                                        <TableCell>
+                                            <Button
+                                                sx={{
+                                                    ml: 2,
+                                                }}
+                                                variant="contained"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                }}
+                                                component="span"
+                                                onClick={() => {
+                                                    if (
+                                                        window.confirm(
+                                                            'You want to Remove?'
+                                                        )
+                                                    ) {
+                                                        handelDuplicateRemove(
+                                                            data?._id,
+                                                            'Second-main',
+                                                            tray[0]?.code
+                                                        )
+                                                    }
+                                                }}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -324,6 +399,36 @@ export default function DialogBox() {
                                             ? data?.tracking_id
                                             : data?.awbn_number}
                                     </TableCell>
+                                    {data?.dup_uic_status !==
+                                    'Duplicate' ? null : (
+                                        <TableCell>
+                                            <Button
+                                                sx={{
+                                                    ml: 2,
+                                                }}
+                                                variant="contained"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                }}
+                                                component="span"
+                                                onClick={() => {
+                                                    if (
+                                                        window.confirm(
+                                                            'You want to Remove?'
+                                                        )
+                                                    ) {
+                                                        handelDuplicateRemove(
+                                                            data?._id,
+                                                            'Main',
+                                                            tray[1]?.code
+                                                        )
+                                                    }
+                                                }}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -165,6 +165,9 @@ export default function DialogBox() {
                 description: description,
                 rackId: rackId,
                 actUser: user.username,
+                brand:trayData?.brand,
+                model:trayData?.model,
+                grade:trayData?.tray_grade
             }
             let res = await axiosWarehouseIn.post(
                 '/sorting/returnFromSortingCtxStx/close',

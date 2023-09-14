@@ -131,7 +131,7 @@ const PaginationTable = () => {
             }
         })
         const data = await promise
-    
+
         setPagination((p) => ({
             ...p,
             page: 1,
@@ -146,7 +146,6 @@ const PaginationTable = () => {
             accumulator[key.toLowerCase()?.split(' ').join('_')] = obj[key]
             accumulator.delet_id = id
             if (key == 'Order Date') {
-              
                 if (accumulator.order_date?.includes('-')) {
                     // Date is in "DD-MM-YYYY" format
                     const [day, month, year] =
@@ -493,10 +492,9 @@ const PaginationTable = () => {
         setExfile(fileData)
         const fileName = fileData.name
         const fileExtension = fileName.split('.').pop() // Get the last part as the extension
-       
+
         setFileExt(fileExtension)
     }
-  
 
     return (
         <Container>

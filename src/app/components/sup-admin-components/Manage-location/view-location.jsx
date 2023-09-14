@@ -4,27 +4,12 @@ import MemberEditorDialog from './add-location'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
+import '../../../../app.css'
 import { Button, IconButton, Icon, Typography, Table,TableContainer } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '100%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16, 
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,9 +24,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)`
-  overflow-x: auto;
-`
+
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -279,8 +262,8 @@ const SimpleMuiTable = () => {
             >
                 Add New Location
             </Button>
-            <ScrollableTableContainer>
-            <ProductTable>
+           
+            <Table className="custom-table" >
             <MUIDataTable
                 title={'All Locations'} 
                 data={locationList}
@@ -308,8 +291,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            </ProductTable>
-            </ScrollableTableContainer>
+            </Table>
+          
             
             
             {shouldOpenEditorDialog && (

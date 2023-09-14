@@ -4,8 +4,9 @@ import MemberEditorDialog from './add-category'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon,Typography } from '@mui/material'
+import { Button, IconButton, Icon, Typography, Table } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -153,54 +154,85 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'ReocrdId',
-            label: <Typography variant="subtitle1" fontWeight='bold' ml={2}><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold" ml={2}>
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
 
         {
             name: 'code', // field name in the row object
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Code</></Typography>, // column title that will be shown in table
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Code</>
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'float',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Float Number</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Float Number</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sereis_start',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Series Start</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Series Start</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'series_end',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Series End</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Series End</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -213,14 +245,18 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
-                sort: false, 
+                sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <>
-                            <IconButton> 
+                            <IconButton>
                                 <Icon
                                     onClick={(e) => {
                                         editCtxcategory(tableMeta.rowData[1])
@@ -262,33 +298,35 @@ const SimpleMuiTable = () => {
             >
                 Add Category
             </Button>
-            <MUIDataTable
-                title={'All Tray Categories'}
-                data={ctxCategorylist}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'All Tray Categories'}
+                    data={ctxCategorylist}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

@@ -301,7 +301,7 @@ const MemberEditorDialog = ({
                                 <MenuItem
                                     value={data.code}
                                     onClick={() =>
-                                        getCpcData(data.name, data.code)
+                                        getCpcData(data.code, data.code)
                                     }
                                 >
                                     {data.code}

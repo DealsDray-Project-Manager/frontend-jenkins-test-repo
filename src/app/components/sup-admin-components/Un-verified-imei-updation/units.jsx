@@ -4,6 +4,7 @@ import MUIDataTable from 'mui-datatables'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import moment from 'moment'
+import '../../../../app.css'
 import AssignDialogBox from './dailog'
 import {
     TableCell,
@@ -24,33 +25,7 @@ import { useNavigate } from 'react-router-dom'
 import { axiosReportingAgent, axiosSuperAdminPrexo } from '../../../../axios'
 import Swal from 'sweetalert2'
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '170%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: 'none',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-    borderCollapse: 'separate',
-    borderSpacing: '0',
-    '& th, & td': {
-        borderBottom: '1px solid rgba(0, 0, 0, 0.2)', // Lighter border color
-        borderRight: '1px solid rgba(0, 0, 0, 0.2)',
-        padding: '8px',
-        textAlign: 'left',
-    },
-    '& th:last-child, & td:last-child': {
-        borderRight: 'none',
-    },
-}))
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -184,248 +159,7 @@ const SimpleMuiTable = () => {
         handleDialogOpen()
     }
 
-    const tableData = useMemo(() => {
-        return (
-            <ProductTable elevation={6}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell
-                            sx={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '150px',
-                            }}
-                        >
-                            Record.NO
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '110px',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            Uic
-                        </TableCell>
-
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                cursor: 'pointer',
-                                width: '150px',
-                            }}
-                        >
-                            Brand and model
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                width: '145px',
-                            }}
-                        >
-                            Delivery IMEI{' '}
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '240px',
-                            }}
-                        >
-                            Bqc software report RO Ril Miui IMEI 0
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '205px',
-                            }}
-                        >
-                            Bqc software report Mobile IMEI
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Bqc software report Mobile IMEI 2
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Charging user added CIMEI 1
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '209px',
-                            }}
-                        >
-                            Charging user added CIMEI 2
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '150px',
-                            }}
-                        >
-                            Tray status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Wht tray id
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Ctx tray id
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Stx tray id
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Sales Bin Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Billed Bin Status
-                        </TableCell>
-                        <TableCell
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-
-                                width: '250px',
-                            }}
-                        >
-                            Action
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {displayText !== '' ? (
-                        <TableCell
-                            colSpan={8}
-                            align="center"
-                            sx={{ verticalAlign: 'top' }}
-                        >
-                            <Typography variant="p" gutterBottom>
-                                {displayText}
-                            </Typography>
-                        </TableCell>
-                    ) : null}
-                    {data.map((data, index) => (
-                        <TableRow tabIndex={-1}>
-                            <TableCell>{data.id}</TableCell>
-                            <TableCell>{data?.uic_code?.code}</TableCell>
-                            <TableCell>
-                                {data?.old_item_details
-                                    ?.replace(/:/g, ' ')
-                                    ?.toUpperCase()}
-                            </TableCell>
-                            <TableCell>{data?.imei}</TableCell>
-                            <TableCell>
-                                {data?.bqc_software_report?._ro_ril_miui_imei0}
-                            </TableCell>
-                            <TableCell>
-                                {data?.bqc_software_report?.mobile_imei}
-                            </TableCell>
-                            <TableCell>
-                                {data?.bqc_software_report?.mobile_imei2}
-                            </TableCell>
-                            <TableCell>{data?.charging?.cimei_1}</TableCell>
-                            <TableCell>{data?.charging?.cimei_2}</TableCell>
-                            <TableCell>{data?.tray_status}</TableCell>
-                            <TableCell>{data?.wht_tray}</TableCell>
-                            <TableCell>{data?.ctx_tray_id}</TableCell>
-                            <TableCell>{data?.stx_tray_id}</TableCell>
-                            <TableCell
-                                style={{ color: 'green', fontWeight: 'bold' }}
-                            >
-                                {data?.sales_bin_status}
-                            </TableCell>
-                            <TableCell
-                                style={{ color: 'green', fontWeight: 'bold' }}
-                            >
-                                {data?.item_moved_to_billed_bin}
-                            </TableCell>
-                            <TableCell>
-                                <Button
-                                    sx={{
-                                        width: '113px',
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'green' }}
-                                    onClick={(e) => {
-                                        handelUpdateImei(
-                                            data?.uic_code?.code,
-                                            data?.imei,
-                                            data?.bqc_software_report
-                                                ?._ro_ril_miui_imei0,
-                                            data?.bqc_software_report
-                                                ?.mobile_imei,
-                                            data?.bqc_software_report
-                                                ?.mobile_imei2
-                                        )
-                                    }}
-                                >
-                                    Update Imei
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </ProductTable>
-        )
-    }, [item, data, displayText])
+    
 
     const columns = [
         {
@@ -612,7 +346,7 @@ const SimpleMuiTable = () => {
                                 }}
                                 style={{ backgroundColor: 'green' }}
                             >
-                                Update Imei
+                                Update 
                             </Button>
                         </>
                     )
@@ -629,7 +363,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-                <ProductTable>
+                <Table className="custom-table">
                     <MUIDataTable
                         title={'Unverified Units'}
                         data={item}
@@ -675,7 +409,7 @@ const SimpleMuiTable = () => {
                             rowsPerPageOptions: [10, 20, 40, 80, 100],
                         }}
                     />
-                </ProductTable>
+                </Table>
             </Card>
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

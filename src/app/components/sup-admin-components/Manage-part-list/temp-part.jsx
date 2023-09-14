@@ -12,8 +12,8 @@ import {
     Radio,
     Typography,
     Table,
-    TableContainer,
 } from '@mui/material'
+import '../../../../app.css'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
@@ -31,33 +31,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '115%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: scroll;
-
-    /* Hide the scrollbar in webkit-based browsers */
-    ::-webkit-scrollbar {
-        display: none;
-    }
-`
 
 const PartTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -245,7 +218,6 @@ const PartTable = () => {
                     variant="subtitle1"
                     marginBottom="15px"
                     fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
                 >
                     <> Record No</>{' '}
                 </Typography>
@@ -253,9 +225,7 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '20%' }}>{columnMeta.label}</th>
-                //   ),
+
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -266,126 +236,67 @@ const PartTable = () => {
         {
             name: 'part_code', // field name in the row object
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    sx={{ ml: 1 }}
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Part No</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '18%' }}>{columnMeta.label}</th>
-                //   ),
             },
         },
         {
             name: 'color', // field name in the row object
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Color</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '10%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Part Name</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                customBodyRender: (value) => (
-                    <Typography>
-                        {value}{' '}
-                        {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                ),
             },
         },
         {
             name: 'sp_category',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Category</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
         },
         {
             name: 'box_id',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold" noWrap>
                     <>Box Id</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '22%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
         },
         {
             name: 'technical_qc', // field name in the row object
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Technical QC</>
                 </Typography>
-            ), // column title that will be shown in table
+            ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                customBodyRender: (value) => (
-                    <Typography sx={{ ml: 6 }}>
-                        {value}{' '}
-                        {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                ),
             },
         },
         {
@@ -395,62 +306,36 @@ const PartTable = () => {
                     variant="subtitle1"
                     marginBottom="15px"
                     fontWeight="bold"
-                    noWrap
                 >
                     <>Description</>
                 </Typography>
             ),
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Available Stock</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                //   ),
                 filter: true,
-                customBodyRender: (value) => (
-                    <Typography sx={{ ml: 6 }}>
-                        {value}{' '}
-                        {/* Apply the desired alignment, 'center' in this case */}
-                    </Typography>
-                ),
             },
         },
         {
             name: 'created_at',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    sx={{ ml: 3 }}
-                    noWrap
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Creation Date</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: true,
-                // customHeadRender: (columnMeta) => (
-                //     <th style={{ borderBottom: '1px solid #ddd', width: '26%' }}>{columnMeta.label}</th>
-                //   ),
+
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
@@ -461,12 +346,7 @@ const PartTable = () => {
         {
             name: 'status',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    marginBottom="15px"
-                    fontWeight="bold"
-                    sx={{ ml: 2 }}
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Status</>
                 </Typography>
             ),
@@ -621,37 +501,35 @@ const PartTable = () => {
                 Manage Stock
             </Button>
 
-            <ScrollableTableContainer>
-                <ProductTable>
-                    <MUIDataTable
-                        title={'Spare Part List'}
-                        data={partList}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Spare Part List'}
+                    data={partList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
                             },
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                </ProductTable>
-            </ScrollableTableContainer>
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
 
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog

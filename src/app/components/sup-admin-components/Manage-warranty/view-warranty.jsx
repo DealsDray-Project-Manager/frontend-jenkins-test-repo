@@ -3,11 +3,19 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-warranty'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography ,Table, TableContainer } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import {
+    Button,
+    Box,
+    IconButton,
+    Icon,
+    Typography,
+    Table,
+    TableContainer,
+} from '@mui/material'
+import '../../../../app.css'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
- 
+
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -35,7 +43,7 @@ const SimpleMuiTable = () => {
                 const res = await axiosSuperAdminPrexo.post(
                     '/warranty/view/' + 'warranty-list'
                 )
-              
+
                 if (res.status === 200) {
                     setwarranty(res.data.data)
                     setIsLoading(false)
@@ -68,7 +76,7 @@ const SimpleMuiTable = () => {
     const editWarranty = async (name) => {
         try {
             let response = await axiosSuperAdminPrexo.post(
-                '/warranty/one/' + name  
+                '/warranty/one/' + name
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -92,7 +100,7 @@ const SimpleMuiTable = () => {
     const handelDelete = (name) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Warranty!', 
+            text: 'You want to Delete Warranty!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -100,25 +108,25 @@ const SimpleMuiTable = () => {
             confirmButtonText: 'Yes, Delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
-                try {      
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/deleteWarranty/'+name
-                        )
-                        if (response.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Warranty has been Deleted.',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } 
-                  }catch (error) {
+                try {
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/deleteWarranty/' + name
+                    )
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Your Warranty has been Deleted.',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
+                    }
+                } catch (error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -132,41 +140,64 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: '_id',
-          
+
             options: {
                 filter: false,
-                sort:false,
-                display:false
+                sort: false,
+                display: false,
             },
         },
         {
             name: 'name',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Name</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Name</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Description</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: true,
@@ -178,12 +209,16 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box 
+                        <Box
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -229,38 +264,37 @@ const SimpleMuiTable = () => {
             >
                 Add Warranty
             </Button>
-            <>
-                <>
+
+            <Table className="custom-table">
                 <MUIDataTable
-                title={'Manage Warranty'}
-                data={warranty}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                    title={'Manage Warranty'}
+                    data={warranty}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-                </>
-            </>
-            
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}
@@ -268,7 +302,7 @@ const SimpleMuiTable = () => {
                     setIsAlive={setIsAlive}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
-                /> 
+                />
             )}
         </Container>
     )

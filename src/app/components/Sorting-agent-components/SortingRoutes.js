@@ -34,8 +34,21 @@ const WhtToRpSortingSortingStartPage= Loadable(
 const RpTrayForSortingWhtToRp = Loadable(
     lazy(() => import('./Sorting-request/wht-to-rp/rp-tray-view'))
 ) 
-
+const CopyGradingRequests = Loadable(
+    lazy(() => import('./Copy-grading/requests'))
+) 
+const CopyGradingStartWork = Loadable(
+    lazy(() => import('./Copy-grading/start-work'))
+) 
 const SortingRouter = [
+    {
+        path: '/sorting/copy-grading-requests/start-grading/:trayId',
+        element: <CopyGradingStartWork />,
+    },
+    {
+        path: '/sorting/copy-grading-requests',
+        element: <CopyGradingRequests />,
+    },
     {
         path: '/sorting/dashboard',
         element: <Dashboard />,

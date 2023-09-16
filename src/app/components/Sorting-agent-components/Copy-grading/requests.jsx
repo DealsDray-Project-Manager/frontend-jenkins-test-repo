@@ -3,9 +3,9 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
-import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography } from '@mui/material'
+import { axiosSortingAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,64 +20,56 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
-    const [RDLRequest, setRDLRequest] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [botTray, setBotTray] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    setIsLoading(true)
-                    let { location } = jwt_decode(admin)
-                    let obj={
-                        status:"Send for RDL-two",
-                        location:location,
-                        type:"RPT"
-                    }
-                    let res = await axiosWarehouseIn.post(
-                        '/requestForApprove',obj
+                    let { user_name } = jwt_decode(admin)
+                    let response = await axiosSortingAgent.post(
+                        `/copyGradingRequests/${user_name}`
                     )
-                    if (res.status == 200) {
-                        setIsLoading(false)
-                        setRDLRequest(res.data.data)
+                    if (response.status === 200) {
+                        setBotTray(response.data.data)
                     }
                 } else {
                     navigate('/')
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
             }
-            fetchData()
-        } catch (error) {
-            setIsLoading(false)
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
         }
+        fetchData()
     }, [])
 
-    const handelDetailPage = (e, trayId) => {
+    const handelStartSorting = (e, code) => {
         e.preventDefault()
-        navigate('/wareshouse/rpt/rdl-two-request/approve/' + trayId)
+        navigate('/sorting/copy-grading-requests/start-grading/' + code)
     }
 
     const columns = [
         {
             name: 'index',
             label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
-                    Record No
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ ml: 2 }}
+                >
+                    <>Record No</>
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -87,20 +79,15 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'rack_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-
-       
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
@@ -116,8 +103,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'sort_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'limit',
-            label: 'limit',
+            label: 'Tray Id',
             options: {
                 filter: false,
                 sort: false,
@@ -125,48 +123,44 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'issued_user_name',
+            name: 'items',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RDL Two Agent</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'requested_date',
-            label: (
-                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
-                   Assigned date
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: false,
+
+                customBodyRender: (value, tableMeta) =>
+                    value.length + '/' + tableMeta.rowData[5],
+            },
+        },
+
+        {
+            name: 'assigned_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Issued Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,
                     }),
             },
         },
-
         {
-            name: 'items',
+            name: 'code',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[5],
-            },
-        },
-        {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
-            options: {
-                filter: false,
-                sort: false,
                 customBodyRender: (value) => {
                     return (
                         <Button
@@ -174,44 +168,37 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => handelDetailPage(e, value)}
+                            onClick={(e) => handelStartSorting(e, value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Approve
+                            Start Grading
                         </Button>
                     )
                 },
             },
         },
     ]
+
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'RDL-two-Requests' },
+                        { name: 'Copy-Grading-Request', path: '/' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Requests'}
-                data={RDLRequest}
+                title={'Tray'}
+                data={botTray}
                 columns={columns}
                 options={{
                     filterType: 'textField',
                     responsive: 'simple',
                     download: false,
                     print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
                     selectableRows: 'none', // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option

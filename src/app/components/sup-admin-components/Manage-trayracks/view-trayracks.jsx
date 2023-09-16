@@ -250,6 +250,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'upcoming_tray_count',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Upcoming Tray Count</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'status',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">

@@ -128,6 +128,8 @@ const BagTransffer = Loadable(
     lazy(() => import('./bag-transffer/bag-send/bag-send'))
 )
 
+
+
 const dataTableRoutes = [
     {
         path: '/mis/bag-transfer',

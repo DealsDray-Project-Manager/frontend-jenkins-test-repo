@@ -33,13 +33,14 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let obj={
-                        status:"Send for RDL-two",
-                        location:location,
-                        type:"RPT"
+                    let obj = {
+                        status: 'Assigned for copy grading',
+                        location: location,
+                        type: 'ST',
                     }
                     let res = await axiosWarehouseIn.post(
-                        '/requestForApprove',obj
+                        '/requestForApprove',
+                        obj
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -63,7 +64,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/rpt/rdl-two-request/approve/' + trayId)
+        navigate('/warehouse/stx/copy-grading-issue-requests/approve/' + trayId)
     }
 
     const columns = [
@@ -100,7 +101,6 @@ const SimpleMuiTable = () => {
             },
         },
 
-       
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
@@ -127,7 +127,9 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RDL Two Agent</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sorting Agent
+                </Typography>
             ),
             options: {
                 filter: true,
@@ -136,8 +138,8 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
-                   Assigned date
+                <Typography sx={{ fontWeight: 'bold', alignItems: 'center' }}>
+                    Assigned date
                 </Typography>
             ),
             options: {
@@ -190,8 +192,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'RDL-two-Requests' },
+                        { name: 'STX', path: '/' },
+                        { name: 'Copy Grading Requests' },
                     ]}
                 />
             </div>

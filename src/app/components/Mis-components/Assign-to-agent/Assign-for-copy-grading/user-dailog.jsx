@@ -21,10 +21,10 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    auditUsers,
+    sortingAgent,
     isCheck,
 }) => {
-    const [auditUserName, setAuditUsername] = useState('')
+    const [sortingAgentName, setSortingAgentName] = useState('')
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
 
@@ -33,8 +33,8 @@ const MemberEditorDialog = ({
             setLoading(true)
             let obj = {
                 tray: isCheck,
-                user_name: auditUserName,
-                sort_id: 'Send for Audit',
+                user_name: sortingAgentName,
+                sort_id: 'Assigned for copy grading',
                 actionUser: user.username,
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
@@ -67,19 +67,19 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Select Audit User</H4>
+                <H4 sx={{ mb: '20px' }}>Select Sorting User</H4>
                 <TextFieldCustOm
                     label="Username"
                     fullWidth
                     select
                     name="username"
                 >
-                    {auditUsers.map((data) => (
+                    {sortingAgent.map((data) => (
                         <MenuItem
                             key={data.user_name}
                             value={data.user_name}
                             onClick={(e) => {
-                                setAuditUsername(data.user_name)
+                                setSortingAgentName(data.user_name)
                             }}
                         >
                             {data.user_name}
@@ -89,7 +89,7 @@ const MemberEditorDialog = ({
                 <FormHandlerBox>
                     <Button
                         variant="contained"
-                        disabled={loading || auditUserName == ''}
+                        disabled={loading || sortingAgentName == ''}
                         onClick={(e) => {
                             handelSendRequestConfirm()
                         }}

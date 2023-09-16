@@ -125,9 +125,14 @@ const RackRequestCreated = Loadable(
     lazy(() => import('./Rack-change/rack-change-request-created/tray'))
 )
 const StxToStxUtilityScanUic = Loadable(lazy(() => import('./Stx-utility/stx-to-stx-utility')))
+const AssignForCopyGrading = Loadable(lazy(() => import('./Assign-to-agent/Assign-for-copy-grading/tray')))
 
 
 const dataTableRoutes = [
+    {
+        path: '/mis/assign-to-agent-for-copy-grading',
+        element: <AssignForCopyGrading />,
+    },
     {
         path: '/mis/rack-change-request',
         element: <RackRequestCreated />,

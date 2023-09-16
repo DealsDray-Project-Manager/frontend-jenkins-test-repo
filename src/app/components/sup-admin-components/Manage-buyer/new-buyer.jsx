@@ -55,7 +55,9 @@ const MemberEditorDialog = ({
     useEffect(() => {
         const fetchCpc = async () => {
             try {
-                let response = await axiosSuperAdminPrexo.get('/getCpcSalesLocation/')
+                let response = await axiosSuperAdminPrexo.get(
+                    '/getCpcSalesLocation/'
+                )
                 if (response.status == 200) setCpc(response.data.data.data)
             } catch (error) {
                 Swal.fire({
@@ -70,24 +72,24 @@ const MemberEditorDialog = ({
             editFetchData.cpassword = editFetchData.password
             Setprofile({
                 ...profile,
-                preview: editFetchData.profile,   
+                preview: editFetchData.profile,
             })
             SetpanProof({
                 ...panProof,
                 preview1: editFetchData.pan_card_proof,
-            });
+            })
             SetAadharProof({
                 ...aadharProof,
                 preview2: editFetchData.aadhar_proof,
-                store: {}, 
-            });
+                store: {},
+            })
             SetBusinessAddressProof({
                 ...businessAddressProof,
                 preview3: editFetchData.business_address_proof,
                 store: {},
-            });
+            })
 
-            reset({ ...editFetchData});
+            reset({ ...editFetchData })
             let arr = []
             let obj = {
                 name: editFetchData.warehouse,
@@ -102,8 +104,7 @@ const MemberEditorDialog = ({
             setWarehouse(arr)
             open()
         }
-       
-    },[editFetchData])
+    }, [editFetchData])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -115,7 +116,9 @@ const MemberEditorDialog = ({
         businessName: Yup.string().required('Required*').nullable(),
         contact: Yup.string().required('Required*').nullable(),
         cpc: Yup.string().required('Required*').nullable(),
-        user_name: Yup.string().max(40, 'Please Enter Below 40').required('Required*')
+        user_name: Yup.string()
+            .max(40, 'Please Enter Below 40')
+            .required('Required*')
             .matches(
                 /^.*((?=.*[aA-zZ\s]){1}).*$/,
                 'Please enter valid username'
@@ -128,45 +131,48 @@ const MemberEditorDialog = ({
             .nullable(),
         email: Yup.string().email().required('Required*').nullable(),
         billing_address: Yup.string()
-        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
-        .max(40)
-        .required('Required*')
-        .nullable(),
-    city: Yup.string()
-        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid city')
-        .max(40)
-        .required('Required*')
-        .nullable(),
-    state: Yup.string()
-        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid state')
-        .max(40)
-        .required('Required*')
-        .nullable(),
-    country: Yup.string()
-        .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
-        .max(40)
-        .required('Required*')
-        .nullable(),
-    pincode: Yup.string()
-        .min(6, 'Please Enter valid Pincode')
-        .required('Required*')
-        .nullable(),
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        city: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid city')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        state: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid state')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        country: Yup.string()
+            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
+            .max(40)
+            .required('Required*')
+            .nullable(),
+        pincode: Yup.string()
+            .min(6, 'Please Enter valid Pincode')
+            .required('Required*')
+            .nullable(),
         gstin: Yup.string()
-        .matches(/^[A-Z0-9]{12}$/i, 'Please enter a valid GSTIN')
-        .max(12)
-        .required('Required*')
-        .nullable(),
+            .matches(/^[A-Z0-9]{12}$/i, 'Please enter a valid GSTIN')
+            .max(12)
+            .required('Required*')
+            .nullable(),
         pan_card_number: Yup.string()
-        .matches(/^[A-Za-z0-9]{10}$/, 'Please enter a valid PAN number')
-        .max(10)
-        .required('Required*')
-        .nullable(),
+            .matches(/^[A-Za-z0-9]{10}$/, 'Please enter a valid PAN number')
+            .max(10)
+            .required('Required*')
+            .nullable(),
         cpc_type: Yup.string().required('Required*').nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
         sales_users: Yup.string().required('Required*').nullable(),
-        mobile_verification_status: Yup.string().required('Required*').nullable(),
-        email_verification_status: Yup.string().required('Required*').nullable(),
-      
+        mobile_verification_status: Yup.string()
+            .required('Required*')
+            .nullable(),
+        email_verification_status: Yup.string()
+            .required('Required*')
+            .nullable(),
     })
     const {
         register,
@@ -180,18 +186,21 @@ const MemberEditorDialog = ({
 
     const onSubmit = async (values) => {
         try {
-            values.user_type = 'Buyer';
+            values.user_type = 'Buyer'
             let formdata = new FormData()
             formdata.append('profile', profile.store)
             formdata.append('pan_card_proof', panProof.store)
             formdata.append('aadhar_proof', aadharProof.store)
-            formdata.append('business_address_proof', businessAddressProof.store)
+            formdata.append(
+                'business_address_proof',
+                businessAddressProof.store
+            )
             for (let [key, value] of Object.entries(values)) {
                 formdata.append(key, value)
             }
             setLoading(true)
             let res = await axiosSuperAdminPrexo.post('/createBuyer', formdata)
-           
+
             if (res.status == 200) {
                 setLoading(false)
                 handleClose()
@@ -253,9 +262,8 @@ const MemberEditorDialog = ({
                 cpc: location,
                 warehouse: warehouse,
             }
-            let res = await axiosSuperAdminPrexo.post('/getsalesUsers',
-                obj)
-               
+            let res = await axiosSuperAdminPrexo.post('/getsalesUsers', obj)
+
             if (res.status == 200) {
                 setGetSalesUsers(res.data.data)
             }
@@ -288,7 +296,10 @@ const MemberEditorDialog = ({
             formdata.append('profile', profile.store)
             formdata.append('pan_card_proof', panProof.store)
             formdata.append('aadhar_proof', aadharProof.store)
-            formdata.append('business_address_proof', businessAddressProof.store)
+            formdata.append(
+                'business_address_proof',
+                businessAddressProof.store
+            )
             for (let [key, value] of Object.entries(values)) {
                 formdata.append(key, value)
             }
@@ -333,22 +344,22 @@ const MemberEditorDialog = ({
         SetAadharProof({
             preview2: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
-        });
-    };
+        })
+    }
 
     const handelPanCardProof = (event) => {
         SetpanProof({
             preview1: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
-        });
-    };
+        })
+    }
 
     const handelBusinessAddressProof = (event) => {
         SetBusinessAddressProof({
             preview3: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
-        });
-    };
+        })
+    }
     return (
         <Dialog open={open}>
             <Box p={3}>
@@ -357,47 +368,47 @@ const MemberEditorDialog = ({
                 ) : (
                     <H4 sx={{ mb: '20px' }}>ADD Buyer</H4>
                 )}
-                <Box style={{display:"flex"}}>
-                <Avatar
-                 variant="rounded"
-                    src={profile?.preview}
-                    style={{
-                        margin: 'auto',
-                        marginBottom: '15px',
-                        height: '57px',
-                        width: '57px',
-                    }}
-                />
-                 <Avatar
-                 variant="rounded"
-                    src={panProof?.preview1}
-                    style={{
-                        margin: 'auto',
-                        marginBottom: '15px',
-                        height: '57px',
-                        width: '57px',
-                    }}
-                />
-                 <Avatar
-                  variant="rounded"
-                    src={aadharProof?.preview2}
-                    style={{
-                        margin: 'auto',
-                        marginBottom: '15px',
-                        height: '57px',
-                        width: '57px',
-                    }}
-                />
-                 <Avatar
-                  variant="rounded"
-                    src={businessAddressProof?.preview3}
-                    style={{
-                        margin: 'auto',
-                        marginBottom: '15px',
-                        height: '57px',
-                        width: '57px',
-                    }}
-                />
+                <Box style={{ display: 'flex' }}>
+                    <Avatar
+                        variant="rounded"
+                        src={profile?.preview}
+                        style={{
+                            margin: 'auto',
+                            marginBottom: '15px',
+                            height: '57px',
+                            width: '57px',
+                        }}
+                    />
+                    <Avatar
+                        variant="rounded"
+                        src={panProof?.preview1}
+                        style={{
+                            margin: 'auto',
+                            marginBottom: '15px',
+                            height: '57px',
+                            width: '57px',
+                        }}
+                    />
+                    <Avatar
+                        variant="rounded"
+                        src={aadharProof?.preview2}
+                        style={{
+                            margin: 'auto',
+                            marginBottom: '15px',
+                            height: '57px',
+                            width: '57px',
+                        }}
+                    />
+                    <Avatar
+                        variant="rounded"
+                        src={businessAddressProof?.preview3}
+                        style={{
+                            margin: 'auto',
+                            marginBottom: '15px',
+                            height: '57px',
+                            width: '57px',
+                        }}
+                    />
                 </Box>
                 <Grid sx={{ mb: '16px' }} container spacing={4}>
                     <Grid item sm={6} xs={12}>
@@ -411,7 +422,7 @@ const MemberEditorDialog = ({
                                 handelProfile(e)
                             }}
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Buyer Name"
                             type="text"
                             name="user_name"
@@ -423,12 +434,15 @@ const MemberEditorDialog = ({
                             }
                             inputProps={{ maxLength: 40 }}
                         />
-                            <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Mobile No"
                             name="contact"
                             {...register('contact')}
                             onInput={(e) => {
-                                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                e.target.value = e.target.value.replace(
+                                    /[^0-9]/g,
+                                    ''
+                                )
                             }}
                             inputProps={{ maxLength: 10 }}
                             error={errors.contact ? true : false}
@@ -436,7 +450,7 @@ const MemberEditorDialog = ({
                                 errors.contact ? errors.contact.message : ''
                             }
                         />
-                           <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Name"
                             type="text"
                             name="name"
@@ -446,7 +460,7 @@ const MemberEditorDialog = ({
                             helperText={errors.name ? errors.name.message : ''}
                             inputProps={{ maxLength: 40 }}
                         />
-                            <TextFieldCustOm
+                        <TextFieldCustOm
                             label="State"
                             type="text"
                             name="state"
@@ -457,20 +471,22 @@ const MemberEditorDialog = ({
                                 errors.state ? errors.state?.message : ''
                             }
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Buisness Name"
                             type="text"
                             name="businessName"
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('businessName')}
                             error={errors.businessName ? true : false}
-                            helperText={errors.businessName ? errors.businessName.message : ''}
+                            helperText={
+                                errors.businessName
+                                    ? errors.businessName.message
+                                    : ''
+                            }
                             inputProps={{ maxLength: 40 }}
                         />
-                     
-                     
-                         
-                         <TextFieldCustOm
+
+                        <TextFieldCustOm
                             label="GSTIN"
                             type="text"
                             name="gstin"
@@ -480,7 +496,7 @@ const MemberEditorDialog = ({
                             error={errors.gstin ? true : false}
                             helperText={errors.gstin?.message}
                         />
-                            <TextFieldCustOm
+                        <TextFieldCustOm
                             label="PAN Card Number"
                             type="text"
                             name="pan_card_number"
@@ -500,7 +516,7 @@ const MemberEditorDialog = ({
                             onChange={(e) => {
                                 getLocationType(e.target.value)
                             }}
-                             defaultValue={getValues('cpc')}
+                            defaultValue={getValues('cpc')}
                             error={errors.cpc ? true : false}
                             helperText={errors.cpc?.message}
                         >
@@ -533,7 +549,7 @@ const MemberEditorDialog = ({
                             {cpcType?.map((cpcData) => (
                                 <MenuItem
                                     onClick={(e) => {
-                                        setSelectedCpc(cpcData.location_type)  
+                                        setSelectedCpc(cpcData.location_type)
                                         getlWarehouse(cpcData.location_type)
                                     }}
                                     key={cpcData.location_type}
@@ -569,7 +585,7 @@ const MemberEditorDialog = ({
                                 </MenuItem>
                             ))}
                         </TextFieldCustOm>
-                        <TextFieldCustOm   
+                        <TextFieldCustOm
                             label="Sales Users"
                             select
                             name="sales_users"
@@ -602,34 +618,46 @@ const MemberEditorDialog = ({
                                 errors.email ? errors.email.message : ''
                             }
                         />
-                          <TextFieldCustOm
-                                label="Email Verification Status"
-                                select
-                                name="email_verification_status"
-                                disabled={Object.keys(editFetchData).length !== 0}
-                                defaultValue={editFetchData.email_verification_status || ''}
-                                {...register('email_verification_status')}
-                                error={errors.email_verification_status ? true : false}
-                                helperText={errors.email_verification_status?.message}
-                            >
-                                <MenuItem value="Verified">Verified</MenuItem>
-                                <MenuItem value="Unverified">Unverified</MenuItem>
-                            </TextFieldCustOm>
-                            <TextFieldCustOm
-                                label="Mobile Verification Status"
-                                select
-                                name="mobile_verification_status"
-                                {...register('mobile_verification_status')}
-                                disabled={Object.keys(editFetchData).length !== 0}
-                                defaultValue={editFetchData.mobile_verification_status || ''}
-                                error={errors.mobile_verification_status ? true : false}
-                                helperText={errors.mobile_verification_status?.message}
-                            >
-                                <MenuItem value="Verified">Verified</MenuItem>
-                                <MenuItem value="Unverified">Unverified</MenuItem>
-                            </TextFieldCustOm>
-                            
-                            <TextFieldCustOm
+                        <TextFieldCustOm
+                            label="Email Verification Status"
+                            select
+                            name="email_verification_status"
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            defaultValue={
+                                editFetchData.email_verification_status || ''
+                            }
+                            {...register('email_verification_status')}
+                            error={
+                                errors.email_verification_status ? true : false
+                            }
+                            helperText={
+                                errors.email_verification_status?.message
+                            }
+                        >
+                            <MenuItem value="Verified">Verified</MenuItem>
+                            <MenuItem value="Unverified">Unverified</MenuItem>
+                        </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Mobile Verification Status"
+                            select
+                            name="mobile_verification_status"
+                            {...register('mobile_verification_status')}
+                            disabled={Object.keys(editFetchData).length !== 0}
+                            defaultValue={
+                                editFetchData.mobile_verification_status || ''
+                            }
+                            error={
+                                errors.mobile_verification_status ? true : false
+                            }
+                            helperText={
+                                errors.mobile_verification_status?.message
+                            }
+                        >
+                            <MenuItem value="Verified">Verified</MenuItem>
+                            <MenuItem value="Unverified">Unverified</MenuItem>
+                        </TextFieldCustOm>
+
+                        <TextFieldCustOm
                             label="Country"
                             type="text"
                             name="country"
@@ -640,7 +668,7 @@ const MemberEditorDialog = ({
                                 errors.country ? errors.country?.message : ''
                             }
                         />
-                         <TextFieldCustOm
+                        <TextFieldCustOm
                             label="City"
                             type="text"
                             name="city"
@@ -649,7 +677,7 @@ const MemberEditorDialog = ({
                             error={errors.city ? true : false}
                             helperText={errors.city ? errors.city?.message : ''}
                         />
-                       <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Billing Address"
                             type="text"
                             name="billing_address"
@@ -657,10 +685,13 @@ const MemberEditorDialog = ({
                             disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.billing_address ? true : false}
                             helperText={
-                                errors.billing_address ? errors.billing_address?.message : ''
-                            }/>
-                         
-                          <TextFieldCustOm
+                                errors.billing_address
+                                    ? errors.billing_address?.message
+                                    : ''
+                            }
+                        />
+
+                        <TextFieldCustOm
                             label="Pincode"
                             type="number"
                             name="pincode"
@@ -693,36 +724,35 @@ const MemberEditorDialog = ({
                             error={errors.cpassword ? true : false}
                             helperText={errors.cpassword?.message}
                         />
-                        
-                          
-                            <TextFieldCustOm
+
+                        <TextFieldCustOm
                             label="PAN Card Photo"
                             type="file"
                             InputLabelProps={{ shrink: true }}
                             name="pan_card_proof"
                             disabled={Object.keys(editFetchData).length !== 0}
                             onChange={(e) => {
-                                handelPanCardProof(e);
+                                handelPanCardProof(e)
                             }}
                         />
-                           <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Aadhar Photo"
                             type="file"
                             InputLabelProps={{ shrink: true }}
                             disabled={Object.keys(editFetchData).length !== 0}
                             name="aadhar_proof"
                             onChange={(e) => {
-                                handelAadharProof(e);
+                                handelAadharProof(e)
                             }}
                         />
-                           <TextFieldCustOm
+                        <TextFieldCustOm
                             label="Business Address Proof"
                             type="file"
                             disabled={Object.keys(editFetchData).length !== 0}
                             InputLabelProps={{ shrink: true }}
                             name="business_address_proof"
                             onChange={(e) => {
-                                handelBusinessAddressProof(e);
+                                handelBusinessAddressProof(e)
                             }}
                         />
                     </Grid>

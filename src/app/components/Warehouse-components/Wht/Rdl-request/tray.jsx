@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button , Typography} from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -32,8 +32,15 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
+
+                    let obj = {
+                        status: 'Send for RDL-FLS',
+                        location: location,
+                        type: 'WHT',
+                    }
                     let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-FLS/' + location
+                        '/requestForApprove',
+                        obj
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -63,25 +70,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'rack_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Rack ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
             options: {
                 filter: true,
             },
@@ -95,21 +109,23 @@ const SimpleMuiTable = () => {
         // },
         {
             name: 'warehouse',
-            label: <Typography sx={{fontWeight:'bold'}}>Warehouse</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -125,14 +141,20 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>RDL Agent</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>RDL Agent</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'requested_date',
-            label: <Typography sx={{fontWeight:'bold'}} noWrap>Request Sent Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Request Sent Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: false,
@@ -145,7 +167,9 @@ const SimpleMuiTable = () => {
 
         {
             name: 'items',
-            label: <Typography sx={{fontWeight:'bold'}}>Quantity</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
@@ -154,16 +178,18 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Action</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value) => {
                     return (
                         <Button
-                            sx={{
-                                // m: 1,
-                            }}
+                            sx={
+                                {
+                                    // m: 1,
+                                }
+                            }
                             variant="contained"
                             onClick={(e) => handelDetailPage(e, value)}
                             style={{ backgroundColor: 'green' }}

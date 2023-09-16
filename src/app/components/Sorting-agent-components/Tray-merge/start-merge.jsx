@@ -87,7 +87,6 @@ export default function DialogBox() {
                     trayId: trayId,
                     wht_tray: tray?.wht,
                 }
-
                 let res = await axiosSortingAgent.post(
                     '/cheack-uic-for-sorting',
                     obj

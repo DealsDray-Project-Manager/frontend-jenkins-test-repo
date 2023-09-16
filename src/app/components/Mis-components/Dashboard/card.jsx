@@ -210,6 +210,13 @@ const StatCard3 = () => {
             sales: 'all',
         },
         {
+            icon: 'merge_type',
+            amount: count.stxMerge,
+            title: 'Assign for Copy Grading',
+            path: '/mis/assign-to-agent-for-copy-grading',
+            sales: true,
+        },
+        {
             icon: 'art_track',
             amount: count.trackItem,
             title: 'Track Item',

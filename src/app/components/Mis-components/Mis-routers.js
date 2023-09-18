@@ -127,16 +127,16 @@ const RackRequestCreated = Loadable(
 const BagTransffer = Loadable(
     lazy(() => import('./bag-transffer/bag-send/bag-send'))
 )
-const AssignForCopyGrading=Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-for-copy-grading/tray'))
+const AssignForDisplayGrading=Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-for-display-grading/tray'))
 )
 
 
 
 const dataTableRoutes = [
     {
-        path: '/mis/assign-to-agent-for-copy-grading',
-        element: <AssignForCopyGrading />,
+        path: '/mis/assign-to-agent-for-display-grading',
+        element: <AssignForDisplayGrading />,
     },
     {
         path: '/mis/bag-transfer',

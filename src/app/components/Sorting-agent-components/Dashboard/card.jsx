@@ -61,9 +61,9 @@ const StatCard3 = () => {
         },
         {
             icon: 'merge_type',
-            amount: count.copyGradingRequest,
-            title: 'Copy Grading',
-            path: '/sorting/copy-grading-requests',
+            amount: count.displayGradingRequest,
+            title: 'Display Grading',
+            path: '/sorting/display-grading-requests',
             sales: true,
         },
         {

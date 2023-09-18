@@ -242,26 +242,26 @@ const AllPmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-pmt/tray')))
 const AllMmtTray = Loadable(lazy(() => import('./Pmt-mmt/All-mmt/tray')))
 const RackChangeScanOut = Loadable(lazy(() => import('./Rack-change/scan-out')))
 const RackChangeScanIn = Loadable(lazy(() => import('./Rack-change/scan-in')))
-const  CopyGradingAssignRequest = Loadable(lazy(() => import('./Stx-tray/Copy-grading-request/requests')))
-const  CopyGradingRequestApprove = Loadable(lazy(() => import('./Stx-tray/Copy-grading-request/approve')))
-const  RetunrFromCopyGrading = Loadable(lazy(() => import('./Stx-tray/Return-from-copy-grading/tray')))
-const  ReturnFromCopyGradingClose = Loadable(lazy(() => import('./Stx-tray/Return-from-copy-grading/close')))
+const  CopyGradingAssignRequest = Loadable(lazy(() => import('./Stx-tray/Copy-display-grading-request/requests')))
+const  DisplayGradingRequestApprove = Loadable(lazy(() => import('./Stx-tray/Copy-display-grading-request/approve')))
+const  RetunrFromCopyGrading = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/tray')))
+const  ReturnFromDisplayGradingClose = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/close')))
 
 const WarehoueRouter = [
     {
-        path: '/warehouse/stx/return-from-copy-grading/close/:trayId',
-        element: <ReturnFromCopyGradingClose />,
+        path: '/warehouse/stx/return-from-display-grading/close/:trayId',
+        element: <ReturnFromDisplayGradingClose />,
     },
     {
-        path: '/warehouse/stx/return-from-copy-grading',
+        path: '/warehouse/stx/return-from-display-grading',
         element: <RetunrFromCopyGrading />,
     },
     {
-        path: '/warehouse/stx/copy-grading-issue-requests/approve/:trayId',
-        element: <CopyGradingRequestApprove />,
+        path: '/warehouse/stx/display-grading-issue-requests/approve/:trayId',
+        element: <DisplayGradingRequestApprove />,
     },
     {
-        path: '/warehouse/stx/copy-grading-issue-requests',
+        path: '/warehouse/stx/display-grading-issue-requests',
         element: <CopyGradingAssignRequest />,
     },
     

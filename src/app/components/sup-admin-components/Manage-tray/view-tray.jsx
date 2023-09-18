@@ -300,6 +300,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        
         {
             name: 'tray_grade',
             label: (

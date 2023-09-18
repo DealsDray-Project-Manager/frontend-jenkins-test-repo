@@ -302,16 +302,16 @@ const StatCard3 = () => {
         },
         {
             icon: 'shopping_cart',
-            amount: count.copyGradingRequest,
-            title: 'Copy Grading Requests',
-            path: '/warehouse/stx/copy-grading-issue-requests',
+            amount: count.displayGradingRequest,
+            title: 'Display Grading Requests',
+            path: '/warehouse/stx/display-grading-issue-requests',
             sales: true,
         },
         {
             icon: 'shopping_cart',
-            amount: count.returnFromCopyGrading,
-            title: 'Return From Copy Grading',
-            path: '/warehouse/stx/return-from-copy-grading',
+            amount: count.returnFromDisplayGrading,
+            title: 'Return From Display Grading',
+            path: '/warehouse/stx/return-from-display-grading',
             sales: true,
         },
     ]

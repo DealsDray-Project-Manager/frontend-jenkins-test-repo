@@ -268,6 +268,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        
         {
             name: 'tray_grade',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Grade</></Typography>,

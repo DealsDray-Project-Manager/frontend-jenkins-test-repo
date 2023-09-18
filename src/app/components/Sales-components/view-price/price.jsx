@@ -107,6 +107,8 @@ const SimpleMuiTable = () => {
                 Brand: selectedItem._id.brand,
                 Model: selectedItem._id.model,
                 Units: selectedItem.itemCount,
+                C:selectedItem.count_of_c_display,
+                G:selectedItem.count_of_g_display,
                 Grade: selectedItem._id.grade,
                 // mrp_price: selectedItem.mrp,
                 SP: selectedItem.sp,
@@ -139,6 +141,8 @@ const SimpleMuiTable = () => {
             'Brand',
             'Model',
             'Units',
+            'C',
+            "G",
             'Grade',
             // 'MRP',
             'SP',
@@ -149,6 +153,8 @@ const SimpleMuiTable = () => {
             item._id.brand,
             item._id.model,
             item.itemCount,
+            item.count_of_c_display,
+            item.count_of_g_display,
             item._id.grade,
             // item.mrp,
             item.sp,
@@ -282,6 +288,28 @@ const SimpleMuiTable = () => {
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Units</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'count_of_c_display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>C</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'count_of_g_display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>G</>
                 </Typography>
             ),
             options: {

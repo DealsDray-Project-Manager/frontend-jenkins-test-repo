@@ -824,6 +824,15 @@ const SimpleMuiTable = () => {
                         >
                             RDL-Two Done Closed By WH
                         </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Display Grade
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -1251,22 +1260,11 @@ const SimpleMuiTable = () => {
                                       })
                                     : ''}
                             </TableCell>
+                           
                             <TableCell>
                                 {data?.delivery?.rdl_two_user_name}
                             </TableCell>
-                            <TableCell>
-                                {data?.delivery?.rdl_two_user_name}
-                            </TableCell>
-                            <TableCell>
-                                {data?.delivery?.rdl_two_closed_date !=
-                                undefined
-                                    ? new Date(
-                                          data?.delivery?.rdl_two_closed_date
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })
-                                    : ''}
-                            </TableCell>
+                         
                             <TableCell>
                                 {data?.delivery?.rdl_two_closed_date !=
                                 undefined
@@ -1297,6 +1295,9 @@ const SimpleMuiTable = () => {
                                           hour12: true,
                                       })
                                     : ''}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.copy_grading_report?.scree_type}
                             </TableCell>
                         </TableRow>
                     ))}

@@ -212,8 +212,8 @@ const StatCard3 = () => {
         {
             icon: 'merge_type',
             amount: count.stxMerge,
-            title: 'Assign for Copy Grading',
-            path: '/mis/assign-to-agent-for-copy-grading',
+            title: 'Assign for Display Grading',
+            path: '/mis/assign-to-agent-for-display-grading',
             sales: true,
         },
         {

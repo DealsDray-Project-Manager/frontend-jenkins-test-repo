@@ -1,14 +1,26 @@
-/* Change table header color */
-.head-cell {
-    background-color: blue;
-    color: white; /* Change text color to white for better readability */
-  }
-  
-  /* Customize row and column lines */
-  .cell {
-    border: 1px solid #ccc; /* Set a 1px solid gray border for all cells */
-  }
-  .row-cell {
-    /* Customize row-specific styling here if needed */
-  }
-  
+/* styles.css */
+
+.custom-table {
+  white-space: pre;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.custom-table th,
+.custom-table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  text-align: left;
+}
+
+.custom-table th:last-child,
+.custom-table td:last-child {
+  border-right: none;
+}
+
+/* Add background color to table header */
+.custom-table th {
+  background-color: #e0e0e0; /* Specify the background color you want */
+  /* You can also add other styles like text color, font-size, etc. */
+}

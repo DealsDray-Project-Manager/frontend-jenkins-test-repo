@@ -658,7 +658,7 @@ const TrackItem = () => {
                             sx={{
                                 fontSize: '16px',
                                 fontWeight: 'bold',
-                                width: '440px',
+                                width: '350px',
                             }}
                         >
                             CTX Tray Received From Processing and Close By WH
@@ -668,7 +668,7 @@ const TrackItem = () => {
                             sx={{
                                 fontSize: '16px',
                                 fontWeight: 'bold',
-                                pl: 10,
+                               
                                 width: '240px',
                             }}
                         >
@@ -786,10 +786,19 @@ const TrackItem = () => {
                             sx={{
                                 fontWeight: 'bold',
                                 fontSize: '16px',
-                                width: '200px',
+                                width: '120px',
                             }}
                         >
                             RDL-Two Done Closed By WH
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Display Grade
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -1218,22 +1227,11 @@ const TrackItem = () => {
                                       })
                                     : ''}
                             </TableCell>
+                           
                             <TableCell>
                                 {data?.delivery?.rdl_two_user_name}
                             </TableCell>
-                            <TableCell>
-                                {data?.delivery?.rdl_two_user_name}
-                            </TableCell>
-                            <TableCell>
-                                {data?.delivery?.rdl_two_closed_date !=
-                                undefined
-                                    ? new Date(
-                                          data?.delivery?.rdl_two_closed_date
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })
-                                    : ''}
-                            </TableCell>
+                          
                             <TableCell>
                                 {data?.delivery?.rdl_two_closed_date !=
                                 undefined
@@ -1264,6 +1262,9 @@ const TrackItem = () => {
                                           hour12: true,
                                       })
                                     : ''}
+                            </TableCell>
+                            <TableCell sx={{mr:2}}> 
+                                {data?.delivery?.copy_grading_report?.scree_type}
                             </TableCell>
                         </TableRow>
                     ))}

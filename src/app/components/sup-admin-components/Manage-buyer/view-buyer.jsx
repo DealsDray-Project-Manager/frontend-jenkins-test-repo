@@ -75,9 +75,7 @@ const SimpleMuiTable = () => {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
-useEffect(()=>{
-    console.log(userList);
-},[userList])
+
 
     const editUser = async (empId) => {
         try {

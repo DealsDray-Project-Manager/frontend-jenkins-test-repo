@@ -3,6 +3,7 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-vendor'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
 import { styled } from '@mui/system'
 import {
     Button,
@@ -12,7 +13,7 @@ import {
     Radio,
     Typography,
     Table,
-    TableContainer,
+   
 } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
@@ -29,27 +30,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '145%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
 
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -184,7 +165,7 @@ const SimpleMuiTable = () => {
                 <Typography
                     variant="subtitle1"
                     sx={{ fontWeight: 'bold' }}
-                    noWrap
+                    
                 >
                     <>Record No</>
                 </Typography>
@@ -202,7 +183,7 @@ const SimpleMuiTable = () => {
         {
             name: 'vendor_id', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" fontWeight="bold" >
                     <>Vendor ID</>
                 </Typography>
             ), // column title that will be shown in table
@@ -276,20 +257,20 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'deals',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Deals</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return value?.join(',')
-                },
-            },
-        },
+        // {
+        //     name: 'deals',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Deals</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return value?.join(',')
+        //         },
+        //     },
+        // },
         {
             name: 'reference',
             label: (
@@ -383,12 +364,9 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                             <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                }}
+                              
                             >
-                                {tableMeta.rowData[13] == 'Active' ? (
+                                {tableMeta.rowData[12] == 'Active' ? (
                                     <Radio
                                         onClick={(e) => {
                                             handelActive(value, 'Deactive')
@@ -436,8 +414,8 @@ const SimpleMuiTable = () => {
             >
                 Add New Vendor
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
+           
+                <Table className="custom-table">
                     <MUIDataTable
                         title={'All Vendors'}
                         data={warehouseList}
@@ -465,8 +443,8 @@ const SimpleMuiTable = () => {
                             rowsPerPageOptions: [10, 20, 40, 80, 100],
                         }}
                     />
-                </ProductTable>
-            </ScrollableTableContainer>
+                </Table>
+            
 
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog

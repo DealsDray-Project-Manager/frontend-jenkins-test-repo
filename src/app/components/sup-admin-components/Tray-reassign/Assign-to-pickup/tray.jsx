@@ -2,6 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
+import '../../../../../app.css'
 import {
     Button,
     Dialog,
@@ -15,6 +16,7 @@ import {
     Typography,
     MenuItem,
     TextField,
+    Table
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -496,6 +498,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Table className="custom-table">
 
             <MUIDataTable
                 title={'Pickup'}
@@ -540,6 +543,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
+
         </Container>
     )
 }

@@ -3,9 +3,19 @@ import { Breadcrumb } from 'app/components'
 import MemberEditorDialog from './add-bag'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Box, IconButton, Icon, Typography,Table, TableContainer,TableCell  } from '@mui/material'
+import {
+    Button,
+    Box,
+    IconButton,
+    Icon,
+    Typography,
+    Table,
+    TableContainer,
+    TableCell,
+} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -20,26 +30,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: 2000,
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -179,32 +169,51 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:2}}>{dataIndex.rowIndex + 1}</Typography>
+
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 2 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag ID</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Bag ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'cpc',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Location</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Location</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'warehouse',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Warehouse</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Warehouse</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customHeadRender: (columnMeta) => (
@@ -212,77 +221,90 @@ const SimpleMuiTable = () => {
                         key={columnMeta.index}
                         style={{
                             maxWidth: '80px',
-                            overflow: 'hidden', 
+                            overflow: 'hidden',
                             whiteSpace: 'normal',
-                              textOverflow: 'ellipsis'
-                           
+                            textOverflow: 'ellipsis',
                         }}
                     >
-                        <Typography variant="subtitle1" fontWeight='bold'>Warehouse</Typography>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                            Warehouse
+                        </Typography>
                     </TableCell>
                 ),
             },
         },
         {
             name: 'name',
-            label: "Bag Display Name",
+            label: 'Bag Display Name',
             options: {
                 filter: true,
                 customHeadRender: (columnMeta) => (
-                    <TableCell
-                        key={columnMeta.index}
-                        style={{
-                            width: '250px', 
-                            // paddingLeft: '10px', 
-                        }}
-                    >
-                        <Typography variant="subtitle1" fontWeight='bold'>Bag Display Name</Typography>
+                    <TableCell key={columnMeta.index}>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                            Bag Display Name
+                        </Typography>
                     </TableCell>
                 ),
             },
         },
         {
             name: 'limit',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Limit</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Bag Limit</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'display',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Display</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Bag Display</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customHeadRender: (columnMeta) => (
-                    <TableCell
-                        key={columnMeta.index}
-                        style={{
-                            width: '250px', 
-                            // padding: '5px', 
-                        }}
-                    >
-                        <Typography variant="subtitle1" fontWeight='bold'>Bag Display</Typography>
+                    <TableCell key={columnMeta.index}>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                            Bag Display
+                        </Typography>
                     </TableCell>
                 ),
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Bag Type</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Bag Type</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -293,18 +315,17 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Actions</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
-                        >
+                        <Box>
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
@@ -340,7 +361,6 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        
     ]
 
     return (
@@ -364,38 +384,37 @@ const SimpleMuiTable = () => {
             >
                 Add Bulk Bag
             </Button>
-            <ScrollableTableContainer>
-                <ProductTable>
+
+            <Table className="custom-table">
                 <MUIDataTable
-                title={'All Bags'}
-                data={bagList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                    title={'All Bags'}
+                    data={bagList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-                </ProductTable>
-            </ScrollableTableContainer>
-            
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

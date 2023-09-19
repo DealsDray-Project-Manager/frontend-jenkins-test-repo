@@ -24,9 +24,7 @@ import PropTypes from 'prop-types'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosBqc } from '../../../../axios'
-import useAuth from 'app/hooks/useAuth'
-
+import { axiosBqc, axiosSuperAdminPrexo } from '../../../../axios'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -77,7 +75,6 @@ export default function DialogBox() {
     const [resDataUic, setResDataUic] = useState({})
     const [loading, setLoading] = useState(false)
     const [deviceButDis, setDeviceButDis] = useState(false)
-    const { user } = useAuth()
 
     const handleClose = () => {
         setTextBoxDis(false)
@@ -223,7 +220,52 @@ export default function DialogBox() {
             }
         }
     }
-
+    /*-------------------------------------------------------------------------*/
+    const handelDuplicateRemove = async (id, arrayType) => {
+        try {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You want to Remove !',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Remove it!',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let obj = {
+                        trayId: trayId,
+                        id: id,
+                        arrayType: arrayType,
+                    }
+                    const res = await axiosSuperAdminPrexo.post(
+                        '/globeDuplicateRemove',
+                        obj
+                    )
+                    if (res.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: res?.data?.message,
+                            showConfirmButton: true,
+                        })
+                        setRefresh((refresh) => !refresh)
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.data.message,
+                        })
+                    }
+                }
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
     /************************************************************************** */
     const handelIssue = async (e) => {
         e.preventDefault()
@@ -269,9 +311,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
-                                {/* <TableCell>Tracking Number</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -282,8 +321,29 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    {data?.dup_uic_status !==
+                                    'Duplicate' ? null : (
+                                        <TableCell>
+                                            <Button
+                                                sx={{
+                                                    ml: 2,
+                                                }}
+                                                variant="contained"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                }}
+                                                component="span"
+                                                onClick={() => {
+                                                    handelDuplicateRemove(
+                                                        data?._id,
+                                                        'Second-main'
+                                                    )
+                                                }}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -331,8 +391,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -344,8 +402,29 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    {data?.dup_uic_status !==
+                                    'Duplicate' ? null : (
+                                        <TableCell>
+                                            <Button
+                                                sx={{
+                                                    ml: 2,
+                                                }}
+                                                variant="contained"
+                                                style={{
+                                                    backgroundColor: 'red',
+                                                }}
+                                                component="span"
+                                                onClick={() => {
+                                                    handelDuplicateRemove(
+                                                        data?._id,
+                                                        'Third-main'
+                                                    )
+                                                }}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -581,18 +660,6 @@ export default function DialogBox() {
                         name="doorsteps_diagnostics"
                         label="SCAN UIC"
                         value={uic}
-                        onKeyPress={(e) => {
-                            if (user.serverType == 'Live') {
-                                // Prevent manual typing by intercepting key presses
-                                e.preventDefault()
-                            }
-                        }}
-                        onPaste={(e) => {
-                            if (user.serverType == 'Live') {
-                                // Prevent manual typing by intercepting key presses
-                                e.preventDefault()
-                            }
-                        }}
                         onChange={(e) => {
                             setUic(e.target.value)
                             handelUic(e)

@@ -61,6 +61,13 @@ const StatCard3 = () => {
         },
         {
             icon: 'merge_type',
+            amount: count.displayGradingRequest,
+            title: 'Display Grading',
+            path: '/sorting/display-grading-requests',
+            sales: true,
+        },
+        {
+            icon: 'merge_type',
             amount: count.pickup,
             title: 'Pickup From Tray',
             path: '/sorting/pickup/request',

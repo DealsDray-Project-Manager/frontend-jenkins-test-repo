@@ -28,7 +28,6 @@ const MemberEditorDialog = ({
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
 
-
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
@@ -36,7 +35,7 @@ const MemberEditorDialog = ({
                 tray: isCheck,
                 user_name: auditUserName,
                 sort_id: 'Send for Audit',
-                actionUser:user.username
+                actionUser: user.username,
             }
             let res = await axiosMisUser.post('/wht-sendTo-wharehouse', obj)
             if (res.status == 200) {

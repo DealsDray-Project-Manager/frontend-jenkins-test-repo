@@ -476,7 +476,7 @@ const SimpleMuiTable = () => {
                             // pagination: true, //set pagination option
                             // viewColumns: false, // set column option
                             customSort: (data, colIndex, order) => {
-                                console.log('Sorting data:', data)
+                            
                                 const columnProperties = {
                                     1: 'wht_tray',
                                     2: 'code',

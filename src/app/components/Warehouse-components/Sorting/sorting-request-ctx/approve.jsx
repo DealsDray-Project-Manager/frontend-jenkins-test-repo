@@ -30,8 +30,14 @@ export default function StickyHeadTable({ props }) {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
+                    let obj = {
+                        location: location,
+                        fromTray: trayId,
+                        type:"sorting-request-approve"
+                    }
                     let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo/' + location + '/' + trayId
+                        '/viewTrayFromAndTo',
+                        obj
                     )
                     if (response.status === 200) {
                         setMmtTray(response.data.data)

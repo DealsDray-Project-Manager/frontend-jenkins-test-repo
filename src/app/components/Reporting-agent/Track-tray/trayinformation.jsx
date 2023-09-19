@@ -65,7 +65,7 @@ const Trayinformation = () => {
             alert(error)
         }
     }
-    console.log(otherDetails)
+ 
     return (
         <Container>
             <h3>Tray Details</h3>

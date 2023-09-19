@@ -300,6 +300,20 @@ const StatCard3 = () => {
             path: '/warehouse/rack-change/scan-in',
             sales: 'all',
         },
+        {
+            icon: 'shopping_cart',
+            amount: count.displayGradingRequest,
+            title: 'Display Grading Requests',
+            path: '/warehouse/stx/display-grading-issue-requests',
+            sales: true,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.returnFromDisplayGrading,
+            title: 'Return From Display Grading',
+            path: '/warehouse/stx/return-from-display-grading',
+            sales: true,
+        },
     ]
 
     const { palette } = useTheme()

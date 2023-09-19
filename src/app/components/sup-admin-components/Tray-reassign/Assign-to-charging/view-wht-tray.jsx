@@ -2,11 +2,13 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography } from '@mui/material'
+import { Button, Checkbox, Typography,Table } from '@mui/material'
 import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -340,6 +342,8 @@ const SimpleMuiTable = () => {
             >
                 Reassign for charging
             </Button>
+            <Table className="custom-table">
+
             <MUIDataTable
                 title={'WHT'}
                 data={whtTray}
@@ -383,6 +387,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

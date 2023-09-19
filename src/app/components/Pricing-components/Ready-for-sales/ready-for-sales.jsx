@@ -154,7 +154,7 @@ const SimpleMuiTable = () => {
         setLoading(true)
         let flag = false
         for (let x of addPricing) {
-            console.log(x)
+         
             if (
                 isNaN(Number(x.mrp)) ||
                 Number(x.mrp) < 0 ||
@@ -318,6 +318,28 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'count_of_c_display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>C</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'count_of_g_display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>G</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: '_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -356,7 +378,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     const muic = tableMeta.rowData[2]
-                    const grade = tableMeta.rowData[6]?.grade
+                    const grade = tableMeta.rowData[8]?.grade
 
                     const updatedItem = item.find(
                         (item) =>
@@ -389,7 +411,7 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
                     const muic = tableMeta.rowData[2]
-                    const grade = tableMeta.rowData[6]?.grade
+                    const grade = tableMeta.rowData[8]?.grade
 
                     const updatedItem = item.find(
                         (item) =>

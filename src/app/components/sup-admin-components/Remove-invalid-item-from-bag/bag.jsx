@@ -6,6 +6,8 @@ import Swal from 'sweetalert2'
 import { Button, Typography,Table, TableContainer  } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
+import '../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,26 +22,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '150%',
-    height:'100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '36px !important',
-    },
-}))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -194,8 +177,8 @@ const SimpleMuiTable = () => {
                 />
             </div>
 
-            <ScrollableTableContainer>
-                <ProductTable>
+            
+                <Table className="custom-table">
                 <MUIDataTable
                 title={'Bag'}
                 data={bagList}
@@ -223,8 +206,8 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-                </ProductTable>
-            </ScrollableTableContainer>
+                </Table>
+          
             
         </Container>
     )

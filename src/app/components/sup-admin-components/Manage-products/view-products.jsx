@@ -5,7 +5,8 @@ import { styled } from '@mui/system'
 import EditProdutDilog from './edit-product'
 import AddEditorDialog from './add-products'
 import { useNavigate } from 'react-router-dom'
-import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
+import '../../../../app.css'
+import { Button, Box, IconButton, Icon, Typography,Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo,baseURL } from '../../../../axios'
 
@@ -328,10 +329,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                            }}
+                           
                         >
                             <IconButton>
                                 <Icon
@@ -406,6 +404,8 @@ const SimpleMuiTable = () => {
             >
                 Add Bulk Products
             </Button>
+            <Table className="custom-table">
+
             <MUIDataTable
                 title={'All Products'}
                 data={productList}
@@ -433,6 +433,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
             {shouldOpenEditorDialog && (
                 <AddEditorDialog
                     handleClose={handleDialogClose}

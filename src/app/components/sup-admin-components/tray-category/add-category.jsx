@@ -69,7 +69,6 @@ const MemberEditorDialog = ({
                 )
             }),
     })
-
     const {
         register,
         handleSubmit,
@@ -172,7 +171,7 @@ const MemberEditorDialog = ({
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('code')}
                             onKeyPress={(event) => {
-                                if (!/[A-Za-z+]/.test(event.key)) {
+                                if (!/[A-Za-z0-9]/.test(event.key)) {
                                     event.preventDefault()
                                 }
                             }}

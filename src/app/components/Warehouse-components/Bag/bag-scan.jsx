@@ -62,7 +62,7 @@ const PaginationTable = () => {
     const [disAwbnText, SetDisAwbText] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
-    console.log(user)
+   
 
     const handelCheckBagId = async (e) => {
         try {

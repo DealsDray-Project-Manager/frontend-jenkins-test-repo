@@ -185,7 +185,6 @@ const SimpleMuiTable = () => {
     useEffect(() => {
         setDisplayText('Loading...')
         const fetchOrder = async () => {
-       
             try {
                 let user = localStorage.getItem('prexo-authentication')
                 if (user) {
@@ -225,7 +224,7 @@ const SimpleMuiTable = () => {
                                 '/' +
                                 rowsPerPage
                         )
-                      
+
                         if (res.status == 200) {
                             setDisplayText('')
                             setOrderCount(res.data.count)
@@ -383,7 +382,7 @@ const SimpleMuiTable = () => {
                 '/orderDateReport/item/filter',
                 filterData
             )
-           
+
             if (res.status === 200) {
                 setDisplayText('')
                 setOrderCount(res.data.count)

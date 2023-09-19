@@ -283,7 +283,7 @@ const AddBulkPart = () => {
         }
     }
 
-    // console.log(item)
+    
 
     return (
         <Container>

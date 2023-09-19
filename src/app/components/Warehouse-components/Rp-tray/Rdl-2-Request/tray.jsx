@@ -33,8 +33,13 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
+                    let obj={
+                        status:"Send for RDL-two",
+                        location:location,
+                        type:"RPT"
+                    }
                     let res = await axiosWarehouseIn.post(
-                        '/request-for-RDL-fls/' + 'Send for RDL-two/' + location
+                        '/requestForApprove',obj
                     )
                     if (res.status == 200) {
                         setIsLoading(false)

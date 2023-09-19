@@ -127,8 +127,17 @@ const RackRequestCreated = Loadable(
 const BagTransffer = Loadable(
     lazy(() => import('./bag-transffer/bag-send/bag-send'))
 )
+const AssignForDisplayGrading=Loadable(
+    lazy(() => import('./Assign-to-agent/Assign-for-display-grading/tray'))
+)
+
+
 
 const dataTableRoutes = [
+    {
+        path: '/mis/assign-to-agent-for-display-grading',
+        element: <AssignForDisplayGrading />,
+    },
     {
         path: '/mis/bag-transfer',
         element: <BagTransffer />,
@@ -145,7 +154,6 @@ const dataTableRoutes = [
         path: '/mis/stx-utility/tray-view/close/:trayId',
         element: <StxTrayUtilityInProgressClose />,
     },
-   
     {
         path: '/mis/stx-utility-tray-view',
         element: <StxUtilityInprogressTray />,

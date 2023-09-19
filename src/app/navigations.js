@@ -661,7 +661,6 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: 'all',
     },
-   
 
     {
         name: 'Track',
@@ -680,7 +679,6 @@ export const navigations = [
         name: 'Report',
         icon: 'report',
         children: [
-            
             {
                 name: 'Upgrade Units',
                 path: '/warehouse/rpt/report/upgrade-units',
@@ -989,10 +987,21 @@ export const navigations = [
                 path: '/wareshouse/stx/all',
                 iconText: 'VP',
             },
+            {
+                name: 'Display Grading Request',
+                path: '/warehouse/stx/display-grading-issue-requests',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return from Display Grading',
+                path: '/warehouse/stx/return-from-display-grading',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: true,
     },
+
     {
         name: 'Rack Change',
         icon: 'shopping_cart',
@@ -1070,12 +1079,24 @@ export const navigations = [
         sales: true,
     },
     {
+        name: 'Assign for Display grading',
+        icon: 'class',
+        path: '/mis/assign-to-agent-for-display-grading',
+        auth: authRoles.Mis,
+        sales: true,
+    },
+    {
         name: 'STX Utility',
         icon: 'search',
         children: [
             {
-                name: 'Scan Uic',
+                name: 'Ctx to Stx Scan Uic',
                 path: '/mis/stx-utility',
+                iconText: 'VP',
+            },
+            {
+                name: 'Stx to Stx Scan Uic',
+                path: '/mis/stx-to-stx-utility',
                 iconText: 'VP',
             },
             {
@@ -1084,7 +1105,7 @@ export const navigations = [
                 iconText: 'VP',
             },
         ],
-        auth: authRoles.Mis,
+        auth: authRoles.Warehouse,
         sales: true,
     },
     {
@@ -1158,6 +1179,13 @@ export const navigations = [
         path: '/sorting/merge',
         auth: authRoles.sorting,
         sales: 'all',
+    },
+    {
+        name: 'Display Grading',
+        icon: 'merge_type',
+        path: '/sorting/display-grading-requests',
+        auth: authRoles.sorting,
+        sales: true,
     },
     {
         name: 'Pickup',

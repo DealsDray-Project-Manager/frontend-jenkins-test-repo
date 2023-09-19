@@ -41,27 +41,7 @@ const MemberEditorDialog = ({
     const [validationState, setValidationState] = useState(false)
     const [otherTrayAssign, setOtherTrayAssign] = useState([])
 
-    useEffect(() => {
-        const fetchCtxTray = async () => {
-            try {
-                const res = await axiosWarehouseIn.post(
-                    '/getCtxCategorysForIssue',
-                    alReadyIssuedTrayGrade
-                )
-                if (res.status === 200) {
-                    setCtxGrade(res?.data)
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error,
-                })
-            }
-        }
-        fetchCtxTray()
-        return () => {}
-    }, [])
+   
     // HANDEL ADD TO STATE
     const handelAddTrayId = (e, grade, value) => {
         e.preventDefault()

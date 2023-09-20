@@ -97,6 +97,28 @@ export default function DialogBox() {
     }, [refresh])
 
     useEffect(() => {
+        const fetchCtxTray = async () => {
+            try {
+                const res = await axiosWarehouseIn.post(
+                    '/getCtxCategorysForIssue',
+                    alReadyIssuedTrayGrade
+                )
+                if (res.status === 200) {
+                    setCtxGrade(res?.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchCtxTray()
+        return () => {}
+    }, [])
+
+    useEffect(() => {
         const userStatusApiCall = async () => {
             try {
                 let obj = {
@@ -172,7 +194,7 @@ export default function DialogBox() {
             }
         }
     }
-
+    console.log()
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -204,8 +226,7 @@ export default function DialogBox() {
                         description: description,
                         username: trayData.issued_user_name,
                         actioUser: user.username,
-                        whtTray:trayId
-                        
+                        whtTray: trayId,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/auditTrayIssueToAgent',
@@ -254,7 +275,6 @@ export default function DialogBox() {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
-  
 
     const tableExpected = useMemo(() => {
         return (

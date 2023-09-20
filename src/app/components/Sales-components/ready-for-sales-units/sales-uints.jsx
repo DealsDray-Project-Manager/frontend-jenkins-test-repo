@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useRef } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box,IconButton,Icon } from '@mui/material'
+import { Button, Typography, TextField, Box,IconButton,Icon,Table } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -285,6 +286,8 @@ const SimpleMuiTable = () => {
             >
                 Download PDF
             </Button>
+            <Table className="custom-table" >
+
             <MUIDataTable
                 title={'Ready for sales units'}
                 data={item}
@@ -344,6 +347,7 @@ const SimpleMuiTable = () => {
                 }}
                 ref={tableRef}
             />
+            </Table>
         </Container>
     )
 }

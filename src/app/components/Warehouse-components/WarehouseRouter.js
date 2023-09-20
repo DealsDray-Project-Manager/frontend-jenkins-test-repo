@@ -2,7 +2,6 @@ import React, { lazy } from 'react'
 import Loadable from 'app/components/Loadable/Loadable'
 
 const Dashboard = Loadable(lazy(() => import('./Dashboard/dashboard')))
-const BagScaning = Loadable(lazy(() => import('./Bag/bag-scan')))
 const BagIssueRequest = Loadable(
     lazy(() => import('./Bag/bag-issue-request/bag-issue-request'))
 )
@@ -313,10 +312,7 @@ const WarehoueRouter = [
         path: '/warehouse/dashboard',
         element: <Dashboard />,
     },
-    {
-        path: '/wareshouse/bag/scan',
-        element: <BagScaning />,
-    },
+   
     {
         path: '/wareshouse/bag/bag-issue-request',
         element: <BagIssueRequest />,

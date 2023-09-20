@@ -138,6 +138,9 @@ const ReassignSortingBotToWht = Loadable(
 const UnverifiedImeiUpdation = Loadable(
     lazy(() => import('./Un-verified-imei-updation/units'))
 )
+const BuyerCreationPage = Loadable(
+    lazy(() => import('./Manage-buyer/new-buyer'))
+)
 
 const SuperAdminRouter = [
     {
@@ -151,6 +154,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/buyer',
         element: <ViewAllBuyer/>,
+    },
+    {
+        path: '/sup-admin/buyer/create',
+        element: <BuyerCreationPage/>,
     },
     {
         path: '/sup-admin/products',

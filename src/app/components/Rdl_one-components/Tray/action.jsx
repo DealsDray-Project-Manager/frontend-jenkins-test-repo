@@ -358,26 +358,26 @@ const Actionfunction = () => {
                 sx={{ width: '180px' }}
                 label="Select an Option"
             >
-                <MenuItem
+                {/* <MenuItem
                     value="Battery Boosted"
                     onClick={() => setSelectedStatus('Battery Boosted')}
                 >
                     Battery Boosted
-                </MenuItem>
-                <MenuItem
+                </MenuItem> */}
+                {/* <MenuItem
                     value="Charge jack Replaced & Boosted"
                     onClick={() =>
                         setSelectedStatus('Charge jack Replaced & Boosted')
                     }
                 >
                     Charge jack Replaced & Boosted
-                </MenuItem>
-                <MenuItem
+                </MenuItem> */}
+                {/* <MenuItem
                     value="Battery Damage"
                     onClick={() => setSelectedStatus('Battery Damage')}
                 >
                     Battery Damage
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                     value="Repair Required"
                     onClick={() => setSelectedStatus('Repair Required')}
@@ -390,20 +390,20 @@ const Actionfunction = () => {
                 >
                     Accept Auditor Feedback
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                     value="Unlocked"
                     onClick={() => setSelectedStatus('Unlocked')}
                 >
                     Unlocked
-                </MenuItem>
-                <MenuItem
+                </MenuItem> */}
+                {/* <MenuItem
                     value="Issue Resolved Through Software"
                     onClick={() =>
                         setSelectedStatus('Issue Resolved Through Software')
                     }
                 >
                     Issue Resolved Through Software
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                     value="Dead"
                     onClick={() => setSelectedStatus('Dead')}
@@ -478,15 +478,6 @@ const Actionfunction = () => {
                 ''
             )}
             <br />
-            {/* <TextField
-                defaultValue={getValues('description')} 
-                sx={{ width: '180px', mt: 1 }}
-                label="Description"
-                type="text"
-                {...register('description')}
-                error={errors.description ? true : false}
-                helperText={errors.description?.message}
-            ></TextField> */}
 
             <textarea
                 defaultValue={getValues('description')}

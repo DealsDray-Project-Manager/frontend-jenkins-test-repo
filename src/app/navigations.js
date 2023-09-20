@@ -11,6 +11,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/bagging/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.bagging, // SP MIS DASHBOARD
+    },
+    {
+        name: 'Dashboard',
         path: '/purchase-user/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -692,11 +699,6 @@ export const navigations = [
         name: 'Bag',
         icon: 'class',
         children: [
-            {
-                name: 'Scan',
-                path: '/wareshouse/bag/scan',
-                iconText: 'VP',
-            },
             {
                 name: 'Bag Issue Request',
                 path: '/wareshouse/bag/bag-issue-request',
@@ -1543,6 +1545,13 @@ export const navigations = [
         path: '/pricing/ready-for-sales',
         auth: authRoles.pricing_Agent,
         sales: true,
+    },
+    {
+        name: 'Bagging',
+        icon: 'save',
+        path: '/bagging/bag/scan',
+        auth: authRoles.bagging,
+        sales: false,
     },
     {
         name: 'Sp tray',

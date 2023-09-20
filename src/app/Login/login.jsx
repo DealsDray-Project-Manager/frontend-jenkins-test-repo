@@ -102,11 +102,11 @@ const Login = () => {
                 navigate('/sp-mis/dashboard')
             } else if (user_type == 'Purchase RM') {
                 navigate('/purchase-user/dashboard')
-            }
-            else if (user_type == 'Buyer') {
+            } else if (user_type == 'Buyer') {
                 navigate('/buyer/dashboard')
+            } else if (user_type == 'Bagging') {
+                navigate('/bagging/dashboard')
             }
-            
         } else {
             navigate('/')
         }
@@ -159,9 +159,10 @@ const Login = () => {
                     navigate('/sp-mis/dashboard')
                 } else if (response.data.data?.user_type == 'Purchase RM') {
                     navigate('/purchase-user/dashboard')
-                }
-                else if (response.data.data?.user_type == 'Buyer') {
+                } else if (response.data.data?.user_type == 'Buyer') {
                     navigate('/buyer/dashboard')
+                } else if (response.data.data?.user_type == 'Bagging') {
+                    navigate('/bagging/dashboard')
                 }
             } else {
                 setLoading(false)

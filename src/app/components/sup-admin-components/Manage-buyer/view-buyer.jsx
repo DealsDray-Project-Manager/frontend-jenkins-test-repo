@@ -4,11 +4,20 @@ import MemberEditorDialog from './new-buyer'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } from '@mui/material'
+import {
+    Button,
+    IconButton,
+    Icon,
+    Typography,
+    TableContainer,
+    Radio,
+    Box,
+    Table,
+} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
-// import './customDataTableStyles.css'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,24 +30,23 @@ const Container = styled('div')(({ theme }) => ({
             marginBottom: '16px',
         },
     },
-})) 
+}))
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 950,
     width: '180%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-  `overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
-    const [editFetchData, setEditFetchData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
-    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -49,7 +57,6 @@ const SimpleMuiTable = () => {
                 if (res.status === 200) {
                     setIsLoading(false)
                     setUserList(res.data.data.user)
-                 
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -67,24 +74,17 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handleDialogClose = () => {
-        setEditFetchData({})
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-
-
     const editUser = async (empId) => {
         try {
             let response = await axiosSuperAdminPrexo.get(
                 '/getEditBuyerData/' + empId
             )
             if (response.status == 200) {
-                setEditFetchData(response.data.data)
-                handleDialogOpen()
+                navigate('/sup-admin/buyer/create', {
+                    state: {
+                        editFetchData: response.data.data,
+                    },
+                })
             }
         } catch (error) {
             Swal.fire({
@@ -93,7 +93,7 @@ const SimpleMuiTable = () => {
                 text: error,
             })
         }
-    }  
+    }
     const handelDeactive = (userId) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -160,28 +160,37 @@ const SimpleMuiTable = () => {
                     })
                 }
             }
-        }) 
+        })
+    }
+    // HANDEL CREATE NEW BUYER
+    const handelNewBuyerPage = () => {
+        navigate('/sup-admin/buyer/create', {
+            state: {
+                editFetchData: {},
+            },
+        })
     }
 
-    
     const columns = [
         {
-            name: 'index', 
-            label: "Record No",
+            name: 'index',
+            label: 'Record No',
             options: {
                 filter: false,
                 sort: false,
-                display: 'true', 
+                display: 'true',
                 customBodyRender: (value, tableMeta, updateValue) => {
-                    const rowIndex = tableMeta.rowIndex;
+                    const rowIndex = tableMeta.rowIndex
                     return (
-                        <Typography sx={{ pl: 2 }} >
-                            {rowIndex + 1}
-                        </Typography>
-                    );
+                        <Typography sx={{ pl: 2 }}>{rowIndex + 1}</Typography>
+                    )
                 },
                 customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold"  sx={{ pl: 1}}>
+                    <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        sx={{ pl: 1 }}
+                    >
                         Record No
                     </Typography>
                 ),
@@ -189,114 +198,73 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'profile',
-            label: "Profile",
+            label: 'Profile',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Profile
+                        Profile
                     </Typography>
                 ),
                 customBodyRender: (value) => {
                     return <Avatar variant="rounded" src={value} />
-                }, 
+                },
             },
         },
         {
             name: 'pan_card_proof',
-            label: "Pan Proof",
+            label: 'Pan Proof',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                     Pan Proof
+                        Pan Proof
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return (
-                        <img
-                            height="80px"
-                            width="80px"
-                            src={
-                                value 
-                            }
-                        />
-                    )
-                }, 
+                    return <img height="80px" width="80px" src={value} />
+                },
             },
         },
         {
             name: 'aadhar_proof',
-            label: "Aadhar Proof",
+            label: 'Aadhar Proof',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Aadhar Proof
+                        Aadhar Proof
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return (
-                        <img
-                            height="80px"
-                            width="80px"
-                            src={
-                                value 
-                            }
-                        />
-                    )
-                }, 
+                    return <img height="80px" width="80px" src={value} />
+                },
             },
         },
         {
             name: 'business_address_proof',
-            label: "Business Proof",
+            label: 'Business Proof',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Business Proof
+                        Business Proof
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return (
-                        <img
-                            height="80px"
-                            width="80px"
-                            src={
-                                value 
-                            }
-                        />
-                    )
+                    return <img height="80px" width="80px" src={value} />
                 },
-                // customBodyRender: (value) => {
-                //     return <Avatar variant="rounded" height="80px"
-                //     width="80px" src={value} />
-                // }, 
-                
             },
         },
-        // {
-        //     name: 'cpc_type',
-        //     label: "cpc type",
-        //     options: {
-        //         filter: true,
-        //         display:false,
-        //         customHeadLabelRender: () => (
-        //             <Typography variant="subtitle1" fontWeight="bold">
-        //               cpc type
-        //             </Typography>
-        //         ),
-        //     },
-        // },
+
         {
             name: 'creation_date',
-            label: "Creation Date",
+            label: 'Creation Date',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Creation Date
+                        Creation Date
                     </Typography>
                 ),
                 customBodyRender: (value) =>
@@ -307,221 +275,206 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'name',
-            label: "Name",
+            label: 'Buyer Name',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Name
+                        Name
                     </Typography>
                 ),
-               
             },
         },
-        
+
         {
-            name: 'businessName',
-            label: "Business Name",
+            name: 'business_name',
+            label: 'Business Name',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                     Business Name
+                        Business Name
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'email',
-            label: "Email",
+            label: 'Email',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Email
+                        Email
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'contact',
-            label: "Mobile No",
+            label: 'Mobile No',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Mobile No
+                        Mobile No
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'user_name',
-            label: "Buyer Name",
+            label: 'User Name',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Buyer Name
+                        User Name
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'sales_users',
-            label: "Sales User",
+            label: 'Sales User',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Sales User
+                        Sales User
                     </Typography>
                 ),
-               
+            },
+        },
+        {
+            name: 'cpc',
+            label: 'CPC',
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        CPC
+                    </Typography>
+                ),
             },
         },
         {
             name: 'warehouse',
-            label: "Warehouse",
+            label: 'Warehouse',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Warehouse
+                        Warehouse
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'billing_address',
-            label: "Address",
+            label: 'Billing Address',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Address
+                        Billing Address
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'city',
-            label: "City",
+            label: 'City',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                     City
+                        City
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'state',
-            label: "State",
+            label: 'State',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      State
+                        State
                     </Typography>
                 ),
-               
             },
         },
-        {
-            name: 'country',
-            label: "Country",
-            options: {
-                filter: true,
-                customHeadLabelRender: () => (
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      Country
-                    </Typography>
-                ),
-               
-            },
-        },
+
         {
             name: 'pincode',
-            label: "Pincode",
+            label: 'Pincode',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                     Pincode
+                        Pincode
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'gstin',
-            label: "GSTIN",
+            label: 'GSTIN',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      GSTIN
+                        GSTIN
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'pan_card_number',
-            label: "Pan Number",
+            label: 'Pan Number',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Pan Number
+                        Pan Number
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'mobile_verification_status',
-            label: "Mobile Status",
+            label: 'Mobile Status',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Mobile Status
+                        Mobile Status
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'email_verification_status',
-            label: "Email Status",
+            label: 'Email Status',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Email Status
+                        Email Status
                     </Typography>
                 ),
-               
             },
         },
         {
             name: 'status',
-            label: "Status",
+            label: 'Status',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Status
+                        Status
                     </Typography>
                 ),
                 customBodyRender: (value) => {
@@ -543,12 +496,12 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: "Actions",
+            label: 'Actions',
             options: {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                      Actions
+                        Actions
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
@@ -562,7 +515,7 @@ const SimpleMuiTable = () => {
                             {value == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
-                                        handelDeactive(tableMeta.rowData[6])
+                                        handelDeactive(tableMeta.rowData[10])
                                     }}
                                     checked
                                     style={{ color: 'green' }}
@@ -570,7 +523,7 @@ const SimpleMuiTable = () => {
                             ) : (
                                 <Radio
                                     onClick={(e) => {
-                                        handelActive(tableMeta.rowData[6])
+                                        handelActive(tableMeta.rowData[10])
                                     }}
                                     checked
                                     style={{ color: 'red' }}
@@ -579,7 +532,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editUser(tableMeta.rowData[6])
+                                        editUser(tableMeta.rowData[10])
                                     }}
                                     color="primary"
                                 >
@@ -595,54 +548,43 @@ const SimpleMuiTable = () => {
 
     return (
         <Container>
-            <div className="breadcrumb"> 
-                <Breadcrumb
-                    routeSegments={[{ name: 'Buyer', path: '/' }]}
-                />
+            <div className="breadcrumb">
+                <Breadcrumb routeSegments={[{ name: 'Buyer', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
                 variant="contained"
                 color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
+                onClick={() => handelNewBuyerPage()}
             >
                 Add New Buyer
             </Button>
             <ScrollableTableContainer>
-            <ProductTable>
-                <MUIDataTable
-                title={'All Buyers'}
-                data={userList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', 
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 15, 40, 80, 100],
-                    sort:true,
-                }}
-            />
-             </ProductTable>
-              </ScrollableTableContainer>
-            {shouldOpenEditorDialog && (
-                <MemberEditorDialog
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    editFetchData={editFetchData}
-                    setEditFetchData={setEditFetchData}
-                />
-            )}
+                <ProductTable className="custom-table">
+                    <MUIDataTable
+                        title={'All Buyers'}
+                        data={userList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none',
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 15, 40, 80, 100],
+                            sort: true,
+                        }}
+                    />
+                </ProductTable>
+            </ScrollableTableContainer>
         </Container>
     )
 }

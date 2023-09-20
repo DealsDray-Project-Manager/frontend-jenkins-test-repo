@@ -401,6 +401,7 @@ const MemberEditorDialog = ({
                                 helperText={errors.user_type?.message}
                             >
                                 <MenuItem value="Audit">Audit</MenuItem>
+                                <MenuItem value="Bagging">Bagging</MenuItem>
                                 <MenuItem value="Bag Opening">
                                     Bag Opening
                                 </MenuItem>

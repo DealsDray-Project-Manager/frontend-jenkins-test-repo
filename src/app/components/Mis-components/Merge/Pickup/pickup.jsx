@@ -14,6 +14,7 @@ import Swal from 'sweetalert2'
 import AssignToSorting from './assign-to-user'
 import jwt_decode from 'jwt-decode'
 import moment from 'moment'
+import '../../../../../app.css'
 
 import {
     Box,
@@ -41,7 +42,6 @@ const MenuProps = {
         },
     },
 }
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -189,7 +189,6 @@ const PickupPage = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setItem(response.data.data)
-                       
                     } else {
                         setItem(response.data.data)
                         setIsLoading(false)
@@ -2793,14 +2792,6 @@ const PickupPage = () => {
                         }}
                     >
                         <Box sx={{ mt: 1 }}>
-                            {/* <TextField
-                                label="Search UIC"
-                                variant="outlined"
-                                sx={{ ml: 3 }}
-                                onChange={(e) => {
-                                    handelSearchUid(e)
-                                }}
-                            /> */}
                             <TextField
                                 select
                                 label="Select Brand"
@@ -3001,7 +2992,9 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTable>{tableData}</ProductTable>
+                            <ProductTable className="custom-table">
+                                {tableData}
+                            </ProductTable>
                         </Card>
                     </TabPanel>
                     <TabPanel value="BQC Done">
@@ -3009,7 +3002,9 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableTwo>{tableDataTwo}</ProductTableTwo>
+                            <ProductTableTwo className="custom-table">
+                                {tableDataTwo}
+                            </ProductTableTwo>
                         </Card>
                     </TabPanel>
                     <TabPanel value="Audit Done">
@@ -3017,7 +3012,7 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableThere>
+                            <ProductTableThere className="custom-table">
                                 {tableDataThree}
                             </ProductTableThere>
                         </Card>
@@ -3027,7 +3022,7 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableRdlOne>
+                            <ProductTableRdlOne className="custom-table">
                                 {tableDataForRdl1}
                             </ProductTableRdlOne>
                         </Card>
@@ -3037,7 +3032,7 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableRdlTwo>
+                            <ProductTableRdlTwo className="custom-table">
                                 {tableDataForRdl2}
                             </ProductTableRdlTwo>
                         </Card>

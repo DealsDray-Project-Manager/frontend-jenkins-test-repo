@@ -5,8 +5,9 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../axios'
-import { Button } from '@mui/material'
+import { Button, Table, Typography } from '@mui/material'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -69,7 +70,6 @@ const SimpleMuiTable = () => {
             }
             const res = await axiosWarehouseIn.post('/movedToBilledBin', obj)
             if (res.status == 200) {
-                
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -100,17 +100,32 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'items',
-            label: 'UIC',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    UIC
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.uic || '',
@@ -118,7 +133,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Imei',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Imei
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.imei || '',
@@ -126,7 +145,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Muic',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Muic
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.muic || '',
@@ -134,7 +157,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Brand',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Brand
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.brand_name || '',
@@ -142,7 +169,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'items',
-            label: 'Model',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Model
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.model_name || '',
@@ -151,7 +182,11 @@ const SimpleMuiTable = () => {
 
         {
             name: 'tray_grade',
-            label: 'Grade',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Grade
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -159,14 +194,22 @@ const SimpleMuiTable = () => {
 
         {
             name: 'code',
-            label: 'STX Tray Id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    STX Tray Id
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'code',
-            label: 'Actions',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Actions
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -204,50 +247,52 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Billed Bin', path: '/' }]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Items'}
-                data={item}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Items'}
+                    data={item}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

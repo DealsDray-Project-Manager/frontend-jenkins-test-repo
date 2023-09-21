@@ -15,6 +15,7 @@ import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import jwt_decode from 'jwt-decode'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -165,6 +166,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'brand',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -220,7 +232,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[5],
             },
         },
         {
@@ -236,8 +248,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value?.[0].code}</span><br />
-                            <span>{value?.[0]?.sort_id}</span><br />
+                            <span>{value?.[0].code}</span>
+                            <br />
+                            <span>{value?.[0]?.sort_id}</span>
+                            <br />
                             <Button
                                 sx={{
                                     m: 1,
@@ -266,8 +280,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value}</span><br />
-                            <span>{tableMeta?.rowData[9]}</span><br />
+                            <span>{value}</span>
+                            <br />
+                            <span>{tableMeta?.rowData[9]}</span>
+                            <br />
                             <Button
                                 sx={{
                                     m: 1,
@@ -304,83 +320,80 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Assign to Agent', path: '/' },
-                        { name: 'RDL-two'},
-                      
+                        { name: 'RDL-two' },
                     ]}
                 />
             </div>
-            <>
-                <>
-                    <MUIDataTable
-                        title={'Assign to RDL-two'}
-                        data={whtTrayList}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            textLabels: {
-                                body: {
-                                    noMatch: isLoading
-                                        ? 'Loading...'
-                                        : 'Sorry, there is no matching data to display',
-                                },
+
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Assign to RDL-two'}
+                    data={whtTrayList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
                             },
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
-                                        return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    }
+                        },
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
                                     return (
-                                        (a.data[colIndex] < b.data[colIndex]
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
                                             ? -1
                                             : 1) * (order === 'desc' ? 1 : -1)
                                     )
-                                })
-                            },
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                    <Box sx={{ textAlign: 'right' }}>
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            disabled={isCheck.length == 0}
-                            onClick={() => handelReadyForRdl()}
-                            style={{ backgroundColor: 'primary' }}
-                            component="span"
-                        >
-                            Assign for RDL-two
-                        </Button>
-                    </Box>
-                    {shouldOpenEditorDialog && (
-                        <AssignDialogBox
-                            handleClose={handleDialogClose}
-                            open={handleDialogOpen}
-                            setIsAlive={setIsAlive}
-                            RDLUsers={RDLUsers}
-                            isCheckk={isCheck}
-                        />
-                    )}
-                </>
-            </>
+                                }
+                                return (
+                                    (a.data[colIndex] < b.data[colIndex]
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            })
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
+            <Box sx={{ textAlign: 'right' }}>
+                <Button
+                    sx={{
+                        m: 1,
+                    }}
+                    variant="contained"
+                    disabled={isCheck.length == 0}
+                    onClick={() => handelReadyForRdl()}
+                    style={{ backgroundColor: 'primary' }}
+                    component="span"
+                >
+                    Assign for RDL-two
+                </Button>
+            </Box>
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    RDLUsers={RDLUsers}
+                    isCheckk={isCheck}
+                />
+            )}
         </Container>
     )
 }

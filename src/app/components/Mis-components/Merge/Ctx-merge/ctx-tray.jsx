@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import useAuth from 'app/hooks/useAuth'
-
+import '../../../../../app.css'
 import {
     Table,
     TableContainer,
@@ -26,6 +26,7 @@ import jwt_decode from 'jwt-decode'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,8 +40,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -228,7 +227,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         try {
             setSubmitDis(true)
-            mergreData.actionUser=user.username
+            mergreData.actionUser = user.username
             let res = await axiosMisUser.post(
                 '/TrayMergeRequestSend',
                 mergreData
@@ -279,7 +278,18 @@ const SimpleMuiTable = () => {
             name: 'code', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
+                    <>Tray Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rack_id', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
@@ -401,7 +411,7 @@ const SimpleMuiTable = () => {
                                         tableMeta.rowData[3]?.length,
                                         tableMeta.rowData[6],
                                         tableMeta.rowData[7],
-                                        tableMeta.rowData[8],
+                                        tableMeta.rowData[8]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
@@ -493,7 +503,7 @@ const SimpleMuiTable = () => {
                         type="submit"
                         variant="contained"
                         disabled={
-                            submitDis || 
+                            submitDis ||
                             mergreData.sort_agent === '' ||
                             mergreData.toTray === ''
                         }
@@ -514,54 +524,52 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-           
+            <Table className="custom-table">
                 <MUIDataTable
-                title={'CTX Tray'}
-                data={tray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                    title={'CTX Tray'}
+                    data={tray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-           
-
-           
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

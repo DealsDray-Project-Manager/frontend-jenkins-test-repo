@@ -34,7 +34,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let obj={
-                        status:"Send for RDL-two",
+                        status:"Send for RDL-2",
                         location:location,
                         type:"RPT"
                     }
@@ -63,7 +63,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/rpt/rdl-two-request/approve/' + trayId)
+        navigate('/wareshouse/rpt/rdl-2-request/approve/' + trayId)
     }
 
     const columns = [
@@ -127,7 +127,7 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RDL Two Agent</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>RDL-2 Agent</Typography>
             ),
             options: {
                 filter: true,
@@ -191,7 +191,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'RDL-two-Requests' },
+                        { name: 'RDL-2-Requests' },
                     ]}
                 />
             </div>

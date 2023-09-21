@@ -148,15 +148,15 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.rdlFlsRequest,
-            title: 'RDL-One Requests',
-            path: '/wareshouse/wht/rdl-fls-request',
+            title: 'RDL-1 Requests',
+            path: '/wareshouse/wht/rdl-1-request',
             sales: false,
         },
         {
             icon: 'shopping_cart',
             amount: count.returnFromRdlFls,
-            title: 'Return from RDL-One',
-            path: '/wareshouse/wht/return-from-rdl-fls',
+            title: 'Return from RDL-1',
+            path: '/wareshouse/wht/return-from-rdl-1',
             sales: false,
         },
         {
@@ -169,16 +169,16 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.rdlTwoRequests,
-            title: 'RDL-two Requests',
-            path: '/wareshouse/rpt/rdl-two-request',
+            title: 'RDL-2 Requests',
+            path: '/wareshouse/rpt/rdl-2-request',
             sales: false,
         },
       
         {
             icon: 'shopping_cart',
             amount: count.returnFromRdlTwo,
-            title: 'Return from RDL-two',
-            path: '/warehouse/rpt/return-from-rdl-two',
+            title: 'Return from RDL-2',
+            path: '/warehouse/rpt/return-from-rdl-2',
             sales: false,
         },
         {

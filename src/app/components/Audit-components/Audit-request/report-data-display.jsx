@@ -25,8 +25,8 @@ import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
 import PrevChargingReport from './Report/prev-charging'
 import PrevBqcReport from './Report/pre-bqc-report'
-import RdlOneReport from './Report/rdl-one-report'
-import RdlTwoReport from './Report/rdl-two-report'
+import RdlOneReport from './Report/rdl-1-report'
+import RdlTwoReport from './Report/rdl-2-report'
 
 import Swal from 'sweetalert2'
 

@@ -229,8 +229,8 @@ const StatCard3 = () => {
             amount: count.readyToRdlFls,
             itemCount: count?.readyToRdlFlsItemCount?.[0]?.totalItemCount,
 
-            title: 'Rdl One Pending',
-            path: '/reporting/wht/ready-for-rdl-fls',
+            title: 'Rdl-1 Pending',
+            path: '/reporting/wht/ready-for-rdl-1',
             sales: false,
         },
         {
@@ -238,8 +238,8 @@ const StatCard3 = () => {
             amount: count.inRdlFls,
             itemCount: count?.inRdlFlsItemCount?.[0]?.totalItemCount,
 
-            title: 'RDL One In progress',
-            path: '/reporting/wht/in-rdl-fls',
+            title: 'RDL-1 In-progress',
+            path: '/reporting/wht/in-rdl-1',
             sales: false,
         },
         {
@@ -274,7 +274,7 @@ const StatCard3 = () => {
             icon: 'shopping_cart',
             amount: count.rdlOneDoneUnits,
             title: 'RDL 1 Done Units',
-            path: '/reporting/rdl-one-done-units',
+            path: '/reporting/rdl-1-done-units',
             sales: false,
         },
     ]

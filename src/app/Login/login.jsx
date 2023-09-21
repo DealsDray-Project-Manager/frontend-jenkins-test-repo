@@ -86,16 +86,16 @@ const Login = () => {
                 navigate('/sorting/dashboard')
             } else if (user_type == 'Audit') {
                 navigate('/audit/dashboard')
-            } else if (user_type == 'RDL-One') {
-                navigate('/rdl-fls/dashboard')
+            } else if (user_type == 'RDL-1') {
+                navigate('/rdl-1/dashboard')
             } else if (user_type == 'Sales Agent') {
                 navigate('/sales/dashboard')
             } else if (user_type == 'Pricing Agent') {
                 navigate('/pricing/dashboard')
             } else if (user_type == 'Reporting') {
                 navigate('/reporting/dashboard')
-            } else if (user_type == 'RDL-two') {
-                navigate('/rdl-two/dashboard')
+            } else if (user_type == 'RDL-2') {
+                navigate('/rdl-2/dashboard')
             } else if (user_type == 'SP User') {
                 navigate('/sp-user/dashboard')
             } else if (user_type == 'Sp mis') {
@@ -143,16 +143,16 @@ const Login = () => {
                     navigate('/sorting/dashboard')
                 } else if (response.data.data?.user_type == 'Audit') {
                     navigate('/audit/dashboard')
-                } else if (response.data.data?.user_type == 'RDL-One') {
-                    navigate('/rdl-fls/dashboard')
+                } else if (response.data.data?.user_type == 'RDL-1') {
+                    navigate('/rdl-1/dashboard')
                 } else if (response.data.data?.user_type == 'Sales Agent') {
                     navigate('/sales/dashboard')
                 } else if (response.data.data?.user_type == 'Pricing Agent') {
                     navigate('/pricing/dashboard')
                 } else if (response.data.data?.user_type == 'Reporting') {
                     navigate('/reporting/dashboard')
-                } else if (response.data.data?.user_type == 'RDL-two') {
-                    navigate('/rdl-two/dashboard')
+                } else if (response.data.data?.user_type == 'RDL-2') {
+                    navigate('/rdl-2/dashboard')
                 } else if (response.data.data?.user_type == 'SP User') {
                     navigate('/sp-user/dashboard')
                 } else if (response.data.data?.user_type == 'Sp mis') {

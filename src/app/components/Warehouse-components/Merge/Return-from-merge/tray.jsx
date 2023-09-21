@@ -232,7 +232,7 @@ const SimpleMuiTable = () => {
                         tableMeta.rowData[5] !=
                             'Audit Done Received From Merging' &&
                         tableMeta.rowData[5] !=
-                            'Ready to RDL-Repair Received From Merging' &&
+                            'Ready to RDL-2 Received From Merging' &&
                         tableMeta.rowData[5] !=
                             'Ready to Audit Received From Merging' &&
                         tableMeta.rowData[5] !=

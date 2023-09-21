@@ -487,7 +487,7 @@ const MemberEditorDialog = () => {
                         disabled={Object.keys(editFetchData).length !== 0}
                         name="cpc"
                         {...register('cpc')}
-                        defaultValue="Default CPC Value"
+                     
                         error={errors.cpc ? true : false}
                         helperText={errors.cpc?.message}
                     >

@@ -1934,7 +1934,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL two status</>
+                    <>RDL-2 status</>
                 </Typography>
             ),
             options: {
@@ -1948,7 +1948,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl two repair not done reason</>
+                    <>Rdl-2 repair not done reason</>
                 </Typography>
             ),
             options: {
@@ -1963,7 +1963,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl two description</>
+                    <>Rdl-2 description</>
                 </Typography>
             ),
             options: {
@@ -2774,13 +2774,13 @@ const PickupPage = () => {
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL One Done Unit's"
-                                value="Ready to RDL-Repair"
+                                label="RDL-1 Done Unit's"
+                                value="Ready to RDL-2"
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL Two Done Unit's"
-                                value="RDL two done closed by warehouse"
+                                label="RDL-2 Done Unit's"
+                                value="RDL-2 done closed by warehouse"
                             />
                         </TabList>
                     </Box>
@@ -2889,7 +2889,7 @@ const PickupPage = () => {
                                     </Select>
                                 </FormControl>
                             ) : null}
-                            {value == 'Ready to RDL-Repair' ? (
+                            {value == 'Ready to RDL-2' ? (
                                 <FormControl sx={{ mb: 2, width: 260 }}>
                                     <InputLabel id="demo-multiple-name-label">
                                         Rdl 1 status
@@ -2947,7 +2947,7 @@ const PickupPage = () => {
                                     </Select>
                                 </FormControl>
                             ) : null}
-                            {value == 'Ready to RDL-Repair' ||
+                            {value == 'Ready to RDL-2' ||
                             value == 'Audit Done' ? (
                                 <Button
                                     sx={{ ml: 2, mr: 3 }}
@@ -3017,7 +3017,7 @@ const PickupPage = () => {
                             </ProductTableThere>
                         </Card>
                     </TabPanel>
-                    <TabPanel value="Ready to RDL-Repair">
+                    <TabPanel value="Ready to RDL-2">
                         <Card
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
@@ -3027,7 +3027,7 @@ const PickupPage = () => {
                             </ProductTableRdlOne>
                         </Card>
                     </TabPanel>
-                    <TabPanel value="RDL two done closed by warehouse">
+                    <TabPanel value="RDL-2 done closed by warehouse">
                         <Card
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}

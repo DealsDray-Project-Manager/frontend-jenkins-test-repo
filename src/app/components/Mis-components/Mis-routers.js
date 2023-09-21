@@ -40,16 +40,16 @@ const Frombqcplanner = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-bqc/view-wht-tray'))
 )
 const AssignToRdl = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-1/wht-tray'))
 )
 const AssignToRdltrayView = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-fls/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-1/view-wht-tray'))
 )
 const AssignToRdltwo = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-2/tray'))
 )
 const AssignToRdltwoview = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-wht-tray'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-2/view-wht-tray'))
 )
 const UicAll = Loadable(lazy(() => import('./Uic-manage/all')))
 const UicDownloaded = Loadable(
@@ -104,10 +104,10 @@ const StxMerging = Loadable(lazy(() => import('./Merge/Stx-merging/tray')))
 const BilledBin = Loadable(lazy(() => import('./BilledBin/items')))
 const BilledBinReport = Loadable(lazy(() => import('./Report/billed-bin')))
 const ViewRpTray = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-rp'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-2/view-rp'))
 )
 const ViewSpTray = Loadable(
-    lazy(() => import('./Assign-to-agent/Assign-to-rdl-repair/view-sp'))
+    lazy(() => import('./Assign-to-agent/Assign-to-rdl-2/view-sp'))
 )
 const StxUtilityPage = Loadable(
     lazy(() => import('./Stx-utility/scan-uic'))
@@ -163,11 +163,11 @@ const dataTableRoutes = [
         element: <StxUtilityPage />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-two/view-rp/:trayId',
+        path: '/mis/assign-to-agent/rdl-2/view-rp/:trayId',
         element: <ViewRpTray />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-two/view-sp/:trayId',
+        path: '/mis/assign-to-agent/rdl-2/view-sp/:trayId',
         element: <ViewSpTray />,
     },
     {
@@ -244,19 +244,19 @@ const dataTableRoutes = [
         element: <AssignToAudit />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-fls',
+        path: '/mis/assign-to-agent/rdl-1',
         element: <AssignToRdl />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-fls/view-item/:trayId',
+        path: '/mis/assign-to-agent/rdl-1/view-item/:trayId',
         element: <AssignToRdltrayView />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-two',
+        path: '/mis/assign-to-agent/rdl-2',
         element: <AssignToRdltwo />,
     },
     {
-        path: '/mis/assign-to-agent/rdl-two/view-item/:trayId',
+        path: '/mis/assign-to-agent/rdl-2/view-item/:trayId',
         element: <AssignToRdltwoview />,
     },
     {

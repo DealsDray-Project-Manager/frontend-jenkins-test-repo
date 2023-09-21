@@ -48,8 +48,8 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.issueToRdl2,
-            title: 'Issue to rdl-two',
-            path: '/sp-user/ready-to-rdl-two',
+            title: 'Issue to rdl-2',
+            path: '/sp-user/ready-to-rdl-2',
         },
     ]
     const { palette } = useTheme()

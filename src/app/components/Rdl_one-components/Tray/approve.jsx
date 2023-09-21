@@ -60,7 +60,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Issued to RDL-FLS/' +
+                            'Issued to RDL-1/' +
                             location
                     )
                     if (response.status === 200) {
@@ -96,7 +96,7 @@ export default function DialogBox() {
                 if (res.status === 200) {
                     // setReportData(res.data.data)
                     navigate(
-                        '/rdL-fls/rdl-fls-request/approve/information-display',
+                        '/rdL-1/rdl-1-request/approve/information-display',
                         {
                             state: {
                                 reportData: res.data.data,
@@ -136,7 +136,7 @@ export default function DialogBox() {
                 sortId: trayData?.sort_id,
             }
             let res = await axiosRDL_oneAgent.post(
-                '/rdl-fls/closeRdlFlsWhtTray',
+                '/rdl-1/closeRdlFlsWhtTray',
                 obj
             )
             if (res.status == 200) {
@@ -147,7 +147,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/rdL-fls/tray')
+                navigate('/rdL-1/tray')
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -337,7 +337,7 @@ export default function DialogBox() {
         <div className="breadcrumb" style={{marginTop:'20px', marginLeft:'10px'}}>
                 <Breadcrumb 
                     routeSegments={[
-                        { name: 'RDL-One-Requests', path: '/' },
+                        { name: 'RDL-1-Requests', path: '/' },
                         { name: 'Verification'}
                     ]}
                 />

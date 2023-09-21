@@ -61,7 +61,7 @@ const SimpleMuiTable = () => {
         const fetchDataFun = async () => {
             try {
                 const response = await axiosRDL_oneAgent.post(
-                    '/rdl-fls/fetchPart/' + reportData?.muic?.muic
+                    '/rdl-1/fetchPart/' + reportData?.muic?.muic
                 )
                 if (response.status === 200) {
                     const fetchedData = response.data.data.map((item) => ({
@@ -178,7 +178,7 @@ const SimpleMuiTable = () => {
                     confirmButtonText: 'Ok',
                 })
 
-                navigate('/rdl-two/tray/start/' + whtTrayId)
+                navigate('/rdl-2/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({
                     position: 'top-center',

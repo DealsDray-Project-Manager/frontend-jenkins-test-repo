@@ -82,7 +82,7 @@ const Actionfunction = () => {
                     setColorList(colorList.data.data)
                 }
                 const fetch = await axiosRDL_oneAgent.post(
-                    '/rdl-fls/fetchPart/' + muic
+                    '/rdl-1/fetchPart/' + muic
                 )
                 if (fetch.status == 200) {
                     for (let x of fetch.data.data) {
@@ -179,7 +179,7 @@ const Actionfunction = () => {
             )
             if (res.status == 200) {
                 setAddButDis(false)
-                navigate('/rdL-fls/tray/approve/' + whtTrayId)
+                navigate('/rdL-1/tray/approve/' + whtTrayId)
             } else {
                 setAddButDis(false)
                 alert(res.data.data)
@@ -340,7 +340,7 @@ const Actionfunction = () => {
             >
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RDL-One-Requests', path: '/' },
+                        { name: 'RDL-1-Requests', path: '/' },
                         { name: 'Verification', path: '/' },
                         { name: 'Report', path: '/' },
                         { name: 'Action' },

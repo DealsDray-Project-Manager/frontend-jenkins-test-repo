@@ -99,7 +99,7 @@ const MemberEditorDialog = ({
                         </MenuItem>
                     ))}
                 </TextFieldCustOm>
-                {value == 'RDL two done closed by warehouse' ? (
+                {value == 'RDL-2 done closed by warehouse' ? (
                     <TextFieldCustOm
                         label="Select Next Stage"
                         fullWidth
@@ -113,12 +113,12 @@ const MemberEditorDialog = ({
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
-                        <MenuItem value="Ready to RDL">Re-RDL One</MenuItem>
-                        <MenuItem value="Ready to RDL-Repair">
-                            Re-RDL Two
+                        <MenuItem value="Ready to RDL-1">Re-RDL-1</MenuItem>
+                        <MenuItem value="Ready to RDL-2">
+                            Re-RDL-2
                         </MenuItem>
                     </TextFieldCustOm>
-                ) : value == 'Ready to RDL-Repair' ? (
+                ) : value == 'Ready to RDL-2' ? (
                     <TextFieldCustOm
                         label="Select Next Stage"
                         fullWidth
@@ -132,7 +132,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Recharge">Recharge</MenuItem>
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
-                        <MenuItem value="Ready to RDL">Re-RDL One</MenuItem>
+                        <MenuItem value="Ready to RDL-1">Re-RDL-1</MenuItem>
                     </TextFieldCustOm>
                 ) : value == 'Audit Done' ? (
                     <TextFieldCustOm

@@ -30,7 +30,7 @@ const ReadyForCharging = Loadable(
 const ReadyToBqc = Loadable(lazy(() => import('./Wht-tray/ready-for-bqc')))
 const ReadyToAudit = Loadable(lazy(() => import('./Wht-tray/ready-for-audit')))
 const ReadyToRdlFls = Loadable(
-    lazy(() => import('./Wht-tray/ready-for-rdl-fls'))
+    lazy(() => import('./Wht-tray/ready-for-rdl-1'))
 )
 const InMergingMmt = Loadable(lazy(() => import('./Mmt-tray/in-merging')))
 const InMergingWht = Loadable(lazy(() => import('./Wht-tray/in-merging')))
@@ -42,7 +42,7 @@ const AuditInProgress = Loadable(
     lazy(() => import('./Wht-tray/audit-in-progress'))
 )
 const RdlFlsInprogress = Loadable(
-    lazy(() => import('./Wht-tray/rdl-fls-in-progress'))
+    lazy(() => import('./Wht-tray/rdl-1-in-progress'))
 )
 const TrackItemDeliveryReport = Loadable(
     lazy(() => import('./Report/delivery-report'))
@@ -137,7 +137,7 @@ const ReportingRouter = [
         element: <ReadyToAudit />,
     },
     {
-        path: '/reporting/wht/ready-for-rdl-fls',
+        path: '/reporting/wht/ready-for-rdl-1',
         element: <ReadyToRdlFls />,
     },
     {
@@ -161,11 +161,11 @@ const ReportingRouter = [
         element: <AuditInProgress />,
     },
     {
-        path: '/reporting/wht/in-rdl-fls',
+        path: '/reporting/wht/in-rdl-1',
         element: <RdlFlsInprogress />,
     },
     {
-        path: '/reporting/wht/in-rdl-fls',
+        path: '/reporting/wht/in-rdl-1',
         element: <RdlFlsInprogress />,
     },
     {
@@ -193,7 +193,7 @@ const ReportingRouter = [
         element: <CtxTransferToSaleProgress />,
     },
     {
-        path: '/reporting/rdl-one-done-units',
+        path: '/reporting/rdl-1-done-units',
         element: <RdlOneDoneUnitsTrack />,
     },
     {

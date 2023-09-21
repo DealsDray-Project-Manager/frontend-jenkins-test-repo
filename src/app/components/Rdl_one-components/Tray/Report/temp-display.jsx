@@ -238,7 +238,7 @@ export default function DialogBox() {
             )
             if (res.status == 200) {
                 setAddButDis(false)
-                navigate('/rdL-fls/tray/approve/' + trayId)
+                navigate('/rdL-1/tray/approve/' + trayId)
             } else {
                 setAddButDis(false)
                 alert(res.data.data)

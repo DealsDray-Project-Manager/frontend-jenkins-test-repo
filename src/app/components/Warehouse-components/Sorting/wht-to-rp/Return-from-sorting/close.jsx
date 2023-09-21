@@ -194,7 +194,7 @@ export default function DialogBox() {
                 screen: 'return-from-wht-to-rp-sorting',
                 actUser:user.username
             }
-            let res = await axiosWarehouseIn.post('/rdl-fls/closedByWh', obj)
+            let res = await axiosWarehouseIn.post('/rdl-1/closedByWh', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',

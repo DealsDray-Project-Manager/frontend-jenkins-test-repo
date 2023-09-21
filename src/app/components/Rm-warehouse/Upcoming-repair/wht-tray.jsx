@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/assignToAgent/rdl-fls/users/' + 'RDL-two/' + location
+                        '/assignToAgent/rdl-1/users/' + 'RDL-2/' + location
                     )
                     if (res.status == 200) {
                         setRDLUsers(res.data.data)
@@ -214,7 +214,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'assigned_date',
-            label: <Typography fontSize='16px' fontWeight='bold' noWrap sx={{width:'100%'}}>RDL One CLosed Date</Typography>,
+            label: <Typography fontSize='16px' fontWeight='bold' noWrap sx={{width:'100%'}}>RDL-1 CLosed Date</Typography>,
             options: {
                 filter: true,
                 customBodyRender: (value) =>

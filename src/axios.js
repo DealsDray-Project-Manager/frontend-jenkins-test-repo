@@ -57,7 +57,7 @@ export const axiosReportingAgent = axios.create({
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
 export const axiosRdlTwoAgent = axios.create({
-    baseURL: `${baseURL}/api/v7/rdl-two`,
+    baseURL: `${baseURL}/api/v7/rdl-2`,
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
 export const axiosRmUserAgent = axios.create({

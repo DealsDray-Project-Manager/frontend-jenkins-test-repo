@@ -129,22 +129,22 @@ const ReadyForAudit = Loadable(
 const ReadyForAuditAction = Loadable(
     lazy(() => import('./Wht/Ready-for-audit/action'))
 )
-const ReadyForRDL = Loadable(lazy(() => import('./Wht/Rdl-request/tray')))
+const ReadyForRDL = Loadable(lazy(() => import('./Wht/Rdl-1-request/tray')))
 
 const ReadyForRDLApprove = Loadable(
-    lazy(() => import('./Wht/Rdl-request/approve'))
+    lazy(() => import('./Wht/Rdl-1-request/approve'))
 )
 
 const ReturnFormRDL = Loadable(
-    lazy(() => import('./Wht/Return-from-rdl-fls/tray'))
+    lazy(() => import('./Wht/Return-from-rdl-1/tray'))
 )
 
 const ReturnFormRDLClose = Loadable(
-    lazy(() => import('./Wht/Return-from-rdl-fls/close'))
+    lazy(() => import('./Wht/Return-from-rdl-1/close'))
 )
 
 const ReturnFormRDLviewitems = Loadable(
-    lazy(() => import('./Wht/Return-from-rdl-fls/view'))
+    lazy(() => import('./Wht/Return-from-rdl-1/view'))
 )
 
 const SalesBinItem = Loadable(lazy(() => import('./Report/sales-bin')))
@@ -223,10 +223,10 @@ const ReturnFromWhtToRpClose = Loadable(
 )
 const AllRptTray = Loadable(lazy(() => import('./Rp-tray/all-rp-tray/tray')))
 const ReturnFromRdlTwo = Loadable(
-    lazy(() => import('./Rp-tray/return-from-rdl-two/returned-tray'))
+    lazy(() => import('./Rp-tray/return-from-rdl-2/returned-tray'))
 )
 const ReturnFromRdlTwoClosePage = Loadable(
-    lazy(() => import('./Rp-tray/return-from-rdl-two/close'))
+    lazy(() => import('./Rp-tray/return-from-rdl-2/close'))
 )
 const UpgradeUnitsReport = Loadable(
     lazy(() => import('./Report/Upgrade-units/units'))
@@ -289,11 +289,11 @@ const WarehoueRouter = [
         element: <UpgradeUnitsReport />,
     },
     {
-        path: '/warehouse/rpt/return-from-rdl-two/close/:trayId',
+        path: '/warehouse/rpt/return-from-rdl-2/close/:trayId',
         element: <ReturnFromRdlTwoClosePage />,
     },
     {
-        path: '/warehouse/rpt/return-from-rdl-two',
+        path: '/warehouse/rpt/return-from-rdl-2',
         element: <ReturnFromRdlTwo />,
     },
     {
@@ -394,15 +394,15 @@ const WarehoueRouter = [
         element: <WhtReturnFromCharging />,
     },
     {
-        path: '/wareshouse/wht/rdl-fls-request',
+        path: '/wareshouse/wht/rdl-1-request',
         element: <ReadyForRDL />,
     },
     {
-        path: '/wareshouse/wht/rdl-fls-request/approve/:trayId',
+        path: '/wareshouse/wht/rdl-1-request/approve/:trayId',
         element: <ReadyForRDLApprove />,
     },
     {
-        path: '/wareshouse/wht/return-from-rdl-fls',
+        path: '/wareshouse/wht/return-from-rdl-1',
         element: <ReturnFormRDL />,
     },
     // {
@@ -410,11 +410,11 @@ const WarehoueRouter = [
     //     element: <ReturnFormRDLApprove />,
     // },ReturnFormRDLviewitems
     {
-        path: '/wareshouse/wht/return-from-rdl-fls/close/:trayId',
+        path: '/wareshouse/wht/return-from-rdl-1/close/:trayId',
         element: <ReturnFormRDLClose />,
     },
     {
-        path: '/wareshouse/wht/return-from-rdl-fls/view/:trayId',
+        path: '/wareshouse/wht/return-from-rdl-1/view/:trayId',
         element: <ReturnFormRDLviewitems />,
     },
     {
@@ -632,11 +632,11 @@ const WarehoueRouter = [
         element: <PickupDoneClose />,
     },
     {
-        path: '/wareshouse/rpt/rdl-two-request',
+        path: '/wareshouse/rpt/rdl-2-request',
         element: <RDL2Request />,
     },
     {
-        path: '/wareshouse/rpt/rdl-two-request/approve/:trayId',
+        path: '/wareshouse/rpt/rdl-2-request/approve/:trayId',
         element: <RDL2RequestApprove />,
     },
 ]

@@ -57,7 +57,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Send for RDL-two/' +
+                            'Send for RDL-2/' +
                             location
                     )
                     if (response.status === 200) {
@@ -124,7 +124,7 @@ export default function DialogBox() {
     const handelIssue = async (e, sortId) => {
         try {
             let userStatus = await axiosWarehouseIn.post(
-                '/checkRdl-two/status/' + trayData?.issued_user_name
+                '/checkRdl-2/status/' + trayData?.issued_user_name
             )
             if (userStatus.status == 200) {
                 setLoading(true)
@@ -145,7 +145,7 @@ export default function DialogBox() {
                         title: res?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    navigate('/wareshouse/rpt/rdl-two-request')
+                    navigate('/wareshouse/rpt/rdl-2-request')
                     setLoading(false)
                 } else {
                     Swal.fire({
@@ -339,7 +339,7 @@ export default function DialogBox() {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'WHT', path: '/' },
-                        { name: 'RDL-two-Requests', path: '/' },
+                        { name: 'RDL-2-Requests', path: '/' },
                         { name: 'Verification' },
                     ]}
                 />

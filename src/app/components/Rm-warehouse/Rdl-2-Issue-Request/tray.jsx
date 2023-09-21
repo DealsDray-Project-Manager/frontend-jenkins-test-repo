@@ -71,7 +71,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let obj = {
-                        status: 'Send for RDL-two',
+                        status: 'Send for RDL-2',
                         location: location,
                         type: 'RPT',
                     }

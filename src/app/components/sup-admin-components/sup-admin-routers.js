@@ -59,7 +59,7 @@ const RemoveInvalidItemView = Loadable(
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
 const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
-const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl/wht-tray')))
+const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl-1/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer = Loadable(
     lazy(() => import('./Ready-for-transfer/ctx-tray'))
@@ -109,16 +109,16 @@ const ReassignToAudit = Loadable(
     lazy(() => import('./Tray-reassign/Assign-to-audit/view-wht-tray'))
 )
 const ReassignToRdlFls = Loadable(
-    lazy(() => import('./Tray-reassign/Assign-to-rdl-fls/wht-tray'))
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-1/wht-tray'))
 )
 const ReassignToRdlRepair = Loadable(
-    lazy(() => import('./Tray-reassign/Assign-to-rdl-repair/wht-tray'))
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-2/wht-tray'))
 )
 const ReassignToReCharging = Loadable(
     lazy(() => import('./Tray-reassign/Assign-to-recharging/view-wht-tray'))
 )
 const ReassignTrayItemView = Loadable(
-    lazy(() => import('./Tray-reassign/Assign-to-rdl-fls/view-wht-tray'))
+    lazy(() => import('./Tray-reassign/Assign-to-rdl-1/view-wht-tray'))
 )
 const ReassignMergeRequest = Loadable(
     lazy(() => import('./Tray-reassign/Tray-merge/tray'))
@@ -374,11 +374,11 @@ const SuperAdminRouter = [
         element: <ReassignToAudit />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-fls',
+        path: '/sup-admin/tray-reassign/rdl-1',
         element: <ReassignToRdlFls />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-repair',
+        path: '/sup-admin/tray-reassign/rdl-2',
         element: <ReassignToRdlRepair />,
     },
     {

@@ -162,7 +162,7 @@ const StatCard3 = () => {
         {
             icon: 'low_priority',
             amount: count.readyForRdl,
-            title: 'Ready For RDL-One',
+            title: 'Ready For RDL-1',
             link: '/sup-admin/ready-for-rdl',
         },
         {

@@ -96,14 +96,14 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
-        path: '/rdl-fls/dashboard',
+        path: '/rdl-1/dashboard',
         icon: 'dashboard',
         sales: 'all',
         auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
-        path: '/rdl-two/dashboard',
+        path: '/rdl-2/dashboard',
         icon: 'dashboard',
         sales: 'all',
         auth: authRoles.RDL_2,
@@ -343,13 +343,13 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-one',
-                path: '/sup-admin/tray-reassign/rdl-fls',
+                name: 'Assigned to rdl-1',
+                path: '/sup-admin/tray-reassign/rdl-1',
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-two',
-                path: '/sup-admin/tray-reassign/rdl-repair',
+                name: 'Assigned to rdl-2',
+                path: '/sup-admin/tray-reassign/rdl-2',
                 iconText: 'PL',
             },
             {
@@ -375,7 +375,7 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for RDL-One',
+        name: 'Ready for RDL-1',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
         auth: authRoles.admin,
@@ -547,13 +547,13 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-One',
-                path: '/mis/assign-to-agent/Rdl-fls',
+                name: 'Assign to RDL-1',
+                path: '/mis/assign-to-agent/Rdl-1',
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-two',
-                path: '/mis/assign-to-agent/rdl-two',
+                name: 'Assign to RDL-2',
+                path: '/mis/assign-to-agent/rdl-2',
                 iconText: 'NP',
             },
         ],
@@ -816,13 +816,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-One Request',
-                path: '/wareshouse/wht/rdl-fls-request',
+                name: 'RDL-1 Request',
+                path: '/wareshouse/wht/rdl-1-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return From RDL-One',
-                path: '/wareshouse/wht/return-from-rdl-fls',
+                name: 'Return From RDL-1',
+                path: '/wareshouse/wht/return-from-rdl-1',
                 iconText: 'VP',
             },
         ],
@@ -839,13 +839,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-two Request',
-                path: '/wareshouse/rpt/rdl-two-request',
+                name: 'RDL-2 Request',
+                path: '/wareshouse/rpt/rdl-2-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return from RDL-two',
-                path: '/warehouse/rpt/return-from-rdl-two',
+                name: 'Return from RDL-2',
+                path: '/warehouse/rpt/return-from-rdl-2',
                 iconText: 'VP',
             },
         ],
@@ -1238,9 +1238,9 @@ export const navigations = [
     },
 
     {
-        name: 'RDL One Requests',
+        name: 'RDL-1 Requests',
         icon: 'class',
-        path: '/rdl-fls/tray',
+        path: '/rdl-1/tray',
         auth: authRoles.RDL_FLS,
         sales: false,
     },
@@ -1407,12 +1407,12 @@ export const navigations = [
                 path: '/reporting/wht/in-audit',
             },
             {
-                name: 'Rdl OnePending',
-                path: '/reporting/wht/ready-for-rdl-fls',
+                name: 'Rdl-1 Pending',
+                path: '/reporting/wht/ready-for-rdl-1',
             },
             {
-                name: 'RDL One In Progress',
-                path: '/reporting/wht/in-rdl-fls',
+                name: 'RDL-1 In-Progress',
+                path: '/reporting/wht/in-rdl-1',
             },
         ],
         sales: false,
@@ -1471,7 +1471,7 @@ export const navigations = [
     {
         name: 'Rdl 1 Done Units',
         icon: 'art_track',
-        path: '/reporting/rdl-one-done-units',
+        path: '/reporting/rdl-1-done-units',
         sales: false,
         auth: authRoles.reporting,
     },
@@ -1492,7 +1492,7 @@ export const navigations = [
     {
         name: 'RDL 2 Requests',
         icon: 'class',
-        path: '/rdl-two/tray',
+        path: '/rdl-2/tray',
         auth: authRoles.RDL_2,
         sales: false,
     },
@@ -1562,12 +1562,12 @@ export const navigations = [
                 path: '/sp-user/sp-tray',
             },
             {
-                name: 'Issue to Rdl-two',
-                path: '/sp-user/ready-to-rdl-two',
+                name: 'Issue to Rdl-2',
+                path: '/sp-user/ready-to-rdl-2',
             },
             {
-                name: 'Return from Rdl-two',
-                path: '/sp-user/return-from-rdl-two',
+                name: 'Return from Rdl-2',
+                path: '/sp-user/return-from-rdl-2',
             },
         ],
         sales: 'all',

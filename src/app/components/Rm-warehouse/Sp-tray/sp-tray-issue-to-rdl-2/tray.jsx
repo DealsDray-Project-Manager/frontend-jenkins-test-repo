@@ -60,7 +60,7 @@ const SimpleMuiTable = () => {
             setLoading(true)
             let obj = {
                 trayId: code,
-                sortId: 'Ready to RDL-Repair',
+                sortId: 'Ready to RDL-2',
                 username: username,
             }
             let res = await axiosWarehouseIn.post('/issue-to-agent-wht', obj)
@@ -179,7 +179,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Issue to Rdl-two' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Issue to Rdl-2' }]} />
             </div>
 
             <MUIDataTable

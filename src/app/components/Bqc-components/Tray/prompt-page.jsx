@@ -7,8 +7,8 @@ import Swal from 'sweetalert2'
 import { H1, H3, H4 } from 'app/components/Typography'
 import { axiosBqc } from '../../../../axios'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
-import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-one-report'
-import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-two-report'
+import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
+import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
 import { result } from 'lodash'
 
 export default function DialogBox() {

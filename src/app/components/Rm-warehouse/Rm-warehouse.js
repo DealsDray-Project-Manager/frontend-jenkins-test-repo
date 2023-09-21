@@ -39,19 +39,19 @@ const IssueRequesToRdl2 = Loadable(lazy(() => import('./Rdl-2-Issue-Request/tray
 const SptrayReadyForAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/sp-tray')))
 const SptrayAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/parts-add')))
 const SptrayIssueToRdlRepair  = Loadable(lazy(() => import('./Sp-tray/sp-tray-issue-to-rdl-2/tray')))
-const SpTrayReturnFromRdlTwo  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-two/tray')))
-const SpTrayReturnFromRdlTwoView  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-two/view-tray')))
+const SpTrayReturnFromRdlTwo  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-2/tray')))
+const SpTrayReturnFromRdlTwoView  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-2/view-tray')))
 const RmWarehouse = [
     {
-        path: '/sp-user/return-from-rdl-two/view/:trayId',
+        path: '/sp-user/return-from-rdl-2/view/:trayId',
         element: <SpTrayReturnFromRdlTwoView />,
     },
     {
-        path: '/sp-user/return-from-rdl-two',
+        path: '/sp-user/return-from-rdl-2',
         element: <SpTrayReturnFromRdlTwo />,
     },
     {
-        path: '/sp-user/ready-to-rdl-two',
+        path: '/sp-user/ready-to-rdl-2',
         element: <SptrayIssueToRdlRepair />,
     },
     {
@@ -123,7 +123,7 @@ const RmWarehouse = [
         element: <ViewRequirementOfPart />,
     },
     {
-        path: '/sp-user/rdl-two-issue-request',
+        path: '/sp-user/rdl-2-issue-request',
         element: <IssueRequesToRdl2 />,
     },
     {

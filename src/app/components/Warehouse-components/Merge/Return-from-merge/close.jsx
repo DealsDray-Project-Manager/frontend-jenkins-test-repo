@@ -173,41 +173,7 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
-    const addActualitem = async (uic) => {
-        setTextDisable(true)
-        try {
-            let obj = {
-                bag_id: trayId,
-                awbn_number: uic.awbn_number,
-                order_id: uic.order_id,
-                order_date: uic.order_date,
-                uic: uic.uic,
-                status: uic.status,
-                stock_in: new Date(),
-            }
-            let res = await axiosWarehouseIn.post('/addActualitem', obj)
-            if (res?.status == 200) {
-                setAwbn('')
-                setTextDisable(false)
-                getitem()
-            } else {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }
+ 
     /************************************************************************** */
     const handelIssue = async (e, trayId, type, length, limit, status) => {
         e.preventDefault()

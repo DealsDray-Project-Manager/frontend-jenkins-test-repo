@@ -59,7 +59,9 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse )
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
                     setrackiddrop(res.data.data)
                 }
@@ -191,11 +193,9 @@ export default function DialogBox() {
                     rackId: rackId,
                     description: description,
                     sortId: trayData?.sort_id,
+                    actionUser: user.username,
                 }
-                let res = await axiosWarehouseIn.post(
-                    '/rdl-2/closedByWh',
-                    obj
-                )
+                let res = await axiosWarehouseIn.post('/rdl-2/closedByWh', obj)
                 if (res.status == 200) {
                     Swal.fire({
                         position: 'top-center',

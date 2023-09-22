@@ -206,61 +206,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-    const addActualitem = async (uic) => {
-        if (
-            employeeData[0]?.actual_items?.filter(function (item) {
-                return item.status == 'Valid'
-            }).length +
-                employeeData[0]?.actual_items?.filter(function (item) {
-                    return item.status == 'Invalid'
-                }).length >=
-            employeeData[0].limit
-        ) {
-            Swal.fire({
-                position: 'top-center',
-                icon: 'error',
-                title: 'Bag Is Full',
-                confirmButtonText: 'Ok',
-            })
-        } else {
-            let data = employeeData[0]?.items?.filter(function (item) {
-                return item.awbn_number == uic.awbn_number
-            })
-            setTextDisable(true)
-            try {
-                let obj = {
-                    bag_id: trayId,
-                    awbn_number: uic.awbn_number,
-                    order_id: uic.order_id,
-                    order_date: uic.order_date,
-                    uic: uic.uic,
-                    username: user.username,
-                    stock_in: new Date(),
-                    status: data[0].status,
-                }
-                let res = await axiosWarehouseIn.post('/addActualitem', obj)
-                if (res?.status == 200) {
-                    setAwbn('')
-                    setTextDisable(false)
-                    getitem()
-                } else {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-    }
+   
     /************************************************************************** */
     const handelIssue = async (e, bagId) => {
         e.preventDefault()

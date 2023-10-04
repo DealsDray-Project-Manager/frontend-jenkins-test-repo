@@ -141,8 +141,15 @@ const UnverifiedImeiUpdation = Loadable(
 const BuyerCreationPage = Loadable(
     lazy(() => import('./Manage-buyer/new-buyer'))
 )
+const SubMuicMaster = Loadable(
+    lazy(() => import('./Sub-muic-master/sub-muic'))
+)
 
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/sub-muic',
+        element: <SubMuicMaster />,
+    },
     {
         path: '/sup-admin/unverified-imei-updation',
         element: <UnverifiedImeiUpdation />,

@@ -36,7 +36,7 @@ const MemberEditorDialog = ({
     model,
     ctxGrade,
     setCtxGrade,
-    alReadyIssuedTrayGrade,
+   
 }) => {
     const [validationState, setValidationState] = useState(false)
     const [otherTrayAssign, setOtherTrayAssign] = useState([])

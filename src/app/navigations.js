@@ -202,6 +202,11 @@ export const navigations = [
                 // icon: 'shopping_cart',
                 path: '/sup-admin/products',
             },
+            {
+                name: 'Sub Muic',
+                // icon: 'shopping_cart',
+                path: '/sup-admin/sub-muic',
+            },
 
             {
                 name: 'SP Categories',
@@ -516,7 +521,6 @@ export const navigations = [
                 path: '/mis/bag-receive',
                 iconText: 'PL',
             },
-            
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -569,9 +573,23 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
+           
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
+        name: 'WHT to RP',
+        icon: 'sort',
+        children: [
             {
-                name: 'WHT to RP',
+                name: 'Parts Available',
                 path: '/mis/sorting/wht-to-rp',
+                iconText: 'VP',
+            },
+            {
+                name: 'Parts Not Available',
+                path: '/mis/sorting/wht-to-rp-parts-not-available',
                 iconText: 'VP',
             },
         ],

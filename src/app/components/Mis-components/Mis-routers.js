@@ -130,10 +130,24 @@ const BagTransffer = Loadable(
 const AssignForDisplayGrading=Loadable(
     lazy(() => import('./Assign-to-agent/Assign-for-display-grading/tray'))
 )
+const WhtToRpPartsNotAvailable=Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/Parts-not-available/brand-model'))
+)
+const WhtToRpPartsNotAvailableViewSp=Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/Parts-not-available/view-sp'))
+)
 
 
 
 const dataTableRoutes = [
+    {
+        path: '/mis/sorting/wht-to-rp-parts-not-available/view-sp/:brand/:model',
+        element: <WhtToRpPartsNotAvailableViewSp />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp-parts-not-available',
+        element: <WhtToRpPartsNotAvailable />,
+    },
     {
         path: '/mis/assign-to-agent-for-display-grading',
         element: <AssignForDisplayGrading />,

@@ -33,13 +33,14 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
-                    let obj={
-                        status:"Send for RDL-2",
-                        location:location,
-                        type:"RPT"
+                    let obj = {
+                        status: 'Send for RDL-2',
+                        location: location,
+                        type: 'RPT',
                     }
                     let res = await axiosWarehouseIn.post(
-                        '/requestForApprove',obj
+                        '/requestForApprove',
+                        obj
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -100,7 +101,6 @@ const SimpleMuiTable = () => {
             },
         },
 
-       
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
@@ -136,8 +136,8 @@ const SimpleMuiTable = () => {
         {
             name: 'requested_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold', alignItems:'center' }} >
-                   Assigned date
+                <Typography sx={{ fontWeight: 'bold', alignItems: 'center' }}>
+                    Assigned date
                 </Typography>
             ),
             options: {

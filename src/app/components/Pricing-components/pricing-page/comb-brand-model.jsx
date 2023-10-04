@@ -66,10 +66,11 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handleQtyChange = (muic, field, value, grade) => {
+    const handleQtyChange = (submuic, field, value, grade) => {
         // Find the item in the state based on the 'muic'
         const updatedItem = item.find(
-            (item) => item.muic_one === muic && item?._id?.grade === grade
+            (item) =>
+                item?._id?.sub_muic === submuic && item?._id?.grade === grade
         )
         if (
             field === 'sp' &&
@@ -92,7 +93,8 @@ const SimpleMuiTable = () => {
                 // Update the 'item' state with the modified item
                 setItem((prevItems) =>
                     prevItems.map((item) =>
-                        item.muic_one === muic && item?._id?.grade == grade
+                        item?._id?.sub_muic === submuic &&
+                        item?._id?.grade == grade
                             ? updatedItem
                             : item
                     )
@@ -100,7 +102,7 @@ const SimpleMuiTable = () => {
 
                 // Check if the 'muic' is already in 'addPricing' list
                 const existingItemIndex = addPricing.findIndex(
-                    (item) => item.muic === muic && item.grade == grade
+                    (item) => item.submuic === submuic && item.grade == grade
                 )
 
                 // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
@@ -117,7 +119,7 @@ const SimpleMuiTable = () => {
                     if (existingItemIndex === -1) {
                         setAddPricing((prevPricing) => [
                             ...prevPricing,
-                            { grade, muic, [field]: value },
+                            { grade, submuic, [field]: value },
                         ])
                     } else {
                         // If the 'muic' already exists in 'addPricing', update the 'mrp' or 'sp' field
@@ -151,7 +153,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: `Please check this product ${x.muic} MRP OR SP is not acceptable"`,
+                    title: `Please check this product ${x.submuic} MRP OR SP is not acceptable"`,
                     confirmButtonText: 'Ok',
                 })
                 flag = true
@@ -268,16 +270,61 @@ const SimpleMuiTable = () => {
             name: '_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
+                    <>Sub MUIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) => value?.sub_muic || '',
+            },
+        },
+        {
+            name: 'ram',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RAM</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'storage',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Storage</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'color',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Color</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.brand || '',
             },
         },
         {
-            name: '_id',
+            name: 'model_name',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
@@ -285,11 +332,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.model || '',
             },
         },
         {
-            name: 'itemCount',
+            name: 'documentCount',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Units</>
@@ -299,28 +345,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'count_of_c_display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>C</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'count_of_g_display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>G</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: '_id',
             label: (
@@ -340,11 +365,12 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const muic = tableMeta.rowData[2]
-                    const grade = tableMeta.rowData[8]?.grade
+                    const subMuic = tableMeta.rowData[3]?.sub_muic
+                    const grade = tableMeta.rowData[10]?.grade
                     const updatedItem = item.find(
                         (item) =>
-                            item.muic_one === muic && item?._id?.grade === grade
+                            item?._id?.sub_muic === subMuic &&
+                            item?._id?.grade === grade
                     )
 
                     return (
@@ -354,7 +380,7 @@ const SimpleMuiTable = () => {
                             size="small"
                             onChange={(e) =>
                                 handleQtyChange(
-                                    muic,
+                                    subMuic,
                                     'mrp',
                                     e.target.value,
                                     grade
@@ -372,11 +398,12 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const muic = tableMeta.rowData[2]
-                    const grade = tableMeta.rowData[8]?.grade
+                    const subMuic = tableMeta.rowData[3]?.sub_muic
+                    const grade = tableMeta.rowData[10]?.grade
                     const updatedItem = item.find(
                         (item) =>
-                            item.muic_one === muic && item?._id?.grade === grade
+                            item?._id?.sub_muic === subMuic &&
+                            item?._id?.grade === grade
                     )
 
                     return (
@@ -386,7 +413,7 @@ const SimpleMuiTable = () => {
                             size="small"
                             onChange={(e) =>
                                 handleQtyChange(
-                                    muic,
+                                    subMuic,
                                     'sp',
                                     e.target.value,
                                     grade
@@ -432,9 +459,7 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            3: 'brand',
-                            4: 'model',
-                            6: 'grade',
+                            3: 'sub_muic',
                         }
 
                         const property = columnProperties[colIndex]

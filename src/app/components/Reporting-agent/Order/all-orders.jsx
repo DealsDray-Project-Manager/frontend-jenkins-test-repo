@@ -952,10 +952,10 @@ const SimpleMuiTable = () => {
                         type="date"
                         label="To Date"
                         name="toDate"
-                        // inputProps={{
-                        //     min: filterData?.fromDate,
-                        //     max: moment().format('YYYY-MM-DD'),
-                        // }}
+                        inputProps={{
+                            min: filterData?.fromDate,
+                            max: moment().format('YYYY-MM-DD'),
+                        }}
                         disabled={filterData.fromDate == ''}
                         variant="outlined"
                         onChange={(e) => {

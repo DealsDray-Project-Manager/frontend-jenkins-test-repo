@@ -13,7 +13,6 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import '../../../../app.css'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -106,11 +105,13 @@ const SimpleMuiTable = () => {
             return {
                 'Record N0': i + 1,
                 MUIC: selectedItem.muic_one,
-                Brand: selectedItem._id.brand,
-                Model: selectedItem._id.model,
+                'Sub Muic': selectedItem._id.sub_muic,
+                RAM: selectedItem.ram,
+                Storage: selectedItem.storage,
+                Color: selectedItem.color,
+                Brand: selectedItem.brand,
+                Model: selectedItem.model,
                 Units: selectedItem.itemCount,
-                C:selectedItem.count_of_c_display,
-                G:selectedItem.count_of_g_display,
                 Grade: selectedItem._id.grade,
                 // mrp_price: selectedItem.mrp,
                 SP: selectedItem.sp,
@@ -140,11 +141,13 @@ const SimpleMuiTable = () => {
         const headers = [
             'Record No',
             'MUIC',
+            'Sub Muic',
+            'RAM',
+            'Storage',
+            'Color',
             'Brand',
             'Model',
             'Units',
-            'C',
-            "G",
             'Grade',
             // 'MRP',
             'SP',
@@ -152,11 +155,13 @@ const SimpleMuiTable = () => {
         const data = selectedData.map((item, index) => [
             index + 1,
             item.muic_one,
+            item.ram,
+            item.storage,
+            item.color,
+            item._id.sub_muic,
             item._id.brand,
             item._id.model,
             item.itemCount,
-            item.count_of_c_display,
-            item.count_of_g_display,
             item._id.grade,
             // item.mrp,
             item.sp,
@@ -171,8 +176,6 @@ const SimpleMuiTable = () => {
         })
         doc.save('ReadyForSales.pdf')
     }
-
-   
 
     const columns = [
         {
@@ -265,16 +268,61 @@ const SimpleMuiTable = () => {
             name: '_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
+                    <>Sub Muic</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) => value?.sub_muic || '',
+            },
+        },
+        {
+            name: 'ram',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RAM</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'storage',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Storage</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'color',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Color</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'brand_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Brand</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.brand || '',
             },
         },
         {
-            name: '_id',
+            name: 'model_name',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Model</>
@@ -282,7 +330,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.model || '',
             },
         },
         {
@@ -296,28 +343,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'count_of_c_display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>C</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'count_of_g_display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>G</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: '_id',
             label: (
@@ -408,133 +434,134 @@ const SimpleMuiTable = () => {
                 Download PDF
             </Button>
             <Table className="custom-table">
-
-            <MUIDataTable
-                title={'Ready for sales'}
-                data={item}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    selectableRows: 'multiple',
-                    selectableRowsOnClick: true,
-                    selectableRowsHeader: false,
-                    selectedRows: selectedItems,
-                    isRowSelectable: (dataIndex) => {
-                        return (
-                            filteredData.findIndex(
-                                (item) => item === dataIndex
-                            ) !== -1
-                        )
-                    },
-                    onRowsSelect: (currentRowsSelected, allRowsSelected) => {
-                        setSelectedItems(
-                            allRowsSelected.map((row) => row.index)
-                        )
-                    },
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                <MUIDataTable
+                    title={'Ready for sales'}
+                    data={item}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        selectableRows: 'multiple',
+                        selectableRowsOnClick: true,
+                        selectableRowsHeader: false,
+                        selectedRows: selectedItems,
+                        isRowSelectable: (dataIndex) => {
+                            return (
+                                filteredData.findIndex(
+                                    (item) => item === dataIndex
+                                ) !== -1
+                            )
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        const columnProperties = {
-                            4: 'brand',
-                            5: 'model',
-                            7: 'grade',
-                        }
+                        onRowsSelect: (
+                            currentRowsSelected,
+                            allRowsSelected
+                        ) => {
+                            setSelectedItems(
+                                allRowsSelected.map((row) => row.index)
+                            )
+                        },
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            const columnProperties = {
+                                3: 'sub_muic',
+                                10: 'grade',
+                            }
 
-                        const property = columnProperties[colIndex]
+                            const property = columnProperties[colIndex]
 
-                        if (property) {
-                            setIsTableSorted(true) // Add this line
+                            if (property) {
+                                setIsTableSorted(true) // Add this line
+                                return data.sort((a, b) => {
+                                    const aPropertyValue = getValueByProperty(
+                                        a.data[colIndex],
+                                        property
+                                    )
+                                    const bPropertyValue = getValueByProperty(
+                                        b.data[colIndex],
+                                        property
+                                    )
+
+                                    if (
+                                        typeof aPropertyValue === 'string' &&
+                                        typeof bPropertyValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aPropertyValue.localeCompare(
+                                                bPropertyValue
+                                            )
+                                        )
+                                    }
+
+                                    return (
+                                        (parseFloat(aPropertyValue) -
+                                            parseFloat(bPropertyValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+                            }
+
                             return data.sort((a, b) => {
-                                const aPropertyValue = getValueByProperty(
-                                    a.data[colIndex],
-                                    property
-                                )
-                                const bPropertyValue = getValueByProperty(
-                                    b.data[colIndex],
-                                    property
-                                )
+                                const aValue = a.data[colIndex]
+                                const bValue = b.data[colIndex]
+
+                                if (aValue === bValue) {
+                                    return 0
+                                }
+
+                                if (aValue === null || aValue === undefined) {
+                                    return 1
+                                }
+
+                                if (bValue === null || bValue === undefined) {
+                                    return -1
+                                }
 
                                 if (
-                                    typeof aPropertyValue === 'string' &&
-                                    typeof bPropertyValue === 'string'
+                                    typeof aValue === 'string' &&
+                                    typeof bValue === 'string'
                                 ) {
                                     return (
                                         (order === 'asc' ? 1 : -1) *
-                                        aPropertyValue.localeCompare(
-                                            bPropertyValue
-                                        )
+                                        aValue.localeCompare(bValue)
                                     )
                                 }
 
                                 return (
-                                    (parseFloat(aPropertyValue) -
-                                        parseFloat(bPropertyValue)) *
+                                    (parseFloat(aValue) - parseFloat(bValue)) *
                                     (order === 'desc' ? -1 : 1)
                                 )
                             })
-                        }
 
-                        return data.sort((a, b) => {
-                            const aValue = a.data[colIndex]
-                            const bValue = b.data[colIndex]
-
-                            if (aValue === bValue) {
-                                return 0
-                            }
-
-                            if (aValue === null || aValue === undefined) {
-                                return 1
-                            }
-
-                            if (bValue === null || bValue === undefined) {
-                                return -1
-                            }
-
-                            if (
-                                typeof aValue === 'string' &&
-                                typeof bValue === 'string'
-                            ) {
-                                return (
-                                    (order === 'asc' ? 1 : -1) *
-                                    aValue.localeCompare(bValue)
+                            function getValueByProperty(data, property) {
+                                const properties = property.split('.')
+                                let value = properties.reduce(
+                                    (obj, key) => obj?.[key],
+                                    data
                                 )
+
+                                return value !== undefined ? value : ''
                             }
-
-                            return (
-                                (parseFloat(aValue) - parseFloat(bValue)) *
-                                (order === 'desc' ? -1 : 1)
-                            )
-                        })
-
-                        function getValueByProperty(data, property) {
-                            const properties = property.split('.')
-                            let value = properties.reduce(
-                                (obj, key) => obj?.[key],
-                                data
-                            )
-
-                            return value !== undefined ? value : ''
-                        }
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
             </Table>
         </Container>
     )

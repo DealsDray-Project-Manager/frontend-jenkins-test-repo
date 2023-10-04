@@ -165,6 +165,7 @@ export default function DialogBox() {
         setOpen(false)
         setLoading(false)
         setUic('')
+        setScreenType('')
         setTextDisable(false)
     }
 

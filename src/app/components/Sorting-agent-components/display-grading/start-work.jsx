@@ -96,6 +96,7 @@ export default function DialogBox() {
     const [open, setOpen] = useState(false)
     const [addUicData, setUicData] = useState({})
     const { user } = useAuth()
+    const [copyGradeReport, setCopyGradeReport] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -138,7 +139,7 @@ export default function DialogBox() {
                 let res = await axiosCharging.post('/check-uic', obj)
                 if (res?.status == 200) {
                     setOpen(true)
-
+                    setCopyGradeReport(res.data.copyGradeReport)
                     setUicData(res.data.data)
                 } else {
                     setTextDisable(false)
@@ -414,6 +415,30 @@ export default function DialogBox() {
                         value={addUicData?.uic}
                         disabled
                     />
+                    {Object.keys(copyGradeReport).length !== 0 ? (
+                        <>
+                            <TextFieldCustOm
+                                label="Previous Grade"
+                                type="text"
+                                name="previous Grade"
+                                value={copyGradeReport?.grade}
+                                disabled
+                            />
+                            <TextFieldCustOm
+                                label="Last Grade Update Date"
+                                type="text"
+                                name="Last Grade Update Date"
+                                value={new Date(
+                                    copyGradeReport?.date
+                                ).toLocaleString('en-GB', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                })}
+                                disabled
+                            />
+                        </>
+                    ) : null}
                     <TextFieldCustOm
                         label="Please select"
                         select

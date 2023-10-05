@@ -1530,12 +1530,23 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for sales',
+        name: 'Ready for Sales',
         icon: 'class',
-        path: '/sales/ready-for-sales',
-        auth: authRoles.Sales_Agent,
+        children: [
+            {
+                name: 'Muic',
+                path: '/sales/muic-basis-ready-for-sales',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/sales/ready-for-sales',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.Sales_Agent,
     },
+    
     {
         name: 'Buyers',
         icon: 'class',
@@ -1553,17 +1564,39 @@ export const navigations = [
     {
         name: 'Ready for Pricing',
         icon: 'class',
-        path: '/pricing/ready-for-pricing',
-        auth: authRoles.pricing_Agent,
+        children: [
+            {
+                name: 'Muic',
+                path: '/pricing/muic-base-ready-for-pricing',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/pricing/ready-for-pricing',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.pricing_Agent,
     },
     {
         name: 'Ready for Sales',
-        icon: 'save',
-        path: '/pricing/ready-for-sales',
-        auth: authRoles.pricing_Agent,
+        icon: 'class',
+        children: [
+            {
+                name: 'Muic',
+                path: '/pricing/muic-base-ready-for-sales',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/pricing/ready-for-sales',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.pricing_Agent,
     },
+   
+    
     {
         name: 'Bagging',
         icon: 'save',

@@ -221,13 +221,6 @@ export default function DialogBox() {
         }
     }
 
-    const handleclosetray = () => {
-        Swal.fire({
-            title: 'Closed Successfully',
-            icon: 'success',
-        })
-    }
-
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>

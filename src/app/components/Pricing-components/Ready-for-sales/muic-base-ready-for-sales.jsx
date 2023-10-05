@@ -44,7 +44,7 @@ const SimpleMuiTable = () => {
                 try {
                     setLoaction(location)
                     let res = await axiosSalsAgent.post(
-                        '/viewPrice/' + location
+                        '/viewPriceBasisMuic/' + location
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
@@ -71,12 +71,11 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handleQtyChange = (submuic, field, value, grade) => {
+    const handleQtyChange = (muic, field, value, grade) => {
         // Find the item in the state based on the 'muic'
         const updatedItem = item.find(
-            (item) =>
-                item?._id?.sub_muic === submuic && item?._id?.grade === grade
-            )
+            (item) => item.muic_one === muic && item?._id?.grade === grade
+        )
         if (
             field === 'sp' &&
             value !== '' &&
@@ -98,7 +97,7 @@ const SimpleMuiTable = () => {
                 // Update the 'item' state with the modified item
                 setItem((prevItems) =>
                     prevItems.map((item) =>
-                        item?._id?.sub_muic && item?._id?.grade == grade
+                        item.muic_one === muic && item?._id?.grade == grade
                             ? updatedItem
                             : item
                     )
@@ -106,7 +105,7 @@ const SimpleMuiTable = () => {
 
                 // Check if the 'muic' is already in 'addPricing' list
                 const existingItemIndex = addPricing.findIndex(
-                    (item) => item.submuic === submuic && item.grade == grade
+                    (item) => item.muic === muic && item.grade == grade
                 )
 
                 // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
@@ -115,7 +114,7 @@ const SimpleMuiTable = () => {
                         ...prevPricing,
                         {
                             grade,
-                            submuic,
+                            muic,
                             mrp: value,
                             sp: updatedItem.sp,
                         },
@@ -127,7 +126,7 @@ const SimpleMuiTable = () => {
                             ...prevPricing,
                             {
                                 grade,
-                                submuic,
+                                muic,
                                 sp: value,
                                 mrp: updatedItem.mrp,
                             },
@@ -168,7 +167,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: `Please check this product ${x.submuic} MRP OR SP is not acceptable"`,
+                    title: `Please check this product ${x.muic} MRP OR SP is not acceptable"`,
                     confirmButtonText: 'Ok',
                 })
                 flag = true
@@ -192,7 +191,7 @@ const SimpleMuiTable = () => {
             screen: 'Price updation',
         }
         if (flag == false) {
-            const res = await axiospricingAgent.post('/addPrice', obj)
+            const res = await axiospricingAgent.post('/addPriceMuicBasis', obj)
             if (res.status == 200) {
                 setAddPricing([])
                 Swal.fire({
@@ -219,7 +218,6 @@ const SimpleMuiTable = () => {
             }
         }
     }
-
 
     const columns = [
         {
@@ -281,52 +279,6 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-            },
-        },
-        {
-            name: '_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Sub Muic</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, dataIndex) => value?.sub_muic || '',
-            },
-        },
-        {
-            name: 'ram',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RAM</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'storage',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Storage</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'color',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Color</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
             },
         },
         {
@@ -401,13 +353,12 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const subMuic = tableMeta.rowData[3]?.sub_muic
-                    const grade = tableMeta.rowData[10]?.grade
+                    const muic = tableMeta.rowData[2]
+                    const grade = tableMeta.rowData[6]?.grade
 
                     const updatedItem = item.find(
                         (item) =>
-                            item?._id?.sub_muic === subMuic &&
-                            item?._id?.grade === grade
+                            item.muic_one === muic && item?._id?.grade === grade
                     )
 
                     return (
@@ -417,7 +368,7 @@ const SimpleMuiTable = () => {
                             size="small"
                             onChange={(e) =>
                                 handleQtyChange(
-                                    subMuic,
+                                    muic,
                                     'mrp',
                                     e.target.value,
                                     grade
@@ -435,13 +386,12 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (value, tableMeta, rowIndex) => {
-                    const subMuic = tableMeta.rowData[3]?.sub_muic
-                    const grade = tableMeta.rowData[10]?.grade
+                    const muic = tableMeta.rowData[2]
+                    const grade = tableMeta.rowData[6]?.grade
 
                     const updatedItem = item.find(
                         (item) =>
-                            item?._id?.sub_muic === subMuic &&
-                            item?._id?.grade === grade
+                            item.muic_one === muic && item?._id?.grade === grade
                     )
 
                     return (
@@ -451,7 +401,7 @@ const SimpleMuiTable = () => {
                             size="small"
                             onChange={(e) =>
                                 handleQtyChange(
-                                    subMuic,
+                                    muic,
                                     'sp',
                                     e.target.value,
                                     grade
@@ -497,9 +447,9 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            3: 'sub_muic',
-                          
-                            10: 'grade',
+                            2: 'brand',
+                            3: 'model',
+                            5: 'grade',
                         }
 
                         const property = columnProperties[colIndex]

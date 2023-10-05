@@ -11,7 +11,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -113,7 +113,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
                 type: 'Merging Done',
-                actUser:user.username
+                actUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/pickup/recieve', obj)
             if (res.status == 200) {
@@ -138,18 +138,25 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -165,28 +172,38 @@ const SimpleMuiTable = () => {
 
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sorting Agent
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_date_agent',
-            label: <Typography sx={{fontWeight:'bold'}}>Pickup Done Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Pickup Done Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -197,7 +214,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

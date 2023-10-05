@@ -402,7 +402,6 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
-                  
 
                     <Button
                         sx={{ m: 3, mb: 9 }}

@@ -2,16 +2,15 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box } from '@mui/material'
+import { Button, Typography, TextField, Box, Checkbox } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import {
-    axiosMisUser,
-    axiosSalsAgent,
-    axiospricingAgent,
-    baseURL,
-} from '../../../../axios'
+import { axiosSalsAgent, axiospricingAgent, baseURL } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -30,10 +29,10 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [item, setItem] = useState([])
     const navigate = useNavigate()
-    const [location, setLoaction] = useState('')
+    const [isTableSorted, setIsTableSorted] = useState(false)
+    const [filteredData, setFilteredData] = useState([])
+    const [selectedItems, setSelectedItems] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [addPricing, setAddPricing] = useState([])
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
@@ -42,9 +41,8 @@ const SimpleMuiTable = () => {
             const { location } = jwt_decode(admin)
             const fetchData = async () => {
                 try {
-                    setLoaction(location)
                     let res = await axiosSalsAgent.post(
-                        '/viewPrice/' + location
+                        '/viewPriceBasisMuic/' + location
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
@@ -67,159 +65,106 @@ const SimpleMuiTable = () => {
         return () => {
             setIsAlive(false)
             setIsLoading(false)
-            setItem([])
         }
     }, [isAlive])
 
-    const handleQtyChange = (submuic, field, value, grade) => {
-        // Find the item in the state based on the 'muic'
-        const updatedItem = item.find(
-            (item) =>
-                item?._id?.sub_muic === submuic && item?._id?.grade === grade
+    const isSelected = (index) => selectedItems.indexOf(index) !== -1
+
+    const handleRowSelect = (index) => {
+        const selectedIndex = selectedItems.indexOf(index)
+        let newSelected = []
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selectedItems, index)
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selectedItems.slice(1))
+        } else if (selectedIndex === selectedItems.length - 1) {
+            newSelected = newSelected.concat(selectedItems.slice(0, -1))
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selectedItems.slice(0, selectedIndex),
+                selectedItems.slice(selectedIndex + 1)
             )
-        if (
-            field === 'sp' &&
-            value !== '' &&
-            parseFloat(value) > parseFloat(updatedItem.mrp)
-        ) {
-            // Show a validation message (you can implement this using Swal or any other method)
-            Swal.fire({
-                position: 'top-center',
-                icon: 'error',
-                title: 'MRP must be greater than SP.',
-                confirmButtonText: 'Ok',
-            })
+        }
+
+        setSelectedItems(newSelected)
+    }
+
+    const handleSelectAll = () => {
+        if (selectedItems.length === item.length) {
+            setSelectedItems([])
         } else {
-            // Check if the item is found
-            if (updatedItem) {
-                // Update the 'mrp' or 'sp' field in the item
-                updatedItem[field] = value
-
-                // Update the 'item' state with the modified item
-                setItem((prevItems) =>
-                    prevItems.map((item) =>
-                        item?._id?.sub_muic && item?._id?.grade == grade
-                            ? updatedItem
-                            : item
-                    )
-                )
-
-                // Check if the 'muic' is already in 'addPricing' list
-                const existingItemIndex = addPricing.findIndex(
-                    (item) => item.submuic === submuic && item.grade == grade
-                )
-
-                // If both 'mrp' and 'sp' fields are empty, remove the item from 'addPricing'
-                if (field === 'mrp' && existingItemIndex === -1) {
-                    setAddPricing((prevPricing) => [
-                        ...prevPricing,
-                        {
-                            grade,
-                            submuic,
-                            mrp: value,
-                            sp: updatedItem.sp,
-                        },
-                    ])
-                } else {
-                    // If the 'muic' is not already in the 'addPricing' list, add it
-                    if (existingItemIndex === -1) {
-                        setAddPricing((prevPricing) => [
-                            ...prevPricing,
-                            {
-                                grade,
-                                submuic,
-                                sp: value,
-                                mrp: updatedItem.mrp,
-                            },
-                        ])
-                    } else {
-                        // If the 'muic' already exists in 'addPricing', update the 'mrp' or 'sp' field
-                        const updatedPricing = addPricing.map((item, index) =>
-                            index === existingItemIndex
-                                ? {
-                                      ...item,
-                                      grade: grade,
-                                      [field]: value,
-                                  }
-                                : item
-                        )
-                        setAddPricing(updatedPricing)
-                    }
-                }
-            }
-        }
-    }
-    /*--------------------------------SUBMIT THE DATA ----------------*/
-    const handelSubmit = async () => {
-        // FLAG
-        setLoading(true)
-        let flag = false
-        for (let x of addPricing) {
-            if (
-                isNaN(Number(x.mrp)) ||
-                Number(x.mrp) < 0 ||
-                isNaN(Number(x.sp)) ||
-                Number(x.sp) < 0 ||
-                x.sp == undefined ||
-                x.mrp == undefined ||
-                x.mrp == '' ||
-                x.sp == ''
-            ) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: `Please check this product ${x.submuic} MRP OR SP is not acceptable"`,
-                    confirmButtonText: 'Ok',
-                })
-                flag = true
-                setLoading(false)
-                break
-            } else if (Number(x.mrp) < Number(x.sp)) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: 'MRP must be greater than SP.',
-                    confirmButtonText: 'Ok',
-                })
-                flag = true
-                setLoading(false)
-                break
-            }
-        }
-        let obj = {
-            muicDetails: addPricing,
-            location: location,
-            screen: 'Price updation',
-        }
-        if (flag == false) {
-            const res = await axiospricingAgent.post('/addPrice', obj)
-            if (res.status == 200) {
-                setAddPricing([])
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setItem([])
-                        setLoading(false)
-                        window.location.reload(true)
-                    }
-                })
-            } else {
-                setLoading(false)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res?.data?.message,
-                })
-            }
+            setSelectedItems([...Array(item.length).keys()])
         }
     }
 
+    const download = (e) => {
+        const selectedData = selectedItems.map((index) => item[index])
+        let arr = selectedData.map((selectedItem, i) => {
+            return {
+                'Record N0': i + 1,
+                MUIC: selectedItem.muic_one,
+                Brand: selectedItem._id.brand,
+                Model: selectedItem._id.model,
+                Units: selectedItem.itemCount,
+                Grade: selectedItem._id.grade,
+                // mrp_price: selectedItem.mrp,
+                SP: selectedItem.sp,
+            }
+        })
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Ready For Sales ' + fileExtension)
+    }
+    const downloadPDF = () => {
+        const selectedData = selectedItems.map((index) => item[index])
+
+        const doc = new jsPDF()
+        doc.setFontSize(16)
+        doc.text('Ready For Sales ', 15, 10)
+        const downloadTime = new Date(Date.now()).toLocaleString('en-GB', {
+            hour12: true,
+        })
+
+        doc.setFontSize(10)
+        doc.text(`Downloaded on: ${downloadTime}`, 15, 20)
+        const headers = [
+            'Record No',
+            'MUIC',
+            'Brand',
+            'Model',
+            'Units',
+            'Grade',
+            // 'MRP',
+            'SP',
+        ]
+        const data = selectedData.map((item, index) => [
+            index + 1,
+            item.muic_one,
+            item._id.brand,
+            item._id.model,
+            item.itemCount,
+            item._id.grade,
+            // item.mrp,
+            item.sp,
+        ])
+
+        doc.autoTable({
+            head: [headers],
+            body: data,
+            startY: 30,
+            theme: 'grid',
+            showHead: 'firstPage',
+        })
+        doc.save('ReadyForSales.pdf')
+    }
+
+   
 
     const columns = [
         {
@@ -243,7 +188,33 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
-
+        {
+            name: 'index',
+            label: (
+                <Checkbox
+                    color="primary"
+                    indeterminate={
+                        selectedItems.length > 0 &&
+                        selectedItems.length < item.length
+                    }
+                    checked={selectedItems.length === item.length}
+                    onChange={() => handleSelectAll()}
+                />
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => (
+                    <Checkbox
+                        color="primary"
+                        checked={isSelected(tableMeta.rowIndex)}
+                        onChange={(event) =>
+                            handleRowSelect(tableMeta.rowIndex, event)
+                        }
+                    />
+                ),
+            },
+        },
         {
             name: 'muicDetails', // field name in the row object
             label: (
@@ -276,53 +247,6 @@ const SimpleMuiTable = () => {
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>MUIC</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-            },
-        },
-        {
-            name: '_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Sub Muic</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, dataIndex) => value?.sub_muic || '',
-            },
-        },
-        {
-            name: 'ram',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RAM</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'storage',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Storage</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'color',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Color</>
                 </Typography>
             ),
             options: {
@@ -362,7 +286,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
+       
         {
             name: '_id',
             label: (
@@ -375,7 +299,38 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.grade || '',
             },
         },
-
+        {
+            name: 'mrp',
+            label: <Typography sx={{ fontWeight: 'bold' }}>MRP</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'sp',
+            label: <Typography sx={{ fontWeight: 'bold' }}>SP</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'price_creation_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }),
+            },
+        },
         {
             name: 'price_updation_date',
             label: (
@@ -394,74 +349,6 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'mrp',
-            label: <Typography sx={{ fontWeight: 'bold' }}>MRP</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta, rowIndex) => {
-                    const subMuic = tableMeta.rowData[3]?.sub_muic
-                    const grade = tableMeta.rowData[10]?.grade
-
-                    const updatedItem = item.find(
-                        (item) =>
-                            item?._id?.sub_muic === subMuic &&
-                            item?._id?.grade === grade
-                    )
-
-                    return (
-                        <TextField
-                            value={updatedItem?.mrp || ''}
-                            variant="outlined"
-                            size="small"
-                            onChange={(e) =>
-                                handleQtyChange(
-                                    subMuic,
-                                    'mrp',
-                                    e.target.value,
-                                    grade
-                                )
-                            }
-                        />
-                    )
-                },
-            },
-        },
-        {
-            name: 'sp',
-            label: <Typography sx={{ fontWeight: 'bold' }}>SP</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta, rowIndex) => {
-                    const subMuic = tableMeta.rowData[3]?.sub_muic
-                    const grade = tableMeta.rowData[10]?.grade
-
-                    const updatedItem = item.find(
-                        (item) =>
-                            item?._id?.sub_muic === subMuic &&
-                            item?._id?.grade === grade
-                    )
-
-                    return (
-                        <TextField
-                            value={updatedItem?.sp || ''}
-                            variant="outlined"
-                            size="small"
-                            onChange={(e) =>
-                                handleQtyChange(
-                                    subMuic,
-                                    'sp',
-                                    e.target.value,
-                                    grade
-                                )
-                            }
-                        />
-                    )
-                },
-            },
-        },
     ]
 
     return (
@@ -471,7 +358,24 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
-
+            <Button
+                sx={{ mb: 2 }}
+                variant="contained"
+                color="success"
+                disabled={selectedItems.length == 0 || isTableSorted}
+                onClick={(e) => download(e)}
+            >
+                Download Excel
+            </Button>
+            <Button
+                sx={{ mb: 2, ml: 2 }}
+                variant="contained"
+                color="secondary"
+                disabled={selectedItems.length == 0 || isTableSorted}
+                onClick={downloadPDF}
+            >
+                Download PDF
+            </Button>
             <MUIDataTable
                 title={'Ready for sales'}
                 data={item}
@@ -481,6 +385,22 @@ const SimpleMuiTable = () => {
                     responsive: 'simple',
                     download: false,
                     print: false,
+                    selectableRows: 'multiple',
+                    selectableRowsOnClick: true,
+                    selectableRowsHeader: false,
+                    selectedRows: selectedItems,
+                    isRowSelectable: (dataIndex) => {
+                        return (
+                            filteredData.findIndex(
+                                (item) => item === dataIndex
+                            ) !== -1
+                        )
+                    },
+                    onRowsSelect: (currentRowsSelected, allRowsSelected) => {
+                        setSelectedItems(
+                            allRowsSelected.map((row) => row.index)
+                        )
+                    },
                     textLabels: {
                         body: {
                             noMatch: isLoading
@@ -497,14 +417,15 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            3: 'sub_muic',
-                          
-                            10: 'grade',
+                            4: 'brand',
+                            5: 'model',
+                            7: 'grade',
                         }
 
                         const property = columnProperties[colIndex]
 
                         if (property) {
+                            setIsTableSorted(true) // Add this line
                             return data.sort((a, b) => {
                                 const aPropertyValue = getValueByProperty(
                                     a.data[colIndex],
@@ -581,20 +502,6 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            <Box sx={{ textAlign: 'right', mr: 4 }}>
-                <Button
-                    sx={{
-                        m: 1,
-                    }}
-                    variant="contained"
-                    disabled={addPricing?.length == 0 || loading}
-                    onClick={(e) => handelSubmit(e)}
-                    style={{ backgroundColor: 'green' }}
-                    component="span"
-                >
-                    Submit
-                </Button>
-            </Box>
         </Container>
     )
 }

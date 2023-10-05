@@ -14,7 +14,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -171,14 +171,16 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -194,14 +196,18 @@ const SimpleMuiTable = () => {
 
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sorting Agent
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
@@ -209,7 +215,9 @@ const SimpleMuiTable = () => {
 
         {
             name: 'closed_time_sorting_agent',
-            label: <Typography sx={{fontWeight:'bold'}}>Closed Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Closed Date</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -220,7 +228,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

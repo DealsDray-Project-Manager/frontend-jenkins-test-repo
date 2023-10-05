@@ -282,7 +282,7 @@ const SimpleMuiTable = () => {
                         <>
                             <span>{value}</span>
                             <br />
-                            <span>{tableMeta?.rowData[9]}</span>
+                            <span>{tableMeta?.rowData[10]}</span>
                             <br />
                             <Button
                                 sx={{

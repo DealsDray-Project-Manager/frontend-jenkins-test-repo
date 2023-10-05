@@ -40,16 +40,30 @@ const StatCard3 = () => {
         {
             icon: 'class',
             amount: count?.radyForPricing,
-            title: 'Ready for Pricing',
+            title: 'Ready for Pricing (SUB MUIC)',
             units: count?.unitsCount,
             path: '/pricing/ready-for-pricing',
         },
         {
+            icon: 'class',
+            amount: count?.readyForPricingMuicBasis,
+            title: 'Ready for Pricing (MUIC)',
+            units: count?.unitsCountMuicBasis,
+            path: '/pricing/muic-base-ready-for-pricing',
+        },
+        {
             icon: 'save',
             amount: count?.viewPriceCount,
-            title: 'Ready for Sales',
+            title: 'Ready for Sales (SUB MUIC)',
             units: count?.unitsCountSales,
             path: '/pricing/ready-for-sales',
+        },
+        {
+            icon: 'save',
+            amount: count?.viewPricedCountMuicBasis,
+            title: 'Ready for Sales (MUIC)',
+            units: count?.unitsCountSalesMuicBasis,
+            path: '/pricing/muic-base-ready-for-sales',
         },
     ]
     const { palette } = useTheme()

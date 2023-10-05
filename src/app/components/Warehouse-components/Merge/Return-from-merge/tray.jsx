@@ -11,7 +11,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -19,7 +19,6 @@ import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -74,12 +73,11 @@ const SimpleMuiTable = () => {
     const [trayId, setTrayId] = useState('')
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
-    const [recceiveBut,setRecieveBut]=useState(false)
+    const [recceiveBut, setRecieveBut] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -122,7 +120,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 counts: counts,
                 type: 'Merging Done',
-                actionUser:user.username,
+                actioUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/receivedTray', obj)
             if (res.status == 200) {
@@ -164,18 +162,25 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
@@ -191,28 +196,38 @@ const SimpleMuiTable = () => {
 
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Sorting Agent</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Sorting Agent
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'closed_time_sorting_agent',
-            label: <Typography sx={{fontWeight:'bold'}}>Merge Done Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Merge Done Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -223,7 +238,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,

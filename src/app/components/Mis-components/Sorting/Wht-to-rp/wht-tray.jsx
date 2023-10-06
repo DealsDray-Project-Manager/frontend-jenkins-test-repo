@@ -126,7 +126,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'count',
+            name: 'repair_units',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Units to Repair</>

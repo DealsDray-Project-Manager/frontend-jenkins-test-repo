@@ -109,8 +109,8 @@ const SimpleMuiTable = () => {
                 RAM: selectedItem.ram,
                 Storage: selectedItem.storage,
                 Color: selectedItem.color,
-                Brand: selectedItem.brand,
-                Model: selectedItem.model,
+                Brand: selectedItem.brand_name,
+                Model: selectedItem.model_name,
                 Units: selectedItem.itemCount,
                 Grade: selectedItem._id.grade,
                 // mrp_price: selectedItem.mrp,
@@ -155,12 +155,12 @@ const SimpleMuiTable = () => {
         const data = selectedData.map((item, index) => [
             index + 1,
             item.muic_one,
+            item._id.sub_muic,
             item.ram,
             item.storage,
             item.color,
-            item._id.sub_muic,
-            item._id.brand,
-            item._id.model,
+            item.brand_name,
+            item.model_name,
             item.itemCount,
             item._id.grade,
             // item.mrp,
@@ -240,7 +240,7 @@ const SimpleMuiTable = () => {
                     return (
                         <img
                             height="80px"
-                            width="70px"
+                            width="65px"
                             src={
                                 value?.[0]?.image == undefined
                                     ? `${baseURL}/product/image/` +

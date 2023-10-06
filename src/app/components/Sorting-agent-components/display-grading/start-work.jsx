@@ -136,7 +136,10 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextDisable(true)
-                let res = await axiosCharging.post('/check-uic', obj)
+                let res = await axiosSortingAgent.post(
+                    '/copyGradingCheckUic',
+                    obj
+                )
                 if (res?.status == 200) {
                     setOpen(true)
                     setCopyGradeReport(res.data.copyGradeReport)

@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box, Checkbox } from '@mui/material'
+import { Button, Typography, Table, Box, Checkbox } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosSalsAgent, axiospricingAgent, baseURL } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -11,6 +11,8 @@ import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import '../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -104,8 +106,8 @@ const SimpleMuiTable = () => {
             return {
                 'Record N0': i + 1,
                 MUIC: selectedItem.muic_one,
-                Brand: selectedItem._id.brand,
-                Model: selectedItem._id.model,
+                Brand: selectedItem.brand_name,
+                Model: selectedItem.model_name,
                 Units: selectedItem.itemCount,
                 Grade: selectedItem._id.grade,
                 // mrp_price: selectedItem.mrp,
@@ -146,8 +148,8 @@ const SimpleMuiTable = () => {
         const data = selectedData.map((item, index) => [
             index + 1,
             item.muic_one,
-            item._id.brand,
-            item._id.model,
+            item.brand_name,
+            item.model_name,
             item.itemCount,
             item._id.grade,
             // item.mrp,
@@ -376,6 +378,8 @@ const SimpleMuiTable = () => {
             >
                 Download PDF
             </Button>
+            <Table className="custom-table">
+
             <MUIDataTable
                 title={'Ready for sales'}
                 data={item}
@@ -502,6 +506,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
         </Container>
     )
 }

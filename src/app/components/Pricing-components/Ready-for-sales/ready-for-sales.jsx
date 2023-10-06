@@ -72,11 +72,12 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleQtyChange = (submuic, field, value, grade) => {
+        console.log(submuic)
         // Find the item in the state based on the 'muic'
         const updatedItem = item.find(
             (item) =>
                 item?._id?.sub_muic === submuic && item?._id?.grade === grade
-            )
+        )
         if (
             field === 'sp' &&
             value !== '' &&
@@ -98,7 +99,8 @@ const SimpleMuiTable = () => {
                 // Update the 'item' state with the modified item
                 setItem((prevItems) =>
                     prevItems.map((item) =>
-                        item?._id?.sub_muic && item?._id?.grade == grade
+                        item?._id?.sub_muic == submuic &&
+                        item?._id?.grade == grade
                             ? updatedItem
                             : item
                     )
@@ -219,7 +221,6 @@ const SimpleMuiTable = () => {
             }
         }
     }
-
 
     const columns = [
         {
@@ -498,7 +499,7 @@ const SimpleMuiTable = () => {
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
                             3: 'sub_muic',
-                          
+
                             10: 'grade',
                         }
 

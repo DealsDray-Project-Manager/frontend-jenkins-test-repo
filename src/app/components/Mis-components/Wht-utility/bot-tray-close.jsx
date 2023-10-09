@@ -17,6 +17,7 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material'
+import useAuth from 'app/hooks/useAuth'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/material/styles'
 import { Breadcrumb } from 'app/components'
@@ -51,6 +52,7 @@ export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
     const [productData, setProductData] = useState([])
@@ -237,6 +239,18 @@ export default function DialogBox() {
                                 style: {
                                     width: 'auto',
                                 },
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                         />
                     </Box>

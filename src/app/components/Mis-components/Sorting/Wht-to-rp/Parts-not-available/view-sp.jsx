@@ -79,7 +79,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Part Number</Typography>
             ),
             options: {
                 filter: true,
@@ -89,7 +89,7 @@ const SimpleMuiTable = () => {
         {
             name: 'part_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Part Number</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Part Name</Typography>
             ),
             options: {
                 filter: true,

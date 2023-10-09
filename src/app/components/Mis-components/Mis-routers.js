@@ -109,37 +109,54 @@ const ViewRpTray = Loadable(
 const ViewSpTray = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-to-rdl-2/view-sp'))
 )
-const StxUtilityPage = Loadable(
-    lazy(() => import('./Stx-utility/scan-uic'))
-)
+const StxUtilityPage = Loadable(lazy(() => import('./Stx-utility/scan-uic')))
 const StxUtilityInprogressTray = Loadable(
     lazy(() => import('./Stx-utility/tray'))
 )
-const StxTrayUtilityInProgressClose= Loadable(
+const StxTrayUtilityInProgressClose = Loadable(
     lazy(() => import('./Stx-utility/close'))
 )
-const RackChangeAssignement = Loadable(
-    lazy(() => import('./Rack-change/tray'))
-)
+const RackChangeAssignement = Loadable(lazy(() => import('./Rack-change/tray')))
 const RackRequestCreated = Loadable(
     lazy(() => import('./Rack-change/rack-change-request-created/tray'))
 )
 const BagTransffer = Loadable(
     lazy(() => import('./bag-transffer/bag-send/bag-send'))
 )
-const AssignForDisplayGrading=Loadable(
+const AssignForDisplayGrading = Loadable(
     lazy(() => import('./Assign-to-agent/Assign-for-display-grading/tray'))
 )
-const WhtToRpPartsNotAvailable=Loadable(
+const WhtToRpPartsNotAvailable = Loadable(
     lazy(() => import('./Sorting/Wht-to-rp/Parts-not-available/brand-model'))
 )
-const WhtToRpPartsNotAvailableViewSp=Loadable(
+const WhtToRpPartsNotAvailableViewSp = Loadable(
     lazy(() => import('./Sorting/Wht-to-rp/Parts-not-available/view-sp'))
 )
-
-
+const WhtToRpRepairWithoutSpCompBrandAndModel = Loadable(
+    lazy(() =>
+        import('./Sorting/Wht-to-rp/Repair-without-part/comp-brand-model')
+    )
+)
+const WhtToRpRepairWithoutSpCompBrandAndModelProcess = Loadable(
+    lazy(() => import('./Sorting/Wht-to-rp/Repair-without-part/process'))
+)
+const StxToStxUtilityScanUic = Loadable(
+    lazy(() => import('./Stx-utility/stx-to-stx-utility'))
+)
 
 const dataTableRoutes = [
+    {
+        path: '/mis/stx-to-stx-utility',
+        element: <StxToStxUtilityScanUic />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp-without-sp/process/:brand/:model',
+        element: <WhtToRpRepairWithoutSpCompBrandAndModelProcess />,
+    },
+    {
+        path: '/mis/sorting/wht-to-rp-without-sp',
+        element: <WhtToRpRepairWithoutSpCompBrandAndModel />,
+    },
     {
         path: '/mis/sorting/wht-to-rp-parts-not-available/view-sp/:brand/:model',
         element: <WhtToRpPartsNotAvailableViewSp />,

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dialog, Button, TextField, MenuItem } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import { axiosMisUser } from '../../../../../axios'
+import { axiosMisUser } from '../../../../../../axios'
 import Swal from 'sweetalert2'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -32,8 +32,6 @@ const MemberEditorDialog = ({
     const { user } = useAuth()
     const schema = Yup.object().shape({
         rpTray: Yup.string().required('Required*').nullable(),
-        spTray: Yup.string().required('Required*').nullable(),
-        spwhuser: Yup.string().required('Required*').nullable(),
         sortingUser: Yup.string().required('Required*').nullable(),
     })
 
@@ -51,9 +49,10 @@ const MemberEditorDialog = ({
         try {
             setLoading(true)
             values.spDetails = isCheck
-            values.selectedUic = selectedUic
+            values.selectedUic = isCheck
             values.actUser = user.username
-            values.screen="WithSp"
+            values.screen="WithoutSp"
+            values.spTray=null
 
             let res = await axiosMisUser.post('/whtToRpSorting/assign', values)
             if (res.status == 200) {
@@ -102,36 +101,6 @@ const MemberEditorDialog = ({
                     ))}
                 </TextFieldCustOm>
 
-                <TextFieldCustOm
-                    label="SP Tray"
-                    fullWidth
-                    select
-                    name="spTray"
-                    {...register('spTray')}
-                    error={errors.spTray ? true : false}
-                    helperText={errors.spTray?.message}
-                >
-                    {requrementList?.spTray?.map((data) => (
-                        <MenuItem key={data.code} value={data.code}>
-                            {data.code}
-                        </MenuItem>
-                    ))}
-                </TextFieldCustOm>
-                <TextFieldCustOm
-                    label="SPWH Agent"
-                    fullWidth
-                    select
-                    name="spwhuser"
-                    {...register('spwhuser')}
-                    error={errors.spwhuser ? true : false}
-                    helperText={errors.spwhuser?.message}
-                >
-                    {requrementList?.spWUser?.map((data) => (
-                        <MenuItem key={data.user_name} value={data.user_name}>
-                            {data.user_name}
-                        </MenuItem>
-                    ))}
-                </TextFieldCustOm>
                 <TextFieldCustOm
                     label="Sorting Agent"
                     fullWidth

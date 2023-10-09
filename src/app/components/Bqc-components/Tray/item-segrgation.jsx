@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { styled } from '@mui/material/styles'
+import useAuth from 'app/hooks/useAuth'
 import {
     Box,
     Button,
@@ -66,6 +67,7 @@ export default function DialogBox() {
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
+    const { user } = useAuth()
     const [textBoxDis, setTextBoxDis] = useState(false)
     /**************************************************************************** */
     const [uic, setUic] = useState('')
@@ -668,6 +670,18 @@ export default function DialogBox() {
                             style: {
                                 width: 'auto',
                             },
+                        }}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
                         }}
                     />
                 </Box>

@@ -2,9 +2,21 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, Table, Box, Checkbox } from '@mui/material'
+import {
+    Button,
+    Typography,
+    Table,
+    Box,
+    Checkbox,
+    TextField,
+    MenuItem,
+} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { axiosSalsAgent, axiospricingAgent, baseURL } from '../../../../axios'
+import {
+    axiosSalsAgent,
+    axiosSuperAdminPrexo,
+    baseURL,
+} from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
 import * as FileSaver from 'file-saver'
@@ -34,6 +46,9 @@ const SimpleMuiTable = () => {
     const [filteredData, setFilteredData] = useState([])
     const [selectedItems, setSelectedItems] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [brand, setbrand] = useState([])
+    const [model, setModel] = useState([])
+    const [state, setState] = useState({})
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
@@ -68,6 +83,69 @@ const SimpleMuiTable = () => {
             setIsLoading(false)
         }
     }, [isAlive])
+    useEffect(() => {
+        const FetchBrand = async () => {
+            let res = await axiosSuperAdminPrexo.post('/getBrands')
+            if (res.status == 200) {
+                setbrand(res.data.data)
+            }
+        }
+        FetchBrand()
+    }, [])
+
+    /*-----------------FETCH MODEL BASED ON THE BRAND---------------*/
+    /* Fetch model */
+    const fetchModel = async (brandName) => {
+        try {
+            let res = await axiosSuperAdminPrexo.post(
+                '/get-product-model/' + brandName
+            )
+            if (res.status == 200) {
+                setModel(res.data.data)
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
+        }
+    }
+
+    /*---------------------STATE CHANGE FOR SORT----------------------*/
+    const handleChangeSort = ({ target: { name, value } }) => {
+        setState({
+            ...state,
+            [name]: value,
+        })
+    }
+    const handelSort = async () => {
+        try {
+            const admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                const { location } = jwt_decode(admin)
+                setIsLoading(true)
+                let obj = {
+                    brand: state?.brand,
+                    model: state?.model,
+                    location: location,
+                }
+                const res = await axiosSalsAgent.post(
+                    '/viewPriceFilter',
+                    obj
+                )
+                if (res.status == 200) {
+                    setIsLoading(false)
+                    setItem(res.data.data)
+                } else {
+                    setItem(res.data.data)
+                    setIsLoading(false)
+                }
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const isSelected = (index) => selectedItems.indexOf(index) !== -1
 
@@ -415,24 +493,87 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for sales', path: '/' }]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="success"
-                disabled={selectedItems.length == 0 || isTableSorted}
-                onClick={(e) => download(e)}
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
             >
-                Download Excel
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                disabled={selectedItems.length == 0 || isTableSorted}
-                onClick={downloadPDF}
-            >
-                Download PDF
-            </Button>
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="success"
+                        disabled={selectedItems.length == 0 || isTableSorted}
+                        onClick={(e) => download(e)}
+                    >
+                        Download Excel
+                    </Button>
+                    <Button
+                        sx={{ mb: 2, ml: 2 }}
+                        variant="contained"
+                        color="secondary"
+                        disabled={selectedItems.length == 0 || isTableSorted}
+                        onClick={downloadPDF}
+                    >
+                        Download PDF
+                    </Button>
+                </Box>
+                <Box sx={{ mb: 1 }}>
+                    <TextField
+                        select
+                        label="Select Brand"
+                        variant="outlined"
+                        sx={{ ml: 3, width: 150 }}
+                        name="brand"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                    >
+                        {brand.map((brandData) => (
+                            <MenuItem
+                                value={brandData.brand_name}
+                                onClick={(e) => {
+                                    fetchModel(brandData.brand_name)
+                                }}
+                            >
+                                {brandData.brand_name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        select
+                        label="Select Model"
+                        variant="outlined"
+                        name="model"
+                        onChange={(e) => {
+                            handleChangeSort(e)
+                        }}
+                        sx={{ ml: 2, width: 150 }}
+                    >
+                        {model.map((modelData) => (
+                            <MenuItem value={modelData.model_name}>
+                                {modelData.model_name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <Button
+                        sx={{
+                            ml: 2,
+                            mt: 1,
+                        }}
+                        variant="contained"
+                        disabled={
+                            state.brand == undefined || state.model == undefined
+                        }
+                        onClick={() => handelSort()}
+                        style={{ backgroundColor: 'green' }}
+                        component="span"
+                    >
+                        Filter
+                    </Button>
+                </Box>
+            </Box>
             <Table className="custom-table">
                 <MUIDataTable
                     title={'Ready for sales'}

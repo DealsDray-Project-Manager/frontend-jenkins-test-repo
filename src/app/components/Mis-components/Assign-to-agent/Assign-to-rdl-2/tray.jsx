@@ -218,7 +218,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.[0]?.items?.length + '/' + value?.[0]?.limit,
+                    value.length == 0
+                        ? ''
+                        : value?.[0]?.items?.length + '/' + value?.[0]?.limit,
             },
         },
         {
@@ -248,16 +250,18 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value?.[0].code}</span>
+                            <span>{value?.[0]?.code}</span>
                             <br />
                             <span>{value?.[0]?.sort_id}</span>
                             <br />
+
                             <Button
                                 sx={{
                                     m: 1,
                                 }}
+                                disabled={value.length == 0}
                                 variant="contained"
-                                onClick={() => handleviewsp(value?.[0].code)}
+                                onClick={() => handleviewsp(value?.[0]?.code)}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >

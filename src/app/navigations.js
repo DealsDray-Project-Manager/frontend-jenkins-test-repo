@@ -401,6 +401,13 @@ export const navigations = [
         sales: false,
     },
     {
+        name: 'BQC Sync',
+        icon: 'verified_user',
+        path: '/sup-admin/bqc-sync',
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
         name: 'Track item',
         icon: 'art_track',
         path: '/sup-admin/track-item',
@@ -590,6 +597,11 @@ export const navigations = [
             {
                 name: 'Parts Not Available',
                 path: '/mis/sorting/wht-to-rp-parts-not-available',
+                iconText: 'VP',
+            },
+            {
+                name: 'Without Parts',
+                path: '/mis/sorting/wht-to-rp-without-sp',
                 iconText: 'VP',
             },
         ],

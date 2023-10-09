@@ -72,8 +72,6 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-   
-
     const handelStart = (code) => {
         navigate('/rdl-2/tray/start/' + code)
     }
@@ -159,7 +157,7 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: true, 
+                filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
@@ -254,7 +252,6 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) => {
-                    
                     return (
                         <Button
                             sx={{
@@ -263,8 +260,9 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             disabled={
                                 tableMeta.rowData[7] !== 'Rdl-2 in-progress' ||
-                                tableMeta.rowData[3]?.[0]?.sort_id !==
-                                    'Rdl-2 in-progress'
+                                (tableMeta.rowData[3]?.[0]?.sort_id !==
+                                    'Rdl-2 in-progress' &&
+                                    tableMeta.rowData[3]?.length !== 0)
                             }
                             onClick={(e) => {
                                 handelStart(value)

@@ -330,6 +330,7 @@ const PickupPage = () => {
             alert(error)
         }
     }
+
     const handelSortingAgent = async () => {
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -2030,6 +2031,7 @@ const PickupPage = () => {
             },
         },
     ]
+
     /*--------------------------------------------------------------*/
 
     const tableData = useMemo(() => {
@@ -2792,7 +2794,7 @@ const PickupPage = () => {
                         }}
                     >
                         <Box sx={{ mt: 1 }}>
-                            <TextField
+                            {/* <TextField
                                 select
                                 label="Select Brand"
                                 variant="outlined"
@@ -2844,7 +2846,7 @@ const PickupPage = () => {
                                 component="span"
                             >
                                 Sort
-                            </Button>
+                            </Button> */}
                         </Box>
                         <Box sx={{ mt: 1 }}>
                             {value == 'Audit Done' ? (

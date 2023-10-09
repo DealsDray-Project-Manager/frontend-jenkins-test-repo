@@ -144,8 +144,14 @@ const BuyerCreationPage = Loadable(
 const SubMuicMaster = Loadable(
     lazy(() => import('./Sub-muic-master/sub-muic'))
 )
-
+const BqcSync = Loadable(
+    lazy(() => import('./Bqc-sync/bqc-sync'))
+)
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/bqc-sync',
+        element: <BqcSync />,
+    },
     {
         path: '/sup-admin/sub-muic',
         element: <SubMuicMaster />,

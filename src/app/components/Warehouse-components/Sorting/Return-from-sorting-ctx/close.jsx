@@ -312,7 +312,7 @@ export default function DialogBox() {
                             inputRef={(input) => input && input.focus()}
                             disabled={textDisable}
                             name="doorsteps_diagnostics"
-                            label="Please Enter UIC"
+                            label="SCAN UIC"
                             value={uic}
                             // onChange={(e) => setAwbn(e.target.value)}
                             onChange={(e) => {
@@ -323,6 +323,18 @@ export default function DialogBox() {
                                 style: {
                                     width: 'auto',
                                 },
+                            }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
                             }}
                         />
                     </Box>
@@ -459,7 +471,8 @@ export default function DialogBox() {
                                 trayData?.actual_items?.length ||
                             description == '' ||
                             loading == true ||
-                            rackId == ''
+                            rackId == '' ||
+                            trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

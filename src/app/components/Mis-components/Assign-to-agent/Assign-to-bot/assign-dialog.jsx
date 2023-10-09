@@ -27,7 +27,7 @@ const MemberEditorDialog = ({
     setBotUsers,
     bagId,
 }) => {
-    const [botName, setBotName] = useState()
+    const [botName, setBotName] = useState('')
     const navigate = useNavigate()
     const { user } = useAuth()
     const [loading, setLoading] = useState(false)

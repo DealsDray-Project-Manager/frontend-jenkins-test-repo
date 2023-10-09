@@ -239,7 +239,7 @@ export default function DialogBox() {
             )
             if (res.status == 200) {
                 setAddButDis(false)
-                navigate('/rdL-fls/tray/approve/' + trayId)
+                navigate('/rdL-1/tray/approve/' + trayId)
             } else {
                 setAddButDis(false)
                 alert(res.data.data)
@@ -304,7 +304,7 @@ export default function DialogBox() {
     const handelNavigate = (e) => {
         e.preventDefault()
         navigate(
-            '/rdL-fls/rdl-fls-request/approve/information-display/action',
+            '/rdL-1/rdl-1-request/approve/information-display/action',
             {
                 state: {
                     muic: state.reportData.muic,
@@ -320,7 +320,7 @@ export default function DialogBox() {
          <div className="breadcrumb" style={{marginTop:'20px', marginLeft:'15px'}}>
                 <Breadcrumb 
                     routeSegments={[
-                        { name: 'RDL-One-Requests', path: '/' },
+                        { name: 'RDL-1-Requests', path: '/' },
                         { name: 'Verification', path: '/'},
                         { name: 'Report'}
                     ]}

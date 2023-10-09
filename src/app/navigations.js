@@ -11,6 +11,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/bagging/dashboard',
+        icon: 'dashboard',
+        sales: 'all',
+        auth: authRoles.bagging, // SP MIS DASHBOARD
+    },
+    {
+        name: 'Dashboard',
         path: '/purchase-user/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -89,14 +96,14 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
-        path: '/rdl-fls/dashboard',
+        path: '/rdl-1/dashboard',
         icon: 'dashboard',
         sales: 'all',
         auth: authRoles.RDL_FLS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
-        path: '/rdl-two/dashboard',
+        path: '/rdl-2/dashboard',
         icon: 'dashboard',
         sales: 'all',
         auth: authRoles.RDL_2,
@@ -194,6 +201,11 @@ export const navigations = [
                 name: 'Products',
                 // icon: 'shopping_cart',
                 path: '/sup-admin/products',
+            },
+            {
+                name: 'Sub Muic',
+                // icon: 'shopping_cart',
+                path: '/sup-admin/sub-muic',
             },
 
             {
@@ -336,13 +348,13 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-one',
-                path: '/sup-admin/tray-reassign/rdl-fls',
+                name: 'Assigned to rdl-1',
+                path: '/sup-admin/tray-reassign/rdl-1',
                 iconText: 'PL',
             },
             {
-                name: 'Assigned to rdl-two',
-                path: '/sup-admin/tray-reassign/rdl-repair',
+                name: 'Assigned to rdl-2',
+                path: '/sup-admin/tray-reassign/rdl-2',
                 iconText: 'PL',
             },
             {
@@ -368,7 +380,7 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for RDL-One',
+        name: 'Ready for RDL-1',
         icon: 'low_priority',
         path: '/sup-admin/ready-for-rdl',
         auth: authRoles.admin,
@@ -385,6 +397,13 @@ export const navigations = [
         name: 'Unverified Imei Updation',
         icon: 'verified_user',
         path: '/sup-admin/unverified-imei-updation',
+        auth: authRoles.admin,
+        sales: false,
+    },
+    {
+        name: 'BQC Sync',
+        icon: 'verified_user',
+        path: '/sup-admin/bqc-sync',
         auth: authRoles.admin,
         sales: false,
     },
@@ -509,7 +528,6 @@ export const navigations = [
                 path: '/mis/bag-receive',
                 iconText: 'PL',
             },
-            
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -540,13 +558,13 @@ export const navigations = [
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-One',
-                path: '/mis/assign-to-agent/Rdl-fls',
+                name: 'Assign to RDL-1',
+                path: '/mis/assign-to-agent/Rdl-1',
                 iconText: 'NP',
             },
             {
-                name: 'Assign to RDL-two',
-                path: '/mis/assign-to-agent/rdl-two',
+                name: 'Assign to RDL-2',
+                path: '/mis/assign-to-agent/rdl-2',
                 iconText: 'NP',
             },
         ],
@@ -562,9 +580,28 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
+           
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
+        name: 'WHT to RP',
+        icon: 'sort',
+        children: [
             {
-                name: 'WHT to RP',
+                name: 'Parts Available',
                 path: '/mis/sorting/wht-to-rp',
+                iconText: 'VP',
+            },
+            {
+                name: 'Parts Not Available',
+                path: '/mis/sorting/wht-to-rp-parts-not-available',
+                iconText: 'VP',
+            },
+            {
+                name: 'Without Parts',
+                path: '/mis/sorting/wht-to-rp-without-sp',
                 iconText: 'VP',
             },
         ],
@@ -693,11 +730,6 @@ export const navigations = [
         icon: 'class',
         children: [
             {
-                name: 'Scan',
-                path: '/wareshouse/bag/scan',
-                iconText: 'VP',
-            },
-            {
                 name: 'Bag Issue Request',
                 path: '/wareshouse/bag/bag-issue-request',
                 iconText: 'NP',
@@ -814,13 +846,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-One Request',
-                path: '/wareshouse/wht/rdl-fls-request',
+                name: 'RDL-1 Request',
+                path: '/wareshouse/wht/rdl-1-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return From RDL-One',
-                path: '/wareshouse/wht/return-from-rdl-fls',
+                name: 'Return From RDL-1',
+                path: '/wareshouse/wht/return-from-rdl-1',
                 iconText: 'VP',
             },
         ],
@@ -837,13 +869,13 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RDL-two Request',
-                path: '/wareshouse/rpt/rdl-two-request',
+                name: 'RDL-2 Request',
+                path: '/wareshouse/rpt/rdl-2-request',
                 iconText: 'VP',
             },
             {
-                name: 'Return from RDL-two',
-                path: '/warehouse/rpt/return-from-rdl-two',
+                name: 'Return from RDL-2',
+                path: '/warehouse/rpt/return-from-rdl-2',
                 iconText: 'VP',
             },
         ],
@@ -1236,9 +1268,9 @@ export const navigations = [
     },
 
     {
-        name: 'RDL One Requests',
+        name: 'RDL-1 Requests',
         icon: 'class',
-        path: '/rdl-fls/tray',
+        path: '/rdl-1/tray',
         auth: authRoles.RDL_FLS,
         sales: false,
     },
@@ -1405,12 +1437,12 @@ export const navigations = [
                 path: '/reporting/wht/in-audit',
             },
             {
-                name: 'Rdl OnePending',
-                path: '/reporting/wht/ready-for-rdl-fls',
+                name: 'Rdl-1 Pending',
+                path: '/reporting/wht/ready-for-rdl-1',
             },
             {
-                name: 'RDL One In Progress',
-                path: '/reporting/wht/in-rdl-fls',
+                name: 'RDL-1 In-Progress',
+                path: '/reporting/wht/in-rdl-1',
             },
         ],
         sales: false,
@@ -1469,7 +1501,7 @@ export const navigations = [
     {
         name: 'Rdl 1 Done Units',
         icon: 'art_track',
-        path: '/reporting/rdl-one-done-units',
+        path: '/reporting/rdl-1-done-units',
         sales: false,
         auth: authRoles.reporting,
     },
@@ -1490,7 +1522,7 @@ export const navigations = [
     {
         name: 'RDL 2 Requests',
         icon: 'class',
-        path: '/rdl-two/tray',
+        path: '/rdl-2/tray',
         auth: authRoles.RDL_2,
         sales: false,
     },
@@ -1510,12 +1542,23 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'Ready for sales',
+        name: 'Ready for Sales',
         icon: 'class',
-        path: '/sales/ready-for-sales',
-        auth: authRoles.Sales_Agent,
+        children: [
+            {
+                name: 'Muic',
+                path: '/sales/muic-basis-ready-for-sales',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/sales/ready-for-sales',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.Sales_Agent,
     },
+    
     {
         name: 'Buyers',
         icon: 'class',
@@ -1533,16 +1576,45 @@ export const navigations = [
     {
         name: 'Ready for Pricing',
         icon: 'class',
-        path: '/pricing/ready-for-pricing',
-        auth: authRoles.pricing_Agent,
+        children: [
+            {
+                name: 'Muic',
+                path: '/pricing/muic-base-ready-for-pricing',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/pricing/ready-for-pricing',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.pricing_Agent,
     },
     {
         name: 'Ready for Sales',
-        icon: 'save',
-        path: '/pricing/ready-for-sales',
-        auth: authRoles.pricing_Agent,
+        icon: 'class',
+        children: [
+            {
+                name: 'Muic',
+                path: '/pricing/muic-base-ready-for-sales',
+            },
+            {
+                name: 'Sub Muic',
+                path: '/pricing/ready-for-sales',
+            },
+           
+        ],
         sales: true,
+        auth: authRoles.pricing_Agent,
+    },
+   
+    
+    {
+        name: 'Bagging',
+        icon: 'save',
+        path: '/bagging/bag/scan',
+        auth: authRoles.bagging,
+        sales: false,
     },
     {
         name: 'Sp tray',
@@ -1553,12 +1625,12 @@ export const navigations = [
                 path: '/sp-user/sp-tray',
             },
             {
-                name: 'Issue to Rdl-two',
-                path: '/sp-user/ready-to-rdl-two',
+                name: 'Issue to Rdl-2',
+                path: '/sp-user/ready-to-rdl-2',
             },
             {
-                name: 'Return from Rdl-two',
-                path: '/sp-user/return-from-rdl-two',
+                name: 'Return from Rdl-2',
+                path: '/sp-user/return-from-rdl-2',
             },
         ],
         sales: 'all',

@@ -14,6 +14,7 @@ import Swal from 'sweetalert2'
 import AssignToSorting from './assign-to-user'
 import jwt_decode from 'jwt-decode'
 import moment from 'moment'
+import '../../../../../app.css'
 
 import {
     Box,
@@ -41,7 +42,6 @@ const MenuProps = {
         },
     },
 }
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -189,7 +189,6 @@ const PickupPage = () => {
                     if (response.status === 200) {
                         setIsLoading(false)
                         setItem(response.data.data)
-                       
                     } else {
                         setItem(response.data.data)
                         setIsLoading(false)
@@ -331,6 +330,7 @@ const PickupPage = () => {
             alert(error)
         }
     }
+
     const handelSortingAgent = async () => {
         try {
             let token = localStorage.getItem('prexo-authentication')
@@ -1935,7 +1935,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL two status</>
+                    <>RDL-2 status</>
                 </Typography>
             ),
             options: {
@@ -1949,7 +1949,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl two repair not done reason</>
+                    <>Rdl-2 repair not done reason</>
                 </Typography>
             ),
             options: {
@@ -1964,7 +1964,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl two description</>
+                    <>Rdl-2 description</>
                 </Typography>
             ),
             options: {
@@ -2031,6 +2031,7 @@ const PickupPage = () => {
             },
         },
     ]
+
     /*--------------------------------------------------------------*/
 
     const tableData = useMemo(() => {
@@ -2775,13 +2776,13 @@ const PickupPage = () => {
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL One Done Unit's"
-                                value="Ready to RDL-Repair"
+                                label="RDL-1 Done Unit's"
+                                value="Ready to RDL-2"
                             />
                             <Tab
                                 disabled={isLoading}
-                                label="RDL Two Done Unit's"
-                                value="RDL two done closed by warehouse"
+                                label="RDL-2 Done Unit's"
+                                value="RDL-2 done closed by warehouse"
                             />
                         </TabList>
                     </Box>
@@ -2794,14 +2795,6 @@ const PickupPage = () => {
                     >
                         <Box sx={{ mt: 1 }}>
                             {/* <TextField
-                                label="Search UIC"
-                                variant="outlined"
-                                sx={{ ml: 3 }}
-                                onChange={(e) => {
-                                    handelSearchUid(e)
-                                }}
-                            /> */}
-                            <TextField
                                 select
                                 label="Select Brand"
                                 variant="outlined"
@@ -2853,7 +2846,7 @@ const PickupPage = () => {
                                 component="span"
                             >
                                 Sort
-                            </Button>
+                            </Button> */}
                         </Box>
                         <Box sx={{ mt: 1 }}>
                             {value == 'Audit Done' ? (
@@ -2898,7 +2891,7 @@ const PickupPage = () => {
                                     </Select>
                                 </FormControl>
                             ) : null}
-                            {value == 'Ready to RDL-Repair' ? (
+                            {value == 'Ready to RDL-2' ? (
                                 <FormControl sx={{ mb: 2, width: 260 }}>
                                     <InputLabel id="demo-multiple-name-label">
                                         Rdl 1 status
@@ -2956,7 +2949,7 @@ const PickupPage = () => {
                                     </Select>
                                 </FormControl>
                             ) : null}
-                            {value == 'Ready to RDL-Repair' ||
+                            {value == 'Ready to RDL-2' ||
                             value == 'Audit Done' ? (
                                 <Button
                                     sx={{ ml: 2, mr: 3 }}
@@ -3001,7 +2994,9 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTable>{tableData}</ProductTable>
+                            <ProductTable className="custom-table">
+                                {tableData}
+                            </ProductTable>
                         </Card>
                     </TabPanel>
                     <TabPanel value="BQC Done">
@@ -3009,7 +3004,9 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableTwo>{tableDataTwo}</ProductTableTwo>
+                            <ProductTableTwo className="custom-table">
+                                {tableDataTwo}
+                            </ProductTableTwo>
                         </Card>
                     </TabPanel>
                     <TabPanel value="Audit Done">
@@ -3017,27 +3014,27 @@ const PickupPage = () => {
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableThere>
+                            <ProductTableThere className="custom-table">
                                 {tableDataThree}
                             </ProductTableThere>
                         </Card>
                     </TabPanel>
-                    <TabPanel value="Ready to RDL-Repair">
+                    <TabPanel value="Ready to RDL-2">
                         <Card
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableRdlOne>
+                            <ProductTableRdlOne className="custom-table">
                                 {tableDataForRdl1}
                             </ProductTableRdlOne>
                         </Card>
                     </TabPanel>
-                    <TabPanel value="RDL two done closed by warehouse">
+                    <TabPanel value="RDL-2 done closed by warehouse">
                         <Card
                             sx={{ maxHeight: '100%', overflow: 'auto' }}
                             elevation={6}
                         >
-                            <ProductTableRdlTwo>
+                            <ProductTableRdlTwo className="custom-table">
                                 {tableDataForRdl2}
                             </ProductTableRdlTwo>
                         </Card>

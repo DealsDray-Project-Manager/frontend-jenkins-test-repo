@@ -69,6 +69,12 @@ const StatCard3 = () => {
             link: '/sup-admin/products',
         },
         {
+            icon: 'shopping_cart',
+            amount: count.subMuic,
+            title: 'Sub Muic',
+            link: '/sup-admin/sub-muic',
+        },
+        {
             icon: 'branding_watermark',
             amount: count.spcategories,
             title: 'SP Categories',
@@ -162,7 +168,7 @@ const StatCard3 = () => {
         {
             icon: 'low_priority',
             amount: count.readyForRdl,
-            title: 'Ready For RDL-One',
+            title: 'Ready For RDL-1',
             link: '/sup-admin/ready-for-rdl',
         },
         {
@@ -183,7 +189,6 @@ const StatCard3 = () => {
             title: 'Track Item',
             link: '/sup-admin/track-item',
         },
-       
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

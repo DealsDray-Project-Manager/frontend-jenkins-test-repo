@@ -7,15 +7,16 @@ export const authRoles = {
     charging: ['Charging'],
     bqc: ['BQC'],
     audit: ['Audit'],
-    RDL_FLS: ['RDL-One'],
+    RDL_FLS: ['RDL-1'],
     Sales_Agent: ['Sales Agent'],
     pricing_Agent: ['Pricing Agent'],
     reporting: ['Reporting'],
-    RDL_2: ['RDL-two'],
+    RDL_2: ['RDL-2'],
     RMWAREHOUSE: ['SP User'],
     SPMIS:['Sp mis'],
     PURCHASERM:['Purchase RM'],
     Buyer:['Buyer'],
+    bagging:["Bagging"]
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

@@ -96,6 +96,7 @@ export default function DialogBox() {
     const [open, setOpen] = useState(false)
     const [addUicData, setUicData] = useState({})
     const { user } = useAuth()
+    const [copyGradeReport, setCopyGradeReport] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -135,10 +136,13 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextDisable(true)
-                let res = await axiosCharging.post('/check-uic', obj)
+                let res = await axiosSortingAgent.post(
+                    '/copyGradingCheckUic',
+                    obj
+                )
                 if (res?.status == 200) {
                     setOpen(true)
-
+                    setCopyGradeReport(res.data.copyGradeReport)
                     setUicData(res.data.data)
                 } else {
                     setTextDisable(false)
@@ -165,6 +169,7 @@ export default function DialogBox() {
         setOpen(false)
         setLoading(false)
         setUic('')
+        setScreenType('')
         setTextDisable(false)
     }
 
@@ -332,6 +337,18 @@ export default function DialogBox() {
                                 setUic(e.target.value)
                                 handelUic(e)
                             }}
+                            onKeyPress={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
+                            onPaste={(e) => {
+                                if (user.serverType == 'Live') {
+                                    // Prevent manual typing by intercepting key presses
+                                    e.preventDefault()
+                                }
+                            }}
                             inputProps={{
                                 style: {
                                     width: 'auto',
@@ -413,6 +430,30 @@ export default function DialogBox() {
                         value={addUicData?.uic}
                         disabled
                     />
+                    {Object.keys(copyGradeReport).length !== 0 ? (
+                        <>
+                            <TextFieldCustOm
+                                label="Previous Grade"
+                                type="text"
+                                name="previous Grade"
+                                value={copyGradeReport?.grade}
+                                disabled
+                            />
+                            <TextFieldCustOm
+                                label="Last Grade Update Date"
+                                type="text"
+                                name="Last Grade Update Date"
+                                value={new Date(
+                                    copyGradeReport?.date
+                                ).toLocaleString('en-GB', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                })}
+                                disabled
+                            />
+                        </>
+                    ) : null}
                     <TextFieldCustOm
                         label="Please select"
                         select

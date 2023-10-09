@@ -47,7 +47,7 @@ const SimpleMuiTable = () => {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Rdl-two inprogress/' +
+                            'Rdl-2 in-progress/' +
                             location
                     )
                     if (response.status === 200) {
@@ -82,7 +82,7 @@ const SimpleMuiTable = () => {
                 )
                 if (res.status === 200) {
                     // setReportData(res.data.data)
-                    navigate('/rdl-two/tray/unit-information-display', {
+                    navigate('/rdl-2/tray/unit-information-display', {
                         state: {
                             reportData: res.data.data,
                             trayId: trayId,
@@ -111,7 +111,7 @@ const SimpleMuiTable = () => {
     }
 
     const handelSummary = () => {
-        navigate('/rdl-two/tray/tray/summary/' + trayId)
+        navigate('/rdl-2/tray/tray/summary/' + trayId)
     }
 
     const columns = [

@@ -7,13 +7,15 @@ import {
     Checkbox,
     Typography,
     Table,
-    TableContainer,
+    Box,
 } from '@mui/material'
+
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -28,27 +30,7 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '130%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
 
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -197,7 +179,17 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-
+        {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'brand',
             label: (
@@ -244,7 +236,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
+                    value.length + '/' + tableMeta.rowData[6],
             },
         },
 
@@ -299,8 +291,57 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+         
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'WHT'}
+                    data={whtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
+                                return (
+                                    (a.data[colIndex] < b.data[colIndex]
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
+
+            <Box sx={{ textAlign: 'right',mt:1 }}>
             <Button
-                sx={{ mb: 2 }}
+               
                 variant="contained"
                 color="primary"
                 onClick={() => handelGetAuditUser()}
@@ -309,49 +350,7 @@ const SimpleMuiTable = () => {
                 Assign For Audit
             </Button>
 
-            <MUIDataTable
-                title={'WHT'}
-                data={whtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+            </Box>
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

@@ -6,6 +6,7 @@ import { axiosMisUser, axiosWarehouseIn } from '../../../../axios'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import jwt_decode from 'jwt-decode'
+import useAuth from 'app/hooks/useAuth'
 import {
     Button,
     Typography,
@@ -81,6 +82,7 @@ function Search() {
     const [open, setOpen] = React.useState(false)
     const [location, setLocation] = useState([])
     const [stxTray, setStxTray] = useState([])
+    const { user } = useAuth()
     const [muicDetails, setMuicDetails] = useState({})
     const [butDiss, setButDiss] = useState(false)
     const schema = Yup.object().shape({
@@ -320,6 +322,18 @@ function Search() {
                         variant="outlined"
                         onChange={(e) => {
                             setUic(e.target.value)
+                        }}
+                        onKeyPress={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
+                        }}
+                        onPaste={(e) => {
+                            if (user.serverType == 'Live') {
+                                // Prevent manual typing by intercepting key presses
+                                e.preventDefault()
+                            }
                         }}
                     />
                 </Box>

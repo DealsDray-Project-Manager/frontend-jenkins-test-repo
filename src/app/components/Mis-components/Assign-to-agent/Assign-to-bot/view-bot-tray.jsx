@@ -3,11 +3,13 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import AssignDialogBox from './assign-dialog'
 import { styled } from '@mui/system'
-import { Button, Box, Typography } from '@mui/material'
+import { Button, Box, Typography,Table } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -258,9 +260,8 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+               <Table className="custom-table">
 
-            {/* <ScrollableTableContainer>
-                <ProductTable> */}
                 <MUIDataTable
                 title={'Bot Bag'}
                 data={bagList}
@@ -305,6 +306,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+               </Table>
                 {/* </ProductTable>
             </ScrollableTableContainer> */}
             

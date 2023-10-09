@@ -293,7 +293,7 @@ const SimpleMuiTable = () => {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/rdl-two/tray')
+                navigate('/rdl-2/tray')
             } else {
                 setButtonLoading(false)
                 Swal.fire({

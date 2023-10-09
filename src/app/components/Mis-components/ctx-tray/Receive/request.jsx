@@ -2,18 +2,13 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import {
-    Button,
-    Checkbox,
-    Typography,
-    Table,
-    TableContainer,
-} from '@mui/material'
+import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -27,28 +22,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '130%',
-    height: '100%',
-    whiteSpace: 'pre',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: auto;
-`
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -101,8 +74,8 @@ const SimpleMuiTable = () => {
             let obj = {
                 ischeck: isCheck,
                 page: 'Mis-ctx-receive',
-                userCpcType:userCpcType,
-                actUser:user.username
+                userCpcType: userCpcType,
+                actUser: user.username,
             }
             if (userCpcType == 'Sales') {
                 obj.sortId = 'Accepted From Processing'
@@ -303,61 +276,66 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'CTX Receive', path: '/' }]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                disabled={isCheck.length === 0}
-                onClick={(e) => {
-                    handelReceive(e)
-                }}
-            >
-                Accept
-            </Button>
 
-            <MUIDataTable
-                title={'CTX Tray'}
-                data={ctxTrayList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'CTX Tray'}
+                    data={ctxTrayList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
+            <Box sx={{ textAlign: 'right', mt: 1 }}>
+                <Button
+                    sx={{ mb: 2 }}
+                    variant="contained"
+                    color="primary"
+                    disabled={isCheck.length === 0}
+                    onClick={(e) => {
+                        handelReceive(e)
+                    }}
+                >
+                    Accept
+                </Button>
+            </Box>
         </Container>
     )
 }

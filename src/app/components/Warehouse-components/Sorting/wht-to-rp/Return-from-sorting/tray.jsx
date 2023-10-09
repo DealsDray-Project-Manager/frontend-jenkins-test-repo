@@ -162,7 +162,7 @@ const SimpleMuiTable = () => {
 
     const handelViewTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/return-from-rdl-fls/view/' + id)
+        navigate('/wareshouse/wht/return-from-rdl-1/view/' + id)
     }
 
     const columns = [

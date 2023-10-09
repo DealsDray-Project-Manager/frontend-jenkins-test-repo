@@ -5,11 +5,13 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../axios'
-import { Button, Typography, Checkbox } from '@mui/material'
+import { Button, Typography, Checkbox,Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import AssignDialogBox from './assign'
 import { Warehouse } from '@mui/icons-material'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -245,6 +247,7 @@ const SimpleMuiTable = () => {
             >
                 Assign To Warehouse
             </Button>
+                <Table className="custom-table">
 
             <MUIDataTable
                 title={'Tray'}
@@ -289,6 +292,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </Table>
             {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}

@@ -4,26 +4,10 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import moment from 'moment'
-
-import {
-    TableCell,
-    TableHead,
-    Table,
-    TableRow,
-    TableBody,
-    Card,
-    TablePagination,
-    TextField,
-    Box,
-    Typography,
-    Button,
-    MenuItem,
-} from '@mui/material'
-
+import { Table, Card, TextField, Box, Typography, Button } from '@mui/material'
+import '../../../../../app.css'
 import { useNavigate } from 'react-router-dom'
 import {
-    axiosMisUser,
-    axiosReportingAgent,
     axiosWarehouseIn,
 } from '../../../../../axios'
 import Swal from 'sweetalert2'
@@ -451,7 +435,7 @@ const SimpleMuiTable = () => {
                 </Box>
             </Box>
             <Card sx={{ maxHeight: '100%', overflow: 'auto' }} elevation={6}>
-                <ProductTable>
+                <ProductTable className="custom-table">
                     <MUIDataTable
                         title={'Upgrade Units'}
                         data={item}
@@ -476,7 +460,6 @@ const SimpleMuiTable = () => {
                             // pagination: true, //set pagination option
                             // viewColumns: false, // set column option
                             customSort: (data, colIndex, order) => {
-                            
                                 const columnProperties = {
                                     1: 'wht_tray',
                                     2: 'code',

@@ -52,7 +52,7 @@ const SimpleMuiTable = () => {
     const [description, setDescription] = useState('')
     const [descriptionCount, setDescriptionCount] = useState([])
     const [radioButtonCount, setRadioButtonCount] = useState([])
-    const [requredPart, setRequredPart] = useState()
+    const [requredPart, setRequredPart] = useState([])
     /**************************************************************************** */
     const [selectedValue, setSelectedValue] = useState('')
     const [partData, setPartData] = useState([])
@@ -61,16 +61,23 @@ const SimpleMuiTable = () => {
         const fetchDataFun = async () => {
             try {
                 const response = await axiosRDL_oneAgent.post(
-                    '/rdl-fls/fetchPart/' + reportData?.muic?.muic
+                    '/rdl-1/fetchPart/' + reportData?.muic?.muic
                 )
                 if (response.status === 200) {
                     const fetchedData = response.data.data.map((item) => ({
                         ...item,
                         quantity: 1,
                     }))
-                    setRequredPart(
-                        reportData?.delivery?.rdl_fls_one_report?.partRequired
-                    )
+                    if (
+                        reportData?.delivery?.rdl_fls_one_report
+                            ?.partRequired !== undefined
+                    ) {
+                        setRequredPart(
+                            reportData?.delivery?.rdl_fls_one_report
+                                ?.partRequired
+                        )
+                    }
+
                     setPartData(fetchedData)
                 }
             } catch (error) {
@@ -84,7 +91,6 @@ const SimpleMuiTable = () => {
             setRadioButtonCount([])
         }
     }, [])
-
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
         setSelectReason('')
@@ -178,7 +184,7 @@ const SimpleMuiTable = () => {
                     confirmButtonText: 'Ok',
                 })
 
-                navigate('/rdl-two/tray/start/' + whtTrayId)
+                navigate('/rdl-2/tray/start/' + whtTrayId)
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -662,6 +668,9 @@ const SimpleMuiTable = () => {
                                 <FormControlLabel
                                     value="Repair Not Done"
                                     sx={{ ml: 5 }}
+                                    disabled={
+                                        reportData?.checkIntray?.sp_tray == null
+                                    }
                                     control={<Radio />}
                                     label="Repair Not Done"
                                 />
@@ -842,31 +851,53 @@ const SimpleMuiTable = () => {
                     ) : null}
 
                     <Box sx={{ textAlign: 'right' }}>
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            disabled={
-                                loading ||
-                                selectedValue == '' ||
-                                description == '' ||
-                                (selectedValue == 'Repair Not Done' &&
-                                    selectReason == '') ||
-                                (selectReason == 'More part required' &&
-                                    isCheck.length == 0) ||
-                                requredPart.length !==
-                                    descriptionCount.length ||
-                                requredPart.length !== radioButtonCount.length
-                            }
-                            onClick={(e) => {
-                                handelSubmit(e)
-                            }}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Submit
-                        </Button>
+                        {reportData?.checkIntray?.sp_tray == null ? (
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                disabled={
+                                    loading ||
+                                    selectedValue == '' ||
+                                    description == ''
+                                }
+                                onClick={(e) => {
+                                    handelSubmit(e)
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                Submit
+                            </Button>
+                        ) : (
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                disabled={
+                                    loading ||
+                                    selectedValue == '' ||
+                                    description == '' ||
+                                    (selectedValue == 'Repair Not Done' &&
+                                        selectReason == '') ||
+                                    (selectReason == 'More part required' &&
+                                        isCheck.length == 0) ||
+                                    requredPart?.length !==
+                                        descriptionCount?.length ||
+                                    requredPart.length !==
+                                        radioButtonCount?.length
+                                }
+                                onClick={(e) => {
+                                    handelSubmit(e)
+                                }}
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                Submit
+                            </Button>
+                        )}
                     </Box>
                 </>
             </Container>

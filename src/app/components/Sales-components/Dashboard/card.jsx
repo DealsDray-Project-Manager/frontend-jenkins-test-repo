@@ -40,8 +40,14 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count?.viewPriceCount,
-            title: 'Ready for sales',
+            title: 'Ready for sales (SUB MUIC)',
             path: '/sales/ready-for-sales',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count?.viewPriceCountMuicBasis,
+            title: 'Ready for sales (MUIC)',
+            path: '/sales/muic-basis-ready-for-sales',
         },
         {
             icon: 'branding_watermark',

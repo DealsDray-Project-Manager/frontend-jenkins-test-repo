@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
 import {
     Box,
     Button,
@@ -79,6 +80,7 @@ export default function DialogBox() {
     const [open, setOpen] = React.useState(false)
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
+    const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
     const [productData, setProductData] = useState([])
@@ -276,6 +278,18 @@ export default function DialogBox() {
                                     style: {
                                         width: 'auto',
                                     },
+                                }}
+                                onKeyPress={(e) => {
+                                    if (user.serverType == 'Live') {
+                                        // Prevent manual typing by intercepting key presses
+                                        e.preventDefault()
+                                    }
+                                }}
+                                onPaste={(e) => {
+                                    if (user.serverType == 'Live') {
+                                        // Prevent manual typing by intercepting key presses
+                                        e.preventDefault()
+                                    }
                                 }}
                             />
                             <Button

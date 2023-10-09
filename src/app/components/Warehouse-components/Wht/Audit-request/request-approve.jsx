@@ -55,7 +55,6 @@ export default function DialogBox() {
     const [validatedCtx, setValidatedCtx] = useState([])
     const [ctxGrade, setCtxGrade] = useState([])
     const [issuedCtx, setIssuedCtx] = useState([])
-    const [alReadyIssuedTrayGrade, setAlReadyIssuedTrayGrade] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -97,6 +96,28 @@ export default function DialogBox() {
     }, [refresh])
 
     useEffect(() => {
+        const fetchCtxTray = async () => {
+            try {
+                const res = await axiosWarehouseIn.post(
+                    '/getCtxCategorysForIssue',
+                    issuedCtx
+                )
+                if (res.status === 200) {
+                    setCtxGrade(res?.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchCtxTray()
+        return () => {}
+    }, [issuedCtx])
+
+    useEffect(() => {
         const userStatusApiCall = async () => {
             try {
                 let obj = {
@@ -119,7 +140,7 @@ export default function DialogBox() {
                 )
                 if (trayFetch.status == 200) {
                     setIssuedCtx(trayFetch.data.grade)
-                    setAlReadyIssuedTrayGrade(trayFetch.data.tray)
+                   
                 }
                 if (res.status === 200) {
                     setUserAgent(res.data.data)
@@ -172,7 +193,6 @@ export default function DialogBox() {
             }
         }
     }
-
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -204,8 +224,7 @@ export default function DialogBox() {
                         description: description,
                         username: trayData.issued_user_name,
                         actioUser: user.username,
-                        whtTray:trayId
-                        
+                        whtTray: trayId,
                     }
                     let res = await axiosWarehouseIn.post(
                         '/auditTrayIssueToAgent',
@@ -254,7 +273,6 @@ export default function DialogBox() {
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
     }
-  
 
     const tableExpected = useMemo(() => {
         return (
@@ -477,7 +495,7 @@ export default function DialogBox() {
                         model={trayData?.model}
                         ctxGrade={ctxGrade}
                         setCtxGrade={setCtxGrade}
-                        alReadyIssuedTrayGrade={alReadyIssuedTrayGrade}
+                       
                     />
                 )}
             </Card>

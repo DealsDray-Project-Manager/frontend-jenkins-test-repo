@@ -57,7 +57,7 @@ export default function DialogBox() {
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Issued to RDL-two/' +
+                            'Issued to RDL-2/' +
                             location
                     )
                     if (response.status === 200) {
@@ -167,7 +167,7 @@ export default function DialogBox() {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/rdl-two/tray')
+                navigate('/rdl-2/tray')
             } else {
                 alert(res.data.message)
             }

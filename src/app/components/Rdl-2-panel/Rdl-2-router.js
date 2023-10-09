@@ -19,35 +19,35 @@ const TraySummary = Loadable(lazy(() => import('./Sp_Rp_trays/summary')))
 
 const RDLRouter = [
     {
-        path: '/rdl-two/dashboard',
+        path: '/rdl-2/dashboard',
         element: <Dashboard />,
     },
     {
-        path: '/rdl-two/tray',
+        path: '/rdl-2/tray',
         element: <Trayrequest />,
     },
     {
-        path: '/rdl-two/tray/rp-tray-receive/:trayId',
+        path: '/rdl-2/tray/rp-tray-receive/:trayId',
         element: <RpTrayReceive />,
     },
     {
-        path: '/rdl-two/tray/sp-tray-receive/:trayId',
+        path: '/rdl-2/tray/sp-tray-receive/:trayId',
         element: <SpTrayReceive />,
     },
     {
-        path: '/rdl-two/tray/start/:trayId',
+        path: '/rdl-2/tray/start/:trayId',
         element: <TrayStartPage />,
     },
     {
-        path: '/rdl-two/tray/unit-information-display',
+        path: '/rdl-2/tray/unit-information-display',
         element: <TrayUnitInformationDisplay />,
     },
     {
-        path: '/rdl-two/tray/unit-information-display/action',
+        path: '/rdl-2/tray/unit-information-display/action',
         element: <TrayUnitInformationDisplayAction />,
     },
     {
-        path: '/rdl-two/tray/tray/summary/:trayId',
+        path: '/rdl-2/tray/tray/summary/:trayId',
         element: <TraySummary />,
     },
 ]

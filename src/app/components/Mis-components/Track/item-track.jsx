@@ -641,7 +641,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL One Agent name
+                            RDL-1 Agent name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -650,7 +650,7 @@ const SimpleMuiTable = () => {
                                 width: '250px',
                             }}
                         >
-                            Tray Issued to RDL One Date
+                            Tray Issued to RDL-1 Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -659,7 +659,7 @@ const SimpleMuiTable = () => {
                                 width: '300px',
                             }}
                         >
-                            Tray Closed By RDL One Date
+                            Tray Closed By RDL-1 Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -668,7 +668,7 @@ const SimpleMuiTable = () => {
                                 width: '300px',
                             }}
                         >
-                            Tray Received From RDL One Date
+                            Tray Received From RDL-1 Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -677,7 +677,7 @@ const SimpleMuiTable = () => {
                                 width: '300px',
                             }}
                         >
-                            RDL One Done Closed By Warehouse
+                            RDL-1 Done Closed By Warehouse
                         </TableCell>
                         <TableCell
                             sx={{
@@ -786,7 +786,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Issued to RDL-Two
+                            Issued to RDL-2
                         </TableCell>
                         <TableCell
                             sx={{
@@ -795,7 +795,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-Two Username
+                            RDL-2 Username
                         </TableCell>
                         <TableCell
                             sx={{
@@ -804,7 +804,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-Two Done Closed By Agent
+                            RDL-2 Done Closed By Agent
                         </TableCell>
                         <TableCell
                             sx={{
@@ -813,7 +813,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-Two Done Received By WH
+                            RDL-2 Done Received By WH
                         </TableCell>
                         <TableCell
                             sx={{
@@ -822,7 +822,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-Two Done Closed By WH
+                            RDL-2 Done Closed By WH
                         </TableCell>
                         <TableCell
                             sx={{

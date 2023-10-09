@@ -18,6 +18,7 @@ import useAuth from 'app/hooks/useAuth'
 import { useNavigate, useParams } from 'react-router-dom'
 import AssignDialogBox from './assign-dialog'
 import Swal from 'sweetalert2'
+import ShortFall from './parts-short-fall'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -105,6 +106,8 @@ const SimpleMuiTable = () => {
     const [checkBoxDis, setCheckBoxDis] = useState(false)
     const [location, setLoaction] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const [partsAvailable, setPartsAvailable] = useState([])
+    const [partsNotAvailable, setPartsNotAvailable] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -125,7 +128,8 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
-                        setUnitsData(res.data.data)
+                        setPartsNotAvailable(res.data.partsNotAvailable)
+                        setPartsAvailable(res.data.partsAvailable)
                     }
                 }
             } catch (error) {
@@ -474,7 +478,7 @@ const SimpleMuiTable = () => {
                         <MUIDataTable
                             // title={'Assign for Repairs'}
                             sx={{ borderTop: '0px' }}
-                            data={unitsData}
+                            data={partsAvailable}
                             columns={columns}
                             options={{
                                 filterType: 'textField',
@@ -522,7 +526,7 @@ const SimpleMuiTable = () => {
                 </ScrollableTableContainer>
             </StyledTable>
         )
-    }, [unitsData, columns])
+    }, [partsAvailable, columns])
 
     // SELECTED UIC TABLE BOTTOM
     const selectedUicTable = useMemo(() => {
@@ -607,7 +611,7 @@ const SimpleMuiTable = () => {
                         <Typography
                             sx={{ fontSize: 'large', fontWeight: 'bold' }}
                         >
-                            Assign for Repairs
+                            Parts Available
                         </Typography>
                         <Typography sx={{ mt: 2 }}>Brand : {brand}</Typography>
                     </Box>
@@ -646,6 +650,21 @@ const SimpleMuiTable = () => {
             <br />
             <br />
             <Card>
+                <Box
+                    sx={{
+                        border: '',
+                        width: '100%',
+                        marginLeft: '',
+                        marginRight: '',
+                        borderRadius: '8px',
+                        background: 'white',
+                    }}
+                    overflow="auto"
+                >
+                    <ShortFall partsNotAvailable={partsNotAvailable} />
+                </Box>
+            </Card>
+            <Card sx={{ mt: 1 }}>
                 <Box sx={{ p: 2 }}>
                     <Typography sx={{ fontSize: 'large', fontWeight: 'bold' }}>
                         Spare Part Availability & Selection

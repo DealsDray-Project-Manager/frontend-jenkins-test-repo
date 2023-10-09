@@ -87,7 +87,7 @@ const SimpleMuiTable = () => {
 
     const handelNextpage = (e) => {
         e.preventDefault()
-        navigate('/rdl-two/tray/unit-information-display/action', {
+        navigate('/rdl-2/tray/unit-information-display/action', {
             state: {
                 reportData: reportData,
                 trayId: trayId,

@@ -53,6 +53,7 @@ const MemberEditorDialog = ({
             values.spDetails = isCheck
             values.selectedUic = selectedUic
             values.actUser = user.username
+            values.screen="WithSp"
 
             let res = await axiosMisUser.post('/whtToRpSorting/assign', values)
             if (res.status == 200) {

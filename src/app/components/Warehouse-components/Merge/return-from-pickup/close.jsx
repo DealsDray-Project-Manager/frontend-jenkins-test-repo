@@ -402,22 +402,6 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
-                    {/* {tray?.[0]?.to_tray_for_pickup == null ? (
-                        <TextField
-                            label="Select Next Stage"
-                            select
-                            name="stage"
-                            sx={{ ml: 2, mt: 1, width: 150 }}
-                            onChange={(e) => setStage(e.target.value)}
-                        >
-                            <MenuItem value="Recharge">Recharge</MenuItem>
-                            <MenuItem value="Charge Done">Re-BQC</MenuItem>
-                            <MenuItem value="BQC Done">Re-Audit</MenuItem>
-                            <MenuItem value="Ready to RDL-Repair">
-                                RDL FLS Done
-                            </MenuItem>
-                        </TextField>
-                    ) : null} */}
 
                     <Button
                         sx={{ m: 3, mb: 9 }}

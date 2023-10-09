@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, Button, Grid, MenuItem, TextField } from '@mui/material'
+import { Select, Button, Grid, MenuItem, TextField } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import Avatar from '@mui/material/Avatar'
+import Image from 'mui-image'
 import Swal from 'sweetalert2'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../.././../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
@@ -14,33 +15,21 @@ const TextFieldCustOm = styled(TextField)(() => ({
     marginBottom: '16px',
 }))
 
-const FormHandlerBox = styled('div')(() => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-}))
-
-const MemberEditorDialog = ({
-    open,
-    handleClose,
-    setIsAlive,
-    editFetchData,
-    setEditFetchData,
-}) => {
+const MemberEditorDialog = () => {
     const [profile, Setprofile] = useState({
         preview: '',
         store: {},
     })
     const [panProof, SetpanProof] = useState({
-        preview1: '',
+        preview: '',
         store: {},
     })
     const [aadharProof, SetAadharProof] = useState({
-        preview2: '',
+        preview: '',
         store: {},
     })
     const [businessAddressProof, SetBusinessAddressProof] = useState({
-        preview3: '',
+        preview: '',
         store: {},
     })
 
@@ -48,9 +37,23 @@ const MemberEditorDialog = ({
     const [cpc, setCpc] = useState([])
     const [getSalesUsers, setGetSalesUsers] = useState([])
     const [cpcType, setCpcType] = useState([])
-    const [selectedCpc, setSelectedCpc] = useState('')
-    const [location, setLocation] = useState('')
     const [warehouse, setWarehouse] = useState([])
+    const [location, setLocation] = useState('')
+    const navigate = useNavigate()
+    const { state } = useLocation()
+    const { editFetchData } = state
+
+    useEffect(() => {
+        if (Object.keys(editFetchData).length !== 0) {
+            editFetchData.cpassword = editFetchData.password
+            console.log(editFetchData.mobile_verification_status)
+            reset({ ...editFetchData })
+            let obj = {
+                code: editFetchData.warehouse,
+            }
+            setWarehouse([obj])
+        }
+    }, [])
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -68,43 +71,7 @@ const MemberEditorDialog = ({
             }
         }
         fetchCpc()
-        if (Object.keys(editFetchData).length !== 0) {
-            editFetchData.cpassword = editFetchData.password
-            Setprofile({
-                ...profile,
-                preview: editFetchData.profile,
-            })
-            SetpanProof({
-                ...panProof,
-                preview1: editFetchData.pan_card_proof,
-            })
-            SetAadharProof({
-                ...aadharProof,
-                preview2: editFetchData.aadhar_proof,
-                store: {},
-            })
-            SetBusinessAddressProof({
-                ...businessAddressProof,
-                preview3: editFetchData.business_address_proof,
-                store: {},
-            })
-
-            reset({ ...editFetchData })
-            let arr = []
-            let obj = {
-                name: editFetchData.warehouse,
-            }
-            let objOne = {
-                code: editFetchData.location_type,
-            }
-            let arrOne = []
-            arrOne.push(objOne)
-            setSelectedCpc(arrOne)
-            arr.push(obj)
-            setWarehouse(arr)
-            open()
-        }
-    }, [editFetchData])
+    }, [])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -113,7 +80,7 @@ const MemberEditorDialog = ({
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
             .max(40)
             .nullable(),
-        businessName: Yup.string().required('Required*').nullable(),
+        business_name: Yup.string().required('Required*').nullable(),
         contact: Yup.string().required('Required*').nullable(),
         cpc: Yup.string().required('Required*').nullable(),
         user_name: Yup.string()
@@ -145,23 +112,19 @@ const MemberEditorDialog = ({
             .max(40)
             .required('Required*')
             .nullable(),
-        country: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
-            .max(40)
-            .required('Required*')
-            .nullable(),
+
         pincode: Yup.string()
-            .min(6, 'Please Enter valid Pincode')
+
             .required('Required*')
             .nullable(),
         gstin: Yup.string()
-            .matches(/^[A-Z0-9]{12}$/i, 'Please enter a valid GSTIN')
-            .max(12)
+            .matches(/^[A-Z0-9]{15}$/i, 'Please enter a valid GSTIN')
+
             .required('Required*')
             .nullable(),
         pan_card_number: Yup.string()
             .matches(/^[A-Za-z0-9]{10}$/, 'Please enter a valid PAN number')
-            .max(10)
+
             .required('Required*')
             .nullable(),
         cpc_type: Yup.string().required('Required*').nullable(),
@@ -173,6 +136,7 @@ const MemberEditorDialog = ({
         email_verification_status: Yup.string()
             .required('Required*')
             .nullable(),
+        contact_person_name: Yup.string().required('Required*').nullable(),
     })
     const {
         register,
@@ -180,12 +144,14 @@ const MemberEditorDialog = ({
         getValues,
         formState: { errors },
         reset,
+        setValue,
     } = useForm({
         resolver: yupResolver(schema),
     })
 
     const onSubmit = async (values) => {
         try {
+            setLoading(true)
             values.user_type = 'Buyer'
             let formdata = new FormData()
             formdata.append('profile', profile.store)
@@ -198,28 +164,21 @@ const MemberEditorDialog = ({
             for (let [key, value] of Object.entries(values)) {
                 formdata.append(key, value)
             }
-            setLoading(true)
+
             let res = await axiosSuperAdminPrexo.post('/createBuyer', formdata)
 
             if (res.status == 200) {
                 setLoading(false)
-                handleClose()
                 if (res.data.status == 1) {
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: 'Successfully Created',
-                        confirmButtonText: 'Ok',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            setIsAlive((isAlive) => !isAlive)
-                        }
+                        onfirmButtonText: 'Ok',
                     })
+                    navigate('/sup-admin/buyer')
                 } else {
                     setLoading(false)
-                    handleClose()
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -227,10 +186,6 @@ const MemberEditorDialog = ({
                         confirmButtonText: 'Ok',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            setIsAlive((isAlive) => !isAlive)
-                        }
                     })
                 }
             }
@@ -256,6 +211,7 @@ const MemberEditorDialog = ({
             alert(error)
         }
     }
+
     const handelSlaesUsers = async (warehouse) => {
         try {
             let obj = {
@@ -263,7 +219,6 @@ const MemberEditorDialog = ({
                 warehouse: warehouse,
             }
             let res = await axiosSuperAdminPrexo.post('/getsalesUsers', obj)
-
             if (res.status == 200) {
                 setGetSalesUsers(res.data.data)
             }
@@ -290,8 +245,10 @@ const MemberEditorDialog = ({
             alert(error)
         }
     }
+
     const handelEdit = async (values) => {
         try {
+            setLoading(true)
             let formdata = new FormData()
             formdata.append('profile', profile.store)
             formdata.append('pan_card_proof', panProof.store)
@@ -308,23 +265,25 @@ const MemberEditorDialog = ({
                 formdata
             )
             if (response.status == 200) {
-                setEditFetchData({})
-                handleClose()
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
                     title: 'Successfully Updated',
                     confirmButtonText: 'Ok',
+                })
+                navigate('/sup-admin/buyer')
+            } else {
+                setLoading(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: 'Buyer exist,Please check Buyername',
+                    confirmButtonText: 'Ok',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsAlive((isAlive) => !isAlive)
-                    }
                 })
             }
         } catch (error) {
-            setEditFetchData({})
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -342,448 +301,422 @@ const MemberEditorDialog = ({
 
     const handelAadharProof = (event) => {
         SetAadharProof({
-            preview2: URL.createObjectURL(event.target.files[0]),
+            preview: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
         })
     }
 
     const handelPanCardProof = (event) => {
         SetpanProof({
-            preview1: URL.createObjectURL(event.target.files[0]),
+            preview: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
         })
     }
 
     const handelBusinessAddressProof = (event) => {
         SetBusinessAddressProof({
-            preview3: URL.createObjectURL(event.target.files[0]),
+            preview: URL.createObjectURL(event.target.files[0]),
             store: event.target.files[0],
         })
     }
+
     return (
-        <Dialog open={open}>
-            <Box p={3}>
+        <Box p={3}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    mt: 1,
+                }}
+            >
                 {Object.keys(editFetchData).length !== 0 ? (
                     <H4 sx={{ mb: '20px' }}>Update Buyer</H4>
                 ) : (
                     <H4 sx={{ mb: '20px' }}>ADD Buyer</H4>
                 )}
-                <Box style={{ display: 'flex' }}>
-                    <Avatar
-                        variant="rounded"
-                        src={profile?.preview}
-                        style={{
-                            margin: 'auto',
-                            marginBottom: '15px',
-                            height: '57px',
-                            width: '57px',
-                        }}
-                    />
-                    <Avatar
-                        variant="rounded"
-                        src={panProof?.preview1}
-                        style={{
-                            margin: 'auto',
-                            marginBottom: '15px',
-                            height: '57px',
-                            width: '57px',
-                        }}
-                    />
-                    <Avatar
-                        variant="rounded"
-                        src={aadharProof?.preview2}
-                        style={{
-                            margin: 'auto',
-                            marginBottom: '15px',
-                            height: '57px',
-                            width: '57px',
-                        }}
-                    />
-                    <Avatar
-                        variant="rounded"
-                        src={businessAddressProof?.preview3}
-                        style={{
-                            margin: 'auto',
-                            marginBottom: '15px',
-                            height: '57px',
-                            width: '57px',
-                        }}
-                    />
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => navigate('/sup-admin/buyer')}
+                    >
+                        Back to List
+                    </Button>
+                    {Object.keys(editFetchData).length !== 0 ? (
+                        <Button
+                            sx={{ mb: 2, ml: 2 }}
+                            variant="contained"
+                            color="success"
+                            download
+                            type="submit"
+                            disabled={loading}
+                            onClick={handleSubmit(handelEdit)}
+                        >
+                            Update
+                        </Button>
+                    ) : (
+                        <Button
+                            sx={{ mb: 2, ml: 2 }}
+                            variant="contained"
+                            color="success"
+                            download
+                            type="submit"
+                            disabled={loading}
+                            onClick={handleSubmit(onSubmit)}
+                        >
+                            Save
+                        </Button>
+                    )}
                 </Box>
-                <Grid sx={{ mb: '16px' }} container spacing={4}>
-                    <Grid item sm={6} xs={12}>
-                        <TextFieldCustOm
-                            label="Profile"
-                            type="file"
-                            InputLabelProps={{ shrink: true }}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            name="profile"
-                            onChange={(e) => {
-                                handelProfile(e)
-                            }}
-                        />
-                        <TextFieldCustOm
-                            label="Buyer Name"
-                            type="text"
-                            name="user_name"
-                            {...register('user_name')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.user_name ? true : false}
-                            helperText={
-                                errors.user_name ? errors.user_name.message : ''
-                            }
-                            inputProps={{ maxLength: 40 }}
-                        />
-                        <TextFieldCustOm
-                            label="Mobile No"
-                            name="contact"
-                            {...register('contact')}
-                            onInput={(e) => {
-                                e.target.value = e.target.value.replace(
-                                    /[^0-9]/g,
-                                    ''
-                                )
-                            }}
-                            inputProps={{ maxLength: 10 }}
-                            error={errors.contact ? true : false}
-                            helperText={
-                                errors.contact ? errors.contact.message : ''
-                            }
-                        />
-                        <TextFieldCustOm
-                            label="Name"
-                            type="text"
-                            name="name"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('name')}
-                            error={errors.name ? true : false}
-                            helperText={errors.name ? errors.name.message : ''}
-                            inputProps={{ maxLength: 40 }}
-                        />
-                        <TextFieldCustOm
-                            label="State"
-                            type="text"
-                            name="state"
-                            {...register('state')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.state ? true : false}
-                            helperText={
-                                errors.state ? errors.state?.message : ''
-                            }
-                        />
-                        <TextFieldCustOm
-                            label="Buisness Name"
-                            type="text"
-                            name="businessName"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('businessName')}
-                            error={errors.businessName ? true : false}
-                            helperText={
-                                errors.businessName
-                                    ? errors.businessName.message
-                                    : ''
-                            }
-                            inputProps={{ maxLength: 40 }}
-                        />
+            </Box>
 
-                        <TextFieldCustOm
-                            label="GSTIN"
-                            type="text"
-                            name="gstin"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            inputProps={{ maxLength: 12 }}
-                            {...register('gstin')}
-                            error={errors.gstin ? true : false}
-                            helperText={errors.gstin?.message}
-                        />
-                        <TextFieldCustOm
-                            label="PAN Card Number"
-                            type="text"
-                            name="pan_card_number"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            inputProps={{ maxLength: 10 }}
-                            {...register('pan_card_number')}
-                            error={errors.pan_card_number ? true : false}
-                            helperText={errors.pan_card_number?.message}
-                        />
-                        <TextFieldCustOm
-                            label="CPC"
-                            select
-                            name="cpc"
-                            {...register('cpc')}
-                            // value={getValues('cpc')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            onChange={(e) => {
-                                getLocationType(e.target.value)
-                            }}
-                            defaultValue={getValues('cpc')}
-                            error={errors.cpc ? true : false}
-                            helperText={errors.cpc?.message}
-                        >
-                            {cpc?.map((cpcData) => (
-                                <MenuItem
-                                    key={cpcData.code}
-                                    value={cpcData.code}
-                                    onClick={() =>
-                                        getLocationType(cpcData.code)
-                                    }
-                                >
-                                    {cpcData.code}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="CPC Type"
-                            select
-                            name="cpc_type"
-                            {...register('cpc_type')}
-                            // value={getValues('cpc_type')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={getValues('cpc_type')}
-                            // onChange={(e) => {
-                            //     getlWarehouse(e.target.value)
-                            // }}
-                            error={errors.cpc_type ? true : false}
-                            helperText={errors.cpc_type?.message}
-                        >
-                            {cpcType?.map((cpcData) => (
-                                <MenuItem
-                                    onClick={(e) => {
-                                        setSelectedCpc(cpcData.location_type)
-                                        getlWarehouse(cpcData.location_type)
-                                    }}
-                                    key={cpcData.location_type}
-                                    value={cpcData.location_type}
-                                >
-                                    {cpcData.location_type}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="Warehouse"
-                            select
-                            name="warehouse"
-                            {...register('warehouse')}
-                            // value={getValues('warehouse')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={getValues('warehouse')}
-                            // onChange={(e) => {
-                            //     handelSlaesUsers(e.target.value)
-                            // }}
-                            error={errors.warehouse ? true : false}
-                            helperText={errors.warehouse?.message}
-                        >
-                            {warehouse?.map((cpcData) => (
-                                <MenuItem
-                                    key={cpcData.code}
-                                    value={cpcData.code}
-                                    onClick={() =>
-                                        handelSlaesUsers(cpcData.code)
-                                    }
-                                >
-                                    {cpcData.code}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="Sales Users"
-                            select
-                            name="sales_users"
-                            {...register('sales_users')}
-                            // value={getValues('sales_users')}
-                            defaultValue={getValues('sales_users')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.warehouse ? true : false}
-                            helperText={errors.warehouse?.message}
-                        >
-                            {getSalesUsers?.map((cpcData) => (
-                                <MenuItem
-                                    key={cpcData.user_name}
-                                    value={cpcData.user_name}
-                                >
-                                    {cpcData.user_name}
-                                </MenuItem>
-                            ))}
-                        </TextFieldCustOm>
-                    </Grid>
+            <Grid sx={{ mt: 1 }} container spacing={4}>
+                <Grid item sm={6} xs={12}>
+                    <TextFieldCustOm
+                        label="Buyer Name"
+                        type="text"
+                        name="name"
+                        {...register('name')}
+                        error={errors.name ? true : false}
+                        helperText={errors.name ? errors.name.message : ''}
+                        inputProps={{ maxLength: 40 }}
+                    />
+                    <TextFieldCustOm
+                        label="Mobile No"
+                        name="contact"
+                        {...register('contact')}
+                        onInput={(e) => {
+                            e.target.value = e.target.value.replace(
+                                /[^0-9]/g,
+                                ''
+                            )
+                        }}
+                        inputProps={{ maxLength: 10 }}
+                        error={errors.contact ? true : false}
+                        helperText={
+                            errors.contact ? errors.contact.message : ''
+                        }
+                    />
+                    <TextFieldCustOm
+                        label="Email"
+                        type="email"
+                        name="email"
+                        {...register('email')}
+                        error={errors.email ? true : false}
+                        helperText={errors.email ? errors.email.message : ''}
+                    />
+                    <TextFieldCustOm
+                        label="Business Name"
+                        type="text"
+                        name="business_name"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('business_name')}
+                        error={errors.business_name ? true : false}
+                        helperText={
+                            errors.business_name
+                                ? errors.business_name.message
+                                : ''
+                        }
+                        inputProps={{ maxLength: 40 }}
+                    />
+                    <TextFieldCustOm
+                        label="Business Address"
+                        type="text"
+                        name="billing_address"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('billing_address')}
+                        error={errors.billing_address ? true : false}
+                        helperText={
+                            errors.billing_address
+                                ? errors.billing_address.message
+                                : ''
+                        }
+                        inputProps={{ maxLength: 40 }}
+                    />
 
-                    <Grid item sm={6} xs={12}>
-                        <TextFieldCustOm
-                            label="Email"
-                            type="email"
-                            name="email"
-                            {...register('email')}
-                            error={errors.email ? true : false}
-                            helperText={
-                                errors.email ? errors.email.message : ''
-                            }
-                        />
-                        <TextFieldCustOm
-                            label="Email Verification Status"
-                            select
-                            name="email_verification_status"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={
-                                editFetchData.email_verification_status || ''
-                            }
-                            {...register('email_verification_status')}
-                            error={
-                                errors.email_verification_status ? true : false
-                            }
-                            helperText={
-                                errors.email_verification_status?.message
-                            }
-                        >
-                            <MenuItem value="Verified">Verified</MenuItem>
-                            <MenuItem value="Unverified">Unverified</MenuItem>
-                        </TextFieldCustOm>
-                        <TextFieldCustOm
-                            label="Mobile Verification Status"
-                            select
-                            name="mobile_verification_status"
-                            {...register('mobile_verification_status')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            defaultValue={
-                                editFetchData.mobile_verification_status || ''
-                            }
-                            error={
-                                errors.mobile_verification_status ? true : false
-                            }
-                            helperText={
-                                errors.mobile_verification_status?.message
-                            }
-                        >
-                            <MenuItem value="Verified">Verified</MenuItem>
-                            <MenuItem value="Unverified">Unverified</MenuItem>
-                        </TextFieldCustOm>
+                    <TextFieldCustOm
+                        label="GSTIN"
+                        type="text"
+                        name="gstin"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        inputProps={{ maxLength: 15 }}
+                        {...register('gstin')}
+                        error={errors.gstin ? true : false}
+                        helperText={errors.gstin?.message}
+                    />
 
-                        <TextFieldCustOm
-                            label="Country"
-                            type="text"
-                            name="country"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('country')}
-                            error={errors.country ? true : false}
-                            helperText={
-                                errors.country ? errors.country?.message : ''
+                    <TextFieldCustOm
+                        label="State"
+                        type="text"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        name="state"
+                        {...register('state')}
+                        error={errors.state ? true : false}
+                        helperText={errors.state ? errors.state?.message : ''}
+                    />
+                    <TextFieldCustOm
+                        label="City"
+                        type="text"
+                        name="city"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('city')}
+                        error={errors.city ? true : false}
+                        helperText={errors.city ? errors.city?.message : ''}
+                    />
+                    <TextFieldCustOm
+                        label="Pincode"
+                        type="text"
+                        name="pincode"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault()
                             }
-                        />
-                        <TextFieldCustOm
-                            label="City"
-                            type="text"
-                            name="city"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('city')}
-                            error={errors.city ? true : false}
-                            helperText={errors.city ? errors.city?.message : ''}
-                        />
-                        <TextFieldCustOm
-                            label="Billing Address"
-                            type="text"
-                            name="billing_address"
-                            {...register('billing_address')}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            error={errors.billing_address ? true : false}
-                            helperText={
-                                errors.billing_address
-                                    ? errors.billing_address?.message
-                                    : ''
-                            }
-                        />
+                        }}
+                        inputProps={{ maxLength: 6 }}
+                        {...register('pincode')}
+                        error={errors.pincode ? true : false}
+                        helperText={
+                            errors.pincode ? errors.pincode?.message : ''
+                        }
+                    />
+                    <TextFieldCustOm
+                        label="CPC"
+                        select
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        name="cpc"
+                        {...register('cpc')}
+                     
+                        error={errors.cpc ? true : false}
+                        helperText={errors.cpc?.message}
+                    >
+                        {cpc?.map((cpcData) => (
+                            <MenuItem
+                                value={cpcData.code}
+                                onClick={(e) => getLocationType(cpcData.code)}
+                            >
+                                {cpcData.code}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
+                    <TextFieldCustOm
+                        label="CPC Type"
+                        select
+                        name="cpc_type"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        type="text"
+                        {...register('cpc_type')}
+                        defaultValue={getValues('cpc_type')}
+                        error={errors.cpc_type ? true : false}
+                        helperText={errors.cpc_type?.message}
+                    >
+                        {cpcType?.map((cpcData) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    getlWarehouse(cpcData.location_type)
+                                }}
+                                key={cpcData.location_type}
+                                value={cpcData.location_type}
+                            >
+                                {cpcData.location_type}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
 
-                        <TextFieldCustOm
-                            label="Pincode"
-                            type="number"
-                            name="pincode"
-                            inputProps={{ maxLength: 6 }}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault()
-                                }
-                            }}
-                            {...register('pincode')}
-                            error={errors.pincode ? true : false}
-                            helperText={
-                                errors.pincode ? errors.pincode?.message : ''
-                            }
-                        />
-                        <TextFieldCustOm
-                            label="Password"
-                            type="password"
-                            name="password"
-                            {...register('password')}
-                            error={errors.password ? true : false}
-                            helperText={errors.password?.message}
-                        />
-                        <TextFieldCustOm
-                            label="Confirm Password"
-                            type="password"
-                            name="cpassword"
-                            {...register('cpassword')}
-                            error={errors.cpassword ? true : false}
-                            helperText={errors.cpassword?.message}
-                        />
-
-                        <TextFieldCustOm
-                            label="PAN Card Photo"
-                            type="file"
-                            InputLabelProps={{ shrink: true }}
-                            name="pan_card_proof"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            onChange={(e) => {
-                                handelPanCardProof(e)
-                            }}
-                        />
-                        <TextFieldCustOm
-                            label="Aadhar Photo"
-                            type="file"
-                            InputLabelProps={{ shrink: true }}
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            name="aadhar_proof"
-                            onChange={(e) => {
-                                handelAadharProof(e)
-                            }}
-                        />
-                        <TextFieldCustOm
-                            label="Business Address Proof"
-                            type="file"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            InputLabelProps={{ shrink: true }}
-                            name="business_address_proof"
-                            onChange={(e) => {
-                                handelBusinessAddressProof(e)
-                            }}
-                        />
-                    </Grid>
+                    <TextFieldCustOm
+                        label="Warehouse"
+                        select
+                        name="warehouse"
+                        type="text"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('warehouse')}
+                        defaultValue={getValues('warehouse')}
+                        error={errors.warehouse ? true : false}
+                        helperText={errors.warehouse?.message}
+                    >
+                        {warehouse?.map((cpcData) => (
+                            <MenuItem
+                                key={cpcData.code}
+                                value={cpcData.code}
+                                onClick={() => handelSlaesUsers(cpcData.code)}
+                            >
+                                {cpcData.code}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
+                    <TextFieldCustOm
+                        label="Sales User"
+                        select
+                        name="sales_users"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('sales_users')}
+                        defaultValue={getValues('sales_users')}
+                        error={errors.warehouse ? true : false}
+                        helperText={errors.warehouse?.message}
+                    >
+                        {getSalesUsers?.map((cpcData) => (
+                            <MenuItem
+                                key={cpcData.user_name}
+                                value={cpcData.user_name}
+                            >
+                                {cpcData.user_name}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                 </Grid>
 
-                <FormHandlerBox>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={loading}
-                        onClick={
-                            Object.keys(editFetchData).length !== 0
-                                ? handleSubmit(handelEdit)
-                                : handleSubmit(onSubmit)
+                <Grid item sm={6} xs={12}>
+                    <TextFieldCustOm
+                        label="Username"
+                        type="text"
+                        name="user_name"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        {...register('user_name')}
+                        error={errors.user_name ? true : false}
+                        helperText={
+                            errors.user_name ? errors.user_name.message : ''
                         }
-                        type="submit"
-                    >
-                        Submit
-                    </Button>
+                        inputProps={{ maxLength: 40 }}
+                    />
 
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleClose()}
+                    <TextFieldCustOm
+                        label="Mobile Verification Status"
+                        select
+                        name="mobile_verification_status"
+                        {...register('mobile_verification_status')}
+                        error={errors.mobile_verification_status ? true : false}
+                        helperText={errors.mobile_verification_status?.message}
                     >
-                        Cancel
-                    </Button>
-                </FormHandlerBox>
-            </Box>
-        </Dialog>
+                        <MenuItem value="Verified">Verified</MenuItem>
+                        <MenuItem value="Unverified">Unverified</MenuItem>
+                    </TextFieldCustOm>
+                    <TextFieldCustOm
+                        select
+                        label="Email Verification Status"
+                        name="email_verification_status"
+                        {...register('email_verification_status')}
+                        error={errors.email_verification_status ? true : false}
+                        helperText={errors.email_verification_status?.message}
+                    >
+                        <MenuItem value="Verified">Verified</MenuItem>
+                        <MenuItem value="Unverified">Unverified</MenuItem>
+                    </TextFieldCustOm>
+                    <TextFieldCustOm
+                        label="Contact Person Name"
+                        type="text"
+                        name="contact_person_name"
+                        {...register('contact_person_name')}
+                        error={errors.contact_person_name ? true : false}
+                        helperText={
+                            errors.contact_person_name
+                                ? errors.contact_person_name.message
+                                : ''
+                        }
+                    />
+                    <TextFieldCustOm
+                        label="PAN Card Number"
+                        type="text"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        name="pan_card_number"
+                        inputProps={{ maxLength: 10 }}
+                        {...register('pan_card_number')}
+                        error={errors.pan_card_number ? true : false}
+                        helperText={errors.pan_card_number?.message}
+                    />
+                    <TextFieldCustOm
+                        label="Password"
+                        type="password"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        name="password"
+                        {...register('password')}
+                        error={errors.password ? true : false}
+                        helperText={errors.password?.message}
+                    />
+                    <TextFieldCustOm
+                        label="Confirm Password"
+                        type="password"
+                        disabled={Object.keys(editFetchData).length !== 0}
+                        name="cpassword"
+                        {...register('cpassword')}
+                        error={errors.cpassword ? true : false}
+                        helperText={errors.cpassword?.message}
+                    />
+                    <TextFieldCustOm
+                        label="Profile"
+                        type="file"
+                        InputLabelProps={{ shrink: true }}
+                        name="profile"
+                        onChange={(e) => {
+                            handelProfile(e)
+                        }}
+                    />
+                    {profile?.preview !== '' ? (
+                        <Image
+                            src={profile?.preview}
+                            alt="Profile Preview"
+                            width={200}
+                            height={100}
+                        />
+                    ) : null}
+
+                    <TextFieldCustOm
+                        label="PAN Card Photo"
+                        type="file"
+                        InputLabelProps={{ shrink: true }}
+                        name="pan_card_proof"
+                        onChange={(e) => {
+                            handelPanCardProof(e)
+                        }}
+                        sx={{ mt: 2 }}
+                    />
+                    {panProof?.preview !== '' ? (
+                        <Image
+                            src={panProof?.preview}
+                            alt="Pancard Preview"
+                            width={200}
+                            height={100}
+                        />
+                    ) : null}
+                    <TextFieldCustOm
+                        label="Aadhar Photo"
+                        type="file"
+                        InputLabelProps={{ shrink: true }}
+                        name="aadhar_proof"
+                        onChange={(e) => {
+                            handelAadharProof(e)
+                        }}
+                        sx={{ mt: 2 }}
+                    />
+                    {aadharProof?.preview !== '' ? (
+                        <Image
+                            src={aadharProof?.preview}
+                            alt="Aadhar Preview"
+                            width={200}
+                            height={100}
+                        />
+                    ) : null}
+                    <TextFieldCustOm
+                        label="Business Address Proof"
+                        type="file"
+                        InputLabelProps={{ shrink: true }}
+                        name="business_address_proof"
+                        onChange={(e) => {
+                            handelBusinessAddressProof(e)
+                        }}
+                        sx={{ mt: 2 }}
+                    />
+                    {businessAddressProof?.preview !== '' ? (
+                        <Image
+                            src={businessAddressProof?.preview}
+                            alt="Aadhat Preview"
+                            width={200}
+                            height={100}
+                        />
+                    ) : null}
+                </Grid>
+            </Grid>
+        </Box>
     )
 }
-
 export default MemberEditorDialog

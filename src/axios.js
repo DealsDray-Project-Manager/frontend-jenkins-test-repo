@@ -1,8 +1,7 @@
 import axios from 'axios'
 
-
 export const baseURL = 'http://localhost:8000'
-// export const baseURL = 'https://prexo-v9-dev-api.dealsdray.com'
+// export const baseURL = 'https://prexo-v9-1-uat-api.dealsdray.com'
 
 export const axiosSuperAdminPrexo = axios.create({
     baseURL: `${baseURL}/api/v7/superAdmin`,
@@ -57,7 +56,7 @@ export const axiosReportingAgent = axios.create({
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
 export const axiosRdlTwoAgent = axios.create({
-    baseURL: `${baseURL}/api/v7/rdl-two`,
+    baseURL: `${baseURL}/api/v7/rdl-2`,
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
 export const axiosRmUserAgent = axios.create({

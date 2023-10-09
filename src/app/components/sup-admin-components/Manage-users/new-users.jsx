@@ -401,14 +401,15 @@ const MemberEditorDialog = ({
                                 helperText={errors.user_type?.message}
                             >
                                 <MenuItem value="Audit">Audit</MenuItem>
+                                <MenuItem value="Bagging">Bagging</MenuItem>
                                 <MenuItem value="Bag Opening">
                                     Bag Opening
                                 </MenuItem>
                                 <MenuItem value="BQC">BQC</MenuItem>
                                 <MenuItem value="Charging">Charging</MenuItem>
                                 <MenuItem value="MIS">MIS</MenuItem>
-                                <MenuItem value="RDL-One">RDL-One</MenuItem>
-                                <MenuItem value="RDL-two">RDL-two</MenuItem>
+                                <MenuItem value="RDL-1">RDL-1</MenuItem>
+                                <MenuItem value="RDL-2">RDL-2</MenuItem>
 
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sorting Agent">

@@ -33,7 +33,7 @@ import BqcRoutes from '../components/Bqc-components/BqcRoutes'
 import Login from '../Login/loginRouter'
 import ChangePasswordRouter from 'app/components/Change-password/change-password-router'
 import AuditRouter from 'app/components/Audit-components/AuditRouter'
-import RDL_one from 'app/components/Rdl_one-components/Rdl-fls-routers'
+import RDL_one from 'app/components/Rdl_one-components/Rdl-1-routers'
 import PricingRoutes from 'app/components/Pricing-components/Pricing_routers'
 import SalesRoutes from 'app/components/Sales-components/Sales_routes'
 import ReportingAgent from 'app/components/Reporting-agent/Reporting-agent-router'
@@ -42,6 +42,7 @@ import RmWarehouse from 'app/components/Rm-warehouse/Rm-warehouse'
 import SpmisPanel from "app/components/Sp-mis-panel/sp-mis-panel"
 import PurchaseUser from 'app/components/Purchase-rm/purchase-rm'
 import BuyerUser from 'app/components/Buyer-panel/Buyer-routes'
+import BaggingUserRouter from 'app/components/Bagging-user/bagging-user-router'
 
 export const AllPages = () => {
     const all_routes = [
@@ -87,7 +88,8 @@ export const AllPages = () => {
                 ...ReportingAgent,
                 ...Rdl2Routers,
                 ...RmWarehouse,
-                ...BuyerUser
+                ...BuyerUser,
+                ...BaggingUserRouter
             ],
         },
 

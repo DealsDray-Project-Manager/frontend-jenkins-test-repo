@@ -63,7 +63,6 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                  
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -188,13 +187,13 @@ export default function DialogBox() {
             setLoading(true)
             let obj = {
                 trayId: trayId,
-                rackId:rackId,
+                rackId: rackId,
                 description: description,
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',
-                actUser:user.username
+                actUser: user.username,
             }
-            let res = await axiosWarehouseIn.post('/rdl-fls/closedByWh', obj)
+            let res = await axiosWarehouseIn.post('/rdl-1/closedByWh', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -220,13 +219,6 @@ export default function DialogBox() {
                 text: error,
             })
         }
-    }
-
-    const handleclosetray = () => {
-        Swal.fire({
-            title: 'Closed Successfully',
-            icon: 'success',
-        })
     }
 
     const tableExpected = useMemo(() => {

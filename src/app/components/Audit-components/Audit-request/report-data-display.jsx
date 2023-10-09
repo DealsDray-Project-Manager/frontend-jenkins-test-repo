@@ -25,8 +25,9 @@ import BqcApiReport from './Report/bqc-api-data'
 import BqcApiAllReport from './Report/bqc-all-api-report'
 import PrevChargingReport from './Report/prev-charging'
 import PrevBqcReport from './Report/pre-bqc-report'
-import RdlOneReport from './Report/rdl-one-report'
-import RdlTwoReport from './Report/rdl-two-report'
+import RdlOneReport from './Report/rdl-1-report'
+import RdlTwoReport from './Report/rdl-2-report'
+import useAuth from 'app/hooks/useAuth'
 
 import Swal from 'sweetalert2'
 
@@ -74,22 +75,38 @@ export default function DialogBox() {
         storage: [],
     })
     const { state } = useLocation()
-    const [color, setcolor] = useState()
+    const [gradeInfo, setGradeInfo] = useState({
+        downArray: [],
+        upArray: [],
+        flagToHigh: 0,
+    })
     const [addButDis, setAddButDis] = useState(false)
     const { reportData, trayId, username, uic, ctxTray, whtTrayId } = state
     const [stateData, setStateData] = useState({})
     const [open, setOpen] = React.useState(false)
     const [butDis, setButDis] = useState(false)
+    const [subMuic, setSubMuic] = useState('')
+    const [currentSubmuicCount,setCurrentSubMuicCount]=useState("")
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchPartList = async () => {
             try {
-                let res = await axiosAuditAgent.post('/getColorStorageRam')
+                let obj = {
+                    grade: reportData?.delivery?.bqc_software_report
+                        ?.final_grade,
+                }
+                let res = await axiosAuditAgent.post('/getColorStorageRam', obj)
                 if (res.status == 200) {
                     setAllDropDwon({
                         ram: res.data.data.ram,
                         storage: res.data.data.storage,
                         color: res.data.data.color,
+                    })
+                    setGradeInfo({
+                        downArray: res.data.downArray,
+                        upArray: res.data.upArray,
+                        flagToHigh: res.data.flagToHigh,
                     })
                 }
             } catch (error) {
@@ -108,10 +125,14 @@ export default function DialogBox() {
                     username: username,
                     uic: uic,
                     trayId: trayId,
+                    muic: reportData?.muic,
                     color: stateData.color,
                     storage_verification: stateData.storage_verification,
                     ram_verification: stateData.ram_verification,
                     stage: 'BQC Not Done / Unverified imei',
+                    subMuic: subMuic,
+                    actionUser: user.username,
+                    currentSubMuicCount:currentSubmuicCount
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -146,6 +167,7 @@ export default function DialogBox() {
                         obj.description = stateData.description
                     }
                 }
+
                 let res = await axiosAuditAgent.post('/traySegrigation', obj)
                 if (res.status == 200) {
                     setButDis(false)
@@ -195,6 +217,9 @@ export default function DialogBox() {
                 [name]: value,
             })
         }
+        if (name == 'storage_verification') {
+            fetchSubmuic(value)
+        }
     }
     const handleClose = () => {
         setOpen(false)
@@ -232,7 +257,29 @@ export default function DialogBox() {
             })
         }
     }
-
+    /*----------------------------FETCH / CHECK SUB MUIC ------------------------------*/
+    const fetchSubmuic = async (storage) => {
+        try {
+            let obj = {
+                storage: storage,
+                ram: stateData.ram_verification,
+                color: stateData.color,
+                muic: reportData.muic,
+            }
+            const subMuicRes = await axiosAuditAgent.post('/fetchSubMuic', obj)
+            if (subMuicRes.status == 200) {
+                setSubMuic(subMuicRes.data.subMuic)
+                setCurrentSubMuicCount(subMuicRes.data.currentSubMuicCount)
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
@@ -257,9 +304,7 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
-                    <PrevChargingReport
-                        Charging={reportData?.preChargeData}
-                    />
+                    <PrevChargingReport Charging={reportData?.preChargeData} />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
                     <ChargingDetails
@@ -270,9 +315,7 @@ export default function DialogBox() {
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
-                    <PrevBqcReport
-                        BqcUserReport={reportData?.preBqcData}
-                    />
+                    <PrevBqcReport BqcUserReport={reportData?.preBqcData} />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
                     <BqcUserReport
@@ -326,28 +369,23 @@ export default function DialogBox() {
                                 mb: 2,
                             }}
                             onChange={handleChange}
+                            value={stateData?.stage}
                             name="stage"
                         >
                             <MenuItem value="Accept">Accept</MenuItem>
-                            {reportData?.delivery?.bqc_software_report
-                                ?.final_grade !== 'A' ? (
+                            {gradeInfo?.flagToHigh !== '2' ? (
                                 <MenuItem value="Upgrade">Upgrade</MenuItem>
                             ) : null}
-                            {reportData?.delivery?.bqc_software_report
-                                ?.final_grade !== 'D' ? (
+                            {gradeInfo?.flagToHigh !== '1' ? (
                                 <MenuItem value="Downgrade">Downgrade</MenuItem>
                             ) : null}
-                            {/* <MenuItem value="Direct Upgrade">
-                                Direct Upgrade
-                            </MenuItem> */}
-                            {reportData?.delivery?.bqc_software_report
-                                ?.final_grade !== 'A' ? (
+
+                            {gradeInfo?.flagToHigh !== '2' ? (
                                 <MenuItem value="Direct Upgrade">
                                     Direct Upgrade
                                 </MenuItem>
                             ) : null}
-                            {reportData?.delivery?.bqc_software_report
-                                ?.final_grade !== 'D' ? (
+                            {gradeInfo?.flagToHigh !== '1' ? (
                                 <MenuItem value="Direct Downgrade">
                                     Direct Downgrade
                                 </MenuItem>
@@ -367,62 +405,27 @@ export default function DialogBox() {
                                     onChange={handleChange}
                                     name="tray_type"
                                 >
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade == 'A' ? (
-                                        <MenuItem value="A">
-                                            CTA - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'A' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'B' ? (
-                                        <MenuItem value="B">
-                                            CTB - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'B' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'C' ? (
-                                        <MenuItem value="C">
-                                            CTC - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'C' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : reportData?.delivery
-                                          ?.bqc_software_report?.final_grade ==
-                                      'D' ? (
-                                        <MenuItem value="D">
-                                            CTD - (
-                                            {ctxTray?.map((trayData) =>
-                                                trayData.tray_grade == 'D' &&
-                                                trayData.sort_id ==
-                                                    'Issued to Audit'
-                                                    ? trayData?.code
-                                                    : null
-                                            )}
-                                            )
-                                        </MenuItem>
-                                    ) : null}
+                                    <MenuItem
+                                        value={
+                                            reportData?.delivery
+                                                ?.bqc_software_report
+                                                ?.final_grade
+                                        }
+                                    >
+                                        {`CT${reportData?.delivery?.bqc_software_report?.final_grade}`}{' '}
+                                        - (
+                                        {ctxTray?.map((trayData) =>
+                                            reportData?.delivery
+                                                ?.bqc_software_report
+                                                ?.final_grade ==
+                                                trayData?.tray_grade &&
+                                            trayData.sort_id ==
+                                                'Issued to Audit'
+                                                ? trayData?.code
+                                                : null
+                                        )}
+                                        )
+                                    </MenuItem>
                                 </TextField>
                             </>
                         ) : null}
@@ -439,24 +442,14 @@ export default function DialogBox() {
                                     onChange={handleChange}
                                     name="tray_grade"
                                 >
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'A' ? (
-                                        <MenuItem value="A">A</MenuItem>
-                                    ) : null}
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'B' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'A' ? (
-                                        <MenuItem value="B">B</MenuItem>
-                                    ) : null}
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'C' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'A' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'B' ? (
-                                        <MenuItem value="C">C</MenuItem>
-                                    ) : null}
+                                    {gradeInfo?.upArray?.map((upGradeData) => (
+                                        <MenuItem
+                                            key={upGradeData?.code}
+                                            value={upGradeData?.code}
+                                        >
+                                            {upGradeData?.code}
+                                        </MenuItem>
+                                    ))}
                                 </TextField>
                                 {stateData.stage === 'Upgrade' ? (
                                     <>
@@ -502,25 +495,16 @@ export default function DialogBox() {
                                     onChange={handleChange}
                                     name="tray_grade"
                                 >
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'B' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'D' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'C' ? (
-                                        <MenuItem value="B">B</MenuItem>
-                                    ) : null}
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'C' &&
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'D' ? (
-                                        <MenuItem value="C">C</MenuItem>
-                                    ) : null}
-
-                                    {reportData?.delivery?.bqc_software_report
-                                        ?.final_grade !== 'D' ? (
-                                        <MenuItem value="D">D</MenuItem>
-                                    ) : null}
+                                    {gradeInfo?.downArray?.map(
+                                        (upGradeData) => (
+                                            <MenuItem
+                                                key={upGradeData?.code}
+                                                value={upGradeData?.code}
+                                            >
+                                                {upGradeData?.code}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </TextField>
 
                                 {stateData.stage === 'Downgrade' ? (
@@ -566,55 +550,17 @@ export default function DialogBox() {
                                 onChange={handleChange}
                                 name="tray_type"
                             >
-                                {stateData.tray_grade == 'A' ? (
-                                    <MenuItem value="A">
-                                        CTA - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'A' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : stateData.tray_grade == 'B' ? (
-                                    <MenuItem value="B">
-                                        CTB - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'B' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : stateData.tray_grade == 'C' ? (
-                                    <MenuItem value="C">
-                                        CTC - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'C' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : stateData.tray_grade == 'D' ? (
-                                    <MenuItem value="D">
-                                        CTD - (
-                                        {ctxTray?.map((trayData) =>
-                                            trayData.tray_grade == 'D' &&
-                                            trayData.sort_id ==
-                                                'Issued to Audit'
-                                                ? trayData?.code
-                                                : null
-                                        )}
-                                        )
-                                    </MenuItem>
-                                ) : null}
+                                <MenuItem value={stateData.tray_grade}>
+                                    {`CT${stateData.tray_grade}`} - (
+                                    {ctxTray?.map((trayData) =>
+                                        trayData.tray_grade ==
+                                            stateData.tray_grade &&
+                                        trayData.sort_id == 'Issued to Audit'
+                                            ? trayData?.code
+                                            : null
+                                    )}
+                                    )
+                                </MenuItem>
                             </TextField>
                         ) : null}
 
@@ -622,6 +568,9 @@ export default function DialogBox() {
                             label="Select color"
                             fullWidth
                             select
+                            disabled={
+                                stateData.storage_verification != undefined
+                            }
                             sx={{
                                 mb: 2,
                             }}
@@ -641,6 +590,9 @@ export default function DialogBox() {
                             sx={{
                                 mb: 2,
                             }}
+                            disabled={
+                                stateData.storage_verification != undefined
+                            }
                             onChange={handleChange}
                             value={stateData?.ram_verification}
                             name="ram_verification"
@@ -659,6 +611,10 @@ export default function DialogBox() {
                             sx={{
                                 mb: 2,
                             }}
+                            disabled={
+                                stateData.color == undefined ||
+                                stateData.ram_verification == undefined
+                            }
                             onChange={handleChange}
                             name="storage_verification"
                         >
@@ -671,14 +627,25 @@ export default function DialogBox() {
                         <TextField
                             label="Audit Remark"
                             fullWidth
+                            sx={{
+                                mb: 2,
+                            }}
                             onChange={handleChange}
                             name="description"
+                        />
+                        <TextField
+                            label="Sub Muic"
+                            fullWidth
+                            disabled
+                            value={subMuic}
+                            name="sub_muic"
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button
                             sx={{ ml: 2 }}
                             disabled={
+                                subMuic == '' ||
                                 stateData.stage == undefined ||
                                 stateData.color == undefined ||
                                 stateData.description == undefined ||
@@ -741,91 +708,53 @@ export default function DialogBox() {
                         <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
                     </Box>
                     <Box>
-                        {
-                            // (reportData?.delivery?.bqc_report?.bqc_status ==
-                            //     'Device not to be checked for BQC' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
-                            reportData?.delivery?.bqc_software_report ==
-                                undefined ||
-                            // (reportData?.delivery?.bqc_report?.bqc_status ==
-                            //     'BQC Incomplete' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
-                            // (reportData?.delivery?.charging?.battery_status ==
-                            //     'Charge failed' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
-                            // (reportData?.delivery?.charging?.battery_status ==
-                            //     'No-battery' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
-                            // (reportData?.delivery?.charging?.battery_status ==
-                            //     'Heat Problem' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
-                            // (reportData?.delivery?.charging?.lock_status ==
-                            //     'Software Issue' &&
-                            //     reportData?.delivery?.bqc_software_report?.hardware_test_summary?.toLowerCase() ==
-                            //         'failed') ||
+                        {reportData?.delivery?.bqc_software_report ==
+                            undefined ||
+                        reportData?.delivery?.bqc_software_report
+                            ?.final_grade == undefined ||
+                        (reportData?.delivery?.imei
+                            ?.match(/[0-9]/g)
+                            ?.join('') !==
                             reportData?.delivery?.bqc_software_report
-                                ?.final_grade == undefined ||
-                            (reportData?.delivery?.imei
+                                ?.mobile_imei &&
+                            reportData?.delivery?.imei
                                 ?.match(/[0-9]/g)
                                 ?.join('') !==
                                 reportData?.delivery?.bqc_software_report
-                                    ?.mobile_imei &&
-                                reportData?.delivery?.imei
-                                    ?.match(/[0-9]/g)
-                                    ?.join('') !==
-                                    reportData?.delivery?.bqc_software_report
-                                        ?.mobile_imei2 &&
-                                reportData?.delivery?.imei
-                                    ?.match(/[0-9]/g)
-                                    ?.join('') !==
-                                    reportData?.delivery?.bqc_software_report
-                                        ?._ro_ril_miui_imei0) ? (
-                                <Button
-                                    sx={{ mr: 2 }}
-                                    onClick={(e) =>
-                                        handelAdd(
-                                            e,
-                                            'Device not to be checked for BQC'
-                                        )
-                                    }
-                                    disabled={butDis}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    ADD to WHT
-                                </Button>
-                            ) : (
-                                <Button
-                                    sx={{ mr: 2 }}
-                                    disabled={butDis}
-                                    onClick={(e) => handleOpen()}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    ADD
-                                </Button>
-                            )
-                        }
+                                    ?.mobile_imei2 &&
+                            reportData?.delivery?.imei
+                                ?.match(/[0-9]/g)
+                                ?.join('') !==
+                                reportData?.delivery?.bqc_software_report
+                                    ?._ro_ril_miui_imei0) ? (
+                            <Button
+                                sx={{ mr: 2 }}
+                                onClick={(e) =>
+                                    handelAdd(
+                                        e,
+                                        'Device not to be checked for BQC'
+                                    )
+                                }
+                                disabled={butDis}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD to WHT
+                            </Button>
+                        ) : (
+                            <Button
+                                sx={{ mr: 2 }}
+                                disabled={butDis}
+                                onClick={(e) => handleOpen()}
+                                variant="contained"
+                                color="primary"
+                            >
+                                ADD
+                            </Button>
+                        )}
                     </Box>
                 </Box>
                 {gridData}
-                {/* <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                        mt: 2,
-                        mr: 3,
-                        ml: 3,
-                        mb: 2,
-                    }}
-                >
-                  
-                </Box> */}
             </Box>
         </>
     )

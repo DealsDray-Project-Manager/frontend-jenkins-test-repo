@@ -46,7 +46,6 @@ const MemberEditorDialog = () => {
     useEffect(() => {
         if (Object.keys(editFetchData).length !== 0) {
             editFetchData.cpassword = editFetchData.password
-            console.log(editFetchData.mobile_verification_status)
             reset({ ...editFetchData })
             let obj = {
                 code: editFetchData.warehouse,

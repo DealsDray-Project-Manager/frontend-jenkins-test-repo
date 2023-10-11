@@ -72,7 +72,6 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handleQtyChange = (submuic, field, value, grade) => {
-        console.log(submuic)
         // Find the item in the state based on the 'muic'
         const updatedItem = item.find(
             (item) =>

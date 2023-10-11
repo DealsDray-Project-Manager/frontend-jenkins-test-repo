@@ -5,8 +5,9 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography,Table } from '@mui/material'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -95,7 +96,7 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                <Typography sx={{ fontWeight: 'bold' }} >
                    BOT Agent Name
                 </Typography>
             ),
@@ -184,6 +185,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Table className="custom-table" >
 
             <MUIDataTable
                 title={'Requests'}
@@ -228,6 +230,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
         </Container>
     )
 }

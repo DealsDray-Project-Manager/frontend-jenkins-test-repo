@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import { Button, Typography, Card, Box } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSpMisAgent } from '../../../../../../axios'
+import '../../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',

@@ -7,7 +7,8 @@ import { axiosMisUser } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Box , Table, TableContainer} from '@mui/material'
 import Swal from 'sweetalert2'
-
+import '../../../../app.css'
+ 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -176,7 +177,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <ProductTable>
+            <Table className="custom-table" >
             <MUIDataTable
                 title={'Procurement'}
                 data={item}
@@ -298,7 +299,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
-            </ProductTable>
+            </Table>
         </Container>
     )
 }

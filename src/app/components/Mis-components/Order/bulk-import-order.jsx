@@ -349,7 +349,7 @@ const PaginationTable = () => {
                 }
                 if (
                     err?.model_name_does_not_exist?.includes(
-                        data?.old_item_details?.split(':')?.[1]
+                        data?.old_item_details?.split(':').slice(1).join(':')
                     ) ||
                     data?.old_item_details?.split(':')?.[1] == undefined ||
                     data?.old_item_details?.split(':')?.[1] == ''

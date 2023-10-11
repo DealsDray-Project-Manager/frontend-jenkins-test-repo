@@ -15,6 +15,7 @@ import {
     TableContainer,
 } from '@mui/material'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -286,6 +287,7 @@ const SimpleMuiTable = () => {
                         Model : {model}
                     </Typography>
                 </Box>
+                    <Table className="custom-table" >
 
                 <MUIDataTable
                     sx={{ mt: 0 }}
@@ -332,6 +334,7 @@ const SimpleMuiTable = () => {
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
+                    </Table>
 
                 <br />
                 <Box>

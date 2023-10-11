@@ -2,11 +2,12 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Table } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -26,10 +27,9 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
- 
 
-    const handelViewItem = (brand,model) => {
-        navigate('/mis/sorting/wht-to-rp/process/' + brand + "/" + model)
+    const handelViewItem = (brand, model) => {
+        navigate('/mis/sorting/wht-to-rp/process/' + brand + '/' + model)
     }
 
     useEffect(() => {
@@ -98,7 +98,6 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.muic || '',
-
             },
         },
         {
@@ -134,8 +133,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                
-
             },
         },
         {
@@ -152,14 +149,19 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value,tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={() => handelViewItem(tableMeta.rowData[2]?.brand,tableMeta.rowData[3]?.model)}
+                            onClick={() =>
+                                handelViewItem(
+                                    tableMeta.rowData[2]?.brand,
+                                    tableMeta.rowData[3]?.model
+                                )
+                            }
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
@@ -181,50 +183,52 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Items'}
-                data={item}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Items'}
+                    data={item}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

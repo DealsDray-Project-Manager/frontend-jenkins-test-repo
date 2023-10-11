@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box } from '@mui/material'
+import { Button, Typography, Card, Box, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSpMisAgent } from '../../../../axios'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -103,7 +104,7 @@ const SimpleMuiTable = () => {
                 sort: true,
             },
         },
-       
+
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
@@ -157,34 +158,36 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Card>
-                <MUIDataTable
-                    title={'Procurement list'}
-                    data={spList}
-                    columns={columns}
-                    options={{
-                        filterType: 'textField',
-                        responsive: 'simple',
-                        download: false,
-                        print: false,
-                        textLabels: {
-                            body: {
-                                noMatch: isLoading
-                                    ? 'Loading...'
-                                    : 'Sorry, there is no matching data to display',
+                <Table className="custom-table">
+                    <MUIDataTable
+                        title={'Procurement list'}
+                        data={spList}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
                             },
-                        },
-                        selectableRows: 'none', // set checkbox for each row
-                        // search: false, // set search option
-                        // filter: false, // set data filter option
-                        // download: false, // set download option
-                        // print: false, // set print option
-                        // pagination: true, //set pagination option
-                        // viewColumns: false, // set column option
-                        
-                        elevation: 0,
-                        rowsPerPageOptions: [10, 20, 40, 80, 100],
-                    }}
-                />
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </Table>
                 <br />
                 <Box>
                     <Button

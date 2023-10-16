@@ -375,7 +375,7 @@ export default function DialogBox() {
                         disabled={
                             loading == true ||
                             trayData?.actual_items?.length !==
-                                trayData?.items?.length ||
+                                trayData?.items?.length || trayData?.length == 0 ||
                             description == ''
                                 ? true
                                 : false

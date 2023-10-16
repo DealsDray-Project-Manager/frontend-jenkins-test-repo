@@ -9,7 +9,7 @@ import {
     Button,
     Typography,
     Dialog,
-    TableContainer,
+    Table,
     DialogTitle,
     IconButton,
     DialogContent,
@@ -19,6 +19,7 @@ import {
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -314,6 +315,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: 'Return from rdl-2' }]} />
             </div>
+                <Table className="custom-table" >
 
             <MUIDataTable
                 title={'Sp Tray'}
@@ -351,6 +353,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+                </Table>
         </Container>
     )
 }

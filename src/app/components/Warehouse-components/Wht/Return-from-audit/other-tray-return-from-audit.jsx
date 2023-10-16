@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import AssignTrayDialogBox from './assign-tray'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 import {
     Button,
@@ -16,6 +17,7 @@ import {
     Typography,
     DialogContent,
     DialogActions,
+    Table,
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
@@ -69,7 +71,7 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 }
 const SimpleMuiTable = () => {
-    const {user } = useAuth()
+    const { user } = useAuth()
     const [isAlive, setIsAlive] = useState(true)
     const [tray, setTray] = useState([])
     const [open, setOpen] = React.useState(false)
@@ -122,7 +124,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 trayId: trayId,
                 counts: counts,
-                actioUser:user.username
+                actioUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/recievedFromOtherTray', obj)
             if (res.status == 200) {
@@ -160,13 +162,11 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handelViewTray = (e, id,trayType) => {
+    const handelViewTray = (e, id, trayType) => {
         e.preventDefault()
-        if(trayType == "WHT"){
-
+        if (trayType == 'WHT') {
             navigate('/wareshouse/wht/return-from-audit/tray-items/' + id)
-        }
-        else{
+        } else {
             navigate('/wareshouse/wht/return-from-audit/ctx/tray-items/' + id)
         }
     }
@@ -208,39 +208,50 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'type_taxanomy',
-            label: <Typography sx={{fontWeight:'bold'}}>Tray Type</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Status</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Agent Name</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -248,14 +259,14 @@ const SimpleMuiTable = () => {
 
         {
             name: 'brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -272,7 +283,11 @@ const SimpleMuiTable = () => {
 
         {
             name: 'closed_time_bot',
-            label: <Typography sx={{fontWeight:'bold'}}>Audit Done Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Audit Done Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -283,7 +298,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'code',
-            label: <Typography sx={{fontWeight:'bold'}}>Actions</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
             options: {
                 filter: false,
                 sort: false,
@@ -313,7 +328,11 @@ const SimpleMuiTable = () => {
                                         variant="contained"
                                         style={{ backgroundColor: '#206CE2' }}
                                         onClick={(e) => {
-                                            handelViewTray(e, value,tableMeta.rowData[2])
+                                            handelViewTray(
+                                                e,
+                                                value,
+                                                tableMeta.rowData[2]
+                                            )
                                         }}
                                     >
                                         View
@@ -404,50 +423,52 @@ const SimpleMuiTable = () => {
             >
                 Assign new tray
             </Button>
-
-            <MUIDataTable
-                title={'Tray'}
-                data={tray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={tray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <AssignTrayDialogBox
                     handleClose={handleDialogClose}

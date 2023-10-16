@@ -4,6 +4,9 @@ import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
 import { axiosMisUser } from '../../../../../axios'
 import useAuth from 'app/hooks/useAuth'
+import Swal from 'sweetalert2'
+
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -47,14 +50,23 @@ const MemberEditorDialog = ({
             if (res.status == 200) {
                 handleClose()
                 setLoading(false)
-                alert(res.data.message)
                 setRefresh((refresh) => !refresh)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 setLoading(false)
                 alert(res.data.message)
             }
         } catch (error) {
-            alert(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+            })
         }
     }
 

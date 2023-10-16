@@ -274,7 +274,7 @@ const SimpleMuiTable = () => {
 
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Manage sp Categories'}
+                    title={'Manage Sp Categories'}
                     data={categoriesList}
                     columns={columns}
                     options={{

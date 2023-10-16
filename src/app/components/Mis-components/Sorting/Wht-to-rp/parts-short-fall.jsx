@@ -11,10 +11,7 @@ import {
     TableContainer,
     Card,
 } from '@mui/material'
-
-import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
-import jwt_decode from 'jwt-decode'
-import { useNavigate, useParams } from 'react-router-dom'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,32 +36,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
     },
 }))
 
-const ProductTable = styled(Table)(() => ({
-    minWidth: 750,
-    width: '100%',
-    height: '100%',
-    whiteSpace: 'nowrap',
-    '& thead': {
-        '& th:first-of-type': {
-            paddingLeft: 16,
-        },
-    },
-    '& td': {
-        borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
-        paddingLeft: '16px !important',
-    },
-}))
-
-const ScrollableTableContainer = styled(TableContainer)`
-    overflow-x: scroll;
-
-    /* Hide the scrollbar in webkit-based browsers */
-    ::-webkit-scrollbar {
-        display: none;
-    }
-`
 
 const SimpleMuiTable = ({ partsNotAvailable }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -119,7 +90,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
         {
             name: 'closed_date_agent',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" fontWeight="bold" >
                     <>RDL 1 Done Date</>
                 </Typography>
             ),
@@ -134,7 +105,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" fontWeight="bold" >
                     <>RDL 1 Username</>
                 </Typography>
             ),
@@ -147,7 +118,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
         {
             name: 'items',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" fontWeight="bold" >
                     <>RDL 1 User Remarks</>
                 </Typography>
             ),
@@ -197,63 +168,60 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
                     margin: 'auto',
                 }}
             >
-                <ScrollableTableContainer>
-                    <ProductTable>
-                        <MUIDataTable
-                            // title={'Assign for Repairs'}
-                            sx={{ borderTop: '0px' }}
-                            data={partsNotAvailable}
-                            columns={columns}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                textLabels: {
-                                    body: {
-                                        noMatch: isLoading
-                                            ? 'Loading...'
-                                            : 'Sorry, there is no matching data to display',
-                                    },
+                <Table className="custom-table">
+                    <MUIDataTable
+                        // title={'Assign for Repairs'}
+                        sx={{ borderTop: '0px' }}
+                        data={partsNotAvailable}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
                                 },
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                //  pagination: false, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
-                                            return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        }
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            //  pagination: false, //set pagination option
+                            // viewColumns: false, // set column option
+                            customSort: (data, colIndex, order) => {
+                                return data.sort((a, b) => {
+                                    if (colIndex === 1) {
                                         return (
-                                            (a.data[colIndex] < b.data[colIndex]
+                                            (a.data[colIndex].price <
+                                            b.data[colIndex].price
                                                 ? -1
                                                 : 1) *
                                             (order === 'desc' ? 1 : -1)
                                         )
-                                    })
-                                },
-                                // elevation: 0,
-                                // rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </ProductTable>
-                </ScrollableTableContainer>
+                                    }
+                                    return (
+                                        (a.data[colIndex] < b.data[colIndex]
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                })
+                            },
+                            // elevation: 0,
+                            // rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
+                </Table>
             </StyledTable>
         )
     }, [partsNotAvailable, columns])
 
     return (
-        <Card sx={{ mt: 1 }}>
+        <Card >
             <Box>
                 <Box sx={{ pl: 2 }}>
                     <Typography sx={{ fontSize: 'large', fontWeight: 'bold' }}>

@@ -5,7 +5,8 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Table } from '@mui/material'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -104,7 +105,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+
         {
             name: 'actual_items',
             label: 'acutual_items',
@@ -124,11 +125,7 @@ const SimpleMuiTable = () => {
         {
             name: 'items',
             label: (
-                <Typography
-                    fontWeight="bold"
-                    variant="subtitle1"
-                  
-                >
+                <Typography fontWeight="bold" variant="subtitle1">
                     Quantity
                 </Typography>
             ),
@@ -149,7 +146,7 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                <Typography fontWeight="bold" variant="subtitle1" >
                     Agent Name
                 </Typography>
             ),
@@ -160,7 +157,7 @@ const SimpleMuiTable = () => {
         {
             name: 'name',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                <Typography fontWeight="bold" variant="subtitle1" >
                     Tray Name
                 </Typography>
             ),
@@ -191,7 +188,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
+
         {
             name: 'sort_id',
             label: (
@@ -206,7 +203,7 @@ const SimpleMuiTable = () => {
         {
             name: 'created_at',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" noWrap>
+                <Typography fontWeight="bold" variant="subtitle1" >
                     Creation Date
                 </Typography>
             ),
@@ -269,52 +266,54 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Tray'}
-                data={tray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    showFirstButton: 'true',
-                    showLastButton: 'true',
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={tray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        showFirstButton: 'true',
+                        showLastButton: 'true',
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

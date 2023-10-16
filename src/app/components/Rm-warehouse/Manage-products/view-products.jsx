@@ -5,10 +5,11 @@ import { styled } from '@mui/system'
 import EditProdutDilog from './edit-product'
 import AddEditorDialog from './add-products'
 import { useNavigate } from 'react-router-dom'
-import { Button, Box, IconButton, Icon, Typography } from '@mui/material'
+import { Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSuperAdminPrexo,baseURL } from '../../../../axios'
+import { axiosSuperAdminPrexo, baseURL } from '../../../../axios'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -57,54 +58,6 @@ const SimpleMuiTable = () => {
             setIsLoading(false)
         }
     }, [isAlive])
-
-    const editProductData = async (prdodutId) => {
-        try {
-            let response = await axiosSuperAdminPrexo.get(
-                '/getEditProduct/' + prdodutId
-            )
-            if (response.status === 200) {
-                setEditFetchData(response.data.data)
-                handleDialogOpen()
-            } else if (response.status == 202) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response.data.message,
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
-
-    const editImage = async (productId) => {
-        try {
-            let res = await axiosSuperAdminPrexo.post(
-                '/getImageEditProdt/' + productId
-            )
-            if (res.status == 200) {
-                setEditFetchData(res.data.data)
-                handleDialogOpenForProductEdit()
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.message,
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
 
     const handleDialogClose = () => {
         setEditFetchData({})
@@ -182,7 +135,11 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography fontSize='16px' fontWeight='bold'>Record No</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -192,7 +149,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'image', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Image</Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Image
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: false,
                 sort: false,
@@ -216,42 +177,66 @@ const SimpleMuiTable = () => {
 
         {
             name: 'vendor_sku_id',
-            label: <Typography fontSize='16px' fontWeight='bold'>SKU ID</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    SKU ID
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography fontSize='16px' fontWeight='bold'>Brand</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Brand
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography fontSize='16px' fontWeight='bold'>Model</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Model
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'vendor_name',
-            label: <Typography fontSize='16px' fontWeight='bold'>Vendor Name</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Vendor Name
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography fontSize='16px' fontWeight='bold'>MUIC</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    MUIC
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography fontSize='16px' fontWeight='bold'>Creation Date</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Creation Date
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
@@ -260,83 +245,6 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        // {
-        //     name: 'created_by',
-        //     label: 'Created By',
-        //     options: {
-        //         filter: true,
-        //     },
-        // },
-        // {
-        //     name: 'status',
-        //     label: 'Actions',
-        //     options: {
-        //         filter: false,
-        //         sort: false,
-        //         customBodyRender: (value, tableMeta) => {
-        //             return (
-        //                 <Box
-        //                     sx={{
-        //                         display: 'flex',
-        //                         flexDirection: 'row',
-        //                     }}
-        //                 >
-        //                     {tableMeta.rowData[8] == user.name ? (
-        //                         <>
-        //                             <IconButton>
-        //                                 <Icon
-        //                                     onClick={(e) => {
-        //                                         editProductData(
-        //                                             tableMeta.rowData[6]
-        //                                         )
-        //                                     }}
-        //                                     color="primary"
-        //                                 >
-        //                                     edit
-        //                                 </Icon>
-        //                             </IconButton>
-        //                             <IconButton>
-        //                                 <Icon
-        //                                     onClick={() => {
-        //                                         handelDelete(
-        //                                             tableMeta.rowData[6]
-        //                                         )
-        //                                     }}
-        //                                     color="error"
-        //                                 >
-        //                                     delete
-        //                                 </Icon>
-        //                             </IconButton>
-        //                             <IconButton>
-        //                                 <Icon
-        //                                     onClick={() => {
-        //                                         editImage(tableMeta.rowData[6])
-        //                                     }}
-        //                                     color="primary"
-        //                                 >
-        //                                     image
-        //                                 </Icon>
-        //                             </IconButton>
-        //                         </>
-        //                     ) : null}
-        //                     <IconButton>
-        //                         <Icon
-        //                             onClick={() =>
-        //                                 navigate(
-        //                                     '/rm-user/products/muiclist/' +
-        //                                         tableMeta.rowData[6]
-        //                                 )
-        //                             }
-        //                             color="default"
-        //                         >
-        //                             details
-        //                         </Icon>
-        //                     </IconButton>
-        //                 </Box>
-        //             )
-        //         },
-        //     },
-        // },
     ]
 
     return (
@@ -346,49 +254,35 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Products', path: '/pages' }]}
                 />
             </div>
-            {/* <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                onClick={() => handleDialogOpen()}
-            >
-                Add New Product
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate('/rm-user/products/bulk-product')}
-            >
-                Add Bulk Products
-            </Button> */}
-            <MUIDataTable
-                title={'All Products'}
-                data={productList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'All Product'}
+                    data={productList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <AddEditorDialog
                     handleClose={handleDialogClose}

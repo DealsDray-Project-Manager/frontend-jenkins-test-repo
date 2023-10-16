@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import MemberEditorDialog from './part-add'
 import Swal from 'sweetalert2'
-import { Button, IconButton, Icon, Box, Radio, Typography } from '@mui/material'
+import { Table, Typography } from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -204,7 +205,11 @@ const PartTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography fontSize='16px' fontWeight='bold'>Record No </Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Record No{' '}
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -214,29 +219,45 @@ const PartTable = () => {
         },
         {
             name: 'part_code', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Part No </Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Part No{' '}
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'box_id', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Box Id </Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Box Id{' '}
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
-        
+
         {
             name: 'color', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Color</Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Color
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Part Name</Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Part Name
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
@@ -244,7 +265,7 @@ const PartTable = () => {
         {
             name: 'sp_category',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                <Typography variant="subtitle1" fontWeight="bold" >
                     <>Category</>
                 </Typography>
             ),
@@ -254,28 +275,44 @@ const PartTable = () => {
         },
         {
             name: 'technical_qc', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold'>Technical QC</Typography>,// column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Technical QC
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'description',
-            label: <Typography fontSize='16px' fontWeight='bold'>Description</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Description
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'avl_stock', // field name in the row object
-            label: <Typography fontSize='16px' fontWeight='bold' noWrap>Available Stock</Typography>, // column title that will be shown in table
+            label: (
+                <Typography fontSize="16px" fontWeight="bold" >
+                    Available Stock
+                </Typography>
+            ), // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'created_at',
-            label: <Typography fontSize='16px' fontWeight='bold'>Creation Date </Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Creation Date{' '}
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: true,
@@ -294,7 +331,11 @@ const PartTable = () => {
         // },
         {
             name: 'status',
-            label: <Typography fontSize='16px' fontWeight='bold'>Status</Typography>,
+            label: (
+                <Typography fontSize="16px" fontWeight="bold">
+                    Status
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) => {
@@ -314,67 +355,6 @@ const PartTable = () => {
                 },
             },
         },
-        // {
-        //     name: '_id',
-        //     label: 'Actions',
-        //     options: {
-        //         filter: false,
-        //         sort: false,
-
-        //         customBodyRender: (value, tableMeta) => {
-        //             return (
-        //                 <Box
-        //                     sx={{
-        //                         display: 'flex',
-        //                         flexDirection: 'row',
-        //                     }}
-        //                 >
-        //                     {tableMeta.rowData[8] == user.name ? (
-        //                         <>
-        //                             {tableMeta.rowData[9] == 'Active' ? (
-        //                                 <Radio
-        //                                     onClick={(e) => {
-        //                                         handelActive(value, 'Deactive')
-        //                                     }}
-        //                                     checked
-        //                                     style={{ color: 'green' }}
-        //                                 />
-        //                             ) : (
-        //                                 <Radio
-        //                                     onClick={(e) => {
-        //                                         handelActive(value, 'Active')
-        //                                     }}
-        //                                     checked
-        //                                     style={{ color: 'red' }}
-        //                                 />
-        //                             )}
-        //                             <IconButton>
-        //                                 <Icon
-        //                                     onClick={(e) => {
-        //                                         editMaster(value)
-        //                                     }}
-        //                                     color="primary"
-        //                                 >
-        //                                     edit
-        //                                 </Icon>
-        //                             </IconButton>
-        //                         </>
-        //                     ) : null}
-        //                     <IconButton>
-        //                         <Icon
-        //                             onClick={(e) => {
-        //                                 handledetails(tableMeta.rowData[1])
-        //                             }}
-        //                             color="default"
-        //                         >
-        //                             details
-        //                         </Icon>
-        //                     </IconButton>
-        //                 </Box>
-        //             )
-        //         },
-        //     },
-        // },
     ]
 
     return (
@@ -384,73 +364,36 @@ const PartTable = () => {
                     routeSegments={[{ name: 'Part-list', path: '/' }]}
                 />
             </div>
-            {/* <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                onClick={() => handleDialogOpen('ADD')}
-            >
-                Add New Part
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate('/rm-user/view-list/bulk-add')}
-            >
-                Add Bulk
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="success"
-                onClick={(e) => download(e)}
-            >
-                Download available stock
-            </Button>
 
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="warning"
-                onClick={() =>
-                    navigate('/rm-user/view-list/managestock', {
-                        state: {
-                            partList: partList,
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Spare Part List'}
+                    data={partList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    })
-                }
-            >
-                Manage Stock
-            </Button> */}
-
-            <MUIDataTable
-                title={'Spare Part List'}
-                data={partList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

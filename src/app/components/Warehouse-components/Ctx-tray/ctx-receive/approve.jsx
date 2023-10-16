@@ -59,9 +59,10 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosSuperAdminPrexo.post('/trayracks/view/' + user.warehouse)
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
                 if (res.status == 200) {
-                    
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -80,7 +81,7 @@ export default function DialogBox() {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { location,cpc_type } = jwt_decode(admin)
+                    let { location, cpc_type } = jwt_decode(admin)
                     setUserCpcType(cpc_type)
                     let response = await axiosWarehouseIn.post(
                         '/getWhtTrayItem/' +
@@ -148,7 +149,7 @@ export default function DialogBox() {
             }
         }
     }
-   
+
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
@@ -162,8 +163,8 @@ export default function DialogBox() {
                 length: trayData?.items?.length,
                 limit: trayData?.limit,
                 rackId: rackId,
-                userCpcType:userCpcType,
-                actUser:user.username
+                userCpcType: userCpcType,
+                actUser: user.username,
             }
             let res = await axiosWarehouseIn.post(
                 '/ctx/transferRequest/approve',
@@ -431,7 +432,7 @@ export default function DialogBox() {
                                 trayData?.items?.length ||
                             description == ''
                                 ? true
-                                : false || rackId == ''
+                                : false || rackId == '' || trayData?.length == 0
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

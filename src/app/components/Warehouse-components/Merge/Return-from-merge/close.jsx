@@ -173,7 +173,7 @@ export default function DialogBox() {
             }
         }
     }
- 
+
     /************************************************************************** */
     const handelIssue = async (e, trayId, type, length, limit, status) => {
         e.preventDefault()
@@ -540,7 +540,7 @@ export default function DialogBox() {
                             tray[0]?.actual_items?.length !==
                                 tray[0]?.items?.length
                                 ? true
-                                : false || rackId == ''
+                                : false || rackId == '' || tray?.length == 0
                         }
                         onClick={(e) => {
                             handelIssue(

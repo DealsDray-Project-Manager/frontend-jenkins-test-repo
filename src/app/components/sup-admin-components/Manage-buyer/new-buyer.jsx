@@ -9,6 +9,7 @@ import Image from 'mui-image'
 import Swal from 'sweetalert2'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../.././../../axios'
+import SkeletonPage from './skelton-load'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -42,18 +43,7 @@ const MemberEditorDialog = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
     const { editFetchData } = state
-
-    useEffect(() => {
-        if (Object.keys(editFetchData).length !== 0) {
-            editFetchData.cpassword = editFetchData.password
-            console.log(editFetchData.mobile_verification_status)
-            reset({ ...editFetchData })
-            let obj = {
-                code: editFetchData.warehouse,
-            }
-            setWarehouse([obj])
-        }
-    }, [])
+    const [pageLoad, setPageLoad] = useState(true)
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -71,7 +61,7 @@ const MemberEditorDialog = () => {
             }
         }
         fetchCpc()
-    }, [])
+    }, [pageLoad])
 
     const schema = Yup.object().shape({
         name: Yup.string()
@@ -148,6 +138,36 @@ const MemberEditorDialog = () => {
     } = useForm({
         resolver: yupResolver(schema),
     })
+
+    useEffect(() => {
+        if (Object.keys(editFetchData).length !== 0) {
+            editFetchData.cpassword = editFetchData.password
+            reset({ ...editFetchData })
+            let obj = {
+                code: editFetchData.warehouse,
+            }
+            setWarehouse([obj])
+            setGetSalesUsers([
+                {
+                    user_name: editFetchData.sales_users,
+                },
+            ])
+            setCpcType([
+                {
+                    location_type: editFetchData.cpc_type,
+                },
+            ])
+            Setprofile({
+                preview: editFetchData?.profile,
+            })
+            SetpanProof({ preview: editFetchData?.pan_card_proof })
+            SetAadharProof({ preview: editFetchData?.aadhar_proof })
+            SetBusinessAddressProof({
+                preview: editFetchData?.business_address_proof,
+            })
+        }
+        setPageLoad(false)
+    }, [])
 
     const onSubmit = async (values) => {
         try {
@@ -320,7 +340,9 @@ const MemberEditorDialog = () => {
         })
     }
 
-    return (
+    return pageLoad == true ? (
+        <SkeletonPage />
+    ) : (
         <Box p={3}>
             <Box
                 sx={{
@@ -487,7 +509,7 @@ const MemberEditorDialog = () => {
                         disabled={Object.keys(editFetchData).length !== 0}
                         name="cpc"
                         {...register('cpc')}
-                     
+                        defaultValue={getValues('cpc')}
                         error={errors.cpc ? true : false}
                         helperText={errors.cpc?.message}
                     >
@@ -549,9 +571,9 @@ const MemberEditorDialog = () => {
                         label="Sales User"
                         select
                         name="sales_users"
+                        defaultValue={getValues('sales_users')}
                         disabled={Object.keys(editFetchData).length !== 0}
                         {...register('sales_users')}
-                        defaultValue={getValues('sales_users')}
                         error={errors.warehouse ? true : false}
                         helperText={errors.warehouse?.message}
                     >
@@ -585,6 +607,7 @@ const MemberEditorDialog = () => {
                         select
                         name="mobile_verification_status"
                         {...register('mobile_verification_status')}
+                        defaultValue={getValues('mobile_verification_status')}
                         error={errors.mobile_verification_status ? true : false}
                         helperText={errors.mobile_verification_status?.message}
                     >
@@ -596,6 +619,7 @@ const MemberEditorDialog = () => {
                         label="Email Verification Status"
                         name="email_verification_status"
                         {...register('email_verification_status')}
+                        defaultValue={getValues('email_verification_status')}
                         error={errors.email_verification_status ? true : false}
                         helperText={errors.email_verification_status?.message}
                     >

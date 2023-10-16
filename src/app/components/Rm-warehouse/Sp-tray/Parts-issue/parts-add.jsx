@@ -5,9 +5,10 @@ import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosRmUserAgent, axiosSuperAdminPrexo } from '../../../../../axios'
-import { Button, Box, Typography, TextField, MenuItem } from '@mui/material'
+import { Button, Box, Typography, TextField, MenuItem,Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../../app.css'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -301,6 +302,8 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
+            <Table className="custom-table" >
+
             <MUIDataTable
                 title={'Parts'}
                 data={tray?.items}
@@ -337,6 +340,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </Table>
             <Box sx={{ float: 'right' }}>
                 <TextFieldCustOm
                     sx={{ m: 1, mt: 3 }}

@@ -207,14 +207,14 @@ const PaginationTable = () => {
                     accumulator?.gc_redeem_time
                 )
             }
-            if (key === 'Delivery Date') {
+            if (key === 'Delivery Date' && accumulator.delivery_date != undefined) {
                 accumulator.delivery_date = forDateFormat(
                     accumulator?.delivery_date
                 )
             }
             if (key === 'GC Refund Time') {
                 accumulator.gc_refund_time = forDateFormat(
-                    accumulator.gc_refund_time
+                    accumulator?.gc_refund_time
                 )
             }
 
@@ -223,15 +223,21 @@ const PaginationTable = () => {
     }
     const forDateFormat = (field) => {
         if (field?.includes('-')) {
+            console.log(field);
             // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
-            const [datePart, timePart] = field.split(' ')
-            const [day, month, year] = datePart.split('-')
-            const [hours, minutes, seconds] = timePart?.split(':')
+            const [datePart, timePart] = field?.split(' ')
+            const [day, month, year] = datePart?.split('-')
             let formattedTimestampStr
-            if (seconds) {
-                formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
-            } else {
-                formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
+            if(timePart){
+                const [hours, minutes, seconds] = timePart?.split(':')
+                if (seconds) {
+                    formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
+                } else {
+                    formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
+                }
+            }
+            else{
+                formattedTimestampStr = `${month}/${day}/${year}`
             }
             return new Date(formattedTimestampStr)
         } else {
@@ -349,10 +355,11 @@ const PaginationTable = () => {
                 }
                 if (
                     err?.model_name_does_not_exist?.includes(
-                        data?.old_item_details?.split(':').slice(1).join(':')
+                        data?.old_item_details?.split(':')?.slice(1)?.join('')
                     ) ||
-                    data?.old_item_details?.split(':')?.[1] == undefined ||
-                    data?.old_item_details?.split(':')?.[1] == ''
+                    data?.old_item_details?.split(':')?.slice(1)?.join('') ==
+                        undefined ||
+                    data?.old_item_details?.split(':')?.slice(1)?.join('') == ''
                 ) {
                     data.reason.push('Model name does not exists')
                 }
@@ -414,8 +421,14 @@ const PaginationTable = () => {
                         err?.brand_name_does_not_exist?.includes(
                             data?.old_item_details?.split(':')?.[1]
                         ) ||
-                        data?.old_item_details?.split(':')?.[1] == undefined ||
-                        data?.old_item_details?.split(':')?.[1] == ''
+                        data?.old_item_details
+                            ?.split(':')
+                            ?.slice(1)
+                            ?.join('') == undefined ||
+                        data?.old_item_details
+                            ?.split(':')
+                            ?.slice(1)
+                            ?.join('') == ''
                     ) {
                         obj.invalidItem.push(data)
                     } else if (
@@ -1160,9 +1173,10 @@ const PaginationTable = () => {
                                                         ]?.split(':')[0]
                                                     ) ||
                                                     err?.model_name_does_not_exist?.includes(
-                                                        data[
-                                                            'old_item_details'
-                                                        ]?.split(':')[1]
+                                                        data['old_item_details']
+                                                            ?.split(':')
+                                                            ?.slice(1)
+                                                            ?.join('')
                                                     ) ||
                                                     (Object.keys(err).length !=
                                                         0 &&
@@ -1191,19 +1205,28 @@ const PaginationTable = () => {
                                                     ) : err?.model_name_does_not_exist?.includes(
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1]
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('')
                                                       ) ||
                                                       (Object.keys(err)
                                                           .length != 0 &&
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1] ==
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('') ==
                                                               undefined) ||
                                                       (Object.keys(err)
                                                           .length != 0 &&
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1] ==
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('') ==
                                                               '') ? (
                                                         <ClearIcon
                                                             style={{
@@ -1236,7 +1259,10 @@ const PaginationTable = () => {
                                                     ) : err?.model_name_does_not_exist?.includes(
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1]
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('')
                                                       ) ? (
                                                         <p
                                                             style={{
@@ -1270,13 +1296,19 @@ const PaginationTable = () => {
                                                           .length != 0 &&
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1] ==
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('') ==
                                                               undefined) ||
                                                       (Object.keys(err)
                                                           .length != 0 &&
                                                           data[
                                                               'old_item_details'
-                                                          ]?.split(':')[1] ==
+                                                          ]
+                                                              ?.split(':')
+                                                              ?.slice(1)
+                                                              ?.join('') ==
                                                               '') ? (
                                                         <p
                                                             style={{
@@ -1826,10 +1858,10 @@ const PaginationTable = () => {
                                                             '') ||
                                                     (Object.keys(err).length !=
                                                         0 &&
-                                                        data[
-                                                            'old_item_details'
-                                                        ]?.split(':')[1] ==
-                                                            '') ||
+                                                        data['old_item_details']
+                                                            ?.split(':')
+                                                            ?.slice(1)
+                                                            ?.join('') == '') ||
                                                     (Object.keys(err).length !=
                                                         0 &&
                                                         data['imei'] == '') ||
@@ -1885,15 +1917,17 @@ const PaginationTable = () => {
                                                         ]?.split(':')[0] ==
                                                             undefined) ||
                                                     err?.model_name_does_not_exist?.includes(
-                                                        data[
-                                                            'old_item_details'
-                                                        ]?.split(':')[1]
+                                                        data['old_item_details']
+                                                            ?.split(':')
+                                                            ?.slice(1)
+                                                            ?.join('')
                                                     ) == true ||
                                                     (Object.keys(err).length !=
                                                         0 &&
-                                                        data[
-                                                            'old_item_details'
-                                                        ]?.split(':')[1] ==
+                                                        data['old_item_details']
+                                                            ?.split(':')
+                                                            ?.slice(1)
+                                                            ?.join('') ==
                                                             undefined) ||
                                                     (Object.keys(err).length !=
                                                         0 &&

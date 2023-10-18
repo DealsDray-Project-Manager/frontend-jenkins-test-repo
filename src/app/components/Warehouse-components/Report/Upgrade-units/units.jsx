@@ -7,9 +7,7 @@ import moment from 'moment'
 import { Table, Card, TextField, Box, Typography, Button } from '@mui/material'
 import '../../../../../app.css'
 import { useNavigate } from 'react-router-dom'
-import {
-    axiosWarehouseIn,
-} from '../../../../../axios'
+import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 
 const ProductTable = styled(Table)(() => ({

@@ -43,6 +43,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
 
     const schema = Yup.object().shape({
         delivery_type: Yup.string().required('Required*').nullable(),
+        cpc: Yup.string().required('Required*').nullable(),
         name_of_courier: Yup.string()
             .when('delivery_type', (delivery_type, schema) => {
                 if (delivery_type == 'Courier') {
@@ -93,7 +94,6 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                 }
             })
             .nullable(),
-
         description: Yup.string().required('Required*').nullable(),
     })
 
@@ -110,9 +110,10 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
     const onSubmit = async (value) => {
         try {
             setLoading(true)
+            value.bag_details = isCheck
             value.username = user.username
-            value.warehouseType=user.warehouse
-            let res = await axiosMisUser.post('/bagTransferSend',value)
+            value.warehouseType = user.warehouse
+            let res = await axiosMisUser.post('/bagTransferSend', value)
             if (res.status == 200) {
                 setLoading(false)
                 Swal.fire({
@@ -161,7 +162,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Add Courier Details</H4>
+                <H4 sx={{ mb: '20px' }}>Add Details</H4>
                 <TextFieldCustOm
                     label="Select Delivery Type"
                     select
@@ -186,28 +187,13 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                     helperText={errors.cpc?.message}
                     defaultValue={getValues('cpc')}
                 >
-                    {cpc.map((data) => (
-                        <MenuItem
-                            value={data.code}
-                            onClick={() => fetchWarehouse(data.code)}
-                        >
-                            {data.code}
-                        </MenuItem>
-                    ))}
+                    {cpc.map((data) =>
+                        user.location !== data.code ? (
+                            <MenuItem value={data.code}>{data.code}</MenuItem>
+                        ) : null
+                    )}
                 </TextFieldCustOm>
-                <TextFieldCustOm
-                    label="Select Warehouse"
-                    select
-                    name="warehouse"
-                    {...register('warehouse')}
-                    error={errors.warehouse ? true : false}
-                    helperText={errors.warehouse?.message}
-                    defaultValue={getValues('warehouse')}
-                >
-                    {warehouse?.map((data) => (
-                        <MenuItem value={data.name}>{data.name}</MenuItem>
-                    ))}
-                </TextFieldCustOm>
+
                 {deliveryType == 'Courier' ? (
                     <>
                         <TextFieldCustOm
@@ -251,6 +237,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                             label="Name of the person"
                             fullWidth
                             name="hand_name_of_the_person"
+                            // value={getValues("hand_name_of_the_person")}
                             {...register('hand_name_of_the_person')}
                             error={
                                 errors.hand_name_of_the_person ? true : false
@@ -263,11 +250,9 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                             type="date"
                             name="date_of_delivery"
                             InputLabelProps={{ shrink: true }}
-                            {...register('hand_name_of_the_person')}
-                            error={
-                                errors.hand_name_of_the_person ? true : false
-                            }
-                            helperText={errors.hand_name_of_the_person?.message}
+                            {...register('date_of_delivery')}
+                            error={errors.date_of_delivery ? true : false}
+                            helperText={errors.date_of_delivery?.message}
                         />
                         <TextFieldCustOm
                             label="Received by"

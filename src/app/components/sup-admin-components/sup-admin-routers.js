@@ -147,7 +147,14 @@ const SubMuicMaster = Loadable(
 const BqcSync = Loadable(
     lazy(() => import('./Bqc-sync/bqc-sync'))
 )
+const RemoveDupUicFromTray=Loadable(
+    lazy(() => import('./Remove-duplicat-from-tray/remove-dup-from-tray'))
+)
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/remove-duplicate-uic',
+        element: <RemoveDupUicFromTray />,
+    },
     {
         path: '/sup-admin/bqc-sync',
         element: <BqcSync />,
@@ -294,11 +301,11 @@ const SuperAdminRouter = [
         element: <ReadyForChargingViewItem />,
     },
     {
-        path: '/sup-admin/remove-invalid-item',
+        path: '/sup-admin/remove-invalid-units-from-bag',
         element: <RemoveInvalidItem />,
     },
     {
-        path: '/sup-admin/remove-invalid-item/:bagId',
+        path: '/sup-admin/remove-invalid-units-from-bag/:bagId',
         element: <RemoveInvalidItemView />,
     },
     {

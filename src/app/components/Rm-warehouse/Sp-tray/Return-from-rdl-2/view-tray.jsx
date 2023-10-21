@@ -8,6 +8,7 @@ import { axiosRmUserAgent } from '../../../../../axios'
 import { Button, Box, Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import AddToBox from './dialogbox'
+import useAuth from 'app/hooks/useAuth'
 import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
@@ -33,6 +34,7 @@ const SimpleMuiTable = () => {
     const [objId, setObjId] = useState('')
     const [uniqueid, setUniqueId] = useState('')
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,6 +82,7 @@ const SimpleMuiTable = () => {
         try {
             let obj = {
                 spTrayId: trayId,
+                actionUser: user.username,
             }
             const res = await axiosRmUserAgent.post('/rdlTwoDoneCloseSP', obj)
             if (res.status == 200) {

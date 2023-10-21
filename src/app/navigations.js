@@ -373,9 +373,20 @@ export const navigations = [
     },
 
     {
-        name: 'Remove invalid item',
-        icon: 'remove',
-        path: '/sup-admin/remove-invalid-item',
+        name: 'Remove Units',
+        icon: 'battery_charging_full',
+        children: [
+            {
+                name: 'Invalid Units From Bag',
+                path: '/sup-admin/remove-invalid-units-from-bag',
+                iconText: 'PL',
+            },
+            {
+                name: 'Duplicate Units From Tray',
+                path: '/sup-admin/remove-duplicate-uic',
+                iconText: 'PL',
+            },
+        ],
         auth: authRoles.admin,
         sales: false,
     },
@@ -401,8 +412,8 @@ export const navigations = [
         sales: false,
     },
     {
-        name: 'BQC Sync',
-        icon: 'verified_user',
+        name: 'BQC sync',
+        icon: 'sync',
         path: '/sup-admin/bqc-sync',
         auth: authRoles.admin,
         sales: false,
@@ -514,25 +525,24 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: false,
     },
-    // {
-    //     name: 'Bag Transfer',
-    //     icon: 'transfer_within_a_station',
-    //     children: [
-    //         {
-    //             name: 'Transfer',
-    //             path: '/mis/bag-transfer',
-    //             iconText: 'PL',
-    //         },
-    //         {
-    //             name: 'Receive',
-    //             path: '/mis/bag-receive',
-    //             iconText: 'PL',
-    //         },
-    //     ],
-    //     auth: authRoles.Mis,
-    //     sales: false,
-    // },
-
+    {
+        name: 'Bag Transfer',
+        icon: 'transfer_within_a_station',
+        children: [
+            {
+                name: 'Transfer',
+                path: '/mis/bag-transfer',
+                iconText: 'PL',
+            },
+            {
+                name: 'Receive',
+                path: '/mis/bag-receive',
+                iconText: 'PL',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
     {
         name: 'Assign to Agent',
         icon: 'assignment',

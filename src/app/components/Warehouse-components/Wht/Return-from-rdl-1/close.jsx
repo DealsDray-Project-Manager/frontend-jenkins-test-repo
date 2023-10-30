@@ -64,7 +64,6 @@ export default function DialogBox() {
                     '/trayracks/view/' + user.warehouse
                 )
                 if (res.status == 200) {
-                   
                     setrackiddrop(res.data.data)
                 }
             } catch (error) {
@@ -195,13 +194,11 @@ export default function DialogBox() {
                     description: description,
                     sortId: trayData?.sort_id,
                     screen: 'return-from-rdl-1',
-                    rackId:rackId,
-                    actUser:user.username
+                    rackId: rackId,
+                    actUser: user.username,
+                    length:trayData?.items?.length
                 }
-                let res = await axiosWarehouseIn.post(
-                    '/rdl-1/closedByWh',
-                    obj
-                )
+                let res = await axiosWarehouseIn.post('/rdl-1/closedByWh', obj)
                 if (res.status == 200) {
                     Swal.fire({
                         position: 'top-center',
@@ -484,7 +481,12 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || rackId == '' || description == ''
+                            trayData?.actual_items?.length !==
+                                trayData?.items?.length ||
+                            trayData?.length == 0 ||
+                            loading == true ||
+                            rackId == '' ||
+                            description == ''
                                 ? true
                                 : false
                         }

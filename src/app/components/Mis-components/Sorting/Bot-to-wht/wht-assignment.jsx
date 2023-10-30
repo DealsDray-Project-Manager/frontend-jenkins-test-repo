@@ -50,7 +50,6 @@ export default function DialogBox() {
                 if (res.status === 200) {
                     setClubModel(res.data.data)
                 } else {
-                
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
@@ -192,7 +191,7 @@ export default function DialogBox() {
                     setLoading(false)
                     setRefresh((refresh) => !refresh)
                     handeTrayGet(currentstate)
-                
+
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -201,11 +200,10 @@ export default function DialogBox() {
                     })
                 }
             } else {
-               
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title:"Tray Already Full",
+                    title: 'Tray Already Full',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -231,8 +229,8 @@ export default function DialogBox() {
             }
             let res = await axiosWarehouseIn.post('/removeItemWht', obj)
             if (res.status === 200) {
-                setRefresh((refresh)=> !refresh)
-         
+                setRefresh((refresh) => !refresh)
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',

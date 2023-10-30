@@ -214,7 +214,7 @@ const PaginationTable = () => {
                     setLoading(false)
                     setErr({})
                     setCountOfTray((p) => ({
-                        ...p,
+                        ...obj,
                         BOT: p.BOT + count1,
                         MMT: p.MMT + count2,
                         PMT: p.PMT + count3,

@@ -129,7 +129,8 @@ export default function DialogBox() {
                     if (
                         res.data.data.pickup_toTray == undefined ||
                         res.data.data.pickup_toTray == '' ||
-                        res.data.data.pickup_toTray == null
+                        res.data.data.pickup_toTray == null ||
+                        res.data.data.pickup_toTray != tray[1]?.code
                     ) {
                         addActualitemTop(res.data.data)
                     } else {
@@ -361,7 +362,8 @@ export default function DialogBox() {
                     >
                         {itemDetails?.pickup_toTray == '' ||
                         itemDetails?.pickup_toTray == undefined ||
-                        itemDetails?.pickup_toTray == null ? (
+                        itemDetails?.pickup_toTray == null ||
+                        itemDetails?.pickup_toTray !== tray?.[1]?.code ? (
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
                                     <h4>MUIC:-{itemDetails?.muic}</h4>

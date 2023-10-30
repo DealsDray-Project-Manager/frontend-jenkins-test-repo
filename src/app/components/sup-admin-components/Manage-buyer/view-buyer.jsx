@@ -171,6 +171,11 @@ const SimpleMuiTable = () => {
         })
     }
 
+    const handelHistory = (e, username) => {
+        e.preventDefault()
+        navigate('/sup-admin/buyer-edit-hitsory/' + username)
+    }
+
     const columns = [
         {
             name: 'index',
@@ -222,7 +227,7 @@ const SimpleMuiTable = () => {
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return <img height="80px" width="80px" src={value} />
+                    return <img height="80px" width="70px" src={value} />
                 },
             },
         },
@@ -237,7 +242,7 @@ const SimpleMuiTable = () => {
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return <img height="80px" width="80px" src={value} />
+                    return <img height="80px" width="70px" src={value} />
                 },
             },
         },
@@ -252,7 +257,7 @@ const SimpleMuiTable = () => {
                     </Typography>
                 ),
                 customBodyRender: (value, tableMeta) => {
-                    return <img height="80px" width="80px" src={value} />
+                    return <img height="80px" width="70px" src={value} />
                 },
             },
         },
@@ -280,7 +285,19 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customHeadLabelRender: () => (
                     <Typography variant="subtitle1" fontWeight="bold">
-                        Name
+                        Buyer Name
+                    </Typography>
+                ),
+            },
+        },
+        {
+            name: 'contact_person_name',
+            label: 'Contact Person Name',
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Contact Person Name
                     </Typography>
                 ),
             },
@@ -515,7 +532,7 @@ const SimpleMuiTable = () => {
                             {value == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
-                                        handelDeactive(tableMeta.rowData[10])
+                                        handelDeactive(tableMeta.rowData[11])
                                     }}
                                     checked
                                     style={{ color: 'green' }}
@@ -523,7 +540,7 @@ const SimpleMuiTable = () => {
                             ) : (
                                 <Radio
                                     onClick={(e) => {
-                                        handelActive(tableMeta.rowData[10])
+                                        handelActive(tableMeta.rowData[11])
                                     }}
                                     checked
                                     style={{ color: 'red' }}
@@ -532,11 +549,21 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editUser(tableMeta.rowData[10])
+                                        editUser(tableMeta.rowData[11])
                                     }}
                                     color="primary"
                                 >
                                     edit
+                                </Icon>
+                            </IconButton>
+                            <IconButton>
+                                <Icon
+                                    onClick={(e) => {
+                                        handelHistory(e, tableMeta.rowData[11])
+                                    }}
+                                    color="secondary"
+                                >
+                                    history
                                 </Icon>
                             </IconButton>
                         </Box>

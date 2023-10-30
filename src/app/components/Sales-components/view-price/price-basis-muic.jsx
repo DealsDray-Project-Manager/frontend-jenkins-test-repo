@@ -10,6 +10,9 @@ import {
     Checkbox,
     TextField,
     MenuItem,
+    Select,
+    InputLabel,
+    FormControl,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -24,6 +27,16 @@ import * as XLSX from 'xlsx'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import '../../../../app.css'
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -42,13 +55,20 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [item, setItem] = useState([])
     const navigate = useNavigate()
-    const [isTableSorted, setIsTableSorted] = useState(false)
+    const [isTableSorted, setIsTableSorted] = useState(true)
     const [filteredData, setFilteredData] = useState([])
     const [selectedItems, setSelectedItems] = useState([])
-    const [state, setState] = useState({})
+    const [state, setState] = useState({
+        brand: [],
+        model: [],
+        grade: [],
+    })
     const [isLoading, setIsLoading] = useState(false)
     const [brand, setbrand] = useState([])
     const [model, setModel] = useState([])
+    const [grade, setGrade] = useState([])
+    const [skuData, setSkuData] = useState([])
+    const [brandAvl, setBrandAvl] = useState([])
 
     useEffect(() => {
         let admin = localStorage.getItem('prexo-authentication')
@@ -62,7 +82,10 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
+
+                        setBrandAvl(res.data.arrOfBrand)
                         setItem(res.data.data)
+                        setSkuData(res.data.skuData)
                     }
                 } catch (error) {
                     setIsLoading(false)
@@ -90,17 +113,23 @@ const SimpleMuiTable = () => {
             if (res.status == 200) {
                 setbrand(res.data.data)
             }
+            let categorys = await axiosSuperAdminPrexo.get(
+                '/getCtxTrayCategory'
+            )
+            if (categorys.status == 200) {
+                setGrade(categorys.data)
+            }
         }
         FetchBrand()
     }, [])
 
     /*-----------------FETCH MODEL BASED ON THE BRAND---------------*/
     /* Fetch model */
-    const fetchModel = async (brandName) => {
+    const fetchModel = async (newValue) => {
         try {
-            let res = await axiosSuperAdminPrexo.post(
-                '/get-product-model/' + brandName
-            )
+            let arr = state?.brand
+            arr.push(newValue)
+            let res = await axiosSalsAgent.post('/getModelBasisOfArray', arr)
             if (res.status == 200) {
                 setModel(res.data.data)
             }
@@ -115,11 +144,15 @@ const SimpleMuiTable = () => {
 
     /*---------------------STATE CHANGE FOR SORT----------------------*/
     const handleChangeSort = ({ target: { name, value } }) => {
-        setState({
-            ...state,
-            [name]: value,
+        setState((prevState) => {
+            const updatedState = {
+                ...prevState,
+                [name]: value,
+            }
+            return updatedState
         })
     }
+
     const handelSort = async () => {
         try {
             const admin = localStorage.getItem('prexo-authentication')
@@ -130,12 +163,14 @@ const SimpleMuiTable = () => {
                     brand: state?.brand,
                     model: state?.model,
                     location: location,
+                    grade: state?.grade,
                 }
                 const res = await axiosSalsAgent.post(
                     '/viewPriceBasisMuicFilter',
                     obj
                 )
                 if (res.status == 200) {
+                    setIsTableSorted(false) // Add this line
                     setIsLoading(false)
                     setItem(res.data.data)
                 } else {
@@ -463,43 +498,82 @@ const SimpleMuiTable = () => {
                     </Button>
                 </Box>
                 <Box sx={{ mb: 1 }}>
-                    <TextField
-                        select
-                        label="Select Brand"
-                        variant="outlined"
-                        sx={{ ml: 3, width: 150 }}
-                        name="brand"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                    >
-                        {brand.map((brandData) => (
-                            <MenuItem
-                                value={brandData.brand_name}
-                                onClick={(e) => {
-                                    fetchModel(brandData.brand_name)
-                                }}
-                            >
-                                {brandData.brand_name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        select
-                        label="Select Model"
-                        variant="outlined"
-                        name="model"
-                        onChange={(e) => {
-                            handleChangeSort(e)
-                        }}
-                        sx={{ ml: 2, width: 150 }}
-                    >
-                        {model.map((modelData) => (
-                            <MenuItem value={modelData.model_name}>
-                                {modelData.model_name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                    <FormControl>
+                        <InputLabel id="demo-multiple-name-label">
+                            Select Brand
+                        </InputLabel>
+                        <Select
+                            select
+                            id="demo-multiple-name"
+                            multiple
+                            sx={{ width: 150 }}
+                            name="brand"
+                            MenuProps={MenuProps}
+                            value={state?.brand}
+                            onChange={(e) => {
+                                handleChangeSort(e)
+                            }}
+                        >
+                            {brand.map((brandData) =>
+                                brandAvl?.includes(brandData?.brand_name) ? (
+                                    <MenuItem
+                                        onClick={(e) => {
+                                            fetchModel(brandData.brand_name)
+                                        }}
+                                        value={brandData.brand_name}
+                                    >
+                                        {brandData.brand_name}
+                                    </MenuItem>
+                                ) : null
+                            )}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ ml: 1 }}>
+                        <InputLabel id="demo-multiple-name-label">
+                            Select Model
+                        </InputLabel>
+                        <Select
+                            select
+                            id="demo-multiple-name"
+                            name="model"
+                            multiple
+                            onChange={(e) => {
+                                handleChangeSort(e)
+                            }}
+                            value={state?.model}
+                            sx={{ width: 150 }}
+                        >
+                            {model.map((modelData) =>
+                                skuData?.includes(modelData?.muic) ? (
+                                    <MenuItem value={modelData.model_name}>
+                                        {modelData.model_name}
+                                    </MenuItem>
+                                ) : null
+                            )}
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ ml: 1 }}>
+                        <InputLabel id="demo-multiple-name-label">
+                            Select Grade
+                        </InputLabel>
+                        <Select
+                            select
+                            id="demo-multiple-name"
+                            sx={{ width: 150 }}
+                            name="grade"
+                            multiple
+                            value={state?.grade}
+                            onChange={(e) => {
+                                handleChangeSort(e)
+                            }}
+                        >
+                            {grade.map((gradeData) => (
+                                <MenuItem value={gradeData.code}>
+                                    {gradeData.code}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <Button
                         sx={{
                             ml: 2,
@@ -507,7 +581,7 @@ const SimpleMuiTable = () => {
                         }}
                         variant="contained"
                         disabled={
-                            state.brand == undefined || state.model == undefined
+                            state.brand.length == 0 && state.grade.length == 0
                         }
                         onClick={() => handelSort()}
                         style={{ backgroundColor: 'green' }}
@@ -568,7 +642,6 @@ const SimpleMuiTable = () => {
                             const property = columnProperties[colIndex]
 
                             if (property) {
-                                setIsTableSorted(true) // Add this line
                                 return data.sort((a, b) => {
                                     const aPropertyValue = getValueByProperty(
                                         a.data[colIndex],

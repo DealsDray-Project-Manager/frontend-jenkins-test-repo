@@ -192,6 +192,7 @@ export default function DialogBox() {
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',
                 actUser: user.username,
+                length:trayData?.items?.length
             }
             let res = await axiosWarehouseIn.post('/rdl-1/closedByWh', obj)
             if (res.status == 200) {
@@ -457,7 +458,7 @@ export default function DialogBox() {
                             trayData?.actual_items?.length !==
                                 trayData?.items?.length ||
                             loading == true ||
-                            rackId == '' ||
+                            rackId == '' || trayData?.length == 0 ||
                             description == ''
                                 ? true
                                 : false

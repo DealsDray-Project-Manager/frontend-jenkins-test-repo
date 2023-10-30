@@ -397,6 +397,7 @@ const PaginationTable = () => {
                             justifyContent: 'row',
                         }}
                     >
+                        
                         <TextField
                             size="medium"
                             variant="outlined"

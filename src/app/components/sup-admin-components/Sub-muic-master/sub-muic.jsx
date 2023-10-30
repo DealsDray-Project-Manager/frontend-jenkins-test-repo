@@ -161,22 +161,22 @@ const PartTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'created_at',
-        //     label: (
-        //         <Typography variant="subtitle1" fontWeight="bold">
-        //             <>Creation Date</>
-        //         </Typography>
-        //     ),
-        //     options: {
-        //         filter: false,
-        //         sort: true,
-        //         customBodyRender: (value) =>
-        //             new Date(value).toLocaleString('en-GB', {
-        //                 hour12: true,
-        //             }),
-        //     },
-        // },
+        {
+            name: 'createdAt',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Creation Date</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: true,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
     ]
 
     return (

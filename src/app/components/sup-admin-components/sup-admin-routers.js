@@ -145,8 +145,12 @@ const BqcSync = Loadable(
     lazy(() => import('./Bqc-sync/bqc-sync'))
 )
 const RemoveDupUicFromTray=Loadable(
+    
     lazy(() => import('./Remove-duplicat-from-tray/remove-dup-from-tray'))
 )
+
+const ByuerEditHistory = Loadable(lazy(() => import('./Manage-buyer/buyer-history')))
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/buyer/create',

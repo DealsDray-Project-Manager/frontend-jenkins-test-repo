@@ -149,6 +149,10 @@ const RemoveDupUicFromTray=Loadable(
 )
 const SuperAdminRouter = [
     {
+        path: '/sup-admin/buyer/create',
+        element: <BuyerCreationPage />,
+    },
+    {
         path: '/sup-admin/remove-duplicate-uic',
         element: <RemoveDupUicFromTray />,
     },

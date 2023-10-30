@@ -71,7 +71,9 @@ const MemberEditorDialog = () => {
             .max(40)
             .nullable(),
         business_name: Yup.string().required('Required*').nullable(),
-        contact: Yup.string().required('Required*').nullable(),
+        contact: Yup.string()
+            .matches(/^[0-9]{10,}$/, 'Mobile number must be at least 10 digits')
+            .required('Mobile number is required'),
         cpc: Yup.string().required('Required*').nullable(),
         user_name: Yup.string()
             .max(40, 'Please Enter Below 40')
@@ -103,20 +105,21 @@ const MemberEditorDialog = () => {
             .required('Required*')
             .nullable(),
 
-        pincode: Yup.string()
-
-            .required('Required*')
-            .nullable(),
-        gstin: Yup.string()
-            .matches(/^[A-Z0-9]{15}$/i, 'Please enter a valid GSTIN')
-
-            .required('Required*')
-            .nullable(),
+        pincode: Yup.string().required('Required*').nullable(),
+        gstin: Yup.string().matches(
+            /^\d{2}[A-Z]{5}\d{4}[A-Z]\d{1}[A-Z]\d{1}$/,
+            {
+                message: 'Please enter a valid GSTIN',
+                excludeEmptyString: true, // This option prevents validation on empty strings
+            }
+        ),
         pan_card_number: Yup.string()
-            .matches(/^[A-Za-z0-9]{10}$/, 'Please enter a valid PAN number')
-
-            .required('Required*')
-            .nullable(),
+            .trim()
+            .matches(
+                /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/,
+                'Please enter a valid PAN number'
+            )
+            .required('PAN number is required'),
         cpc_type: Yup.string().required('Required*').nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
         sales_users: Yup.string().required('Required*').nullable(),
@@ -202,7 +205,7 @@ const MemberEditorDialog = () => {
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',
-                        title: 'Buyer exist,Please check Buyername',
+                        title: 'Buyer exist, Please check your username or Email or Mobile Number',
                         confirmButtonText: 'Ok',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
@@ -647,6 +650,7 @@ const MemberEditorDialog = () => {
                         {...register('pan_card_number')}
                         error={errors.pan_card_number ? true : false}
                         helperText={errors.pan_card_number?.message}
+                        autoComplete="off" // Add this line to disable browser autofill
                     />
                     <TextFieldCustOm
                         label="Password"

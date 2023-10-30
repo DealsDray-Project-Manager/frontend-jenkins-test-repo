@@ -359,7 +359,7 @@ const SimpleMuiTable = () => {
                                 handelIssue(e, 'Assigned to sorting agent')
                             }}
                         >
-                            Assign To Agent
+                            Issue To Agent
                         </Button>
                     ) : null}
                 </Box>

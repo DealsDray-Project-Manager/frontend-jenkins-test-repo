@@ -24,8 +24,12 @@ const Warehouse = Loadable(
 )
 
 const Vendors = Loadable(lazy(() => import('./Manage-vendors/view-vendors')))
-const Categories = Loadable(lazy(() => import('./Manage-sp-categories/view-categories')))
-const Trayrack = Loadable(lazy(() => import('./Manage-trayracks/view-trayracks')))
+const Categories = Loadable(
+    lazy(() => import('./Manage-sp-categories/view-categories'))
+)
+const Trayrack = Loadable(
+    lazy(() => import('./Manage-trayracks/view-trayracks'))
+)
 const Storage = Loadable(lazy(() => import('./Manage-storage/view-storage')))
 const RAM = Loadable(lazy(() => import('./Manage-ram/view-ram')))
 const Boxes = Loadable(lazy(() => import('./Manage-boxes/view-boxes')))
@@ -141,12 +145,10 @@ const UnverifiedImeiUpdation = Loadable(
 const BuyerCreationPage = Loadable(
     lazy(() => import('./Manage-buyer/new-buyer'))
 )
-const SubMuicMaster = Loadable(
-    lazy(() => import('./Sub-muic-master/sub-muic'))
-)
-const BqcSync = Loadable(
-    lazy(() => import('./Bqc-sync/bqc-sync'))
-)
+const SubMuicMaster = Loadable(lazy(() => import('./Sub-muic-master/sub-muic')))
+const BqcSync = Loadable(lazy(() => import('./Bqc-sync/bqc-sync')))
+const ByuerEditHistory = Loadable(lazy(() => import('./Manage-buyer/buyer-history')))
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/bqc-sync',
@@ -166,11 +168,15 @@ const SuperAdminRouter = [
     },
     {
         path: '/sup-admin/buyer',
-        element: <ViewAllBuyer/>,
+        element: <ViewAllBuyer />,
+    },
+    {
+        path: '/sup-admin/buyer-edit-hitsory/:buyername',
+        element: <ByuerEditHistory />,
     },
     {
         path: '/sup-admin/buyer/create',
-        element: <BuyerCreationPage/>,
+        element: <BuyerCreationPage />,
     },
     {
         path: '/sup-admin/products',

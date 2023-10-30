@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Card, Box } from '@mui/material'
+import { Button, Typography, Card, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import { axiosSpMisAgent } from '../../../../../../axios'
 import '../../../../../../app.css'
@@ -150,7 +150,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Card>
+            <Table className="custom-table">
                 <MUIDataTable
                     title={'View sp'}
                     data={spList}
@@ -180,7 +180,7 @@ const SimpleMuiTable = () => {
                     }}
                 />
                 <br />
-            </Card>
+            </Table>
         </Container>
     )
 }

@@ -111,8 +111,8 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
         try {
             setLoading(true)
             value.username = user.username
-            value.warehouseType=user.warehouse
-            let res = await axiosMisUser.post('/bagTransferSend',value)
+            value.warehouseType = user.warehouse
+            let res = await axiosMisUser.post('/bagTransferSend', value)
             if (res.status == 200) {
                 setLoading(false)
                 Swal.fire({

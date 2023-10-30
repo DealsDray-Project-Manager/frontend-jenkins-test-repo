@@ -6,8 +6,6 @@ import { axiosMisUser } from '../../../../../axios'
 import useAuth from 'app/hooks/useAuth'
 import Swal from 'sweetalert2'
 
-
-
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
@@ -126,9 +124,7 @@ const MemberEditorDialog = ({
                         <MenuItem value="Charge Done">Re-BQC</MenuItem>
                         <MenuItem value="BQC Done">Re-Audit</MenuItem>
                         <MenuItem value="Ready to RDL-1">Re-RDL-1</MenuItem>
-                        <MenuItem value="Ready to RDL-2">
-                            Re-RDL-2
-                        </MenuItem>
+                        <MenuItem value="Ready to RDL-2">Re-RDL-2</MenuItem>
                     </TextFieldCustOm>
                 ) : value == 'Ready to RDL-2' ? (
                     <TextFieldCustOm

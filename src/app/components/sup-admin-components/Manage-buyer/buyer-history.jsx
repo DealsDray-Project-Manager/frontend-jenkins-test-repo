@@ -5,8 +5,8 @@ import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import Avatar from '@mui/material/Avatar'
-import { useParams } from 'react-router-dom'
 import { Typography, Table } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
@@ -25,13 +25,13 @@ const Container = styled('div')(({ theme }) => ({
 const UserTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
-    const { username } = useParams()
+    const { buyername } = useParams()
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 let res = await axiosSuperAdminPrexo.post(
-                    '/getUsersHistoy/' + username
+                    '/getUsersHistoy/' + buyername
                 )
                 if (res.status === 200) {
                     setUserList(res.data.data)
@@ -55,139 +55,149 @@ const UserTable = () => {
             options: {
                 filter: true,
                 sort: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Record No
+                    </Typography>
+                ),
                 customBodyRender: (rowIndex, dataIndex) =>
                     dataIndex.rowIndex + 1,
             },
         },
         {
-            name: 'image',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Profile
-                </Typography>
-            ),
+            name: 'profile',
+            label: 'Profile',
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: () => {
-                    return <Avatar variant="rounded" src="profile"></Avatar>
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Profile
+                    </Typography>
+                ),
+                customBodyRender: (value) => {
+                    return <Avatar variant="rounded" src={value} />
                 },
             },
         },
         {
-            name: 'name', // field name in the row object
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Name
-                </Typography>
-            ),
+            name: 'pan_card_proof',
+            label: 'Pan Proof',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Pan Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return <img height="80px" width="70px" src={value} />
+                },
+            },
+        },
+        {
+            name: 'aadhar_proof',
+            label: 'Aadhar Proof',
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Aadhar Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return <img height="80px" width="70px" src={value} />
+                },
+            },
+        },
+        {
+            name: 'business_address_proof',
+            label: 'Business Proof',
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Business Proof
+                    </Typography>
+                ),
+                customBodyRender: (value, tableMeta) => {
+                    return <img height="80px" width="70px" src={value} />
+                },
+            },
+        },
+
+        {
+            name: 'name',
+            label: 'Buyer Name',
+            options: {
+                filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Name
+                    </Typography>
+                ),
             },
         },
         {
             name: 'email',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Email
-                </Typography>
-            ),
+            label: 'Email',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Email
+                    </Typography>
+                ),
             },
         },
         {
             name: 'contact',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Mobile No
-                </Typography>
-            ),
+            label: 'Mobile No',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Mobile No
+                    </Typography>
+                ),
             },
         },
         {
-            name: 'user_name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    User name
-                </Typography>
-            ),
+            name: 'mobile_verification_status',
+            label: 'Mobile Status',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Mobile Status
+                    </Typography>
+                ),
             },
         },
         {
-            name: 'user_type',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    User Type
-                </Typography>
-            ),
+            name: 'email_verification_status',
+            label: 'Email Status',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Email Status
+                    </Typography>
+                ),
             },
         },
         {
-            name: 'cpc',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    CPC
-                </Typography>
-            ),
+            name: 'contact_person_name',
+            label: 'Contact Person Name',
             options: {
                 filter: true,
+                customHeadLabelRender: () => (
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Contact Person Name
+                    </Typography>
+                ),
             },
         },
-        {
-            name: 'device_name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Device Name
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'device_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Device Id
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'status',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    Status
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    if (value == 'Active') {
-                        return (
-                            <div style={{ color: 'green', fontWeight: 'bold' }}>
-                                {value}
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <div style={{ color: 'red', fontWeight: 'bold' }}>
-                                {value}
-                            </div>
-                        )
-                    }
-                },
-            },
-        },
+
         {
             name: 'last_update_date',
             label: (
@@ -197,6 +207,7 @@ const UserTable = () => {
             ),
             options: {
                 filter: true,
+
                 customBodyRender: (value) =>
                     value != undefined
                         ? new Date(value).toLocaleString('en-GB', {
@@ -211,14 +222,14 @@ const UserTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Users', path: '/' },
+                        { name: 'Buyer', path: '/' },
                         { name: 'History' },
                     ]}
                 />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'User History'}
+                    title={'Buyer History'}
                     data={userList}
                     columns={columns}
                     options={{

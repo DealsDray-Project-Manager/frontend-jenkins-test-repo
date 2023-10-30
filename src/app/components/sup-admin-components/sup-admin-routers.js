@@ -2,7 +2,6 @@ import React, { lazy } from 'react'
 import Loadable from 'app/components/Loadable/Loadable'
 
 const ViewAllUsers = Loadable(lazy(() => import('./Manage-users/view-users')))
-const ViewAllBuyer = Loadable(lazy(() => import('./Manage-buyer/view-buyer')))
 const ViewUserEditHistory = Loadable(
     lazy(() => import('./Manage-users/user-history'))
 )
@@ -14,6 +13,7 @@ const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
+
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -126,9 +126,6 @@ const ReassignMergeRequest = Loadable(
 const AssignedBag = Loadable(
     lazy(() => import('./Bag-reassign/Assign-to-bot/view-bot-bag'))
 )
-const ReAssignToPickup = Loadable(
-    lazy(() => import('./Tray-reassign/Assign-to-pickup/tray'))
-)
 const ReassignSortingCtxToStx = Loadable(
     lazy(() => import('./Tray-reassign/Ctx-to-stx/ctx-tray'))
 )
@@ -170,14 +167,6 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
         element: <ViewAllUsers />,
-    },
-    {
-        path: '/sup-admin/buyer',
-        element: <ViewAllBuyer/>,
-    },
-    {
-        path: '/sup-admin/buyer/create',
-        element: <BuyerCreationPage/>,
     },
     {
         path: '/sup-admin/products',
@@ -394,11 +383,11 @@ const SuperAdminRouter = [
         element: <ReassignToAudit />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-1',
+        path: '/sup-admin/tray-reassign/rdl-fls',
         element: <ReassignToRdlFls />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-2',
+        path: '/sup-admin/tray-reassign/rdl-repair',
         element: <ReassignToRdlRepair />,
     },
     {
@@ -424,10 +413,6 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/tray-reassign/sorting/bot-wht',
         element: <ReassignSortingBotToWht />,
-    },
-    {
-        path: '/sup-admin/tray-reassign/pick-up',
-        element: <ReAssignToPickup />,
     },
 ]
 

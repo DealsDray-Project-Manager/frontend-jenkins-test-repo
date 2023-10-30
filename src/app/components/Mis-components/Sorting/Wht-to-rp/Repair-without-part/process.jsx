@@ -352,22 +352,97 @@ const SimpleMuiTable = () => {
                             //  pagination: false, //set pagination option
                             // viewColumns: false, // set column option
                             customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
+                                const columnProperties = {
+                                    2: 'uic',
+                                    5: 'rdl_fls_report.username',
+                                    6: 'rdl_fls_report.selected_status',
+                                    7: 'rdl_fls_report.description',
+                                }
+
+                                const property = columnProperties[colIndex]
+
+                                if (property) {
+                                    return data.sort((a, b) => {
+                                        const aPropertyValue =
+                                            getValueByProperty(
+                                                a.data[colIndex],
+                                                property
+                                            )
+                                        const bPropertyValue =
+                                            getValueByProperty(
+                                                b.data[colIndex],
+                                                property
+                                            )
+
+                                        if (
+                                            typeof aPropertyValue ===
+                                                'string' &&
+                                            typeof bPropertyValue === 'string'
+                                        ) {
+                                            return (
+                                                (order === 'asc' ? 1 : -1) *
+                                                aPropertyValue.localeCompare(
+                                                    bPropertyValue
+                                                )
+                                            )
+                                        }
+
                                         return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
+                                            (parseFloat(aPropertyValue) -
+                                                parseFloat(bPropertyValue)) *
+                                            (order === 'desc' ? -1 : 1)
+                                        )
+                                    })
+                                }
+
+                                return data.sort((a, b) => {
+                                    const aValue = a.data[colIndex]
+                                    const bValue = b.data[colIndex]
+
+                                    if (aValue === bValue) {
+                                        return 0
+                                    }
+
+                                    if (
+                                        aValue === null ||
+                                        aValue === undefined
+                                    ) {
+                                        return 1
+                                    }
+
+                                    if (
+                                        bValue === null ||
+                                        bValue === undefined
+                                    ) {
+                                        return -1
+                                    }
+
+                                    if (
+                                        typeof aValue === 'string' &&
+                                        typeof bValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aValue.localeCompare(bValue)
                                         )
                                     }
+
                                     return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
+                                        (parseFloat(aValue) -
+                                            parseFloat(bValue)) *
+                                        (order === 'desc' ? -1 : 1)
                                     )
                                 })
+
+                                function getValueByProperty(data, property) {
+                                    const properties = property.split('.')
+                                    let value = properties.reduce(
+                                        (obj, key) => obj?.[key],
+                                        data
+                                    )
+
+                                    return value !== undefined ? value : ''
+                                }
                             },
                             // elevation: 0,
                             // rowsPerPageOptions: [10, 20, 40, 80, 100],

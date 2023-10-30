@@ -155,7 +155,6 @@ export default function DialogBox() {
                     getitem()
                 } else {
                     setTextDisable(false)
-
                     Swal.fire({
                         position: 'top-center',
                         icon: 'error',

@@ -86,7 +86,7 @@ export default function DialogBox() {
     const [open, setOpen] = React.useState(false)
     const [butDis, setButDis] = useState(false)
     const [subMuic, setSubMuic] = useState('')
-    const [currentSubmuicCount,setCurrentSubMuicCount]=useState("")
+    const [currentSubmuicCount, setCurrentSubMuicCount] = useState('')
     const { user } = useAuth()
 
     useEffect(() => {
@@ -132,7 +132,7 @@ export default function DialogBox() {
                     stage: 'BQC Not Done / Unverified imei',
                     subMuic: subMuic,
                     actionUser: user.username,
-                    currentSubMuicCount:currentSubmuicCount
+                    currentSubMuicCount: currentSubmuicCount,
                 }
                 if (stageType == 'Device not to be checked for BQC') {
                     obj.type = 'WHT'
@@ -217,8 +217,8 @@ export default function DialogBox() {
                 [name]: value,
             })
         }
+        fetchSubmuic(value)
         if (name == 'storage_verification') {
-            fetchSubmuic(value)
         }
     }
     const handleClose = () => {
@@ -568,9 +568,9 @@ export default function DialogBox() {
                             label="Select color"
                             fullWidth
                             select
-                            disabled={
-                                stateData.storage_verification != undefined
-                            }
+                            // disabled={
+                            //     stateData.storage_verification != undefined
+                            // }
                             sx={{
                                 mb: 2,
                             }}
@@ -590,9 +590,9 @@ export default function DialogBox() {
                             sx={{
                                 mb: 2,
                             }}
-                            disabled={
-                                stateData.storage_verification != undefined
-                            }
+                            // disabled={
+                            //     stateData.storage_verification != undefined
+                            // }
                             onChange={handleChange}
                             value={stateData?.ram_verification}
                             name="ram_verification"
@@ -632,6 +632,9 @@ export default function DialogBox() {
                             }}
                             onChange={handleChange}
                             name="description"
+                            inputProps={{
+                                autoComplete: "off", // Add this line
+                            }}
                         />
                         <TextField
                             label="Sub Muic"

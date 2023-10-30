@@ -43,8 +43,6 @@ const StyledTable = styled(Table)(({ theme }) => ({
     },
 }))
 
-
-
 const ScrollableTableContainer = styled(TableContainer)`
     overflow-x: scroll;
 
@@ -208,7 +206,7 @@ const SimpleMuiTable = () => {
                             onClick={(e) => {
                                 handleClick(
                                     e,
-                                    tableMeta.rowData[7]?.rdl_fls_report
+                                    tableMeta.rowData[10]?.rdl_fls_report
                                         ?.partRequired,
                                     value?.uic
                                 )
@@ -269,6 +267,47 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Stage</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.stage || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Recommended Grade</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.grade || '',
+            },
+        },
+        {
+            name: 'items',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Remarks</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.audit_report?.description || '',
+            },
+        },
+
         {
             name: 'closed_date_agent',
             label: (

@@ -140,7 +140,6 @@ export default function DialogBox() {
                 )
                 if (trayFetch.status == 200) {
                     setIssuedCtx(trayFetch.data.grade)
-                   
                 }
                 if (res.status === 200) {
                     setUserAgent(res.data.data)
@@ -495,7 +494,6 @@ export default function DialogBox() {
                         model={trayData?.model}
                         ctxGrade={ctxGrade}
                         setCtxGrade={setCtxGrade}
-                       
                     />
                 )}
             </Card>

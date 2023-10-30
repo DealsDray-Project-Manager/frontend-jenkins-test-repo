@@ -30,6 +30,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 function Search() {
+    
     const [trayId, setTrayId] = useState('')
     const [trayData, setTrayData] = useState({})
     const [isCheck1, setIsCheck1] = useState([])
@@ -71,6 +72,7 @@ function Search() {
             setIsCheck2(isCheck2.filter((item) => item !== id))
         }
     }
+
     /*------------------------------HANDEL REMOVE UNITS FROM TRAY ---------------------------------------------------*/
     const handelRemove = async () => {
         try {

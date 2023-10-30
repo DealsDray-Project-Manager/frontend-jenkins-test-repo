@@ -11,6 +11,7 @@ import {
     Box,
     Grid,
     Checkbox,
+    Card,
 } from '@mui/material'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
@@ -70,6 +71,43 @@ function Search() {
             setIsCheck2(isCheck2.filter((item) => item !== id))
         }
     }
+    /*------------------------------HANDEL REMOVE UNITS FROM TRAY ---------------------------------------------------*/
+    const handelRemove = async () => {
+        try {
+            let obj = {
+                trayId: trayId,
+                actualSide: isCheck2,
+                expectedSide: isCheck1,
+            }
+            const res = await axiosSuperAdminPrexo.post(
+                '/removeDuplicteFromTray',
+                obj
+            )
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res.data.message,
+                    confirmButtonText: 'Ok',
+                })
+                searchTrayId()
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res.data.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
 
     const ExpectedSide = [
         {
@@ -92,7 +130,7 @@ function Search() {
                             onClick={(e) => {
                                 handleClick1(e)
                             }}
-                            disabled={tableMeta.rowData[3]}
+                            disabled={tableMeta.rowData[3] !== 'Duplicate'}
                             id={value}
                             key={value}
                             checked={isCheck1.includes(value)}
@@ -166,7 +204,7 @@ function Search() {
                             onClick={(e) => {
                                 handleClick2(e)
                             }}
-                            disabled={tableMeta.rowData[3]}
+                            disabled={tableMeta.rowData[3] !== 'Duplicate'}
                             id={value}
                             key={value}
                             checked={isCheck2.includes(value)}
@@ -257,7 +295,13 @@ function Search() {
                     </Button>
                 </Box>
             </Box>
-            <Grid sx={{ mt: 1 }} container spacing={3}>
+            <Card sx={{ mb: 1, mt: 1 }}>
+                <Typography sx={{ m: 2 }}>Tray ID :- {trayId}</Typography>
+                <Typography sx={{ m: 2 }}>
+                    Tray Status :- {trayData?.sort_id}
+                </Typography>
+            </Card>
+            <Grid container spacing={3}>
                 <Grid item lg={6} md={6} xs={12}>
                     <Table className="custom-table">
                         <MUIDataTable
@@ -357,10 +401,13 @@ function Search() {
                         mt: 2,
                     }}
                     variant="contained"
+                    disabled={isCheck1.length == 0 && isCheck2.length == 0}
                     style={{ backgroundColor: 'red' }}
-                    // onClick={(e) => {
-                    //     handleOpen(e)
-                    // }}
+                    onClick={(e) => {
+                        if (window.confirm('You Want to Remove?')) {
+                            handelRemove(e)
+                        }
+                    }}
                 >
                     Remove
                 </Button>

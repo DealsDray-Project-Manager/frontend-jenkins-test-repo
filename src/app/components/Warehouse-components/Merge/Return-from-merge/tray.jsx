@@ -189,7 +189,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+
         {
             name: 'limit',
             label: 'Tray Id',

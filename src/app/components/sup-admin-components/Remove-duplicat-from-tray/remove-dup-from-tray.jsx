@@ -30,7 +30,6 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 function Search() {
-    
     const [trayId, setTrayId] = useState('')
     const [trayData, setTrayData] = useState({})
     const [isCheck1, setIsCheck1] = useState([])
@@ -92,6 +91,8 @@ function Search() {
                     title: res.data.message,
                     confirmButtonText: 'Ok',
                 })
+                setIsCheck2([])
+                setIsCheck1([])
                 searchTrayId()
             } else {
                 Swal.fire({

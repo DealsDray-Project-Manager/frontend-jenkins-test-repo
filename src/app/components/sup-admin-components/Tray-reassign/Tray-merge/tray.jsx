@@ -15,6 +15,7 @@ import {
     Typography,
     MenuItem,
     TextField,
+    Table,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -275,6 +276,27 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Details</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
+                    )
+                },
+            },
+        },
+        {
             name: 'to_merge', // field name in the row object
             label: (
                 <Typography
@@ -312,7 +334,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[5],
             },
         },
         {
@@ -398,7 +420,7 @@ const SimpleMuiTable = () => {
                                     handelMerge(
                                         e,
                                         value,
-                                        tableMeta.rowData[3],
+                                        tableMeta.rowData[4],
                                         tableMeta.rowData[1]
                                     )
                                 }}
@@ -499,50 +521,52 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Mmt Tray'}
-                data={mmtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Assigned to merging'}
+                    data={mmtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

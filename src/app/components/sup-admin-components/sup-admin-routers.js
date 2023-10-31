@@ -396,11 +396,11 @@ const SuperAdminRouter = [
         element: <ReassignToAudit />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-fls',
+        path: '/sup-admin/tray-reassign/rdl-1',
         element: <ReassignToRdlFls />,
     },
     {
-        path: '/sup-admin/tray-reassign/rdl-repair',
+        path: '/sup-admin/tray-reassign/rdl-2',
         element: <ReassignToRdlRepair />,
     },
     {

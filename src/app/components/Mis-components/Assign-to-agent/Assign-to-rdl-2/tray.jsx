@@ -264,7 +264,7 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                View 
+                                View
                             </Button>
                         </>
                     )
@@ -304,7 +304,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        
+
         {
             name: 'rack', // field name in the row object
             label: (

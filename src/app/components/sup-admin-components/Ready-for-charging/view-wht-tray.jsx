@@ -189,6 +189,27 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Details</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
+                    )
+                },
+            },
+        },
+        {
             name: 'warehouse',
             label: (
                 <Typography sx={{ fontWeight: 'bold', fontSize: '16px' }}>
@@ -199,7 +220,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
+
         {
             name: 'brand',
             label: (
@@ -222,7 +243,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-       
+
         {
             name: 'limit',
             label: 'Limit',
@@ -255,7 +276,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[6],
+                    value?.length + '/' + tableMeta.rowData[7],
             },
         },
         {

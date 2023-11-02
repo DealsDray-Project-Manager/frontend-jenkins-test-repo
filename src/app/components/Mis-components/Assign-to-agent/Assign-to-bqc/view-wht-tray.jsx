@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography, Table,Box } from '@mui/material'
+import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -203,6 +203,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'variant',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Variant</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'jack_type',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -237,10 +248,20 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
+                    value.length + '/' + tableMeta.rowData[8],
             },
         },
-
+        {
+            name: 'out_of_stock',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Priority:Out of stock</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'sort_id',
             label: (

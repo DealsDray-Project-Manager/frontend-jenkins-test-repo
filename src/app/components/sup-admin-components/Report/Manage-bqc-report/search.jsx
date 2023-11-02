@@ -8,7 +8,7 @@ import BqcUserReport from './BqcUserReport'
 import AmazonDetails from './AmazonDetails'
 import BotUserReprt from './Bot-user-report'
 import BqcApiSummery from './Bqc-api-data-summary'
-import { axiosSuperAdminPrexo } from '../../../../axios'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({

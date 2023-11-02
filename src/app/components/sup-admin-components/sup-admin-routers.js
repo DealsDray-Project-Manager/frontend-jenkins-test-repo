@@ -62,7 +62,7 @@ const RemoveInvalidItemView = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/view-item'))
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
-const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
+const BqcReport = Loadable(lazy(() => import('./Report/Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl-1/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer = Loadable(
@@ -152,7 +152,26 @@ const ByuerEditHistory = Loadable(
     lazy(() => import('./Manage-buyer/buyer-history'))
 )
 
+const ReAssignToPickup = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-pickup/tray'))
+)
+// RESTORE DELETED TRAYS 
+const RestoreDeletedTrays=Loadable(
+    lazy(() => import('./Manage-deleted-trays/deleted-trays'))
+)
+// RACK SUMMARY PAGE 
+const RackSummaryPage=Loadable(
+    lazy(() => import('./Report/Rack-report/rack-report'))
+)
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/report/rack',
+        element: <RackSummaryPage />,
+    },
+    {
+        path: '/sup-admin/manage-deleted-trays',
+        element: <RestoreDeletedTrays />,
+    },
     {
         path: '/sup-admin/buyer/create',
         element: <BuyerCreationPage />,
@@ -426,6 +445,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/tray-reassign/sorting/bot-wht',
         element: <ReassignSortingBotToWht />,
+    },
+    {
+        path: '/sup-admin/tray-reassign/pick-up',
+        element: <ReAssignToPickup />,
     },
 ]
 

@@ -74,6 +74,7 @@ const MemberEditorDialog = ({
             .max(40)
             .nullable(),
         brand_name: Yup.string().required('Required'),
+        variant: Yup.string().required('Required'),
         jack_type: Yup.string()
             .required('Required*')
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid name')
@@ -251,6 +252,16 @@ const MemberEditorDialog = ({
                             <MenuItem value="Type C">Type C</MenuItem>
                             <MenuItem value="lightning">lightning</MenuItem>
                         </TextFieldCustOm>
+                        <TextFieldCustOm
+                            label="Variant Name"
+                            type="text"
+                            name="variant"
+                            {...register('variant')}
+                            error={errors.variant ? true : false}
+                            helperText={
+                                errors.variant ? errors.variant.message : ''
+                            }
+                        />
                     </Grid>
 
                     <Grid item sm={6} xs={12}>

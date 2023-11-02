@@ -97,6 +97,19 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'rackDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Rack Display
+                </Typography>
+            ),
+
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+            },
+        },
 
         {
             name: 'actual_items',
@@ -123,9 +136,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value == 0 ? tableMeta.rowData[3] : value) +
+                        (value == 0 ? tableMeta.rowData[4] : value) +
                         '/' +
-                        tableMeta.rowData[4]
+                        tableMeta.rowData[5]
                     )
                 },
             },

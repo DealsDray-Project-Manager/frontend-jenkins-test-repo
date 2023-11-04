@@ -2,11 +2,13 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Typography, TextField, Box } from '@mui/material'
+import { Button, Typography, TextField, Box,Table } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser, axiospricingAgent, baseURL } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -383,6 +385,7 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Ready for pricing', path: '/' }]}
                 />
             </div>
+        <Table className="custom-table" >
 
             <MUIDataTable
                 title={'Ready for pricing'}
@@ -409,8 +412,6 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            3: 'brand',
-                            4: 'model',
                             6: 'grade',
                         }
 
@@ -493,6 +494,7 @@ const SimpleMuiTable = () => {
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+        </Table>
             <Box sx={{ textAlign: 'right' }}>
                 <Button
                     sx={{

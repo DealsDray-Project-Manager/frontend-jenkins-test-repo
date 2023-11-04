@@ -302,7 +302,7 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
+                    <Typography sx={{ pl: 3 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -338,18 +338,21 @@ const SimpleMuiTable = () => {
         {
             name: 'muicDetails', // field name in the row object
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography sx={{ width: "500px" }} variant="subtitle1" fontWeight="bold">
                     <>Image</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
                 filter: false,
                 sort: false,
+                customHeadRender: () => (
+                    <th style={{ width: '95px' }}>Image</th>
+                ),
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <img
                             height="80px"
-                            width="65px"
+                            width="80px"
                             src={
                                 value?.[0]?.image == undefined
                                     ? `${baseURL}/product/image/` +
@@ -360,6 +363,7 @@ const SimpleMuiTable = () => {
                         />
                     )
                 },
+                
             },
         },
         {

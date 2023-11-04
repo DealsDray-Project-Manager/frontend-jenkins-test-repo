@@ -64,6 +64,7 @@ const Login = () => {
     const [message, setMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const { LoginPrxo } = useAuth()
+    
     useEffect(() => {
         let userExists = localStorage.getItem('prexo-authentication')
         if (userExists) {

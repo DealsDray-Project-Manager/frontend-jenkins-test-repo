@@ -27,6 +27,7 @@ const MemberEditorDialog = ({
     editFetchData,
     setEditFetchData,
 }) => {
+    
     const [profile, Setprofile] = useState({
         preview: '',
         store: {},

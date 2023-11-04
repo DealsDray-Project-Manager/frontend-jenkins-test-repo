@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
             password: password,
         })
         if (res.status == 200) {
-         
             dispatch({
                 type: 'AUTH_STATE_CHANGED',
                 payload: {
@@ -86,7 +85,7 @@ export const AuthProvider = ({ children }) => {
         let userExists = localStorage.getItem('prexo-authentication')
         if (userExists) {
             let user = jwt_decode(userExists)
-           
+
             dispatch({
                 type: 'AUTH_STATE_CHANGED',
                 payload: {

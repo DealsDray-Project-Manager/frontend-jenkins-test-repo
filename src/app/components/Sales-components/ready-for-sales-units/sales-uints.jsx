@@ -48,7 +48,7 @@ const SimpleMuiTable = () => {
                     let res = await axiosSalsAgent.post(
                         '/ReadyForSalesUnits', obj
                     );
-                    console.log('Fetched Data:', res.data.data);
+                  
                     if (res.status === 200) {
                         setIsLoading(false);
                         setItem(res.data.data);
@@ -74,8 +74,7 @@ const SimpleMuiTable = () => {
     }, [isAlive]);
 
 
-    useEffect(() => { console.log(item) }
-        , [item])
+   
 
 
     const downloadExcel = (e) => {

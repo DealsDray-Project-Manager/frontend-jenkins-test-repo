@@ -203,6 +203,7 @@ export default function DialogBox() {
     }
 
     const handleChange = ({ target: { name, value } }) => {
+        
         if (name === 'stage') {
             setStateData({
                 [name]: value,
@@ -211,14 +212,30 @@ export default function DialogBox() {
                 ram_verification: stateData.ram_verification,
                 color: stateData.color,
             })
-        } else {
+        }
+        else if(name == "ram_verification"){
+            setStateData({
+                ...stateData,
+                [name]: value,
+                storage_verification:undefined
+            })
+        }
+        else if(name == "color"){
+            setStateData({
+                ...stateData,
+                [name]: value,
+                ram_verification:undefined,
+                storage_verification:undefined
+            })
+        }
+         else {
             setStateData({
                 ...stateData,
                 [name]: value,
             })
         }
-        fetchSubmuic(value)
         if (name == 'storage_verification') {
+            fetchSubmuic(value)
         }
     }
     const handleClose = () => {
@@ -642,6 +659,9 @@ export default function DialogBox() {
                             disabled
                             value={subMuic}
                             name="sub_muic"
+                            InputLabelProps={{
+                                shrink: true,
+                              }}
                         />
                     </DialogContent>
                     <DialogActions>

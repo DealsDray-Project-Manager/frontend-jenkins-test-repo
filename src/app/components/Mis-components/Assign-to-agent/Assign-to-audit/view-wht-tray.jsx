@@ -158,8 +158,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: true,
-                sort: true,
+                filter: false,  
+                sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}

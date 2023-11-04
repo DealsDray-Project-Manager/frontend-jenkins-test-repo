@@ -447,9 +447,7 @@ const SimpleMuiTable = () => {
                     // viewColumns: false, // set column option
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
-                            2: 'brand',
-                            3: 'model',
-                            5: 'grade',
+                            6: 'grade',
                         }
 
                         const property = columnProperties[colIndex]

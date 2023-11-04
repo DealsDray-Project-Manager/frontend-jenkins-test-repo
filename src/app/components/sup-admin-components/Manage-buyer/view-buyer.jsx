@@ -44,6 +44,7 @@ const ScrollableTableContainer = styled(TableContainer)`
 `
 
 const SimpleMuiTable = () => {
+    
     const [isAlive, setIsAlive] = useState(true)
     const [userList, setUserList] = useState([])
     const [isLoading, setIsLoading] = useState(false)

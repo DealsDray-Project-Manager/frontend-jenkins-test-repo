@@ -64,6 +64,7 @@ BootstrapDialogTitle.propTypes = {
 }
 
 export default function DialogBox() {
+    
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()

@@ -460,6 +460,7 @@ const SimpleMuiTable = () => {
                     customSort: (data, colIndex, order) => {
                         const columnProperties = {
                             3: 'sub_muic',
+                            10: 'grade',
                         }
 
                         const property = columnProperties[colIndex]

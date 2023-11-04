@@ -138,6 +138,7 @@ function Search() {
             value.brand = muicDetails.brand
             value.model = muicDetails.model
             value.muic = muicDetails.muic
+            value.grade= uicData?.[0]?.grade
             value.screen="Stx to Stx"
 
             let res = await axiosMisUser.post('/stxUtilityAddToStx', value)

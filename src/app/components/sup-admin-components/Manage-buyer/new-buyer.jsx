@@ -88,7 +88,16 @@ const MemberEditorDialog = () => {
         cpassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .nullable(),
-        email: Yup.string().email().required('Required*').nullable(),
+        email: Yup.string()
+            .test('is-valid-email', 'Invalid email address', (value) => {
+                if (!value) return true // Allow empty fields
+                const emailParts = value.split('@')
+                if (emailParts.length !== 2) return false
+                const [, domain] = emailParts
+                return ['gmail.com', 'dealsdray.com'].includes(domain)
+            })
+            .required('Required*')
+            .nullable(),
         billing_address: Yup.string()
             .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid address')
             .max(40)
@@ -162,11 +171,19 @@ const MemberEditorDialog = () => {
             ])
             Setprofile({
                 preview: editFetchData?.profile,
+                store: {},
             })
-            SetpanProof({ preview: editFetchData?.pan_card_proof })
-            SetAadharProof({ preview: editFetchData?.aadhar_proof })
+            SetpanProof({
+                preview: editFetchData?.pan_card_proof,
+                store: {},
+            })
+            SetAadharProof({
+                preview: editFetchData?.aadhar_proof,
+                store: {},
+            })
             SetBusinessAddressProof({
                 preview: editFetchData?.business_address_proof,
+                store: {},
             })
         }
         setPageLoad(false)
@@ -268,18 +285,18 @@ const MemberEditorDialog = () => {
             alert(error)
         }
     }
-
     const handelEdit = async (values) => {
         try {
             setLoading(true)
             let formdata = new FormData()
-            formdata.append('profile', profile.store)
-            formdata.append('pan_card_proof', panProof.store)
-            formdata.append('aadhar_proof', aadharProof.store)
+            formdata.append('profile_file', profile.store)
             formdata.append(
-                'business_address_proof',
+                'business_address_proof_file',
                 businessAddressProof.store
             )
+            formdata.append('aadhar_proof_file', aadharProof.store)
+            formdata.append('pan_card_proof_file', panProof.store)
+
             for (let [key, value] of Object.entries(values)) {
                 formdata.append(key, value)
             }

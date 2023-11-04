@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     const handelViewItem = (bagId) => {
-        navigate('/sup-admin/remove-invalid-item/' + bagId)
+        navigate('/sup-admin/remove-invalid-units-from-bag/' + bagId)
     }
 
     const columns = [
@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Remove Invalid Item', path: '/' }]}
+                    routeSegments={[{ name: 'Remove Invalid Units', path: '/' }]}
                 />
             </div>
 

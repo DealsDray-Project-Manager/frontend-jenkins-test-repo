@@ -274,6 +274,27 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Details</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
+                    )
+                },
+            },
+        },
+        {
             name: 'to_tray_for_pickup', // field name in the row object
             label: (
                 <Typography
@@ -311,24 +332,10 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[5],
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ marginLeft: '7px' }}
-                >
-                    <>Tray Type</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'sort_id',
             label: (
@@ -397,7 +404,7 @@ const SimpleMuiTable = () => {
                                     handelMerge(
                                         e,
                                         value,
-                                        tableMeta.rowData[3],
+                                        tableMeta.rowData[4],
                                         tableMeta.rowData[1]
                                     )
                                 }}

@@ -283,18 +283,46 @@ export const navigations = [
     },
 
     {
-        name: 'Ready For Charging',
-        icon: 'battery_charging_full',
+        name: 'Force full actions',
+        icon: 'call_to_action',
         children: [
             {
-                name: 'In-use wht Tray',
+                name: 'In-use Tray (Charge)',
                 path: '/sup-admin/ready-for-charging/in-use-wht',
                 iconText: 'PL',
             },
             {
-                name: 'Ready for BQC wht Tray',
+                name: 'BQC Tray (Recharge)',
                 path: '/sup-admin/ready-for-charging/bqc-tray',
                 iconText: 'PL',
+            },
+            {
+                name: 'Ready for RDL-1',
+                icon: 'low_priority',
+                path: '/sup-admin/ready-for-rdl',
+                auth: authRoles.admin,
+                sales: false,
+            },
+            {
+                name: 'Ready for Transfer CTX',
+                icon: 'transform',
+                path: '/sup-admin/ready-for-transfer',
+                auth: authRoles.admin,
+                sales: false,
+            },
+            {
+                name: 'Unverified Imei Updation',
+                icon: 'verified_user',
+                path: '/sup-admin/unverified-imei-updation',
+                auth: authRoles.admin,
+                sales: false,
+            },
+            {
+                name: 'BQC sync',
+                icon: 'sync',
+                path: '/sup-admin/bqc-sync',
+                auth: authRoles.admin,
+                sales: false,
             },
         ],
         auth: authRoles.admin,
@@ -373,44 +401,34 @@ export const navigations = [
     },
 
     {
-        name: 'Remove invalid item',
+        name: 'Remove Units',
         icon: 'remove',
-        path: '/sup-admin/remove-invalid-item',
+        children: [
+            {
+                name: 'Invalid Units From Bag',
+                path: '/sup-admin/remove-invalid-units-from-bag',
+                iconText: 'PL',
+            },
+            {
+                name: 'Duplicate Units From Tray',
+                path: '/sup-admin/remove-duplicate-uic',
+                iconText: 'PL',
+            },
+        ],
         auth: authRoles.admin,
         sales: false,
     },
     {
-        name: 'Ready for RDL-1',
-        icon: 'low_priority',
-        path: '/sup-admin/ready-for-rdl',
-        auth: authRoles.admin,
-        sales: false,
-    },
-    {
-        name: 'Ready for Transfer CTX',
-        icon: 'transform',
-        path: '/sup-admin/ready-for-transfer',
-        auth: authRoles.admin,
-        sales: false,
-    },
-    {
-        name: 'Unverified Imei Updation',
-        icon: 'verified_user',
-        path: '/sup-admin/unverified-imei-updation',
-        auth: authRoles.admin,
-        sales: false,
-    },
-    {
-        name: 'BQC Sync',
-        icon: 'verified_user',
-        path: '/sup-admin/bqc-sync',
-        auth: authRoles.admin,
-        sales: false,
-    },
-    {
-        name: 'Track item',
-        icon: 'art_track',
-        path: '/sup-admin/track-item',
+        name: 'Deleted Items',
+        icon: 'restore',
+        children: [
+            {
+                name: 'Trays',
+                path: '/sup-admin/manage-deleted-trays',
+                iconText: 'PL',
+            },
+           
+        ],
         auth: authRoles.admin,
         sales: false,
     },
@@ -423,10 +441,23 @@ export const navigations = [
                 path: '/sup-admin/bqc/report',
                 iconText: 'PL',
             },
+            {
+                name: 'Rack Report',
+                path: '/sup-admin/report/rack',
+                iconText: 'PL',
+            },
         ],
         auth: authRoles.admin,
         sales: false,
     },
+    {
+        name: 'Track item',
+        icon: 'art_track',
+        path: '/sup-admin/track-item',
+        auth: authRoles.admin,
+        sales: false,
+    },
+
     {
         name: 'Order',
         icon: 'reorder',
@@ -514,25 +545,24 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: false,
     },
-    // {
-    //     name: 'Bag Transfer',
-    //     icon: 'transfer_within_a_station',
-    //     children: [
-    //         {
-    //             name: 'Transfer',
-    //             path: '/mis/bag-transfer',
-    //             iconText: 'PL',
-    //         },
-    //         {
-    //             name: 'Receive',
-    //             path: '/mis/bag-receive',
-    //             iconText: 'PL',
-    //         },
-    //     ],
-    //     auth: authRoles.Mis,
-    //     sales: false,
-    // },
-
+    {
+        name: 'Bag Transfer',
+        icon: 'transfer_within_a_station',
+        children: [
+            {
+                name: 'Transfer',
+                path: '/mis/bag-transfer',
+                iconText: 'PL',
+            },
+            {
+                name: 'Receive',
+                path: '/mis/bag-receive',
+                iconText: 'PL',
+            },
+        ],
+        auth: authRoles.Mis,
+        sales: false,
+    },
     {
         name: 'Assign to Agent',
         icon: 'assignment',
@@ -580,7 +610,6 @@ export const navigations = [
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
-           
         ],
         auth: authRoles.Mis,
         sales: false,
@@ -1553,12 +1582,11 @@ export const navigations = [
                 name: 'Sub Muic',
                 path: '/sales/ready-for-sales',
             },
-           
         ],
         sales: true,
         auth: authRoles.Sales_Agent,
     },
-    
+
     {
         name: 'Buyers',
         icon: 'class',
@@ -1585,7 +1613,6 @@ export const navigations = [
                 name: 'Sub Muic',
                 path: '/pricing/ready-for-pricing',
             },
-           
         ],
         sales: true,
         auth: authRoles.pricing_Agent,
@@ -1602,13 +1629,11 @@ export const navigations = [
                 name: 'Sub Muic',
                 path: '/pricing/ready-for-sales',
             },
-           
         ],
         sales: true,
         auth: authRoles.pricing_Agent,
     },
-   
-    
+
     {
         name: 'Bagging',
         icon: 'save',

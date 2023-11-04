@@ -50,6 +50,7 @@ const SimpleMuiTable = () => {
                         '/RDLoneDoneTray/' + location
                     )
                     if (res.status === 200) {
+                        console.log(res.data.data)
                         setWhtTrayList(res.data.data)
                         setIsLoading(false)
                     }
@@ -165,17 +166,17 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
-        {
-            name: 'rack_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rack Id</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'rack_id',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Rack Id</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'brand',
             label: (
@@ -218,9 +219,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length == 0
-                        ? ''
-                        : value?.[0]?.items?.length + '/' + value?.[0]?.limit,
+                    value?.items?.length + '/' + value?.limit,
             },
         },
         {
@@ -234,14 +233,14 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[4],
             },
         },
         {
             name: 'spTray', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>SP Tray ID</>
+                    <>SP Tray Details</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
@@ -250,9 +249,9 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            <span>{value?.[0]?.code}</span>
+                            <span>{value?.code}</span>
                             <br />
-                            <span>{value?.[0]?.sort_id}</span>
+                            <span>{value?.sort_id}</span>
                             <br />
 
                             <Button
@@ -261,11 +260,11 @@ const SimpleMuiTable = () => {
                                 }}
                                 disabled={value.length == 0}
                                 variant="contained"
-                                onClick={() => handleviewsp(value?.[0]?.code)}
+                                onClick={() => handleviewsp(value?.code)}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                View SP
+                                View
                             </Button>
                         </>
                     )
@@ -276,7 +275,7 @@ const SimpleMuiTable = () => {
             name: 'code', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RP Tray ID</>
+                    <>RP Tray Details</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
@@ -287,6 +286,7 @@ const SimpleMuiTable = () => {
                             <span>{value}</span>
                             <br />
                             <span>{tableMeta?.rowData[10]}</span>
+
                             <br />
                             <Button
                                 sx={{
@@ -297,9 +297,50 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                View RP
+                                View
                             </Button>
                         </>
+                    )
+                },
+            },
+        },
+
+        {
+            name: 'rack', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RP Tray Rack</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
+                    )
+                },
+            },
+        },
+        {
+            name: 'rackIdForSP', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>SP Tray Rack</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
                     )
                 },
             },

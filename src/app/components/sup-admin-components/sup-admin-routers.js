@@ -2,7 +2,6 @@ import React, { lazy } from 'react'
 import Loadable from 'app/components/Loadable/Loadable'
 
 const ViewAllUsers = Loadable(lazy(() => import('./Manage-users/view-users')))
-const ViewAllBuyer = Loadable(lazy(() => import('./Manage-buyer/view-buyer')))
 const ViewUserEditHistory = Loadable(
     lazy(() => import('./Manage-users/user-history'))
 )
@@ -14,6 +13,7 @@ const Addparts = Loadable(lazy(() => import('./Manage-products/addparts')))
 const Partsassociation = Loadable(
     lazy(() => import('./Manage-products/partsassociation'))
 )
+
 const BulkProducts = Loadable(
     lazy(() => import('./Manage-products/add-bulk-products'))
 )
@@ -62,7 +62,7 @@ const RemoveInvalidItemView = Loadable(
     lazy(() => import('./Remove-invalid-item-from-bag/view-item'))
 )
 const TrackItem = Loadable(lazy(() => import('./Track-item/track-item')))
-const BqcReport = Loadable(lazy(() => import('./Manage-bqc-report/search')))
+const BqcReport = Loadable(lazy(() => import('./Report/Manage-bqc-report/search')))
 const ReadyForRdl = Loadable(lazy(() => import('./Ready-for-rdl-1/wht-tray')))
 const Categorys = Loadable(lazy(() => import('./tray-category/view-categorys')))
 const ReadyToTransfer = Loadable(
@@ -130,9 +130,6 @@ const ReassignMergeRequest = Loadable(
 const AssignedBag = Loadable(
     lazy(() => import('./Bag-reassign/Assign-to-bot/view-bot-bag'))
 )
-const ReAssignToPickup = Loadable(
-    lazy(() => import('./Tray-reassign/Assign-to-pickup/tray'))
-)
 const ReassignSortingCtxToStx = Loadable(
     lazy(() => import('./Tray-reassign/Ctx-to-stx/ctx-tray'))
 )
@@ -147,9 +144,46 @@ const BuyerCreationPage = Loadable(
 )
 const SubMuicMaster = Loadable(lazy(() => import('./Sub-muic-master/sub-muic')))
 const BqcSync = Loadable(lazy(() => import('./Bqc-sync/bqc-sync')))
-const ByuerEditHistory = Loadable(lazy(() => import('./Manage-buyer/buyer-history')))
+const RemoveDupUicFromTray = Loadable(
+    lazy(() => import('./Remove-duplicat-from-tray/remove-dup-from-tray'))
+)
 
+const ByuerEditHistory = Loadable(
+    lazy(() => import('./Manage-buyer/buyer-history'))
+)
+
+const ReAssignToPickup = Loadable(
+    lazy(() => import('./Tray-reassign/Assign-to-pickup/tray'))
+)
+// RESTORE DELETED TRAYS 
+const RestoreDeletedTrays=Loadable(
+    lazy(() => import('./Manage-deleted-trays/deleted-trays'))
+)
+// RACK SUMMARY PAGE 
+const RackSummaryPage=Loadable(
+    lazy(() => import('./Report/Rack-report/rack-report'))
+)
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/report/rack',
+        element: <RackSummaryPage />,
+    },
+    {
+        path: '/sup-admin/manage-deleted-trays',
+        element: <RestoreDeletedTrays />,
+    },
+    {
+        path: '/sup-admin/buyer/create',
+        element: <BuyerCreationPage />,
+    },
+    {
+        path: '/sup-admin/buyer-edit-hitsory/:buyername',
+        element: <ByuerEditHistory />,
+    },
+    {
+        path: '/sup-admin/remove-duplicate-uic',
+        element: <RemoveDupUicFromTray />,
+    },
     {
         path: '/sup-admin/bqc-sync',
         element: <BqcSync />,
@@ -165,18 +199,6 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/users',
         element: <ViewAllUsers />,
-    },
-    {
-        path: '/sup-admin/buyer',
-        element: <ViewAllBuyer />,
-    },
-    {
-        path: '/sup-admin/buyer-edit-hitsory/:buyername',
-        element: <ByuerEditHistory />,
-    },
-    {
-        path: '/sup-admin/buyer/create',
-        element: <BuyerCreationPage />,
     },
     {
         path: '/sup-admin/products',
@@ -300,11 +322,11 @@ const SuperAdminRouter = [
         element: <ReadyForChargingViewItem />,
     },
     {
-        path: '/sup-admin/remove-invalid-item',
+        path: '/sup-admin/remove-invalid-units-from-bag',
         element: <RemoveInvalidItem />,
     },
     {
-        path: '/sup-admin/remove-invalid-item/:bagId',
+        path: '/sup-admin/remove-invalid-units-from-bag/:bagId',
         element: <RemoveInvalidItemView />,
     },
     {

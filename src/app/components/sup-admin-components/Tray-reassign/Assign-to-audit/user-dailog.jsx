@@ -6,7 +6,6 @@ import { axiosMisUser } from '../../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
@@ -25,11 +24,9 @@ const MemberEditorDialog = ({
     auditUsers,
     isCheck,
 }) => {
-    
     const [auditUserName, setAuditUsername] = useState('')
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
-
 
     const handelSendRequestConfirm = async () => {
         try {

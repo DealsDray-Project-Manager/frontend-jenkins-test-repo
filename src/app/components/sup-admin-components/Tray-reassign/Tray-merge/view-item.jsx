@@ -5,7 +5,8 @@ import { styled } from '@mui/system'
 import { axiosBot } from '../../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Typography } from '@mui/material'
+import { Typography, Table } from '@mui/material'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -54,27 +55,28 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Tray'}
-                data={trayData}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download:false,
-                    print:false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={trayData}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }
@@ -82,94 +84,151 @@ const SimpleMuiTable = () => {
 const columns = [
     {
         name: 'index',
-        label: <Typography variant="subtitle1" fontWeight='bold' sx={{marginLeft:'7px'}}><>Record No</></Typography>,
+        label: (
+            <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                sx={{ marginLeft: '7px' }}
+            >
+                <>Record No</>
+            </Typography>
+        ),
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (rowIndex, dataIndex) => 
-            <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+            customBodyRender: (rowIndex, dataIndex) => (
+                <Typography sx={{ pl: 4 }}>{dataIndex.rowIndex + 1}</Typography>
+            ),
         },
     },
     {
         name: 'uic',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>UIC</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>UIC</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'imei',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>IMEI</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>IMEI</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'bag_id',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Bag ID</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Bag ID</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'body_damage',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Body Damage</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Body Damage</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'body_damage_des',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Body Damage Description</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Body Damage Description</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'item_recieved',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Item Received in Packet</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Item Received in Packet</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'model_brand',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Mismatched Model Brand Name</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Mismatched Model Brand Name</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerOne',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 1</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Other Info 1</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerTwo',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 2</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Other Info 2</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerThree',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 3</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Other Info 3</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'stickerFour',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Other Info 4</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Other Info 4</>
+            </Typography>
+        ),
         options: {
             filter: true,
         },
     },
     {
         name: 'added_time',
-        label: <Typography variant="subtitle1" fontWeight='bold' ><>Added Date</></Typography>,
+        label: (
+            <Typography variant="subtitle1" fontWeight="bold">
+                <>Added Date</>
+            </Typography>
+        ),
         options: {
             filter: true,
             customBodyRender: (value) =>

@@ -91,6 +91,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackDetails',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Rack Display
+                </Typography>
+            ),
+
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'rack_id',
             label: (
                 <Typography
@@ -134,10 +147,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         (value.length == 0
-                            ? tableMeta.rowData[3].length
+                            ? tableMeta.rowData[4].length
                             : value.length) +
                         '/' +
-                        tableMeta.rowData[4]
+                        tableMeta.rowData[5]
                     )
                 },
             },
@@ -146,7 +159,7 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" >
+                <Typography fontWeight="bold" variant="subtitle1">
                     Agent Name
                 </Typography>
             ),
@@ -157,7 +170,7 @@ const SimpleMuiTable = () => {
         {
             name: 'name',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" >
+                <Typography fontWeight="bold" variant="subtitle1">
                     Tray Name
                 </Typography>
             ),
@@ -203,7 +216,7 @@ const SimpleMuiTable = () => {
         {
             name: 'created_at',
             label: (
-                <Typography fontWeight="bold" variant="subtitle1" >
+                <Typography fontWeight="bold" variant="subtitle1">
                     Creation Date
                 </Typography>
             ),

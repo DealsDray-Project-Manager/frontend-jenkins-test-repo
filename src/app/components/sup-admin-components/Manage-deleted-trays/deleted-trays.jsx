@@ -1,6 +1,5 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import MemberEditorDialog from './add-tray'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import {
@@ -34,19 +33,16 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayList, setTrayList] = useState([])
-    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
-    const [editFetchData, setEditFetchData] = useState({})
-    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
         const fetchBrand = async () => {
             try {
                 setIsLoading(true)
-                let obj = {
-                    master_type: 'tray-master',
-                }
-                const res = await axiosSuperAdminPrexo.post('/getMasters', obj)
+
+                const res = await axiosSuperAdminPrexo.post(
+                    `/getDeletedMaster/${'tray-master'}`
+                )
                 if (res.status === 200) {
                     setIsLoading(false)
                     setTrayList(res.data.data)
@@ -64,63 +60,39 @@ const SimpleMuiTable = () => {
         return () => setIsAlive(false)
     }, [isAlive])
 
-    const handleDialogClose = () => {
-        setEditFetchData({})
-        setShouldOpenEditorDialog(false)
-    }
-
-    const handleDialogOpen = () => {
-        setShouldOpenEditorDialog(true)
-    }
-
-    const handelDelete = (masterId) => {
+    const handelRestore = (id) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You Want to Delete!',
+            text: 'You Want to Restore!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Delete it!',
+            confirmButtonText: 'Yes, Restore!',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    let obj = {
-                        masterId: masterId,
-                    }
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/getOneMaster',
-                        obj
+                    let response = await axiosSuperAdminPrexo.post(
+                        `restoreDeletedMaster/${id}`
                     )
-                    if (res.status == 200) {
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/deleteMaster/' + masterId
-                        )
-                        if (response.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Tray has been Deleted',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: response?.data?.message,
-                            })
-                        }
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: response.data.message,
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive)
+                            }
+                        })
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "You Can't Delete This Tray",
+                            text: response.data.message,
                         })
                     }
                 } catch (error) {
@@ -132,39 +104,6 @@ const SimpleMuiTable = () => {
                 }
             }
         })
-    }
-
-    const editTray = async (masterId) => {
-        try {
-            let obj = {
-                masterId: masterId,
-            }
-            let response = await axiosSuperAdminPrexo.post('/getOneMaster', obj)
-            if (response.status == 200) {
-                setEditFetchData(response.data.data)
-                handleDialogOpen()
-            } else if (response.status === 202) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: "You Can't Edit This Tray",
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
-        }
-    }
-
-    const handelAudit = (trayId) => {
-        navigate('/sup-admin/tray/audit/' + trayId)
-    }
-
-    const handelEditHistory = (trayId) => {
-        navigate('/sup-admin/tray/edit-history/' + trayId)
     }
 
     const columns = [
@@ -289,17 +228,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'sort_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Status</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
 
         {
             name: 'tray_grade',
@@ -312,22 +240,12 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'rack_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rack Id</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'created_at',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Creation Date</>
+                    <>Created Date</>
                 </Typography>
             ),
             options: {
@@ -340,7 +258,23 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'status',
+            name: 'createdAt',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Deleted Date</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Actions</>
@@ -351,46 +285,13 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box>
-                            <IconButton>
-                                <Icon
-                                    onClick={(e) => {
-                                        editTray(tableMeta.rowData[1])
-                                    }}
-                                    color="primary"
-                                >
-                                    edit
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        handelDelete(tableMeta.rowData[1])
-                                    }}
-                                    color="error"
-                                >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
-                                    onClick={() => {
-                                        handelAudit(tableMeta.rowData[1])
-                                    }}
-                                    color="primary"
-                                >
-                                    history
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <EditRoadIcon
-                                    onClick={() => {
-                                        handelEditHistory(tableMeta.rowData[1])
-                                    }}
-                                    color="green"
-                                >
-                                    button
-                                </EditRoadIcon>
-                            </IconButton>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={(e) => handelRestore(value)}
+                            >
+                                Restore
+                            </Button>
                         </Box>
                     )
                 },
@@ -402,7 +303,7 @@ const SimpleMuiTable = () => {
         return (
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'All Trays'}
+                    title={'Manage Deleted Trays'}
                     data={trayList}
                     columns={columns}
                     options={{
@@ -435,34 +336,12 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Tray', path: '/' }]} />
-            </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                onClick={() => setShouldOpenEditorDialog(true)}
-            >
-                Add New Tray
-            </Button>
-            <Button
-                sx={{ mb: 2, ml: 2 }}
-                variant="contained"
-                color="secondary"
-                onClick={() => navigate('/sup-admin/tray/add-bulk-tray')}
-            >
-                Add Bulk Tray
-            </Button>
-            {trayData}
-            {shouldOpenEditorDialog && (
-                <MemberEditorDialog
-                    handleClose={handleDialogClose}
-                    open={handleDialogOpen}
-                    setIsAlive={setIsAlive}
-                    editFetchData={editFetchData}
-                    setEditFetchData={setEditFetchData}
+                <Breadcrumb
+                    routeSegments={[{ name: 'Deleted Trays', path: '/' }]}
                 />
-            )}
+            </div>
+
+            {trayData}
         </Container>
     )
 }

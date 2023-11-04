@@ -180,8 +180,8 @@ const StatCard3 = () => {
         {
             icon: 'remove',
             amount: count.removeInvalidItem,
-            title: 'Remove invalid item',
-            link: '/sup-admin/remove-invalid-item',
+            title: 'Remove invalid Units',
+            link: '/sup-admin/remove-invalid-units-from-bag',
         },
         {
             icon: 'art_track',

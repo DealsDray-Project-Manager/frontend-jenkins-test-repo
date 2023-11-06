@@ -223,7 +223,6 @@ const PaginationTable = () => {
     }
     const forDateFormat = (field) => {
         if (field?.includes('-')) {
-            console.log(field);
             // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
             const [datePart, timePart] = field?.split(' ')
             const [day, month, year] = datePart?.split('-')

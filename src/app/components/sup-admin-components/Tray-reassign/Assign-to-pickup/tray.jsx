@@ -16,7 +16,7 @@ import {
     Typography,
     MenuItem,
     TextField,
-    Table
+    Table,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -24,6 +24,7 @@ import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -88,6 +89,8 @@ const SimpleMuiTable = () => {
         sort_agent: '',
         location: '',
     })
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -189,6 +192,61 @@ const SimpleMuiTable = () => {
             toTray: totray,
             location: locationData,
         }))
+    }
+
+    // ONE STEP BACK API
+    const handelOneStepBack = async (fromTray, toTray) => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = [
+                {
+                    tray_status: 'Empty',
+                    code: toTray,
+                },
+                {
+                    tray_status: 'Not-empty',
+                    code: fromTray,
+                },
+            ]
+            let obj = {
+                trayIds: trayIds,
+                status: 'Closed By Warehouse',
+                actionDoneBy: user.username,
+                currentStatus: 'Sorting Request Sent To Warehouse',
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     /* REQUEST SEND TO WAREHOUSE */
@@ -335,7 +393,7 @@ const SimpleMuiTable = () => {
                     value?.length + '/' + tableMeta?.rowData[5],
             },
         },
-       
+
         {
             name: 'sort_id',
             label: (
@@ -411,6 +469,29 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                             >
                                 Reassign
+                            </Button>
+                            <Button
+                                sx={{
+                                    ml: 1,
+                                }}
+                                variant="contained"
+                                disabled={oneStepBackButLoad}
+                                onClick={(e) => {
+                                    if (
+                                        window.confirm(
+                                            'You want to do one step back?'
+                                        )
+                                    ) {
+                                        handelOneStepBack(
+                                            value,
+                                            tableMeta.rowData[4]
+                                        )
+                                    }
+                                }}
+                                color="secondary"
+                                component="span"
+                            >
+                                One step back
                             </Button>
                         </>
                     )
@@ -506,52 +587,51 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Table className="custom-table">
-
-            <MUIDataTable
-                title={'Pickup'}
-                data={mmtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                <MUIDataTable
+                    title={'Pickup'}
+                    data={mmtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
             </Table>
-
         </Container>
     )
 }

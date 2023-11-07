@@ -23,6 +23,7 @@ import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -80,7 +81,8 @@ const SimpleMuiTable = () => {
     const [submitDis, setSubmitDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
-
+    const { user } = useAuth()
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -188,6 +190,83 @@ const SimpleMuiTable = () => {
             toTray: totray,
             location: locationData,
         }))
+    }
+
+    // ONE STEP BACK API
+    const handelOneStepBack = async (fromTray, toTray, currentStatus) => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = [
+                {
+                    tray_status: 'Not-empty',
+                    code: fromTray,
+                },
+                {
+                    tray_status: 'Not-empty',
+                    code: toTray,
+                },
+            ]
+
+            let obj = {
+                trayIds: trayIds,
+                status: 'Closed By Warehouse',
+                actionDoneBy: user.username,
+                currentStatus: currentStatus,
+            }
+            if (
+                currentStatus == 'Audit Done Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Audit Done Closed By Warehouse'
+            } else if (
+                currentStatus == 'Ready to BQC Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to BQC'
+            } else if (
+                currentStatus ==
+                'Ready to Audit Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to Audit'
+            } else if (
+                currentStatus ==
+                'Ready to RDL-2 Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to RDL-2'
+            } else if (currentStatus == 'Merge Request Sent To Wharehouse') {
+                obj.status = 'Closed By Warehouse'
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     /* REQUEST SEND TO WAREHOUSE */
@@ -427,6 +506,30 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                             >
                                 Reassign
+                            </Button>
+                            <Button
+                                sx={{
+                                    ml: 1,
+                                }}
+                                variant="contained"
+                                disabled={oneStepBackButLoad}
+                                onClick={(e) => {
+                                    if (
+                                        window.confirm(
+                                            'You want to do one step back?'
+                                        )
+                                    ) {
+                                        handelOneStepBack(
+                                            value,
+                                            tableMeta.rowData[4],
+                                            tableMeta.rowData[8]
+                                        )
+                                    }
+                                }}
+                                color="secondary"
+                                component="span"
+                            >
+                                One step back
                             </Button>
                         </>
                     )

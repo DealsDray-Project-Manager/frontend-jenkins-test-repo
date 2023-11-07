@@ -359,7 +359,7 @@ const CtxToStxPage = () => {
                     <>Action</>
                 </Typography>
             ),
-          
+
             options: {
                 filter: false,
                 sort: false,

@@ -446,6 +446,11 @@ export const navigations = [
                 path: '/sup-admin/report/rack',
                 iconText: 'PL',
             },
+            {
+                name: 'Upgrade Report',
+                path: '/sup-admin/report/upgrade',
+                iconText: 'PL',
+            },
         ],
         auth: authRoles.admin,
         sales: false,

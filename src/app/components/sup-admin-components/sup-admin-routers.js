@@ -163,7 +163,15 @@ const RestoreDeletedTrays=Loadable(
 const RackSummaryPage=Loadable(
     lazy(() => import('./Report/Rack-report/rack-report'))
 )
+// UPGRADE REPORT 
+const UpgradeReport=Loadable(
+    lazy(() => import('./Report/Upgrade-report/upgrade-report'))
+)
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/report/upgrade',
+        element: <UpgradeReport />,
+    },
     {
         path: '/sup-admin/report/rack',
         element: <RackSummaryPage />,

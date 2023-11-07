@@ -27,7 +27,6 @@ const MemberEditorDialog = ({
     editFetchData,
     setEditFetchData,
 }) => {
-    
     const [profile, Setprofile] = useState({
         preview: '',
         store: {},
@@ -39,6 +38,7 @@ const MemberEditorDialog = ({
     const [location, setLocation] = useState('')
     const [warehouse, setWarehouse] = useState([])
     const [warehouseType, setWarehouseType] = useState('')
+    const [passwordType, setPasswordType] = useState('password')
 
     useEffect(() => {
         const fetchCpc = async () => {
@@ -520,24 +520,32 @@ const MemberEditorDialog = ({
                             helperText={errors.device_id?.message}
                             inputProps={{ maxLength: 40 }}
                         />
-                        <TextFieldCustOm
-                            label="Password"
-                            type="password"
-                            name="password"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('password')}
-                            error={errors.password ? true : false}
-                            helperText={errors.password?.message}
-                        />
-                        <TextFieldCustOm
-                            label="Confirm Password"
-                            type="password"
-                            name="cpassword"
-                            disabled={Object.keys(editFetchData).length !== 0}
-                            {...register('cpassword')}
-                            error={errors.cpassword ? true : false}
-                            helperText={errors.cpassword?.message}
-                        />
+                        {Object.keys(editFetchData).length !== 0 ? null : (
+                            <>
+                                <TextFieldCustOm
+                                    label="Password"
+                                    type={passwordType}
+                                    name="password"
+                                    disabled={
+                                        Object.keys(editFetchData).length !== 0
+                                    }
+                                    {...register('password')}
+                                    error={errors.password ? true : false}
+                                    helperText={errors.password?.message}
+                                />
+                                <TextFieldCustOm
+                                    label="Confirm Password"
+                                    type={passwordType}
+                                    name="cpassword"
+                                    disabled={
+                                        Object.keys(editFetchData).length !== 0
+                                    }
+                                    {...register('cpassword')}
+                                    error={errors.cpassword ? true : false}
+                                    helperText={errors.cpassword?.message}
+                                />
+                            </>
+                        )}
                     </Grid>
                 </Grid>
 

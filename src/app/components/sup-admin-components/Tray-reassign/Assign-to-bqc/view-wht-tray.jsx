@@ -13,6 +13,7 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,6 +37,8 @@ const SimpleMuiTable = () => {
     const [location, setLocation] = useState('')
     const [chargingUsers, setChargingUsers] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -128,6 +131,58 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
+    }
+    // ONE STEP BACK API
+    const handelOneStepBack = async () => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = []
+            for (let x of isCheck) {
+                let obj = {
+                    tray_status: 'Not-empty',
+                    code: x,
+                }
+                trayIds.push(obj)
+            }
+            let obj = {
+                trayIds: trayIds,
+                status: 'Ready to BQC',
+                actionDoneBy: user.username,
+                currentStatus: 'Send for BQC',
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     const handelViewItem = (id) => {
@@ -356,6 +411,23 @@ const SimpleMuiTable = () => {
                 onClick={() => handelGetChargingUser(true)}
             >
                 Reassign for BQC
+            </Button>
+            <Button
+                sx={{
+                    mb: 2,
+                    ml: 2,
+                }}
+                variant="contained"
+                disabled={oneStepBackButLoad || isCheck.length == 0}
+                onClick={(e) => {
+                    if (window.confirm('You want to do one step back?')) {
+                        handelOneStepBack()
+                    }
+                }}
+                color="secondary"
+                component="span"
+            >
+                One step back
             </Button>
             <Table className="custom-table">
                 <MUIDataTable

@@ -19,7 +19,6 @@ import {
     DialogActions,
     Table,
 } from '@mui/material'
-
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import useAuth from 'app/hooks/useAuth'
@@ -78,7 +77,7 @@ const SimpleMuiTable = () => {
     const [open, setOpen] = React.useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
-    const [auditUsers, setAuditUsers] = useState([])
+    const [reBqcUsername, setRebqcusername] = useState([])
     const [receiveBut, setReceiveBut] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -92,7 +91,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/retunrFromAudit/' + location
+                        '/return-from-rebqc/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -187,10 +186,10 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/get-charging-users/' + 'Audit/' + location
+                        '/get-charging-users/' + 'REBQC/' + location
                     )
                     if (res.status == 200) {
-                        setAuditUsers(res.data.data)
+                        setRebqcusername(res.data.data)
                         handleDialogOpen()
                     }
                 }
@@ -283,10 +282,10 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'closed_time_bot',
+            name: 'closed_date_agent',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Audit Done Date
+                    REBQC Done Date
                 </Typography>
             ),
             options: {
@@ -297,66 +296,66 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <>
-                            {tableMeta.rowData[3] != 'Received From Audit' ? (
-                                <Button
-                                    sx={{
-                                        m: 1,
-                                    }}
-                                    variant="contained"
-                                    style={{ backgroundColor: 'green' }}
-                                    onClick={(e) => {
-                                        setOpen(true)
-                                        setTrayId(value)
-                                    }}
-                                >
-                                    RECEIVE
-                                </Button>
-                            ) : (
-                                <>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: '#206CE2' }}
-                                        onClick={(e) => {
-                                            handelViewTray(
-                                                e,
-                                                value,
-                                                tableMeta.rowData[2]
-                                            )
-                                        }}
-                                    >
-                                        View
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            m: 1,
-                                        }}
-                                        variant="contained"
-                                        style={{ backgroundColor: 'red' }}
-                                        onClick={(e) => {
-                                            handelViewDetailTray(e, value)
-                                        }}
-                                    >
-                                        Close
-                                    </Button>
-                                </>
-                            )}
-                        </>
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'code',
+        //     label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
+        //     options: {
+        //         filter: false,
+        //         sort: false,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <>
+        //                     {tableMeta.rowData[3] != 'Received From Audit' ? (
+        //                         <Button
+        //                             sx={{
+        //                                 m: 1,
+        //                             }}
+        //                             variant="contained"
+        //                             style={{ backgroundColor: 'green' }}
+        //                             onClick={(e) => {
+        //                                 setOpen(true)
+        //                                 setTrayId(value)
+        //                             }}
+        //                         >
+        //                             RECEIVE
+        //                         </Button>
+        //                     ) : (
+        //                         <>
+        //                             <Button
+        //                                 sx={{
+        //                                     m: 1,
+        //                                 }}
+        //                                 variant="contained"
+        //                                 style={{ backgroundColor: '#206CE2' }}
+        //                                 onClick={(e) => {
+        //                                     handelViewTray(
+        //                                         e,
+        //                                         value,
+        //                                         tableMeta.rowData[2]
+        //                                     )
+        //                                 }}
+        //                             >
+        //                                 View
+        //                             </Button>
+        //                             <Button
+        //                                 sx={{
+        //                                     m: 1,
+        //                                 }}
+        //                                 variant="contained"
+        //                                 style={{ backgroundColor: 'red' }}
+        //                                 onClick={(e) => {
+        //                                     handelViewDetailTray(e, value)
+        //                                 }}
+        //                             >
+        //                                 Close
+        //                             </Button>
+        //                         </>
+        //                     )}
+        //                 </>
+        //             )
+        //         },
+        //     },
+        // },
     ]
 
     return (
@@ -409,8 +408,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'Return-from-Audit' },
+                        { name: 'RBQC', path: '/' },
+                        { name: 'Return-from-Rebqc' },
                     ]}
                 />
             </div>
@@ -422,7 +421,7 @@ const SimpleMuiTable = () => {
                     handelGetAuditUser()
                 }}
             >
-                Assign new tray
+                Issue new tray
             </Button>
             <Table className="custom-table">
                 <MUIDataTable
@@ -474,7 +473,7 @@ const SimpleMuiTable = () => {
                 <AssignTrayDialogBox
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    auditUsers={auditUsers}
+                    ReBqcUsername={reBqcUsername}
                     setIsAlive={setIsAlive}
                 />
             )}

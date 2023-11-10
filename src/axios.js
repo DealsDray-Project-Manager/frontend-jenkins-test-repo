@@ -71,3 +71,7 @@ export const axiosPurchaseAgent = axios.create({
     baseURL: `${baseURL}/api/v7/purchase-user`,
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
+export const axiosReBqcAgent = axios.create({
+    baseURL: `${baseURL}/api/v7/rebqc-user`,
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})

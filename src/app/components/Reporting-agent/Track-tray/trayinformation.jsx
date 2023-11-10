@@ -75,7 +75,7 @@ const Trayinformation = () => {
                     onChange={(e) => {
                         setSearchInput(e.target.value)
                     }}
-                    label="enter tray id"
+                    label="Enter tray id"
                 >
                     Enter Tray Id
                 </TextField>

@@ -8,6 +8,7 @@ import {
     axiosSuperAdminPrexo,
 } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -32,6 +33,7 @@ const MemberEditorDialog = ({
     const [boxList, setBoxList] = useState([])
     const [loading, setLoading] = useState(false)
     const [boxName, setBoxName] = useState('')
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchBoxes = async () => {
@@ -62,6 +64,7 @@ const MemberEditorDialog = ({
                 boxName: boxName,
                 objId: objId,
                 uniqueid: uniqueid,
+                username: user.username,
             }
             let res = await axiosRmUserAgent.post('/addIntoBox', obj)
             if (res.status == 200) {

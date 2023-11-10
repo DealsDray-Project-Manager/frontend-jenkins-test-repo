@@ -68,9 +68,20 @@ const TrackItemsEach = Loadable(
 )
 const TrackTray = Loadable(lazy(() => import('./Track-tray/trayinformation')))
 const UnVerifiedImeiReport = Loadable(lazy(() => import('./Unverified-imei-report/items')))
-
+// RDL-2 OUT PUT 
+const Rdl2Output = Loadable(lazy(() => import('./Report/Rdl-2-output/rdl-2-output')))
+// PART INVENTORY LEDGER 
+const PartInventoryLedger=Loadable(lazy(() => import('./Track-item/part-inventory-ledger/part-inventory-ledger')))
 
 const ReportingRouter = [
+    {
+        path: '/reporting/inventory-ledger',
+        element: <PartInventoryLedger />,
+    },
+    {
+        path: '/reporting/rdl-2-output',
+        element: <Rdl2Output />,
+    },
     {
         path: '/reporting/unverified-imei',
         element: <UnVerifiedImeiReport />,

@@ -57,9 +57,8 @@ const AuthGuard = ({ children }) => {
                             obj
                         )
                         if (res.status === 200) {
-
                         } else if (res.status == 202) {
-                            console.log(res.data);
+                            console.log(res.data)
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -69,7 +68,7 @@ const AuthGuard = ({ children }) => {
                             }).then((result) => {
                                 if (
                                     result.isConfirmed &&
-                                    res.data.status == "1"
+                                    res.data.status == '1'
                                 ) {
                                     localStorage.removeItem(
                                         'prexo-authentication'

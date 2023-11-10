@@ -39,11 +39,11 @@ import SalesRoutes from 'app/components/Sales-components/Sales_routes'
 import ReportingAgent from 'app/components/Reporting-agent/Reporting-agent-router'
 import Rdl2Routers from 'app/components/Rdl-2-panel/Rdl-2-router'
 import RmWarehouse from 'app/components/Rm-warehouse/Rm-warehouse'
-import SpmisPanel from "app/components/Sp-mis-panel/sp-mis-panel"
+import SpmisPanel from 'app/components/Sp-mis-panel/sp-mis-panel'
 import PurchaseUser from 'app/components/Purchase-rm/purchase-rm'
 import BuyerUser from 'app/components/Buyer-panel/Buyer-routes'
 import BaggingUserRouter from 'app/components/Bagging-user/bagging-user-router'
-
+import ReBqcRouter from 'app/components/Rebqc-agent/Rebqc-routers'
 export const AllPages = () => {
     const all_routes = [
         {
@@ -53,6 +53,7 @@ export const AllPages = () => {
                 </AuthGuard>
             ),
             children: [
+                ...ReBqcRouter,
                 ...PurchaseUser,
                 ...SpmisPanel,
                 ...dashboardRoutes,
@@ -89,7 +90,7 @@ export const AllPages = () => {
                 ...Rdl2Routers,
                 ...RmWarehouse,
                 ...BuyerUser,
-                ...BaggingUserRouter
+                ...BaggingUserRouter,
             ],
         },
 

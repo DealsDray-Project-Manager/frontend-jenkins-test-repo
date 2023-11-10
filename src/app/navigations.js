@@ -89,6 +89,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/rebqc/dashboard',
+        icon: '',
+        sales: 'all',
+        auth: authRoles.REBQC, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/reporting/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -427,7 +434,6 @@ export const navigations = [
                 path: '/sup-admin/manage-deleted-trays',
                 iconText: 'PL',
             },
-           
         ],
         auth: authRoles.admin,
         sales: false,
@@ -1045,6 +1051,24 @@ export const navigations = [
         sales: 'all',
     },
     {
+        name: 'RBQC',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'RBQC Tray',
+                path: '/warehouse/rbqc-tray',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Rebqc',
+                path: '/warehouse/return-from-rebqc',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+        sales: 'all',
+    },
+    {
         name: 'STX',
         icon: 'shopping_cart',
         children: [
@@ -1517,6 +1541,13 @@ export const navigations = [
         auth: authRoles.reporting,
     },
     {
+        name: 'Rdl-2 Output',
+        icon: 'poll',
+        path: '/reporting/rdl-2-output',
+        sales: false,
+        auth: authRoles.reporting,
+    },
+    {
         name: 'Track',
         icon: 'track_changes',
         children: [
@@ -1527,6 +1558,10 @@ export const navigations = [
             {
                 name: 'Tray Track',
                 path: '/reporting/track-tray',
+            },
+            {
+                name: 'Part Inventory Ledger',
+                path: '/reporting/inventory-ledger',
             },
         ],
         sales: 'all',
@@ -1665,6 +1700,20 @@ export const navigations = [
         ],
         sales: 'all',
         auth: authRoles.RMWAREHOUSE,
+    },
+    {
+        name: 'RBQC Tray',
+        icon: 'save',
+        path: '/rebqc/issued-trays',
+        auth: authRoles.REBQC,
+        sales: false,
+    },
+    {
+        name: 'Pending Items',
+        icon: 'save',
+        path: '/rebqc/pending-items',
+        auth: authRoles.REBQC,
+        sales: false,
     },
 ]
 export const getfilteredNavigations = (navList = [], role, cpc_type) => {

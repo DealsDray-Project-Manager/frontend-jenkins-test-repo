@@ -92,7 +92,7 @@ const MemberEditorDialog = ({
                 let categorys = await axiosSuperAdminPrexo.get(
                     '/getCtxTrayCategory'
                 )
-                if (categorys.status == 200) { 
+                if (categorys.status == 200) {
                     setCategorys(categorys.data)
                 }
             } else {
@@ -167,52 +167,18 @@ const MemberEditorDialog = ({
                                 handleClose()
                             }
                         })
+                    } else if (type == 'RBQC' && res.data.data > '0100') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'RBQC Tray Maximum ID NO  0100',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
                     }
-                    // else if (type == 'CTA' && res.data.data > '1999') {
-                    //     handleClose()
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Oops...',
-                    //         text: 'cta Tray Maximum ID NO  1999',
-                    //     }).then((result) => {
-                    //         if (result.isConfirmed) {
-                    //             handleClose()
-                    //         }
-                    //     })
-                    // } else if (type == 'CTB' && res.data.data > '3999') {
-                    //     handleClose()
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Oops...',
-                    //         text: 'CTB Tray Maximum ID NO  2999',
-                    //     }).then((result) => {
-                    //         if (result.isConfirmed) {
-                    //             handleClose()
-                    //         }
-                    //     })
-                    // } else if (type == 'CTC' && res.data.data > '3999') {
-                    //     handleClose()
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Oops...',
-                    //         text: 'CTC Tray Maximum ID NO  3999',
-                    //     }).then((result) => {
-                    //         if (result.isConfirmed) {
-                    //             handleClose()
-                    //         }
-                    //     })
-                    // } else if (type == 'CTD' && res.data.data > '4999') {
-                    //     handleClose()
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Oops...',
-                    //         text: 'CTD Tray Maximum ID NO  4999',
-                    //     }).then((result) => {
-                    //         if (result.isConfirmed) {
-                    //             handleClose()
-                    //         }
-                    //     })
-                    // }
                 } else {
                     handleClose()
                     Swal.fire({
@@ -523,7 +489,7 @@ const MemberEditorDialog = ({
                                     {data.name}
                                 </MenuItem>
                             ))}
-                        </TextFieldCustOm> 
+                        </TextFieldCustOm>
                         <TextFieldCustOm
                             label="Tray Category"
                             select
@@ -599,6 +565,14 @@ const MemberEditorDialog = ({
                             >
                                 RPT
                             </MenuItem>
+                            <MenuItem
+                                value="RBQC"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'RBQC', 'TOP')
+                                }}
+                            >
+                                RBQC
+                            </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'CT' ||
                         getValues('type_taxanomy') == 'ST' ? (
@@ -628,6 +602,7 @@ const MemberEditorDialog = ({
                             </TextFieldCustOm>
                         ) : null}
                         {getValues('type_taxanomy') !== 'BOT' &&
+                        getValues('type_taxanomy') !== 'RBQC' &&
                         getValues('type_taxanomy') !== 'PMT' &&
                         getValues('type_taxanomy') !== 'SPT' &&
                         getValues('type_taxanomy') !== 'MMT' ? (

@@ -101,13 +101,18 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        // {
-        //     name: 'issued_user_name',
-        //     label: 'Agent Name',
-        //     options: {
-        //         filter: true,
-        //     },
-        // },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
 
         {
             name: 'brand',

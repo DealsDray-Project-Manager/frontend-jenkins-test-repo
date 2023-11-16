@@ -285,7 +285,7 @@ const SimpleMuiTable = () => {
                         <>
                             <span>{value}</span>
                             <br />
-                            <span>{tableMeta?.rowData[10]}</span>
+                            <span>{tableMeta?.rowData[11]}</span>
 
                             <br />
                             <Button
@@ -314,6 +314,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                sort:false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <div>
@@ -334,6 +335,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                sort:false,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <div>

@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography, Table,Box } from '@mui/material'
+import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -174,11 +174,25 @@ const SimpleMuiTable = () => {
             name: 'rack_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rack Id</>
+                    <>Rack ID</>
                 </Typography>
             ),
             options: {
                 filter: true,
+            },
+        },
+
+        {
+            name: 'trayrack', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
             },
         },
         {
@@ -251,7 +265,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
+                    value?.length + '/' + tableMeta.rowData[9],
             },
         },
 
@@ -341,9 +355,8 @@ const SimpleMuiTable = () => {
                     }}
                 />
             </Table>
-            <Box sx={{ textAlign: 'right',mt:1 }}>
+            <Box sx={{ textAlign: 'right', mt: 1 }}>
                 <Button
-                
                     variant="contained"
                     color="primary"
                     disabled={isCheck.length == 0}

@@ -208,7 +208,7 @@ const SimpleMuiTable = () => {
                     return (
                         <Checkbox
                             onClick={(e) => {
-                                handleClick(e, tableMeta.rowData[3])
+                                handleClick(e, tableMeta.rowData[5])
                             }}
                             id={value}
                             key={value}
@@ -351,7 +351,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[9],
+                    value.length + '/' + tableMeta.rowData[10],
             },
         },
 

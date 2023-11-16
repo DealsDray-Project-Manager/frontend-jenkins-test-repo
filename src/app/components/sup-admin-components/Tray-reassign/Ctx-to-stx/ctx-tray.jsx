@@ -15,6 +15,8 @@ import {
     Select,
     MenuItem,
     TextField,
+    Table,
+    Typography,
 } from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
@@ -23,12 +25,11 @@ import {
     axiosMisUser,
     axiosSuperAdminPrexo,
 } from '../../../../../axios'
-import jwt_decode from 'jwt-decode'
+import '../../../../../app.css'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -200,39 +201,86 @@ const CtxToStxPage = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
-            name: 'code', // field name in the row object
-            label: 'Tray Id', // column title that will be shown in table
+            name: 'code',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
             },
         },
 
         {
             name: 'cpc',
-            label: 'CPC',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>CPC</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'to_merge',
-            label: 'To Tray',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>To Tray</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_grade',
-            label: 'Tray Grade',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Grade</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -248,53 +296,73 @@ const CtxToStxPage = () => {
         },
         {
             name: 'items',
-            label: 'Quantity',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Quantity</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
-            },
-        },
-        {
-            name: 'type_taxanomy',
-            label: 'Tray Type',
-            options: {
-                filter: true,
+                    value?.length + '/' + tableMeta?.rowData[7],
             },
         },
 
         {
             name: 'brand',
-            label: 'Brand',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Brand</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'sort_id',
-            label: 'Status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Status</>
+                </Typography>
+            ),
+
             options: {
                 filter: true,
             },
         },
         {
             name: 'issued_user_name',
-            label: 'Assigned to',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Assigned to</>
+                </Typography>
+            ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
 
         {
             name: 'code',
-            label: 'Action',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
+
             options: {
                 filter: false,
                 sort: false,
@@ -322,8 +390,8 @@ const CtxToStxPage = () => {
                                     handelSorting(
                                         e,
                                         tableMeta.rowData[1],
-                                        tableMeta.rowData[3],
-                                        tableMeta.rowData[2]
+                                        tableMeta.rowData[5],
+                                        tableMeta.rowData[4]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}
@@ -422,50 +490,52 @@ const CtxToStxPage = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'CTX Tray'}
-                data={tray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'CTX Tray'}
+                    data={tray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

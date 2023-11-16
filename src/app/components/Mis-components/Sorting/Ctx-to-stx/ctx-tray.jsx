@@ -291,6 +291,18 @@ const CtxToStxPage = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'tray_grade',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -324,7 +336,7 @@ const CtxToStxPage = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[5],
             },
         },
         {
@@ -416,12 +428,12 @@ const CtxToStxPage = () => {
                                 onClick={(e) => {
                                     handelSorting(
                                         e,
+                                        tableMeta.rowData[10],
                                         tableMeta.rowData[9],
-                                        tableMeta.rowData[8],
                                         value,
-                                        tableMeta.rowData[6]?.length,
+                                        tableMeta.rowData[7]?.length,
                                         tableMeta.rowData[11],
-                                        tableMeta.rowData[3]
+                                        tableMeta.rowData[4]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}

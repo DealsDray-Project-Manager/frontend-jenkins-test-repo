@@ -5,13 +5,12 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { axiosMisUser } from '../../../../axios'
-import { Button, Typography, Checkbox,Table } from '@mui/material'
+import { Button, Typography, Checkbox, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import AssignDialogBox from './assign'
 import { Warehouse } from '@mui/icons-material'
 import useAuth from 'app/hooks/useAuth'
 import '../../../../app.css'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -165,6 +164,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'type_taxanomy',
             label: <Typography sx={{ fontWeight: 'bold' }}>Type</Typography>,
             options: {
@@ -197,9 +209,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value == 0 ? tableMeta.rowData[5] : value) +
+                        (value == 0 ? tableMeta.rowData[6] : value) +
                         '/' +
-                        tableMeta.rowData[6]
+                        tableMeta.rowData[7]
                     )
                 },
             },
@@ -247,52 +259,52 @@ const SimpleMuiTable = () => {
             >
                 Assign To Warehouse
             </Button>
-                <Table className="custom-table">
-
-            <MUIDataTable
-                title={'Tray'}
-                data={whtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={whtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-                </Table>
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}

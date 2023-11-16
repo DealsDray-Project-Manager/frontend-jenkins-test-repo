@@ -153,7 +153,7 @@ const SimpleMuiTable = () => {
                     return (
                         <Checkbox
                             onClick={(e) => {
-                                handleClick(e, tableMeta.rowData[3])
+                                handleClick(e, tableMeta.rowData[5])
                             }}
                             id={value}
                             key={value}
@@ -193,6 +193,30 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'cpc',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -214,17 +238,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Category</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
             label: (
@@ -282,7 +296,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[9],
+                    value.length + '/' + tableMeta.rowData[10],
             },
         },
 

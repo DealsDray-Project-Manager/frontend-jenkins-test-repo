@@ -15,6 +15,7 @@ import {
     Typography,
     MenuItem,
     TextField,
+    Table,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -22,6 +23,7 @@ import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
 import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -79,7 +81,8 @@ const SimpleMuiTable = () => {
     const [submitDis, setSubmitDis] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
-
+    const { user } = useAuth()
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -189,6 +192,83 @@ const SimpleMuiTable = () => {
         }))
     }
 
+    // ONE STEP BACK API
+    const handelOneStepBack = async (fromTray, toTray, currentStatus) => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = [
+                {
+                    tray_status: 'Not-empty',
+                    code: fromTray,
+                },
+                {
+                    tray_status: 'Not-empty',
+                    code: toTray,
+                },
+            ]
+
+            let obj = {
+                trayIds: trayIds,
+                status: 'Closed By Warehouse',
+                actionDoneBy: user.username,
+                currentStatus: currentStatus,
+            }
+            if (
+                currentStatus == 'Audit Done Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Audit Done Closed By Warehouse'
+            } else if (
+                currentStatus == 'Ready to BQC Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to BQC'
+            } else if (
+                currentStatus ==
+                'Ready to Audit Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to Audit'
+            } else if (
+                currentStatus ==
+                'Ready to RDL-2 Merge Request Sent To Wharehouse'
+            ) {
+                obj.status = 'Ready to RDL-2'
+            } else if (currentStatus == 'Merge Request Sent To Wharehouse') {
+                obj.status = 'Closed By Warehouse'
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
     /* REQUEST SEND TO WAREHOUSE */
     const handelSendRequest = async (e) => {
         e.preventDefault()
@@ -275,6 +355,34 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id', // field name in the row object
+            label: (
+                <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ marginLeft: '7px' }}
+                >
+                    <>Rack ID</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'to_merge', // field name in the row object
             label: (
                 <Typography
@@ -312,7 +420,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[4],
+                    value?.length + '/' + tableMeta?.rowData[6],
             },
         },
         {
@@ -398,7 +506,7 @@ const SimpleMuiTable = () => {
                                     handelMerge(
                                         e,
                                         value,
-                                        tableMeta.rowData[3],
+                                        tableMeta.rowData[5],
                                         tableMeta.rowData[1]
                                     )
                                 }}
@@ -499,50 +607,52 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Mmt Tray'}
-                data={mmtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Assigned to merging'}
+                    data={mmtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

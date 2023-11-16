@@ -3,7 +3,7 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import '../../../../../app.css'
-import { Button, Checkbox, Typography,Table } from '@mui/material'
+import { Button, Checkbox, Typography, Table } from '@mui/material'
 import {
     axiosMisUser,
     axiosSuperAdminPrexo,
@@ -13,6 +13,7 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,6 +37,8 @@ const SimpleMuiTable = () => {
     const [location, setLocation] = useState('')
     const [chargingUsers, setChargingUsers] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -129,6 +132,58 @@ const SimpleMuiTable = () => {
         }
         fetchData()
     }
+    // ONE STEP BACK API
+    const handelOneStepBack = async () => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = []
+            for (let x of isCheck) {
+                let obj = {
+                    tray_status: 'Not-empty',
+                    code: x,
+                }
+                trayIds.push(obj)
+            }
+            let obj = {
+                trayIds: trayIds,
+                status: 'Ready to BQC',
+                actionDoneBy: user.username,
+                currentStatus: 'Send for BQC',
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
 
     const handelViewItem = (id) => {
         navigate('/sup-admin/tray/item-view/' + id)
@@ -193,6 +248,30 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'cpc',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -214,17 +293,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Category</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
             label: (
@@ -346,50 +415,52 @@ const SimpleMuiTable = () => {
             >
                 Reassign for BQC
             </Button>
+
             <Table className="custom-table">
-            <MUIDataTable
-                title={'WHT'}
-                data={whtTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                <MUIDataTable
+                    title={'WHT'}
+                    data={whtTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
             </Table>
 
             {shouldOpenEditorDialog && (

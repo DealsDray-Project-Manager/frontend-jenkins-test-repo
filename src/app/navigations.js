@@ -1121,13 +1121,13 @@ export const navigations = [
         name: 'STX Utility',
         icon: 'search',
         children: [
+            // {
+            //     name: 'Ctx to Stx Scan Uic',
+            //     path: '/mis/stx-utility',
+            //     iconText: 'VP',
+            // },
             {
-                name: 'Ctx to Stx Scan Uic',
-                path: '/mis/stx-utility',
-                iconText: 'VP',
-            },
-            {
-                name: 'Stx to Stx Scan Uic',
+                name: 'Stx Utility Scan Uic',
                 path: '/mis/stx-to-stx-utility',
                 iconText: 'VP',
             },

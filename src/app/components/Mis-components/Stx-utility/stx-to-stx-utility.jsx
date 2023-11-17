@@ -138,8 +138,9 @@ function Search() {
             value.brand = muicDetails.brand
             value.model = muicDetails.model
             value.muic = muicDetails.muic
-            value.grade= uicData?.[0]?.grade
-            value.screen="Stx to Stx"
+            value.grade = uicData?.[0]?.grade
+            value.screen = 'Stx to Stx'
+            value.system_status = uicData?.[0]?.system_status
 
             let res = await axiosMisUser.post('/stxUtilityAddToStx', value)
             if (res.status == 200) {
@@ -238,7 +239,7 @@ function Search() {
             name: 'grade',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Grade</>
+                    <>New Grade</>
                 </Typography>
             ),
             options: {
@@ -250,6 +251,39 @@ function Search() {
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'old_grade',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Old Grade</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'system_status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>System Status</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'description',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
                 </Typography>
             ),
             options: {
@@ -308,7 +342,7 @@ function Search() {
             </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'STX to STX Utility', path: '/' }]}
+                    routeSegments={[{ name: 'STX Utility', path: '/' }]}
                 />
             </div>
             <Box

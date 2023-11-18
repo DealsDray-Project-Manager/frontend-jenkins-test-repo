@@ -203,6 +203,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                sort: false,
             },
         },
         {

@@ -300,6 +300,7 @@ const SimpleMuiTable = () => {
             ), // column title that will be shown in table
             options: {
                 filter: true,
+                sort: false,
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },

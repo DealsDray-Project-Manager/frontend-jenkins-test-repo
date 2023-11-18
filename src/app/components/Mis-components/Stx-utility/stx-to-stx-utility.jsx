@@ -141,6 +141,7 @@ function Search() {
             value.grade = uicData?.[0]?.grade
             value.screen = 'Stx to Stx'
             value.system_status = uicData?.[0]?.system_status
+            value.actUser=user.username
 
             let res = await axiosMisUser.post('/stxUtilityAddToStx', value)
             if (res.status == 200) {
@@ -213,6 +214,18 @@ function Search() {
             },
         },
         {
+            name: 'file_name', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>File Name</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+            },
+        },
+        {
             name: 'uic', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -220,7 +233,8 @@ function Search() {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
 
@@ -232,7 +246,8 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -243,7 +258,8 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -254,7 +270,8 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -265,7 +282,8 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -276,7 +294,8 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -287,7 +306,26 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: 'createdAt',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Imported Date</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    value != undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : null,
             },
         },
     ]

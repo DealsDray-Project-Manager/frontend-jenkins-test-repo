@@ -292,6 +292,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'limit',
             label: 'Tray Id',
             options: {
@@ -310,7 +323,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value + '/' + tableMeta?.rowData[3],
+                    value + '/' + tableMeta?.rowData[4],
             },
         },
         {
@@ -394,12 +407,12 @@ const SimpleMuiTable = () => {
                                 onClick={(e) => {
                                     handelMerge(
                                         e,
-                                        tableMeta.rowData[6],
-                                        tableMeta.rowData[5],
-                                        value,
-                                        tableMeta.rowData[4],
                                         tableMeta.rowData[7],
-                                        tableMeta.rowData[8]
+                                        tableMeta.rowData[6],
+                                        value,
+                                        tableMeta.rowData[5],
+                                        tableMeta.rowData[8],
+                                        tableMeta.rowData[9]
                                     )
                                 }}
                                 style={{ backgroundColor: 'green' }}

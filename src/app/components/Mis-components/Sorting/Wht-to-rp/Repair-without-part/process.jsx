@@ -262,7 +262,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'closed_date_agent',
+            name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Done Date</>
@@ -271,9 +271,12 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                    new Date(value?.rdl_fls_closed_date).toLocaleString(
+                        'en-GB',
+                        {
+                            hour12: true,
+                        }
+                    ),
             },
         },
         {
@@ -354,6 +357,7 @@ const SimpleMuiTable = () => {
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
                                     2: 'uic',
+                                    4:'rdl_fls_closed_date',
                                     5: 'rdl_fls_report.username',
                                     6: 'rdl_fls_report.selected_status',
                                     7: 'rdl_fls_report.description',

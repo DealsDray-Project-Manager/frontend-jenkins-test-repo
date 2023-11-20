@@ -138,8 +138,10 @@ function Search() {
             value.brand = muicDetails.brand
             value.model = muicDetails.model
             value.muic = muicDetails.muic
-            value.grade= uicData?.[0]?.grade
-            value.screen="Stx to Stx"
+            value.grade = uicData?.[0]?.grade
+            value.screen = 'Stx to Stx'
+            value.system_status = uicData?.[0]?.system_status
+            value.actUser=user.username
 
             let res = await axiosMisUser.post('/stxUtilityAddToStx', value)
             if (res.status == 200) {
@@ -212,6 +214,18 @@ function Search() {
             },
         },
         {
+            name: 'file_name', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>File Name</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: false,
+                sort: false,
+            },
+        },
+        {
             name: 'uic', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -219,7 +233,8 @@ function Search() {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
 
@@ -231,18 +246,20 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
             name: 'grade',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Grade</>
+                    <>New Grade</>
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
             },
         },
         {
@@ -253,7 +270,62 @@ function Search() {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: 'old_grade',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Old Grade</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: 'system_status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>System Status</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: 'description',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Description</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: 'createdAt',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Imported Date</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    value != undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : null,
             },
         },
     ]
@@ -308,7 +380,7 @@ function Search() {
             </BootstrapDialog>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'STX to STX Utility', path: '/' }]}
+                    routeSegments={[{ name: 'STX Utility', path: '/' }]}
                 />
             </div>
             <Box

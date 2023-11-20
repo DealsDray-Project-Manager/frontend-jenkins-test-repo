@@ -1762,7 +1762,7 @@ const PickupPage = () => {
             },
         },
         {
-            name: 'closed_date_agent',
+            name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>RDL 1 Done Date</>
@@ -1772,9 +1772,12 @@ const PickupPage = () => {
                 filter: true,
                 sort: true, // enable sorting for Brand column
                 customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                    new Date(value?.rdl_fls_closed_date).toLocaleString(
+                        'en-GB',
+                        {
+                            hour12: true,
+                        }
+                    ),
             },
         },
         {
@@ -2498,7 +2501,8 @@ const PickupPage = () => {
                                     28: 'rdl_fls_report.model_reg',
                                     29: 'rdl_fls_report.color',
                                     30: 'rdl_fls_report.partRequired',
-                                    31: 'rdl_fls_report.description',
+                                    32: 'rdl_fls_closed_date',
+                                    33: 'rdl_fls_report.description',
                                 }
 
                                 const property = columnProperties[colIndex]

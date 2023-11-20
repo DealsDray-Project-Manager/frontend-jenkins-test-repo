@@ -133,6 +133,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'type_taxanomy',
             label: <Typography sx={{ fontWeight: 'bold' }}>Type</Typography>,
             options: {
@@ -155,7 +168,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta.rowData[4],
+                    value?.length + '/' + tableMeta.rowData[5],
             },
         },
         {

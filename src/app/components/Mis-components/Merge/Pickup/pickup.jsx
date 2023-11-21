@@ -1869,7 +1869,7 @@ const PickupPage = () => {
             name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Done Date</>
+                    <>RDL 1 Done Unit Date</>
                 </Typography>
             ),
             options: {
@@ -1877,6 +1877,25 @@ const PickupPage = () => {
                 sort: true, // enable sorting for Brand column
                 customBodyRender: (value) =>
                     new Date(value?.rdl_fls_closed_date).toLocaleString(
+                        'en-GB',
+                        {
+                            hour12: true,
+                        }
+                    ),
+            },
+        },
+        {
+            name: 'closed_date_agent',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 1 Done Tray Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString(
                         'en-GB',
                         {
                             hour12: true,
@@ -1903,7 +1922,7 @@ const PickupPage = () => {
             name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Merge Done From</>
+                    <>From Tray</>
                 </Typography>
             ),
             options: {
@@ -1918,7 +1937,7 @@ const PickupPage = () => {
             name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Merging Done Date</>
+                    <>Tray Merging Date</>
                 </Typography>
             ),
             options: {
@@ -2647,7 +2666,7 @@ const PickupPage = () => {
                             selectableRows: 'none',
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
-                                    1: 'price',
+                                   
                                     2: 'uic',
                                     3: 'order_id',
                                     4: 'imei',
@@ -2676,10 +2695,10 @@ const PickupPage = () => {
                                     30: 'rdl_fls_report.model_reg',
                                     31: 'rdl_fls_report.color',
                                     32: 'rdl_fls_report.partRequired',
-                                    33: 'rdl_fls_closed_date',
-                                    34: 'rdl_fls_report.description',
-                                    35:"merge_done_tray",
-                                    36:"merge_done_date",
+                                    34: 'rdl_fls_closed_date',
+                                    36: 'rdl_fls_report.description',
+                                    37:"merge_done_tray",
+                                    38:"merge_done_date",
 
                                 }
 

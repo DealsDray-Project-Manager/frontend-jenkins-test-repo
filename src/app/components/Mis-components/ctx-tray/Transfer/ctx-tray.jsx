@@ -101,7 +101,7 @@ const SimpleMuiTable = () => {
     const handelViewItem = (id) => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
-    
+
     const columns = [
         {
             name: 'code',
@@ -179,7 +179,7 @@ const SimpleMuiTable = () => {
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                sort: false,
+                sort: true,
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },

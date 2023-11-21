@@ -262,6 +262,32 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
+            },
+        },
+        {
             name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -357,10 +383,12 @@ const SimpleMuiTable = () => {
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
                                     2: 'uic',
-                                    4:'rdl_fls_closed_date',
-                                    5: 'rdl_fls_report.username',
-                                    6: 'rdl_fls_report.selected_status',
-                                    7: 'rdl_fls_report.description',
+                                    4: 'rack_id',
+                                    5: 'display',
+                                    6: 'rdl_fls_closed_date',
+                                    7: 'rdl_fls_report.username',
+                                    8: 'rdl_fls_report.selected_status',
+                                    9: 'rdl_fls_report.description',
                                 }
 
                                 const property = columnProperties[colIndex]

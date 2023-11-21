@@ -43,13 +43,14 @@ export default function DialogBox() {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let obj={
-                        location:location,
-                        fromTray:trayId,
-                        type:"tray-merging-page"
+                    let obj = {
+                        location: location,
+                        fromTray: trayId,
+                        type: 'tray-merging-page',
                     }
                     let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo',obj
+                        '/viewTrayFromAndTo',
+                        obj
                     )
                     if (response.status === 200) {
                         setTray(response.data.data)
@@ -206,13 +207,13 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        ml:1
+                        ml: 1,
                     }}
                 >
-                    <h4 >FROM TRAY ITEMS - {tray[0]?.code}</h4>
+                    <h4>FROM TRAY ITEMS - {tray[0]?.code}</h4>
 
                     <Box>
-                        <h5 >Total</h5>
+                        <h5>Total</h5>
                         <p style={{ margin: '5px', fontSize: '22px' }}>
                             {tray?.[0]?.actual_items?.length}/{tray?.[0]?.limit}
                         </p>
@@ -227,7 +228,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Order Id</TableCell>
                                 <TableCell>AWBN</TableCell>
@@ -236,7 +237,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:2}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
@@ -260,7 +263,7 @@ export default function DialogBox() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        ml:1,
+                        ml: 1,
                     }}
                 >
                     <h4>TO TRAY ITEMS - {tray?.[1]?.code}</h4>
@@ -312,7 +315,7 @@ export default function DialogBox() {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{pl:2}}>S.NO</TableCell>
+                                <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Order Id</TableCell>
                                 <TableCell>AWBN</TableCell>
@@ -322,7 +325,9 @@ export default function DialogBox() {
                         <TableBody>
                             {tray?.[1]?.items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
-                                    <TableCell sx={{pl:2}}>{index + 1}</TableCell>
+                                    <TableCell sx={{ pl: 2 }}>
+                                        {index + 1}
+                                    </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>

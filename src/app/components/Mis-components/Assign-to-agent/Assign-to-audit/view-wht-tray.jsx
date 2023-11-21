@@ -2,13 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import {
-    Button,
-    Checkbox,
-    Typography,
-    Table,
-    Box,
-} from '@mui/material'
+import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 
 import { axiosWarehouseIn, axiosMisUser } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
@@ -29,8 +23,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
-
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -158,7 +150,7 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: false,  
+                filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
@@ -198,9 +190,9 @@ const SimpleMuiTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                filter: false,
-                sort:false,
-                customBodyRender: (value) => value?.[0]?.display,
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
             },
         },
         {
@@ -304,7 +296,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-         
+
             <Table className="custom-table">
                 <MUIDataTable
                     title={'WHT'}
@@ -352,17 +344,15 @@ const SimpleMuiTable = () => {
                 />
             </Table>
 
-            <Box sx={{ textAlign: 'right',mt:1 }}>
-            <Button
-               
-                variant="contained"
-                color="primary"
-                onClick={() => handelGetAuditUser()}
-                disabled={isCheck.length === 0}
-            >
-                Assign For Audit
-            </Button>
-
+            <Box sx={{ textAlign: 'right', mt: 1 }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handelGetAuditUser()}
+                    disabled={isCheck.length === 0}
+                >
+                    Assign For Audit
+                </Button>
             </Box>
 
             {shouldOpenEditorDialog && (

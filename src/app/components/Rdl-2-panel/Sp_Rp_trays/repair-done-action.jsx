@@ -244,8 +244,6 @@ const SimpleMuiTable = () => {
                     trayId: whtTrayId,
                     spTray: spTray,
                     rdl_repair_report: {
-                        rdl_two_user:user.username,
-                        rp_tray:whtTrayId,
                         status: selectedValue,
                         reason: selectReason,
                         description: description,

@@ -20,6 +20,8 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { axiosReportingAgent, axiosSuperAdminPrexo } from '../../../../../axios'
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote'
 import SaveIcon from '@mui/icons-material/Save'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -121,6 +123,77 @@ const PartTable = () => {
                 title: 'Oops...',
                 text: error,
             })
+        }
+    }
+
+    const download = async (e, request_id) => {
+        let arr = []
+        let res = await axiosReportingAgent.post(
+            `/get-data-for-rdl-2-downalod/${request_id}`
+        )
+
+        if (res.status === 200) {
+            for (let x of res.data.data) {
+                let obj = {
+                    'Brand & Model': x?.brand_and_model_name,
+                    'Auditor Grade A': x?.all_data?.auditorGradeA,
+                    'Auditor Grade B': x?.all_data?.auditorGradeB,
+                    'Auditor Grade C': x?.all_data?.auditorGradeC,
+                    'Auditor Grade D': x?.all_data?.auditorGradeD,
+                    'Auditor Grade B2': x?.all_data?.auditorGradeB2,
+                    'Auditor Grade RB': x?.all_data?.auditorGradeRB,
+                    Upgrade: x?.all_data?.upgradeCount,
+                    'Issued to RDL-2': x?.all_data?.issuedToRdl2OrInprocess,
+                    'Repair Done': x?.all_data?.repairDoneCount,
+                    'Repair Done With Issue BQC Not Done/Unverified Imei':
+                        x?.all_data?.repairDoneWithIssue,
+                    'Repair Not Done': x?.all_data?.repairNotDoneWithIssue,
+                    'Device Not Repairable': x?.all_data?.deviceNotRepairable,
+                    'More Part Required': x?.all_data?.morePartRequired,
+                    'Spare Part Faulty': x?.all_data?.sparePartFaulty,
+                    'Part Not Available': x?.all_data?.partNotAvailable,
+                    'RDL-2 Done Closed By Warehouse':
+                        x?.all_data?.rdlTwoDoneClosedByWh,
+                    'Ready To BQC': x?.all_data?.readyToBqc,
+                    'Ready To Audit': x?.all_data?.readyToAudit,
+                }
+
+                arr.push(obj)
+            }
+
+            // Add styles for the header row
+            const headerCellStyle = {
+                font: { bold: true, color: { rgb: 'FFFFFF' } }, // Bold white font
+                fill: { bgColor: { indexed: 64 }, fgColor: { rgb: '2F75B5' } }, // Blue background
+                alignment: { horizontal: 'center' }, // Center text horizontally
+            }
+
+            const ws = XLSX.utils.json_to_sheet(arr, {
+                header: Object.keys(arr[0]),
+            })
+            const headerRange = XLSX.utils.decode_range(ws['!ref'])
+
+            for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+                const headerCell = XLSX.utils.encode_cell({
+                    r: headerRange.s.r,
+                    c: col,
+                })
+                ws[headerCell].s = headerCellStyle
+            }
+
+            const fileExtension = '.xlsx'
+            const fileType =
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+            const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+            const excelBuffer = XLSX.write(wb, {
+                bookType: 'xlsx',
+                type: 'array',
+            })
+
+            const data = new Blob([excelBuffer], { type: fileType })
+            FileSaver.saveAs(data, 'RDL-2 Output' + fileExtension)
+        } else {
+            // Handle the case when the response status is not 200
         }
     }
 
@@ -246,7 +319,9 @@ const PartTable = () => {
                     return (
                         <LoadingButton
                             color="secondary"
-                            onClick={handelGetReport}
+                            onClick={(e) => {
+                                download(e, value)
+                            }}
                             loading={loading}
                             loadingPosition="start"
                             startIcon={<SaveIcon />}

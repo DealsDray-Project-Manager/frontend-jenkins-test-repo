@@ -183,16 +183,16 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'trayrack', // field name in the row object
+            name: 'rack_display', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Rack Display</>
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => value?.[0]?.display,
+                filter: true,
+                sort: true,
+               
             },
         },
         {
@@ -337,19 +337,15 @@ const SimpleMuiTable = () => {
                             return data.sort((a, b) => {
                                 if (colIndex === 1) {
                                     return (
-                                        (a.data[colIndex].price <
-                                        b.data[colIndex].price
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
+                                        (a.data[colIndex].price < b.data[colIndex].price ? -1 : 1) * (order === 'desc' ? 1 : -1)
+                                    );
                                 }
                                 return (
-                                    (a.data[colIndex] < b.data[colIndex]
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
-                            })
+                                    (a.data[colIndex] < b.data[colIndex] ? -1 : 1) * (order === 'desc' ? 1 : -1)
+                                );
+                            });
                         },
+                        
                         elevation: 0,
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}

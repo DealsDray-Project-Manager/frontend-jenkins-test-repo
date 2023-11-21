@@ -224,12 +224,7 @@ const SimpleMuiTable = () => {
         {
             name: 'index',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    noWrap
-                    sx={{ mr: 8 }}
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
@@ -265,6 +260,32 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
             },
         },
 
@@ -318,9 +339,12 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value?.rdl_fls_closed_date).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                    new Date(value?.rdl_fls_closed_date).toLocaleString(
+                        'en-GB',
+                        {
+                            hour12: true,
+                        }
+                    ),
             },
         },
         {
@@ -507,14 +531,16 @@ const SimpleMuiTable = () => {
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
                                     2: 'uic',
-                                    4: 'audit_report.stage',
-                                    5: 'audit_report.grade',
-                                    6: 'audit_report.description',
-                                    7: 'rdl_fls_closed_date',
-                                    8: 'rdl_fls_report.username',
-                                    9: 'rdl_fls_report.description',
-                                    10: 'rdl_fls_report.partRequired',
-                                  
+                                    4: 'rack_id',
+                                    5: 'display',
+                                    6: 'audit_report.stage',
+                                    7: 'audit_report.grade',
+                                    8: 'audit_report.description',
+                                    9: 'rdl_fls_closed_date',
+                                    10: 'rdl_fls_report.username',
+                                    11: 'rdl_fls_report.description',
+                                    12: 'rdl_fls_report.partRequired',
+
                                     // add more columns and properties here
                                 }
                                 const property = columnProperties[colIndex]

@@ -258,7 +258,9 @@ const SimpleMuiTable = () => {
                                 sx={{
                                     m: 1,
                                 }}
-                                disabled={value.length == 0}
+                                disabled={
+                                    value?.length == 0 || value == undefined
+                                }
                                 variant="contained"
                                 onClick={() => handleviewsp(value?.code)}
                                 style={{ backgroundColor: 'green' }}
@@ -314,7 +316,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                sort:false,
+                sort: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <div>
@@ -335,7 +337,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                sort:false,
+                sort: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <div>

@@ -199,7 +199,7 @@ const SimpleMuiTable = () => {
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                sort: false,
+                sort: true,
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },
@@ -247,7 +247,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
+                    value.length + '/' + tableMeta.rowData[7],
             },
         },
 

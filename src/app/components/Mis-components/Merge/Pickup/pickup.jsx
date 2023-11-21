@@ -147,7 +147,6 @@ const ProductTableRdlTwo = styled(Table)(() => ({
 
 const PickupPage = () => {
     /*-----------------------state----------------------------------*/
-
     const [value, setValue] = React.useState('Charge Done')
     const [item, setItem] = useState([])
     const [brand, setbrand] = useState([])
@@ -160,9 +159,9 @@ const PickupPage = () => {
     const [sortingUsers, SetSortingUsers] = useState([])
     const [whtTray, setWhtTray] = useState([])
     const [selectedStatus, setSelectedStatus] = useState([])
-
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
+
     /*--------------------------------------------------------------*/
 
     const handleChange = (event, newValue) => {
@@ -427,6 +426,44 @@ const PickupPage = () => {
             },
         },
         {
+            name: 'code',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray ID</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
+            },
+        },
+        {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -490,18 +527,7 @@ const PickupPage = () => {
                 customBodyRender: (value, dataIndex) => value.muic || '',
             },
         },
-        {
-            name: 'code',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
-            },
-        },
+
         {
             name: 'items',
             label: (
@@ -735,6 +761,32 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
             },
         },
         {
@@ -1022,6 +1074,32 @@ const PickupPage = () => {
             ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
             },
         },
         {
@@ -1386,6 +1464,32 @@ const PickupPage = () => {
             options: {
                 filter: true,
                 sort: true, // enable sorting for Brand column
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
             },
         },
         {
@@ -1795,6 +1899,42 @@ const PickupPage = () => {
                     value?.rdl_fls_report?.description || '',
             },
         },
+        {
+            name: 'deliveryData',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Merge Done From</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.merge_done_tray || '',
+            },
+        },
+        {
+            name: 'deliveryData',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Merging Done Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value) =>
+                    value?.merge_done_date != undefined
+                        ? new Date(value?.merge_done_date).toLocaleString(
+                              'en-GB',
+                              {
+                                  hour12: true,
+                              }
+                           )
+                        : null,
+            },
+        },
     ]
     const columnsForRdlTwo = [
         {
@@ -1935,6 +2075,32 @@ const PickupPage = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.display,
+            },
+        },
+        {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -2071,16 +2237,18 @@ const PickupPage = () => {
                                 const columnProperties = {
                                     1: 'price',
                                     2: 'uic',
-                                    3: 'order_id',
-                                    4: 'imei',
-                                    7: 'muic',
-                                    9: 'charging.battery_status',
-                                    10: 'charging.charge_percentage',
-                                    11: 'charging.body_condition',
-                                    12: 'charging.display_condition',
-                                    13: 'charging.lock_status',
-                                    14: 'charging.charging_jack_type',
-                                    15: 'charging.boady_part_missing',
+                                    6: 'order_id',
+                                    4: 'rack_id',
+                                    5: 'display',
+                                    7: 'imei',
+                                    10: 'muic',
+                                    11: 'charging.battery_status',
+                                    12: 'charging.charge_percentage',
+                                    13: 'charging.body_condition',
+                                    14: 'charging.display_condition',
+                                    15: 'charging.lock_status',
+                                    16: 'charging.charging_jack_type',
+                                    17: 'charging.boady_part_missing',
                                     // add more columns and properties here
                                 }
                                 const property = columnProperties[colIndex]
@@ -2207,18 +2375,20 @@ const PickupPage = () => {
                                     3: 'order_id',
                                     4: 'imei',
                                     7: 'muic',
-                                    9: 'charging.battery_status',
-                                    10: 'charging.charge_percentage',
-                                    11: 'charging.body_condition',
-                                    12: 'charging.display_condition',
-                                    13: 'charging.lock_status',
-                                    14: 'charging.charging_jack_type',
-                                    15: 'charging.boady_part_missing',
-                                    16: 'bqc_report.blancoo_qc_status',
-                                    17: 'bqc_report.factory_reset_status',
-                                    18: 'bqc_report.bqc_incomplete_reason',
-                                    19: 'bqc_report.technical_issue',
-                                    20: 'bqc_report.other',
+                                    9: 'rack_id',
+                                    10: 'display',
+                                    11: 'charging.battery_status',
+                                    12: 'charging.charge_percentage',
+                                    13: 'charging.body_condition',
+                                    14: 'charging.display_condition',
+                                    15: 'charging.lock_status',
+                                    16: 'charging.charging_jack_type',
+                                    17: 'charging.boady_part_missing',
+                                    18: 'bqc_report.blancoo_qc_status',
+                                    19: 'bqc_report.factory_reset_status',
+                                    20: 'bqc_report.bqc_incomplete_reason',
+                                    21: 'bqc_report.technical_issue',
+                                    22: 'bqc_report.other',
                                     // add more columns and properties here
                                 }
                                 const property = columnProperties[colIndex]
@@ -2344,23 +2514,26 @@ const PickupPage = () => {
                                     3: 'order_id',
                                     4: 'imei',
                                     7: 'muic',
-                                    9: 'charging.battery_status',
-                                    10: 'charging.charge_percentage',
-                                    11: 'charging.body_condition',
-                                    12: 'charging.display_condition',
-                                    13: 'charging.lock_status',
-                                    14: 'charging.charging_jack_type',
-                                    15: 'charging.boady_part_missing',
-                                    16: 'bqc_report.blancoo_qc_status',
-                                    17: 'bqc_report.factory_reset_status',
-                                    18: 'bqc_report.bqc_incomplete_reason',
-                                    19: 'bqc_report.technical_issue',
-                                    20: 'bqc_report.other',
-                                    21: 'audit_report.orgGrade',
-                                    22: 'audit_report.grade',
-                                    23: 'audit_report.stage',
-                                    24: 'audit_report.reason',
-                                    25: 'audit_report.description',
+                                    9: 'rack_id',
+                                    10: 'display',
+                                    11: 'charging.battery_status',
+                                    12: 'charging.charge_percentage',
+                                    13: 'charging.body_condition',
+                                    14: 'charging.display_condition',
+                                    15: 'charging.lock_status',
+                                    16: 'charging.charging_jack_type',
+                                    17: 'charging.boady_part_missing',
+                                    18: 'bqc_report.blancoo_qc_status',
+                                    19: 'bqc_report.factory_reset_status',
+                                    20: 'bqc_report.bqc_incomplete_reason',
+                                    21: 'bqc_report.technical_issue',
+                                    22: 'bqc_report.other',
+                                    23: 'audit_report.orgGrade',
+                                    24: 'audit_report.grade',
+                                    25: 'audit_report.stage',
+                                    26: 'audit_report.reason',
+                                    27: 'audit_report.description',
+                                    
                                     // add more columns and properties here
                                 }
                                 const property = columnProperties[colIndex]
@@ -2479,30 +2652,35 @@ const PickupPage = () => {
                                     3: 'order_id',
                                     4: 'imei',
                                     7: 'muic',
-                                    9: 'charging.battery_status',
-                                    10: 'charging.charge_percentage',
-                                    11: 'charging.body_condition',
-                                    12: 'charging.display_condition',
-                                    13: 'charging.lock_status',
-                                    14: 'charging.charging_jack_type',
-                                    15: 'charging.boady_part_missing',
-                                    16: 'bqc_report.blancoo_qc_status',
-                                    17: 'bqc_report.factory_reset_status',
-                                    18: 'bqc_report.bqc_incomplete_reason',
-                                    19: 'bqc_report.technical_issue',
-                                    20: 'bqc_report.other',
-                                    21: 'audit_report.orgGrade',
-                                    22: 'audit_report.grade',
-                                    23: 'audit_report.stage',
-                                    24: 'audit_report.reason',
-                                    25: 'audit_report.description',
-                                    26: 'rdl_fls_report.username',
-                                    27: 'rdl_fls_report.selected_status',
-                                    28: 'rdl_fls_report.model_reg',
-                                    29: 'rdl_fls_report.color',
-                                    30: 'rdl_fls_report.partRequired',
-                                    32: 'rdl_fls_closed_date',
-                                    33: 'rdl_fls_report.description',
+                                    9: 'rack_id',
+                                    10: 'display',
+                                    11: 'charging.battery_status',
+                                    12: 'charging.charge_percentage',
+                                    13: 'charging.body_condition',
+                                    14: 'charging.display_condition',
+                                    15: 'charging.lock_status',
+                                    16: 'charging.charging_jack_type',
+                                    17: 'charging.boady_part_missing',
+                                    18: 'bqc_report.blancoo_qc_status',
+                                    19: 'bqc_report.factory_reset_status',
+                                    20: 'bqc_report.bqc_incomplete_reason',
+                                    21: 'bqc_report.technical_issue',
+                                    22: 'bqc_report.other',
+                                    23: 'audit_report.orgGrade',
+                                    24: 'audit_report.grade',
+                                    25: 'audit_report.stage',
+                                    26: 'audit_report.reason',
+                                    27: 'audit_report.description',
+                                    28: 'rdl_fls_report.username',
+                                    29: 'rdl_fls_report.selected_status',
+                                    30: 'rdl_fls_report.model_reg',
+                                    31: 'rdl_fls_report.color',
+                                    32: 'rdl_fls_report.partRequired',
+                                    33: 'rdl_fls_closed_date',
+                                    34: 'rdl_fls_report.description',
+                                    35:"merge_done_tray",
+                                    36:"merge_done_date",
+
                                 }
 
                                 const property = columnProperties[colIndex]
@@ -2637,11 +2815,13 @@ const PickupPage = () => {
                                     3: 'order_id',
                                     4: 'imei',
                                     7: 'muic',
-                                    9: 'rdl_repair_report.status',
-                                    10: 'rdl_repair_report.reason',
-                                    11: 'rdl_repair_report.description',
-                                    12: 'rdl_fls_report.partRequired',
-                                    13: 'rdl_repair_report.rdl_two_part_status',
+                                    9: 'rack_id',
+                                    10: 'display',
+                                    11: 'rdl_repair_report.status',
+                                    12: 'rdl_repair_report.reason',
+                                    13: 'rdl_repair_report.description',
+                                    14: 'rdl_fls_report.partRequired',
+                                    15: 'rdl_repair_report.rdl_two_part_status',
                                 }
 
                                 const property = columnProperties[colIndex]

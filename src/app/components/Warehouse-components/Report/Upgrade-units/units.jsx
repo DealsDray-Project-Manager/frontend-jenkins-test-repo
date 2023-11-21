@@ -286,6 +286,17 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+         {
+            name: 'rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'sales_bin_status',
             label: (

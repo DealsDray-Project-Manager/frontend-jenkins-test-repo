@@ -43,12 +43,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
         {
             name: 'index',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    noWrap
-                    sx={{ mr: 8 }}
-                >
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>Record No</>
                 </Typography>
             ),
@@ -84,6 +79,32 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
             ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value.rack_id,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value.display,
             },
         },
         {
@@ -198,11 +219,13 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
                                     1: 'uic',
-                                    6: 'audit_report.description',
-                                    3: 'rdl_fls_closed_date',
-                                    4: 'rdl_fls_report.username',
-                                    5: 'rdl_fls_report.description',
-                                    16: 'rdl_fls_report.partRequired',
+                                    3: 'rack_id',
+                                    4: 'display',
+                                    8: 'audit_report.description',
+                                    5: 'rdl_fls_closed_date',
+                                    6: 'rdl_fls_report.username',
+                                    7: 'rdl_fls_report.description',
+                                    8: 'rdl_fls_report.partRequired',
 
                                     // add more columns and properties here
                                 }

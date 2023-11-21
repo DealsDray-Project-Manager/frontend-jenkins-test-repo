@@ -299,7 +299,7 @@ const CtxToStxPage = () => {
             ), // column title that will be shown in table
             options: {
                 filter: true,
-                sort: false,
+                sort: true,
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },

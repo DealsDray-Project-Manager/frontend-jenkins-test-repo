@@ -180,19 +180,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rackData', // field name in the row object
+            name: 'rack_display', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Rack Display</>
                 </Typography>
-            ), // column title that will be shown in table
+            ),
             options: {
                 filter: true,
-                sort: false,
-                customBodyRender: (value) => value?.[0]?.display,
+                sort: true,
             },
         },
-
         {
             name: 'brand',
             label: (
@@ -215,7 +213,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-      
+
         {
             name: 'jack_type',
             label: (
@@ -254,7 +252,7 @@ const SimpleMuiTable = () => {
                     value.length + '/' + tableMeta.rowData[8],
             },
         },
-      
+
         {
             name: 'sort_id',
             label: (

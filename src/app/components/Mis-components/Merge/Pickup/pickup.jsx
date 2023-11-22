@@ -1884,25 +1884,25 @@ const PickupPage = () => {
                     ),
             },
         },
-        {
-            name: 'closed_date_agent',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Done Tray Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString(
-                        'en-GB',
-                        {
-                            hour12: true,
-                        }
-                    ),
-            },
-        },
+        // {
+        //     name: 'closed_date_agent',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>RDL 1 Done Tray Date</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         sort: true, // enable sorting for Brand column
+        //         customBodyRender: (value) =>
+        //             new Date(value).toLocaleString(
+        //                 'en-GB',
+        //                 {
+        //                     hour12: true,
+        //                 }
+        //             ),
+        //     },
+        // },
         {
             name: 'items',
             label: (
@@ -2696,9 +2696,9 @@ const PickupPage = () => {
                                     31: 'rdl_fls_report.color',
                                     32: 'rdl_fls_report.partRequired',
                                     34: 'rdl_fls_closed_date',
-                                    36: 'rdl_fls_report.description',
-                                    37:"merge_done_tray",
-                                    38:"merge_done_date",
+                                    35: 'rdl_fls_report.description',
+                                    36:"merge_done_tray",
+                                    37:"merge_done_date",
 
                                 }
 

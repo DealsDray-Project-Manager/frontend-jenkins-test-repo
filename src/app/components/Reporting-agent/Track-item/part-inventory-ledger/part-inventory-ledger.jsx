@@ -165,6 +165,18 @@ const PartTable = () => {
             },
         },
         {
+            name: 'box_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Box Id</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: true,
+            },
+        },
+        {
             name: 'action',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -236,15 +248,11 @@ const PartTable = () => {
                                 <p>
                                     Color: <b>{result?.color}</b>{' '}
                                 </p>
-
-                                <p>
-                                    Tray Status: <b>{result?.status}</b>
-                                </p>
                                 <p>
                                     Available Stock: <b>{result?.avl_stock}</b>
                                 </p>
                                 <p>
-                                    Created Date:{' '}
+                                   Part Created Date:{' '}
                                     <b>
                                         {new Date(
                                             result?.created_at

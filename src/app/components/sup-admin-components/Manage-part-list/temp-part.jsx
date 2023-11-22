@@ -40,6 +40,7 @@ const PartTable = () => {
     const navigate = useNavigate()
     const [partId, setPartId] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [editFlag,setEditFlag]=useState("")
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
 
     useEffect(() => {
@@ -69,6 +70,7 @@ const PartTable = () => {
         }
     }, [isAlive])
 
+
     const handleDialogClose = () => {
         setEditFetchData({})
         setShouldOpenEditorDialog(false)
@@ -92,10 +94,16 @@ const PartTable = () => {
 
     const editMaster = async (id) => {
         try {
+            let obj={
+                id:id,
+                type:"part-list",
+                actionType:"Edit"
+            }
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/oneData/' + id + '/part-list'
+                '/partAndColor/oneData',obj
             )
             if (response.status == 200) {
+                setEditFlag(response.data.flag)
                 setEditFetchData(response.data.data)
                 handleDialogOpen()
             } else {
@@ -126,8 +134,13 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                    let obj1={
+                        id:id,
+                        type:"part-list",
+                        actionType:"Delete"
+                    }
                     let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/part-list'
+                        '/partAndColor/oneData',obj1
                     )
                     if (res.status == 200) {
                     }
@@ -178,6 +191,7 @@ const PartTable = () => {
         })
     }
 
+    
     // DOWNLOAD PART LIST
     const download = (e) => {
         let arr = []
@@ -541,10 +555,10 @@ const PartTable = () => {
                     muicData={muicData}
                     editFetchData={editFetchData}
                     setEditFetchData={setEditFetchData}
+                    editFlag={editFlag}
                 />
             )}
         </Container>
     )
 }
-
 export default PartTable

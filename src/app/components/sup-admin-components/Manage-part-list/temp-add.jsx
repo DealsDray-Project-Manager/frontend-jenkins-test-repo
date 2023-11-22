@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import useAuth from 'app/hooks/useAuth'
+
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -28,12 +30,13 @@ const AddPartOrColorAndEditDialog = ({
     muicData,
     partId,
     setPartId,
+    editFlag,
 }) => {
     const [loading, setLoading] = useState(false)
     const [colorData, setColorData] = useState([])
     const [spCategory, setSpCategory] = useState([])
     const [boxData, setBoxData] = useState([])
-
+    const { user } = useAuth()
     useEffect(() => {
         const fetchColorData = async () => {
             try {
@@ -152,6 +155,8 @@ const AddPartOrColorAndEditDialog = ({
 
     const handelEdit = async (data) => {
         try {
+            data.editFlag = editFlag
+            data.actionUser = user.username
             let response = await axiosSuperAdminPrexo.post(
                 '/partAndColor/edit',
                 data
@@ -199,6 +204,7 @@ const AddPartOrColorAndEditDialog = ({
                     name="part_code"
                     value={partId}
                     {...register('part_code')}
+                    disabled={editFlag}
                     error={errors.part_code ? true : false}
                     helperText={
                         errors.part_code ? errors.part_code?.message : ''
@@ -210,6 +216,7 @@ const AddPartOrColorAndEditDialog = ({
                     type="text"
                     name="name"
                     {...register('name')}
+                    disabled={editFlag}
                     error={errors.name ? true : false}
                     helperText={errors.name ? errors.name?.message : ''}
                 />
@@ -219,6 +226,7 @@ const AddPartOrColorAndEditDialog = ({
                     type="text"
                     select
                     name="color"
+                    disabled={editFlag}
                     defaultValue={getValues('color')}
                     {...register('color')}
                     error={errors.color ? true : false}
@@ -235,6 +243,7 @@ const AddPartOrColorAndEditDialog = ({
                     type="text"
                     select
                     name="sp_category"
+                    disabled={editFlag}
                     defaultValue={getValues('sp_category')}
                     {...register('sp_category')}
                     error={errors.sp_category ? true : false}
@@ -271,6 +280,7 @@ const AddPartOrColorAndEditDialog = ({
                     label="Technical qc (Y/N)"
                     type="text"
                     name="technical_qc"
+                    disabled={editFlag}
                     {...register('technical_qc')}
                     error={errors.technical_qc ? true : false}
                     helperText={
@@ -282,6 +292,7 @@ const AddPartOrColorAndEditDialog = ({
                     label="Description"
                     type="text"
                     name="description"
+                    disabled={editFlag}
                     {...register('description')}
                     error={errors.description ? true : false}
                     helperText={

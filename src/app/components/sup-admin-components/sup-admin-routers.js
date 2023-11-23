@@ -167,6 +167,8 @@ const RackSummaryPage=Loadable(
 const UpgradeReport=Loadable(
     lazy(() => import('./Report/Upgrade-report/upgrade-report'))
 )
+const ViewAllBuyer = Loadable(lazy(() => import('./Manage-buyer/view-buyer')))
+
 const SuperAdminRouter = [
     {
         path: '/sup-admin/report/upgrade',
@@ -179,6 +181,10 @@ const SuperAdminRouter = [
     {
         path: '/sup-admin/manage-deleted-trays',
         element: <RestoreDeletedTrays />,
+    },
+    {
+        path: '/sup-admin/buyer',
+        element: <ViewAllBuyer />,
     },
     {
         path: '/sup-admin/buyer/create',

@@ -140,8 +140,10 @@ const SimpleMuiTable = () => {
         const { checked } = e.target
 
         setIsCheck([...isCheck, id])
+        setSelectedUic([...selectedUic, id])
         if (!checked) {
             setIsCheck(isCheck.filter((item) => item !== id))
+            setSelectedUic(selectedUic.filter((item) => item !== id))
         }
     }
 

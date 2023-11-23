@@ -154,6 +154,15 @@ export const navigations = [
         auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
+        name:  <Typography sx={{ textAlign: 'left' }}>
+       Issue Tools And Consumables
+    </Typography> ,
+        path: '/sp-mis/tools-and-consumable/issue',
+        icon: 'pan_tool',
+        sales: false,
+        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
         name: 'Purchase request',
         path: '/purchase-user/purchase',
         icon: 'shopping_cart',

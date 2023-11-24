@@ -186,8 +186,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ), // column title that will be shown in table
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },

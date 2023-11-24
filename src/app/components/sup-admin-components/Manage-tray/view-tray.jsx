@@ -300,7 +300,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+
         {
             name: 'tray_grade',
             label: (
@@ -314,7 +314,11 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rack_id',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Rack Id</></Typography>,
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
             options: {
                 filter: true,
             },

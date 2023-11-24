@@ -6,9 +6,9 @@ import EditProdutDilog from './edit-product'
 import AddEditorDialog from './add-products'
 import { useNavigate } from 'react-router-dom'
 import '../../../../app.css'
-import { Button, Box, IconButton, Icon, Typography,Table } from '@mui/material'
+import { Button, Box, IconButton, Icon, Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
-import { axiosSuperAdminPrexo,baseURL } from '../../../../axios'
+import { axiosSuperAdminPrexo, baseURL } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -273,6 +273,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'variant',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Variant</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'vendor_name',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -328,13 +339,11 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Box
-                           
-                        >
+                        <Box>
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editProductData(tableMeta.rowData[7])
+                                        editProductData(tableMeta.rowData[8])
                                     }}
                                     color="primary"
                                 >
@@ -344,7 +353,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        handelDelete(tableMeta.rowData[7])
+                                        handelDelete(tableMeta.rowData[8])
                                     }}
                                     color="error"
                                 >
@@ -354,7 +363,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={() => {
-                                        editImage(tableMeta.rowData[7])
+                                        editImage(tableMeta.rowData[8])
                                     }}
                                     color="primary"
                                 >
@@ -366,7 +375,7 @@ const SimpleMuiTable = () => {
                                     onClick={() =>
                                         navigate(
                                             '/sup-admin/products/muiclist/' +
-                                                tableMeta.rowData[7]
+                                                tableMeta.rowData[8]
                                         )
                                     }
                                     color="default"
@@ -405,34 +414,33 @@ const SimpleMuiTable = () => {
                 Add Bulk Products
             </Button>
             <Table className="custom-table">
-
-            <MUIDataTable
-                title={'All Products'}
-                data={productList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                <MUIDataTable
+                    title={'All Products'}
+                    data={productList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
             </Table>
             {shouldOpenEditorDialog && (
                 <AddEditorDialog

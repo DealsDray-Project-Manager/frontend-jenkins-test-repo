@@ -143,7 +143,9 @@ const WhtToRpRepairWithoutSpCompBrandAndModelProcess = Loadable(
 const StxToStxUtilityScanUic = Loadable(
     lazy(() => import('./Stx-utility/stx-to-stx-utility'))
 )
-
+const BagTransfferReceive= Loadable(
+    lazy(() => import('./bag-transffer/bag-receive/bag-receive'))
+)
 const dataTableRoutes = [
     {
         path: '/mis/stx-to-stx-utility',
@@ -172,6 +174,10 @@ const dataTableRoutes = [
     {
         path: '/mis/bag-transfer',
         element: <BagTransffer />,
+    },
+    {
+        path: '/mis/bag-receive',
+        element: <BagTransfferReceive />,
     },
     {
         path: '/mis/rack-change-request',

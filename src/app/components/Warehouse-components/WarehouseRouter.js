@@ -245,8 +245,20 @@ const  CopyGradingAssignRequest = Loadable(lazy(() => import('./Stx-tray/Copy-di
 const  DisplayGradingRequestApprove = Loadable(lazy(() => import('./Stx-tray/Copy-display-grading-request/approve')))
 const  RetunrFromCopyGrading = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/tray')))
 const  ReturnFromDisplayGradingClose = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/close')))
+// RBQC TRAY ALL
+const GetRebqcTrayAll= Loadable(lazy(() => import('./Rbqc-tray/all-rbqc-tray/tray')))
+// RETURN FROM REBQC 
+const ReturnFromReBqcTrays =Loadable(lazy(() => import('./Rbqc-tray/return-from-rebqc/return-from-rebqc')))
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/return-from-rebqc',
+        element: <ReturnFromReBqcTrays />,
+    },
+    {
+        path: '/warehouse/rbqc-tray',
+        element: <GetRebqcTrayAll />,
+    },
     {
         path: '/warehouse/stx/return-from-display-grading/close/:trayId',
         element: <ReturnFromDisplayGradingClose />,

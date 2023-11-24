@@ -90,19 +90,23 @@ const Login = () => {
             if (token) {
                 const { adminId, user_type } = jwt_decode(token)
                 state._id = adminId
+                state.user_type = user_type
                 let response = await axiosSuperAdminPrexo.post(
                     '/changePassword',
                     state
                 )
                 if (response.status == 200) {
-                 
                     Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: response?.data?.message,
                         confirmButtonText: 'Ok',
                     })
-                    if (user_type == 'MIS') {
+                    if (user_type == undefined) {
+                        navigate('/')
+                    } else if (user_type == 'super-admin') {
+                        navigate('/sup-admin/dashboard')
+                    } else if (user_type == 'MIS') {
                         navigate('/mis/dashboard')
                     } else if (user_type == 'Warehouse') {
                         navigate('/warehouse/dashboard')
@@ -114,6 +118,28 @@ const Login = () => {
                         navigate('/bqc/dashboard')
                     } else if (user_type == 'Sorting Agent') {
                         navigate('/sorting/dashboard')
+                    } else if (user_type == 'Audit') {
+                        navigate('/audit/dashboard')
+                    } else if (user_type == 'RDL-1') {
+                        navigate('/rdl-1/dashboard')
+                    } else if (user_type == 'Sales Agent') {
+                        navigate('/sales/dashboard')
+                    } else if (user_type == 'Pricing Agent') {
+                        navigate('/pricing/dashboard')
+                    } else if (user_type == 'Reporting') {
+                        navigate('/reporting/dashboard')
+                    } else if (user_type == 'RDL-2') {
+                        navigate('/rdl-2/dashboard')
+                    } else if (user_type == 'SP User') {
+                        navigate('/sp-user/dashboard')
+                    } else if (user_type == 'Sp mis') {
+                        navigate('/sp-mis/dashboard')
+                    } else if (user_type == 'Purchase RM') {
+                        navigate('/purchase-user/dashboard')
+                    } else if (user_type == 'Buyer') {
+                        navigate('/buyer/dashboard')
+                    } else if (user_type == 'Bagging') {
+                        navigate('/bagging/dashboard')
                     }
                 } else if (response.status == 202) {
                     Swal.fire({
@@ -124,7 +150,6 @@ const Login = () => {
                 }
             }
         } catch (error) {
-          
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

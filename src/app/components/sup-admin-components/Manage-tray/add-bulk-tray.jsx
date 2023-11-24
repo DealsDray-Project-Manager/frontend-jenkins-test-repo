@@ -144,6 +144,7 @@ const PaginationTable = () => {
         let count4 = 0
         let count5 = 0
         let count6 = 0
+        let count7 = 0
         let obj = {
             ...countOfTray,
         }
@@ -168,6 +169,9 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'RPT') {
                     x.tray_id = 'RPT' + (countOfTray.RPT + count6)
                     count6++
+                } else if (x.tray_category == 'RBQC') {
+                    x.tray_id = 'RBQC' + (countOfTray.RBQC + count7)
+                    count7++
                 } else {
                     x.tray_id =
                         x.tray_category +
@@ -177,6 +181,7 @@ const PaginationTable = () => {
                         obj[x.tray_category + x.tray_grade] + 1
                     )
                 }
+                console.log(obj)
                 // else if (x.tray_category == 'CTA') {
                 //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
                 //     count5++
@@ -274,6 +279,7 @@ const PaginationTable = () => {
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
+            console.log('y', countOfTray)
             let obj = {
                 allCount: countOfTray,
                 item: pagination.item,

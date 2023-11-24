@@ -217,6 +217,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
@@ -246,7 +258,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta?.rowData[5],
+                    value?.length + '/' + tableMeta?.rowData[6],
             },
         },
         {
@@ -266,8 +278,8 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     const isDisabled =
-                        tableMeta?.rowData[5]?.length ===
-                        tableMeta?.rowData[6]?.length
+                        tableMeta?.rowData[6]?.length ===
+                        tableMeta?.rowData[7]?.length
 
                     return isDisabled ? (
                         <Button

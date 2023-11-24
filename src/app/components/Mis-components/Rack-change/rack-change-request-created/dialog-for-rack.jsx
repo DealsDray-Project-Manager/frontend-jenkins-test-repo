@@ -91,7 +91,7 @@ const MemberEditorDialog = ({
                                     setnewRack(data.rack_id)
                                 }}
                             >
-                                {data.rack_id}
+                                {`Rack Id:${data?.rack_id} / Display:${data?.display} / Upcoming:${data?.upcoming_tray_count} / Current:${data?.current_tray_count} / Avl:${data?.avl_spc}`}
                             </MenuItem>
                         ))}
                 </TextFieldCustOm>

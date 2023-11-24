@@ -12,6 +12,11 @@ import {
     RadioGroup,
     Grid,
     TextareaAutosize,
+    DialogContent,
+    DialogActions,
+    Dialog,
+    DialogTitle,
+    IconButton,
 } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
@@ -20,8 +25,52 @@ import ChargingDetails from '../../Audit-components/Audit-request/Report/chargin
 import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
 import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { axiosRDL_oneAgent, axiosRdlTwoAgent } from '../../../../axios'
+import {
+    axiosMisUser,
+    axiosRDL_oneAgent,
+    axiosRdlTwoAgent,
+    axiosReBqcAgent,
+    axiosWarehouseIn,
+} from '../../../../axios'
 import Swal from 'sweetalert2'
+import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import useAuth from 'app/hooks/useAuth'
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}))
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    )
+}
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+}
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -56,7 +105,28 @@ const SimpleMuiTable = () => {
     /**************************************************************************** */
     const [selectedValue, setSelectedValue] = useState('')
     const [partData, setPartData] = useState([])
+    const [open, setOpen] = useState(false)
+    const [rebqcUsers, setRebqcUsers] = useState([])
+    const [rbqcTrays, setRbqcTrays] = useState([])
+    const [popdata, setPopData] = useState({
+        rebqc_username: '',
+        rbqc_tray: '',
+    })
 
+    const { user } = useAuth()
+
+    // USEEFFECT FOR REBQC USERS FETCH
+    useEffect(() => {
+        const fetchRebqcUsers = async () => {
+            const res = await axiosMisUser.post(
+                `/get-charging-users/${'REBQC'}/${user.location}`
+            )
+            if (res.status == 200) {
+                setRebqcUsers(res.data.data)
+            }
+        }
+        fetchRebqcUsers()
+    }, [])
     useEffect(() => {
         const fetchDataFun = async () => {
             try {
@@ -91,6 +161,14 @@ const SimpleMuiTable = () => {
             setRadioButtonCount([])
         }
     }, [])
+
+    const handleChangeThePopValue = ({ target: { name, value } }) => {
+        setPopData({
+            ...popdata,
+            [name]: value,
+        })
+    }
+
     const handleChange = (event) => {
         setDisplayContent('Spare parts used')
         setSelectReason('')
@@ -138,60 +216,84 @@ const SimpleMuiTable = () => {
         }
     }
 
-    const handelSubmit = async () => {
+    const handleClose = () => {
+        setOpen(false)
+    }
+    // GET RBQC TRAY
+    const handelFetchRbqcTray = async (username) => {
         try {
-            setLoading(true)
-            let obj = {
-                uic: uic,
-                trayId: whtTrayId,
-                spTray: spTray,
-                rdl_repair_report: {
-                    status: selectedValue,
-                    reason: selectReason,
-                    description: description,
-                    more_part_required: [],
-                    used_parts: [],
-                    rdl_two_part_status: requredPart,
-                },
+            const res = await axiosReBqcAgent.post(`/issued-trays/${username}`)
+            if (res.status === 200) {
+                setRbqcTrays(res.data.data)
             }
-            if (selectReason == 'More part required') {
-                let arr1 = []
-                for (let x of partData) {
-                    if (isCheck.includes(x.part_code)) {
-                        let obj = {
-                            part_id: x.part_code,
-                            part_name: x.name,
-                            quantity: x.quantity,
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    const handelSubmit = async (e, type) => {
+        try {
+            if (selectedValue == 'Repair Done' && type == 'Direct') {
+                setOpen(true)
+            } else {
+                setLoading(true)
+                let obj = {
+                    uic: uic,
+                    rebqc_username: popdata.rebqc_username,
+                    rbqc_tray: popdata.rbqc_tray,
+                    trayId: whtTrayId,
+                    spTray: spTray,
+                    rdl_repair_report: {
+                        status: selectedValue,
+                        reason: selectReason,
+                        description: description,
+                        more_part_required: [],
+                        used_parts: [],
+                        rdl_two_part_status: requredPart,
+                    },
+                }
+                if (selectReason == 'More part required') {
+                    let arr1 = []
+                    for (let x of partData) {
+                        if (isCheck.includes(x.part_code)) {
+                            let obj = {
+                                part_id: x.part_code,
+                                part_name: x.name,
+                                quantity: x.quantity,
+                            }
+                            arr1.push(obj)
                         }
-                        arr1.push(obj)
+                    }
+                    obj.rdl_repair_report.more_part_required = arr1
+                }
+                let arr = []
+                for (let y of requredPart) {
+                    if (y.rdl_two_status == 'Used') {
+                        arr.push(y)
                     }
                 }
-                obj.rdl_repair_report.more_part_required = arr1
-            }
-            let arr = []
-            for (let y of requredPart) {
-                if (y.rdl_two_status == 'Used') {
-                    arr.push(y)
-                }
-            }
-            obj.rdl_repair_report.used_parts = arr
-            const res = await axiosRdlTwoAgent.post('/repairDone/action', obj)
-            if (res.status == 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
+                obj.rdl_repair_report.used_parts = arr
+                const res = await axiosRdlTwoAgent.post(
+                    '/repairDone/action',
+                    obj
+                )
+                if (res.status == 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
 
-                navigate('/rdl-2/tray/start/' + whtTrayId)
-            } else {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
+                    navigate('/rdl-2/tray/start/' + whtTrayId)
+                } else {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
             }
         } catch (error) {
             alert(error)
@@ -624,6 +726,76 @@ const SimpleMuiTable = () => {
     return (
         <>
             <Container>
+                <BootstrapDialog
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                    fullWidth
+                    maxWidth="xs"
+                >
+                    <BootstrapDialogTitle
+                        id="customized-dialog-title"
+                        onClose={handleClose}
+                    >
+                        Select RBQC Tray
+                    </BootstrapDialogTitle>
+                    <DialogContent dividers>
+                        <TextField
+                            label="Select REBQC User"
+                            variant="outlined"
+                            fullWidth
+                            select
+                            onChange={handleChangeThePopValue}
+                            name="rebqc_username"
+                            sx={{ mt: 2 }}
+                        >
+                            {rebqcUsers.map((data) => (
+                                <MenuItem
+                                    key={data.user_name}
+                                    value={data.user_name}
+                                    onClick={(e) => {
+                                        handelFetchRbqcTray(data.user_name)
+                                    }}
+                                >
+                                    {data.user_name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <TextField
+                            label="Select Rbqc Tray"
+                            variant="outlined"
+                            fullWidth
+                            select
+                            name="rbqc_tray"
+                            onChange={handleChangeThePopValue}
+                            sx={{ mt: 2 }}
+                        >
+                            {rbqcTrays.map((data) => (
+                                <MenuItem key={data.code} value={data.code}>
+                                    {data.code}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            sx={{
+                                m: 1,
+                            }}
+                            disabled={
+                                popdata.rebqc_username == '' ||
+                                popdata.rbqc_tray == ''
+                            }
+                            variant="contained"
+                            style={{ backgroundColor: 'green' }}
+                            onClick={(e) => {
+                                handelSubmit(e, 'Finelcall')
+                            }}
+                        >
+                            Submit
+                        </Button>
+                    </DialogActions>
+                </BootstrapDialog>
                 <div className="breadcrumb">
                     <Breadcrumb
                         routeSegments={[
@@ -863,7 +1035,7 @@ const SimpleMuiTable = () => {
                                     description == ''
                                 }
                                 onClick={(e) => {
-                                    handelSubmit(e)
+                                    handelSubmit(e, 'Direct')
                                 }}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
@@ -890,7 +1062,7 @@ const SimpleMuiTable = () => {
                                         radioButtonCount?.length
                                 }
                                 onClick={(e) => {
-                                    handelSubmit(e)
+                                    handelSubmit(e, 'Direct')
                                 }}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"

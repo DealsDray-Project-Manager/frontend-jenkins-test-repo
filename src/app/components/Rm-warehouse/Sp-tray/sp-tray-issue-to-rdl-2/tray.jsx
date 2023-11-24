@@ -7,6 +7,7 @@ import { axiosRmUserAgent, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
@@ -28,6 +29,7 @@ const SimpleMuiTable = () => {
     const [loading, setLoading] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,6 +65,7 @@ const SimpleMuiTable = () => {
                 trayId: code,
                 sortId: 'Ready to RDL-2',
                 username: username,
+                actionUser: user.username,
             }
             let res = await axiosWarehouseIn.post('/issue-to-agent-wht', obj)
             if (res.status == 200) {

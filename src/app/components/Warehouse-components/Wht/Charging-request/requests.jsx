@@ -96,6 +96,19 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+
+        {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
@@ -143,7 +156,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
+                    value.length + '/' + tableMeta.rowData[8],
             },
         },
         {

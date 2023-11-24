@@ -87,7 +87,6 @@ const CtxToStxPage = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [submitButDis, setSubmitButDis] = useState(false)
-    const { user } = useAuth()
     const [mergreData, setMergeData] = useState({
         fromTray: '',
         toTray: '',
@@ -172,7 +171,6 @@ const CtxToStxPage = () => {
         e.preventDefault()
         try {
             setSubmitButDis(true)
-            mergreData.actionUser = user.username
             let res = await axiosMisUser.post(
                 '/sorting/ctxToStx/request/sendToWh',
                 mergreData

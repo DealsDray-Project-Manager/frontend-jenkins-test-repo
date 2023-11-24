@@ -76,7 +76,7 @@ const SimpleMuiTable = () => {
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
     const [receiveBut, setReceiveBut] = useState(false)
-    const [refresh, setRefresh] = useState(refresh)
+    const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const { user } = useAuth()
     const navigate = useNavigate()

@@ -166,6 +166,27 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackDetails', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Details</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <div>
+                            <span>Rack Id: {value?.[0]?.rack_id}</span>
+                            <br />
+                            <span>Rack Display: {value?.[0]?.display}</span>
+                        </div>
+                    )
+                },
+            },
+        },
+        {
             name: 'warehouse',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
@@ -218,7 +239,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
+                    value.length + '/' + tableMeta.rowData[8],
             },
         },
         {
@@ -273,7 +294,9 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For Charging', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Ready For Recharging', path: '/' },
+                    ]}
                 />
             </div>
             <Button

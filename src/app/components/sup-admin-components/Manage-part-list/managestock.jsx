@@ -21,6 +21,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 import CircularProgress from '@mui/material/CircularProgress'
 import Swal from 'sweetalert2'
 import * as FileSaver from 'file-saver'
+import useAuth from 'app/hooks/useAuth'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -90,6 +91,7 @@ const AddBulkPart = () => {
         size: 10,
         item: [],
     })
+    const { user } = useAuth()
 
     useEffect(() => {
         try {
@@ -244,9 +246,13 @@ const AddBulkPart = () => {
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
+            let obj = {
+                username: user.username,
+                partData: pagination.item,
+            }
             let res = await axiosSuperAdminPrexo.post(
                 '/partlist/manageStock/update',
-                pagination.item
+                obj
             )
             if (res.status == 200) {
                 Swal.fire({
@@ -284,8 +290,6 @@ const AddBulkPart = () => {
             })
         }
     }
-
- 
 
     return (
         <Container>

@@ -8,7 +8,6 @@ import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import AssignDialogBox from './user-dailog'
 import Swal from 'sweetalert2'
-import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -238,9 +237,20 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                
             },
         },
-
+        {
+            name: 'name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Name</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
         {
             name: 'limit',
             label: (

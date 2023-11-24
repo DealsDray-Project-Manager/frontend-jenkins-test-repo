@@ -66,8 +66,13 @@ const PartTable = () => {
 
     const editMaster = async (id) => {
         try {
+            let obj={
+                id:id,
+                type:"color-list",
+                actionType:"Edit"
+            }
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/oneData/' + id + '/color-list'
+                '/partAndColor/oneData',obj
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)
@@ -100,8 +105,13 @@ const PartTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
+                    let obj={
+                        id:id,
+                        type:"color-list",
+                        actionType:"Delete"
+                    }
                     let res = await axiosSuperAdminPrexo.post(
-                        '/partAndColor/oneData/' + id + '/color-list'
+                        '/partAndColor/oneData',obj
                     )
                     if (res.status == 200) {
                         let response = await axiosSuperAdminPrexo.post(

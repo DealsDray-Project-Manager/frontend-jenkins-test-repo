@@ -86,8 +86,13 @@ const PartTable = () => {
 
     const editMaster = async (id) => {
         try {
+            let obj={
+                id:id,
+                type:"part-list",
+                actionType:"Edit"
+            }
             let response = await axiosSuperAdminPrexo.post(
-                '/partAndColor/oneData/' + id + '/part-list'
+                '/partAndColor/oneData',obj
             )
             if (response.status == 200) {
                 setEditFetchData(response.data.data)

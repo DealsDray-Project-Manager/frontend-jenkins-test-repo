@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser, axiosSuperAdminPrexo } from '../../../../../axios'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Table } from '@mui/material'
 import AssignDialogBox from './assign-dailog'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -20,14 +22,18 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
+    
     const [isLoading, setIsLoading] = useState(false)
     const [botTray, setBotTray] = useState([])
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const [sortingAgent, setSortingAgent] = useState([])
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
+    const [oneStepBackButLoad, setOneStepBackButLoad] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,6 +87,65 @@ const SimpleMuiTable = () => {
                 handleDialogOpen()
             }
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+    // ONE STEP BACK API
+    const handelOneStepBack = async (botTray, whtTray) => {
+        try {
+            setOneStepBackButLoad(true)
+            let trayIds = []
+            for (let x of botTray) {
+                let obj = {
+                    tray_status: 'Not-empty',
+                    code: x,
+                }
+                trayIds.push(obj)
+            }
+            for (let y of whtTray) {
+                let obj = {
+                    tray_status: 'Empty',
+                    code: y,
+                }
+                trayIds.push(obj)
+            }
+            let obj = {
+                trayIds: trayIds,
+                status: 'Closed By Warehouse',
+                actionDoneBy: user.username,
+                currentStatus: 'Sorting Request Sent To Warehouse',
+            }
+            const res = await axiosSuperAdminPrexo.post('/one-step-back', obj)
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        setIsAlive((isAlive) => !isAlive)
+                        setOneStepBackButLoad(false)
+                    }
+                })
+            } else {
+                setOneStepBackButLoad(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+            }
+        } catch (error) {
+            setOneStepBackButLoad(false)
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -197,23 +262,47 @@ const SimpleMuiTable = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) =>
-                                handelGetSortingUser(
-                                    tableMeta.rowData[1]?.[0]?.botTray,
-                                    tableMeta.rowData[2]?.[0]?.cpc,
-                                   
-                                )
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Reassign
-                        </Button>
+                        <>
+                            <Button
+                                sx={{
+                                    m: 1,
+                                }}
+                                variant="contained"
+                                onClick={(e) =>
+                                    handelGetSortingUser(
+                                        tableMeta.rowData[1]?.[0]?.botTray,
+                                        tableMeta.rowData[2]?.[0]?.cpc
+                                    )
+                                }
+                                style={{ backgroundColor: 'green' }}
+                                component="span"
+                            >
+                                Reassign
+                            </Button>
+                            <Button
+                                sx={{
+                                    ml: 1,
+                                }}
+                                variant="contained"
+                                disabled={oneStepBackButLoad}
+                                onClick={(e) => {
+                                    if (
+                                        window.confirm(
+                                            'You want to do one step back?'
+                                        )
+                                    ) {
+                                        handelOneStepBack(
+                                            tableMeta.rowData[1]?.[0]?.botTray,
+                                            tableMeta.rowData[6]?.[0]?.WhtTray
+                                        )
+                                    }
+                                }}
+                                color="secondary"
+                                component="span"
+                            >
+                                One step back
+                            </Button>
+                        </>
                     )
                 },
             },
@@ -230,50 +319,52 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Tray'}
-                data={botTray}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={botTray}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
             {shouldOpenEditorDialog && (
                 <AssignDialogBox
                     handleClose={handleDialogClose}

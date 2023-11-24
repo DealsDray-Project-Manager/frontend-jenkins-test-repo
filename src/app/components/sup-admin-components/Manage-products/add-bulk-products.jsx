@@ -174,6 +174,18 @@ const AddBulkProduct = () => {
                         setLoading(false)
                     }
                 })
+            } else if (res.data.status == '1') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.message,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload(false)
+                    }
+                })
             } else {
                 setErr(res.data.data)
                 setLoading(false)
@@ -356,6 +368,7 @@ const AddBulkProduct = () => {
                                         <TableCell>Model Name</TableCell>
                                         <TableCell>Jack Type</TableCell>
                                         <TableCell>Vendor Name</TableCell>
+                                        <TableCell>Variant</TableCell>
                                         <TableCell>Action</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -515,6 +528,16 @@ const AddBulkProduct = () => {
                                                     type="text"
                                                     name="vendor_name"
                                                     value={data.vendor_name?.toString()}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <TextField
+                                                    onChange={updateFieldChanged(
+                                                        data.muic
+                                                    )}
+                                                    type="text"
+                                                    name="variant"
+                                                    value={data.variant?.toString()}
                                                 />
                                             </TableCell>
                                             <TableCell>

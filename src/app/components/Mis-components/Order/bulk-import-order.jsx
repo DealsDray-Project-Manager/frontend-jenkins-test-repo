@@ -207,7 +207,10 @@ const PaginationTable = () => {
                     accumulator?.gc_redeem_time
                 )
             }
-            if (key === 'Delivery Date' && accumulator.delivery_date != undefined) {
+            if (
+                key === 'Delivery Date' &&
+                accumulator.delivery_date != undefined
+            ) {
                 accumulator.delivery_date = forDateFormat(
                     accumulator?.delivery_date
                 )
@@ -227,15 +230,14 @@ const PaginationTable = () => {
             const [datePart, timePart] = field?.split(' ')
             const [day, month, year] = datePart?.split('-')
             let formattedTimestampStr
-            if(timePart){
+            if (timePart) {
                 const [hours, minutes, seconds] = timePart?.split(':')
                 if (seconds) {
                     formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
                 } else {
                     formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
                 }
-            }
-            else{
+            } else {
                 formattedTimestampStr = `${month}/${day}/${year}`
             }
             return new Date(formattedTimestampStr)

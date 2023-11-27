@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Table } from '@mui/material'
-import { axiosReBqcAgent, axiosSortingAgent } from '../../../../axios'
+import { axiosRpBqcAgent, axiosSortingAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
 
@@ -31,7 +31,7 @@ const SimpleMuiTable = () => {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { user_name } = jwt_decode(admin)
-                    let response = await axiosReBqcAgent.post(
+                    let response = await axiosRpBqcAgent.post(
                         `/issued-trays/${user_name}`
                     )
                     if (response.status === 200) {
@@ -53,7 +53,7 @@ const SimpleMuiTable = () => {
 
     const handelClose = (e, code) => {
         e.preventDefault()
-        navigate('/rebqc/issued-trays/close/' + code)
+        navigate('/rp-bqc/issued-trays/close/' + code)
     }
 
     const columns = [

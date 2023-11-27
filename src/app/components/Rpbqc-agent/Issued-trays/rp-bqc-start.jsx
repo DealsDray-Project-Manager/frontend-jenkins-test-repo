@@ -19,7 +19,7 @@ import { H1, H3, H4 } from 'app/components/Typography'
 import useAuth from 'app/hooks/useAuth'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosBqc, axiosReBqcAgent } from '../../../../axios'
+import { axiosBqc, axiosRpBqcAgent } from '../../../../axios'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
@@ -81,7 +81,7 @@ export default function DialogBox() {
                 username: user.username,
                 uic: uic,
             }
-            const res = await axiosReBqcAgent.post('/pedning-item', obj)
+            const res = await axiosRpBqcAgent.post('/pedning-item', obj)
             if (res.status === 200) {
                 setresDataUic(res.data.data)
             } else {
@@ -118,7 +118,7 @@ export default function DialogBox() {
                 description: popdata.description,
                 username: user.username,
             }
-            const res = await axiosReBqcAgent.post('/add-rebqc-data', obj)
+            const res = await axiosRpBqcAgent.post('/add-rpbqc-data', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -126,9 +126,9 @@ export default function DialogBox() {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/rebqc/pending-items')
+                navigate('/rp-bqc/pending-items')
             } else {
-                navigate('/rebqc/pending-items')
+                navigate('/rp-bqc/pending-items')
                 setDeviceButDis(false)
                 Swal.fire({
                     icon: 'error',
@@ -173,7 +173,7 @@ export default function DialogBox() {
                     id="customized-dialog-title"
                     onClose={handleClose}
                 >
-                    REBQC Done Action
+                    RP-BQC Done Action
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
                     <TextField
@@ -185,8 +185,8 @@ export default function DialogBox() {
                         name="status"
                         sx={{ mt: 2 }}
                     >
-                        <MenuItem value="REBQC Pass">REBQC Pass</MenuItem>
-                        <MenuItem value="REBQC Fail">REBQC Fail</MenuItem>
+                        <MenuItem value="RP-BQC Pass">RP-BQC Pass</MenuItem>
+                        <MenuItem value="RP-BQC Fail">RP-BQC Fail</MenuItem>
                     </TextField>
 
                     <TextField
@@ -257,7 +257,7 @@ export default function DialogBox() {
                     }}
                     disabled={deviceButDis}
                 >
-                    REBQC Done
+                    RP-BQC Done
                 </Button>
             </Box>
         </Box>

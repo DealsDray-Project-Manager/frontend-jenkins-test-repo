@@ -29,7 +29,7 @@ import {
     axiosMisUser,
     axiosRDL_oneAgent,
     axiosRdlTwoAgent,
-    axiosReBqcAgent,
+    axiosRpBqcAgent,
     axiosWarehouseIn,
 } from '../../../../axios'
 import Swal from 'sweetalert2'
@@ -106,26 +106,26 @@ const SimpleMuiTable = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [partData, setPartData] = useState([])
     const [open, setOpen] = useState(false)
-    const [rebqcUsers, setRebqcUsers] = useState([])
+    const [rpbqcUsers, setRpbqcUsers] = useState([])
     const [rbqcTrays, setRbqcTrays] = useState([])
     const [popdata, setPopData] = useState({
-        rebqc_username: '',
+        rpbqc_username: '',
         rbqc_tray: '',
     })
 
     const { user } = useAuth()
 
-    // USEEFFECT FOR REBQC USERS FETCH
+    // USEEFFECT FOR RPBQC USERS FETCH
     useEffect(() => {
-        const fetchRebqcUsers = async () => {
+        const fetchRpbqcUsers = async () => {
             const res = await axiosMisUser.post(
-                `/get-charging-users/${'REBQC'}/${user.location}`
+                `/get-charging-users/${'RP-BQC'}/${user.location}`
             )
             if (res.status == 200) {
-                setRebqcUsers(res.data.data)
+                setRpbqcUsers(res.data.data)
             }
         }
-        fetchRebqcUsers()
+        fetchRpbqcUsers()
     }, [])
     useEffect(() => {
         const fetchDataFun = async () => {
@@ -222,7 +222,7 @@ const SimpleMuiTable = () => {
     // GET RBQC TRAY
     const handelFetchRbqcTray = async (username) => {
         try {
-            const res = await axiosReBqcAgent.post(`/issued-trays/${username}`)
+            const res = await axiosRpBqcAgent.post(`/issued-trays/${username}`)
             if (res.status === 200) {
                 setRbqcTrays(res.data.data)
             }
@@ -239,7 +239,7 @@ const SimpleMuiTable = () => {
                 setLoading(true)
                 let obj = {
                     uic: uic,
-                    rebqc_username: popdata.rebqc_username,
+                    rpbqc_username: popdata.rpbqc_username,
                     rbqc_tray: popdata.rbqc_tray,
                     trayId: whtTrayId,
                     spTray: spTray,
@@ -740,15 +740,15 @@ const SimpleMuiTable = () => {
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
                         <TextField
-                            label="Select REBQC User"
+                            label="Select RP-BQC User"
                             variant="outlined"
                             fullWidth
                             select
                             onChange={handleChangeThePopValue}
-                            name="rebqc_username"
+                            name="rpbqc_username"
                             sx={{ mt: 2 }}
                         >
-                            {rebqcUsers.map((data) => (
+                            {rpbqcUsers.map((data) => (
                                 <MenuItem
                                     key={data.user_name}
                                     value={data.user_name}
@@ -783,7 +783,7 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             disabled={
-                                popdata.rebqc_username == '' ||
+                                popdata.rpbqc_username == '' ||
                                 popdata.rbqc_tray == ''
                             }
                             variant="contained"

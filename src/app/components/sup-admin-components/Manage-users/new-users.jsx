@@ -417,7 +417,7 @@ const MemberEditorDialog = ({
                                     Sorting Agent
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
-                                <MenuItem value="REBQC">REBQC</MenuItem>
+                                <MenuItem value="RP-BQC">RP-BQC</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Sales' ? (
                             <TextFieldCustOm

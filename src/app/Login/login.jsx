@@ -107,8 +107,8 @@ const Login = () => {
                 navigate('/buyer/dashboard')
             } else if (user_type == 'Bagging') {
                 navigate('/bagging/dashboard')
-            } else if (user_type == 'REBQC') {
-                navigate('/rebqc/dashboard')
+            } else if (user_type == 'RP-BQC') {
+                navigate('/rp-bqc/dashboard')
             }
         } else {
             navigate('/')
@@ -166,8 +166,8 @@ const Login = () => {
                     navigate('/buyer/dashboard')
                 } else if (response.data.data?.user_type == 'Bagging') {
                     navigate('/bagging/dashboard')
-                } else if (response.data.data?.user_type == 'REBQC') {
-                    navigate('/rebqc/dashboard')
+                } else if (response.data.data?.user_type == 'RP-BQC') {
+                    navigate('/rp-bqc/dashboard')
                 }
             } else {
                 setLoading(false)

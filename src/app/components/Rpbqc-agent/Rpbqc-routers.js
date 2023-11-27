@@ -10,29 +10,29 @@ const IssuedTrays= Loadable(lazy(() => import('./Issued-trays/issued-trays')))
 const CloseTheTray = Loadable(lazy(() => import('./Issued-trays/close')))
 // PENDING ITEMS
 const PendingItems= Loadable(lazy(() => import('./Issued-trays/pending-items'))) 
-// START REBQC
-const ReBqcPage= Loadable(lazy(() => import('./Issued-trays/re-bqc-start'))) 
-const ReBqcRouters = [
+// START RP-BQC
+const RpBqcPage= Loadable(lazy(() => import('./Issued-trays/rp-bqc-start'))) 
+const RpBqcRouters = [
     {
-        path: '/rebqc/pending-items/start-rebqc/:model/:uic',
-        element: <ReBqcPage />,
+        path: '/rp-bqc/pending-items/start-rp-bqc/:model/:uic',
+        element: <RpBqcPage />,
     },
     {
-        path: '/rebqc/pending-items',
+        path: '/rp-bqc/pending-items',
         element: <PendingItems />,
     },
     {
-        path: '/rebqc/dashboard',
+        path: '/rp-bqc/dashboard',
         element: <Dashboard />,
     },
     {
-        path: '/rebqc/issued-trays',
+        path: '/rp-bqc/issued-trays',
         element: <IssuedTrays />,
     },
     {
-        path: '/rebqc/issued-trays/close/:trayId',
+        path: '/rp-bqc/issued-trays/close/:trayId',
         element: <CloseTheTray />,
     },
 ]
 
-export default ReBqcRouters
+export default RpBqcRouters

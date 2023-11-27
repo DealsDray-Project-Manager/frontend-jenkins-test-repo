@@ -246,18 +246,18 @@ const  DisplayGradingRequestApprove = Loadable(lazy(() => import('./Stx-tray/Cop
 const  RetunrFromCopyGrading = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/tray')))
 const  ReturnFromDisplayGradingClose = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/close')))
 // RBQC TRAY ALL
-const GetRebqcTrayAll= Loadable(lazy(() => import('./Rbqc-tray/all-rbqc-tray/tray')))
-// RETURN FROM REBQC 
-const ReturnFromReBqcTrays =Loadable(lazy(() => import('./Rbqc-tray/return-from-rebqc/return-from-rebqc')))
+const GetRpbqcTrayAll= Loadable(lazy(() => import('./Rp-tray/all-rp-tray/tray')))
+// RETURN FROM RPBQC 
+const ReturnFromRpBqcTrays =Loadable(lazy(() => import('./Rpbqc-tray/return-from-rpbqc/return-from-rpbqc')))
 
 const WarehoueRouter = [
     {
-        path: '/warehouse/return-from-rebqc',
-        element: <ReturnFromReBqcTrays />,
+        path: '/warehouse/return-from-rp-bqc',
+        element: <ReturnFromRpBqcTrays />,
     },
     {
         path: '/warehouse/rbqc-tray',
-        element: <GetRebqcTrayAll />,
+        element: <GetRpbqcTrayAll />,
     },
     {
         path: '/warehouse/stx/return-from-display-grading/close/:trayId',

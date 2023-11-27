@@ -77,7 +77,7 @@ const SimpleMuiTable = () => {
     const [open, setOpen] = React.useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
-    const [reBqcUsername, setRebqcusername] = useState([])
+    const [rpBqcUsername, setRpbqcusername] = useState([])
     const [receiveBut, setReceiveBut] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -91,7 +91,7 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/return-from-rebqc/' + location
+                        '/return-from-rpbqc/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -186,10 +186,10 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location } = jwt_decode(admin)
                     let res = await axiosMisUser.post(
-                        '/get-charging-users/' + 'REBQC/' + location
+                        '/get-charging-users/' + 'RP-BQC/' + location
                     )
                     if (res.status == 200) {
-                        setRebqcusername(res.data.data)
+                        setRpbqcusername(res.data.data)
                         handleDialogOpen()
                     }
                 }
@@ -285,7 +285,7 @@ const SimpleMuiTable = () => {
             name: 'closed_date_agent',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    REBQC Done Date
+                    RP-BQC Done Date
                 </Typography>
             ),
             options: {
@@ -409,7 +409,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'RBQC', path: '/' },
-                        { name: 'Return-from-Rebqc' },
+                        { name: 'Return-from-Rp-bqc' },
                     ]}
                 />
             </div>
@@ -473,7 +473,7 @@ const SimpleMuiTable = () => {
                 <AssignTrayDialogBox
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    ReBqcUsername={reBqcUsername}
+                    rpBqcUsername={rpBqcUsername}
                     setIsAlive={setIsAlive}
                 />
             )}

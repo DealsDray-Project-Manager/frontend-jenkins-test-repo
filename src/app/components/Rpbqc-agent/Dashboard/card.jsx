@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, useTheme } from '@mui/system'
 import { H3, Paragraph } from 'app/components/Typography'
 import { Grid, Card, IconButton, Icon } from '@mui/material'
-import { axiosAuditAgent, axiosReBqcAgent } from '../../../../axios'
+import { axiosAuditAgent, axiosRpBqcAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -17,7 +17,7 @@ const StatCard3 = () => {
             if (user) {
                 let { user_name } = jwt_decode(user)
                 try {
-                    let res = await axiosReBqcAgent.post(
+                    let res = await axiosRpBqcAgent.post(
                         '/dashboard/' + user_name
                     )
                     if (res.status === 200) {
@@ -40,7 +40,7 @@ const StatCard3 = () => {
             icon: 'shopping_cart',
             amount: count.issuedTray,
             title: 'RBQC Tray',
-            path: '/rebqc/issued-trays',
+            path: '/rp-bqc/issued-trays',
         },
         
     ]

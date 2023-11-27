@@ -43,7 +43,7 @@ import SpmisPanel from 'app/components/Sp-mis-panel/sp-mis-panel'
 import PurchaseUser from 'app/components/Purchase-rm/purchase-rm'
 import BuyerUser from 'app/components/Buyer-panel/Buyer-routes'
 import BaggingUserRouter from 'app/components/Bagging-user/bagging-user-router'
-import ReBqcRouter from 'app/components/Rebqc-agent/Rebqc-routers'
+import RpBqcRouter from 'app/components/Rpbqc-agent/Rpbqc-routers'
 export const AllPages = () => {
     const all_routes = [
         {
@@ -53,7 +53,7 @@ export const AllPages = () => {
                 </AuthGuard>
             ),
             children: [
-                ...ReBqcRouter,
+                ...RpBqcRouter,
                 ...PurchaseUser,
                 ...SpmisPanel,
                 ...dashboardRoutes,

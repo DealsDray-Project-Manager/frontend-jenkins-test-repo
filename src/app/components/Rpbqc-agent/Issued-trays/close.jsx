@@ -19,7 +19,7 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { axiosReBqcAgent, axiosWarehouseIn } from '../../../../axios'
+import { axiosRpBqcAgent, axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
 
 const Container = styled('div')(({ theme }) => ({
@@ -51,7 +51,7 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let res = await axiosReBqcAgent.post(
+                let res = await axiosRpBqcAgent.post(
                     `/close-page/${user.username}/${trayId}`
                 )
                 if (res.status == 200) {
@@ -129,7 +129,7 @@ export default function DialogBox() {
                 trayId: trayId,
                 description: description,
             }
-            let res = await axiosReBqcAgent.post('/close-rebqc-tray', obj)
+            let res = await axiosRpBqcAgent.post('/close-rpbqc-tray', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',
@@ -138,7 +138,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/rebqc/issued-trays')
+                navigate('/rp-bqc/issued-trays')
             } else {
                 setLoading(false)
                 Swal.fire({

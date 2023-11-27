@@ -89,10 +89,10 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
-        path: '/rebqc/dashboard',
+        path: '/rp-bqc/dashboard',
         icon: '',
         sales: 'all',
-        auth: authRoles.REBQC, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.RPBQC, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
         name: 'Dashboard',
@@ -1071,8 +1071,8 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Return From Rebqc',
-                path: '/warehouse/return-from-rebqc',
+                name: 'Return From Rp-bqc',
+                path: '/warehouse/return-from-rp-bqc',
                 iconText: 'VP',
             },
         ],
@@ -1726,17 +1726,17 @@ export const navigations = [
         auth: authRoles.RMWAREHOUSE,
     },
     {
-        name: 'RBQC Tray',
+        name: 'RP-BQC Tray',
         icon: 'save',
-        path: '/rebqc/issued-trays',
-        auth: authRoles.REBQC,
+        path: '/rp-bqc/issued-trays',
+        auth: authRoles.RPBQC,
         sales: false,
     },
     {
         name: 'Pending Items',
         icon: 'save',
-        path: '/rebqc/pending-items',
-        auth: authRoles.REBQC,
+        path: '/rp-bqc/pending-items',
+        auth: authRoles.RPBQC,
         sales: false,
     },
 ]

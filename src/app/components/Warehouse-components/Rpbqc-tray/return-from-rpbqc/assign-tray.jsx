@@ -29,7 +29,7 @@ const MemberEditorDialog = ({
     handleClose,
     open,
     setIsAlive,
-    ReBqcUsername,
+    RpBqcUsername,
 }) => {
     const [loading, setLoading] = useState(false)
     const [state, setState] = useState({})
@@ -57,7 +57,7 @@ const MemberEditorDialog = ({
     const handelSendRequestConfirm = async () => {
         try {
             setLoading(true)
-            let res = await axiosWarehouseIn.post('/issuethe-tray-rebqc', state)
+            let res = await axiosWarehouseIn.post('/issuethe-tray-rpbqc', state)
             if (res.status == 200) {
                 setLoading(false)
 
@@ -91,7 +91,7 @@ const MemberEditorDialog = ({
     const handelTrayId = async () => {
         try {
             let res = await axiosWarehouseIn.post(
-                '/check-rebqc-tray-for-issue',
+                '/check-rpbqc-tray-for-issue',
                 state
             )
             if (res.status === 200) {
@@ -114,15 +114,15 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Issue RBQC Tray</H4>
+                <H4 sx={{ mb: '20px' }}>Issue RP-BQC Tray</H4>
                 <TextFieldCustOm
-                    label="REBQC Username"
+                    label="RP-BQC Username"
                     fullWidth
                     select
                     name="username"
                     onChange={handleChange}
                 >
-                    {ReBqcUsername.map((data) => (
+                    {RpBqcUsername.map((data) => (
                         <MenuItem key={data.user_name} value={data.user_name}>
                             {data.user_name}
                         </MenuItem>

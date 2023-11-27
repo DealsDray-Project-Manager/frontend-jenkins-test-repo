@@ -17,7 +17,7 @@ export const authRoles = {
     PURCHASERM:['Purchase RM'],
     Buyer:['Buyer'],
     bagging:["Bagging"],
-    REBQC:["REBQC"]
+    RPBQC:["RP-BQC"]
 }
 
 // Check out app/views/dashboard/DashboardRoutes.js

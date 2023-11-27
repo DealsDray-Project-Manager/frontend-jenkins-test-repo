@@ -12,14 +12,20 @@ import {
 } from '@mui/material'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
-
 import '../../../../app.css'
+import { axiosSpMisAgent } from '../../../../axios'
+import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
+
 
 const MuiDataTable = ({
     selectedToolsAndConsumables,
     setselectedToolsAndConsumables,
+    userPreview,
 }) => {
     const [loading, setLoading] = useState(false)
+    const { user } = useAuth()
+    const [description, setDescription] = useState('')
 
     const handleDecreaseQuantity = (rowIndex) => {
         const updatedData = [...selectedToolsAndConsumables]
@@ -33,11 +39,54 @@ const MuiDataTable = ({
         setselectedToolsAndConsumables(updatedData)
     }
     const handleDeleteItem = (rowIndex) => {
-        const updatedData = [...selectedToolsAndConsumables];
-        updatedData.splice(rowIndex, 1);
-        setselectedToolsAndConsumables(updatedData);
-    };
+        const updatedData = [...selectedToolsAndConsumables]
+        updatedData.splice(rowIndex, 1)
+        setselectedToolsAndConsumables(updatedData)
+    }
 
+    // HANDEL SENT THE REQUESTS
+    const handelSubmit = async () => {
+        try {
+            setLoading(true)
+            let obj = {
+                selectedToolsAndConsumables: selectedToolsAndConsumables,
+                actionUser: user.username,
+                issued_user_name: userPreview.user_name,
+                description: description,
+            }
+            const res = await axiosSpMisAgent.post(
+                '/assignToAgentToolsAndConsumables',
+                obj
+            )
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res.data.message,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload(false)
+                    }
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title:"Oops..",
+                    text: res.data.message,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload(false)
+                    }
+                })
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const columns = [
         {
@@ -66,7 +115,7 @@ const MuiDataTable = ({
             name: 'part_code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Id</>
+                    <>SPN Id</>
                 </Typography>
             ),
             options: {
@@ -84,7 +133,6 @@ const MuiDataTable = ({
                 filter: true,
             },
         },
-
         {
             name: 'selected_quantity',
             label: (
@@ -136,7 +184,7 @@ const MuiDataTable = ({
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value,tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <IconButton>
                             <Icon
@@ -180,7 +228,14 @@ const MuiDataTable = ({
                 />
             </Table>
             <div style={{ marginTop: '20px' }}>
-                <TextField label="Description" variant="outlined" fullWidth />
+                <TextField
+                    label="Description"
+                    onChange={(e) => {
+                        setDescription(e.target.value)
+                    }}
+                    variant="outlined"
+                    fullWidth
+                />
             </div>
 
             <div
@@ -193,8 +248,12 @@ const MuiDataTable = ({
                 <Button
                     variant="contained"
                     color="primary"
-
-                    // onClick={handleSubmit}
+                    disabled={
+                        selectedToolsAndConsumables.length == 0 ||
+                        Object.keys(userPreview)?.length == 0 ||
+                        description == ''
+                    }
+                    onClick={handelSubmit}
                 >
                     {loading ? (
                         <CircularProgress size={24} color="inherit" />

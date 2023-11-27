@@ -24,3 +24,11 @@
   background-color: #e0e0e0; /* Specify the background color you want */
   /* You can also add other styles like text color, font-size, etc. */
 }
+
+.header-section {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px; /* Optional: add some border-radius for rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
+}

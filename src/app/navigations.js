@@ -154,9 +154,11 @@ export const navigations = [
         auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
-        name:  <Typography sx={{ textAlign: 'left' }}>
-       Issue Tools And Consumables
-    </Typography> ,
+        name: (
+            <Typography sx={{ textAlign: 'left' }}>
+                Issue Tools And Consumables
+            </Typography>
+        ),
         path: '/sp-mis/tools-and-consumable/issue',
         icon: 'pan_tool',
         sales: false,
@@ -1707,7 +1709,20 @@ export const navigations = [
                 path: '/sp-user/return-from-rdl-2',
             },
         ],
-        sales: 'all',
+        sales: false,
+        auth: authRoles.RMWAREHOUSE,
+    },
+    {
+        name: 'Tools And Consumables',
+        icon: 'pan_tool',
+        children: [
+            {
+                name: 'Issue Requests',
+                path: '/sp-user/requests-for-tools-and-consumables',
+            },
+           
+        ],
+        sales: false,
         auth: authRoles.RMWAREHOUSE,
     },
     {

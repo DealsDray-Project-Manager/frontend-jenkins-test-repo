@@ -76,7 +76,14 @@ function PageForIssue() {
 
     const handelTheData = (data, isSelection) => {
         if (isSelection && data) {
-            data.selected_quantity = 1
+           
+            let obj={
+                name:data.name,
+                avl_stock:data.avl_stock,
+                part_code:data.part_code,
+                sp_category:data.sp_category,
+                selected_quantity:1
+            }
             // Check for duplicates before adding to the state
             if (
                 !selectedToolsAndConsumables.some(
@@ -85,7 +92,7 @@ function PageForIssue() {
             ) {
                 setselectedToolsAndConsumables((prevData) => [
                     ...prevData,
-                    data,
+                    obj,
                 ])
             }
         }
@@ -217,6 +224,7 @@ function PageForIssue() {
             <MuiDataTable
                 selectedToolsAndConsumables={selectedToolsAndConsumables}
                 setselectedToolsAndConsumables={setselectedToolsAndConsumables}
+                userPreview={userPreview}
             />
         </Container>
     )

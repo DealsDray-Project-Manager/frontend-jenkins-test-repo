@@ -41,7 +41,19 @@ const SptrayAddParts=Loadable(lazy(() => import('./Sp-tray/Parts-issue/parts-add
 const SptrayIssueToRdlRepair  = Loadable(lazy(() => import('./Sp-tray/sp-tray-issue-to-rdl-2/tray')))
 const SpTrayReturnFromRdlTwo  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-2/tray')))
 const SpTrayReturnFromRdlTwoView  = Loadable(lazy(() => import('./Sp-tray/Return-from-rdl-2/view-tray')))
+// TOOLS AND CONSUMABLES 
+const RequestsForToolsAndConsumables = Loadable(lazy(() => import('./Tools-and-consumables/issue-tools-and-consumables')))
+// APPROVE FOR TOOLS AND CONSUMABLES
+const ApproveRequestForToolsAndConsumables= Loadable(lazy(() => import('./Tools-and-consumables/request-approve')))
 const RmWarehouse = [
+    {
+        path: '/sp-user/requests-for-tools-and-consumables/approve/:requestId',
+        element: <ApproveRequestForToolsAndConsumables />,
+    },
+    {
+        path: '/sp-user/requests-for-tools-and-consumables',
+        element: <RequestsForToolsAndConsumables />,
+    },
     {
         path: '/sp-user/return-from-rdl-2/view/:trayId',
         element: <SpTrayReturnFromRdlTwoView />,

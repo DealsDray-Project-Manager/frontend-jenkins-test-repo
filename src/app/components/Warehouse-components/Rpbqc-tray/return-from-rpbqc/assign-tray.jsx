@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { Box, styled } from '@mui/system'
 import { H4 } from 'app/components/Typography'
-import { axiosSuperAdminPrexo, axiosWarehouseIn } from '../../../../../axios'
+import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import SearchIcon from '@mui/icons-material/Search'
 import jwt_decode from 'jwt-decode'
 import Swal from 'sweetalert2'
@@ -25,17 +25,14 @@ const FormHandlerBox = styled('div')(() => ({
     justifyContent: 'space-between',
 }))
 
-const MemberEditorDialog = ({
-    handleClose,
-    open,
-    setIsAlive,
-    RpBqcUsername,
-}) => {
+const MemberEditorDialog = ({ handleClose, open, setIsAlive }) => {
     const [loading, setLoading] = useState(false)
     const [state, setState] = useState({})
     const [err, setErr] = useState('')
     const [assignButDIs, setAssignButDis] = useState(true)
     const [trayStatus, setTrayStatus] = useState('')
+    const [rpBqcUsername, setRpbqcusername] = useState([])
+
     const handleChange = ({ target: { name, value } }) => {
         setState({
             ...state,
@@ -88,6 +85,29 @@ const MemberEditorDialog = ({
             })
         }
     }
+
+    const handelGetAuditUser = async (type) => {
+        try {
+            let admin = localStorage.getItem('prexo-authentication')
+            if (admin) {
+                let { location } = jwt_decode(admin)
+                let res = await axiosMisUser.post(
+                    `/get-charging-users/${type}/${location}`
+                )
+                if (res.status == 200) {
+                    setRpbqcusername(res.data.data)
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
     const handelTrayId = async () => {
         try {
             let res = await axiosWarehouseIn.post(
@@ -114,15 +134,37 @@ const MemberEditorDialog = ({
     return (
         <Dialog fullWidth maxWidth="xs" onClose={handleClose} open={open}>
             <Box p={3}>
-                <H4 sx={{ mb: '20px' }}>Issue RP-BQC Tray</H4>
+                <H4 sx={{ mb: '20px' }}>Issue The Tray</H4>
                 <TextFieldCustOm
-                    label="RP-BQC Username"
+                    label="Select User Type"
+                    fullWidth
+                    select
+                    name="user_type"
+                    onChange={handleChange}
+                >
+                    <MenuItem
+                        onClick={(e) => handelGetAuditUser('RP-Audit')}
+                        key="RP-Audit"
+                        value="RP-Audit"
+                    >
+                        RP-Audit
+                    </MenuItem>
+                    <MenuItem
+                        onClick={(e) => handelGetAuditUser('RP-BQC')}
+                        key="RP-BQC"
+                        value="RP-BQC"
+                    >
+                        RP-BQC
+                    </MenuItem>
+                </TextFieldCustOm>
+                <TextFieldCustOm
+                    label="Select Username"
                     fullWidth
                     select
                     name="username"
                     onChange={handleChange}
                 >
-                    {RpBqcUsername.map((data) => (
+                    {rpBqcUsername.map((data) => (
                         <MenuItem key={data.user_name} value={data.user_name}>
                             {data.user_name}
                         </MenuItem>

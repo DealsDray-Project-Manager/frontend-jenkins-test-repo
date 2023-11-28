@@ -167,12 +167,23 @@ const MemberEditorDialog = ({
                                 handleClose()
                             }
                         })
-                    } else if (type == 'RBQC' && res.data.data > '0100') {
+                    } else if (type == 'RPA' && res.data.data > '0100') {
                         handleClose()
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'RBQC Tray Maximum ID NO  0100',
+                            text: 'RPA Tray Maximum ID NO  0100',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                handleClose()
+                            }
+                        })
+                    } else if (type == 'RPB' && res.data.data > '0100') {
+                        handleClose()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'RPB Tray Maximum ID NO  0100',
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 handleClose()
@@ -566,12 +577,20 @@ const MemberEditorDialog = ({
                                 RPT
                             </MenuItem>
                             <MenuItem
-                                value="RBQC"
+                                value="RPA"
                                 onClick={(e) => {
-                                    fetchTypeWiseId(e, 'RBQC', 'TOP')
+                                    fetchTypeWiseId(e, 'RPA', 'TOP')
                                 }}
                             >
-                                RBQC
+                                RPA
+                            </MenuItem>
+                            <MenuItem
+                                value="RPB"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'RPB', 'TOP')
+                                }}
+                            >
+                                RPB
                             </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'CT' ||
@@ -602,7 +621,8 @@ const MemberEditorDialog = ({
                             </TextFieldCustOm>
                         ) : null}
                         {getValues('type_taxanomy') !== 'BOT' &&
-                        getValues('type_taxanomy') !== 'RBQC' &&
+                        getValues('type_taxanomy') !== 'RPA' &&
+                        getValues('type_taxanomy') !== 'RPB' &&
                         getValues('type_taxanomy') !== 'PMT' &&
                         getValues('type_taxanomy') !== 'SPT' &&
                         getValues('type_taxanomy') !== 'MMT' ? (

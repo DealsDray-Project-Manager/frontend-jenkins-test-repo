@@ -109,6 +109,8 @@ const Login = () => {
                 navigate('/bagging/dashboard')
             } else if (user_type == 'RP-BQC') {
                 navigate('/rp-bqc/dashboard')
+            } else if (user_type == 'RP-Audit') {
+                navigate('/rp-audit/dashboard')
             }
         } else {
             navigate('/')
@@ -168,6 +170,8 @@ const Login = () => {
                     navigate('/bagging/dashboard')
                 } else if (response.data.data?.user_type == 'RP-BQC') {
                     navigate('/rp-bqc/dashboard')
+                } else if (response.data.data?.user_type == 'RP-Audit') {
+                    navigate('/rp-audit/dashboard')
                 }
             } else {
                 setLoading(false)

@@ -96,6 +96,13 @@ export const navigations = [
     },
     {
         name: 'Dashboard',
+        path: '/rp-audit/dashboard',
+        icon: '',
+        sales: 'all',
+        auth: authRoles.RPAUDIT, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+    {
+        name: 'Dashboard',
         path: '/reporting/dashboard',
         icon: 'dashboard',
         sales: 'all',
@@ -1720,14 +1727,13 @@ export const navigations = [
                 name: 'Issue Requests',
                 path: '/sp-user/requests-for-tools-and-consumables',
             },
-           
         ],
         sales: false,
         auth: authRoles.RMWAREHOUSE,
     },
     {
-        name: 'RP-BQC Tray',
-        icon: 'save',
+        name: 'RPB Tray',
+        icon: 'shopping_cart',
         path: '/rp-bqc/issued-trays',
         auth: authRoles.RPBQC,
         sales: false,
@@ -1737,6 +1743,13 @@ export const navigations = [
         icon: 'save',
         path: '/rp-bqc/pending-items',
         auth: authRoles.RPBQC,
+        sales: false,
+    },
+    {
+        name: 'RPA Tray',
+        icon: 'shopping_cart',
+        path: '/rp-audit/issued-trays',
+        auth: authRoles.RPAUDIT,
         sales: false,
     },
 ]

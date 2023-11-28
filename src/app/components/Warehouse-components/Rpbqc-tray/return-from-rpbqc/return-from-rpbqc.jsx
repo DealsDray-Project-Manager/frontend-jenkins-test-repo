@@ -77,7 +77,6 @@ const SimpleMuiTable = () => {
     const [open, setOpen] = React.useState(false)
     const [counts, setCounts] = useState('')
     const [trayId, setTrayId] = useState('')
-    const [rpBqcUsername, setRpbqcusername] = useState([])
     const [receiveBut, setReceiveBut] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -177,32 +176,6 @@ const SimpleMuiTable = () => {
 
     const handleDialogOpen = () => {
         setShouldOpenEditorDialog(true)
-    }
-
-    const handelGetAuditUser = () => {
-        const fetchData = async () => {
-            try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let res = await axiosMisUser.post(
-                        '/get-charging-users/' + 'RP-BQC/' + location
-                    )
-                    if (res.status == 200) {
-                        setRpbqcusername(res.data.data)
-                        handleDialogOpen()
-                    }
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: error,
-                })
-            }
-        }
-        fetchData()
     }
 
     const columns = [
@@ -408,8 +381,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RBQC', path: '/' },
-                        { name: 'Return-from-Rp-bqc' },
+                        { name: 'RP-Audit', path: '/' },
+                        { name: 'Return-from-Rp-Audit' },
                     ]}
                 />
             </div>
@@ -418,7 +391,7 @@ const SimpleMuiTable = () => {
                 sx={{ mb: 1 }}
                 style={{ backgroundColor: 'primery' }}
                 onClick={(e) => {
-                    handelGetAuditUser()
+                    handleDialogOpen()
                 }}
             >
                 Issue new tray
@@ -473,7 +446,6 @@ const SimpleMuiTable = () => {
                 <AssignTrayDialogBox
                     handleClose={handleDialogClose}
                     open={handleDialogOpen}
-                    rpBqcUsername={rpBqcUsername}
                     setIsAlive={setIsAlive}
                 />
             )}

@@ -75,3 +75,7 @@ export const axiosRpBqcAgent = axios.create({
     baseURL: `${baseURL}/api/v7/rp-bqc-user`,
     headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
 })
+export const axiosRpAuditAgent = axios.create({
+    baseURL: `${baseURL}/api/v7/rp-audit-user`,
+    headers: { 'x-access-token': localStorage.getItem('prexo-authentication') },
+})

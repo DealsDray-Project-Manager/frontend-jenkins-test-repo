@@ -413,11 +413,12 @@ const MemberEditorDialog = ({
                                 <MenuItem value="RDL-2">RDL-2</MenuItem>
 
                                 <MenuItem value="Reporting">Reporting</MenuItem>
+                                <MenuItem value="RP-Audit">RP-Audit</MenuItem>
+                                <MenuItem value="RP-BQC">RP-BQC</MenuItem>
                                 <MenuItem value="Sorting Agent">
                                     Sorting Agent
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
-                                <MenuItem value="RP-BQC">RP-BQC</MenuItem>
                             </TextFieldCustOm>
                         ) : selectedCpc == 'Sales' ? (
                             <TextFieldCustOm

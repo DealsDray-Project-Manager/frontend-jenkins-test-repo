@@ -145,6 +145,7 @@ const PaginationTable = () => {
         let count5 = 0
         let count6 = 0
         let count7 = 0
+        let count8 = 0
         let obj = {
             ...countOfTray,
         }
@@ -169,9 +170,12 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'RPT') {
                     x.tray_id = 'RPT' + (countOfTray.RPT + count6)
                     count6++
-                } else if (x.tray_category == 'RBQC') {
-                    x.tray_id = 'RBQC' + (countOfTray.RBQC + count7)
+                } else if (x.tray_category == 'RPB') {
+                    x.tray_id = 'RPB' + (countOfTray.RPB + count7)
                     count7++
+                } else if (x.tray_category == 'RPA') {
+                    x.tray_id = 'RPA' + (countOfTray.RPA + count8)
+                    count8++
                 } else {
                     x.tray_id =
                         x.tray_category +

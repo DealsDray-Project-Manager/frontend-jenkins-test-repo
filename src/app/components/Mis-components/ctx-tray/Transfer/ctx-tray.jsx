@@ -160,6 +160,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'type_taxanomy', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Type</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'rack_id', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -231,7 +242,7 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[7],
+                    value.length + '/' + tableMeta.rowData[8],
             },
         },
 
@@ -286,7 +297,7 @@ const SimpleMuiTable = () => {
 
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'CTX Tray'}
+                    title={'Tray'}
                     data={ctxTrayList}
                     columns={columns}
                     options={{

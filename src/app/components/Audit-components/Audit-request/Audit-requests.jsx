@@ -21,6 +21,7 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayData, setTrayData] = useState([])

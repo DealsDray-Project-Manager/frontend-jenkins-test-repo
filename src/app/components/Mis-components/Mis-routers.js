@@ -146,7 +146,15 @@ const StxToStxUtilityScanUic = Loadable(
 const BagTransfferReceive= Loadable(
     lazy(() => import('./bag-transffer/bag-receive/bag-receive'))
 )
+// RPA TO STX SORTING ASSIGNMENT PAGE
+const RpaToStxSortingAssignment =  Loadable(
+    lazy(() => import('./Sorting/Rpa-stx/rpa-stx'))
+)
 const dataTableRoutes = [
+    {
+        path: '/mis/rpa-to-stx',
+        element: <RpaToStxSortingAssignment />,
+    },
     {
         path: '/mis/stx-to-stx-utility',
         element: <StxToStxUtilityScanUic />,
@@ -361,7 +369,7 @@ const dataTableRoutes = [
         element: <TrackItem />,
     },
     {
-        path: '/mis/ctx/transfer',
+        path: '/mis/tray-transfer',
         element: <CtxTrayTransfer />,
     },
     {

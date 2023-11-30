@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { Button, Typography, Table } from '@mui/material'
-import { axiosRpBqcAgent, axiosSortingAgent } from '../../../../axios'
+import { axiosRpBqcAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
 
@@ -51,7 +51,7 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelStart = (e, code,model) => {
+    const handelStart = (e, code, model) => {
         e.preventDefault()
         navigate(`/rp-bqc/pending-items/start-rp-bqc/${model}/${code}`)
     }
@@ -137,7 +137,8 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.rp_tray || '',
+                customBodyRender: (value, dataIndex) =>
+                    value?.rdl_two_tray || '',
             },
         },
         {
@@ -162,14 +163,16 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value,tableMeta) => {
+                customBodyRender: (value, tableMeta) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => handelStart(e, value,tableMeta.rowData[3])}
+                            onClick={(e) =>
+                                handelStart(e, value, tableMeta.rowData[3])
+                            }
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
@@ -185,7 +188,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'RBQC Tray', path: '/' }]}
+                    routeSegments={[{ name: 'Pending Items', path: '/' }]}
                 />
             </div>
             <Table className="custom-table">

@@ -42,6 +42,12 @@ const StatCard3 = () => {
             title: 'RPA Trays',
             path: '/rp-audit/issued-trays',
         },
+        // {
+        //     icon: 'shopping_cart',
+        //     amount: count.issuedTrays,
+        //     title: 'Pending Items',
+        //     path: '/rp-bqc/pending-items',
+        // },
     ]
     const { palette } = useTheme()
     const textMuted = palette.text.secondary

@@ -23,6 +23,8 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [trayData, setTray] = useState([])
+    const [refresh, setRefresh] = useState(false)
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -49,11 +51,42 @@ const SimpleMuiTable = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [refresh])
 
-    const handelClose = (e, code) => {
-        e.preventDefault()
-        navigate('/rp-bqc/issued-trays/close/' + code)
+    const handelClose = async (e, code) => {
+        try {
+            setLoading(true)
+            let obj = {
+                trayId: code,
+            }
+            let res = await axiosRpBqcAgent.post('/close-rpbqc-tray', obj)
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setLoading(false)
+                setRefresh((refresh) => !refresh)
+            } else {
+                setLoading(false)
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setRefresh((refresh) => !refresh)
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     const columns = [
@@ -184,7 +217,9 @@ const SimpleMuiTable = () => {
                             variant="contained"
                             onClick={(e) => handelClose(e, value)}
                             style={{ backgroundColor: 'red' }}
-                            disabled={tableMeta.rowData[7]?.length !== 0}
+                            disabled={
+                                tableMeta.rowData[7]?.length !== 0 || loading
+                            }
                             component="span"
                         >
                             Close

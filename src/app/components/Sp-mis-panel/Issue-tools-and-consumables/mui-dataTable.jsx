@@ -17,7 +17,6 @@ import { axiosSpMisAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const MuiDataTable = ({
     selectedToolsAndConsumables,
     setselectedToolsAndConsumables,
@@ -73,7 +72,7 @@ const MuiDataTable = ({
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title:"Oops..",
+                    title: 'Oops..',
                     text: res.data.message,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
@@ -214,7 +213,6 @@ const MuiDataTable = ({
                         responsive: 'simple',
                         download: false,
                         print: false,
-
                         selectableRows: 'none', // set checkbox for each row
                         // search: false, // set search option
                         // filter: false, // set data filter option

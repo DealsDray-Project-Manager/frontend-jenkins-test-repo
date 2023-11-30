@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { axiosWarehouseIn } from '../../../../../axios'
 import { Button, Typography, Table } from '@mui/material'
-import { axiosRpAuditAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
-import '../../../../app.css'
+import '../../../../../app.css'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -22,28 +23,36 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 const SimpleMuiTable = () => {
-    const [trayData, setTray] = useState([])
+    const [tray, setTray] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { user_name } = jwt_decode(admin)
-                    let response = await axiosRpAuditAgent.post(
-                        `/issuedTrays/${user_name}`
+                let token = localStorage.getItem('prexo-authentication')
+                if (token) {
+                    const { location } = jwt_decode(token)
+                    setIsLoading(true)
+                    let res = await axiosWarehouseIn.post(
+                        `/getTrayForRpaToStxWh/${'RPA'}/${location}/${'Assigned to Warehouse for Stx Sorting'}/${
+                            user.username
+                        }`
                     )
-                    if (response.status === 200) {
-                        setTray(response.data.data)
+                    if (res.status == 200) {
+                        setIsLoading(false)
+                        setTray(res.data.data)
                     }
                 } else {
                     navigate('/')
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
+                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
@@ -51,9 +60,9 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelClose = (e, code) => {
+    const handelApprove = (e, id) => {
         e.preventDefault()
-        navigate('/rp-audit/issued-trays/close/' + code)
+        navigate('/warehouse/rpa-to-stx/assigned-trays/start/' + id)
     }
 
     const columns = [
@@ -65,14 +74,14 @@ const SimpleMuiTable = () => {
                     fontWeight="bold"
                     sx={{ ml: 2 }}
                 >
-                    <>Record No</>
+                    Record No
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
+                    <Typography sx={{ ml: 4 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
@@ -82,32 +91,7 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'brand',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Status</>
+                    Tray ID
                 </Typography>
             ),
             options: {
@@ -127,35 +111,79 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Quantity</>
+                    Quantity
                 </Typography>
             ),
             options: {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[5],
+                    value.length + '/' + tableMeta.rowData[2],
             },
         },
+
         {
-            name: 'temp_array',
+            name: 'brand',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Pending Units</>
+                    Brand
                 </Typography>
             ),
             options: {
                 filter: true,
-
-                customBodyRender: (value, tableMeta) => value.length,
             },
         },
-
         {
-            name: 'assigned_date',
+            name: 'model',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Issued Date</>
+                    Model
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rack_id', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
+            name: 'sort_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Status
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'requested_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    Assigned Date
                 </Typography>
             ),
             options: {
@@ -170,24 +198,23 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
+                    Action
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
-                            onClick={(e) => handelClose(e, value)}
-                            style={{ backgroundColor: 'red' }}
-                            disabled={tableMeta.rowData[7]?.length !== 0}
+                            onClick={(e) => handelApprove(e, value)}
+                            style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Close
+                            Start
                         </Button>
                     )
                 },
@@ -199,19 +226,26 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'RPA Tray', path: '/' }]}
+                    routeSegments={[{ name: 'Assigned Trays', path: '/' }]}
                 />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Tray'}  
-                    data={trayData}
+                    title={'Tray'}
+                    data={tray}
                     columns={columns}
                     options={{
                         filterType: 'textField',
                         responsive: 'simple',
                         download: false,
                         print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
+                        },
                         selectableRows: 'none', // set checkbox for each row
                         // search: false, // set search option
                         // filter: false, // set data filter option
@@ -244,5 +278,4 @@ const SimpleMuiTable = () => {
         </Container>
     )
 }
-
 export default SimpleMuiTable

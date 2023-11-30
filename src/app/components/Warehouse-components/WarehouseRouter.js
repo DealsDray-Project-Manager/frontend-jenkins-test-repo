@@ -245,19 +245,48 @@ const  CopyGradingAssignRequest = Loadable(lazy(() => import('./Stx-tray/Copy-di
 const  DisplayGradingRequestApprove = Loadable(lazy(() => import('./Stx-tray/Copy-display-grading-request/approve')))
 const  RetunrFromCopyGrading = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/tray')))
 const  ReturnFromDisplayGradingClose = Loadable(lazy(() => import('./Stx-tray/Return-from-display-grading/close')))
-// RBQC TRAY ALL
-const GetRpbqcTrayAll= Loadable(lazy(() => import('./Rp-tray/all-rp-tray/tray')))
+// RPA TRAY ALL
+const GetRpaTrayAll= Loadable(lazy(() => import('./Rpa-rpb-trays/all-rpa/tray')))
 // RETURN FROM RPBQC 
-const ReturnFromRpBqcTrays =Loadable(lazy(() => import('./Rpbqc-tray/return-from-rpbqc/return-from-rpbqc')))
-
+const ReturnFromRpaAndRpbTrays =Loadable(lazy(() => import('./Rpa-rpb-trays/return-from-rp-audit/return-from-rpaudit')))
+// RBQC TRAY ALL
+const GetRpbTrayAll= Loadable(lazy(() => import('./Rpa-rpb-trays/all-rpb/rpb-tray')))
+// CLOSE TRAY RPA OR RPB
+const CloseRpaOrRpb=Loadable(lazy(() => import('./Rpa-rpb-trays/return-from-rp-audit/close')))
+// RPA TO STX  sorting ASSIGNED REQUESTS
+const RpatoStxSortingAssigned=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/requests')))
+// START WORK RPA TO STX
+const StartWorkRpaToStx=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/start')))
+// VIEW RPA TO STX TRAY RPA to STX Work In Progress
+const RpaToStxWorkInProgressTrays=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/rpa-to-stx-work-tray')))
 const WarehoueRouter = [
     {
-        path: '/warehouse/return-from-rp-bqc',
-        element: <ReturnFromRpBqcTrays />,
+        path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
+        element: <RpaToStxWorkInProgressTrays />,
     },
     {
-        path: '/warehouse/rbqc-tray',
-        element: <GetRpbqcTrayAll />,
+        path: '/warehouse/rpa-to-stx/assigned-trays/start/:trayId',
+        element: <StartWorkRpaToStx />,
+    },
+    {
+        path: '/warehouse/rpa-to-stx/assigned-trays',
+        element: <RpatoStxSortingAssigned />,
+    },
+    {
+        path: '/warehouse/rpa-rpb-return-from-agent/close/:trayId',
+        element: <CloseRpaOrRpb />,
+    },
+    {
+        path: '/warehouse/rpa-rpb-return-from-agent',
+        element: <ReturnFromRpaAndRpbTrays />,
+    },
+    {
+        path: '/warehouse/rpb-trays',
+        element: <GetRpbTrayAll />,
+    },
+    {
+        path: '/warehouse/rpa-trays',
+        element: <GetRpaTrayAll />,
     },
     {
         path: '/warehouse/stx/return-from-display-grading/close/:trayId',
@@ -604,11 +633,11 @@ const WarehoueRouter = [
         element: <AllStxTray />,
     },
     {
-        path: '/wareshouse/ctx/transfer/request',
+        path: '/wareshouse/tray-transfer/request',
         element: <CtxTransferRequest />,
     },
     {
-        path: '/wareshouse/ctx/transfer/request/approve/:trayId',
+        path: '/wareshouse/tray-transfer/request/approve/:trayId',
         element: <CtxTransferApprove />,
     },
     {

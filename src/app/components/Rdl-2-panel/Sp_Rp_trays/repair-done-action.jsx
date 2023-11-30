@@ -250,6 +250,9 @@ const SimpleMuiTable = () => {
                         more_part_required: [],
                         used_parts: [],
                         rdl_two_part_status: requredPart,
+                        rdl_two_user:user.username,
+                        rdl_two_tray:whtTrayId
+
                     },
                 }
                 if (selectReason == 'More part required') {
@@ -762,7 +765,7 @@ const SimpleMuiTable = () => {
                         </TextField>
 
                         <TextField
-                            label="Select Rbqc Tray"
+                            label="Select RPB Tray"
                             variant="outlined"
                             fullWidth
                             select

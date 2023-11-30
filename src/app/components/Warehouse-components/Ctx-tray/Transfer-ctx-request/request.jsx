@@ -59,7 +59,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/ctx/transfer/request/approve/' + trayId)
+        navigate('/wareshouse/tray-transfer/request/approve/' + trayId)
     }
 
     const columns = [
@@ -177,7 +177,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'CTX', path: '/' },
+                        { name: 'Tray Transfer', path: '/' },
                         { name: 'Transfer-Requests' },
                     ]}
                 />

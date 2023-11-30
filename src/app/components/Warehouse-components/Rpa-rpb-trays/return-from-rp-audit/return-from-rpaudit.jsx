@@ -114,7 +114,7 @@ const SimpleMuiTable = () => {
 
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
-        navigate('/wareshouse/wht/return-from-audit/close/' + id)
+        navigate('/warehouse/rpa-rpb-return-from-agent/close/' + id)
     }
 
     const handelTrayReceived = async () => {
@@ -125,7 +125,7 @@ const SimpleMuiTable = () => {
                 counts: counts,
                 actioUser: user.username,
             }
-            let res = await axiosWarehouseIn.post('/recievedFromOtherTray', obj)
+            let res = await axiosWarehouseIn.post('/receiveFromRpaOrRpb', obj)
             if (res.status == 200) {
                 setOpen(false)
                 setReceiveBut(false)
@@ -258,7 +258,7 @@ const SimpleMuiTable = () => {
             name: 'closed_date_agent',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    RP-BQC Done Date
+                    Agent Closed Date
                 </Typography>
             ),
             options: {
@@ -269,66 +269,67 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        // {
-        //     name: 'code',
-        //     label: <Typography sx={{ fontWeight: 'bold' }}>Actions</Typography>,
-        //     options: {
-        //         filter: false,
-        //         sort: false,
-        //         customBodyRender: (value, tableMeta) => {
-        //             return (
-        //                 <>
-        //                     {tableMeta.rowData[3] != 'Received From Audit' ? (
-        //                         <Button
-        //                             sx={{
-        //                                 m: 1,
-        //                             }}
-        //                             variant="contained"
-        //                             style={{ backgroundColor: 'green' }}
-        //                             onClick={(e) => {
-        //                                 setOpen(true)
-        //                                 setTrayId(value)
-        //                             }}
-        //                         >
-        //                             RECEIVE
-        //                         </Button>
-        //                     ) : (
-        //                         <>
-        //                             <Button
-        //                                 sx={{
-        //                                     m: 1,
-        //                                 }}
-        //                                 variant="contained"
-        //                                 style={{ backgroundColor: '#206CE2' }}
-        //                                 onClick={(e) => {
-        //                                     handelViewTray(
-        //                                         e,
-        //                                         value,
-        //                                         tableMeta.rowData[2]
-        //                                     )
-        //                                 }}
-        //                             >
-        //                                 View
-        //                             </Button>
-        //                             <Button
-        //                                 sx={{
-        //                                     m: 1,
-        //                                 }}
-        //                                 variant="contained"
-        //                                 style={{ backgroundColor: 'red' }}
-        //                                 onClick={(e) => {
-        //                                     handelViewDetailTray(e, value)
-        //                                 }}
-        //                             >
-        //                                 Close
-        //                             </Button>
-        //                         </>
-        //                     )}
-        //                 </>
-        //             )
-        //         },
-        //     },
-        // },
+        {
+            name: 'code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        <>
+                            {tableMeta.rowData[3] == 'Closed by RP-BQC' ||
+                            tableMeta.rowData[3] == 'Closed by RP-Audit' ? (
+                                <Button
+                                    sx={{
+                                        m: 1,
+                                    }}
+                                    variant="contained"
+                                    style={{ backgroundColor: 'green' }}
+                                    onClick={(e) => {
+                                        setOpen(true)
+                                        setTrayId(value)
+                                    }}
+                                >
+                                    RECEIVE
+                                </Button>
+                            ) : (
+                                <>
+                                    {/* <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: '#206CE2' }}
+                                        onClick={(e) => {
+                                            handelViewTray(
+                                                e,
+                                                value,
+                                                tableMeta.rowData[2]
+                                            )
+                                        }}
+                                    >
+                                        View
+                                    </Button> */}
+                                    <Button
+                                        sx={{
+                                            m: 1,
+                                        }}
+                                        variant="contained"
+                                        style={{ backgroundColor: 'red' }}
+                                        onClick={(e) => {
+                                            handelViewDetailTray(e, value)
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                </>
+                            )}
+                        </>
+                    )
+                },
+            },
+        },
     ]
 
     return (
@@ -381,8 +382,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RP-Audit', path: '/' },
-                        { name: 'Return-from-Rp-Audit' },
+                        { name: 'RPA / RPB', path: '/' },
+                        { name: 'Return-from-agent' },
                     ]}
                 />
             </div>

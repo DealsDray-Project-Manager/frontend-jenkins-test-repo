@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import useAuth from 'app/hooks/useAuth'
+
 import {
     Box,
     Button,
@@ -13,23 +15,35 @@ import {
     Grid,
     MenuItem,
 } from '@mui/material'
-import jwt_decode from 'jwt-decode'
+import { Breadcrumb } from 'app/components'
+import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { styled } from '@mui/system'
-import { axiosSuperAdminPrexo } from '../../../../../axios'
-
-// import jwt from "jsonwebtoken"
+import jwt_decode from 'jwt-decode'
 import { axiosWarehouseIn } from '../../../../../axios'
-import useAuth from 'app/hooks/useAuth'
+import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
 }))
 
+const Container = styled('div')(({ theme }) => ({
+    margin: '30px',
+    [theme.breakpoints.down('sm')]: {
+        margin: '16px',
+    },
+    '& .breadcrumb': {
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '16px',
+        },
+    },
+}))
+
 export default function DialogBox() {
+    const { user } = useAuth()
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -39,23 +53,41 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
     const [refresh, setRefresh] = useState(false)
-    const [userCpcType, setUserCpcType] = useState()
-    const { user } = useAuth()
-
+    const [rackiddrop, setrackiddrop] = useState([])
+    const [rackId, setRackId] = useState('')
     /*********************************************************** */
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let res = await axiosSuperAdminPrexo.post(
+                    '/trayracks/view/' + user.warehouse
+                )
+                if (res.status == 200) {
+                    setrackiddrop(res.data.data)
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                })
+            }
+        }
+        fetchData()
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    let { location, cpc_type } = jwt_decode(admin)
-                    setUserCpcType(cpc_type)
+                    let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
                         '/getWhtTrayItem/' +
                             trayId +
                             '/' +
-                            'Transfer Request sent to Warehouse/' +
+                            'Received From RP-Audit/' +
                             location
                     )
                     if (response.status === 200) {
@@ -117,43 +149,44 @@ export default function DialogBox() {
             }
         }
     }
-    /************************************************************************** */
 
     /************************************************************************** */
     const handelIssue = async (e, sortId) => {
         try {
-            setLoading(true)
-            let obj = {
-                trayId: trayId,
-                description: description,
-                sales_location: trayData?.recommend_location,
-                page: 'Warehouse-approve',
-                userCpcType: userCpcType,
-                actUser: user.username,
-            }
-            if (userCpcType == 'Sales') {
-                obj.sortId = 'Transferred to Processing'
+            if (trayData?.actual_items?.length == trayData?.items?.length) {
+                setLoading(true)
+                let obj = {
+                    trayId: trayId,
+                    description: description,
+                    tray_type: trayData?.type_taxanomy,
+                    rackId: rackId,
+                    actioUser: user.username,
+                }
+                let res = await axiosWarehouseIn.post('/rpaOrRpbDoneClose', obj)
+                if (res.status == 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                    setLoading(false)
+                    navigate('/warehouse/rpa-rpb-return-from-agent')
+                } else {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
             } else {
-                obj.sortId = 'Transferred to Sales'
-            }
-            let res = await axiosWarehouseIn.post(
-                '/ctx/transferRequest/approve',
-                obj
-            )
-            if (res.status == 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
-                })
                 setLoading(false)
-                navigate('/wareshouse/tray-transfer/request')
-            } else {
+
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
-                    title: res?.data?.message,
+                    title: 'Please Verify Actual Data',
                     confirmButtonText: 'Ok',
                 })
             }
@@ -186,9 +219,14 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {trayData?.items?.length}/{trayData?.limit}
+                                {
+                                    trayData?.items?.filter(function (item) {
+                                        return item.status != 'Duplicate'
+                                    }).length
+                                }
+                                /{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -205,8 +243,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+                                <TableCell>BOT Tray</TableCell>
+                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -217,8 +255,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.brand_name}</TableCell>
-                                    <TableCell>{data?.model_name}</TableCell>
+                                    <TableCell>{data?.tray_id}</TableCell>
+                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -277,10 +315,16 @@ export default function DialogBox() {
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {trayData.actual_items?.length}/
-                                {trayData?.limit}
+                                {
+                                    trayData.actual_items?.filter(function (
+                                        item
+                                    ) {
+                                        return item.status != 'Duplicate'
+                                    }).length
+                                }
+                                /{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -297,8 +341,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+                                <TableCell>BOT Tray</TableCell>
+                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -310,8 +354,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.brand_name}</TableCell>
-                                    <TableCell>{data?.model_name}</TableCell>
+                                    <TableCell>{data?.tray_id}</TableCell>
+                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -320,14 +364,24 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
-        <>
+        <Container>
+            <div className="breadcrumb">
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'WHT', path: '/' },
+                        { name: 'Return-From-RDL-1', path: '/' },
+                        { name: 'Tray Close' },
+                    ]}
+                />
+            </div>
             <Box
-                sx={{
-                    mt: 1,
-                    height: 70,
-                    borderRadius: 1,
-                }}
+            // sx={{
+            //     mt: 1,
+            //     height: 70,
+            //     borderRadius: 1,
+            // }}
             >
                 <Box
                     sx={{
@@ -336,7 +390,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        Sales Location - {trayData?.recommend_location}
+                        AGENT NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -362,6 +416,24 @@ export default function DialogBox() {
             </Grid>
             <div style={{ float: 'right' }}>
                 <Box sx={{ float: 'right' }}>
+                    <TextFieldCustOm
+                        sx={{ m: 1 }}
+                        label="Rack ID"
+                        select
+                        style={{ width: '150px' }}
+                        name="rack_id"
+                    >
+                        {rackiddrop?.map((data) => (
+                            <MenuItem
+                                onClick={(e) => {
+                                    setRackId(data.rack_id)
+                                }}
+                                value={data.rack_id}
+                            >
+                                {data.rack_id}
+                            </MenuItem>
+                        ))}
+                    </TextFieldCustOm>
                     <textarea
                         onChange={(e) => {
                             setDescription(e.target.value)
@@ -373,25 +445,26 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true ||
                             trayData?.actual_items?.length !==
                                 trayData?.items?.length ||
                             trayData?.length == 0 ||
+                            loading == true ||
+                            rackId == '' ||
                             description == ''
                                 ? true
                                 : false
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {
-                            if (window.confirm('You Want to Transfer?')) {
+                            if (window.confirm('You Want to Close?')) {
                                 handelIssue(e)
                             }
                         }}
                     >
-                        Close & Transfer
+                        Tray Close
                     </Button>
                 </Box>
             </div>
-        </>
+        </Container>
     )
 }

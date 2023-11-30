@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 import Swal from 'sweetalert2'
-import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
+import { axiosMisUser } from '../../../../../axios'
 import { useNavigate } from 'react-router-dom'
-import useAuth from 'app/hooks/useAuth'
+import AssignDialogBox from './user-dailog'
+import jwt_decode from 'jwt-decode'
 import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
@@ -26,26 +26,25 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [isCheck, setIsCheck] = useState([])
+    const [whtTrayList, setWhtTrayList] = useState([])
+    const [RDLUsers, setRDLUsers] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [ctxTrayList, setCtxTrayList] = useState([])
-    const [userCpcType, setUserCpcType] = useState('')
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
     const navigate = useNavigate()
-    const { user } = useAuth()
 
     useEffect(() => {
         const fetchWht = async () => {
             try {
+                setIsLoading(true)
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
-                    setIsLoading(true)
-                    let { location, cpc_type } = jwt_decode(admin)
-                    setUserCpcType(cpc_type)
-                    let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Transferred to Sales/' + location
+                    let { location } = jwt_decode(admin)
+                    const res = await axiosMisUser.post(
+                        `/getTrayForRpaToStx/${'RPA'}/${location}/${'Ready to Transfer to STX'}`
                     )
                     if (res.status === 200) {
                         setIsLoading(false)
-                        setCtxTrayList(res.data.data)
+                        setWhtTrayList(res.data.data)
                     }
                 }
             } catch (error) {
@@ -63,63 +62,50 @@ const SimpleMuiTable = () => {
 
     const handleClick = (e) => {
         const { id, checked } = e.target
+
         setIsCheck([...isCheck, id])
         if (!checked) {
             setIsCheck(isCheck.filter((item) => item !== id))
         }
     }
 
-    const handelReceive = async () => {
-        try {
-            let obj = {
-                ischeck: isCheck,
-                page: 'Mis-ctx-receive',
-                userCpcType: userCpcType,
-                actUser: user.username,
-            }
-            if (userCpcType == 'Sales') {
-                obj.sortId = 'Accepted From Processing'
-            } else {
-                obj.sortId = 'Accepted From Sales'
-            }
-            let res = await axiosWarehouseIn.post(
-                '/ctx/transferRequest/approve',
-                obj
-            )
-            setIsCheck([])
-            if (res.status === 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res.data.message,
-                    confirmButtonText: 'Ok',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        setIsCheck([])
-                        setIsAlive((isAlive) => !isAlive)
+    const handelReadyForRdl = () => {
+        const fetchData = async () => {
+            try {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosMisUser.post(
+                        '/assignToAgent/rdl-1/users/' + 'Warehouse/' + location
+                    )
+                    if (res.status == 200) {
+                        setRDLUsers(res.data.data)
+                        handleDialogOpen()
                     }
-                })
-            } else if (res.status == 202) {
+                }
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    title: res?.data?.message,
-                    confirmButtonText: 'Ok',
+                    text: error,
                 })
             }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error,
-            })
         }
+        fetchData()
+    }
+
+    const handleDialogClose = () => {
+        setIsCheck([])
+        setRDLUsers([])
+        setShouldOpenEditorDialog(false)
+    }
+
+    const handleDialogOpen = () => {
+        setShouldOpenEditorDialog(true)
     }
 
     const handelViewItem = (trayId) => {
-        navigate('/sup-admin/wht/view-item/' + trayId)
+        navigate('/mis/assign-to-agent/Rdl-1/view-item/' + trayId)
     }
 
     const columns = [
@@ -172,7 +158,7 @@ const SimpleMuiTable = () => {
             name: 'code', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
+                    <>Tray Id</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
@@ -183,7 +169,7 @@ const SimpleMuiTable = () => {
             name: 'rack_id', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rack ID</>
+                    <>Rack Id</>
                 </Typography>
             ), // column title that will be shown in table
             options: {
@@ -203,6 +189,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value) => value?.[0]?.display,
             },
         },
+
         {
             name: 'brand',
             label: (
@@ -228,7 +215,11 @@ const SimpleMuiTable = () => {
 
         {
             name: 'limit',
-            label: 'Limit',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Limit</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -296,14 +287,17 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Tray Receive', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Sorting', path: '/' },
+                        { name: 'RPA to STX' },
+                    ]}
                 />
             </div>
 
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Tray'}
-                    data={ctxTrayList}
+                    title={'RPA Tray'}
+                    data={whtTrayList}
                     columns={columns}
                     options={{
                         filterType: 'textField',
@@ -317,6 +311,13 @@ const SimpleMuiTable = () => {
                                     : 'Sorry, there is no matching data to display',
                             },
                         },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
                         customSort: (data, colIndex, order) => {
                             return data.sort((a, b) => {
                                 if (colIndex === 1) {
@@ -334,13 +335,6 @@ const SimpleMuiTable = () => {
                                 )
                             })
                         },
-                        selectableRows: 'none', // set checkbox for each row
-                        // search: false, // set search option
-                        // filter: false, // set data filter option
-                        // download: false, // set download option
-                        // print: false, // set print option
-                        // pagination: true, //set pagination option
-                        // viewColumns: false, // set column option
                         elevation: 0,
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
@@ -353,12 +347,22 @@ const SimpleMuiTable = () => {
                     color="primary"
                     disabled={isCheck.length === 0}
                     onClick={(e) => {
-                        handelReceive(e)
+                        handelReadyForRdl(e)
                     }}
                 >
-                    Accept
+                    Assign To Warehouse
                 </Button>
             </Box>
+
+            {shouldOpenEditorDialog && (
+                <AssignDialogBox
+                    handleClose={handleDialogClose}
+                    open={handleDialogOpen}
+                    setIsAlive={setIsAlive}
+                    RDLUsers={RDLUsers}
+                    isCheckk={isCheck}
+                />
+            )}
         </Container>
     )
 }

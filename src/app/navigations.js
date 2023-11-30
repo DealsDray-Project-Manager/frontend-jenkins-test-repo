@@ -675,6 +675,11 @@ export const navigations = [
                 path: '/mis/sorting/ctx-to-stx',
                 iconText: 'VP',
             },
+            {
+                name: 'RPA to STX',
+                path: '/mis/rpa-to-stx',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Mis,
         sales: true,
@@ -721,12 +726,12 @@ export const navigations = [
         sales: true,
     },
     {
-        name: 'CTX',
+        name: 'Tray Transfer',
         icon: 'shopping_cart',
         children: [
             {
                 name: 'Transfer',
-                path: '/mis/ctx/transfer',
+                path: '/mis/tray-transfer',
                 iconText: 'VP',
             },
             {
@@ -737,6 +742,24 @@ export const navigations = [
         ],
         auth: authRoles.Mis,
         sales: 'all',
+    },
+    {
+        name: 'RPA TO STX',
+        icon: 'shopping_cart',
+        children: [
+            {
+                name: 'Assigned Trays',
+                path: '/warehouse/rpa-to-stx/assigned-trays',
+                iconText: 'VP',
+            },
+            {
+                name: 'RPA to Stx Work In Progress Trays',
+                path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.Warehouse,
+        sales: true,
     },
     {
         name: 'Rack Change',
@@ -1055,9 +1078,17 @@ export const navigations = [
                 path: '/wareshouse/ctx/all',
                 iconText: 'VP',
             },
+        ],
+        auth: authRoles.Warehouse,
+        sales: 'all',
+    },
+    {
+        name: 'Tray Transfer',
+        icon: 'shopping_cart',
+        children: [
             {
                 name: 'Transfer Request',
-                path: '/wareshouse/ctx/transfer/request',
+                path: '/wareshouse/tray-transfer/request',
             },
             {
                 name: 'Receive Request',
@@ -1069,22 +1100,27 @@ export const navigations = [
         sales: 'all',
     },
     {
-        name: 'RBQC',
+        name: 'RPA / RPB',
         icon: 'shopping_cart',
         children: [
             {
-                name: 'RBQC Tray',
-                path: '/warehouse/rbqc-tray',
+                name: 'RPA',
+                path: '/warehouse/rpa-trays',
                 iconText: 'VP',
             },
             {
-                name: 'Return From Rp-bqc',
-                path: '/warehouse/return-from-rp-bqc',
+                name: 'RPB',
+                path: '/warehouse/rpb-trays',
+                iconText: 'VP',
+            },
+            {
+                name: 'Return From Agent',
+                path: '/warehouse/rpa-rpb-return-from-agent',
                 iconText: 'VP',
             },
         ],
         auth: authRoles.Warehouse,
-        sales: 'all',
+        sales: false,
     },
     {
         name: 'STX',
@@ -1749,6 +1785,13 @@ export const navigations = [
         name: 'RPA Tray',
         icon: 'shopping_cart',
         path: '/rp-audit/issued-trays',
+        auth: authRoles.RPAUDIT,
+        sales: false,
+    },
+    {
+        name: 'Pending Items',
+        icon: 'save',
+        path: '/rp-audit/pending-items',
         auth: authRoles.RPAUDIT,
         sales: false,
     },

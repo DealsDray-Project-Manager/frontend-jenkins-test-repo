@@ -19,7 +19,11 @@ import { H1, H3, H4 } from 'app/components/Typography'
 import useAuth from 'app/hooks/useAuth'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
-import { axiosBqc, axiosRpBqcAgent } from '../../../../axios'
+import {
+    axiosMisUser,
+    axiosRpAuditAgent,
+    axiosRpBqcAgent,
+} from '../../../../axios'
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
@@ -68,9 +72,14 @@ export default function DialogBox() {
     const [resDataUic, setresDataUic] = useState({})
     const { user } = useAuth()
     const [open, setOpen] = useState(false)
+    const [rpAudit, setRpAudit] = useState([])
+    const [tray, setTray] = useState([])
+    const [loading, setLoading] = useState(false)
     const [popdata, setPopData] = useState({
         status: '',
         description: '',
+        rpa_tray: '',
+        rp_audit_user: '',
     })
 
     /*********************************************************** */
@@ -80,6 +89,7 @@ export default function DialogBox() {
             let obj = {
                 username: user.username,
                 uic: uic,
+                type:"Issued to RP-BQC"
             }
             const res = await axiosRpBqcAgent.post('/pedning-item', obj)
             if (res.status === 200) {
@@ -97,11 +107,35 @@ export default function DialogBox() {
         fetchData()
     }, [])
 
+    useEffect(() => {
+        const fetchRpbqcUsers = async () => {
+            const res = await axiosMisUser.post(
+                `/get-charging-users/${'RP-Audit'}/${user.location}`
+            )
+            if (res.status == 200) {
+                setRpAudit(res.data.data)
+            }
+        }
+        fetchRpbqcUsers()
+    }, [])
+
     const handleChangeThePopValue = ({ target: { name, value } }) => {
         setPopData({
             ...popdata,
             [name]: value,
         })
+    }
+
+    // GET RBQC TRAY
+    const handelFetchRbqcTray = async (username) => {
+        try {
+            const res = await axiosRpAuditAgent.post(`/issuedTrays/${username}`)
+            if (res.status === 200) {
+                setTray(res.data.data)
+            }
+        } catch (error) {
+            alert(error)
+        }
     }
 
     const handleClose = () => {
@@ -110,6 +144,7 @@ export default function DialogBox() {
     // HANDEL SUBMIT
     const handelSubmit = async () => {
         try {
+            setLoading(true)
             handleClose()
             setDeviceButDis(true)
             let obj = {
@@ -117,6 +152,8 @@ export default function DialogBox() {
                 status: popdata.status,
                 description: popdata.description,
                 username: user.username,
+                rpa_tray: popdata.rpa_tray,
+                rp_audit_user: popdata.rp_audit_user,
             }
             const res = await axiosRpBqcAgent.post('/add-rpbqc-data', obj)
             if (res.status == 200) {
@@ -185,9 +222,49 @@ export default function DialogBox() {
                         name="status"
                         sx={{ mt: 2 }}
                     >
-                        <MenuItem value="RP-BQC Pass">RP-BQC Pass</MenuItem>
-                        <MenuItem value="RP-BQC Fail">RP-BQC Fail</MenuItem>
+                        <MenuItem value="RP-BQC Passed">RP-BQC Passed</MenuItem>
+                        <MenuItem value="RP-BQC Failed">RP-BQC Failed</MenuItem>
                     </TextField>
+                    {popdata?.status == 'RP-BQC Passed' ? (
+                        <>
+                            <TextField
+                                label="Select RP-Audit User"
+                                variant="outlined"
+                                fullWidth
+                                select
+                                onChange={handleChangeThePopValue}
+                                name="rp_audit_user"
+                                sx={{ mt: 2 }}
+                            >
+                                {rpAudit.map((data) => (
+                                    <MenuItem
+                                        key={data.user_name}
+                                        value={data.user_name}
+                                        onClick={(e) => {
+                                            handelFetchRbqcTray(data.user_name)
+                                        }}
+                                    >
+                                        {data.user_name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            <TextField
+                                label="Select RPA Tray"
+                                variant="outlined"
+                                fullWidth
+                                select
+                                name="rpa_tray"
+                                onChange={handleChangeThePopValue}
+                                sx={{ mt: 2 }}
+                            >
+                                {tray.map((data) => (
+                                    <MenuItem key={data.code} value={data.code}>
+                                        {data.code}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </>
+                    ) : null}
 
                     <TextField
                         label="Description"
@@ -204,9 +281,14 @@ export default function DialogBox() {
                             m: 1,
                         }}
                         disabled={
+                            loading ||
                             popdata.status == '' ||
                             popdata.description == '' ||
-                            deviceButDis
+                            deviceButDis ||
+                            (popdata.status == 'RP-BQC Passed' &&
+                                popdata.rpa_tray == '') ||
+                            (popdata.status == 'RP-BQC Passed' &&
+                                popdata.rp_audit_user == '')
                         }
                         variant="contained"
                         style={{ backgroundColor: 'green' }}

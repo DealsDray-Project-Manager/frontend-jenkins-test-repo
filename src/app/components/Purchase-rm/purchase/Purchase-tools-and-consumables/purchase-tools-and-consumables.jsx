@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
 import MUIDataTable from 'mui-datatables'
-import { axiosRmUserAgent } from '../../../../axios'
-import { styled } from '@mui/system'
-import { Typography, Button, Table } from '@mui/material'
 import { Breadcrumb } from 'app/components'
+import React, { useState, useEffect } from 'react'
+import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from 'axios'
+import jwt_decode from 'jwt-decode'
+import { Button, Typography, Card, Box, TextField, Table } from '@mui/material'
+import Swal from 'sweetalert2'
+import { axiosPurchaseAgent, axiosSpMisAgent } from '../../../../../axios'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,30 +23,47 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-function IssueToolsAndConsumables() {
-    const navigate = useNavigate()
+const SimpleMuiTable = () => {
+    const [RDLRequest, setRDLRequest] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [requests, setRequests] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true)
-            const res = await axiosRmUserAgent.post(
-                `/getRequestOfToolsAndConsumables/${'Assigned'}`
-            )
-            if (res.status === 200) {
-                setRequests(res.data.data)
-                setIsLoading(false)
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    setIsLoading(true)
+                    let { location } = jwt_decode(admin)
+                    let res = await axiosPurchaseAgent.post(
+                        '/procurmentToolsAndConsumables/view/' + 'all'
+                    )
+                    if (res.status == 200) {
+                        setIsLoading(false)
+                        setRDLRequest(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
             }
+            fetchData()
+        } catch (error) {
+            setIsLoading(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
-        fetchData()
     }, [])
 
-    const handelNavigate = (id) => {
-        navigate(`/sp-user/requests-for-tools-and-consumables/approve/${id}`)
+    const handleplace = (id) => {
+        navigate(
+            '/purchase-user/purchase-tools-and-consumables/place-order/' + id
+        )
     }
 
-    // COLUMNS
     const columns = [
         {
             name: 'index',
@@ -65,26 +86,17 @@ function IssueToolsAndConsumables() {
         {
             name: 'request_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Request Id</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Request ID</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'issued_user_name',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'assigned_date',
+            name: 'request_date',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned Date
+                    Request Date
                 </Typography>
             ),
             options: {
@@ -96,17 +108,10 @@ function IssueToolsAndConsumables() {
             },
         },
         {
-            name: 'status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'mis_description',
+            name: 'part_number',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Mis Description
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Spare Part Number
                 </Typography>
             ),
             options: {
@@ -114,8 +119,51 @@ function IssueToolsAndConsumables() {
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
+            name: 'part_name',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Spare Part Name
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+
+        {
+            name: 'requred_qty',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }} noWrap>
+                    Required Quantity
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'category',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Category</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'status',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'request_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Action</>
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
@@ -123,33 +171,30 @@ function IssueToolsAndConsumables() {
                     return (
                         <Button
                             sx={{
-                                m: 1,
+                                m: 0,
                             }}
                             variant="contained"
+                            onClick={() => handleplace(value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
-                            onClick={(e) => {
-                                handelNavigate(tableMeta.rowData[1])
-                            }}
                         >
-                            Approve
+                            Place order
                         </Button>
                     )
                 },
             },
         },
     ]
+
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Tools And Consumables' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Requests', path: '/' }]} />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Issue Requests'}
-                    data={requests}
+                    title={'Procurement Requests'}
+                    data={RDLRequest}
                     columns={columns}
                     options={{
                         filterType: 'textField',
@@ -191,9 +236,10 @@ function IssueToolsAndConsumables() {
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}
                 />
+                <br />
             </Table>
         </Container>
     )
 }
 
-export default IssueToolsAndConsumables
+export default SimpleMuiTable

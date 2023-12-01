@@ -1,11 +1,12 @@
 import { axiosRmUserAgent } from '../../../../axios'
 import React, { useEffect, useState } from 'react'
-import { Typography, Table } from '@mui/material'
+import { Typography, Table, Box, Button } from '@mui/material'
 import { styled } from '@mui/system'
 import { Breadcrumb } from 'app/components'
 import MUIDataTable from 'mui-datatables'
 import { useParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -25,12 +26,13 @@ const RequestApprove = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
     const [toolsAndConsumables, setToolsAndConsumables] = useState({})
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true)
             const res = await axiosRmUserAgent.post(
-                `/getOneRequestOfToolsAndConsumables/${requestId}`
+                `/getOneRequestOfToolsAndConsumables/${requestId}/${'Assigned'}`
             )
             if (res.status === 200) {
                 setToolsAndConsumables(res.data.data)
@@ -38,7 +40,7 @@ const RequestApprove = () => {
             } else {
                 Swal.fire({
                     position: 'top-center',
-                    icon: 'success',
+                    icon: 'error',
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
@@ -47,6 +49,43 @@ const RequestApprove = () => {
         }
         fetchData()
     }, [])
+
+    // HANDEL ISSUE
+    const handelIssue = async () => {
+        try {
+            let obj = {
+                requestId: toolsAndConsumables?.request_id,
+                actionUser: user.username,
+            }
+            const res = await axiosRmUserAgent.post(
+                '/requestApproveForToolsAndConsumables',
+                obj
+            )
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res.data.message,
+                })
+                navigate('/sp-user/requests-for-tools-and-consumables')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res.data.message,
+                })
+                navigate('/sp-user/requests-for-tools-and-consumables')
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
 
     // COLUMNS
     const columns = [
@@ -169,6 +208,26 @@ const RequestApprove = () => {
                     }}
                 />
             </Table>
+            <Box
+                sx={{
+                    float: 'right',
+                }}
+            >
+                <Button
+                    sx={{
+                        mt: 2,
+                    }}
+                    variant="contained"
+                    onClick={(e) => {
+                        if (window.confirm('You want to Issue?')) {
+                            handelIssue(e)
+                        }
+                    }}
+                    style={{ backgroundColor: 'green' }}
+                >
+                    Issue To Agent
+                </Button>
+            </Box>
         </Container>
     )
 }

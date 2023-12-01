@@ -28,7 +28,7 @@ function IssueToolsAndConsumables() {
         const fetchData = async () => {
             setIsLoading(true)
             const res = await axiosRmUserAgent.post(
-                `/getRequestOfToolsAndConsumables/${'Assigned'}`
+                `/getRequestOfToolsAndConsumables/${'All'}`
             )
             if (res.status === 200) {
                 setRequests(res.data.data)
@@ -39,7 +39,7 @@ function IssueToolsAndConsumables() {
     }, [])
 
     const handelNavigate = (id) => {
-        navigate(`/sp-user/requests-for-tools-and-consumables/approve/${id}`)
+        navigate(`/sp-mis/report/tools-and-consumable/view/${id}`)
     }
 
     // COLUMNS
@@ -103,14 +103,18 @@ function IssueToolsAndConsumables() {
             },
         },
         {
-            name: 'mis_description',
+            name: 'issued_date',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Mis Description
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Issued Date</Typography>
             ),
             options: {
                 filter: true,
+                customBodyRender: (value) =>
+                    value !== undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : null,
             },
         },
         {
@@ -132,7 +136,7 @@ function IssueToolsAndConsumables() {
                                 handelNavigate(tableMeta.rowData[1])
                             }}
                         >
-                            Approve
+                            View
                         </Button>
                     )
                 },

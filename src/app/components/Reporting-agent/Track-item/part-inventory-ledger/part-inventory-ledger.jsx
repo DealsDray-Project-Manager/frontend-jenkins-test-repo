@@ -49,8 +49,7 @@ const PartTable = () => {
     const handelSubmit = async () => {
         try {
             const res = await axiosReportingAgent.post(
-                '/get-partinventory-ledger/',
-                searchInput
+                `/get-partinventory-ledger/${searchInput}`
             )
             if (res.status === 200) {
                 setDetails(res.data.data)
@@ -158,10 +157,7 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+               
             },
         },
         {
@@ -186,12 +182,7 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }),
+               
             },
         },
     ]
@@ -252,7 +243,7 @@ const PartTable = () => {
                                     Available Stock: <b>{result?.avl_stock}</b>
                                 </p>
                                 <p>
-                                   Part Created Date:{' '}
+                                    Part Created Date:{' '}
                                     <b>
                                         {new Date(
                                             result?.created_at

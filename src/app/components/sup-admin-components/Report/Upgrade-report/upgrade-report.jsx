@@ -81,12 +81,26 @@ const SimpleMuiTable = () => {
             name: 'old_item_details',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Brand and model</>
+                    <>Brand</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value) => value.toUpperCase(),
+                customBodyRender: (value) =>
+                    value?.split(':')?.[0]?.toUpperCase(),
+            },
+        },
+        {
+            name: 'old_item_details',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Model</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) =>
+                    value?.split(':')?.[1]?.toUpperCase(),
             },
         },
         {
@@ -201,9 +215,7 @@ const SimpleMuiTable = () => {
                         // pagination: true, //set pagination option
                         // viewColumns: false, // set column option
                         customSort: (data, colIndex, order) => {
-                            const columnProperties = {
-                             
-                            }
+                            const columnProperties = {}
 
                             const property = columnProperties[colIndex]
 

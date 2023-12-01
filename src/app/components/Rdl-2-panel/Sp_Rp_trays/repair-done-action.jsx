@@ -250,9 +250,8 @@ const SimpleMuiTable = () => {
                         more_part_required: [],
                         used_parts: [],
                         rdl_two_part_status: requredPart,
-                        rdl_two_user:user.username,
-                        rdl_two_tray:whtTrayId
-
+                        rdl_two_user: user.username,
+                        rdl_two_tray: whtTrayId,
                     },
                 }
                 if (selectReason == 'More part required') {

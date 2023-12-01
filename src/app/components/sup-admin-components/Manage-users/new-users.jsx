@@ -383,6 +383,7 @@ const MemberEditorDialog = ({
                                 error={errors.user_type ? true : false}
                                 helperText={errors.user_type?.message}
                             >
+                                <MenuItem value="Bagging">Bagging</MenuItem>
                                 <MenuItem value="MIS">MIS</MenuItem>
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>

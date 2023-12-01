@@ -279,7 +279,7 @@ const SimpleMuiTable = () => {
                             >
                                 Reassign
                             </Button>
-                            <Button
+                            {/* <Button
                                 sx={{
                                     ml: 1,
                                 }}
@@ -301,7 +301,7 @@ const SimpleMuiTable = () => {
                                 component="span"
                             >
                                 One step back
-                            </Button>
+                            </Button> */}
                         </>
                     )
                 },

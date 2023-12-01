@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import MUIDataTable from 'mui-datatables'
 import { axiosRmUserAgent } from '../../../../axios'
+import React, { useEffect, useState } from 'react'
+import { Typography, Table, Box, Button } from '@mui/material'
 import { styled } from '@mui/system'
-import { Typography, Button, Table } from '@mui/material'
 import { Breadcrumb } from 'app/components'
-import { useNavigate } from 'react-router-dom'
+import MUIDataTable from 'mui-datatables'
+import { useParams, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,27 +21,70 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-function IssueToolsAndConsumables() {
+const RequestApprove = () => {
+    const { requestId } = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
-    const [requests, setRequests] = useState([])
+    const [toolsAndConsumables, setToolsAndConsumables] = useState({})
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true)
             const res = await axiosRmUserAgent.post(
-                `/getRequestOfToolsAndConsumables/${'Assigned'}`
+                `/getOneRequestOfToolsAndConsumables/${requestId}/${'All'}`
             )
             if (res.status === 200) {
-                setRequests(res.data.data)
+                setToolsAndConsumables(res.data.data)
                 setIsLoading(false)
+            } else {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'error',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                navigate(-1)
             }
         }
         fetchData()
     }, [])
 
-    const handelNavigate = (id) => {
-        navigate(`/sp-user/requests-for-tools-and-consumables/approve/${id}`)
+    // HANDEL ISSUE
+    const handelIssue = async () => {
+        try {
+            let obj = {
+                requestId: toolsAndConsumables?.request_id,
+                actionUser: user.username,
+            }
+            const res = await axiosRmUserAgent.post(
+                '/requestApproveForToolsAndConsumables',
+                obj
+            )
+            if (res.status === 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res.data.message,
+                })
+                navigate('/sp-user/requests-for-tools-and-consumables')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res.data.message,
+                })
+                navigate('/sp-user/requests-for-tools-and-consumables')
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
     }
 
     // COLUMNS
@@ -63,93 +108,64 @@ function IssueToolsAndConsumables() {
             },
         },
         {
-            name: 'request_id',
+            name: 'part_code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>SPN Id</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'name',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Name</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'selected_quantity',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Request Id</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
             options: {
                 filter: true,
             },
         },
         {
-            name: 'issued_user_name',
+            name: 'sp_category',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Category</Typography>
             ),
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'assigned_date',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'mis_description',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Mis Description
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                            onClick={(e) => {
-                                handelNavigate(tableMeta.rowData[1])
-                            }}
-                        >
-                            Approve
-                        </Button>
-                    )
-                },
             },
         },
     ]
+
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Tools And Consumables' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Approve Page' }]} />
+            </div>
+            <div className="header-section">
+                <Typography variant="h6">
+                    Request ID: {toolsAndConsumables?.request_id}
+                </Typography>
+                <Typography variant="subtitle1">
+                    Assigned Date:{' '}
+                    {new Date(
+                        toolsAndConsumables?.assigned_date
+                    ).toLocaleString('en-GB', {
+                        hour12: true,
+                    })}
+                </Typography>
+                <Typography variant="subtitle1">
+                    Agent Name: {toolsAndConsumables?.issued_user_name}
+                </Typography>
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Issue Requests'}
-                    data={requests}
+                    title={'Tools And Consumables'}
+                    data={toolsAndConsumables?.tools_and_consumables_list}
                     columns={columns}
                     options={{
                         filterType: 'textField',
@@ -196,4 +212,4 @@ function IssueToolsAndConsumables() {
     )
 }
 
-export default IssueToolsAndConsumables
+export default RequestApprove

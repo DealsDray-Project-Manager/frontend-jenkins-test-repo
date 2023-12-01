@@ -27,10 +27,14 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
 
+    console.log(user);
+
     useEffect(() => {
         const fetchCpc = async () => {
             try {
-                let response = await axiosSuperAdminPrexo.get('/getCpc')
+                let response = await axiosSuperAdminPrexo.get(
+                    `/getCpcBagTransfer/${user.cpc_type}`
+                )
                 if (response.status == 200) {
                     setCpc(response.data.data.data)
                 }
@@ -39,7 +43,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
             }
         }
         fetchCpc()
-    }, [])
+    }, [user])
 
     const schema = Yup.object().shape({
         delivery_type: Yup.string().required('Required*').nullable(),
@@ -187,11 +191,9 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                     helperText={errors.cpc?.message}
                     defaultValue={getValues('cpc')}
                 >
-                    {cpc.map((data) =>
-                        user.location !== data.code ? (
-                            <MenuItem value={data.code}>{data.code}</MenuItem>
-                        ) : null
-                    )}
+                    {cpc.map((data) => (
+                        <MenuItem value={data.code}>{data.code}</MenuItem>
+                    ))}
                 </TextFieldCustOm>
 
                 {deliveryType == 'Courier' ? (
@@ -227,6 +229,7 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
                             fullWidth
                             name="awbn_no"
                             {...register('awbn')}
+                            inputProps={{ maxLength: 40 }}
                             error={errors.awbn ? true : false}
                             helperText={errors.awbn?.message}
                         />

@@ -203,7 +203,11 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Checkbox
-                            disabled={checkBoxDis}
+                            disabled={
+                                checkBoxDis ||
+                                tableMeta.rowData[12]?.rdl_fls_report
+                                    ?.partRequired?.length == 0
+                            }
                             onClick={(e) => {
                                 handleClick(
                                     e,

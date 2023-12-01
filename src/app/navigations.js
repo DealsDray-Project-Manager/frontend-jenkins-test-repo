@@ -153,12 +153,22 @@ export const navigations = [
         label: 'Pages',
         type: 'label',
     },
+   
     {
         name: 'Procurement',
-        path: '/sp-mis/procurement',
-        icon: 'shopping_cart',
+        icon: 'class',
+        children: [
+            {
+                name: 'Spare Parts',
+                path: '/sp-mis/procurement',
+            },
+            {
+                name: 'Tools And Consumables',
+                path: '/sp-mis/procurement-tools-and-consumables',
+            },
+        ],
         sales: false,
-        auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
+        auth: authRoles.SPMIS,
     },
     {
         name: (
@@ -169,14 +179,41 @@ export const navigations = [
         path: '/sp-mis/tools-and-consumable/issue',
         icon: 'pan_tool',
         sales: false,
+
         auth: authRoles.SPMIS, // ONLY SUPER ADMIN(SA) CAN ACCESS
     },
     {
-        name: 'Purchase request',
-        path: '/purchase-user/purchase',
-        icon: 'shopping_cart',
+        name: 'Report',
+        icon: 'report',
+        children: [
+            {
+                name: 'Tools And Consumables',
+                path: '/sp-mis/report/tools-and-consumable',
+                iconText: 'VP',
+            },
+        ],
+        auth: authRoles.SPMIS,
         sales: false,
-        auth: authRoles.PURCHASERM, // ONLY SUPER ADMIN(SA) CAN ACCESS
+    },
+   
+    {
+        name: 'Purchase Request',
+        icon: 'reorder',
+        children: [
+            {
+                name: 'Spare Parts',
+                path: '/purchase-user/purchase',
+                iconText: 'PL',
+            },
+            {
+                name: 'Tools And Consumables',
+                path: '/purchase-user/purchase-tools-and-consumables',
+                iconText: 'PL',
+            },
+            
+        ],
+        auth: authRoles.PURCHASERM,
+        sales: false,
     },
     {
         name: 'Order Details',

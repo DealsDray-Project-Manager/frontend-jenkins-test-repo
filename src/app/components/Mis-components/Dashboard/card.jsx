@@ -191,14 +191,14 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.readyToTransfer,
-            title: 'Transfer CTX',
+            title: 'Transfer Tray',
             path: '/mis/tray-transfer',
             sales: 'all',
         },
         {
             icon: 'shopping_cart',
             amount: count.receiveCtx,
-            title: 'Receive CTX',
+            title: 'Receive Tray',
             path: '/mis/ctx/receive',
             sales: 'all',
         },

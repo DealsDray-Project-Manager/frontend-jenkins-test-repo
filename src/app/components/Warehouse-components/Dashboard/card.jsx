@@ -17,10 +17,10 @@ const StatCard3 = () => {
         const fetchData = async () => {
             let user = localStorage.getItem('prexo-authentication')
             if (user) {
-                let { location ,user_name} = jwt_decode(user)
+                let { location, user_name } = jwt_decode(user)
                 try {
                     let res = await axiosWarehouseIn.post(
-                        `dashboard/${location}/${user_name}`
+                        `/dashboard/${location}/${user_name}`
                     )
                     if (res.status === 200) {
                         setCount(res.data.data)
@@ -173,7 +173,7 @@ const StatCard3 = () => {
             path: '/wareshouse/rpt/rdl-2-request',
             sales: false,
         },
-      
+
         {
             icon: 'shopping_cart',
             amount: count.returnFromRdlTwo,
@@ -275,16 +275,37 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.ctxTransferRequest,
-            title: 'CTX Transfer Request',
+            title: 'Tray Transfer Request',
             path: '/wareshouse/tray-transfer/request',
             sales: 'all',
         },
         {
             icon: 'shopping_cart',
             amount: count.ctxReceiveRequest,
-            title: 'CTX Receive Request',
+            title: 'Tray Receive Request',
             path: '/wareshouse/ctx/receive/request',
             sales: 'all',
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.allRpaTray,
+            title: 'RPA Tray',
+            path: '/warehouse/rpa-trays',
+            sales: false,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.allRpbTray,
+            title: 'RPB Tray',
+            path: '/warehouse/rpb-trays',
+            sales: false,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.returnFromRpaOrRpb,
+            title: 'Return From Agent (RPA/RPB)',
+            path: '/warehouse/rpa-rpb-return-from-agent',
+            sales: false,
         },
         {
             icon: 'shopping_cart',

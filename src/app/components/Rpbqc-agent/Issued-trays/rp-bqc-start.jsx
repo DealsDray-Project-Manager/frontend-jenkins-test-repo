@@ -89,7 +89,7 @@ export default function DialogBox() {
             let obj = {
                 username: user.username,
                 uic: uic,
-                type:"Issued to RP-BQC"
+                type: 'Issued to RP-BQC',
             }
             const res = await axiosRpBqcAgent.post('/pedning-item', obj)
             if (res.status === 200) {
@@ -129,7 +129,9 @@ export default function DialogBox() {
     // GET RBQC TRAY
     const handelFetchRbqcTray = async (username) => {
         try {
-            const res = await axiosRpAuditAgent.post(`/issuedTrays/${username}`)
+            const res = await axiosRpAuditAgent.post(
+                `/getRpAuditTrayRpBqcSelection/${username}`
+            )
             if (res.status === 200) {
                 setTray(res.data.data)
             }

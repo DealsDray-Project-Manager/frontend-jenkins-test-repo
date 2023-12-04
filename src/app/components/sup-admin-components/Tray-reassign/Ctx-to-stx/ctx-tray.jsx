@@ -244,8 +244,8 @@ const CtxToStxPage = () => {
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 customBodyRender: (value, tableMeta) => value?.[0]?.display,
             },
         },

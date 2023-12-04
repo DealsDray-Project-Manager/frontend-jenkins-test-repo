@@ -87,7 +87,6 @@ const PartTable = () => {
             setLoading(true)
             let obj = {
                 from_date: filterData.fromDate,
-                to_date: filterData.toDate,
                 created_user: user.username,
             }
             const res = await axiosReportingAgent.post(
@@ -136,14 +135,8 @@ const PartTable = () => {
             for (let x of res.data.data) {
                 let obj = {
                     'Brand & Model': x?.brand_and_model_name,
-                    'Auditor Grade A': x?.all_data?.auditorGradeA,
-                    'Auditor Grade B': x?.all_data?.auditorGradeB,
-                    'Auditor Grade C': x?.all_data?.auditorGradeC,
-                    'Auditor Grade D': x?.all_data?.auditorGradeD,
-                    'Auditor Grade B2': x?.all_data?.auditorGradeB2,
-                    'Auditor Grade RB': x?.all_data?.auditorGradeRB,
-                    Upgrade: x?.all_data?.upgradeCount,
-                    'Issued to RDL-2': x?.all_data?.issuedToRdl2OrInprocess,
+                    'Issued to RDL-2 Stage':
+                        x?.all_data?.issuedToRdl2OrInprocess,
                     'Repair Done': x?.all_data?.repairDoneCount,
                     'Repair Done With Issue BQC Not Done/Unverified Imei':
                         x?.all_data?.repairDoneWithIssue,
@@ -154,8 +147,14 @@ const PartTable = () => {
                     'Part Not Available': x?.all_data?.partNotAvailable,
                     'RDL-2 Done Closed By Warehouse':
                         x?.all_data?.rdlTwoDoneClosedByWh,
-                    'Ready To BQC': x?.all_data?.readyToBqc,
-                    'Ready To Audit': x?.all_data?.readyToAudit,
+                    'RPBQC Passed': x?.all_data?.rpBqcPassed,
+                    'RPBQC Failed': x?.all_data?.rpBqcFailed,
+                    'RP Auditor Grade A': x?.all_data?.rpaAuditorGradeA,
+                    'RP Auditor Grade B': x?.all_data?.rpaAuditorGradeB,
+                    'RP Auditor Grade C': x?.all_data?.rpaAuditorGradeC,
+                    'RP Auditor Grade D': x?.all_data?.rpaAuditorGradeD,
+                    'RP Auditor Grade B2': x?.all_data?.rpaAuditorGradeB2,
+                    'RP Auditor Grade RB': x?.all_data?.rpaAuditorGradeRB,
                 }
 
                 arr.push(obj)
@@ -246,7 +245,7 @@ const PartTable = () => {
             name: 'from_date',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>From Date</>
+                    <>Selected Date</>
                 </Typography>
             ),
             options: {
@@ -260,24 +259,24 @@ const PartTable = () => {
                     }),
             },
         },
-        {
-            name: 'to_date',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>To Date</>
-                </Typography>
-            ),
-            options: {
-                filter: false,
-                sort: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }),
-            },
-        },
+        // {
+        //     name: 'to_date',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>To Date</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: false,
+        //         sort: true,
+        //         customBodyRender: (value) =>
+        //             new Date(value).toLocaleString('en-GB', {
+        //                 year: 'numeric',
+        //                 month: '2-digit',
+        //                 day: '2-digit',
+        //             }),
+        //     },
+        // },
         {
             name: 'status',
             label: (
@@ -327,7 +326,7 @@ const PartTable = () => {
                             startIcon={<SaveIcon />}
                             variant="contained"
                             sx={{ m: 1 }}
-                            disabled={tableMeta.rowData[5] == 'Pending'}
+                            disabled={tableMeta.rowData[4] == 'Pending'}
                         >
                             <span>Download</span>
                         </LoadingButton>
@@ -347,7 +346,7 @@ const PartTable = () => {
             <Box>
                 <TextField
                     type="date"
-                    label="From Date"
+                    label="Select Date"
                     variant="outlined"
                     inputProps={{ max: moment().format('YYYY-MM-DD') }}
                     onChange={(e) => {
@@ -355,22 +354,6 @@ const PartTable = () => {
                     }}
                     sx={{ mB: 1 }}
                     name="fromDate"
-                    InputLabelProps={{ shrink: true }}
-                />
-                <TextField
-                    type="date"
-                    label="To Date"
-                    name="toDate"
-                    inputProps={{
-                        min: filterData?.fromDate,
-                        max: moment().format('YYYY-MM-DD'),
-                    }}
-                    disabled={filterData.fromDate == ''}
-                    variant="outlined"
-                    onChange={(e) => {
-                        handleChangeSort(e)
-                    }}
-                    sx={{ mb: 1, ml: 1 }}
                     InputLabelProps={{ shrink: true }}
                 />
                 <LoadingButton
@@ -381,9 +364,7 @@ const PartTable = () => {
                     startIcon={<RequestQuoteIcon />}
                     variant="contained"
                     sx={{ m: 1 }}
-                    disabled={
-                        filterData.fromDate == '' || filterData.toDate == ''
-                    }
+                    disabled={filterData.fromDate == ''}
                 >
                     <span>Get Report</span>
                 </LoadingButton>

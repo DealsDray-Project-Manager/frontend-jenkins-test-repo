@@ -150,7 +150,15 @@ const BagTransfferReceive= Loadable(
 const RpaToStxSortingAssignment =  Loadable(
     lazy(() => import('./Sorting/Rpa-stx/rpa-stx'))
 )
+// NOT REPAIRABLE UNITS REPORT 
+const DeviceNotRepairableUnitReport = Loadable(
+    lazy(() => import('./Report/Rdl-2-device-not-repairable/rdl-2-device-not-repairable'))
+)
 const dataTableRoutes = [
+    {
+        path: '/mis/report/not-repairable',
+        element: <DeviceNotRepairableUnitReport />,
+    },
     {
         path: '/mis/rpa-to-stx',
         element: <RpaToStxSortingAssignment />,

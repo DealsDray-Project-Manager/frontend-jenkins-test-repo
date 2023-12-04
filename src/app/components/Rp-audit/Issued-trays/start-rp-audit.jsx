@@ -143,6 +143,8 @@ function StartRpAudit() {
                 status: popdata.status,
                 description: popdata.description,
                 username: user.username,
+                grade: resDataUic?.orderAndDelivery?.[0]?.bqc_software_report
+                    ?.final_grade,
             }
             const res = await axiosRpAuditAgent.post('/add-rpAudit-data', obj)
             if (res.status == 200) {
@@ -209,7 +211,16 @@ function StartRpAudit() {
                         name="status"
                         sx={{ mt: 2 }}
                     >
-                        <MenuItem value="RP-Audit Passed">
+                        <MenuItem
+                            disabled={
+                                resDataUic?.orderAndDelivery?.[0]
+                                    ?.bqc_software_report?.final_grade ==
+                                    undefined ||
+                                resDataUic?.orderAndDelivery?.[0]
+                                    .bqc_software_report?.final_grade == ''
+                            }
+                            value="RP-Audit Passed"
+                        >
                             RP-Audit Passed
                         </MenuItem>
                         <MenuItem value="RP-Audit Failed">

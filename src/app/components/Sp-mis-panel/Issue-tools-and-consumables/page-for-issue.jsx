@@ -37,7 +37,14 @@ const Container = styled('div')(({ theme }) => ({
 
 function PageForIssue() {
     // STATE SECTION
-    const [userType, setUserType] = useState(['Audit', 'RDL-1', 'RDL-2'])
+    const [userType, setUserType] = useState([
+        'Audit',
+        'BQC',
+        'RP-Audit',
+        'RP-BQC',
+        'RDL-1',
+        'RDL-2',
+    ])
     const [users, setUsers] = useState([])
     const [userPreview, setUserPreview] = useState({})
     const [tools, setTools] = useState([])
@@ -76,13 +83,12 @@ function PageForIssue() {
 
     const handelTheData = (data, isSelection) => {
         if (isSelection && data) {
-           
-            let obj={
-                name:data.name,
-                avl_stock:data.avl_stock,
-                part_code:data.part_code,
-                sp_category:data.sp_category,
-                selected_quantity:1
+            let obj = {
+                name: data.name,
+                avl_stock: data.avl_stock,
+                part_code: data.part_code,
+                sp_category: data.sp_category,
+                selected_quantity: 1,
             }
             // Check for duplicates before adding to the state
             if (
@@ -90,10 +96,7 @@ function PageForIssue() {
                     (item) => item.part_code === data.part_code
                 )
             ) {
-                setselectedToolsAndConsumables((prevData) => [
-                    ...prevData,
-                    obj,
-                ])
+                setselectedToolsAndConsumables((prevData) => [...prevData, obj])
             }
         }
     }

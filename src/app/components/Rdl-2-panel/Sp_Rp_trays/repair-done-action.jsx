@@ -222,7 +222,9 @@ const SimpleMuiTable = () => {
     // GET RBQC TRAY
     const handelFetchRbqcTray = async (username) => {
         try {
-            const res = await axiosRpBqcAgent.post(`/issued-trays/${username}`)
+            const res = await axiosRpBqcAgent.post(
+                `/getRpbqcTrayRdlTwoSelection/${username}`
+            )
             if (res.status === 200) {
                 setRbqcTrays(res.data.data)
             }

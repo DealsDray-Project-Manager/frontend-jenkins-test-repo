@@ -41,8 +41,15 @@ const StatCard3 = () => {
         {
             icon: 'art_track',
             amount: count?.precourmentCount,
-            title: 'Procurement',
+            title: 'Spare Part Procurement',
             path: '/sp-mis/procurement',
+            sales: false,
+        },
+        {
+            icon: 'art_track',
+            amount: count?.toolsAndConsumableProcurement,
+            title: 'Tools And Consumables Procurement',
+            path: '/sp-mis/procurement-tools-and-consumables',
             sales: false,
         },
     ]

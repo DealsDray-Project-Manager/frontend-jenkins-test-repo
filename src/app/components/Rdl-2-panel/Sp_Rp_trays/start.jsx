@@ -9,7 +9,6 @@ import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
 import useAuth from 'app/hooks/useAuth'
 
-
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
     marginBottom: '16px',
@@ -89,7 +88,7 @@ const SimpleMuiTable = () => {
                             username: username,
                             uic: uicCode,
                             whtTrayId: trayId,
-                            spTray:trayData?.sp_tray
+                            spTray: trayData?.sp_tray,
                         },
                     })
                 } else {
@@ -183,10 +182,22 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'rdl_repair_report',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value, dataIndex) => value?.description,
+            },
+        },
+        {
+            name: 'rpbqc_info',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>RPB Tray</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.rbqc_tray,
             },
         },
     ]
@@ -310,7 +321,10 @@ const SimpleMuiTable = () => {
                                 m: 1,
                             }}
                             variant="contained"
-                            disabled={trayData?.items?.length !== 0}
+                            disabled={
+                                trayData?.items?.length !== 0 ||
+                                trayData?.temp_array?.length != 0
+                            }
                             onClick={(e) => {
                                 handelSummary()
                             }}

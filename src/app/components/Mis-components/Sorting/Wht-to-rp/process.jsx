@@ -303,6 +303,7 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                sort: true,         
                 customBodyRender: (value, dataIndex) =>
                     value?.audit_report?.stage || '',
             },
@@ -617,13 +618,18 @@ const SimpleMuiTable = () => {
                                 })
 
                                 function getValueByProperty(data, property) {
-                                    const properties = property.split('.')
-                                    return (
-                                        properties.reduce(
-                                            (obj, key) => obj[key],
-                                            data
-                                        ) || ''
-                                    )
+                                    const properties = property?.split('.');
+                                    let result = data;
+                                
+                                    try {
+                                        for (const prop of properties) {
+                                            result = result[prop];
+                                        }
+                                    } catch (error) {
+                                        return null;
+                                    }
+                                
+                                    return result === undefined ? null : result;
                                 }
                             },
                             // elevation: 0,

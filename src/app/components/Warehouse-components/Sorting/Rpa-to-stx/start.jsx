@@ -304,10 +304,11 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'finel_grade',
+            name: 'rp_audit_status',
             label: <Typography sx={{ fontWeight: 'bold' }}>Grade</Typography>,
             options: {
                 filter: true,
+                customBodyRender: (value, dataIndex) => value?.grade || '',
             },
         },
         {

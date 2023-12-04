@@ -5,7 +5,7 @@ const Mobiledetails = ({ ProdutDetails }) => {
     return (
         <Card
             sx={{
-                // width: '920px', 
+                // width: '920px',
                 marginTop: '40px',
                 border: '1px solid black',
             }}

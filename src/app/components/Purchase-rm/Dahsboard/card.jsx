@@ -41,8 +41,14 @@ const StatCard3 = () => {
         {
             icon: 'branding_watermark',
             amount: count.purchaseCount,
-            title: 'Purchase request',
+            title: 'Spare parts Purchase requests',
             path: '/purchase-user/purchase',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count.purchaseCountOfToolsAndConsumables,
+            title: 'Tools And Consumables Purchase requests',
+            path: '/purchase-user/purchase-tools-and-consumables',
         },
         {
             icon: 'branding_watermark',

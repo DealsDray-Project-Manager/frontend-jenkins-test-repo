@@ -839,6 +839,11 @@ export const navigations = [
                 path: '/warehouse/rpt/report/upgrade-units',
                 iconText: 'VP',
             },
+            {
+                name: 'Not Repairable Units',
+                path: '/mis/report/not-repairable',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Mis,
         sales: false,

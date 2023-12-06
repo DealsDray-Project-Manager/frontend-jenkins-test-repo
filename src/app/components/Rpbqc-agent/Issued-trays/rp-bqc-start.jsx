@@ -129,7 +129,7 @@ export default function DialogBox() {
     // GET RBQC TRAY
     const handelFetchRbqcTray = async (username) => {
         try {
-            const res = await axiosRpAuditAgent.post(
+            const res = await axiosRpBqcAgent.post(
                 `/getRpAuditTrayRpBqcSelection/${username}`
             )
             if (res.status === 200) {

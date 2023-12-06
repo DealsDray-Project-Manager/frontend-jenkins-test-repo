@@ -2,23 +2,11 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
-import {
-    Button,
-    Box,
-    IconButton,
-    Icon,
-    Typography,
-    Table,
-    TableContainer,
-} from '@mui/material'
+import { Typography, Table } from '@mui/material'
 import '../../../../../app.css'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../../axios'
-import { useNavigate } from 'react-router-dom'
-import * as FileSaver from 'file-saver'
-import * as XLSX from 'xlsx'
-import SaveIcon from '@mui/icons-material/Save'
-import LoadingButton from '@mui/lab/LoadingButton'
+import { useParams } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -37,14 +25,15 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [upgradeReport, setUpgradeReport] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
+    const { itemId } = useParams()
 
     useEffect(() => {
         const fetchRacks = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post('/upgrade-report')
+                const res = await axiosSuperAdminPrexo.post(
+                    `/upgradeReportViewUic/${itemId}`
+                )
                 if (res.status === 200) {
                     setIsLoading(false)
                     setUpgradeReport(res.data.data)
@@ -65,45 +54,6 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-    const handelViewItem = (id) => {
-        navigate(`/sup-admin/report/upgrade/view/${id}`)
-    }
-
-    const download = async (e) => {
-        let arr = []
-        setLoading(true)
-        for (let x of upgradeReport) {
-            let obj = {
-                Brand: x?.old_item_details?.split(':')?.[0]?.toUpperCase(),
-                Model: x?.old_item_details?.split(':')?.[1]?.toUpperCase(),
-                A: x?.A,
-                B: x?.B,
-                B2: x?.B2,
-                C: x?.C,
-                RB: x?.RB,
-                D: x?.D,
-                'Grand Total': x?.total,
-            }
-
-            arr.push(obj)
-        }
-
-        const fileExtension = '.xlsx'
-        const fileType =
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-        const ws = XLSX.utils.json_to_sheet(arr)
-
-        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
-        const excelBuffer = XLSX.write(wb, {
-            bookType: 'xlsx',
-            type: 'array',
-        })
-
-        const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Upgrade-report' + fileExtension)
-        setLoading(false)
-    }
-
     const columns = [
         {
             name: 'index',
@@ -121,6 +71,18 @@ const SimpleMuiTable = () => {
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
+            },
+        },
+        {
+            name: 'uic_code',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>UIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.code,
             },
         },
         {
@@ -150,105 +112,90 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'A',
+            name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>A</>
+                    <>Original Grade</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) => value?.orgGrade || '',
             },
         },
         {
-            name: 'B',
+            name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>B</>
+                    <>Auditor Recommend Grade</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) => value?.grade || '',
             },
         },
         {
-            name: 'B2',
+            name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>B2</>
+                    <>Auditor Selected Stage</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) => value?.stage || '',
             },
         },
         {
-            name: 'C',
+            name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>C</>
+                    <>Auditor Reason</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) => value?.reason || '',
             },
         },
         {
-            name: 'RB',
+            name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RB</>
+                    <>Auditor Remark</>
                 </Typography>
             ),
             options: {
                 filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.description || '',
             },
         },
         {
-            name: 'D',
+            name: 'audit_done_date',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>D</>
+                    <>Audit Done Date</>
                 </Typography>
             ),
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'total',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Grand Total</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: '_id',
-            label: <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>Action</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                onClick={() => handelViewItem(value)}
-                                style={{ backgroundColor: 'green' }}
-                                component="span"
-                            >
-                                View
-                            </Button>
-                        </>
-                    )
-                },
+                sort: true, // enable sorting for Brand column
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
     ]
@@ -257,28 +204,16 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Upgrade Report', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Upgrade Report', path: '/' },
+                        { name: 'View Units' },
+                    ]}
                 />
             </div>
-            <Box sx={{ float: 'right' }}>
-                <LoadingButton
-                    sx={{ mb: 2 }}
-                    variant="contained"
-                    color="secondary"
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    onClick={(e) => {
-                        download(e)
-                    }}
-                >
-                    <span>Download</span>
-                </LoadingButton>
-            </Box>
 
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Reports'}
+                    title={'Units'}
                     data={upgradeReport}
                     columns={columns}
                     options={{
@@ -301,8 +236,16 @@ const SimpleMuiTable = () => {
                         // pagination: true, //set pagination option
                         // viewColumns: false, // set column option
                         customSort: (data, colIndex, order) => {
-                            const columnProperties = {}
+                            const columnProperties = {
+                                1: 'code',
+                                4: 'orgGrade',
+                                5: 'grade',
+                                6: 'stage',
+                                7: 'reason',
+                                8: 'description',
 
+                                // add more columns and properties here
+                            }
                             const property = columnProperties[colIndex]
 
                             if (property) {
@@ -315,7 +258,6 @@ const SimpleMuiTable = () => {
                                         b.data[colIndex],
                                         property
                                     )
-
                                     if (
                                         typeof aPropertyValue === 'string' &&
                                         typeof bPropertyValue === 'string'
@@ -327,7 +269,6 @@ const SimpleMuiTable = () => {
                                             )
                                         )
                                     }
-
                                     return (
                                         (parseFloat(aPropertyValue) -
                                             parseFloat(bPropertyValue)) *
@@ -339,19 +280,15 @@ const SimpleMuiTable = () => {
                             return data.sort((a, b) => {
                                 const aValue = a.data[colIndex]
                                 const bValue = b.data[colIndex]
-
                                 if (aValue === bValue) {
                                     return 0
                                 }
-
                                 if (aValue === null || aValue === undefined) {
                                     return 1
                                 }
-
                                 if (bValue === null || bValue === undefined) {
                                     return -1
                                 }
-
                                 if (
                                     typeof aValue === 'string' &&
                                     typeof bValue === 'string'
@@ -361,7 +298,6 @@ const SimpleMuiTable = () => {
                                         aValue.localeCompare(bValue)
                                     )
                                 }
-
                                 return (
                                     (parseFloat(aValue) - parseFloat(bValue)) *
                                     (order === 'desc' ? -1 : 1)
@@ -370,12 +306,12 @@ const SimpleMuiTable = () => {
 
                             function getValueByProperty(data, property) {
                                 const properties = property.split('.')
-                                let value = properties.reduce(
-                                    (obj, key) => obj?.[key],
-                                    data
+                                return (
+                                    properties.reduce(
+                                        (obj, key) => obj[key],
+                                        data
+                                    ) || ''
                                 )
-
-                                return value !== undefined ? value : ''
                             }
                         },
                         elevation: 0,

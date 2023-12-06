@@ -58,26 +58,49 @@ const AuthGuard = ({ children }) => {
                         )
                         if (res.status === 200) {
                         } else if (res.status == 202) {
-                            console.log(res.data)
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: res.data.message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (
-                                    result.isConfirmed &&
-                                    res.data.status == '1'
-                                ) {
-                                    localStorage.removeItem(
-                                        'prexo-authentication'
-                                    )
-                                    navigate('/')
-                                } else {
-                                    navigate('/change-password')
-                                }
-                            })
+                            console.log(res.data.message)
+                            if (res.data.status == '1') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: res.data.message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                }).then((result) => {
+                                    if (
+                                        result.isConfirmed &&
+                                        res.data.status == '1'
+                                    ) {
+                                        localStorage.removeItem(
+                                            'prexo-authentication'
+                                        )
+                                        navigate('/')
+                                    } else {
+                                        navigate('/change-password')
+                                    }
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: res.data.message1,
+                                    text: res.data.message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    confirmButtonText: 'Create new password',
+                                }).then((result) => {
+                                    if (
+                                        result.isConfirmed &&
+                                        res.data.status == '1'
+                                    ) {
+                                        localStorage.removeItem(
+                                            'prexo-authentication'
+                                        )
+                                        navigate('/')
+                                    } else {
+                                        navigate('/change-password')
+                                    }
+                                })
+                            }
                         }
                     }
                 } else {

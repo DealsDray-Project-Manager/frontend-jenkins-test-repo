@@ -4,7 +4,16 @@ import MemberEditorDialog from './new-users'
 import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import { styled } from '@mui/system'
-import { Button, IconButton, Icon,Typography,TableContainer,Radio,Box,Table } from '@mui/material'
+import {
+    Button,
+    IconButton,
+    Icon,
+    Typography,
+    TableContainer,
+    Radio,
+    Box,
+    Table,
+} from '@mui/material'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
@@ -22,9 +31,7 @@ const Container = styled('div')(({ theme }) => ({
             marginBottom: '16px',
         },
     },
-})) 
-
-
+}))
 
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
@@ -90,7 +97,7 @@ const SimpleMuiTable = () => {
         e.preventDefault()
         navigate('/sup-admin/user-history/' + username)
     }
-    
+
     const handelDeactive = (userId) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -157,47 +164,70 @@ const SimpleMuiTable = () => {
                     })
                 }
             }
-        }) 
+        })
     }
 
-    
     const columns = [
         {
             name: 'index',
-            label: <Typography marginBottom='15px'  className='table-class' variant="subtitle1" fontWeight='bold'  ><>Record No</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    className="table-class"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Record No</>
+                </Typography>
+            ),
             options: {
-                
                 filter: false,
-                
+
                 sort: false,
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '38%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography  sx={{pl:3}}>{dataIndex.rowIndex + 1}</Typography>,
-                
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 3 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
-            
         },
         {
             name: 'profile',
-            label: <Typography  className='table-class'  variant="subtitle1" fontWeight='bold' ><>Profile</></Typography>,
+            label: (
+                <Typography
+                    className="table-class"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Profile</>
+                </Typography>
+            ),
             options: {
-                
                 filter: false,
                 sort: false,
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 customBodyRender: (value) => {
-                    return <Avatar variant="rounded"  src={value} />
+                    return <Avatar variant="rounded" src={value} />
                 },
             },
-             
         },
         {
             name: 'creation_date',
-            label: <Typography marginBottom='15px'  className='table-class'  variant="subtitle1" fontWeight='bold'><>Creation Date</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    className="table-class"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Creation Date</>
+                </Typography>
+            ),
             options: {
                 filter: true,
                 // customHeadRender: (columnMeta) => (
@@ -208,77 +238,153 @@ const SimpleMuiTable = () => {
                         hour12: true,
                     }),
             },
-             
+        },
+        {
+            name: 'last_password_changed',
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    className="table-class"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Last Password Change Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                // customHeadRender: (columnMeta) => (
+                //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
+                //   ),
+                customBodyRender: (value) =>
+                    value !== undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : null,
+            },
         },
         {
             name: 'name', // field name in the row object
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Name</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ mr: 2 }}
+                >
+                    <>Name</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'email',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' sx={{mr:2}}><>Email</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ mr: 2 }}
+                >
+                    <>Email</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'contact',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' ><>Mobile No</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Mobile No</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '33%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'user_name',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'><>User Name</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>User Name</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'user_type',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'><>User Type</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>User Type</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'cpc',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'><>CPC</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>CPC</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '25%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-             
         },
         {
             name: 'cpc_type',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'>CPC Type</Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    CPC Type
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '36%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
@@ -288,41 +394,70 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'warehouse',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'>Warehouse</Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    Warehouse
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '40%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-            
         },
         {
             name: 'device_name',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold' ><>Device Name</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Device Name</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '45%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-            
         },
         {
             name: 'device_id',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'><>Device ID</></Typography>,
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Device ID</>
+                </Typography>
+            ),
             options: {
                 // customHeadRender: (columnMeta) => (
                 //     <th style={{ width: '30%', borderBottom: '1px solid #ddd' }}>{columnMeta.label}</th>
                 //   ),
                 filter: true,
             },
-            
         },
         {
             name: 'status',
-            label: <Typography marginBottom='15px'  variant="subtitle1" fontWeight='bold'><>Status</></Typography>,
-             
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Status</>
+                </Typography>
+            ),
+
             options: {
                 filter: true,
                 // customHeadRender: (columnMeta) => (
@@ -347,8 +482,17 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'status',
-            label: <Typography marginBottom='15px' noWrap variant="subtitle1" fontWeight='bold'><>Actions</></Typography>,
-             
+            label: (
+                <Typography
+                    marginBottom="15px"
+                    noWrap
+                    variant="subtitle1"
+                    fontWeight="bold"
+                >
+                    <>Actions</>
+                </Typography>
+            ),
+
             options: {
                 sort: false,
                 filter: false,
@@ -405,15 +549,12 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-    
     ]
 
     return (
         <Container>
-            <div className="breadcrumb"> 
-                <Breadcrumb
-                    routeSegments={[{ name: 'Users', path: '/' }]}
-                />
+            <div className="breadcrumb">
+                <Breadcrumb routeSegments={[{ name: 'Users', path: '/' }]} />
             </div>
             <Button
                 sx={{ mb: 2 }}
@@ -423,42 +564,39 @@ const SimpleMuiTable = () => {
             >
                 Add New User
             </Button>
-          
-                <Table className="custom-table">
-               
 
+            <Table className="custom-table">
                 <MUIDataTable
-                title={'All Users'}
-                data={userList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+                    title={'All Users'}
+                    data={userList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 15, 40, 80, 100],
-                    sort:true,
-                }}
-            />
-            {/* </div> */}
-                </Table>
-            
-            
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 15, 40, 80, 100],
+                        sort: true,
+                    }}
+                />
+                {/* </div> */}
+            </Table>
+
             {shouldOpenEditorDialog && (
                 <MemberEditorDialog
                     handleClose={handleDialogClose}

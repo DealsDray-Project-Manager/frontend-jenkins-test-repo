@@ -96,8 +96,12 @@ const SimpleMuiTable = () => {
                         obj
                     )
                     if (res.status == 200) {
+                        let obj={
+                            masterId:masterId,
+                            reason:""
+                        }
                         let response = await axiosSuperAdminPrexo.post(
-                            '/deleteMaster/' + masterId
+                            '/deleteMaster',obj 
                         )
                         if (response.status == 200) {
                             Swal.fire({

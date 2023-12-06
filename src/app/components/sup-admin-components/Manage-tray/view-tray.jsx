@@ -11,11 +11,13 @@ import {
     Typography,
     Table,
     TableContainer,
+    Tooltip,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import EditRoadIcon from '@mui/icons-material/EditRoad'
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete'
 import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
@@ -73,8 +75,8 @@ const SimpleMuiTable = () => {
         setShouldOpenEditorDialog(true)
     }
 
-    const handelDelete = (masterId) => {
-        Swal.fire({
+    const handelDelete = async (masterId) => {
+        const { value: reason } = await Swal.fire({
             title: 'Are you sure?',
             text: 'You Want to Delete!',
             icon: 'warning',
@@ -82,57 +84,66 @@ const SimpleMuiTable = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Delete it!',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    let obj = {
-                        masterId: masterId,
-                    }
-                    let res = await axiosSuperAdminPrexo.post(
-                        '/getOneMaster',
-                        obj
-                    )
-                    if (res.status == 200) {
-                        let response = await axiosSuperAdminPrexo.post(
-                            '/deleteMaster/' + masterId
-                        )
-                        if (response.status == 200) {
-                            Swal.fire({
-                                position: 'top-center',
-                                icon: 'success',
-                                title: 'Your Tray has been Deleted',
-                                confirmButtonText: 'Ok',
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    setIsAlive((isAlive) => !isAlive)
-                                }
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: response?.data?.message,
-                            })
-                        }
+            input: 'text', // Specify the input type as text
+            inputPlaceholder: 'Enter your reason here', // Placeholder text for the textbox
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to enter a reason!';
+                }
+            },
+        });
+    
+        if (reason) {
+            try {
+                let obj = {
+                    masterId: masterId,
+                    reason: reason, // Include the reason in the request payload
+                };
+    
+                // Perform API request to get details before deletion (if needed)
+                let res = await axiosSuperAdminPrexo.post('/getOneMaster', obj);
+    
+                if (res.status === 200) {
+                    // Perform the actual deletion
+                    let response = await axiosSuperAdminPrexo.post('/deleteMaster', obj);
+    
+                    if (response.status === 200) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Your Tray has been Deleted',
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                setIsAlive((isAlive) => !isAlive);
+                            }
+                        });
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: "You Can't Delete This Tray",
-                        })
+                            text: response?.data?.message,
+                        });
                     }
-                } catch (error) {
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: error,
-                    })
+                        text: "You Can't Delete This Tray",
+                    });
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                });
             }
-        })
-    }
+        }
+    };
+    
 
     const editTray = async (masterId) => {
         try {
@@ -165,6 +176,9 @@ const SimpleMuiTable = () => {
 
     const handelEditHistory = (trayId) => {
         navigate('/sup-admin/tray/edit-history/' + trayId)
+    }
+    const handelDeletedHistory = (trayId) => {
+        navigate('/sup-admin/tray/deleted-history/' + trayId)
     }
 
     const columns = [
@@ -351,46 +365,60 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <Box>
-                            <IconButton>
-                                <Icon
+                            <Tooltip title="Edit">
+                                <IconButton
                                     onClick={(e) => {
                                         editTray(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
-                                    edit
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
+                                    <Icon>edit</Icon>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                                <IconButton
                                     onClick={() => {
                                         handelDelete(tableMeta.rowData[1])
                                     }}
                                     color="error"
                                 >
-                                    delete
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <Icon
+                                    <Icon>delete</Icon>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Audit">
+                                <IconButton
                                     onClick={() => {
                                         handelAudit(tableMeta.rowData[1])
                                     }}
                                     color="primary"
                                 >
-                                    history
-                                </Icon>
-                            </IconButton>
-                            <IconButton>
-                                <EditRoadIcon
+                                    <Icon>history</Icon>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit History">
+                                <IconButton
                                     onClick={() => {
                                         handelEditHistory(tableMeta.rowData[1])
                                     }}
                                     color="green"
                                 >
-                                    button
-                                </EditRoadIcon>
-                            </IconButton>
+                                    <EditRoadIcon>button</EditRoadIcon>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Deleted History">
+                                <IconButton
+                                    onClick={() => {
+                                        handelDeletedHistory(
+                                            tableMeta.rowData[1]
+                                        )
+                                    }}
+                                    color="green"
+                                >
+                                    <AutoDeleteIcon>
+                                        deleted history
+                                    </AutoDeleteIcon>
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                     )
                 },

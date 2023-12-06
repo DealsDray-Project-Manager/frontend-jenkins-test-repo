@@ -150,7 +150,7 @@ const SimpleMuiTable = () => {
                 trayId: trayId,
                 rackId: rackId,
             }
-            const res = await axiosRmUserAgent.post('spTrayClose', obj)
+            const res = await axiosRmUserAgent.post('/spTrayClose', obj)
             if (res.status == 200) {
                 Swal.fire({
                     position: 'top-center',

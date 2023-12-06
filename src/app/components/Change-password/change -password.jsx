@@ -1,4 +1,11 @@
-import { Card, Grid, Button, CircularProgress, IconButton } from '@mui/material'
+import {
+    Card,
+    Grid,
+    Button,
+    CircularProgress,
+    IconButton,
+    Typography,
+} from '@mui/material'
 import { Box, styled, useTheme } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
@@ -34,7 +41,10 @@ const IMG = styled('img')(() => ({
 const RegisterRoot = styled(JustifyBox)(({ theme }) => ({
     background: '#1A2038',
     minHeight: '100vh !important',
-    '& .card': {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > .card': {
         maxWidth: 650,
         borderRadius: 12,
         margin: '1rem',
@@ -64,6 +74,7 @@ const Login = () => {
     const [state, setState] = useState({})
     const [message, setMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const { logout, user } = useAuth()
 
     const handleChange = ({ target: { name, value } }) => {
         setState({
@@ -71,8 +82,11 @@ const Login = () => {
             [name]: value,
         })
     }
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+        return value === new_password
+    })
 
-    let { old_password, new_password } = state
+    let { old_password, new_password, confirm_password } = state
     const { palette } = useTheme()
     const textError = palette.error.main
     // PASSWORD SHOW AND HIDE
@@ -160,6 +174,15 @@ const Login = () => {
 
     return (
         <RegisterRoot>
+            <Box variant="h5" sx={{ textAlign: 'center' }} gutterBottom>
+                <Typography
+                    variant="h5"
+                    sx={{ textAlign: 'center', color: 'white' }}
+                    gutterBottom
+                >
+                    Create New Password
+                </Typography>
+            </Box>
             <Card className="card">
                 <Grid container>
                     <Grid item lg={5} md={5} sm={5} xs={12}>
@@ -179,11 +202,11 @@ const Login = () => {
                                     size="large"
                                     label="Old Password"
                                     onChange={handleChange}
-                                    type="text"
+                                    type="password"
                                     name="old_password"
                                     value={old_password || ''}
                                     validators={['required']}
-                                    errorMessages={['this field is required']}
+                                    errorMessages={['This field is required']}
                                 />
                                 <TextValidator
                                     sx={{ mb: '16px', width: '100%' }}
@@ -195,29 +218,23 @@ const Login = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     value={new_password || ''}
                                     validators={['required']}
-                                    errorMessages={['this field is required']}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={
-                                                        handleClickShowPassword
-                                                    }
-                                                    onMouseDown={
-                                                        handleMouseDownPassword
-                                                    }
-                                                    edge="end"
-                                                >
-                                                    {showPassword ? (
-                                                        <VisibilityOff />
-                                                    ) : (
-                                                        <Visibility />
-                                                    )}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                    errorMessages={['This field is required']}
+                                />
+
+                                <TextValidator
+                                    sx={{ mb: '16px', width: '100%' }}
+                                    label="Confirm Password"
+                                    variant="outlined"
+                                    size="large"
+                                    onChange={handleChange}
+                                    name="confirm_password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={confirm_password || ''}
+                                    validators={['isPasswordMatch', 'required']}
+                                    errorMessages={[
+                                        'password mismatch',
+                                        'This field is required',
+                                    ]}
                                 />
 
                                 {message && (
@@ -225,6 +242,7 @@ const Login = () => {
                                         {message}
                                     </Paragraph>
                                 )}
+
                                 <FlexBox display="flex" alignItems="center">
                                     <Box position="relative">
                                         <Button
@@ -242,7 +260,20 @@ const Login = () => {
                                             />
                                         )}
                                     </Box>
+                                    <Button
+                                        sx={{ ml: 1 }}
+                                        variant="outlined"
+                                        color="inherit"
+                                        onClick={logout}
+                                    >
+                                        Logout
+                                    </Button>
                                 </FlexBox>
+                                {/* <Grid item xs={12}>
+                                    <FlexBox justifyContent="flex-end" mt={2}>
+                                       
+                                    </FlexBox>
+                                </Grid> */}
                             </ValidatorForm>
                         </Box>
                     </Grid>

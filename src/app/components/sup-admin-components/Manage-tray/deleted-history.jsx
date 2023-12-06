@@ -11,7 +11,7 @@ import {
     Table,
     TableContainer,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import EditRoadIcon from '@mui/icons-material/EditRoad'
@@ -33,6 +33,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayList, setTrayList] = useState([])
+    const { trayId } = useParams()
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const SimpleMuiTable = () => {
                 setIsLoading(true)
 
                 const res = await axiosSuperAdminPrexo.post(
-                    `/getDeletedMaster/${'tray-master'}`
+                    `/getTrayDeletionHistory/${trayId}`
                 )
                 if (res.status === 200) {
                     setIsLoading(false)
@@ -73,7 +74,7 @@ const SimpleMuiTable = () => {
             if (result.isConfirmed) {
                 try {
                     let response = await axiosSuperAdminPrexo.post(
-                        `/restoreDeletedMaster/${id}`
+                        `restoreDeletedMaster/${id}`
                     )
                     if (response.status == 200) {
                         Swal.fire({
@@ -253,22 +254,6 @@ const SimpleMuiTable = () => {
         },
 
         {
-            name: 'created_at',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Created Date</>
-                </Typography>
-            ),
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'createdAt',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -284,37 +269,13 @@ const SimpleMuiTable = () => {
                     }),
             },
         },
-        {
-            name: 'code',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Actions</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Box>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={(e) => handelRestore(value)}
-                            >
-                                Restore
-                            </Button>
-                        </Box>
-                    )
-                },
-            },
-        },
     ]
 
     const trayData = useMemo(() => {
         return (
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Manage Deleted Trays'}
+                    title={'Histories'}
                     data={trayList}
                     columns={columns}
                     options={{
@@ -348,7 +309,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Deleted Trays', path: '/' }]}
+                    routeSegments={[{ name: 'Deleted History', path: '/' }]}
                 />
             </div>
 

@@ -400,6 +400,7 @@ const SimpleMuiTable = () => {
                     value?.description || '',
             },
         },
+
         {
             name: 'rdl_fls_one_report',
             label: (
@@ -518,6 +519,23 @@ const SimpleMuiTable = () => {
 
                     return ''
                 },
+            },
+        },
+        {
+            name: 'rdl_two_closed_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RDL 2 Done Date</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) =>
+                    value !== undefined
+                        ? new Date(value).toLocaleString('en-GB', {
+                              hour12: true,
+                          })
+                        : '',
             },
         },
     ]

@@ -1690,7 +1690,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Audit Recommend Grade</>
+                    <>Auditor Recommend Grade</>
                 </Typography>
             ),
             options: {
@@ -1705,7 +1705,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Stage</>
+                    <>Auditor Selected Stage</>
                 </Typography>
             ),
             options: {
@@ -1720,7 +1720,7 @@ const PickupPage = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Reason</>
+                    <>Auditor Reason</>
                 </Typography>
             ),
             options: {

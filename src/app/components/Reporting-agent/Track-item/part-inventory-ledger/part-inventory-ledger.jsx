@@ -129,9 +129,7 @@ const PartTable = () => {
                 sort: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
+                        hour12: true,
                     }),
             },
         },
@@ -157,7 +155,6 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: true,
-               
             },
         },
         {
@@ -182,7 +179,6 @@ const PartTable = () => {
             options: {
                 filter: false,
                 sort: true,
-               
             },
         },
     ]
@@ -238,6 +234,9 @@ const PartTable = () => {
                                 </p>
                                 <p>
                                     Color: <b>{result?.color}</b>{' '}
+                                </p>
+                                <p>
+                                    Box Id: <b>{result?.box_id}</b>{' '}
                                 </p>
                                 <p>
                                     Available Stock: <b>{result?.avl_stock}</b>

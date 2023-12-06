@@ -168,8 +168,25 @@ const UpgradeReport=Loadable(
     lazy(() => import('./Report/Upgrade-report/upgrade-report'))
 )
 const ViewAllBuyer = Loadable(lazy(() => import('./Manage-buyer/view-buyer')))
-
+// VIEW TRAY BASED ON THE RACK 
+const ViewTrayBasedOnTheRack=Loadable(lazy(() => import('./Report/Rack-report/view-tray')))
+// TRAY DELETION HISTORY 
+const GetTrayDeletionHistor=Loadable(lazy(() => import('./Manage-tray/deleted-history')))
+// VIEW UPGRADE REPORT WISE UIC
+const ViewUpgradeReportWiseData=Loadable(lazy(() => import('./Report/Upgrade-report/view-uic')))
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/report/upgrade/view/:itemId',
+        element: <ViewUpgradeReportWiseData />,
+    },
+    {
+        path: '/sup-admin/tray/deleted-history/:trayId',
+        element: <GetTrayDeletionHistor />,
+    },
+    {
+        path: '/sup-admin/report/rack/view-tray/:rackId',
+        element: <ViewTrayBasedOnTheRack />,
+    },
     {
         path: '/sup-admin/report/upgrade',
         element: <UpgradeReport />,

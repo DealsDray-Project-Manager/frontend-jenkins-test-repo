@@ -2,12 +2,12 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { axiosSuperAdminPrexo, axiosWarehouseIn } from '../../../../../axios'
 import { Button, Typography, Table } from '@mui/material'
-import { axiosRpBqcAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
-import '../../../../app.css'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,30 +21,28 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
-    const [trayData, setTray] = useState([])
+    const [whtTray, setWhtTray] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const { rackId } = useParams()
     const navigate = useNavigate()
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { user_name } = jwt_decode(admin)
-                    let response = await axiosRpBqcAgent.post(
-                        `/issued-trays/${user_name}`
-                    )
-                    if (response.status === 200) {
-                        setTray(response.data.data)
-                    }
-                } else {
-                    navigate('/')
+                setIsLoading(true)
+                let response = await axiosSuperAdminPrexo.post(
+                    `/viewTrayBasedOnRack/${rackId}`
+                )
+                if (response.status === 200) {
+                    setIsLoading(false)
+                    setWhtTray(response.data.data)
                 }
             } catch (error) {
+                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
+                    confirmButtonText: 'Ok',
                     text: error,
                 })
             }
@@ -52,26 +50,26 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelStart = (e, code, model) => {
-        e.preventDefault()
-        navigate(`/rp-bqc/pending-items/start-rp-bqc/${model}/${code}`)
+    const handelViewItem = (id) => {
+        navigate('/wareshouse/wht/tray/item/' + id)
+    }
+    // CHANGE RACK
+    const handelChangeRack = async (id) => {
+        navigate('/warehouse/tray/rack-change/' + id)
     }
 
     const columns = [
         {
             name: 'index',
             label: (
-                <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ ml: 2 }}
-                >
-                    <>Record No</>
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
                 </Typography>
             ),
             options: {
                 filter: false,
                 sort: false,
+                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
                     <Typography sx={{ pl: 4 }}>
                         {dataIndex.rowIndex + 1}
@@ -80,107 +78,80 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'uic',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>UIC</>
-                </Typography>
-            ),
+            name: 'code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'brand_name',
+            name: 'actual_items',
+            label: 'acutual_items',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: true,
+                display: false,
+            },
+        },
+        {
+            name: 'items_length',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    return (
+                        (value == 0 ? tableMeta.rowData[2] : value) +
+                        '/' +
+                        tableMeta.rowData[3]
+                    )
+                },
+            },
+        },
+
+        {
+            name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'model_name',
+            name: 'model',
             label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
+
         {
-            name: 'rdl_repair_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL-2 Status</>
-                </Typography>
-            ),
+            name: 'sort_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.status || '',
             },
         },
         {
-            name: 'rdl_repair_report',
+            name: 'created_at',
             label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL-2 Description</>
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Creation Date
                 </Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.description || '',
-            },
-        },
-        {
-            name: 'rdl_repair_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL-2 Tray</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.rdl_two_tray || '',
-            },
-        },
-        {
-            name: 'rdl_repair_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL-2 User</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.rdl_two_user || '',
-            },
-        },
-        {
-            name: 'uic',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) =>
-                                handelStart(e, value, tableMeta.rowData[3])
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Start
-                        </Button>
-                    )
-                },
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
             },
         },
     ]
@@ -189,19 +160,29 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Pending Items', path: '/' }]}
+                    routeSegments={[
+                        { name: 'Rack Report', path: '/' },
+                        { name: 'Tray' },
+                    ]}
                 />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
                     title={'Tray'}
-                    data={trayData?.[0]?.temp_array}
+                    data={whtTray}
                     columns={columns}
                     options={{
                         filterType: 'textField',
                         responsive: 'simple',
                         download: false,
                         print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
+                        },
                         selectableRows: 'none', // set checkbox for each row
                         // search: false, // set search option
                         // filter: false, // set data filter option

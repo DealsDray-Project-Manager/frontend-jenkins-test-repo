@@ -113,6 +113,34 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
 
+    const PriorityRenderer = ({ value }) => {
+        const [itemsToShow, setItemsToShow] = useState(1)
+
+        const handleViewMore = () => {
+            setItemsToShow(itemsToShow + 5)
+        }
+
+        return (
+            <div>
+                {value?.slice(0, itemsToShow)?.map((number, index) => (
+                    <Typography
+                        key={index}
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        style={{ color: 'red' }}
+                    >
+                        {`${index + 1}. ${number}`}
+                    </Typography>
+                ))}
+                {itemsToShow < value?.length && (
+                    <Button onClick={handleViewMore} color="primary">
+                        View More
+                    </Button>
+                )}
+            </div>
+        )
+    }
+
     const columns = [
         {
             name: 'code',
@@ -254,6 +282,21 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+            },
+        },
+        {
+            name: 'products', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Priority</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => (
+                    <PriorityRenderer value={value?.[0]?.out_of_stock} />
+                ),
             },
         },
 

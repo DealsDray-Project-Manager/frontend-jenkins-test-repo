@@ -179,6 +179,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'requested_qt',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Requested Quantity
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
+        {
             name: 'required_qty',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>

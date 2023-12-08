@@ -259,7 +259,25 @@ const RpatoStxSortingAssigned=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/r
 const StartWorkRpaToStx=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/start')))
 // VIEW RPA TO STX TRAY RPA to STX Work In Progress
 const RpaToStxWorkInProgressTrays=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/rpa-to-stx-work-tray')))
+// CAN BIN REPORT TRAY 
+const CanBinTray =Loadable(lazy(() => import('./Rp-tray/Can-bin/can-bin-tray')))
+// CAN BIN START 
+const CanBinStartPage=Loadable(lazy(() => import('./Rp-tray/Can-bin/start')))
+// CAN BIN REPORT 
+const CanBinReport =Loadable(lazy(() => import('./Report/can-bin')))
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rpt/report/can-bin',
+        element: <CanBinReport />,
+    },
+    {
+        path: '/warehouse/can-bin/start/:trayId',
+        element: <CanBinStartPage />,
+    },
+    {
+        path: '/warehouse/can-bin',
+        element: <CanBinTray />,
+    },
     {
         path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
         element: <RpaToStxWorkInProgressTrays />,

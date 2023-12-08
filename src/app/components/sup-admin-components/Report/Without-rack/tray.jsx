@@ -28,7 +28,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const { rackId, rackDisplay } = useParams()
+    const { rackId } = useParams()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
 
@@ -37,7 +37,7 @@ const SimpleMuiTable = () => {
             try {
                 setIsLoading(true)
                 let response = await axiosSuperAdminPrexo.post(
-                    `/viewTrayBasedOnRack/${rackId}`
+                    `/viewTrayWithoutRack`
                 )
                 if (response.status === 200) {
                     setIsLoading(false)
@@ -70,12 +70,6 @@ const SimpleMuiTable = () => {
                 Brand: x?.brand,
                 Model: x?.model,
                 Status: x?.sort_id,
-                'Last Modified User': x?.last_action_user,
-                'Last Modified Timestamp': new Date(
-                    x?.last_action_time
-                ).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
             }
             if (x?.items_length == 0) {
                 obj['Quantity'] = `${x?.actual_items}/${x?.limit}`
@@ -98,7 +92,7 @@ const SimpleMuiTable = () => {
         })
 
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, `${rackId} -Tray Details` + fileExtension)
+        FileSaver.saveAs(data, `Not Assigned to Rack Report` + fileExtension)
         setLoading(false)
     }
 
@@ -183,32 +177,32 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'last_action_user',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Last Modified User
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'last_action_time',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Last Modified Timestamp
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+        // {
+        //     name: 'last_action_user',
+        //     label: (
+        //         <Typography sx={{ fontWeight: 'bold' }}>
+        //             Last Modified User
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
+        // {
+        //     name: 'last_action_time',
+        //     label: (
+        //         <Typography sx={{ fontWeight: 'bold' }}>
+        //             Last Modified Timestamp
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value) =>
+        //             new Date(value).toLocaleString('en-GB', {
+        //                 hour12: true,
+        //             }),
+        //     },
+        // },
         {
             name: 'code',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
@@ -241,7 +235,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Rack Report', path: '/' },
+                        { name: 'Not Assigned to Rack', path: '/' },
                         { name: 'Tray' },
                     ]}
                 />
@@ -249,10 +243,6 @@ const SimpleMuiTable = () => {
             <Box
                 sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}
             >
-                <Box>
-                    <Typography>Rack Id:{rackId}</Typography>
-                </Box>
-
                 <LoadingButton
                     sx={{ mb: 1 }}
                     variant="contained"

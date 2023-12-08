@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import MUIDataTable from 'mui-datatables'
-import { axiosRmUserAgent } from '../../../../axios'
-import { styled } from '@mui/system'
-import { Typography, Button, Table } from '@mui/material'
 import { Breadcrumb } from 'app/components'
+import React, { useState, useEffect } from 'react'
+import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn } from '../../../../../axios'
+import jwt_decode from 'jwt-decode'
+import { Button, Typography, Table } from '@mui/material'
+import Swal from 'sweetalert2'
+import '../../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -19,30 +22,47 @@ const Container = styled('div')(({ theme }) => ({
     },
 }))
 
-function IssueToolsAndConsumables() {
-    const navigate = useNavigate()
+const SimpleMuiTable = () => {
+    const [RDLRequest, setRDLRequest] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [requests, setRequests] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true)
-            const res = await axiosRmUserAgent.post(
-                `/getRequestOfToolsAndConsumables/${'All'}`
-            )
-            if (res.status === 200) {
-                setRequests(res.data.data)
-                setIsLoading(false)
+        try {
+            const fetchData = async () => {
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    setIsLoading(true)
+                    let { location } = jwt_decode(admin)
+
+                    let res = await axiosWarehouseIn.post(
+                        `/getTrayForCanBin/${location}`
+                    )
+                    if (res.status == 200) {
+                        setIsLoading(false)
+                        setRDLRequest(res.data.data)
+                    }
+                } else {
+                    navigate('/')
+                }
             }
+            fetchData()
+        } catch (error) {
+            setIsLoading(false)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
         }
-        fetchData()
     }, [])
 
-    const handelNavigate = (id) => {
-        navigate(`/sp-mis/report/tools-and-consumable/view/${id}`)
+    const handelDetailPage = (e, trayId) => {
+        e.preventDefault()
+        navigate('/warehouse/can-bin/start/' + trayId)
     }
 
-    // COLUMNS
     const columns = [
         {
             name: 'index',
@@ -63,58 +83,64 @@ function IssueToolsAndConsumables() {
             },
         },
         {
-            name: 'request_id',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Request Id</Typography>
-            ),
+            name: 'code',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'issued_user_name',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
-            ),
+            name: 'rack_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Rack ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'assigned_date',
+            name: 'rackData', // field name in the row object
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned Date
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
                 </Typography>
-            ),
+            ), // column title that will be shown in table
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
+                customBodyRender: (value) => value?.[0]?.display,
             },
         },
         {
-            name: 'status',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
+            name: 'brand',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'issued_date',
+            name: 'model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'limit',
+            label: 'limit',
+            options: {
+                filter: false,
+                sort: false,
+                display: false,
+            },
+        },
+
+        {
+            name: 'items',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Issued Date</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value) =>
-                    value !== undefined
-                        ? new Date(value).toLocaleString('en-GB', {
-                              hour12: true,
-                          })
-                        : null,
+                customBodyRender: (items, tableMeta) =>
+                    items?.length + '/' + tableMeta.rowData[6],
             },
         },
         {
@@ -123,20 +149,18 @@ function IssueToolsAndConsumables() {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (value, tableMeta) => {
+                customBodyRender: (value) => {
                     return (
                         <Button
                             sx={{
                                 m: 1,
                             }}
                             variant="contained"
+                            onClick={(e) => handelDetailPage(e, value)}
                             style={{ backgroundColor: 'green' }}
                             component="span"
-                            onClick={(e) => {
-                                handelNavigate(tableMeta.rowData[1])
-                            }}
                         >
-                            View
+                            Start
                         </Button>
                     )
                 },
@@ -146,14 +170,12 @@ function IssueToolsAndConsumables() {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'Tools And Consumables' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Can Bin', path: '/' }]} />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Reports'}
-                    data={requests}
+                    title={'Trays'}
+                    data={RDLRequest}
                     columns={columns}
                     options={{
                         filterType: 'textField',
@@ -200,4 +222,4 @@ function IssueToolsAndConsumables() {
     )
 }
 
-export default IssueToolsAndConsumables
+export default SimpleMuiTable

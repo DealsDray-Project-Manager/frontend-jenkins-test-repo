@@ -27,6 +27,8 @@ const RequestApprove = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [toolsAndConsumables, setToolsAndConsumables] = useState({})
     const { user } = useAuth()
+    const [description, setDescription] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,9 +55,11 @@ const RequestApprove = () => {
     // HANDEL ISSUE
     const handelIssue = async () => {
         try {
+            setLoading(true)
             let obj = {
                 requestId: toolsAndConsumables?.request_id,
                 actionUser: user.username,
+                description: description,
             }
             const res = await axiosRmUserAgent.post(
                 '/requestApproveForToolsAndConsumables',
@@ -211,11 +215,20 @@ const RequestApprove = () => {
             <Box
                 sx={{
                     float: 'right',
+                    mt: 1,
                 }}
             >
+                <textarea
+                    onChange={(e) => {
+                        setDescription(e.target.value)
+                    }}
+                    style={{ width: '300px', height: '60px' }}
+                    placeholder="Description"
+                ></textarea>
                 <Button
                     sx={{
-                        mt: 2,
+                        ml: 1,
+                        mb: 4,
                     }}
                     variant="contained"
                     onClick={(e) => {
@@ -223,6 +236,9 @@ const RequestApprove = () => {
                             handelIssue(e)
                         }
                     }}
+                    disabled={
+                        loading == true || description == '' ? true : false
+                    }
                     style={{ backgroundColor: 'green' }}
                 >
                     Issue To Agent

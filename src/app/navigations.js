@@ -508,6 +508,11 @@ export const navigations = [
                 iconText: 'PL',
             },
             {
+                name: 'Not Assigned to Rack',
+                path: '/sup-admin/report/tray-not-assigned-to-rack',
+                iconText: 'PL',
+            },
+            {
                 name: 'Upgrade Report',
                 path: '/sup-admin/report/upgrade',
                 iconText: 'PL',
@@ -1001,6 +1006,11 @@ export const navigations = [
                 path: '/warehouse/rpt/return-from-rdl-2',
                 iconText: 'VP',
             },
+            {
+                name: 'Can Bin',
+                path: '/warehouse/can-bin',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: false,
@@ -1233,6 +1243,11 @@ export const navigations = [
             {
                 name: 'Upgrade Units',
                 path: '/warehouse/rpt/report/upgrade-units',
+                iconText: 'VP',
+            },
+            {
+                name: 'Can Bin',
+                path: '/warehouse/rpt/report/can-bin',
                 iconText: 'VP',
             },
         ],

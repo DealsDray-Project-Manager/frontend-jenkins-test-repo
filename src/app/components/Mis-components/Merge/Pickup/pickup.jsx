@@ -1950,7 +1950,7 @@ const PickupPage = () => {
                               {
                                   hour12: true,
                               }
-                           )
+                          )
                         : null,
             },
         },
@@ -2552,7 +2552,7 @@ const PickupPage = () => {
                                     25: 'audit_report.stage',
                                     26: 'audit_report.reason',
                                     27: 'audit_report.description',
-                                    
+
                                     // add more columns and properties here
                                 }
                                 const property = columnProperties[colIndex]
@@ -2666,7 +2666,6 @@ const PickupPage = () => {
                             selectableRows: 'none',
                             customSort: (data, colIndex, order) => {
                                 const columnProperties = {
-                                   
                                     2: 'uic',
                                     3: 'order_id',
                                     4: 'imei',
@@ -2697,9 +2696,8 @@ const PickupPage = () => {
                                     32: 'rdl_fls_report.partRequired',
                                     34: 'rdl_fls_closed_date',
                                     35: 'rdl_fls_report.description',
-                                    36:"merge_done_tray",
-                                    37:"merge_done_date",
-
+                                    36: 'merge_done_tray',
+                                    37: 'merge_done_date',
                                 }
 
                                 const property = columnProperties[colIndex]

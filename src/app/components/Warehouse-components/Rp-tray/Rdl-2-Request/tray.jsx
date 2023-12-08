@@ -101,6 +101,19 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
 
         {
             name: 'brand',
@@ -159,7 +172,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (items, tableMeta) =>
-                    items?.length + '/' + tableMeta.rowData[5],
+                    items?.length + '/' + tableMeta.rowData[6],
             },
         },
         {

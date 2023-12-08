@@ -5,17 +5,20 @@ import { styled } from '@mui/system'
 import {
     Button,
     Box,
-    IconButton,
+    TableContainer,
     Icon,
     Typography,
     Table,
-    TableContainer,
     Card,
 } from '@mui/material'
 import '../../../../../app.css'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { axiosSuperAdminPrexo } from '../../../../../axios'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import SaveIcon from '@mui/icons-material/Save'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -32,7 +35,7 @@ const Container = styled('div')(({ theme }) => ({
 
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
-    width: '200%',
+    width: '180%', // Adjust as needed
     height: '100%',
     whiteSpace: 'pre',
     '& thead': {
@@ -42,8 +45,6 @@ const ProductTable = styled(Table)(() => ({
     },
     '& td': {
         borderBottom: '1px solid #ddd',
-    },
-    '& td:first-of-type': {
         paddingLeft: '16px !important',
     },
 }))
@@ -53,6 +54,7 @@ const SimpleMuiTable = () => {
     const [trayrackList, setTrayRackList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchRacks = async () => {
@@ -80,8 +82,62 @@ const SimpleMuiTable = () => {
     }, [isAlive])
 
     // HANDEL VIEW
-    const handelViewItem = (rackid) => {
-        navigate('/sup-admin/report/rack/view-tray/' + rackid)
+    const handelViewItem = (rackid, rackDisplay) => {
+        navigate(`/sup-admin/report/rack/view-tray/${rackid}`)
+    }
+
+    const download = async (e) => {
+        let arr = []
+        setLoading(true)
+        for (let x of trayrackList) {
+            let obj = {
+                'Rack Id': x?.rack_id,
+                'Rack Name': x?.name,
+                'Rack Display': x?.display,
+                Location: x?.parent_id,
+                Warehouse: x?.warehouse,
+                Limit: x?.limit,
+                'Tray Count': x?.rack_count,
+                'Upcoming Tray Count': x?.upcoming_tray_count,
+                BOT: x?.count_report?.BOT,
+                MMT: x?.count_report?.MMT,
+                PMT: x?.count_report?.PMT,
+                WHT: x?.count_report?.WHT,
+                CT: x?.count_report?.CT,
+                ST: x?.count_report?.ST,
+                RPT: x?.count_report?.RPT,
+                SPT: x?.count_report?.SPT,
+                RPA: x?.count_report?.RPA,
+                RPB: x?.count_report?.RPB,
+                SPT: x?.count_report?.SPT,
+                'Last Modified User': x?.lat_modified_username,
+                'Last Modified Timestamp': '',
+            }
+            if (x?.last_modified_time != undefined) {
+                obj['Last Modified Timestamp'] = new Date(
+                    x?.last_modified_time
+                ).toLocaleString('en-GB', {
+                    hour12: true,
+                })
+            }
+
+            arr.push(obj)
+        }
+
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, {
+            bookType: 'xlsx',
+            type: 'array',
+        })
+
+        const data = new Blob([excelBuffer], { type: fileType })
+        FileSaver.saveAs(data, 'Rack-report' + fileExtension)
+        setLoading(false)
     }
 
     const columns = [
@@ -95,12 +151,12 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                // setCellProps: () => ({ align: 'center' }),
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>
+                    <Typography sx={{ pl: 1 }}>
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
+                tableLayout: 'fixed',
             },
         },
         {
@@ -349,11 +405,10 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                             <Button
-                                sx={{
-                                    m: 1,
-                                }}
                                 variant="contained"
-                                onClick={() => handelViewItem(value)}
+                                onClick={() =>
+                                    handelViewItem(value, tableMeta.rowData[3])
+                                }
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
@@ -373,7 +428,22 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Racks Report', path: '/' }]}
                 />
             </div>
-            <Card sx={{ maxHeight: '100%', overflow: 'auto' }}>
+            <Box sx={{}}>
+                <LoadingButton
+                    sx={{ mb: 1 }}
+                    variant="contained"
+                    color="secondary"
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<SaveIcon />}
+                    onClick={(e) => {
+                        download(e)
+                    }}
+                >
+                    <span>Download</span>
+                </LoadingButton>
+            </Box>
+            <Card sx={{ overflow: 'auto' }}>
                 <ProductTable className="custom-table">
                     <MUIDataTable
                         title={'Reports'}

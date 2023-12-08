@@ -174,7 +174,18 @@ const ViewTrayBasedOnTheRack=Loadable(lazy(() => import('./Report/Rack-report/vi
 const GetTrayDeletionHistor=Loadable(lazy(() => import('./Manage-tray/deleted-history')))
 // VIEW UPGRADE REPORT WISE UIC
 const ViewUpgradeReportWiseData=Loadable(lazy(() => import('./Report/Upgrade-report/view-uic')))
+const ViewUnitsBasedOnTheRack=Loadable(lazy(() => import('./Report/Rack-report/view-uic')))
+// VIEW TRAY WHICH NOT ASSIGNED TO ANY RACK
+const WithoutRackTray=Loadable(lazy(() => import('./Report/Without-rack/tray')))
 const SuperAdminRouter = [
+    {
+        path: '/sup-admin/report/tray-not-assigned-to-rack',
+        element: <WithoutRackTray />,
+    },
+    {
+        path: '/sup-admin/report/rack/view-tray/view-items/:trayId',
+        element: <ViewUnitsBasedOnTheRack />,
+    },
     {
         path: '/sup-admin/report/upgrade/view/:itemId',
         element: <ViewUpgradeReportWiseData />,
@@ -183,6 +194,7 @@ const SuperAdminRouter = [
         path: '/sup-admin/tray/deleted-history/:trayId',
         element: <GetTrayDeletionHistor />,
     },
+
     {
         path: '/sup-admin/report/rack/view-tray/:rackId',
         element: <ViewTrayBasedOnTheRack />,

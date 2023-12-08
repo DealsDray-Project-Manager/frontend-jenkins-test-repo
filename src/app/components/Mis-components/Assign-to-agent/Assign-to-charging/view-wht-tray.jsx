@@ -111,6 +111,34 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
 
+    const PriorityRenderer = ({ value }) => {
+        const [itemsToShow, setItemsToShow] = useState(1)
+
+        const handleViewMore = () => {
+            setItemsToShow(itemsToShow + 5)
+        }
+
+        return (
+            <div>
+                {value?.slice(0, itemsToShow)?.map((number, index) => (
+                    <Typography
+                        key={index}
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        style={{ color: 'red' }}
+                    >
+                        {`${index + 1}. ${number}`}
+                    </Typography>
+                ))}
+                {itemsToShow < value?.length && (
+                    <Button onClick={handleViewMore} color="primary">
+                        View More
+                    </Button>
+                )}
+            </div>
+        )
+    }
+
     const columns = [
         {
             name: 'code',
@@ -191,7 +219,6 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-               
             },
         },
         {
@@ -237,20 +264,9 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                
             },
         },
-        {
-            name: 'name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Name</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'limit',
             label: (
@@ -275,7 +291,22 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta.rowData[10],
+                    value?.length + '/' + tableMeta.rowData[9],
+            },
+        },
+        {
+            name: 'products', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Priority</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => (
+                    <PriorityRenderer value={value?.[0]?.out_of_stock} />
+                ),
             },
         },
 
@@ -347,15 +378,20 @@ const SimpleMuiTable = () => {
                             return data.sort((a, b) => {
                                 if (colIndex === 1) {
                                     return (
-                                        (a.data[colIndex].price < b.data[colIndex].price ? -1 : 1) * (order === 'desc' ? 1 : -1)
-                                    );
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
                                 }
                                 return (
-                                    (a.data[colIndex] < b.data[colIndex] ? -1 : 1) * (order === 'desc' ? 1 : -1)
-                                );
-                            });
+                                    (a.data[colIndex] < b.data[colIndex]
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            })
                         },
-                        
+
                         elevation: 0,
                         rowsPerPageOptions: [10, 20, 40, 80, 100],
                     }}

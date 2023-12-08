@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
     Box,
     Button,
@@ -178,6 +178,92 @@ function StartRpAudit() {
         }
     }
 
+    const gridData = useMemo(() => {
+        return (
+            <Grid sx={{ mt: 1 }} container spacing={3}>
+                <Grid item lg={12} md={12} xs={12}>
+                    <BqcApiReport
+                        BqcSowftwareReport={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.bqc_software_report
+                        }
+                        grade={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.bqc_software_report?.final_grade
+                        }
+                        imei={resDataUic?.orderAndDelivery?.[0]?.imei}
+                    />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <AmazonDetails
+                        Order={resDataUic?.orderAndDelivery?.[0]?.orders?.[0]}
+                    />
+                    <Botuser
+                        BOt={resDataUic?.orderAndDelivery?.[0]?.bot_report}
+                        botUsername={
+                            resDataUic?.orderAndDelivery?.[0]?.agent_name
+                        }
+                        BotDoneDate={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.tray_closed_by_bot
+                        }
+                    />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <PrevChargingReport Charging={resDataUic?.preChargeData} />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <ChargingDetails
+                        Charging={resDataUic?.orderAndDelivery?.[0]?.charging}
+                        ChargeDoneDate={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.charging_done_date
+                        }
+                    />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <PrevBqcReport BqcUserReport={resDataUic?.preBqcData} />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <BqcUserReport
+                        BqcUserReport={
+                            resDataUic?.orderAndDelivery?.[0]?.bqc_report
+                        }
+                        BqcAgentName={
+                            resDataUic?.orderAndDelivery?.[0]?.agent_name_bqc
+                        }
+                        BqcDoneDate={
+                            resDataUic?.orderAndDelivery?.[0]?.bqc_out_date
+                        }
+                    />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <RdlOneReport
+                        RdlOneReport={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.rdl_fls_one_report
+                        }
+                    />
+                </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <RdlTwoReport
+                        RdlTwoReport={
+                            resDataUic?.orderAndDelivery?.[0]?.rdl_two_report
+                        }
+                    />
+                </Grid>
+                <Grid item lg={12} md={12} xs={12}>
+                    <BqcApiAllReport
+                        BqcSowftwareReport={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.bqc_software_report
+                        }
+                    />
+                </Grid>
+            </Grid>
+        )
+    }, [resDataUic])
+
     return (
         <Container>
             {' '}
@@ -300,87 +386,7 @@ function StartRpAudit() {
                     </Button>
                 </Box>
             </Box>
-            <Grid sx={{ mt: 1 }} container spacing={3}>
-                <Grid item lg={12} md={12} xs={12}>
-                    <BqcApiReport
-                        BqcSowftwareReport={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.bqc_software_report
-                        }
-                        grade={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.bqc_software_report?.final_grade
-                        }
-                        imei={resDataUic?.orderAndDelivery?.[0]?.imei}
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <AmazonDetails
-                        Order={resDataUic?.orderAndDelivery?.[0]?.orders?.[0]}
-                    />
-                    <Botuser
-                        BOt={resDataUic?.orderAndDelivery?.[0]?.bot_report}
-                        botUsername={
-                            resDataUic?.orderAndDelivery?.[0]?.agent_name
-                        }
-                        BotDoneDate={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.tray_closed_by_bot
-                        }
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <PrevChargingReport Charging={resDataUic?.preChargeData} />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <ChargingDetails
-                        Charging={resDataUic?.orderAndDelivery?.[0]?.charging}
-                        ChargeDoneDate={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.charging_done_date
-                        }
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <PrevBqcReport BqcUserReport={resDataUic?.preBqcData} />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <BqcUserReport
-                        BqcUserReport={
-                            resDataUic?.orderAndDelivery?.[0]?.bqc_report
-                        }
-                        BqcAgentName={
-                            resDataUic?.orderAndDelivery?.[0]?.agent_name_bqc
-                        }
-                        BqcDoneDate={
-                            resDataUic?.orderAndDelivery?.[0]?.bqc_out_date
-                        }
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <RdlOneReport
-                        RdlOneReport={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.rdl_fls_one_report
-                        }
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <RdlTwoReport
-                        RdlTwoReport={
-                            resDataUic?.orderAndDelivery?.[0]?.rdl_two_report
-                        }
-                    />
-                </Grid>
-                <Grid item lg={12} md={12} xs={12}>
-                    <BqcApiAllReport
-                        BqcSowftwareReport={
-                            resDataUic?.orderAndDelivery?.[0]
-                                ?.bqc_software_report
-                        }
-                    />
-                </Grid>
-            </Grid>
+            {gridData}
         </Container>
     )
 }

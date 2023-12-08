@@ -2,15 +2,15 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { useNavigate, useParams } from 'react-router-dom'
-import jwt_decode from 'jwt-decode'
 import { axiosSuperAdminPrexo, axiosWarehouseIn } from '../../../../../axios'
-import { Button, Typography, Table, Box } from '@mui/material'
+import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import '../../../../../app.css'
+import jwt_decode from 'jwt-decode'
+import { Typography, Box, Table } from '@mui/material'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import SaveIcon from '@mui/icons-material/Save'
+import '../../../../../app.css'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 const Container = styled('div')(({ theme }) => ({
@@ -27,24 +27,31 @@ const Container = styled('div')(({ theme }) => ({
 }))
 const SimpleMuiTable = () => {
     const [whtTray, setWhtTray] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-    const { rackId, rackDisplay } = useParams()
-    const navigate = useNavigate()
+    const [rackId, setRackId] = useState({
+        rack_id: '',
+        code: '',
+    })
+    const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setIsLoading(true)
-                let response = await axiosSuperAdminPrexo.post(
-                    `/viewTrayBasedOnRack/${rackId}`
-                )
-                if (response.status === 200) {
-                    setIsLoading(false)
-                    setWhtTray(response.data.data)
+                let admin = localStorage.getItem('prexo-authentication')
+                if (admin) {
+                    let { location } = jwt_decode(admin)
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/viewUnitsDataRack/' + trayId
+                    )
+                    if (response.status === 200) {
+                        setRackId({
+                            rack_id: response?.data?.data?.rack_id,
+                            code: response?.data?.data?.code,
+                        })
+                        setWhtTray(response.data.data.items)
+                    }
                 }
             } catch (error) {
-                setIsLoading(false)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -56,33 +63,17 @@ const SimpleMuiTable = () => {
         fetchData()
     }, [])
 
-    const handelViewItem = (id) => {
-        navigate('/sup-admin/report/rack/view-tray/view-items/' + id)
-    }
-
     const download = async (e) => {
         let arr = []
         setLoading(true)
         for (let x of whtTray) {
             let obj = {
-                'Tray ID': x?.code,
-                Quantity: '',
-                Brand: x?.brand,
-                Model: x?.model,
-                Status: x?.sort_id,
-                'Last Modified User': x?.last_action_user,
-                'Last Modified Timestamp': new Date(
-                    x?.last_action_time
-                ).toLocaleString('en-GB', {
-                    hour12: true,
-                }),
+                UIC: x?.uic,
+                MUIC: x?.muic,
+                Brand: x?.brand_name,
+                Model: x?.model_name,
+                'Tracking Id': x?.tracking_id,
             }
-            if (x?.items_length == 0) {
-                obj['Quantity'] = `${x?.actual_items}/${x?.limit}`
-            } else {
-                obj['Quantity'] = `${x?.items_length}/${x?.limit}`
-            }
-
             arr.push(obj)
         }
 
@@ -98,7 +89,7 @@ const SimpleMuiTable = () => {
         })
 
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, `${rackId} -Tray Details` + fileExtension)
+        FileSaver.saveAs(data, `${rackId?.code} -Tray Details` + fileExtension)
         setLoading(false)
     }
 
@@ -122,116 +113,41 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Tray ID</Typography>,
+            name: 'uic',
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'actual_items',
-            label: 'acutual_items',
+            name: 'muic',
+            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'limit',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
-        {
-            name: 'items_length',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value == 0 ? tableMeta.rowData[2] : value) +
-                        '/' +
-                        tableMeta.rowData[3]
-                    )
-                },
             },
         },
 
         {
-            name: 'brand',
+            name: 'brand_name',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
-            name: 'model',
+            name: 'model_name',
             label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
-
         {
-            name: 'sort_id',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'last_action_user',
+            name: 'tracking_id',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Last Modified User
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Tracking ID</Typography>
             ),
             options: {
                 filter: true,
-            },
-        },
-        {
-            name: 'last_action_time',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Last Modified Timestamp
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
-            name: 'code',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <>
-                            <Button
-                                sx={{
-                                    m: 1,
-                                }}
-                                variant="contained"
-                                onClick={() => handelViewItem(value)}
-                                style={{ backgroundColor: 'green' }}
-                                component="span"
-                            >
-                                View
-                            </Button>
-                        </>
-                    )
-                },
             },
         },
     ]
@@ -240,17 +156,15 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[
-                        { name: 'Rack Report', path: '/' },
-                        { name: 'Tray' },
-                    ]}
+                    routeSegments={[{ name: 'Tray Items', path: '/' }]}
                 />
             </div>
             <Box
                 sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}
             >
                 <Box>
-                    <Typography>Rack Id:{rackId}</Typography>
+                    <Typography>Tray Id:{rackId?.code}</Typography>
+                    <Typography>Rack Id:{rackId?.rack_id}</Typography>
                 </Box>
 
                 <LoadingButton
@@ -269,7 +183,7 @@ const SimpleMuiTable = () => {
             </Box>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Tray'}
+                    title={'items'}
                     data={whtTray}
                     columns={columns}
                     options={{
@@ -277,13 +191,6 @@ const SimpleMuiTable = () => {
                         responsive: 'simple',
                         download: false,
                         print: false,
-                        textLabels: {
-                            body: {
-                                noMatch: isLoading
-                                    ? 'Loading...'
-                                    : 'Sorry, there is no matching data to display',
-                            },
-                        },
                         selectableRows: 'none', // set checkbox for each row
                         // search: false, // set search option
                         // filter: false, // set data filter option

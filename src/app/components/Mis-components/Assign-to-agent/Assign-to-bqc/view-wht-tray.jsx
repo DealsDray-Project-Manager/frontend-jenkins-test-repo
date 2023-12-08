@@ -2,7 +2,7 @@ import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
-import { Button, Checkbox, Typography, Table } from '@mui/material'
+import { Button, Checkbox, Typography, Table, Box } from '@mui/material'
 import { axiosMisUser, axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
@@ -110,6 +110,35 @@ const SimpleMuiTable = () => {
     const handelViewItem = (id) => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
+
+    const PriorityRenderer = ({ value }) => {
+        const [itemsToShow, setItemsToShow] = useState(1)
+
+        const handleViewMore = () => {
+            setItemsToShow(itemsToShow + 5)
+        }
+
+        return (
+            <div>
+                {value?.slice(0, itemsToShow)?.map((number, index) => (
+                    <Typography
+                        key={index}
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        style={{ color: 'red' }}
+                    >
+                        {`${index + 1}. ${number}`}
+                    </Typography>
+                ))}
+                {itemsToShow < value?.length && (
+                    <Button onClick={handleViewMore} color="primary">
+                        View More
+                    </Button>
+                )}
+            </div>
+        )
+    }
+
     const columns = [
         {
             name: 'code',
@@ -275,6 +304,19 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'out_of_stock', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Priority</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => <PriorityRenderer value={value} />,
+            },
+        },
 
         {
             name: 'code',
@@ -315,15 +357,7 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Button
-                sx={{ mb: 2 }}
-                variant="contained"
-                color="primary"
-                disabled={isCheck.length == 0}
-                onClick={() => handelGetBqcUser(true)}
-            >
-                Assign For BQC
-            </Button>
+
             <Table className="custom-table">
                 <MUIDataTable
                     title={'WHT'}
@@ -370,6 +404,17 @@ const SimpleMuiTable = () => {
                     }}
                 />
             </Table>
+            <Box sx={{ float: 'right' }}>
+                <Button
+                    sx={{ mt: 1 }}
+                    variant="contained"
+                    color="primary"
+                    disabled={isCheck.length == 0}
+                    onClick={() => handelGetBqcUser(true)}
+                >
+                    Assign For BQC
+                </Button>
+            </Box>
 
             {shouldOpenEditorDialog && (
                 <AssignDialogBox

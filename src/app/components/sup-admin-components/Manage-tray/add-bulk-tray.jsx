@@ -185,7 +185,6 @@ const PaginationTable = () => {
                         obj[x.tray_category + x.tray_grade] + 1
                     )
                 }
-                console.log(obj)
                 // else if (x.tray_category == 'CTA') {
                 //     x.tray_id = 'CTA' + (countOfTray.CTA + count5)
                 //     count5++
@@ -283,7 +282,6 @@ const PaginationTable = () => {
     const handelSubmit = async (e) => {
         try {
             setLoading(true)
-            console.log('y', countOfTray)
             let obj = {
                 allCount: countOfTray,
                 item: pagination.item,

@@ -50,7 +50,6 @@ const SimpleMuiTable = () => {
                         '/RDLoneDoneTray/' + location
                     )
                     if (res.status === 200) {
-                        console.log(res.data.data)
                         setWhtTrayList(res.data.data)
                         setIsLoading(false)
                     }

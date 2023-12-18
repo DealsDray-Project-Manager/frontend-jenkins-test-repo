@@ -58,7 +58,6 @@ const AuthGuard = ({ children }) => {
                         )
                         if (res.status === 200) {
                         } else if (res.status == 202) {
-                            console.log(res.data.message)
                             if (res.data.status == '1') {
                                 Swal.fire({
                                     icon: 'error',

@@ -92,10 +92,7 @@ function StartRpAudit() {
     const { uic, model } = useParams()
     const [loading, setLoading] = useState(false)
     const { user } = useAuth()
-    const [popdata, setPopData] = useState({
-        status: '',
-        description: '',
-    })
+    const [popdata, setPopData] = useState({})
     const [gradeInfo, setGradeInfo] = useState([])
     const navigate = useNavigate()
     const [allDropDwon, setAllDropDwon] = useState({
@@ -114,7 +111,7 @@ function StartRpAudit() {
                         .rp_bqc_software_report?.final_grade,
                 }
                 let res = await axiosAuditAgent.post('/getColorStorageRam', obj)
-                console.log(res.data)
+              
                 if (res.status == 200) {
                     setAllDropDwon({
                         ram: res.data.data.ram,
@@ -226,10 +223,7 @@ function StartRpAudit() {
                     confirmButtonText: 'Ok',
                     text: res.data.message,
                 })
-                setPopData({
-                    status: '',
-                    description: '',
-                })
+                setPopData({})
             }
         } catch (error) {
             Swal.fire({
@@ -518,8 +512,12 @@ function StartRpAudit() {
                         }}
                         disabled={
                             loading ||
-                            popdata.status == '' ||
-                            popdata.description == ''
+                            popdata?.rp_audit_grade == undefined ||
+                            popdata?.status == undefined ||
+                            popdata?.color == undefined ||
+                            popdata?.ram_verification == undefined ||
+                            popdata?.storage_verification == undefined ||
+                            popdata?.description == undefined
                         }
                         variant="contained"
                         style={{ backgroundColor: 'green' }}
@@ -568,15 +566,7 @@ function StartRpAudit() {
                         onClick={(e) => {
                             setOpen(true)
                         }}
-                        disabled={
-                            loading ||
-                            popdata?.rp_audit_grade == undefined ||
-                            popdata?.status == undefined ||
-                            popdata?.color == undefined ||
-                            popdata?.ram_verification == undefined ||
-                            popdata?.storage_verification == undefined ||
-                            popdata?.description == undefined
-                        }
+                        disabled={loading}
                     >
                         RP-Audit Done
                     </Button>

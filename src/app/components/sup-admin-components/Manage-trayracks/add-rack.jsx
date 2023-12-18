@@ -40,11 +40,11 @@ const MemberEditorDialog = ({
             if (Object.keys(editFetchData).length !== 0) {
                 reset({ ...editFetchData })
                 let arr = []
-               
+
                 let obj = {
                     code: editFetchData.warehouse,
                 }
-                
+
                 arr.push(obj)
                 setWarehouse(arr)
                 settrayRackId(editFetchData.trayRackId)
@@ -53,7 +53,6 @@ const MemberEditorDialog = ({
         }
         fetchData()
     }, [])
-    console.log(warehouse)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -263,10 +262,7 @@ const MemberEditorDialog = ({
                             name="rack_id"
                             value={trayRackId}
                             {...register('rack_id')}
-                            disabled={
-                              
-                                Object.keys(editFetchData).length !== 0
-                            }
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.trayRackId ? true : false}
                             helperText={
                                 errors.trayRackId

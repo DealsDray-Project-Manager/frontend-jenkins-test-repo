@@ -258,9 +258,9 @@ export default function DialogBox() {
     }
     const handleClose = () => {
         setOpen(false)
-
         setStateData({})
     }
+
     const handleOpen = () => {
         reset({})
         setOpen(true)
@@ -302,8 +302,6 @@ export default function DialogBox() {
             })
         }
     }
-
-    console.log(trayData)
 
     const tableExpected = useMemo(() => {
         return (
@@ -361,6 +359,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.temp_array])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>

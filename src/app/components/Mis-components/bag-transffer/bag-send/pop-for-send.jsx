@@ -27,8 +27,6 @@ const MemberEditorDialog = ({ handleClose, open, setIsAlive, isCheck }) => {
     const [cpc, setCpc] = useState([])
     const [loading, setLoading] = useState(false)
 
-    console.log(user);
-
     useEffect(() => {
         const fetchCpc = async () => {
             try {

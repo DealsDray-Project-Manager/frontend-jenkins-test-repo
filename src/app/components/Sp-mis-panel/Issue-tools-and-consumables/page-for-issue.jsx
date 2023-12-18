@@ -69,7 +69,6 @@ function PageForIssue() {
 
     const handelGetUsers = async (type) => {
         try {
-            console.log(type)
             const res = await axiosMisUser.post(
                 `/get-charging-users/${type}/${user.location}`
             )
@@ -89,7 +88,7 @@ function PageForIssue() {
                 part_code: data.part_code,
                 sp_category: data.sp_category,
                 selected_quantity: 1,
-                box_id:data.box_id,
+                box_id: data.box_id,
             }
             // Check for duplicates before adding to the state
             if (

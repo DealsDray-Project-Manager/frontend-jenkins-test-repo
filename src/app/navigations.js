@@ -153,7 +153,7 @@ export const navigations = [
         label: 'Pages',
         type: 'label',
     },
-   
+
     {
         name: 'Procurement',
         icon: 'class',
@@ -195,7 +195,7 @@ export const navigations = [
         auth: authRoles.SPMIS,
         sales: false,
     },
-   
+
     {
         name: 'Purchase Request',
         icon: 'reorder',
@@ -210,7 +210,6 @@ export const navigations = [
                 path: '/purchase-user/purchase-tools-and-consumables',
                 iconText: 'PL',
             },
-            
         ],
         auth: authRoles.PURCHASERM,
         sales: false,
@@ -1318,6 +1317,17 @@ export const navigations = [
                 path: '/mis/report/billedBin',
                 iconText: 'VP',
             },
+            {
+                name: 'Sales Stock (MUIC)',
+                path: '/mis/report/sales-stock-with-muic',
+                iconText: 'VP',
+            },
+            {
+                name: 'Sales Stock (SUB-MUIC)',
+                path: '/mis/report/sales-stock',
+                iconText: 'VP',
+            },
+           
         ],
         auth: authRoles.Mis,
         sales: true,

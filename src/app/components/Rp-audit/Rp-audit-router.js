@@ -18,7 +18,7 @@ const RpAuditRouters = [
         element: <CloseTray />,
     },
     {
-        path: '/rp-audit/pending-items/start-rp-audit/:model/:uic',
+        path: '/rp-audit/pending-items/start-rp-audit/:uic',
         element: <StartRpAudit />,
     },
     {

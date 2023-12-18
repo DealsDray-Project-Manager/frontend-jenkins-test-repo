@@ -3,9 +3,9 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { Typography, Table } from '@mui/material'
-import '../../../../../app.css'
+import '../../../../../../app.css'
 import Swal from 'sweetalert2'
-import { axiosSuperAdminPrexo } from '../../../../../axios'
+import { axiosMisUser } from '../../../../../../axios'
 import { useParams } from 'react-router-dom'
 
 const Container = styled('div')(({ theme }) => ({
@@ -31,8 +31,8 @@ const SimpleMuiTable = () => {
         const fetchRacks = async () => {
             try {
                 setIsLoading(true)
-                const res = await axiosSuperAdminPrexo.post(
-                    `/upgradeReportViewUic/${itemId}`
+                const res = await axiosMisUser.post(
+                    `/salesStockReportViewUicWithMuic/${itemId}`
                 )
                 if (res.status === 200) {
                     setIsLoading(false)
@@ -200,107 +200,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'rdl_fls_one_user_name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Username</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-            },
-        },
-        {
-            name: 'rdl_fls_one_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Status</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) =>
-                    value?.selected_status || '',
-            },
-        },
-
-        // {
-        //     name: 'rdl_fls_one_report',
-        //     label: (
-        //         <Typography variant="subtitle1" fontWeight="bold">
-        //             <>RDL 1 Added Model</>
-        //         </Typography>
-        //     ),
-        //     options: {
-        //         filter: true,
-        //         sort: true, // enable sorting for Brand column
-
-        //         customBodyRender: (value, dataIndex) => value?.model_reg || '',
-        //     },
-        // },
-        {
-            name: 'rdl_fls_one_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Remark</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) => value?.description || '',
-            },
-        },
-        {
-            name: 'rdl_fls_one_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Added Part List</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-
-                sort: true, // enable sorting for Brand column
-                customBodyRender: (value, tableMeta) => {
-                    const dataIndex = tableMeta.rowIndex
-                    const partRequired = value?.partRequired
-
-                    if (partRequired && partRequired.length > 0) {
-                        const partsList = partRequired.map((data, index) => {
-                            return `${index + 1}.${data?.part_name} - ${
-                                data?.part_id
-                            }`
-                        })
-
-                        return partsList.join(', ')
-                    }
-
-                    return ''
-                },
-            },
-        },
-        {
-            name: 'rdl_fls_closed_date',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL-1 Done Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'current_tray_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -318,7 +217,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Upgrade Report', path: '/' },
+                        { name: 'Sales Report (MUIC)', path: '/' },
                         { name: 'View Units' },
                     ]}
                 />

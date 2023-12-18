@@ -126,6 +126,13 @@ const RequestApprove = () => {
             },
         },
         {
+            name: 'box_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Box Id</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'selected_quantity',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Quantity</Typography>

@@ -6,8 +6,16 @@ const Purchase = Loadable(lazy(() => import('./purchase/purchaseuser')))
 const Order = Loadable(lazy(() => import('./purchase/order')))
 const OrderDetails = Loadable(lazy(() => import('./order-details/orderd-data')))
 const OrderSummary = Loadable(lazy(() => import('./Order-summary/summary')))
-const PurchaseToolsAndConsumables = Loadable(lazy(() => import('./purchase/Purchase-tools-and-consumables/purchase-tools-and-consumables')))
-const OrderPlaceForToolsAndConsumables=Loadable(lazy(() => import('./purchase/Purchase-tools-and-consumables/place-order')))
+const PurchaseToolsAndConsumables = Loadable(
+    lazy(() =>
+        import(
+            './purchase/Purchase-tools-and-consumables/purchase-tools-and-consumables'
+        )
+    )
+)
+const OrderPlaceForToolsAndConsumables = Loadable(
+    lazy(() => import('./purchase/Purchase-tools-and-consumables/place-order'))
+)
 const PurchaseUser = [
     {
         path: '/purchase-user/purchase-tools-and-consumables/place-order/:requestId',

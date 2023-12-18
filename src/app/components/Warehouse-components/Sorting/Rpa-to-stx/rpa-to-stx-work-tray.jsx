@@ -47,7 +47,9 @@ const SimpleMuiTable = () => {
     }, [refresh])
 
     const handelClose = async (e, code) => {
-        navigate('/mis/stx-utility/tray-view/close/' + code)
+        navigate(
+            '/warehouse/rpa-to-stx-work-in-progess-trays-view/close/' + code
+        )
     }
 
     const columns = [
@@ -154,7 +156,10 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'RPA to STX Work In Progress Trays', path: '/' },
+                        {
+                            name: 'RPA to STX Work In Progress Trays',
+                            path: '/',
+                        },
                     ]}
                 />
             </div>

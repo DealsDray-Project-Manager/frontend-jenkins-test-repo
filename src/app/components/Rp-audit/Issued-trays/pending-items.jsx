@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Table } from '@mui/material'
+import { Button, Typography, Table, TextField } from '@mui/material'
 import { axiosRpAuditAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -25,6 +26,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [trayData, setTray] = useState([])
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +57,11 @@ const SimpleMuiTable = () => {
     const handelStart = (e, code, model) => {
         e.preventDefault()
         navigate(`/rp-audit/pending-items/start-rp-audit/${model}/${code}`)
+    }
+    const handelAwbn = async (e) => {
+        if (e.target.value.length === 11) {
+            navigate(`/rp-audit/pending-items/start-rp-audit/${e.target.value}`)
+        }
     }
 
     const columns = [
@@ -155,46 +162,74 @@ const SimpleMuiTable = () => {
                     value?.rdl_two_user || '',
             },
         },
-        {
-            name: 'uic',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            onClick={(e) =>
-                                handelStart(e, value, tableMeta.rowData[3])
-                            }
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Start
-                        </Button>
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'uic',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Action</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <Button
+        //                     sx={{
+        //                         m: 1,
+        //                     }}
+        //                     variant="contained"
+        //                     onClick={(e) =>
+        //                         handelStart(e, value, tableMeta.rowData[3])
+        //                     }
+        //                     style={{ backgroundColor: 'green' }}
+        //                     component="span"
+        //                 >
+        //                     Start
+        //                 </Button>
+        //             )
+        //         },
+        //     },
+        // },
     ]
 
     return (
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'RBQC Tray', path: '/' }]}
+                    routeSegments={[{ name: 'Pending Units', path: '/' }]}
                 />
             </div>
+            <TextField
+                sx={{ mb: 1 }}
+                id="outlined-password-input"
+                type="text"
+                name="doorsteps_diagnostics"
+                label="SCAN UIC"
+                // onChange={(e) => setAwbn(e.target.value)}
+                onChange={(e) => {
+                    handelAwbn(e)
+                }}
+                onKeyPress={(e) => {
+                    if (user.serverType == 'Live') {
+                        // Prevent manual typing by intercepting key presses
+                        e.preventDefault()
+                    }
+                }}
+                onPaste={(e) => {
+                    if (user.serverType == 'Live') {
+                        // Prevent manual typing by intercepting key presses
+                        e.preventDefault()
+                    }
+                }}
+                inputProps={{
+                    style: {
+                        width: 'auto',
+                    },
+                }}
+            />
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Tray'}
+                    title={'Pending Units'}
                     data={trayData?.[0]?.temp_array}
                     columns={columns}
                     options={{

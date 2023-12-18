@@ -146,6 +146,24 @@ const SimpleMuiTable = () => {
                 sort: true,
             },
         },
+        {
+            name: 'box_id',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Box Id</Typography>,
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
+        {
+            name: 'description',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Description</Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
 
         {
             name: 'color',

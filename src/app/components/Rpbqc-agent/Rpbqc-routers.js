@@ -14,7 +14,7 @@ const PendingItems= Loadable(lazy(() => import('./Issued-trays/pending-items')))
 const RpBqcPage= Loadable(lazy(() => import('./Issued-trays/rp-bqc-start'))) 
 const RpBqcRouters = [
     {
-        path: '/rp-bqc/pending-items/start-rp-bqc/:model/:uic',
+        path: '/rp-bqc/pending-items/start-rp-bqc/:uic',
         element: <RpBqcPage />,
     },
     {

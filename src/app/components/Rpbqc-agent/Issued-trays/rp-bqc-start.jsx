@@ -304,7 +304,7 @@ export default function DialogBox() {
             </BootstrapDialog>
 
             <H3>UIC: {uic}</H3>
-            <H3>Model: {model}</H3>
+            <H3>Model: {resDataUic?.old_item_details?.toUpperCase()}</H3>
             <Grid container spacing={3}>
                 <Grid item lg={6} md={12} xs={12}>
                     <ChargingDetails

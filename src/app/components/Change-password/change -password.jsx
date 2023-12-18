@@ -228,6 +228,7 @@ const Login = () => {
                                     size="large"
                                     onChange={handleChange}
                                     name="confirm_password"
+                                    onPaste={(e) => e.preventDefault()}
                                     type={showPassword ? 'text' : 'password'}
                                     value={confirm_password || ''}
                                     validators={['isPasswordMatch', 'required']}

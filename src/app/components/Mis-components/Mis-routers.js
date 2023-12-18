@@ -154,7 +154,38 @@ const RpaToStxSortingAssignment =  Loadable(
 const DeviceNotRepairableUnitReport = Loadable(
     lazy(() => import('./Report/Rdl-2-device-not-repairable/rdl-2-device-not-repairable'))
 )
+// SALES MIS STOCK REPORT SUB-MUIC
+const SalesMisStockReport = Loadable(
+    lazy(() => import('./Report/Sales-stock-report/stock-report'))
+)
+const SalesMisStockReportViewUic = Loadable(
+    lazy(() => import('./Report/Sales-stock-report/view-uic'))
+)
+// SALES MIS STOCK REPORT MUIC
+const SalesMisStockReportWithMuic = Loadable(
+    lazy(() => import('./Report/Sales-stock-report/Sales-stock-with-muic/stock-report-muic'))
+)
+const SalesMisStockReportViewUicMuicBase = Loadable(
+    lazy(() => import('./Report/Sales-stock-report/Sales-stock-with-muic/view-uic-with-muic'))
+)
+
 const dataTableRoutes = [
+    {
+        path: '/mis/report/sales-stock-with-muic/view-uic/:itemId',
+        element: <SalesMisStockReportViewUicMuicBase />,
+    },
+    {
+        path: '/mis/report/sales-stock-with-muic',
+        element: <SalesMisStockReportWithMuic />,
+    },
+    {
+        path: '/mis/report/sales-stock/view-uic/:subMuic',
+        element: <SalesMisStockReportViewUic />,
+    },
+    {
+        path: '/mis/report/sales-stock',
+        element: <SalesMisStockReport />,
+    },
     {
         path: '/mis/report/not-repairable',
         element: <DeviceNotRepairableUnitReport />,

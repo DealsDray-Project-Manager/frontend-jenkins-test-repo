@@ -42,45 +42,73 @@ const MuiDataTable = ({
         updatedData.splice(rowIndex, 1)
         setselectedToolsAndConsumables(updatedData)
     }
+    const handleQuantityChange = (rowIndex, newQuantity) => {
+        // Make a shallow copy of the table data
+        const updatedData = [...selectedToolsAndConsumables]
+
+        // Update the quantity for the specified row
+        updatedData[rowIndex].selected_quantity = parseInt(newQuantity, 10)
+
+        // Update the state with the new data
+        setselectedToolsAndConsumables(updatedData)
+    }
 
     // HANDEL SENT THE REQUESTS
     const handelSubmit = async () => {
         try {
             setLoading(true)
-            let obj = {
-                selectedToolsAndConsumables: selectedToolsAndConsumables,
-                actionUser: user.username,
-                issued_user_name: userPreview.user_name,
-                description: description,
+            let flag = false
+            for (let x of selectedToolsAndConsumables) {
+                if (
+                    Number(x.selected_quantity) < 0 ||
+                    isNaN(x.selected_quantity)
+                ) {
+                    flag = true
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${x.part_code} -Please check the quantity`,
+                    })
+                    setLoading(false)
+                    break
+                }
             }
-            const res = await axiosSpMisAgent.post(
-                '/assignToAgentToolsAndConsumables',
-                obj
-            )
-            if (res.status === 200) {
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: res.data.message,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload(false)
-                    }
-                })
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops..',
-                    text: res.data.message,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload(false)
-                    }
-                })
+            if (flag == false) {
+                let obj = {
+                    selectedToolsAndConsumables: selectedToolsAndConsumables,
+                    actionUser: user.username,
+                    issued_user_name: userPreview.user_name,
+                    description: description,
+                }
+                const res = await axiosSpMisAgent.post(
+                    '/assignToAgentToolsAndConsumables',
+                    obj
+                )
+                if (res.status === 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: res.data.message,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(false)
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops..',
+                        text: res.data.message,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(false)
+                        }
+                    })
+                }
             }
         } catch (error) {
             alert(error)
@@ -147,27 +175,17 @@ const MuiDataTable = ({
 
                     return (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <IconButton
-                                size="small"
-                                style={{ color: 'red' }}
-                                disabled={value <= 1}
-                                onClick={() => handleDecreaseQuantity(rowIndex)}
-                            >
-                                <RemoveIcon />
-                            </IconButton>
-                            <Typography
-                                variant="body1"
-                                style={{ margin: '0 8px' }}
-                            >
-                                {value}
-                            </Typography>
-                            <IconButton
-                                size="small"
-                                style={{ color: 'green' }}
-                                onClick={() => handleIncreaseQuantity(rowIndex)}
-                            >
-                                <AddIcon />
-                            </IconButton>
+                            <TextField
+                                type="number"
+                                value={value}
+                                onChange={(e) =>
+                                    handleQuantityChange(
+                                        rowIndex,
+                                        e.target.value
+                                    )
+                                }
+                                style={{ width: '80px', marginRight: '8px' }}
+                            />
                         </div>
                     )
                 },

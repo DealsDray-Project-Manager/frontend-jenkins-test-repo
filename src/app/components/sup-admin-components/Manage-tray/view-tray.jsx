@@ -19,6 +19,7 @@ import { axiosSuperAdminPrexo } from '../../../../axios'
 import EditRoadIcon from '@mui/icons-material/EditRoad'
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete'
 import '../../../../app.css'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -40,6 +41,7 @@ const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchBrand = async () => {
@@ -88,25 +90,29 @@ const SimpleMuiTable = () => {
             inputPlaceholder: 'Enter your reason here', // Placeholder text for the textbox
             inputValidator: (value) => {
                 if (!value) {
-                    return 'You need to enter a reason!';
+                    return 'You need to enter a reason!'
                 }
             },
-        });
-    
+        })
+
         if (reason) {
             try {
                 let obj = {
+                    actionUser: user.username,
                     masterId: masterId,
                     reason: reason, // Include the reason in the request payload
-                };
-    
+                }
+
                 // Perform API request to get details before deletion (if needed)
-                let res = await axiosSuperAdminPrexo.post('/getOneMaster', obj);
-    
+                let res = await axiosSuperAdminPrexo.post('/getOneMaster', obj)
+
                 if (res.status === 200) {
                     // Perform the actual deletion
-                    let response = await axiosSuperAdminPrexo.post('/deleteMaster', obj);
-    
+                    let response = await axiosSuperAdminPrexo.post(
+                        '/deleteMaster',
+                        obj
+                    )
+
                     if (response.status === 200) {
                         Swal.fire({
                             position: 'top-center',
@@ -117,33 +123,32 @@ const SimpleMuiTable = () => {
                             allowEscapeKey: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                setIsAlive((isAlive) => !isAlive);
+                                setIsAlive((isAlive) => !isAlive)
                             }
-                        });
+                        })
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: response?.data?.message,
-                        });
+                        })
                     }
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: "You Can't Delete This Tray",
-                    });
+                    })
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: error,
-                });
+                })
             }
         }
-    };
-    
+    }
 
     const editTray = async (masterId) => {
         try {

@@ -265,7 +265,13 @@ const CanBinTray =Loadable(lazy(() => import('./Rp-tray/Can-bin/can-bin-tray')))
 const CanBinStartPage=Loadable(lazy(() => import('./Rp-tray/Can-bin/start')))
 // CAN BIN REPORT 
 const CanBinReport =Loadable(lazy(() => import('./Report/can-bin')))
+const RpaToStxInprogressTrayClose=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/close')))
+
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rpa-to-stx-work-in-progess-trays-view/close/:trayId',
+        element: <RpaToStxInprogressTrayClose />,
+    },
     {
         path: '/warehouse/rpt/report/can-bin',
         element: <CanBinReport />,

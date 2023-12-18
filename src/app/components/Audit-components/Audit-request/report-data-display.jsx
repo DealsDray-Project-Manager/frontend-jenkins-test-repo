@@ -203,7 +203,6 @@ export default function DialogBox() {
     }
 
     const handleChange = ({ target: { name, value } }) => {
-        
         if (name === 'stage') {
             setStateData({
                 [name]: value,
@@ -212,23 +211,20 @@ export default function DialogBox() {
                 ram_verification: stateData.ram_verification,
                 color: stateData.color,
             })
-        }
-        else if(name == "ram_verification"){
+        } else if (name == 'ram_verification') {
             setStateData({
                 ...stateData,
                 [name]: value,
-                storage_verification:undefined
+                storage_verification: undefined,
             })
-        }
-        else if(name == "color"){
+        } else if (name == 'color') {
             setStateData({
                 ...stateData,
                 [name]: value,
-                ram_verification:undefined,
-                storage_verification:undefined
+                ram_verification: undefined,
+                storage_verification: undefined,
             })
-        }
-         else {
+        } else {
             setStateData({
                 ...stateData,
                 [name]: value,
@@ -650,7 +646,7 @@ export default function DialogBox() {
                             onChange={handleChange}
                             name="description"
                             inputProps={{
-                                autoComplete: "off", // Add this line
+                                autoComplete: 'off', // Add this line
                             }}
                         />
                         <TextField
@@ -661,7 +657,7 @@ export default function DialogBox() {
                             name="sub_muic"
                             InputLabelProps={{
                                 shrink: true,
-                              }}
+                            }}
                         />
                     </DialogContent>
                     <DialogActions>

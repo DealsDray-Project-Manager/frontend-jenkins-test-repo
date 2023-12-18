@@ -18,6 +18,7 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
+    console.log(imei);
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summary</H4>
@@ -63,7 +64,6 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             {BqcSowftwareReport?.hardware_test_summary}
                         </TableCell>
                     </TableRow>
-
                     <TableRow key={BqcSowftwareReport?.frp}>
                         <TableCell sx={{ pl: 2 }}>FRP :</TableCell>
                         <TableCell>{BqcSowftwareReport?.frp}</TableCell>

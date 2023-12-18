@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
 import { axiosSuperAdminPrexo } from '../../../../axios'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -35,6 +36,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [bagList, setBagList] = useState([])
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [editFetchData, setEditFetchData] = useState({})
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false)
@@ -97,6 +99,7 @@ const SimpleMuiTable = () => {
                     )
                     if (res.status == 200) {
                         let obj={
+                            actionUser:user.username,
                             masterId:masterId,
                             reason:""
                         }

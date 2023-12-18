@@ -24,12 +24,18 @@ import BqcUserReport from '../../Audit-components/Audit-request/Report/bqc-user-
 import AmazonDetails from '../../Audit-components/Audit-request/Report/amazon-data'
 import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
+import RpBqcApiAllReport from '../../Audit-components/Audit-request/Report/rp-bqc-done-report-all'
 import PrevChargingReport from '../../Audit-components/Audit-request/Report/prev-charging'
 import PrevBqcReport from '../../Audit-components/Audit-request/Report/pre-bqc-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
+import RpbqcSummery from './Rpb-summery'
 import Swal from 'sweetalert2'
-import { axiosRpAuditAgent, axiosRpBqcAgent } from '../../../../axios'
+import {
+    axiosAuditAgent,
+    axiosRpAuditAgent,
+    axiosRpBqcAgent,
+} from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -90,7 +96,39 @@ function StartRpAudit() {
         status: '',
         description: '',
     })
+    const [gradeInfo, setGradeInfo] = useState([])
     const navigate = useNavigate()
+    const [allDropDwon, setAllDropDwon] = useState({
+        color: [],
+        ram: [],
+        storage: [],
+    })
+    const [subMuic, setSubMuic] = useState('')
+    const [currentSubmuicCount, setCurrentSubMuicCount] = useState('')
+
+    useEffect(() => {
+        const fetchPartList = async () => {
+            try {
+                let obj = {
+                    grade: resDataUic?.orderAndDelivery?.[0]
+                        .rp_bqc_software_report?.final_grade,
+                }
+                let res = await axiosAuditAgent.post('/getColorStorageRam', obj)
+                console.log(res.data)
+                if (res.status == 200) {
+                    setAllDropDwon({
+                        ram: res.data.data.ram,
+                        storage: res.data.data.storage,
+                        color: res.data.data.color,
+                    })
+                    setGradeInfo(res.data.allCategory)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchPartList()
+    }, [resDataUic])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -124,10 +162,28 @@ function StartRpAudit() {
     }, [])
 
     const handleChangeThePopValue = ({ target: { name, value } }) => {
-        setPopData({
-            ...popdata,
-            [name]: value,
-        })
+        if (name == 'ram_verification') {
+            setPopData({
+                ...popdata,
+                [name]: value,
+                storage_verification: undefined,
+            })
+        } else if (name == 'color') {
+            setPopData({
+                ...popdata,
+                [name]: value,
+                ram_verification: undefined,
+                storage_verification: undefined,
+            })
+        } else {
+            setPopData({
+                ...popdata,
+                [name]: value,
+            })
+        }
+        if (name == 'storage_verification') {
+            fetchSubmuic(value)
+        }
     }
     const handleClose = () => {
         setOpen(false)
@@ -143,6 +199,13 @@ function StartRpAudit() {
                 status: popdata.status,
                 description: popdata.description,
                 username: user.username,
+                subMuic: subMuic,
+                rp_audit_grade: popdata.rp_audit_grade,
+                muic: resDataUic?.orderAndDelivery?.[0]?.products?.[0]?.muic,
+                color: popdata.color,
+                storage_verification: popdata.storage_verification,
+                ram_verification: popdata.ram_verification,
+                currentSubMuicCount: currentSubmuicCount,
                 grade: resDataUic?.orderAndDelivery?.[0]?.bqc_software_report
                     ?.final_grade,
             }
@@ -178,6 +241,30 @@ function StartRpAudit() {
         }
     }
 
+    /*----------------------------FETCH / CHECK SUB MUIC ------------------------------*/
+    const fetchSubmuic = async (storage) => {
+        try {
+            let obj = {
+                storage: storage,
+                ram: popdata.ram_verification,
+                color: popdata.color,
+                muic: resDataUic?.orderAndDelivery?.[0]?.products?.[0]?.muic,
+            }
+            const subMuicRes = await axiosAuditAgent.post('/fetchSubMuic', obj)
+            if (subMuicRes.status == 200) {
+                setSubMuic(subMuicRes.data.subMuic)
+                setCurrentSubMuicCount(subMuicRes.data.currentSubMuicCount)
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
+
     const gridData = useMemo(() => {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
@@ -185,11 +272,11 @@ function StartRpAudit() {
                     <BqcApiReport
                         BqcSowftwareReport={
                             resDataUic?.orderAndDelivery?.[0]
-                                ?.bqc_software_report
+                                ?.rp_bqc_software_report
                         }
                         grade={
                             resDataUic?.orderAndDelivery?.[0]
-                                ?.bqc_software_report?.final_grade
+                                ?.rp_bqc_software_report?.final_grade
                         }
                         imei={resDataUic?.orderAndDelivery?.[0]?.imei}
                     />
@@ -252,6 +339,19 @@ function StartRpAudit() {
                         }
                     />
                 </Grid>
+                <Grid item lg={4} md={6} xs={12}>
+                    <RpbqcSummery
+                        Rpbqc={resDataUic?.orderAndDelivery?.[0]?.rp_bqc_report}
+                    />
+                </Grid>
+                <Grid item lg={12} md={12} xs={12}>
+                    <RpBqcApiAllReport
+                        BqcSowftwareReport={
+                            resDataUic?.orderAndDelivery?.[0]
+                                ?.rp_bqc_software_report
+                        }
+                    />
+                </Grid>
                 <Grid item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
@@ -295,15 +395,17 @@ function StartRpAudit() {
                         select
                         onChange={handleChangeThePopValue}
                         name="status"
-                        sx={{ mt: 2 }}
+                        sx={{
+                            mb: 2,
+                        }}
                     >
                         <MenuItem
                             disabled={
                                 resDataUic?.orderAndDelivery?.[0]
-                                    ?.bqc_software_report?.final_grade ==
+                                    ?.rp_bqc_software_report?.final_grade ==
                                     undefined ||
                                 resDataUic?.orderAndDelivery?.[0]
-                                    .bqc_software_report?.final_grade == ''
+                                    .rp_bqc_software_report?.final_grade == ''
                             }
                             value="RP-Audit Passed"
                         >
@@ -313,14 +415,100 @@ function StartRpAudit() {
                             RP-Audit Failed
                         </MenuItem>
                     </TextField>
+                    <TextField
+                        label="Select Grade"
+                        fullWidth
+                        sx={{
+                            mb: 2,
+                        }}
+                        select
+                        onChange={handleChangeThePopValue}
+                        name="rp_audit_grade"
+                    >
+                        {gradeInfo?.map((upGradeData) => (
+                            <MenuItem
+                                key={upGradeData?.code}
+                                value={upGradeData?.code}
+                            >
+                                {upGradeData?.code}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Select color"
+                        fullWidth
+                        select
+                        // disabled={
+                        //     stateData.storage_verification != undefined
+                        // }
+                        sx={{
+                            mb: 2,
+                        }}
+                        onChange={handleChangeThePopValue}
+                        name="color"
+                    >
+                        {allDropDwon?.color?.map((data) => (
+                            <MenuItem value={data?.name}>{data?.name}</MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Select Ram"
+                        fullWidth
+                        select
+                        sx={{
+                            mb: 2,
+                        }}
+                        // disabled={
+                        //     stateData.storage_verification != undefined
+                        // }
+                        onChange={handleChangeThePopValue}
+                        value={popdata?.ram_verification}
+                        name="ram_verification"
+                    >
+                        {allDropDwon?.ram?.map((data) => (
+                            <MenuItem value={data?.name}>{data?.name}</MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        label="Select storage"
+                        fullWidth
+                        select
+                        value={popdata?.storage_verification}
+                        sx={{
+                            mb: 2,
+                        }}
+                        disabled={
+                            popdata.color == undefined ||
+                            popdata.ram_verification == undefined
+                        }
+                        onChange={handleChangeThePopValue}
+                        name="storage_verification"
+                    >
+                        {allDropDwon?.storage?.map((data) => (
+                            <MenuItem value={data?.name}>{data?.name}</MenuItem>
+                        ))}
+                    </TextField>
 
                     <TextField
-                        label="Description"
+                        label="Remark"
                         variant="outlined"
                         fullWidth
                         name="description"
                         onChange={handleChangeThePopValue}
-                        sx={{ mt: 2 }}
+                        sx={{
+                            mb: 2,
+                        }}
+                    />
+
+                    <TextField
+                        label="Sub Muic"
+                        fullWidth
+                        disabled
+                        value={subMuic}
+                        name="sub_muic"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -350,9 +538,9 @@ function StartRpAudit() {
                 }}
             >
                 <Box>
-                    {resDataUic?.orderAndDelivery?.[0]?.bqc_software_report
+                    {resDataUic?.orderAndDelivery?.[0]?.rp_bqc_software_report
                         ?.final_grade == undefined ||
-                    resDataUic?.orderAndDelivery?.[0].bqc_software_report
+                    resDataUic?.orderAndDelivery?.[0].rp_bqc_software_report
                         ?.final_grade == '' ? (
                         <H3>Grade: Not found</H3>
                     ) : (
@@ -360,7 +548,7 @@ function StartRpAudit() {
                             Grade :{' '}
                             {
                                 resDataUic?.orderAndDelivery?.[0]
-                                    .bqc_software_report?.final_grade
+                                    .rp_bqc_software_report?.final_grade
                             }
                         </H3>
                     )}
@@ -380,7 +568,15 @@ function StartRpAudit() {
                         onClick={(e) => {
                             setOpen(true)
                         }}
-                        disabled={loading}
+                        disabled={
+                            loading ||
+                            popdata?.rp_audit_grade == undefined ||
+                            popdata?.status == undefined ||
+                            popdata?.color == undefined ||
+                            popdata?.ram_verification == undefined ||
+                            popdata?.storage_verification == undefined ||
+                            popdata?.description == undefined
+                        }
                     >
                         RP-Audit Done
                     </Button>

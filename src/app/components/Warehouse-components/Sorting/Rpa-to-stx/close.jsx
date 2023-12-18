@@ -19,10 +19,8 @@ import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { axiosWarehouseIn, axiosSuperAdminPrexo } from '../../../../../axios'
 import Swal from 'sweetalert2'
-import jwt_decode from 'jwt-decode'
-import { axiosWarehouseIn } from '../../../../../axios'
-import { axiosSuperAdminPrexo } from '../../../../../axios'
 
 const TextFieldCustOm = styled(TextField)(() => ({
     width: '100%',
@@ -49,15 +47,14 @@ export default function DialogBox() {
     const { trayId } = useParams()
     const [loading, setLoading] = useState(false)
     const [textDisable, setTextDisable] = useState(false)
-    /**************************************************************************** */
-
+    /*********************************************************** */
+    const [refresh, setRefresh] = useState(false)
     const [uic, setUic] = useState('')
     const [description, setDescription] = useState([])
-    const [refresh, setRefresh] = useState(false)
     const [rackiddrop, setrackiddrop] = useState([])
     const [rackId, setRackId] = useState('')
 
-    /*********************************************************** */
+    /************************************************************/
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,27 +79,22 @@ export default function DialogBox() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let admin = localStorage.getItem('prexo-authentication')
-                if (admin) {
-                    let { location } = jwt_decode(admin)
-                    let response = await axiosWarehouseIn.post(
-                        '/getWhtTrayItem/' +
-                            trayId +
-                            '/' +
-                            'Received From RP-Audit/' +
-                            location
-                    )
-                    if (response.status === 200) {
-                        setTrayData(response.data.data)
-                    } else {
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'error',
-                            title: response?.data?.message,
-                            confirmButtonText: 'Ok',
-                        })
-                        navigate(-1)
-                    }
+                let response = await axiosWarehouseIn.post(
+                    '/charging-done-recieved/' +
+                        trayId +
+                        '/' +
+                        'STX-Utility In-progress'
+                )
+                if (response.status === 200) {
+                    setTrayData(response.data.data)
+                } else {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: 'Please check Details',
+                        confirmButtonText: 'Ok',
+                    })
+                    navigate(-1)
                 }
             } catch (error) {
                 Swal.fire({
@@ -116,6 +108,97 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
+    /************************************************************************** */
+    const addActualitem = async (obj) => {
+        if (trayData?.items.length < trayData?.actual_items?.length) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'All Items Are Verified',
+                confirmButtonText: 'Ok',
+            })
+        } else {
+            try {
+                let objData = {
+                    trayId: trayId,
+                    item: obj,
+                }
+                setTextDisable(true)
+                let res = await axiosWarehouseIn.post(
+                    '/sorting-done-put-item',
+                    objData
+                )
+                if (res?.status == 200) {
+                    setRefresh((refresh) => !refresh)
+                    setTextDisable(false)
+                    setUic('')
+                } else {
+                    setTextDisable(false)
+
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'error',
+                        title: res?.data?.message,
+                        confirmButtonText: 'Ok',
+                    })
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: error,
+                })
+            }
+        }
+    }
+    /************************************************************************** */
+    const handelIssue = async (e) => {
+        e.preventDefault()
+        try {
+            setLoading(true)
+            let obj = {
+                trayId: trayData.code,
+                itemCount: trayData.items.length,
+                limit: trayData.limit,
+                type: trayData.type_taxanomy,
+                description: description,
+                rackId: rackId,
+                actUser: user.username,
+                brand: trayData?.brand,
+                model: trayData?.model,
+                grade: trayData?.tray_grade,
+            }
+            let res = await axiosWarehouseIn.post(
+                '/sorting/returnFromSortingCtxStx/close',
+                obj
+            )
+            if (res.status == 200) {
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: res?.data?.message,
+                    confirmButtonText: 'Ok',
+                })
+                setLoading(false)
+                navigate('/warehouse/rpa-to-stx-work-in-progess-trays-view')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    confirmButtonText: 'Ok',
+                    text: res?.data?.message,
+                })
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                confirmButtonText: 'Ok',
+                text: error,
+            })
+        }
+    }
     const handelUic = async (e) => {
         if (e.target.value.length === 11) {
             try {
@@ -124,15 +207,15 @@ export default function DialogBox() {
                     trayId: trayId,
                 }
                 setTextDisable(true)
-
-                let res = await axiosWarehouseIn.post('/check-uic', obj)
+                let res = await axiosWarehouseIn.post(
+                    '/check-uic-sorting-done',
+                    obj
+                )
                 if (res?.status == 200) {
-                    setUic('')
-                    setTextDisable(false)
-                    setRefresh((refresh) => !refresh)
+                    addActualitem(res.data.data)
                 } else {
-                    setTextDisable(false)
                     setUic('')
+                    setTextDisable(false)
 
                     Swal.fire({
                         position: 'top-center',
@@ -152,83 +235,26 @@ export default function DialogBox() {
         }
     }
 
-    /************************************************************************** */
-    const handelIssue = async (e, sortId) => {
-        try {
-            if (trayData?.actual_items?.length == trayData?.items?.length) {
-                setLoading(true)
-                let obj = {
-                    trayId: trayId,
-                    description: description,
-                    tray_type: trayData?.type_taxanomy,
-                    rackId: rackId,
-                    actioUser: user.username,
-                }
-                let res = await axiosWarehouseIn.post('/rpaOrRpbDoneClose', obj)
-                if (res.status == 200) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                    setLoading(false)
-                    navigate('/warehouse/rpa-rpb-return-from-agent')
-                } else {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'error',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
-                }
-            } else {
-                setLoading(false)
-
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'error',
-                    title: 'Please Verify Actual Data',
-                    confirmButtonText: 'Ok',
-                })
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                confirmButtonText: 'Ok',
-                text: error,
-            })
-        }
-    }
-
+    /***************************************************************************************** */
     const tableExpected = useMemo(() => {
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{}}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <h4 style={{ marginLeft: '15px' }}>EXPECTED</h4>
                     <Box
                         sx={{
-                            float: 'left',
-                            ml: 2,
-                        }}
-                    >
-                        <h5>EXPECTED</h5>
-                    </Box>
-                    <Box
-                        sx={{
-                            float: 'right',
                             mr: 2,
                         }}
                     >
                         <Box sx={{}}>
-                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
+                            <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {
-                                    trayData?.items?.filter(function (item) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
+                                {trayData?.items?.length}/{trayData?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -244,9 +270,8 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+                                <TableCell>Brand Name</TableCell>
+                                <TableCell>Model Name</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -256,7 +281,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -267,26 +291,28 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
-                <Box sx={{}}>
-                    <Box
-                        sx={{
-                            float: 'left',
-                            ml: 2,
-                        }}
-                    >
-                        <h5>ACTUAL</h5>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box>
+                        <h4 style={{ marginLeft: '15px' }}>ACTUAL</h4>
+
                         <TextField
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, ml: 2, mb: 1 }}
                             id="outlined-password-input"
                             type="text"
+                            inputRef={(input) => input && input.focus()}
                             disabled={textDisable}
                             name="doorsteps_diagnostics"
-                            inputRef={(input) => input && input.focus()}
-                            label="SCAN UIC"
                             value={uic}
+                            // onChange={(e) => setAwbn(e.target.value)}
+                            label="Scan UIC"
+                            onChange={(e) => {
+                                setUic(e.target.value)
+                                handelUic(e)
+                            }}
                             onKeyPress={(e) => {
                                 if (user.serverType == 'Live') {
                                     // Prevent manual typing by intercepting key presses
@@ -299,10 +325,6 @@ export default function DialogBox() {
                                     e.preventDefault()
                                 }
                             }}
-                            onChange={(e) => {
-                                setUic(e.target.value)
-                                handelUic(e)
-                            }}
                             inputProps={{
                                 style: {
                                     width: 'auto',
@@ -312,23 +334,13 @@ export default function DialogBox() {
                     </Box>
                     <Box
                         sx={{
-                            float: 'right',
                             mr: 2,
                         }}
                     >
-                        <Box sx={{}}>
-                            <h5 style={{ marginLeft: '15px' }}>Total</h5>
-                            <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {
-                                    trayData.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
-                                }
-                                /{trayData?.limit}
-                            </p>
-                        </Box>
+                        <h5 style={{ marginLeft: '12px' }}>Total</h5>
+                        <p style={{ marginLeft: '5px', fontSize: '22px' }}>
+                            {trayData?.actual_items?.length}/{trayData?.limit}
+                        </p>
                     </Box>
                 </Box>
                 <TableContainer>
@@ -342,9 +354,9 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>Brand</TableCell>
-                                <TableCell>Model</TableCell>
+
+                                <TableCell>Brand Name</TableCell>
+                                <TableCell>Model Name</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -355,7 +367,7 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
+
                                     <TableCell>{data?.brand_name}</TableCell>
                                     <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
@@ -369,31 +381,13 @@ export default function DialogBox() {
 
     return (
         <Container>
-            <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'WHT', path: '/' },
-                        { name: 'Return-From-RDL-1', path: '/' },
-                        { name: 'Tray Close' },
-                    ]}
-                />
-            </div>
-            <Box
-            // sx={{
-            //     mt: 1,
-            //     height: 70,
-            //     borderRadius: 1,
-            // }}
-            >
+            <Box>
                 <Box
                     sx={{
                         float: 'left',
                     }}
                 >
-                    <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
-                    <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
-                    </h4>
+                    <h4 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h4>
                 </Box>
                 <Box
                     sx={{
@@ -443,18 +437,16 @@ export default function DialogBox() {
                         style={{ width: '300px', height: '60px' }}
                         placeholder="Description"
                     ></textarea>
+
                     <Button
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            trayData?.actual_items?.length !==
-                                trayData?.items?.length ||
-                            trayData?.length == 0 ||
+                            trayData?.items?.length !==
+                                trayData?.actual_items?.length ||
+                            description == '' ||
                             loading == true ||
-                            rackId == '' ||
-                            description == ''
-                                ? true
-                                : false
+                            rackId == ''
                         }
                         style={{ backgroundColor: 'green' }}
                         onClick={(e) => {

@@ -57,6 +57,7 @@ const StatCard3 = () => {
             path: '/purchase-user/order-details',
         },
     ]
+
     const { palette } = useTheme()
     const textMuted = palette.text.secondary
 

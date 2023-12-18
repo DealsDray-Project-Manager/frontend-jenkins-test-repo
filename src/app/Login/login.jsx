@@ -16,6 +16,7 @@ const FlexBox = styled(Box)(() => ({
     alignItems: 'center',
 }))
 
+
 const JustifyBox = styled(FlexBox)(() => ({
     justifyContent: 'center',
 }))

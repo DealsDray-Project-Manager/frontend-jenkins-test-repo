@@ -844,15 +844,17 @@ const SimpleMuiTable = () => {
                                 <FormControlLabel
                                     value="Repair Not Done"
                                     sx={{ ml: 5 }}
-                                    disabled={
-                                        reportData?.checkIntray?.sp_tray == null
-                                    }
+                                    // disabled={
+                                    //     reportData?.checkIntray?.sp_tray == null
+                                    // }
                                     control={<Radio />}
                                     label="Repair Not Done"
                                 />
                             </Box>
                         </RadioGroup>
-                        {selectedValue == 'Repair Not Done' ? (
+
+                        {selectedValue == 'Repair Not Done' &&
+                        reportData?.checkIntray?.sp_tray != null ? (
                             <Box sx={{ ml: 2 }}>
                                 <TextFieldCustOm
                                     label="Select Reason"
@@ -889,6 +891,62 @@ const SimpleMuiTable = () => {
                                         value="Part not available"
                                     >
                                         Part not available
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) => {
+                                            handelReason('More part required')
+                                        }}
+                                        value="More part required"
+                                    >
+                                        More part required
+                                    </MenuItem>
+                                </TextFieldCustOm>
+                            </Box>
+                        ) : (
+                            ''
+                        )}
+                        {selectedValue == 'Repair Not Done' &&
+                        reportData?.checkIntray?.sp_tray == null ? (
+                            <Box sx={{ ml: 2 }}>
+                                <TextFieldCustOm
+                                    label="Select Reason"
+                                    select
+                                    type="text"
+                                    value={selectReason}
+                                    style={{
+                                        width: '200px',
+                                        marginRight: '20px',
+                                    }}
+                                >
+                                    <MenuItem
+                                        onClick={(e) => {
+                                            handelReason(
+                                                'Device not repairable'
+                                            )
+                                        }}
+                                        value="Device not repairable"
+                                    >
+                                        Device not repairable
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) => {
+                                            handelReason(
+                                                'Software Work Not Done'
+                                            )
+                                        }}
+                                        value="Software Work Not Done"
+                                    >
+                                        Software Work Not Done
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) => {
+                                            handelReason(
+                                                'Motherboard Work Not Done'
+                                            )
+                                        }}
+                                        value="Motherboard Work Not Done"
+                                    >
+                                        Motherboard Work Not Done
                                     </MenuItem>
                                     <MenuItem
                                         onClick={(e) => {

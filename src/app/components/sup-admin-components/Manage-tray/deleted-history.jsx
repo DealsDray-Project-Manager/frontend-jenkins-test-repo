@@ -252,6 +252,17 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'deleted_by',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Deleted By</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
 
         {
             name: 'createdAt',

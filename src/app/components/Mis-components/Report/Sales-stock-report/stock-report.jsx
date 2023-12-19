@@ -75,6 +75,9 @@ const SimpleMuiTable = () => {
         for (let x of upgradeReport) {
             let obj = {
                 'SUB-MUIC': x._id,
+                Storage: x?.storage,
+                RAM: x?.ram,
+                Color: x?.color,
                 Brand: x?.old_item_details?.split(':')?.[0]?.toUpperCase(),
                 Model: x?.old_item_details?.split(':')?.[1]?.toUpperCase(),
                 A: x?.A,
@@ -134,6 +137,40 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'storage',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Storage</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'ram',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RAM</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'color',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Color</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+
         {
             name: 'old_item_details',
             label: (

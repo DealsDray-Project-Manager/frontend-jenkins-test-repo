@@ -85,6 +85,66 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value) => value?.code,
             },
         },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>SUB-MUIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.sub_muic || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RAM</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.ram_verification || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Color</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.color || '',
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Storage</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+
+                customBodyRender: (value, dataIndex) =>
+                    value?.storage_verification || '',
+            },
+        },
 
         {
             name: 'old_item_details',
@@ -250,14 +310,16 @@ const SimpleMuiTable = () => {
                         customSort: (data, colIndex, order) => {
                             const columnProperties = {
                                 1: 'code',
-                                4: 'orgGrade',
-                                5: 'grade',
-                                6: 'stage',
-                                7: 'reason',
-                                8: 'description',
-                                11: 'selected_status',
+                                2:'sub_muic',
+                                3:'ram_verification',
+                                4:'color',
+                                5:'storage_verification',
+                                8: 'orgGrade',
+                                9: 'grade',
+                                10: 'stage',
+                                11: 'reason',
                                 12: 'description',
-                                13: 'partRequired',
+                              
 
                                 // add more columns and properties here
                             }

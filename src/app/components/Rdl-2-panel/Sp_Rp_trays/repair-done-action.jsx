@@ -928,34 +928,6 @@ const SimpleMuiTable = () => {
                                     >
                                         Device not repairable
                                     </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) => {
-                                            handelReason(
-                                                'Software Work Not Done'
-                                            )
-                                        }}
-                                        value="Software Work Not Done"
-                                    >
-                                        Software Work Not Done
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) => {
-                                            handelReason(
-                                                'Motherboard Work Not Done'
-                                            )
-                                        }}
-                                        value="Motherboard Work Not Done"
-                                    >
-                                        Motherboard Work Not Done
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) => {
-                                            handelReason('More part required')
-                                        }}
-                                        value="More part required"
-                                    >
-                                        More part required
-                                    </MenuItem>
                                 </TextFieldCustOm>
                             </Box>
                         ) : (
@@ -1097,7 +1069,7 @@ const SimpleMuiTable = () => {
                                     description == ''
                                 }
                                 onClick={(e) => {
-                                    handelSubmit(e, 'Direct')
+                                    handelSubmit(e, 'Not-Direct')
                                 }}
                                 style={{ backgroundColor: 'green' }}
                                 component="span"

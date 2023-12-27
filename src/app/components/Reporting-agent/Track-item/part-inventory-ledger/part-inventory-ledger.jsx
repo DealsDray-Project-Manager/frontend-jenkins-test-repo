@@ -158,6 +158,18 @@ const PartTable = () => {
             },
         },
         {
+            name: 'avl_stock',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Available Stock</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: true,
+            },
+        },
+        {
             name: 'box_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">

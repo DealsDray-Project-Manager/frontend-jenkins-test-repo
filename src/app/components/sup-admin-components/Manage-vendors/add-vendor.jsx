@@ -56,8 +56,10 @@ const MemberEditorDialog = ({
     const [personName, setPersonName] = React.useState([])
     const [spCategory, setSpCategory] = useState([])
     const [deals, setDeals] = useState([])
+    const [vendorIdFetch, setVendorIdFetch] = useState('')
 
     useEffect(() => {
+        setVendorIdFetch(vendorId)
         const fetchData = async () => {
             const res = await axiosSuperAdminPrexo.post('/spcategories/view')
             if (res.status == 200) {
@@ -69,6 +71,7 @@ const MemberEditorDialog = ({
             reset({ ...editFetchData })
             setPersonName(editFetchData.location)
             setDeals(editFetchData.deals)
+            setVendorIdFetch(editFetchData?.vendor_id)
             open()
         }
     }, [])
@@ -268,7 +271,7 @@ const MemberEditorDialog = ({
                             label="Vendor ID"
                             type="text"
                             name="vendor_id"
-                            value={vendorId}
+                            value={vendorIdFetch}
                             {...register('vendor_id')}
                             disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.vendor_id ? true : false}

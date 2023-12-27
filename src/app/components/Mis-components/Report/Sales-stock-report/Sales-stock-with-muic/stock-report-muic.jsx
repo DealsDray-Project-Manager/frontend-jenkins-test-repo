@@ -80,10 +80,10 @@ const SimpleMuiTable = () => {
                 Brand: x?.old_item_details?.split(':')?.[0]?.toUpperCase(),
                 Model: x?.old_item_details?.split(':')?.[1]?.toUpperCase(),
                 A: x?.A,
+                RB: x?.RB,
                 B: x?.B,
                 B2: x?.B2,
                 C: x?.C,
-                RB: x?.RB,
                 D: x?.D,
                 'Grand Total': x?.total,
             }
@@ -183,6 +183,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'RB',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>RB</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'B',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -215,17 +226,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'RB',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RB</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'D',
             label: (

@@ -98,7 +98,19 @@ const SimpleMuiTable = () => {
             options: {
                 filter: false,
                 sort: false,
-                display: false,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.[0]?.display,
             },
         },
         {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography, Table, TextField } from '@mui/material'
+import { Button, Typography, Table, TextField, Box } from '@mui/material'
 import { axiosRpBqcAgent } from '../../../../axios'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
@@ -91,6 +91,17 @@ const SimpleMuiTable = () => {
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>UIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'imei',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>IMEI</>
                 </Typography>
             ),
             options: {
@@ -199,34 +210,44 @@ const SimpleMuiTable = () => {
                     routeSegments={[{ name: 'Pending Items', path: '/' }]}
                 />
             </div>
-            <TextField
-                sx={{ mb: 1 }}
-                id="outlined-password-input"
-                type="text"
-                name="doorsteps_diagnostics"
-                label="SCAN UIC"
-                // onChange={(e) => setAwbn(e.target.value)}
-                onChange={(e) => {
-                    handelAwbn(e)
-                }}
-                onKeyPress={(e) => {
-                    if (user.serverType == 'Live') {
-                        // Prevent manual typing by intercepting key presses
-                        e.preventDefault()
-                    }
-                }}
-                onPaste={(e) => {
-                    if (user.serverType == 'Live') {
-                        // Prevent manual typing by intercepting key presses
-                        e.preventDefault()
-                    }
-                }}
-                inputProps={{
-                    style: {
-                        width: 'auto',
-                    },
-                }}
-            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <TextField
+                    sx={{ mb: 1 }}
+                    id="outlined-password-input"
+                    type="text"
+                    name="doorsteps_diagnostics"
+                    label="SCAN UIC"
+                    // onChange={(e) => setAwbn(e.target.value)}
+                    onChange={(e) => {
+                        handelAwbn(e)
+                    }}
+                    onKeyPress={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
+                    }}
+                    onPaste={(e) => {
+                        if (user.serverType == 'Live') {
+                            // Prevent manual typing by intercepting key presses
+                            e.preventDefault()
+                        }
+                    }}
+                    inputProps={{
+                        style: {
+                            width: 'auto',
+                        },
+                    }}
+                />
+                <Box>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        Tray ID :{trayData?.[0]?.code}
+                    </Typography>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        <>Tray Status:{trayData?.[0]?.sort_id}</>
+                    </Typography>
+                </Box>
+            </Box>
             <Table className="custom-table">
                 <MUIDataTable
                     title={'Pending Units'}

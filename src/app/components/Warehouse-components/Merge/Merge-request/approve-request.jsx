@@ -47,13 +47,14 @@ export default function StickyHeadTable({ props }) {
                 let admin = localStorage.getItem('prexo-authentication')
                 if (admin) {
                     let { location } = jwt_decode(admin)
-                    let obj={
-                        location:location,
-                        fromTray:mmtTrayId,
-                        type:"merge-request-approve"
+                    let obj = {
+                        location: location,
+                        fromTray: mmtTrayId,
+                        type: 'merge-request-approve',
                     }
                     let response = await axiosWarehouseIn.post(
-                        '/viewTrayFromAndTo',obj
+                        '/viewTrayFromAndTo',
+                        obj
                     )
                     if (response.status === 200) {
                         setMmtTray(response.data.data)
@@ -251,6 +252,14 @@ export default function StickyHeadTable({ props }) {
                                                 fontSize: '16px',
                                             }}
                                         >
+                                            Rack Display
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: '16px',
+                                            }}
+                                        >
                                             Tray Type
                                         </TableCell>
                                         <TableCell
@@ -292,6 +301,9 @@ export default function StickyHeadTable({ props }) {
                                             <TableCell>{data.code}</TableCell>
                                             <TableCell>
                                                 {data.rack_id}
+                                            </TableCell>
+                                            <TableCell>
+                                                {data?.rackData?.[0]?.display}
                                             </TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}

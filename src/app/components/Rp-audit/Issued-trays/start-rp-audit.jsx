@@ -22,14 +22,14 @@ import ChargingDetails from '../../Audit-components/Audit-request/Report/chargin
 import Botuser from '../../Audit-components/Audit-request/Report/bot-user-rport'
 import BqcUserReport from '../../Audit-components/Audit-request/Report/bqc-user-report'
 import AmazonDetails from '../../Audit-components/Audit-request/Report/amazon-data'
-import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
+import BqcApiReport from './Rpbqc-agent-report'
 import BqcApiAllReport from '../../Audit-components/Audit-request/Report/bqc-all-api-report'
 import RpBqcApiAllReport from '../../Audit-components/Audit-request/Report/rp-bqc-done-report-all'
 import PrevChargingReport from '../../Audit-components/Audit-request/Report/prev-charging'
 import PrevBqcReport from '../../Audit-components/Audit-request/Report/pre-bqc-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
-import RpbqcSummery from './Rpb-summery'
+import RpbqcSummery from './Rpbqc-agent-report'
 import Swal from 'sweetalert2'
 import {
     axiosAuditAgent,
@@ -111,7 +111,7 @@ function StartRpAudit() {
                         .rp_bqc_software_report?.final_grade,
                 }
                 let res = await axiosAuditAgent.post('/getColorStorageRam', obj)
-              
+
                 if (res.status == 200) {
                     setAllDropDwon({
                         ram: res.data.data.ram,
@@ -133,7 +133,7 @@ function StartRpAudit() {
                 let obj = {
                     username: user.username,
                     uic: uic,
-                    type: 'Issued to RP-Audit',
+                    type: 'RP-Audit In Progress',
                 }
                 const res = await axiosRpAuditAgent.post('/startRpAudit', obj)
                 if (res.status === 200) {
@@ -205,6 +205,9 @@ function StartRpAudit() {
                 currentSubMuicCount: currentSubmuicCount,
                 grade: resDataUic?.orderAndDelivery?.[0]?.bqc_software_report
                     ?.final_grade,
+            }
+            if (popdata?.status == 'RP-Audit Passed') {
+                obj.grade = popdata.rp_audit_grade
             }
             const res = await axiosRpAuditAgent.post('/add-rpAudit-data', obj)
             if (res.status == 200) {
@@ -409,25 +412,27 @@ function StartRpAudit() {
                             RP-Audit Failed
                         </MenuItem>
                     </TextField>
-                    <TextField
-                        label="Select Grade"
-                        fullWidth
-                        sx={{
-                            mb: 2,
-                        }}
-                        select
-                        onChange={handleChangeThePopValue}
-                        name="rp_audit_grade"
-                    >
-                        {gradeInfo?.map((upGradeData) => (
-                            <MenuItem
-                                key={upGradeData?.code}
-                                value={upGradeData?.code}
-                            >
-                                {upGradeData?.code}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                    {popdata?.status == 'RP-Audit Passed' ? (
+                        <TextField
+                            label="Select Grade"
+                            fullWidth
+                            sx={{
+                                mb: 2,
+                            }}
+                            select
+                            onChange={handleChangeThePopValue}
+                            name="rp_audit_grade"
+                        >
+                            {gradeInfo?.map((upGradeData) => (
+                                <MenuItem
+                                    key={upGradeData?.code}
+                                    value={upGradeData?.code}
+                                >
+                                    {upGradeData?.code}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    ) : null}
                     <TextField
                         label="Select color"
                         fullWidth
@@ -512,7 +517,8 @@ function StartRpAudit() {
                         }}
                         disabled={
                             loading ||
-                            popdata?.rp_audit_grade == undefined ||
+                            (popdata?.rp_audit_grade == undefined &&
+                                popdata?.status == 'RP-Audit Passed') ||
                             popdata?.status == undefined ||
                             popdata?.color == undefined ||
                             popdata?.ram_verification == undefined ||
@@ -552,6 +558,14 @@ function StartRpAudit() {
                     )}
 
                     <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
+                    <H3 sx={{ mt: 2 }}>
+                        RP-BQC Done Timestamp :{' '}
+                        {new Date(
+                            resDataUic?.orderAndDelivery?.[0]?.rp_bqc_done_date
+                        ).toLocaleString('en-GB', {
+                            hour12: true,
+                        })}
+                    </H3>
                 </Box>
                 <Box
                     sx={{

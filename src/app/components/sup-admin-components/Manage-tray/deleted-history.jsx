@@ -245,7 +245,7 @@ const SimpleMuiTable = () => {
             name: 'reason',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Reason</>
+                    <>Reason Of Deletion</>
                 </Typography>
             ),
             options: {
@@ -269,6 +269,44 @@ const SimpleMuiTable = () => {
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Deleted Date</>
+                </Typography>
+            ),
+            options: {
+                filter: false,
+                sort: false,
+                customBodyRender: (value) =>
+                    new Date(value).toLocaleString('en-GB', {
+                        hour12: true,
+                    }),
+            },
+        },
+        {
+            name: 'restored_by',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Restored By</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'reason_for_restore',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Reason Of Restore</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'restored_date',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Restored Date</>
                 </Typography>
             ),
             options: {

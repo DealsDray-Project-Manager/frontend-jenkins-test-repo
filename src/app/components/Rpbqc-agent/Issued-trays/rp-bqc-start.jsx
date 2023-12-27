@@ -89,7 +89,7 @@ export default function DialogBox() {
             let obj = {
                 username: user.username,
                 uic: uic,
-                type: 'Issued to RP-BQC',
+                type: 'RP-BQC In Progress',
             }
             const res = await axiosRpBqcAgent.post('/pedning-item', obj)
             if (res.status === 200) {

@@ -140,6 +140,7 @@ export default function StickyHeadTable({ props }) {
                                         <TableCell>Record.NO</TableCell>
                                         <TableCell>Tray Id</TableCell>
                                         <TableCell>Rack Id</TableCell>
+                                        <TableCell>Rack Display</TableCell>
                                         <TableCell>Tray Type</TableCell>
                                         <TableCell>Quantity</TableCell>
                                         <TableCell>Status</TableCell>
@@ -157,6 +158,9 @@ export default function StickyHeadTable({ props }) {
                                             <TableCell>{data.code}</TableCell>
                                             <TableCell>
                                                 {data.rack_id}
+                                            </TableCell>
+                                            <TableCell>
+                                                {data?.rackData?.[0]?.display}
                                             </TableCell>
                                             <TableCell>
                                                 {data.type_taxanomy}

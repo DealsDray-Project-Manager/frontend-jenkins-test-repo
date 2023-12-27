@@ -117,7 +117,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value?.rdl_fls_closed_date).toLocaleString(
+                    new Date(value?.rdl_fls_done_units_date).toLocaleString(
                         'en-GB',
                         {
                             hour12: true,
@@ -222,7 +222,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
                                     3: 'rack_id',
                                     4: 'display',
                                     8: 'audit_report.description',
-                                    5: 'rdl_fls_closed_date',
+                                    5: 'rdl_fls_done_units_date',
                                     6: 'rdl_fls_report.username',
                                     7: 'rdl_fls_report.description',
                                     8: 'rdl_fls_report.partRequired',

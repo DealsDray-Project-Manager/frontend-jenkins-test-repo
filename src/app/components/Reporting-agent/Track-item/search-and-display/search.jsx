@@ -9,6 +9,7 @@ import Orderdetails from './orderdetails'
 import PMTdetails from './pmtdetails'
 import WHTdetails from './whtdetails'
 import Mobiledetails from './mobiledetails'
+import BotLevelImages from './bot-level-image'
 import jwt_decode from 'jwt-decode'
 import { axiosReportingAgent } from '../../../../../axios'
 import Swal from 'sweetalert2'
@@ -149,8 +150,8 @@ const Search = () => {
                         sorting_agent_name: result?.[0]?.sorting_agent_name,
                         handover_sorting_date:
                             result?.[0]?.handover_sorting_date,
-                            tray_status:result?.[0]?.tray_status,
-                    tray_location:result?.[0]?.tray_location
+                        tray_status: result?.[0]?.tray_status,
+                        tray_location: result?.[0]?.tray_location,
                     }}
                 />
             ) : result?.[0]?.tray_type == 'PMT' ? (
@@ -162,8 +163,8 @@ const Search = () => {
                         tray_closed_by_bot: result?.[0]?.tray_closed_by_bot,
                         bot_done_received: result?.[0]?.bot_done_received,
                         tray_close_wh_date: result?.[0]?.tray_close_wh_date,
-                        tray_status:result?.[0]?.tray_status,
-                    tray_location:result?.[0]?.tray_location
+                        tray_status: result?.[0]?.tray_status,
+                        tray_location: result?.[0]?.tray_location,
                     }}
                 />
             ) : (
@@ -175,14 +176,20 @@ const Search = () => {
                         tray_closed_by_bot: result?.[0]?.tray_closed_by_bot,
                         bot_done_received: result?.[0]?.bot_done_received,
                         tray_close_wh_date: result?.[0]?.tray_close_wh_date,
-                        tray_status:result?.[0]?.tray_status,
-                    tray_location:result?.[0]?.tray_location
+                        tray_status: result?.[0]?.tray_status,
+                        tray_location: result?.[0]?.tray_location,
                     }}
                 />
             )}
-            <WHTdetails
-                WhtTrayDetails={result?.[0]?.uic_history}
-            />
+            <BotLevelImages Images={{
+                imageOne:result?.[0]?.image_one,
+                imageTwo:result?.[0]?.image_two,
+                imageThree:result?.[0]?.image_three,
+                imageFour:result?.[0]?.image_four,
+                imageFive:result?.[0]?.image_five,
+                imageSix:result?.[0]?.image_six,
+            }} />
+            <WHTdetails WhtTrayDetails={result?.[0]?.uic_history} />
         </Container>
     )
 }

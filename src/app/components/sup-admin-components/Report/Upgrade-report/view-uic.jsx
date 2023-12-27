@@ -113,6 +113,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'audit_user_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Auditor Username</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand column
+            },
+        },
+        {
             name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -252,7 +264,8 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true, // enable sorting for Brand column
 
-                customBodyRender: (value, dataIndex) => value?.description || '',
+                customBodyRender: (value, dataIndex) =>
+                    value?.description || '',
             },
         },
         {
@@ -304,7 +317,18 @@ const SimpleMuiTable = () => {
             name: 'current_tray_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Id</>
+                    <> Current Tray Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'current_tray_status',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <> Current Tray Status</>
                 </Typography>
             ),
             options: {
@@ -351,14 +375,14 @@ const SimpleMuiTable = () => {
                         customSort: (data, colIndex, order) => {
                             const columnProperties = {
                                 1: 'code',
-                                4: 'orgGrade',
-                                5: 'grade',
-                                6: 'stage',
-                                7: 'reason',
-                                8: 'description',
-                                11: 'selected_status',
-                                12: 'description',
-                                13: 'partRequired',
+                                5: 'orgGrade',
+                                6: 'grade',
+                                7: 'stage',
+                                8: 'reason',
+                                9: 'description',
+                                12: 'selected_status',
+                                13: 'description',
+                                14: 'partRequired',
 
                                 // add more columns and properties here
                             }

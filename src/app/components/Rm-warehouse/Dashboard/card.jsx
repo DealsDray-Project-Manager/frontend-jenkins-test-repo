@@ -16,10 +16,10 @@ const StatCard3 = () => {
             try {
                 let user = localStorage.getItem('prexo-authentication')
                 if (user) {
-                    let { location,user_name } = jwt_decode(user)
+                    let { location, user_name } = jwt_decode(user)
 
                     let res = await axiosRmUserAgent.post(
-                        '/dashboard/' + location + "/" + user_name
+                        '/dashboard/' + location + '/' + user_name
                     )
                     if (res.status == 200) {
                         setCount(res.data.data)
@@ -50,6 +50,12 @@ const StatCard3 = () => {
             amount: count?.issueToRdl2,
             title: 'Issue to rdl-2',
             path: '/sp-user/ready-to-rdl-2',
+        },
+        {
+            icon: 'branding_watermark',
+            amount: count?.issueRequestForToolsAndConsumables,
+            title: 'Issue Request for Tools And Consumables',
+            path: '/sp-user/requests-for-tools-and-consumables',
         },
     ]
     const { palette } = useTheme()

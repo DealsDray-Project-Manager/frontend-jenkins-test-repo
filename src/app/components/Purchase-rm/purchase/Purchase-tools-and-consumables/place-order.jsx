@@ -353,6 +353,10 @@ const SimpleMuiTable = () => {
                                     {pageData?.findTheSpnDetails?.part_code}
                                 </Typography>
                                 <Typography>
+                                    Spare Part Name :{' '}
+                                    {pageData?.findTheSpnDetails?.name}
+                                </Typography>
+                                <Typography>
                                     Technical Qc :{' '}
                                     {pageData?.findTheSpnDetails?.technical_qc}
                                 </Typography>

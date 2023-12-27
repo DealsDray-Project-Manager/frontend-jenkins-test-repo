@@ -339,13 +339,13 @@ const SimpleMuiTable = () => {
             name: 'deliveryData',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Done Date</>
+                    <>RDL 1 Done Unit Date</>
                 </Typography>
             ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
-                    new Date(value?.rdl_fls_closed_date).toLocaleString(
+                    new Date(value?.rdl_fls_done_units_date).toLocaleString(
                         'en-GB',
                         {
                             hour12: true,
@@ -542,7 +542,7 @@ const SimpleMuiTable = () => {
                                     6: 'audit_report.stage',
                                     7: 'audit_report.grade',
                                     8: 'audit_report.description',
-                                    9: 'rdl_fls_closed_date',
+                                    9: 'rdl_fls_done_units_date',
                                     10: 'rdl_fls_report.username',
                                     11: 'rdl_fls_report.description',
                                     12: 'rdl_fls_report.partRequired',

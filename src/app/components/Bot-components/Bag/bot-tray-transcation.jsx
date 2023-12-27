@@ -769,13 +769,13 @@ export default function DialogBox() {
                             <Checkbox
                                 onClick={(e) => {
                                     stickerTwo == ''
-                                        ? setStickerTwo('Device Putin Sleeve')
+                                        ? setStickerTwo('Device Put in Sleeve')
                                         : setStickerTwo('')
                                 }}
                                 {...label}
                                 sx={{ ml: 1 }}
                             />
-                            Device Putin Sleeve
+                            Device Put in Sleeve
                         </label>
                         {/* <h6>
               {" "}

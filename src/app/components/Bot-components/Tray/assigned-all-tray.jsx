@@ -148,7 +148,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'sort_id',
+            name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Action</>

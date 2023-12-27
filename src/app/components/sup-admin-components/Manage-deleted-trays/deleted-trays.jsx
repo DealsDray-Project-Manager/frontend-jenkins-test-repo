@@ -16,6 +16,7 @@ import Swal from 'sweetalert2'
 import { axiosSuperAdminPrexo } from '../../../../axios'
 import EditRoadIcon from '@mui/icons-material/EditRoad'
 import '../../../../app.css'
+import useAuth from 'app/hooks/useAuth'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -34,6 +35,7 @@ const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [trayList, setTrayList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchBrand = async () => {
@@ -60,8 +62,8 @@ const SimpleMuiTable = () => {
         return () => setIsAlive(false)
     }, [isAlive])
 
-    const handelRestore = (id) => {
-        Swal.fire({
+    const handelRestore = async (id) => {
+        const result = await Swal.fire({
             title: 'Are you sure?',
             text: 'You Want to Restore!',
             icon: 'warning',
@@ -69,42 +71,61 @@ const SimpleMuiTable = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Restore!',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    let response = await axiosSuperAdminPrexo.post(
-                        `/restoreDeletedMaster/${id}`
-                    )
-                    if (response.status == 200) {
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: response.data.message,
-                            confirmButtonText: 'Ok',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                setIsAlive((isAlive) => !isAlive)
-                            }
-                        })
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: response.data.message,
-                        })
-                    }
-                } catch (error) {
+            input: 'text', // Specify the input type as text
+            inputPlaceholder: 'Enter your reason here', // Placeholder text for the textbox
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to enter a reason!';
+                }
+            },
+        });
+    
+        // Check if the user confirmed the action and entered a reason
+        if (result.isConfirmed) {
+            const reason = result.value; // Access the value property
+    
+            try {
+                let obj = {
+                    actionUser: user.username,
+                    reason: reason,
+                    id: id,
+                };
+    
+                let response = await axiosSuperAdminPrexo.post(
+                    '/restoreDeletedMaster',
+                    obj
+                );
+    
+                if (response.status === 200) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: response.data.message,
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            setIsAlive((isAlive) => !isAlive);
+                        }
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: error,
-                    })
+                        text: response.data.message,
+                    });
                 }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error,
+                });
             }
-        })
-    }
+        }
+    };
+    
 
     const columns = [
         {

@@ -33,7 +33,7 @@ export default function StickyHeadTable({ props }) {
                     let obj = {
                         location: location,
                         fromTray: trayId,
-                        type:"sorting-request-approve"
+                        type: 'sorting-request-approve',
                     }
                     let response = await axiosWarehouseIn.post(
                         '/viewTrayFromAndTo',
@@ -211,6 +211,22 @@ export default function StickyHeadTable({ props }) {
                                                 fontSize: 15,
                                             }}
                                         >
+                                            Rack Id
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
+                                            Rack Display
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 15,
+                                            }}
+                                        >
                                             Tray Type
                                         </TableCell>
                                         <TableCell
@@ -251,13 +267,19 @@ export default function StickyHeadTable({ props }) {
                                             </TableCell>
                                             <TableCell>{data.code}</TableCell>
                                             <TableCell>
+                                                {data.rack_id}
+                                            </TableCell>
+                                            <TableCell>
+                                                {data?.rackData?.[0]?.display}
+                                            </TableCell>
+                                            <TableCell>
                                                 {data.type_taxanomy}
                                             </TableCell>
                                             <TableCell>
-                                                {data.items.length}/{data.limit}
+                                                {data?.items?.length}/{data.limit}
                                             </TableCell>
                                             <TableCell>
-                                                {data.items.length !==
+                                                {data?.items?.length !==
                                                 data?.actual_items?.length
                                                     ? 'Not Scanned'
                                                     : 'Scanned'}
@@ -266,8 +288,8 @@ export default function StickyHeadTable({ props }) {
                                                 <Button
                                                     variant="contained"
                                                     disabled={
-                                                        data.items.length ===
-                                                        data.actual_items.length
+                                                        data?.items?.length ===
+                                                        data?.actual_items?.length
                                                             ? true
                                                             : false
                                                     }
@@ -283,8 +305,8 @@ export default function StickyHeadTable({ props }) {
                                                     }}
                                                     component="span"
                                                 >
-                                                    {data.items.length ===
-                                                    data.actual_items.length
+                                                    {data?.items?.length ===
+                                                    data?.actual_items?.length
                                                         ? 'Scanned'
                                                         : 'Scan'}
                                                 </Button>

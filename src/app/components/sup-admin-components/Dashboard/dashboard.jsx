@@ -48,7 +48,7 @@ const Analytics2 = () => {
                 <H3 sx={{ m: 0 }}>DASHBOARD</H3>
                 {count?.blancoUpdationLatest !== null ? (
                     <Typography sx={{ m: 0 }}>
-                        Last Blancoo Update:{' '}
+                         Last blancoo updated through scheduler:{' '}
                         {new Date(
                             count?.blancoUpdationLatest?.createdAt
                         ).toLocaleString('en-GB', {
@@ -57,7 +57,7 @@ const Analytics2 = () => {
                     </Typography>
                 ) : (
                     <Typography sx={{ m: 0, color: 'red' }}>
-                        Last Blancoo Update:{' '}
+                         Last blancoo updated through scheduler:{' '}
                         {new Date(
                             count?.blancoUpdatelast?.createdAt
                         ).toLocaleString('en-GB', {

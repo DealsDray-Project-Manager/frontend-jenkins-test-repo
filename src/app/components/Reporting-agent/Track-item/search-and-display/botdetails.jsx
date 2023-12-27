@@ -1,6 +1,15 @@
 import { Box, Card, Divider, Stack, Typography, Grid } from '@mui/material'
+import Image from 'mui-image'
 
-const Botdetails = ({ BotTrayDetails }) => {
+const Botdetails = ({
+    BotTrayDetails,
+    imageOne,
+    imageTwo,
+    imageThree,
+    imageFour,
+    imageFive,
+    imageSix,
+}) => {
     return (
         <Card
             sx={{
@@ -117,25 +126,11 @@ const Botdetails = ({ BotTrayDetails }) => {
                                 Sorting Agnet Name:{' '}
                                 {BotTrayDetails?.sorting_agent_name}
                             </Typography>
-                            {/* <Typography
-                            sx={{ fontSize: '16px', marginBottom: '15px' }}
-                        >
-                            {' '}
-                            Tray Status:
-                            {BotTrayDetails?.tray_status 
-                              }
-                        </Typography>
-                        <Typography
-                            sx={{ fontSize: '16px', marginBottom: '15px' }}
-                        >
-                            {' '}
-                            Tray Location:
-                            {BotTrayDetails?.tray_location 
-                              }
-                        </Typography> */}
                         </Box>
                     </Grid>
+                   
                 </Box>
+              
             </Stack>
         </Card>
     )

@@ -510,7 +510,7 @@ const SimpleMuiTable = () => {
                             {value == 'Active' ? (
                                 <Radio
                                     onClick={(e) => {
-                                        handelDeactive(tableMeta.rowData[6])
+                                        handelDeactive(tableMeta.rowData[7])
                                     }}
                                     checked
                                     style={{ color: 'green' }}
@@ -518,7 +518,7 @@ const SimpleMuiTable = () => {
                             ) : (
                                 <Radio
                                     onClick={(e) => {
-                                        handelActive(tableMeta.rowData[6])
+                                        handelActive(tableMeta.rowData[7])
                                     }}
                                     checked
                                     style={{ color: 'red' }}
@@ -527,7 +527,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editUser(tableMeta.rowData[6])
+                                        editUser(tableMeta.rowData[7])
                                     }}
                                     color="primary"
                                 >
@@ -537,7 +537,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelHistory(e, tableMeta.rowData[6])
+                                        handelHistory(e, tableMeta.rowData[7])
                                     }}
                                     color="secondary"
                                 >

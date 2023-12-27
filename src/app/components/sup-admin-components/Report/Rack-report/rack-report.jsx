@@ -99,17 +99,17 @@ const SimpleMuiTable = () => {
                 Limit: x?.limit,
                 'Tray Count': x?.rack_count,
                 'Upcoming Tray Count': x?.upcoming_tray_count,
-                BOT: x?.count_report?.BOT,
-                MMT: x?.count_report?.MMT,
-                PMT: x?.count_report?.PMT,
-                WHT: x?.count_report?.WHT,
-                CT: x?.count_report?.CT,
-                ST: x?.count_report?.ST,
-                RPT: x?.count_report?.RPT,
-                SPT: x?.count_report?.SPT,
-                RPA: x?.count_report?.RPA,
-                RPB: x?.count_report?.RPB,
-                SPT: x?.count_report?.SPT,
+                BOT: x?.BOT,
+                MMT: x?.MMT,
+                PMT: x?.PMT,
+                WHT: x?.WHT,
+                CT: x?.CT,
+                ST: x?.ST,
+                RPT: x?.RPT,
+                SPT: x?.SPT,
+                RPA: x?.RPA,
+                RPB: x?.RPB,
+                SPT: x?.SPT,
                 'Last Modified User': x?.lat_modified_username,
                 'Last Modified Timestamp': '',
             }
@@ -248,7 +248,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'count_report',
+            name: 'BOT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>BOT</>
@@ -256,11 +256,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.BOT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'MMT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>MMT</>
@@ -268,11 +267,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.MMT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'PMT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>PMT</>
@@ -280,11 +278,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.PMT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'WHT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>WHT</>
@@ -292,11 +289,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.WHT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'CT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>CT</>
@@ -304,11 +300,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.CT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'ST',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>ST</>
@@ -316,11 +311,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.ST || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'RPT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>RPT</>
@@ -328,11 +322,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.RPT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'SPT',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>SPT</>
@@ -340,11 +333,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.SPT || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'RPA',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>RPA</>
@@ -352,11 +344,10 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.RPA || '',
             },
         },
         {
-            name: 'count_report',
+            name: 'RPB',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>RPB</>
@@ -364,7 +355,6 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.RPB || '',
             },
         },
         {
@@ -469,16 +459,7 @@ const SimpleMuiTable = () => {
                             // pagination: true, //set pagination option
                             // viewColumns: false, // set column option
                             customSort: (data, colIndex, order) => {
-                                const columnProperties = {
-                                    9: 'BOT',
-                                    10: 'MMT',
-                                    11: 'PMT',
-                                    12: 'WHT',
-                                    13: 'CT',
-                                    14: 'ST',
-                                    15: 'RPT',
-                                    16: 'SPT',
-                                }
+                                const columnProperties = {}
 
                                 const property = columnProperties[colIndex]
 

@@ -77,7 +77,7 @@ const SimpleMuiTable = () => {
                     let obj = {
                         allTray: botTray,
                         type: type,
-                        actionUser:user.username,
+                        actionUser: user.username,
                         username: botTray[0]?.issued_user_name,
                     }
                     let res = await axiosWarehouseIn.post(
@@ -163,6 +163,18 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'type_taxanomy',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
@@ -187,7 +199,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    value?.length + '/' + tableMeta.rowData[4],
+                    value?.length + '/' + tableMeta.rowData[5],
             },
         },
         {
@@ -197,12 +209,12 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return value == 'Sorting Request Sent To Warehouse' &&
-                        tableMeta.rowData[7] == 'BOT'
+                        tableMeta.rowData[8] == 'BOT'
                         ? 'Not Issued'
-                        : tableMeta.rowData[7] == 'WHT' &&
-                          tableMeta.rowData[5]?.length !== 0
+                        : tableMeta.rowData[8] == 'WHT' &&
+                          tableMeta.rowData[6]?.length !== 0
                         ? 'Not Issued'
-                        : tableMeta.rowData[5] == 'WHT'
+                        : tableMeta.rowData[6] == 'WHT'
                         ? 'New WHT'
                         : 'Issued'
                 },
@@ -215,14 +227,14 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort_id: false,
                 customBodyRender: (value, tableMeta) => {
-                    return tableMeta.rowData[7] == 'BOT' ||
-                        (tableMeta.rowData[7] == 'WHT' &&
-                            tableMeta.rowData[5]?.length !== 0) ? (
+                    return tableMeta.rowData[8] == 'BOT' ||
+                        (tableMeta.rowData[8] == 'WHT' &&
+                            tableMeta.rowData[6]?.length !== 0) ? (
                         <Button
                             variant="contained"
                             disabled={
-                                tableMeta.rowData[5]?.length ===
-                                tableMeta.rowData[8]?.length
+                                tableMeta.rowData[6]?.length ===
+                                tableMeta.rowData[9]?.length
                                     ? true
                                     : false
                             }
@@ -232,8 +244,8 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'primery' }}
                             component="span"
                         >
-                            {tableMeta.rowData[5]?.length ===
-                            tableMeta.rowData[8]?.length
+                            {tableMeta.rowData[6]?.length ===
+                            tableMeta.rowData[9]?.length
                                 ? 'Scanned'
                                 : ' Issue Now'}
                         </Button>

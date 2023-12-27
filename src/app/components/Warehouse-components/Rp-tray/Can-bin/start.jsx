@@ -57,6 +57,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }))
 const BootstrapDialogTitle = (props) => {
+    
     const { children, onClose, ...other } = props
     return (
         <DialogTitle sx={{ m: 0, p: 2 }} {...other}>

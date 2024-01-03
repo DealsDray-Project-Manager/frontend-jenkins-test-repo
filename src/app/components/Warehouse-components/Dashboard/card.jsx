@@ -283,7 +283,7 @@ const StatCard3 = () => {
             icon: 'shopping_cart',
             amount: count.ctxReceiveRequest,
             title: 'Tray Receive Request',
-            path: '/wareshouse/ctx/receive/request',
+            path: '/wareshouse/tray/receive/request',
             sales: 'all',
         },
         {
@@ -333,6 +333,20 @@ const StatCard3 = () => {
             amount: count.returnFromDisplayGrading,
             title: 'Return From Display Grading',
             path: '/warehouse/stx/return-from-display-grading',
+            sales: true,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.assignedTraysRpaToStx,
+            title: 'Assigned Trays (RPA TO STX)',
+            path: '/warehouse/rpa-to-stx/assigned-trays',
+            sales: true,
+        },
+        {
+            icon: 'shopping_cart',
+            amount: count.rpaToStxWorkInProgressTrays,
+            title: 'RPA to STX Work In Progress Trays',
+            path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
             sales: true,
         },
     ]

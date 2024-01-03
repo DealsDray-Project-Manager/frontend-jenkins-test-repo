@@ -35,7 +35,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const CustomerBillings = ({ Rpbqc }) => {
     return (
         <Card elevation={3}>
-            <H4 sx={{ p: 2 }}>RPBQC Report</H4>
+            <H4 sx={{ p: 2 }}>RP-BQC Report</H4>
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>

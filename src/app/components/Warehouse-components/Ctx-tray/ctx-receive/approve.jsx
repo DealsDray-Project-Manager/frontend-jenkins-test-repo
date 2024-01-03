@@ -178,7 +178,7 @@ export default function DialogBox() {
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
-                navigate('/wareshouse/ctx/receive/request')
+                navigate('/wareshouse/tray/receive/request')
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -355,7 +355,7 @@ export default function DialogBox() {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'CTX', path: '/' },
+                        { name: 'Tray', path: '/' },
                         { name: 'Recieve', path: '/' },
                         { name: 'Tray Close' },
                     ]}

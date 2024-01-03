@@ -204,7 +204,7 @@ export default function DialogBox() {
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
-                    navigate('/wareshouse/wht/return-from-rdl-1')
+                    navigate('/warehouse/rpt/return-from-rdl-2')
                 } else {
                     Swal.fire({
                         position: 'top-center',

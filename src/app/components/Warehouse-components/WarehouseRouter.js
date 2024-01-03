@@ -665,11 +665,11 @@ const WarehoueRouter = [
         element: <CtxTransferApprove />,
     },
     {
-        path: '/wareshouse/ctx/receive/request',
+        path: '/wareshouse/tray/receive/request',
         element: <CtxTrayReceiveFromProcessing />,
     },
     {
-        path: '/wareshouse/ctx/receive/request/approve/:trayId',
+        path: '/wareshouse/tray/receive/request/approve/:trayId',
         element: <CtxTrayReceiveApprove />,
     },
     {

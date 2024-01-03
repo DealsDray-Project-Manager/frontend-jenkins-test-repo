@@ -412,7 +412,7 @@ const dataTableRoutes = [
         element: <CtxTrayTransfer />,
     },
     {
-        path: '/mis/ctx/receive',
+        path: '/mis/tray/receive',
         element: <CtxTrayReceiveFromProcessing />,
     },
     {

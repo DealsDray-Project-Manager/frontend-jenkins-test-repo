@@ -777,7 +777,7 @@ export const navigations = [
             },
             {
                 name: 'Receive',
-                path: '/mis/ctx/receive',
+                path: '/mis/tray/receive',
                 iconText: 'VP',
             },
         ],
@@ -794,7 +794,7 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RPA to Stx Work In Progress Trays',
+                name: 'RPA to STX Work In Progress Trays',
                 path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
                 iconText: 'VP',
             },
@@ -1143,7 +1143,7 @@ export const navigations = [
             },
             {
                 name: 'Receive Request',
-                path: '/wareshouse/ctx/receive/request',
+                path: '/wareshouse/tray/receive/request',
                 iconText: 'VP',
             },
         ],
@@ -1327,7 +1327,6 @@ export const navigations = [
                 path: '/mis/report/sales-stock',
                 iconText: 'VP',
             },
-           
         ],
         auth: authRoles.Mis,
         sales: true,

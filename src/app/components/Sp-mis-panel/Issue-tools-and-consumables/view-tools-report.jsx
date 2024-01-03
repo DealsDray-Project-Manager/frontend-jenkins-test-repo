@@ -165,7 +165,8 @@ const RequestApprove = () => {
                     MIS Description: {toolsAndConsumables?.mis_description}
                 </Typography>
                 <Typography variant="subtitle1">
-                    Warehouse Description: {toolsAndConsumables?.warehouse_description}
+                    Warehouse Description:{' '}
+                    {toolsAndConsumables?.warehouse_description}
                 </Typography>
             </div>
             <Table className="custom-table">

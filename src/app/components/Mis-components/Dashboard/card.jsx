@@ -199,7 +199,7 @@ const StatCard3 = () => {
             icon: 'shopping_cart',
             amount: count.receiveCtx,
             title: 'Receive Tray',
-            path: '/mis/ctx/receive',
+            path: '/mis/tray/receive',
             sales: 'all',
         },
         {
@@ -214,6 +214,13 @@ const StatCard3 = () => {
             amount: count.stxMerge,
             title: 'Assign for Display Grading',
             path: '/mis/assign-to-agent-for-display-grading',
+            sales: true,
+        },
+        {
+            icon: 'merge_type',
+            amount: count.rpaToStxSorting,
+            title: 'RPA to STX',
+            path: '/mis/rpa-to-stx',
             sales: true,
         },
         {

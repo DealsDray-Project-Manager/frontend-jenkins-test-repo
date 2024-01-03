@@ -81,6 +81,14 @@ function IssueToolsAndConsumables() {
             },
         },
         {
+            name: 'tools_and_consumables_list',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Count Of Tools & Consumables Issued</Typography>,
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => value.length,
+            },
+        },
+        {
             name: 'assigned_date',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>

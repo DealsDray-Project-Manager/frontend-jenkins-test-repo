@@ -29,7 +29,8 @@ import PrevChargingReport from '../../Audit-components/Audit-request/Report/prev
 import PrevBqcReport from '../../Audit-components/Audit-request/Report/pre-bqc-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
-import RpbqcSummery from './Rpbqc-agent-report'
+import RpbqcReport from './Rpbqc-agent-report'
+import RpBqcSummary from "./rp-bqc-summary"
 import Swal from 'sweetalert2'
 import {
     axiosAuditAgent,
@@ -266,7 +267,7 @@ function StartRpAudit() {
         return (
             <Grid sx={{ mt: 1 }} container spacing={3}>
                 <Grid item lg={12} md={12} xs={12}>
-                    <BqcApiReport
+                    <RpBqcSummary
                         BqcSowftwareReport={
                             resDataUic?.orderAndDelivery?.[0]
                                 ?.rp_bqc_software_report
@@ -337,7 +338,7 @@ function StartRpAudit() {
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
-                    <RpbqcSummery
+                    <RpbqcReport
                         Rpbqc={resDataUic?.orderAndDelivery?.[0]?.rp_bqc_report}
                     />
                 </Grid>

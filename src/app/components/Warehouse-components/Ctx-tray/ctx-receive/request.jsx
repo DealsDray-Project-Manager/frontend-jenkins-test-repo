@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/wareshouse/ctx/receive/request/approve/' + trayId)
+        navigate('/wareshouse/tray/receive/request/approve/' + trayId)
     }
     const handleClose = () => {
         setOpen(false)

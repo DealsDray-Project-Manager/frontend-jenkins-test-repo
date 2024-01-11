@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_2_user_temp',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Scan In Agent
+                    Scan In User
                 </Typography>
             ),
             options: {

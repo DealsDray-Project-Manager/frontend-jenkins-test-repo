@@ -50,7 +50,7 @@ const SimpleMuiTable = () => {
     }, [])
 
     const handelViewItem = (id) => {
-        navigate('/wareshouse/tray/view-item/' + id)
+        navigate('/warehouse/stx/view-units/' + id)
     }
     // CHANGE RACK
     const handelChangeRack = async (id) => {
@@ -91,9 +91,31 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'name',
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Tray Name
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'tray_grade',
+            label: (
+                <Typography fontWeight="bold" variant="subtitle1">
+                    Tray Grade
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'rackDetails',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
+                <Typography fontWeight="bold" variant="subtitle1">
                     Rack Display
                 </Typography>
             ),
@@ -136,7 +158,7 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'items',
+            name: 'items_length',
             label: (
                 <Typography fontWeight="bold" variant="subtitle1">
                     Quantity
@@ -146,11 +168,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value.length == 0
-                            ? tableMeta.rowData[4].length
-                            : value.length) +
+                        (value == 0 ? tableMeta.rowData[6] : value) +
                         '/' +
-                        tableMeta.rowData[5]
+                        tableMeta.rowData[7]
                     )
                 },
             },
@@ -160,24 +180,14 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography fontWeight="bold" variant="subtitle1">
-                    Agent Name
+                    User Name
                 </Typography>
             ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'name',
-            label: (
-                <Typography fontWeight="bold" variant="subtitle1">
-                    Tray Name
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        
 
         {
             name: 'brand',
@@ -213,21 +223,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'created_at',
-            label: (
-                <Typography fontWeight="bold" variant="subtitle1">
-                    Creation Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
+        
         {
             name: 'code',
             label: (

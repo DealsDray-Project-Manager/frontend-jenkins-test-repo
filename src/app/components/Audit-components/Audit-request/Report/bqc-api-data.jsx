@@ -17,7 +17,13 @@ const FlexBox = styled(Box)(() => ({
     alignItems: 'center',
 }))
 
-const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
+const BqcSowftwareReportPage = ({
+    BqcSowftwareReport,
+    grade,
+    imei,
+    cimei_1,
+    cimei_2,
+}) => {
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summary</H4>
@@ -33,7 +39,9 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                         imei?.match(/[0-9]/g)?.join('') ==
                             BqcSowftwareReport?.mobile_imei2 ||
                         imei?.match(/[0-9]/g)?.join('') ==
-                            BqcSowftwareReport?._ro_ril_miui_imei0 ? (
+                            BqcSowftwareReport?._ro_ril_miui_imei0 ||
+                        imei?.match(/[0-9]/g)?.join('') == cimei_1 ||
+                        imei?.match(/[0-9]/g)?.join('') == cimei_2 ? (
                             <TableCell style={{ color: 'green' }}>
                                 Verified
                             </TableCell>

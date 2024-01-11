@@ -40,7 +40,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/stxTray/' + 'Inuse/' + location
+                        '/stxTray/' + 'Merge/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)

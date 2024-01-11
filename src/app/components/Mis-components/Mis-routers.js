@@ -168,8 +168,22 @@ const SalesMisStockReportWithMuic = Loadable(
 const SalesMisStockReportViewUicMuicBase = Loadable(
     lazy(() => import('./Report/Sales-stock-report/Sales-stock-with-muic/view-uic-with-muic'))
 )
+const ViewWhtAndEditTryas = Loadable(
+    lazy(() => import('./Edit-trays/wht-trays'))
+)
+const ViewStxAndEditTryas = Loadable(
+    lazy(() => import('./Edit-trays/stx-trays'))
+)
 
 const dataTableRoutes = [
+    {
+        path: '/mis/manage-stx-trays',
+        element: <ViewStxAndEditTryas />,
+    },
+    {
+        path: '/mis/manage-wht-trays',
+        element: <ViewWhtAndEditTryas />,
+    },
     {
         path: '/mis/report/sales-stock-with-muic/view-uic/:itemId',
         element: <SalesMisStockReportViewUicMuicBase />,
@@ -199,11 +213,11 @@ const dataTableRoutes = [
         element: <StxToStxUtilityScanUic />,
     },
     {
-        path: '/mis/sorting/wht-to-rp-without-sp/process/:brand/:model',
+        path: '/mis/sorting/wht-to-rp-mb-sft-work/process/:brand/:model',
         element: <WhtToRpRepairWithoutSpCompBrandAndModelProcess />,
     },
     {
-        path: '/mis/sorting/wht-to-rp-without-sp',
+        path: '/mis/sorting/wht-to-rp-mb-sft-work',
         element: <WhtToRpRepairWithoutSpCompBrandAndModel />,
     },
     {

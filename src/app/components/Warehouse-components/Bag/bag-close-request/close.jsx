@@ -206,7 +206,7 @@ export default function DialogBox() {
         }
     }
     /************************************************************************** */
-   
+
     /************************************************************************** */
     const handelIssue = async (e, bagId) => {
         e.preventDefault()
@@ -422,8 +422,7 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
-                                <TableCell>Order ID</TableCell>
-                                <TableCell>Order Date</TableCell>
+                                <TableCell>Delivery Date</TableCell>
                                 <TableCell>Status</TableCell>
                             </TableRow>
                         </TableHead>
@@ -435,11 +434,9 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.bag_id}</TableCell>
-
-                                    <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
                                         {new Date(
-                                            data?.order_date
+                                            data?.delivery_date
                                         ).toLocaleString('en-GB', {
                                             year: 'numeric',
                                             month: '2-digit',
@@ -579,8 +576,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>Bag Id</TableCell>
-                                <TableCell>Order ID</TableCell>
-                                <TableCell>Order Date</TableCell>
+
+                                <TableCell>Delivery Date</TableCell>
                                 <TableCell>Status</TableCell>
                             </TableRow>
                         </TableHead>
@@ -597,10 +594,9 @@ export default function DialogBox() {
                                         </TableCell>
                                         <TableCell>{data?.uic}</TableCell>
                                         <TableCell>{data?.bag_id}</TableCell>
-                                        <TableCell>{data?.order_id}</TableCell>
                                         <TableCell>
                                             {new Date(
-                                                data?.order_date
+                                                data?.delivery_date
                                             ).toLocaleString('en-GB', {
                                                 year: 'numeric',
                                                 month: '2-digit',
@@ -676,7 +672,7 @@ export default function DialogBox() {
                 >
                     <h3 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h3>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {employeeData[0]?.issued_user_name}
+                        User Name - {employeeData[0]?.issued_user_name}
                     </h4>
                 </Box>
                 <Box

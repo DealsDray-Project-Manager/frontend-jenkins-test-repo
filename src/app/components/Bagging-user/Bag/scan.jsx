@@ -215,7 +215,7 @@ const PaginationTable = () => {
                         bag_id: bagId,
                         awbn_number: awbn.tracking_id,
                         order_id: awbn.order_id,
-                        order_date: awbn.order_date,
+                        delivery_date: awbn.delivery_date,
                         status: status,
                         sotckin_date: Date.now(),
                         old_item_details: awbn.old_item_details,
@@ -375,15 +375,10 @@ const PaginationTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[
-                        { name: 'Bag', path: '/' },
-                        { name: 'Scan' },
-                    ]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'Bagging', path: '/' }]} />
             </div>
 
-            <SimpleCard title="Item">
+            <SimpleCard title="Bag-ID">
                 <Box
                     sx={{
                         display: 'flex',
@@ -397,14 +392,12 @@ const PaginationTable = () => {
                             justifyContent: 'row',
                         }}
                     >
-                        
                         <TextField
                             size="medium"
                             variant="outlined"
-                            type="text"
                             label="Bag ID"
                             onChange={(e) => setBagId(e.target.value)}
-                            autoComplete="off" // Disable autocomplete suggestions
+                            inputProps={{ autoComplete: 'off' }} // Additional attribute for better browser compatibility
                         />
                         <Button
                             sx={{ ml: 2, mb: 1, mt: 1, mr: 2, height: '37px' }}
@@ -510,7 +503,7 @@ const PaginationTable = () => {
                                     m: 2,
                                 }}
                             >
-                                <h4>Invalid</h4>
+                                <h4>Delivered Earlier</h4>
                                 <h4
                                     style={{
                                         marginLeft: '13px',
@@ -575,7 +568,7 @@ const PaginationTable = () => {
                             <TableCell
                                 sx={{ fontWeight: 'bold', fontSize: '14px' }}
                             >
-                                Order Date
+                                Delivery Date
                             </TableCell>
                             <TableCell
                                 sx={{ fontWeight: 'bold', fontSize: '14px' }}
@@ -591,10 +584,10 @@ const PaginationTable = () => {
                                 <TableCell>{data?.awbn_number}</TableCell>
                                 <TableCell>{data?.order_id}</TableCell>
                                 <TableCell>
-                                    {data?.order_date == null
+                                    {data?.delivery_date == null
                                         ? 'No Order Date'
                                         : new Date(
-                                              data?.order_date
+                                              data?.delivery_date
                                           ).toLocaleString('en-GB', {
                                               year: 'numeric',
                                               month: '2-digit',

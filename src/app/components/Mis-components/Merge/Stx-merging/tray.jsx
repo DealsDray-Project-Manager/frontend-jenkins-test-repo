@@ -100,7 +100,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let response = await axiosWarehouseIn.post(
-                        '/stxTray/' + 'Inuse/' + location
+                        '/stxTray/' + 'Merge/' + location
                     )
                     if (response.status === 200) {
                         setIsLoading(false)
@@ -482,7 +482,7 @@ const SimpleMuiTable = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            Sorting Agent
+                            Sorting User
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"

@@ -190,15 +190,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'sort_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
@@ -259,7 +251,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[3] != 'Received From RDL-1' ? (
+                            {tableMeta.rowData[2] != 'Received From RDL-1' ? (
                                 <Button
                                     sx={{
                                         m: 1,

@@ -155,7 +155,7 @@ const SimpleMuiTable = ({ partsNotAvailable }) => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Repair item</>
+                    <>Spare Part Name</>
                 </Typography>
             ),
             options: {

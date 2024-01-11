@@ -45,7 +45,7 @@ const CustomerBillings = ({ Rpbqc }) => {
                     </TableRow>
 
                     <TableRow key={Rpbqc?.description}>
-                        <TableCell sx={{ pl: 2 }}>RPB-BQC remark:</TableCell>
+                        <TableCell sx={{ pl: 2 }}>RP-BQC remark:</TableCell>
                         <TableCell>{Rpbqc?.description}</TableCell>
                     </TableRow>
                 </TableBody>

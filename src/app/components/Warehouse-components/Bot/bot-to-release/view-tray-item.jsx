@@ -3,8 +3,10 @@ import { Breadcrumb } from 'app/components'
 import React, { useState, useEffect } from 'react'
 import { styled } from '@mui/system'
 import { useParams } from 'react-router-dom'
-import { axiosBot, } from '../../../../../axios'
+import { axiosBot } from '../../../../../axios'
 import Swal from 'sweetalert2'
+import '../../../../../app.css'
+import { Table,Typography } from '@mui/material'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -21,8 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true)
     const [botTray, setBotTray] = useState([])
-    const {trayId}=useParams()
-   
+    const { trayId } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,52 +47,60 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: 'Record No',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 1 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender: (rowIndex, dataIndex) =>
-                    dataIndex.rowIndex + 1,
+                // setCellProps: () => ({ align: 'center' }),
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'uic',
-            label: 'UIC',
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'imei',
-            label: 'IMEI',
+            label: <Typography sx={{ fontWeight: 'bold' }}>IMEI</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: 'MUIC',
+            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand',
-            label: 'Brand',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model',
-            label: 'Model',
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'wht_tray',
-            label: 'WHT Tray',
+            label: <Typography sx={{ fontWeight: 'bold' }}>WHT Tray</Typography>,
             options: {
                 filter: true,
             },
@@ -108,27 +117,28 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-
-            <MUIDataTable
-                title={'Tray'}
-                data={botTray.items}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download:false,
-                    print:false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Tray'}
+                    data={botTray.items}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }

@@ -318,7 +318,7 @@ const TrackItem = () => {
                                 width: '160px',
                             }}
                         >
-                            BOT Agent Name
+                            BOT User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -327,7 +327,7 @@ const TrackItem = () => {
                                 width: '240px',
                             }}
                         >
-                            Assigned to BOT Agent Date
+                            Assigned to BOT User Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -399,7 +399,7 @@ const TrackItem = () => {
                                 width: '240px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -507,7 +507,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            BQC Agent Name
+                            BQC User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -607,7 +607,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-1 Agent name
+                            RDL-1 User name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -699,7 +699,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -708,7 +708,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -726,7 +726,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Done Closed by Agent
+                            Sorting Done Closed by User
                         </TableCell>
                         <TableCell
                             sx={{
@@ -771,7 +771,7 @@ const TrackItem = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-2 Done Closed By Agent
+                            RDL-2 Done Closed By User
                         </TableCell>
                         <TableCell
                             sx={{

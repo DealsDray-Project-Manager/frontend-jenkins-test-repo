@@ -174,7 +174,7 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Approve
+                            Receive
                         </Button>
                     )
                 },

@@ -5,9 +5,8 @@ import { styled } from '@mui/system'
 import { axiosBot } from '../../../../axios'
 import { useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Typography,Table } from '@mui/material'
+import { Typography, Table } from '@mui/material'
 import '../../../../app.css'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -31,7 +30,6 @@ const SimpleMuiTable = () => {
             try {
                 let res = await axiosBot.post('/trayItem/' + trayId)
                 if (res.status == 200) {
-                    console.log(res.data.data);
                     setTrayData(res.data.data?.items)
                 }
             } catch (error) {
@@ -46,7 +44,6 @@ const SimpleMuiTable = () => {
         return () => setIsAlive(false)
     }, [])
 
-
     const columns = [
         {
             name: 'index',
@@ -59,7 +56,9 @@ const SimpleMuiTable = () => {
                 filter: false,
                 sort: false,
                 customBodyRender: (rowIndex, dataIndex) => (
-                    <Typography sx={{ pl: 4 }}>{dataIndex.rowIndex + 1}</Typography>
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
                 ),
             },
         },
@@ -86,7 +85,9 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'body_damage',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Body Damage</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Body Damage</Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -102,67 +103,14 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'item_recieved',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Item Recieved in Packet
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model_brand',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Mismatched Model Brand Name
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerOne',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Other Info 1</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerTwo',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Other Info 2</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerThree',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Other Info 3</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerFour',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Other Info 4</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'added_time',
-            label: <Typography sx={{ fontWeight: 'bold' }}>Added Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Added in BOT Tray
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -184,47 +132,46 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Table className="custom-table">
-            <MUIDataTable
-                title={'Tray'}
-                data={trayData}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
+                <MUIDataTable
+                    title={'Tray'}
+                    data={trayData}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        customSort: (data, colIndex, order) => {
+                            return data.sort((a, b) => {
+                                if (colIndex === 1) {
+                                    return (
+                                        (a.data[colIndex].price <
+                                        b.data[colIndex].price
+                                            ? -1
+                                            : 1) * (order === 'desc' ? 1 : -1)
+                                    )
+                                }
                                 return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
+                                    (a.data[colIndex] < b.data[colIndex]
                                         ? -1
                                         : 1) * (order === 'desc' ? 1 : -1)
                                 )
-                            }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
-                </Table>
+                            })
+                        },
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
+            </Table>
         </Container>
     )
 }
-
-
 
 export default SimpleMuiTable

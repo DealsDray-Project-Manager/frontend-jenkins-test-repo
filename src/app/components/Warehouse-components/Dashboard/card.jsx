@@ -303,8 +303,8 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.returnFromRpaOrRpb,
-            title: 'Return From Agent (RPA/RPB)',
-            path: '/warehouse/rpa-rpb-return-from-agent',
+            title: 'Tray Issue/return (RPA/RPB)',
+            path: '/warehouse/rpa-rpb-tray-issue-or-return',
             sales: false,
         },
         {

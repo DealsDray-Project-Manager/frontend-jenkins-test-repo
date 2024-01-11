@@ -236,7 +236,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -332,7 +332,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -368,7 +368,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -414,7 +414,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Issue To Agent
+                        Issue To User
                     </Button>
                 </Box>
             </div>

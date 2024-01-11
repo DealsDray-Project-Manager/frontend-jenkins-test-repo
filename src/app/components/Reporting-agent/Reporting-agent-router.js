@@ -72,8 +72,19 @@ const UnVerifiedImeiReport = Loadable(lazy(() => import('./Unverified-imei-repor
 const Rdl2Output = Loadable(lazy(() => import('./Report/Rdl-2-output/rdl-2-output')))
 // PART INVENTORY LEDGER 
 const PartInventoryLedger=Loadable(lazy(() => import('./Track-item/part-inventory-ledger/part-inventory-ledger')))
-
+// BAGS IN PROGRESS
+const BagsInprogress=Loadable(lazy(() => import('./Bags/bag-in-progress')))
+// BOTSORTING INPRPGRESS
+const BotSortingInprogress=Loadable(lazy(() => import('./Bot-tray/bot-in-sorting')))
 const ReportingRouter = [
+    {
+        path: '/reporting/bot-tray/sorting-inprogress',
+        element: <BotSortingInprogress />,
+    },
+    {
+        path: '/reporting/bags/issued',
+        element: <BagsInprogress />,
+    },
     {
         path: '/reporting/inventory-ledger',
         element: <PartInventoryLedger />,
@@ -96,7 +107,7 @@ const ReportingRouter = [
         element: <NotDeliverdOrders />,
     },
     {
-        path: '/reporting/delivered-orders',
+        path: '/reporting/opened-packets',
         element: <DeliveredOrders />,
     },
     {

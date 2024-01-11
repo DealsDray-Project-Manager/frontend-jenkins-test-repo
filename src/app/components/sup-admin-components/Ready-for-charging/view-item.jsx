@@ -131,40 +131,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'tracking_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tracking ID</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'tray_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>BOT Tray</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'bot_agent',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>BOT Agent</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
     ]
 
     return (

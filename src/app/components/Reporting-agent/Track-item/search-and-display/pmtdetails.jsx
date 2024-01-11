@@ -17,7 +17,7 @@ const PMTdetails = ({ PmtTrayDetails }) => {
                     fontWeight: 'bold',
                 }}
             >
-                PMT details
+                PMT Details
             </Typography>
             <Divider />
             <Stack
@@ -29,7 +29,7 @@ const PMTdetails = ({ PmtTrayDetails }) => {
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
-                            Tray id: {PmtTrayDetails?.tray_id}
+                            Tray ID: {PmtTrayDetails?.tray_id}
                         </Typography>
 
                         <Typography
@@ -47,14 +47,14 @@ const PMTdetails = ({ PmtTrayDetails }) => {
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
-                            Bot Agent name: {PmtTrayDetails?.agent_name}
+                            BOT Agent name: {PmtTrayDetails?.agent_name}
                         </Typography>
                     </Box>
                     <Box sx={{ marginLeft: '50px', fontSize: '16px' }}>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
-                            Tray Closed Date Bot:{' '}
+                            Tray Closed Date BOT:{' '}
                             {PmtTrayDetails?.tray_closed_by_bot != undefined
                                 ? new Date(
                                       PmtTrayDetails?.tray_closed_by_bot

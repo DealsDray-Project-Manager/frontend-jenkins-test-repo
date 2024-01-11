@@ -4,10 +4,10 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
-import moment from 'moment' 
+import moment from 'moment'
 import {
     TableCell,
-    TableHead, 
+    TableHead,
     Table,
     TableRow,
     TableBody,
@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
                                 '/' +
                                 rowsPerPage
                         )
-                      
+
                         if (res.status == 200) {
                             setDisplayText('')
                             setCount(res.data.count)
@@ -251,9 +251,9 @@ const SimpleMuiTable = () => {
             let obj = {
                 'Order Id': x?.order_id,
                 'Tracking Id': x?.tracking_id,
-                'Model Name': x?.old_item_details?.replace(/:/g, ' ').toUpperCase(),
-                IMEI: x?.imei,
-                'SKU Name': x?.item_id,
+                'Model Name': x?.products?.[0]?.model_name,
+                'Purchase IMEI': x?.imei,
+                'Item ID': x?.item_id,
                 'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
                 UIC: x?.uic_code?.code,
                 Price: x?.partner_purchase_price,
@@ -263,7 +263,7 @@ const SimpleMuiTable = () => {
             if (x.tray_type == 'MMT') {
                 obj['Type'] = 'Model MisMatch MMT'
             } else if (x.tray_type == 'PMT') {
-                obj['Type'] = 'Product MisMatch MMT'
+                obj['Type'] = 'Product MisMatch PMT'
             } else {
                 obj['Type'] = 'Model Verified BOT'
             }
@@ -291,20 +291,20 @@ const SimpleMuiTable = () => {
             } else {
                 obj['Delivery Date'] = ''
             }
-            if (
-                x?.assign_to_agent !== undefined &&
-                x?.assign_to_agent !== null
-            ) {
-                obj['Packet Open Date'] = new Date(
-                    x?.assign_to_agent
-                ).toLocaleString('en-GB', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                })
-            } else {
-                obj['Packet Open Date'] = ''
-            }
+            // if (
+            //     x?.assign_to_agent !== undefined &&
+            //     x?.assign_to_agent !== null
+            // ) {
+            //     obj['Packet Open Date'] = new Date(
+            //         x?.assign_to_agent
+            //     ).toLocaleString('en-GB', {
+            //         year: 'numeric',
+            //         month: '2-digit',
+            //         day: '2-digit',
+            //     })
+            // } else {
+            //     obj['Packet Open Date'] = ''
+            // }
 
             arr.push(obj)
         }
@@ -316,7 +316,10 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Month Wise Purchase Details' + fileExtension)
+        FileSaver.saveAs(
+            data,
+            'Weekly/Month Wise Purchase Details' + fileExtension
+        )
     }
     const dataFilter = async () => {
         try {
@@ -330,7 +333,7 @@ const SimpleMuiTable = () => {
                 '/monthWiseReport/item/filter',
                 filterData
             )
-          
+
             if (res.status === 200) {
                 setDisplayText('')
                 setCount(res.data.count)
@@ -351,9 +354,22 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontSize:'16px', fontWeight:'bold', width:'150px'}}>Record.NO</TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold', width:'200px', cursor: 'pointer' }}
+                            sx={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '150px',
+                            }}
+                        >
+                            Record.NO
+                        </TableCell>
+                        <TableCell
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '200px',
+                                cursor: 'pointer',
+                            }}
                             onClick={() => handleSort('order_id')}
                         >
                             Order ID{' '}
@@ -365,7 +381,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('tracking_id')}
                         >
                             Tracking ID{' '}
@@ -377,7 +398,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('model_name')}
                         >
                             Model Name{' '}
@@ -389,10 +415,15 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , width:'150px', cursor: 'pointer' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                width: '150px',
+                                cursor: 'pointer',
+                            }}
                             onClick={() => handleSort('imei')}
                         >
-                            IMEI{' '}
+                            Purchase IMEI{' '}
                             {sortColumn === 'imei' &&
                                 sortDirection === 'asc' &&
                                 '↑'}
@@ -401,10 +432,15 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('sku_name')}
                         >
-                            SKU Name{' '}
+                            Item ID{' '}
                             {sortColumn === 'sku_name' &&
                                 sortDirection === 'asc' &&
                                 '↑'}
@@ -413,7 +449,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'250px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '250px',
+                            }}
                             onClick={() => handleSort('bot_remark')}
                         >
                             Received Units Remarks (BOT){' '}
@@ -425,7 +466,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('type')}
                         >
                             Type{' '}
@@ -437,7 +483,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('uic')}
                         >
                             UIC{' '}
@@ -449,7 +500,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer' , width:'100px'}}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '100px',
+                            }}
                             onClick={() => handleSort('price')}
                         >
                             Price{' '}
@@ -461,7 +517,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('order_date')}
                         >
                             Order Date{' '}
@@ -473,7 +534,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('location')}
                         >
                             Location{' '}
@@ -485,7 +551,12 @@ const SimpleMuiTable = () => {
                                 '↓'}
                         </TableCell>
                         <TableCell
-                            style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'150px' }}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                width: '150px',
+                            }}
                             onClick={() => handleSort('delivery_date')}
                         >
                             Delivery Date{' '}
@@ -496,7 +567,7 @@ const SimpleMuiTable = () => {
                                 sortDirection === 'desc' &&
                                 '↓'}
                         </TableCell>
-                        <TableCell
+                        {/* <TableCell
                             style={{ fontSize:'16px', fontWeight:'bold' , cursor: 'pointer', width:'200px' }}
                             onClick={() => handleSort('packet_open_date')}
                         >
@@ -507,7 +578,7 @@ const SimpleMuiTable = () => {
                             {sortColumn === 'packet_open_date' &&
                                 sortDirection === 'desc' &&
                                 '↓'}
-                        </TableCell>
+                        </TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -527,7 +598,9 @@ const SimpleMuiTable = () => {
                             <TableCell>{data.id}</TableCell>
                             <TableCell>{data?.order_id}</TableCell>
                             <TableCell>{data?.tracking_id}</TableCell>
-                            <TableCell>{data?.old_item_details?.replace(/:/g, ' ')?.toUpperCase()}</TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name}
+                            </TableCell>
                             <TableCell>{data?.imei}</TableCell>
                             <TableCell>{data?.item_id}</TableCell>
                             <TableCell>
@@ -536,9 +609,11 @@ const SimpleMuiTable = () => {
                             {data.tray_type == 'MMT' ? (
                                 <TableCell>Model MisMatch MMT</TableCell>
                             ) : data.tray_type == 'PMT' ? (
-                                <TableCell>Product MisMatch MMT</TableCell>
-                            ) : (
+                                <TableCell>Product MisMatch PMT</TableCell>
+                            ) : data.tray_type == 'BOT' ? (
                                 <TableCell>Model Verified BOT</TableCell>
+                            ) : (
+                                <TableCell>-</TableCell>
                             )}
 
                             <TableCell>{data?.uic_code?.code}</TableCell>
@@ -570,7 +645,7 @@ const SimpleMuiTable = () => {
                                     }
                                 )}
                             </TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 {' '}
                                 {data?.assign_to_agent == null
                                     ? ''
@@ -581,7 +656,7 @@ const SimpleMuiTable = () => {
                                           month: '2-digit',
                                           day: '2-digit',
                                       })}
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>
@@ -594,7 +669,10 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Month Wise Purchase Details', path: '/' },
+                        {
+                            name: 'Weekly/Month Wise Purchase Details',
+                            path: '/',
+                        },
                     ]}
                 />
             </div>

@@ -319,9 +319,9 @@ function Search() {
                         <TableCell>Stockin Date</TableCell>
                         <TableCell>Stockin Status</TableCell>
                         <TableCell>Bag close Date</TableCell>
-                        <TableCell>BOT Agent Name</TableCell>
+                        <TableCell>BOT User Name</TableCell>
 
-                        <TableCell>Assigned to BOT Agent Date</TableCell>
+                        <TableCell>Assigned to BOT User Date</TableCell>
                         <TableCell>Tray ID</TableCell>
                         <TableCell>Tray Type</TableCell>
                         <TableCell>Tray Status</TableCell>
@@ -332,7 +332,7 @@ function Search() {
                             Tray Received From BOT Time Warehouse
                         </TableCell>
                         <TableCell> Tray Closed Time Warehouse</TableCell>
-                        <TableCell>Sorting Agent Name</TableCell>
+                        <TableCell>Sorting User Name</TableCell>
 
                         <TableCell>Handover to Sorting Date</TableCell>
                         <TableCell>WHT Tray</TableCell>
@@ -351,7 +351,7 @@ function Search() {
                             {' '}
                             Charging Done Tray Closed Time Warehouse
                         </TableCell>
-                        <TableCell>BQC Agent Name</TableCell>
+                        <TableCell>BQC User Name</TableCell>
                         <TableCell>Assigned to BQC</TableCell>
                         <TableCell>BQC Done Date</TableCell>
                         <TableCell>

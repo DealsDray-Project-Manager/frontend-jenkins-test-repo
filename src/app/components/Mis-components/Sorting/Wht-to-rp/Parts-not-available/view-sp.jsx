@@ -152,7 +152,7 @@ const SimpleMuiTable = () => {
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'View sp'}
+                    title={'Spare Parts'}
                     data={spList}
                     columns={columns}
                     options={{

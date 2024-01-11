@@ -133,7 +133,7 @@ const MemberEditorDialog = ({
                     ))}
                 </TextFieldCustOm>
                 <TextFieldCustOm
-                    label="Sorting Agent"
+                    label="Sorting User"
                     fullWidth
                     select
                     name="sortingUser"

@@ -585,7 +585,7 @@ const SimpleMuiTable = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            Bot users
+                            BOT users
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"

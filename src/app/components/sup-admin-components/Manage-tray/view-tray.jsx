@@ -350,8 +350,8 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: false,
-                sort: false,
+                filter: true,
+                sort: true,
                 customBodyRender: (value) =>
                     new Date(value).toLocaleString('en-GB', {
                         hour12: true,

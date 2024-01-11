@@ -60,53 +60,46 @@ const SimpleMuiTable = () => {
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: true,
                 sort: true,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) =>
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'uic', // field name in the row object
-            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>, // column title that will be shown in table
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>, // column title that will be shown in table
             options: {
                 filter: true,
             },
         },
         {
             name: 'muic',
-            label: <Typography sx={{fontWeight:'bold'}}>MUIC</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>MUIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'brand_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Brand</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'model_name',
-            label: <Typography sx={{fontWeight:'bold'}}>Model</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'tracking_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Tracking ID</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'tray_id',
-            label: <Typography sx={{fontWeight:'bold'}}>BOT Tray</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Model</Typography>,
             options: {
                 filter: true,
             },
@@ -118,8 +111,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign To RDL', path: '/' },
-                        { name: 'View-Item' },
+                        { name: 'Tray', path: '/' },
+                        { name: 'View-Units' },
                     ]}
                 />
             </div>

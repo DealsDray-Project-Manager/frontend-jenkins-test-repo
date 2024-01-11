@@ -185,29 +185,29 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'limit',
-            label: 'Tray',
-            options: {
-                filter: true,
-                display: false,
-            },
-        },
+        // {
+        //     name: 'type_taxanomy',
+        //     label: (
+        //         <Typography sx={{ fontWeight: 'bold' }}>Tray Type</Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
+        // {
+        //     name: 'limit',
+        //     label: 'Tray',
+        //     options: {
+        //         filter: true,
+        //         display: false,
+        //     },
+        // },
 
         {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Sorting Agent
+                    Sorting User
                 </Typography>
             ),
             options: {
@@ -218,7 +218,9 @@ const SimpleMuiTable = () => {
             name: 'sort_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Status</Typography>,
             options: {
-                filter: true,
+                filter: false,
+                display:false,
+                sort:false
             },
         },
 
@@ -244,7 +246,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         <>
-                            {tableMeta.rowData[5] != 'Received From Sorting' ? (
+                            {tableMeta.rowData[3] != 'Received From Sorting' ? (
                                 <Button
                                     sx={{
                                         m: 1,

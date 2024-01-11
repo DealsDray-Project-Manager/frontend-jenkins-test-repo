@@ -150,7 +150,7 @@ import {
               <TableCell align="center">Date</TableCell>
               <TableCell align="center">Department</TableCell>
               <TableCell align="center">Type</TableCell>
-              <TableCell align="center">Agent</TableCell>
+              <TableCell align="center">User</TableCell>
               <TableCell align="center">Descritption</TableCell>
               <TableCell align="center">WareHouse</TableCell>
             </TableRow>

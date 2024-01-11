@@ -78,9 +78,9 @@ const SimpleMuiTable = () => {
                 actUser: user.username,
             }
             if (userCpcType == 'Sales') {
-                obj.sortId = 'Accepted From Processing'
+                obj.sortId = 'Accepted from Processing WH'
             } else {
-                obj.sortId = 'Accepted From Sales'
+                obj.sortId = 'Accepted From Sales WH'
             }
             let res = await axiosWarehouseIn.post(
                 '/ctx/transferRequest/approve',

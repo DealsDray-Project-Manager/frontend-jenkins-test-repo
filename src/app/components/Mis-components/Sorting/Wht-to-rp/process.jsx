@@ -205,13 +205,13 @@ const SimpleMuiTable = () => {
                         <Checkbox
                             disabled={
                                 checkBoxDis ||
-                                tableMeta.rowData[12]?.rdl_fls_report
+                                tableMeta.rowData[7]?.rdl_fls_report
                                     ?.partRequired?.length == 0
                             }
                             onClick={(e) => {
                                 handleClick(
                                     e,
-                                    tableMeta.rowData[10]?.rdl_fls_report
+                                    tableMeta.rowData[7]?.rdl_fls_report
                                         ?.partRequired,
                                     value?.uic
                                 )
@@ -308,82 +308,12 @@ const SimpleMuiTable = () => {
                     value?.audit_report?.stage || '',
             },
         },
-        {
-            name: 'items',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Recommended Grade</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.audit_report?.grade || '',
-            },
-        },
-        {
-            name: 'items',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Auditor Remarks</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.audit_report?.description || '',
-            },
-        },
 
         {
-            name: 'deliveryData',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Done Unit Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value?.rdl_fls_done_units_date).toLocaleString(
-                        'en-GB',
-                        {
-                            hour12: true,
-                        }
-                    ),
-            },
-        },
-        {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 Username</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.rdl_fls_report?.username || '',
-            },
-        },
-        {
-            name: 'items',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>RDL 1 User Remarks</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.rdl_fls_report?.description || '',
-            },
-        },
-        {
-            name: 'items',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Repair item</>
+                    <>Spare Part Name</>
                 </Typography>
             ),
             options: {
@@ -540,12 +470,7 @@ const SimpleMuiTable = () => {
                                     4: 'rack_id',
                                     5: 'display',
                                     6: 'audit_report.stage',
-                                    7: 'audit_report.grade',
-                                    8: 'audit_report.description',
-                                    9: 'rdl_fls_done_units_date',
-                                    10: 'rdl_fls_report.username',
-                                    11: 'rdl_fls_report.description',
-                                    12: 'rdl_fls_report.partRequired',
+                                    7: 'rdl_fls_report.partRequired',
 
                                     // add more columns and properties here
                                 }
@@ -712,8 +637,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/' },
-                        { name: 'Wht to rp' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'Total Repairable Units' },
                     ]}
                 />
             </div>

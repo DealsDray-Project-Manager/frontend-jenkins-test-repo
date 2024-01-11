@@ -248,7 +248,7 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) =>
                     value?.length == 0 || value == undefined
                         ? 'SP NR'
-                        : value?.items?.length + '/' + value?.limit,
+                        : value?.actual_items?.length + '/' + value?.limit,
             },
         },
         {

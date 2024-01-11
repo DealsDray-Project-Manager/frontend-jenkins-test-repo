@@ -40,18 +40,18 @@ const CustomerBillings = ({ RdlTwoReport }) => {
             <Table sx={{ mb: 2 }}>
                 <TableBody>
                     <TableRow key={RdlTwoReport?.status}>
-                        <TableCell sx={{ pl: 2 }}>Rdl-2 status :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>RDL-2 status :</TableCell>
                         <TableCell>{RdlTwoReport?.status}</TableCell>
                     </TableRow>
 
                     <TableRow key={RdlTwoReport?.reason}>
                         <TableCell sx={{ pl: 2 }}>
-                            Rdl-2 added reason:
+                            RDL-2 added reason:
                         </TableCell>
                         <TableCell>{RdlTwoReport?.reason}</TableCell>
                     </TableRow>
                     <TableRow key={RdlTwoReport?.description}>
-                        <TableCell sx={{ pl: 2 }}>Rdl-2 remark:</TableCell>
+                        <TableCell sx={{ pl: 2 }}>RDL-2 remark:</TableCell>
                         <TableCell>{RdlTwoReport?.description}</TableCell>
                     </TableRow>
                 </TableBody>

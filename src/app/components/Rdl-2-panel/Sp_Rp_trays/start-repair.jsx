@@ -7,6 +7,7 @@ import {
     Grid,
     Typography,
     MenuItem,
+    Table
 } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
@@ -16,6 +17,8 @@ import AuditReport from '../../Rdl_one-components/Tray/Report/Audit-report'
 import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-data'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import '../../../../app.css'
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -94,7 +97,7 @@ const SimpleMuiTable = () => {
                 username: username,
                 whtTrayId: trayId,
                 uic: uic,
-                spTray:spTray
+                spTray: spTray,
             },
         })
     }
@@ -139,68 +142,81 @@ const SimpleMuiTable = () => {
                             </Box>
                             <Box sx={{ ml: 5 }}>
                                 <Typography sx={{ mt: 2 }}>
-                                   Auditor Description:{' '}
+                                    Auditor Description:{' '}
                                     {
                                         reportData?.delivery?.audit_report
                                             ?.description
                                     }
                                 </Typography>
                                 <Typography sx={{ mt: 2 }}>
-                                   RDL 1 Description:{' '}
+                                    RDL-1 Status:{' '}
+                                    {
+                                        reportData?.delivery?.rdl_fls_one_report
+                                            ?.selected_status
+                                    }
+                                </Typography>
+                            </Box>
+                            <Box sx={{ ml: 5 }}>
+                                <Typography sx={{ mt: 2 }}>
+                                    RDL-1 Description:{' '}
                                     {
                                         reportData?.delivery?.rdl_fls_one_report
                                             ?.description
                                     }
                                 </Typography>
                             </Box>
-                            
                         </Box>
                     </Card>
-
-                    <Card sx={{ mt: 2, width: '100%' }}>
-                        <MUIDataTable
-                            title={"Assigned Spare Parts"}
-                            data={
-                                reportData?.delivery?.rdl_fls_one_report
-                                    ?.partRequired
-                            }
-                            columns={columns}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
+                    {reportData?.checkIntray?.sp_tray != null ? (
+                        <Card sx={{ mt: 2, width: '100%' }}>
+                            <Table className="custom-table">
+                                
+                            <MUIDataTable
+                                title={'Assigned Spare Partsd'}
+                                data={
+                                    reportData?.delivery?.rdl_fls_one_report
+                                        ?.partRequired
+                                }
+                                columns={columns}
+                                options={{
+                                    filterType: 'textField',
+                                    responsive: 'simple',
+                                    download: false,
+                                    print: false,
+                                    selectableRows: 'none', // set checkbox for each row
+                                    // search: false, // set search option
+                                    // filter: false, // set data filter option
+                                    // download: false, // set download option
+                                    // print: false, // set print option
+                                    // pagination: true, //set pagination option
+                                    // viewColumns: false, // set column option
+                                    customSort: (data, colIndex, order) => {
+                                        return data.sort((a, b) => {
+                                            if (colIndex === 1) {
+                                                return (
+                                                    (a.data[colIndex].price <
+                                                    b.data[colIndex].price
+                                                        ? -1
+                                                        : 1) *
+                                                    (order === 'desc' ? 1 : -1)
+                                                )
+                                            }
                                             return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
+                                                (a.data[colIndex] <
+                                                b.data[colIndex]
                                                     ? -1
                                                     : 1) *
                                                 (order === 'desc' ? 1 : -1)
                                             )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </Card>
+                                        })
+                                    },
+                                    elevation: 0,
+                                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                                }}
+                            />
+                            </Table>
+                        </Card>
+                    ) : null}
 
                     <Grid container spacing={3} sx={{ mt: 1 }}>
                         <Grid item lg={6} md={12} xs={12}>

@@ -301,14 +301,14 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign-to-agent', path: '/' },
+                        { name: 'Assign-to-user', path: '/' },
                         { name: 'BOT' },
                     ]}
                 />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Bot Bag'}
+                    title={'BOT Bag'}
                     data={bagList}
                     columns={columns}
                     options={{

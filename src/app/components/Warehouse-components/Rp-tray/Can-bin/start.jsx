@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react'
-
 import {
     Box,
     Button,
@@ -57,7 +56,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }))
 const BootstrapDialogTitle = (props) => {
-    
     const { children, onClose, ...other } = props
     return (
         <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -99,6 +97,7 @@ export default function DialogBox() {
     const [itemDataVer, setItemDataVer] = useState({})
     const [open, setOpen] = React.useState(false)
     const [description, setDescription] = useState([])
+    const [canBinTray, setCanBinTray] = useState([])
 
     /*********************************************************** */
 
@@ -131,14 +130,21 @@ export default function DialogBox() {
         fetchData()
     }, [refresh])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await axiosWarehouseIn.post(
+                '/canBinGetCbtTray/' + user.location
+            )
+            if (res.status == 200) {
+                setCanBinTray(res.data.data)
+            }
+        }
+        fetchData()
+    }, [])
+
     const schema = Yup.object().shape({
-        description: Yup.string()
-            .when('stage', (stage, schema) => {
-                if (stage == 'Shift to Sales Bin') {
-                    return schema.required('Required')
-                }
-            })
-            .nullable(),
+        description: Yup.string().required('Required*').nullable(),
+        cbt: Yup.string().required('Required*').nullable(),
     })
     const {
         register,
@@ -210,6 +216,7 @@ export default function DialogBox() {
                     item: itemDataVer,
                     username: user_name,
                     description: value.description,
+                    cbt: value.cbt,
                 }
                 let res = await axiosWarehouseIn.post('/addToCanBin', obj)
                 if (res.status == 200) {
@@ -487,6 +494,26 @@ export default function DialogBox() {
                         Add
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
+                        <TextField
+                            label="Select CBT"
+                            fullWidth
+                            name="cbt"
+                            sx={{
+                                mb: 2,
+                            }}
+                            select
+                            {...register('cbt')}
+                            error={errors.description ? true : false}
+                            helperText={errors.description?.message}
+                            type="text"
+                            variant="outlined"
+                        >
+                            {canBinTray?.map((data) => (
+                                <MenuItem key={data?.code} value={data?.code}>
+                                    {data?.code}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         <TextField
                             label="Description"
                             fullWidth

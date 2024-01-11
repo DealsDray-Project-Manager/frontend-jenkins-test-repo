@@ -140,28 +140,28 @@ const SimpleMuiTable = () => {
                     value?.length + '/' + tableMeta?.rowData[2],
             },
         },
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Type</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'sort_id',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Status</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'type_taxanomy',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Tray Type</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
+        // {
+        //     name: 'sort_id',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Status</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
         {
             name: 'assigned_date',
             label: (

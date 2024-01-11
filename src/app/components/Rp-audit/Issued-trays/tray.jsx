@@ -127,7 +127,7 @@ const SimpleMuiTable = () => {
             name: 'items',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Quantity</>
+                    <>Graded Quantity</>
                 </Typography>
             ),
             options: {
@@ -198,13 +198,11 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb
-                    routeSegments={[{ name: 'RPA Tray', path: '/' }]}
-                />
+                <Breadcrumb routeSegments={[{ name: 'RPA Tray', path: '/' }]} />
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Tray'}  
+                    title={'Tray'}
                     data={trayData}
                     columns={columns}
                     options={{

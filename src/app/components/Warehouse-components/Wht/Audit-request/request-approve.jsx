@@ -450,7 +450,7 @@ export default function DialogBox() {
                                 TRAY ID :- {trayId}
                             </Typography>
                             <Typography sx={{ ml: 2 }}>
-                                AGENT NAME :- {trayData?.issued_user_name}
+                                User NAME :- {trayData?.issued_user_name}
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex' }}>
@@ -532,7 +532,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Issue To Agent
+                        Issue To User
                     </Button>
                 </Box>
             </div>

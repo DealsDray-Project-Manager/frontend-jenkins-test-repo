@@ -107,7 +107,7 @@ const SimpleMuiTable = () => {
             name: 'actual_items',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Item Recieved Count
+                    Parts to be Issued Count
                 </Typography>
             ),
             options: {
@@ -119,7 +119,7 @@ const SimpleMuiTable = () => {
             name: 'requested_date',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Assigned date
+                    Assigned Date
                 </Typography>
             ),
             options: {

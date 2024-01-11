@@ -82,6 +82,8 @@ const PaginationTable = () => {
         item: [],
         totalPage: 0,
     })
+    const [fileExt, setFileExt] = useState('')
+    const { format, isValid, parse } = require('date-fns')
 
     const importExcel = () => {
         if (exFile == null) {
@@ -142,8 +144,97 @@ const PaginationTable = () => {
             accumulator.created_at = Date.now()
             accumulator[key.toLowerCase().split(' ').join('_')] = obj[key]
             accumulator.delet_id = id
+            if (key == 'Order Date') {
+                if (accumulator.order_date?.includes('-')) {
+                    // Date is in "DD-MM-YYYY" format
+                    const [day, month, year] =
+                        accumulator.order_date?.split('-')
+                    const formattedDateStr = `${month}/${day}/${year}`
+                    accumulator.order_date = new Date(formattedDateStr)
+                } else {
+                    // Date is in "MM/DD/YYYY" format
+                    if (fileExt == 'csv') {
+                        const parsedDate = parse(
+                            accumulator.order_date,
+                            'MM/dd/yyyy',
+                            new Date()
+                        )
+
+                        if (isValid(parsedDate)) {
+                            accumulator.order_date = format(
+                                parsedDate,
+                                'dd/MM/yyyy'
+                            )
+                        } else {
+                            console.error(
+                                'Invalid date:',
+                                accumulator.order_date
+                            )
+                            // Handle the invalid date case here
+                            accumulator.order_date = accumulator.order_date
+                        }
+                    } else {
+                        const parsedDate = parse(
+                            accumulator.order_date,
+                            'MM/dd/yyyy HH:mm:ss',
+                            new Date()
+                        )
+
+                        if (isValid(parsedDate)) {
+                            accumulator.order_date = format(
+                                parsedDate,
+                                'dd/MM/yyyy HH:mm:ss'
+                            )
+                        } else {
+                            console.error(
+                                'Invalid date:',
+                                accumulator.order_date
+                            )
+                            // Handle the invalid date case here
+                            accumulator.order_date = accumulator.order_date
+                        }
+                    }
+                }
+            }
+            if (
+                key === 'Delivery Date' &&
+                accumulator.delivery_date != undefined
+            ) {
+                accumulator.delivery_date = forDateFormat(
+                    accumulator?.delivery_date
+                )
+            }
             return accumulator
         }, {})
+    }
+
+    const forDateFormat = (field) => {
+        if (field?.includes('-')) {
+            // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
+            const [datePart, timePart] = field?.split(' ')
+            const [day, month, year] = datePart?.split('-')
+            let formattedTimestampStr
+            if (timePart) {
+                const [hours, minutes, seconds] = timePart?.split(':')
+                if (seconds) {
+                    formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
+                } else {
+                    formattedTimestampStr = `${month}/${day}/${year} ${hours}:${minutes}`
+                }
+            } else {
+                formattedTimestampStr = `${month}/${day}/${year}`
+            }
+            return new Date(formattedTimestampStr)
+        } else {
+            const parsedDate = parse(field, 'MM/dd/yyyy', new Date())
+            if (isValid(parsedDate)) {
+                return format(parsedDate, 'dd/MM/yyyy')
+            } else {
+                console.error('Invalid date:', field)
+                // Handle the invalid date case here
+                return field
+            }
+        }
     }
 
     const handelSubmit = async () => {
@@ -367,6 +458,14 @@ const PaginationTable = () => {
         }))
     }
 
+    const addFileData = (fileData) => {
+        setExfile(fileData)
+        const fileName = fileData.name
+        const fileExtension = fileName.split('.').pop() // Get the last part as the extension
+
+        setFileExt(fileExtension)
+    }
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -418,11 +517,12 @@ const PaginationTable = () => {
                 >
                     <TextField
                         size="small"
-                        onChange={(e) => {
-                            setExfile(e.target.files[0])
-                        }}
                         variant="outlined"
                         type="file"
+                        inputProps={{ accept: '.csv' }}
+                        onChange={(e) => {
+                            addFileData(e.target.files[0])
+                        }}
                     />
                     <TextField
                         size="small"
@@ -431,7 +531,7 @@ const PaginationTable = () => {
                             setDeliveryDate(e.target.value)
                         }}
                         inputProps={{
-                            max: moment().format('DD/MM/YYYY'),
+                            max: moment().format('YYYY-MM-DD'),
                         }}
                         variant="outlined"
                         type="date"

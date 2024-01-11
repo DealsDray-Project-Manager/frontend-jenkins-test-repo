@@ -26,6 +26,7 @@ import jwt_decode from 'jwt-decode'
 import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
 import { DatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import '../../../../app.css'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 const Container = styled('div')(({ theme }) => ({
@@ -84,35 +85,25 @@ const SimpleMuiTable = () => {
         let arr = []
         for (let x of dataForDownload) {
             let obj = {
-                'Order Id': x?.order_id,
-                'Tracking Id': x?.tracking_id,
-                'Old Item details': x?.old_item_details,
-                IMEI: x?.imei,
-                'Item ID': x?.item_id,
-                Price: x?.partner_purchase_price,
-                'Partner shop': x?.partner_shop,
                 'Delivery Status': x?.delivery_status,
-                'Partner ID': x?.partner_id,
-                'Base Discount': x?.base_discount,
-                Diagnostic: x?.diagnostic,
-                'Partner Purchase Price': x?.partner_purchase_price,
-                'Product Name': x?.model_name,
-                'Order Status': x?.order_status,
-                'Order ID Replaced': x?.order_id_replaced,
-                'Delivered with OTP': x?.deliverd_with_otp,
-                'Delivered with Bag Exception': x?.deliverd_with_bag_exception,
-                'GC Amount Redeemed': x?.gc_amount_redeemed,
-                'GC Amount Refund': x?.gc_amount_refund,
-                'Diagnostic Status': x?.diagnstic_status,
-                'VC Eligible': x?.vc_eligible,
-                'Customer Declaration Pysical Defect Present':
-                    x?.customer_declaration_physical_defect_present,
-                'Customer Declaration Pysical Defect Type':
-                    x?.customer_declaration_physical_defect_type,
-                'Partner Price No Defect': x?.partner_price_no_defect,
-                'Revised Partner Price': x?.revised_partner_price,
-                'Delivery Fee': x?.delivery_fee,
-                'Exchange Facilitation Fee': x?.exchange_facilitation_fee,
+                'Order Imported TimeStamp': new Date(
+                    x?.created_at
+                ).toLocaleString('en-GB', {
+                    hour12: true,
+                }),
+            }
+            obj['Order ID'] = x?.order_id
+            if (x?.order_date !== undefined && x?.order_date !== null) {
+                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
+                    'en-GB',
+                    {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }
+                )
+            } else {
+                obj['Order Date'] = ''
             }
             if (
                 x.order_timestamp !== undefined &&
@@ -126,49 +117,17 @@ const SimpleMuiTable = () => {
             } else {
                 obj['Order TimeStamp'] = ''
             }
-            if (x.gc_redeem_time !== undefined && x?.gc_redeem_time !== null) {
-                obj['GC Redeemed Time'] = new Date(
-                    x?.gc_redeem_time
-                ).toLocaleString('en-GB', {
-                    hour12: true,
-                })
-            } else {
-                obj['GC Redeemed Time'] = ''
-            }
-            if (
-                x.gc_amount_refund_time !== undefined &&
-                x?.gc_amount_refund_time !== null
-            ) {
-                obj['GC Amount Refund Time'] = new Date(
-                    x?.gc_amount_refund_time
-                ).toLocaleString('en-GB', {
-                    hour12: true,
-                })
-            } else {
-                obj['GC Amount Refund Time'] = ''
-            }
-            if (x.created_at !== undefined && x?.created_at !== null) {
-                obj['Order Imported TimeStamp'] = new Date(
-                    x?.created_at
-                ).toLocaleString('en-GB', {
-                    hour12: true,
-                })
-            } else {
-                obj['Order TimeStamp'] = ''
-            }
-            if (x?.order_date !== undefined && x?.order_date !== null) {
-                obj['Order Date'] = new Date(x?.order_date).toLocaleString(
-                    'en-GB',
-                    {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                    }
-                )
-            } else {
-                obj['Order Date'] = ''
-            }
+            obj['RAM'] = x?.delivery?.[0]?.audit_report?.ram_verification
+            obj['Storage'] =
+                x?.delivery?.[0]?.audit_report?.storage_verification
 
+            obj['Item ID'] = x?.item_id
+            obj['Old Item details'] = x?.old_item_details
+
+            obj['Brand Name'] = x?.products?.[0]?.brand_name
+            obj['Product Name'] = x?.products?.[0]?.model_name
+            obj['MUIC'] = x?.products?.[0]?.muic
+            obj['IMEI'] = x?.imei
             arr.push(obj)
         }
         const fileExtension = '.xlsx'
@@ -179,7 +138,7 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Order Details' + fileExtension)
+        FileSaver.saveAs(data, 'Total Order Placed' + fileExtension)
     }
 
     useEffect(() => {
@@ -209,6 +168,8 @@ const SimpleMuiTable = () => {
                             setOrderCount(res.data.count)
                             setDisplayText('Sorry no data found')
                         }
+                    } else if (filterData?.toDate != '') {
+                        dataFilter()
                     } else {
                         let orderCount = await axiosMisUser.post(
                             '/getOrdersCount/' + location
@@ -227,7 +188,6 @@ const SimpleMuiTable = () => {
 
                         if (res.status == 200) {
                             setDisplayText('')
-                            setOrderCount(res.data.count)
                             setItem(res.data.data)
                         }
                     }
@@ -245,7 +205,7 @@ const SimpleMuiTable = () => {
         }
         fetchOrder()
         return () => setIsAlive(false)
-    }, [isAlive, page])
+    }, [isAlive, page, rowsPerPage])
 
     useEffect(() => {
         setData((_) =>
@@ -392,7 +352,7 @@ const SimpleMuiTable = () => {
                 setItem(res.data.data)
                 setOrderCount(res.data.count)
                 setDataForDownload(res.data.forXlsx)
-                setDisplayText('Sorry noo data found')
+                setDisplayText('Sorry no data found')
             }
         } catch (error) {
             alert(error)
@@ -419,7 +379,7 @@ const SimpleMuiTable = () => {
 
     const tableData = useMemo(() => {
         return (
-            <ProductTable>
+            <ProductTable className="custom-table">
                 <TableHead>
                     <TableRow>
                         <TableCell
@@ -483,7 +443,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Order Status
+                            RAM
                         </TableCell>
                         <TableCell
                             sx={{
@@ -492,8 +452,17 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Partner ID
+                            Storage
                         </TableCell>
+                        {/* <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Partner ID
+                        </TableCell> */}
                         <TableCell
                             sx={{
                                 fontWeight: 'bold',
@@ -547,186 +516,6 @@ const SimpleMuiTable = () => {
                             }}
                         >
                             IMEI
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Base Discount
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Diagnostic
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Partner Purchase Price
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Tracking ID
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Delivery Date
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Order ID Replaced
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Deliverd With OTP
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '250px',
-                            }}
-                        >
-                            Deliverd With Bag Exception
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            GC Amount Redeemed
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            GC Amount Refund
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            GC Redeem Time
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            GC Amount Refund Time
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Diagnostic Status
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            VC Eligible
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '400px',
-                            }}
-                        >
-                            Customer Declaration Physical Defect Present
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '350px',
-                            }}
-                        >
-                            Customer Declaration Physical Defect Type
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Partner Price No Defect
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Revised Partner Price
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Delivery Fee
-                        </TableCell>
-                        <TableCell
-                            sx={{
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                width: '200px',
-                            }}
-                        >
-                            Exchange Facilitation Fee
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -785,10 +574,13 @@ const SimpleMuiTable = () => {
                                       })}
                             </TableCell>
                             <TableCell>
-                                {data.order_status?.toString()}
+                                {data?.delivery?.[0]?.audit_report?.ram_verification?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data?.delivery?.[0]?.audit_report?.storage_verification?.toString()}
                             </TableCell>
                             {/* <TableCell>{data.buyback_category?.toString()}</TableCell> */}
-                            <TableCell>{data.partner_id?.toString()}</TableCell>
+                            {/* <TableCell>{data.partner_id?.toString()}</TableCell> */}
                             {/* <TableCell>{data.partner_email?.toString()}</TableCell> */}
                             {/* <TableCell>{data.partner_shop?.toString()}</TableCell> */}
                             <TableCell>{data.item_id?.toString()}</TableCell>
@@ -803,77 +595,6 @@ const SimpleMuiTable = () => {
                             </TableCell>
                             <TableCell>{data?.products?.[0]?.muic}</TableCell>
                             <TableCell>{data.imei?.toString()}</TableCell>
-                            {/* <TableCell>{data.gep_order?.toString()}</TableCell> */}
-                            <TableCell>
-                                ₹{data.base_discount?.toString()}
-                            </TableCell>
-                            <TableCell>{data.diagnostic}</TableCell>
-                            <TableCell>
-                                ₹{data.partner_purchase_price}
-                            </TableCell>
-                            <TableCell>{data.tracking_id}</TableCell>
-                            <TableCell>
-                                {data.delivery_date == null
-                                    ? ''
-                                    : new Date(
-                                          data.delivery_date
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })}
-                            </TableCell>
-                            <TableCell>{data.order_id_replaced}</TableCell>
-                            <TableCell>{data.deliverd_with_otp}</TableCell>
-                            <TableCell>
-                                {data.deliverd_with_bag_exception}
-                            </TableCell>
-                            <TableCell>
-                                {data.gc_amount_redeemed?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.gc_amount_refund?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.gc_redeem_time == null
-                                    ? ''
-                                    : new Date(
-                                          data.gc_redeem_time
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })}
-                            </TableCell>
-                            <TableCell>
-                                {data.gc_amount_refund_time == null
-                                    ? ''
-                                    : new Date(
-                                          data.gc_amount_refund_time
-                                      ).toLocaleString('en-GB', {
-                                          hour12: true,
-                                      })}
-                            </TableCell>
-                            <TableCell>
-                                {data.diagnstic_status?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.vc_eligible?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.customer_declaration_physical_defect_present?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.customer_declaration_physical_defect_type?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.partner_price_no_defect?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                ₹{data.revised_partner_price?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                ₹{data.delivery_fee?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                ₹{data.exchange_facilitation_fee?.toString()}
-                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -999,7 +720,7 @@ const SimpleMuiTable = () => {
             </Card>
             <TablePagination
                 sx={{ px: 2 }}
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[50, 100, 150]}
                 component="div"
                 count={orderCount}
                 rowsPerPage={rowsPerPage}

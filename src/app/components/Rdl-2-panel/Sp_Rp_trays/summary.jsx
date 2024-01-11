@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { Box, Button, TextField, Card, Typography } from '@mui/material'
+import { Box, Button, TextField, Table, Card, Typography } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
 import { styled } from '@mui/system'
@@ -7,6 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { axiosRdlTwoAgent } from '../../../../axios'
 import jwt_decode from 'jwt-decode'
+import '../../../../app.css'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -136,6 +137,30 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.description,
             },
         },
+        {
+            name: 'rp_audit_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    RP-Audit Status
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.status,
+            },
+        },
+        {
+            name: 'rp_audit_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    RP-Audit Remark
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value, dataIndex) => value?.description,
+            },
+        },
     ]
 
     const more_part_required = [
@@ -181,7 +206,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_repair_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Part Details</>
+                    <>More Part Required Details</>
                 </Typography>
             ),
             options: {
@@ -224,6 +249,14 @@ const SimpleMuiTable = () => {
                         {dataIndex.rowIndex + 1}
                     </Typography>
                 ),
+            },
+        },
+        {
+            name: 'uic',
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>,
+            options: {
+                filter: true,
+                sort: true,
             },
         },
 
@@ -271,6 +304,115 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
+            },
+        },
+    ]
+
+    const repair_done_report = [
+        {
+            name: 'index',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                // setCellProps: () => ({ align: 'center' }),
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
+            },
+        },
+        {
+            name: 'uic',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>UIC</Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
+        {
+            name: 'muic',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>MUIC</Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+            },
+        },
+        {
+            name: 'rp_audit_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Repair Auditor User
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.username_of_rpaudit,
+            },
+        },
+        {
+            name: 'rp_audit_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Repair Auditor User
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) =>
+                    value?.username_of_rpaudit,
+            },
+        },
+        {
+            name: 'rp_audit_status',
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Final Repair Audit Grade
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, dataIndex) => value?.grade,
+            },
+        },
+        {
+            name: 'rdl_repair_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Spare Part Details</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand colum
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_two_part_status
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            } status :- ${data?.rdl_two_status}`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
+                },
             },
         },
     ]
@@ -373,50 +515,52 @@ const SimpleMuiTable = () => {
                                 </p>
                             </Box>
                         </Box>
-
-                        <MUIDataTable
-                            // title={'Spare Parts Used'}
-                            data={trayData?.actual_items}
-                            columns={UnitsData}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
+                        <Table className="custom-table">
+                            <MUIDataTable
+                                // title={'Spare Parts Used'}
+                                data={trayData?.actual_items}
+                                columns={UnitsData}
+                                options={{
+                                    filterType: 'textField',
+                                    responsive: 'simple',
+                                    download: false,
+                                    print: false,
+                                    selectableRows: 'none', // set checkbox for each row
+                                    // search: false, // set search option
+                                    // filter: false, // set data filter option
+                                    // download: false, // set download option
+                                    // print: false, // set print option
+                                    // pagination: true, //set pagination option
+                                    // viewColumns: false, // set column option
+                                    customSort: (data, colIndex, order) => {
+                                        return data.sort((a, b) => {
+                                            if (colIndex === 1) {
+                                                return (
+                                                    (a.data[colIndex].price <
+                                                    b.data[colIndex].price
+                                                        ? -1
+                                                        : 1) *
+                                                    (order === 'desc' ? 1 : -1)
+                                                )
+                                            }
                                             return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
+                                                (a.data[colIndex] <
+                                                b.data[colIndex]
                                                     ? -1
                                                     : 1) *
                                                 (order === 'desc' ? 1 : -1)
                                             )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
+                                        })
+                                    },
+                                    elevation: 0,
+                                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                                }}
+                            />
+                        </Table>
                     </Card>
                     <br />
                     <br />
-                    <Card>
+                    <Card className="custom-table">
                         <MUIDataTable
                             title={`Sp tray:- ${trayData?.sp_tray}`}
                             data={summary?.spTray?.actual_items}
@@ -460,11 +604,53 @@ const SimpleMuiTable = () => {
 
                     <br />
                     <br />
-                    <Card>
+                    <Card className="custom-table">
                         <MUIDataTable
                             title={'More Spare Parts Required List'}
                             data={summary?.morePartRequred}
                             columns={more_part_required}
+                            options={{
+                                filterType: 'textField',
+                                responsive: 'simple',
+                                download: false,
+                                print: false,
+                                selectableRows: 'none', // set checkbox for each row
+                                // search: false, // set search option
+                                // filter: false, // set data filter option
+                                // download: false, // set download option
+                                // print: false, // set print option
+                                // pagination: true, //set pagination option
+                                // viewColumns: false, // set column option
+                                customSort: (data, colIndex, order) => {
+                                    return data.sort((a, b) => {
+                                        if (colIndex === 1) {
+                                            return (
+                                                (a.data[colIndex].price <
+                                                b.data[colIndex].price
+                                                    ? -1
+                                                    : 1) *
+                                                (order === 'desc' ? 1 : -1)
+                                            )
+                                        }
+                                        return (
+                                            (a.data[colIndex] < b.data[colIndex]
+                                                ? -1
+                                                : 1) *
+                                            (order === 'desc' ? 1 : -1)
+                                        )
+                                    })
+                                },
+                                elevation: 0,
+                                rowsPerPageOptions: [10, 20, 40, 80, 100],
+                            }}
+                        />
+                    </Card>
+
+                    <Card className="custom-table">
+                        <MUIDataTable
+                            title={'Repair Done Report'}
+                            data={trayData?.wht_tray}
+                            columns={repair_done_report}
                             options={{
                                 filterType: 'textField',
                                 responsive: 'simple',

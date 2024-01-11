@@ -190,20 +190,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'country',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Country</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'pincode',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>Pincode</></Typography>,
-            options: {
-                filter: true,
-            },
-        },
+       
         {
             name: 'type_taxanomy',
             label: <Typography variant="subtitle1" fontWeight='bold'><>Type</></Typography>,
@@ -225,7 +212,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        editLocation(value,tableMeta.rowData[9])
+                                        editLocation(value,tableMeta.rowData[7])
                                     }}
                                     color="primary"
                                 >
@@ -235,7 +222,7 @@ const SimpleMuiTable = () => {
                             <IconButton>
                                 <Icon
                                     onClick={(e) => {
-                                        handelDelete(value,tableMeta.rowData[9])
+                                        handelDelete(value,tableMeta.rowData[7])
                                     }}
                                     color="error"
                                 >

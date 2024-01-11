@@ -112,11 +112,11 @@ export default function DialogBox() {
                         addActualitem(
                             e,
                             'Device Out',
-                            'Device not to be checked for BQC'
+                            'Device not to be processed for BQC'
                         )
                     }}
                 >
-                    Device not to be checked for BQC
+                    Device not to be processed for BQC
                 </Button>
                 <Button
                     sx={{
@@ -132,11 +132,11 @@ export default function DialogBox() {
                         addActualitem(
                             e,
                             'Device In',
-                            'Device in progress for BQC'
+                            'Device to be processed for BQC'
                         )
                     }}
                 >
-                    Device in progress for BQC
+                    Device to be processed for BQC
                 </Button>
             </Box>
         </Box>

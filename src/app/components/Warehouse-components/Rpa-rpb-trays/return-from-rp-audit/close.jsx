@@ -173,7 +173,7 @@ export default function DialogBox() {
                         confirmButtonText: 'Ok',
                     })
                     setLoading(false)
-                    navigate('/warehouse/rpa-rpb-return-from-agent')
+                    navigate('/warehouse/rpa-rpb-tray-issue-or-return')
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -392,7 +392,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box

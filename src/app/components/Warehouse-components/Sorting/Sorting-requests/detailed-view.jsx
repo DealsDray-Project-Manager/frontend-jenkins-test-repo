@@ -300,7 +300,7 @@ const SimpleMuiTable = () => {
                                 day: '2-digit',
                             })}
                         </h4>
-                        <h4>Agent Name- {botTray[0]?.issued_user_name}</h4>
+                        <h4>User Name- {botTray[0]?.issued_user_name}</h4>
                     </Box>
                 </Box>
 
@@ -371,7 +371,7 @@ const SimpleMuiTable = () => {
                                 handelIssue(e, 'Assigned to sorting agent')
                             }}
                         >
-                            Issue To Agent
+                            Issue To User
                         </Button>
                     ) : null}
                 </Box>

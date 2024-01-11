@@ -192,7 +192,7 @@ const SimpleMuiTable = () => {
         {
             name: 'code',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RP tray Id</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>RPT Tray ID</Typography>
             ),
             options: {
                 filter: true,

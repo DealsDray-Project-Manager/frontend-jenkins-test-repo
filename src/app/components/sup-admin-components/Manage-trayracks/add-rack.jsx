@@ -135,12 +135,13 @@ const MemberEditorDialog = ({
             )
             .max(100)
             .nullable(),
-        limit: Yup.number('Must be number')
-            .required('Required*')
-            .positive()
-            .integer()
-            .min(1, 'Minimum is 1')
-            .nullable(),
+        limit:Yup.number('Must be a number')
+        .required('Required*')
+        .positive()
+        .integer()
+        .min(1, 'Minimum is 1')
+        .max(40, 'Maximum is 40')
+        .nullable(),
         parent_id: Yup.string().required('Required*').nullable(),
         warehouse: Yup.string().required('Required*').nullable(),
     })

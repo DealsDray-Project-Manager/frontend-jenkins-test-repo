@@ -173,7 +173,7 @@ const SimpleMuiTable = () => {
                         <TableCell
                             sx={{ fontSize: '16px', fontWeight: 'bold' }}
                         >
-                            Added Agent Name
+                            Added User Name
                         </TableCell>
                         <TableCell
                             sx={{ fontSize: '16px', fontWeight: 'bold' }}

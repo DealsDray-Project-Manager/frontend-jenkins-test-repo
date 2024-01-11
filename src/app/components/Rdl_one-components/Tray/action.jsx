@@ -355,7 +355,7 @@ const Actionfunction = () => {
                 {...register('selected_status')}
                 error={errors.selected_status ? true : false}
                 helperText={errors.selected_status?.message}
-                sx={{ width: '180px' }}
+                sx={{ width: '300px' }}
                 label="Select an Option"
             >
                 {/* <MenuItem
@@ -384,12 +384,12 @@ const Actionfunction = () => {
                 >
                     Repair Required
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                     value="Accept Auditor Feedback"
                     onClick={() => setSelectedStatus('Accept Auditor Feedback')}
                 >
                     Accept Auditor Feedback
-                </MenuItem>
+                </MenuItem> */}
                 {/* <MenuItem
                     value="Unlocked"
                     onClick={() => setSelectedStatus('Unlocked')}

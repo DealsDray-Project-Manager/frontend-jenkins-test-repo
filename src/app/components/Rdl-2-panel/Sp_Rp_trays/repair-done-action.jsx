@@ -17,6 +17,7 @@ import {
     Dialog,
     DialogTitle,
     IconButton,
+    Table,
 } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
@@ -36,6 +37,7 @@ import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
 import CloseIcon from '@mui/icons-material/Close'
 import useAuth from 'app/hooks/useAuth'
+import '../../../../app.css'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -201,6 +203,7 @@ const SimpleMuiTable = () => {
             setRequredPart((prevValues) => {
                 const updatedValues = [...prevValues]
                 updatedValues[rowIndex]['unique_id_gen'] = newId
+                updatedValues[rowIndex]['uic'] = uic
                 updatedValues[rowIndex].rdl_two_status = newValue
                 return updatedValues
             })
@@ -227,6 +230,10 @@ const SimpleMuiTable = () => {
             )
             if (res.status === 200) {
                 setRbqcTrays(res.data.data)
+                setPopData((popdata) => ({
+                    ...popdata,
+                    rbqc_tray: res.data.data?.[0]?.code,
+                }))
             }
         } catch (error) {
             alert(error)
@@ -256,6 +263,10 @@ const SimpleMuiTable = () => {
                         rdl_two_tray: whtTrayId,
                     },
                 }
+                if (popdata.rpbqc_username == '') {
+                    obj.rbqc_tray = ''
+                }
+
                 if (selectReason == 'More part required') {
                     let arr1 = []
                     for (let x of partData) {
@@ -630,7 +641,16 @@ const SimpleMuiTable = () => {
                             {reportData?.delivery?.audit_report?.description}
                         </Typography>
                         <Typography sx={{ mt: 2 }}>
-                            RDL 1 Description:{' '}
+                            RDL-1 Status:{' '}
+                            {
+                                reportData?.delivery?.rdl_fls_one_report
+                                    ?.selected_status
+                            }
+                        </Typography>
+                    </Box>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography sx={{ mt: 2 }}>
+                            RDL-1 Description:{' '}
                             {
                                 reportData?.delivery?.rdl_fls_one_report
                                     ?.description
@@ -645,49 +665,55 @@ const SimpleMuiTable = () => {
     const BqcAndAllReport = useMemo(() => {
         return (
             <>
-                <Card sx={{ mt: 2, width: '100%' }}>
-                    <MUIDataTable
-                        title={'Assigned Spare Parts'}
-                        data={
-                            reportData?.delivery?.rdl_fls_one_report
-                                ?.partRequired
-                        }
-                        columns={sprequired_data_assigned}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
+                {reportData?.checkIntray?.sp_tray != null ? (
+                    <Card
+                        className="custom-table"
+                        sx={{ mt: 2, width: '100%' }}
+                    >
+                        <MUIDataTable
+                            title={'Assigned Spare Parts'}
+                            data={
+                                reportData?.delivery?.rdl_fls_one_report
+                                    ?.partRequired
+                            }
+                            columns={sprequired_data_assigned}
+                            options={{
+                                filterType: 'textField',
+                                responsive: 'simple',
+                                download: false,
+                                print: false,
+                                selectableRows: 'none', // set checkbox for each row
+                                // search: false, // set search option
+                                // filter: false, // set data filter option
+                                // download: false, // set download option
+                                // print: false, // set print option
+                                // pagination: true, //set pagination option
+                                // viewColumns: false, // set column option
+                                customSort: (data, colIndex, order) => {
+                                    return data.sort((a, b) => {
+                                        if (colIndex === 1) {
+                                            return (
+                                                (a.data[colIndex].price <
+                                                b.data[colIndex].price
+                                                    ? -1
+                                                    : 1) *
+                                                (order === 'desc' ? 1 : -1)
+                                            )
+                                        }
                                         return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
+                                            (a.data[colIndex] < b.data[colIndex]
                                                 ? -1
                                                 : 1) *
                                             (order === 'desc' ? 1 : -1)
                                         )
-                                    }
-                                    return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                })
-                            },
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
-                </Card>
+                                    })
+                                },
+                                elevation: 0,
+                                rowsPerPageOptions: [10, 20, 40, 80, 100],
+                            }}
+                        />
+                    </Card>
+                ) : null}
 
                 <Grid container spacing={3} sx={{ mt: 1 }}>
                     <Grid item lg={6} md={12} xs={12}>
@@ -720,6 +746,8 @@ const SimpleMuiTable = () => {
                                     ?.final_grade
                             }
                             imei={reportData?.delivery?.imei}
+                            cimei_1={reportData?.delivery?.charging?.cimei_1}
+                        cimei_2={reportData?.delivery?.charging?.cimei_2}
                         />
                     </Grid>
                 </Grid>
@@ -740,7 +768,7 @@ const SimpleMuiTable = () => {
                         id="customized-dialog-title"
                         onClose={handleClose}
                     >
-                        Select RBQC Tray
+                        Select RPB Tray
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
                         <TextField
@@ -766,20 +794,20 @@ const SimpleMuiTable = () => {
                         </TextField>
 
                         <TextField
-                            label="Select RPB Tray"
-                            variant="outlined"
+                            // label="Select RPB Tray"
+                            // variant="outlined"
                             fullWidth
-                            select
                             name="rbqc_tray"
+                            disabled
+                            type="text"
                             onChange={handleChangeThePopValue}
                             sx={{ mt: 2 }}
-                        >
-                            {rbqcTrays.map((data) => (
-                                <MenuItem key={data.code} value={data.code}>
-                                    {data.code}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            value={
+                                rbqcTrays?.[0]?.code != undefined
+                                    ? `Tray ID:-${rbqcTrays?.[0]?.code}`
+                                    : null
+                            }
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button
@@ -954,55 +982,62 @@ const SimpleMuiTable = () => {
                             ></textarea>
                         </Box>
                         {selectedValue !== '' ? (
-                            <MUIDataTable
-                                title={displayContent}
-                                data={
-                                    reportData?.delivery?.rdl_fls_one_report
-                                        ?.partRequired
-                                }
-                                columns={sprequired_data}
-                                options={{
-                                    filterType: 'textField',
-                                    responsive: 'simple',
-                                    download: false,
-                                    print: false,
-                                    selectableRows: 'none', // set checkbox for each row
-                                    // search: false, // set search option
-                                    // filter: false, // set data filter option
-                                    // download: false, // set download option
-                                    // print: false, // set print option
-                                    // pagination: true, //set pagination option
-                                    // viewColumns: false, // set column option
-                                    customSort: (data, colIndex, order) => {
-                                        return data.sort((a, b) => {
-                                            if (colIndex === 1) {
+                            <Table className="custom-table">
+                                <MUIDataTable
+                                    title={displayContent}
+                                    data={
+                                        reportData?.delivery?.rdl_fls_one_report
+                                            ?.partRequired
+                                    }
+                                    columns={sprequired_data}
+                                    options={{
+                                        filterType: 'textField',
+                                        responsive: 'simple',
+                                        download: false,
+                                        print: false,
+                                        selectableRows: 'none', // set checkbox for each row
+                                        // search: false, // set search option
+                                        // filter: false, // set data filter option
+                                        // download: false, // set download option
+                                        // print: false, // set print option
+                                        // pagination: true, //set pagination option
+                                        // viewColumns: false, // set column option
+                                        customSort: (data, colIndex, order) => {
+                                            return data.sort((a, b) => {
+                                                if (colIndex === 1) {
+                                                    return (
+                                                        (a.data[colIndex]
+                                                            .price <
+                                                        b.data[colIndex].price
+                                                            ? -1
+                                                            : 1) *
+                                                        (order === 'desc'
+                                                            ? 1
+                                                            : -1)
+                                                    )
+                                                }
                                                 return (
-                                                    (a.data[colIndex].price <
-                                                    b.data[colIndex].price
+                                                    (a.data[colIndex] <
+                                                    b.data[colIndex]
                                                         ? -1
                                                         : 1) *
                                                     (order === 'desc' ? 1 : -1)
                                                 )
-                                            }
-                                            return (
-                                                (a.data[colIndex] <
-                                                b.data[colIndex]
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        })
-                                    },
-                                    elevation: 0,
-                                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                                }}
-                            />
+                                            })
+                                        },
+                                        elevation: 0,
+                                        rowsPerPageOptions: [
+                                            10, 20, 40, 80, 100,
+                                        ],
+                                    }}
+                                />
+                            </Table>
                         ) : null}
                     </Box>
                     {selectedValue !== '' &&
                     selectReason == 'More part required' ? (
                         <Box sx={{ mt: 2 }}>
-                            <>
+                            <Table className="custom-table">
                                 <MUIDataTable
                                     title={
                                         'Search for the Spare part you need for this device, that is not assigned for repairs'
@@ -1050,7 +1085,7 @@ const SimpleMuiTable = () => {
                                         ],
                                     }}
                                 />
-                            </>
+                            </Table>
 
                             <br />
                         </Box>

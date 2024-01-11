@@ -285,7 +285,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>DEVICE IN PROGRESS FOR BQC</h5>
+                        <h5>Device to be processed for BQC</h5>
                     </Box>
                     <Box
                         sx={{
@@ -366,7 +366,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>DEVICE NOT TO BE CHECKED FOR BQC</h5>
+                        <h5>Device not to be processed for BQC</h5>
                     </Box>
                     <Box
                         sx={{
@@ -550,20 +550,7 @@ export default function DialogBox() {
                             sx={{ mt: 2 }}
                             fullWidth
                         />
-                        <TextField
-                            label="Charging Jack Type"
-                            variant="outlined"
-                            type="text"
-                            sx={{ mt: 2 }}
-                            disabled={
-                                resDataUic?.charging?.charging_jack_type ==
-                                    '' ||
-                                resDataUic?.charging?.charging_jack_type ==
-                                    undefined
-                            }
-                            value={resDataUic?.charging?.charging_jack_type}
-                            fullWidth
-                        />
+                        
                         <TextField
                             label="Any Body Part Missing"
                             variant="outlined"
@@ -609,11 +596,11 @@ export default function DialogBox() {
                             addActualitem(
                                 e,
                                 'Device Out',
-                                'Device not to be checked for BQC'
+                                'Device not to be processed for BQC'
                             )
                         }}
                     >
-                        Device not to be checked for BQC
+                        Device not to be processed for BQC
                     </Button>
                     <Button
                         sx={{
@@ -629,11 +616,11 @@ export default function DialogBox() {
                             addActualitem(
                                 e,
                                 'Device In',
-                                'Device in progress for BQC'
+                                'Device to be processed for BQC'
                             )
                         }}
                     >
-                        Device in progress for BQC
+                        Device to be processed for BQC
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
@@ -652,7 +639,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '8px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '8px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User Name - {trayData?.issued_user_name}
                     </h4>
                     <TextField
                         sx={{ mt: 1, ml: 1 }}

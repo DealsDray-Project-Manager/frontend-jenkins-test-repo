@@ -147,16 +147,7 @@ const SimpleMuiTable = () => {
                 },
             },
         },
-        {
-            name: 'charging',
-            label: 'Charging Jack Type',
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return value?.charging_jack_type
-                },
-            },
-        },
+
         {
             name: 'charging',
             label: 'Body Part missing',

@@ -335,7 +335,7 @@ const SimpleMuiTable = () => {
         <Container>
             <div className="breadcrumb">
                 <Breadcrumb
-                    routeSegments={[{ name: 'Ready For Charging', path: '/' }]}
+                    routeSegments={[{ name: 'Move to Charging', path: '/' }]}
                 />
             </div>
             <Button
@@ -347,7 +347,7 @@ const SimpleMuiTable = () => {
                     handelReadyForCharging(e)
                 }}
             >
-                Ready For Charging
+                Move to Charging
             </Button>
 
             <Table className="custom-table">

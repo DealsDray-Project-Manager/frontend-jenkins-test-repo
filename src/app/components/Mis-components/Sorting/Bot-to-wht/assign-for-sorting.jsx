@@ -252,7 +252,7 @@ const SimpleMuiTable = () => {
                                     handelGetSortingUser()
                                 }}
                             >
-                                Select Sorting Agent
+                                Select Sorting User
                             </Button>
                         </Box>
                     ) : null}

@@ -199,10 +199,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
-                                {/* <TableCell>Tracking Number</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -212,9 +208,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -299,9 +292,7 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                
                             </TableRow>
                         </TableHead>
 
@@ -312,9 +303,7 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                   
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -341,7 +330,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User Name - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box

@@ -463,7 +463,7 @@ const SimpleMuiTable = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            Sorting Agent
+                            Sorting User
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -515,7 +515,7 @@ const SimpleMuiTable = () => {
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Mmt Tray'}
+                    title={'MMT Tray'}
                     data={mmtTray}
                     columns={columns}
                     options={{

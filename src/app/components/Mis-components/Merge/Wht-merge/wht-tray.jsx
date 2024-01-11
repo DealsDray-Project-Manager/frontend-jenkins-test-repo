@@ -475,7 +475,7 @@ const SimpleMuiTable = () => {
                             sx={{ pt: 2 }}
                             id="demo-simple-select-label"
                         >
-                            Sorting Agent
+                            Sorting User
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"

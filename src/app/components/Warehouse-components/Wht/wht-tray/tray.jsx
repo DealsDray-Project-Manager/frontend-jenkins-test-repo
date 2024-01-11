@@ -167,21 +167,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Creation Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'code',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {

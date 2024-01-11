@@ -114,7 +114,7 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-        FileSaver.saveAs(data, 'Delivered Packets' + fileExtension)
+        FileSaver.saveAs(data, 'Opened Packets' + fileExtension)
     }
 
     const columns = [

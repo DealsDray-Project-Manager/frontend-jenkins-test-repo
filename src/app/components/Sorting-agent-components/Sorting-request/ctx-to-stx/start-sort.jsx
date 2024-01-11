@@ -243,6 +243,9 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '15px' }}>
                         FROM TRAY ITEMS - {tray[0]?.code}
                     </h4>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        Tray Grade - {tray[0]?.tray_grade}
+                    </h4>
 
                     <Box sx={{ mr: 2 }}>
                         <h5 style={{ marginLeft: '14px' }}>Total</h5>
@@ -263,8 +266,9 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>Order Id</TableCell>
-                                <TableCell>AWBN</TableCell>
+                                <TableCell>MUIC</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -274,12 +278,10 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.order_id}</TableCell>
-                                    <TableCell>
-                                        {data?.awbn_number == undefined
-                                            ? data?.tracking_id
-                                            : data?.awbn_number}
-                                    </TableCell>
+                                    <TableCell>{data?.muic}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
+
                                     {data?.dup_uic_status !==
                                     'Duplicate' ? null : (
                                         <TableCell>
@@ -331,6 +333,9 @@ export default function DialogBox() {
                     <h4 style={{ marginLeft: '15px' }}>
                         TO TRAY ITEMS - {tray?.[1]?.code}
                     </h4>
+                    <h4 style={{ marginLeft: '15px' }}>
+                        Tray Grade - {tray[1]?.tray_grade}
+                    </h4>
                     <Box sx={{ mr: 2 }}>
                         <h5 style={{ marginLeft: '14px' }}>Total</h5>
                         <p style={{ margin: '5px', fontSize: '22px' }}>
@@ -381,8 +386,9 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>Order Id</TableCell>
-                                <TableCell>AWBN</TableCell>
+                                <TableCell>MUIC</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -393,12 +399,10 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.order_id}</TableCell>
-                                    <TableCell>
-                                        {data?.awbn_number == undefined
-                                            ? data?.tracking_id
-                                            : data?.awbn_number}
-                                    </TableCell>
+                                    <TableCell>{data?.muic}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
+
                                     {data?.dup_uic_status !==
                                     'Duplicate' ? null : (
                                         <TableCell>

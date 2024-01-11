@@ -192,7 +192,7 @@ export default function DialogBox() {
                 sortId: trayData?.sort_id,
                 screen: 'return-from-wht-to-rp-sorting',
                 actUser: user.username,
-                length:trayData?.items?.length
+                length: trayData?.items?.length,
             }
             let res = await axiosWarehouseIn.post('/rdl-1/closedByWh', obj)
             if (res.status == 200) {
@@ -260,8 +260,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -272,8 +270,6 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -352,8 +348,6 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -365,8 +359,6 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -400,7 +392,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -458,7 +450,8 @@ export default function DialogBox() {
                             trayData?.actual_items?.length !==
                                 trayData?.items?.length ||
                             loading == true ||
-                            rackId == '' || trayData?.length == 0 ||
+                            rackId == '' ||
+                            trayData?.length == 0 ||
                             description == ''
                                 ? true
                                 : false

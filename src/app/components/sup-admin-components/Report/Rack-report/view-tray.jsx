@@ -66,6 +66,7 @@ const SimpleMuiTable = () => {
         for (let x of whtTray) {
             let obj = {
                 'Tray ID': x?.code,
+                'Tray Grade': x?.tray_grade,
                 Quantity: '',
                 Brand: x?.brand,
                 Model: x?.model,
@@ -129,6 +130,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'tray_grade',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Grade</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'actual_items',
             label: 'acutual_items',
             options: {
@@ -153,9 +163,9 @@ const SimpleMuiTable = () => {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     return (
-                        (value == 0 ? tableMeta.rowData[2] : value) +
+                        (value == 0 ? tableMeta.rowData[3] : value) +
                         '/' +
-                        tableMeta.rowData[3]
+                        tableMeta.rowData[4]
                     )
                 },
             },

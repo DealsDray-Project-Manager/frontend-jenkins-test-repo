@@ -41,6 +41,12 @@ const MemberEditorDialog = ({
             }
             fetchCpc()
             if (Object.keys(editFetchData).length !== 0) {
+                let arr = []
+                let obj = {
+                    name: editFetchData.warehouse,
+                }
+                arr.push(obj)
+                setWarehouse(arr)
                 reset({ ...editFetchData })
                 open()
             }

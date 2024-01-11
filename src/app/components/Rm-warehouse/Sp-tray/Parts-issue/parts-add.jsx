@@ -110,8 +110,8 @@ const SimpleMuiTable = () => {
     const handleAdd = (partId, boxId) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be add this part!",
-            icon: 'warning',
+            text: 'Do you want to add this part?',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -308,7 +308,7 @@ const SimpleMuiTable = () => {
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Parts'}
+                    title={`Add Spare Parts to SP :-${trayId}`}
                     data={tray?.items}
                     columns={columns}
                     options={{

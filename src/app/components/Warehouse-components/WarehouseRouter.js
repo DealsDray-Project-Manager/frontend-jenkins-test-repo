@@ -266,8 +266,13 @@ const CanBinStartPage=Loadable(lazy(() => import('./Rp-tray/Can-bin/start')))
 // CAN BIN REPORT 
 const CanBinReport =Loadable(lazy(() => import('./Report/can-bin')))
 const RpaToStxInprogressTrayClose=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/close')))
+const StxTrayViewUnits=Loadable(lazy(() => import('./Stx-tray/Stx/view-units')))
 
 const WarehoueRouter = [
+    {
+        path: '/warehouse/stx/view-units/:trayId',
+        element: <StxTrayViewUnits />,
+    },
     {
         path: '/warehouse/rpa-to-stx-work-in-progess-trays-view/close/:trayId',
         element: <RpaToStxInprogressTrayClose />,
@@ -297,11 +302,11 @@ const WarehoueRouter = [
         element: <RpatoStxSortingAssigned />,
     },
     {
-        path: '/warehouse/rpa-rpb-return-from-agent/close/:trayId',
+        path: '/warehouse/rpa-rpb-tray-issue-or-return/close/:trayId',
         element: <CloseRpaOrRpb />,
     },
     {
-        path: '/warehouse/rpa-rpb-return-from-agent',
+        path: '/warehouse/rpa-rpb-tray-issue-or-return',
         element: <ReturnFromRpaAndRpbTrays />,
     },
     {

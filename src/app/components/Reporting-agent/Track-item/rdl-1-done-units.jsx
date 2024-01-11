@@ -310,9 +310,7 @@ const TrackItem = () => {
                                 {data?.charging?.display_condition}
                             </TableCell>
                             <TableCell>{data?.charging?.lock_status}</TableCell>
-                            <TableCell>
-                                {data?.charging?.charging_jack_type}
-                            </TableCell>
+                          
                             <TableCell>
                                 {data?.charging?.boady_part_missing}
                             </TableCell>

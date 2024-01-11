@@ -567,6 +567,7 @@ const PaginationTable = () => {
                         }}
                         variant="outlined"
                         type="file"
+                        inputProps={{ accept: '.csv' }}
                     />
                     {item.length == 0 ? (
                         <Button

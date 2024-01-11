@@ -198,6 +198,17 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'name', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Name</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'rack_id', // field name in the row object
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -278,7 +289,7 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[8],
+                    value.length + '/' + tableMeta.rowData[9],
             },
         },
 
@@ -293,17 +304,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'name', // field name in the row object
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Name</>
-                </Typography>
-            ), // column title that will be shown in table
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'out_of_stock', // field name in the row object
             label: (
@@ -352,7 +353,7 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign-to-agent', path: '/' },
+                        { name: 'Assign-to-user', path: '/' },
                         { name: 'BQC' },
                     ]}
                 />

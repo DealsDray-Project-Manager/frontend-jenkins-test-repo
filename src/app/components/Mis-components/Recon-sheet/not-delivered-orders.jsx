@@ -13,10 +13,17 @@ import {
     TablePagination,
     TextField,
     Box,
+    Button,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { axiosMisUser } from '../../../../axios'
 import Swal from 'sweetalert2'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
+import { User } from '@auth0/auth0-spa-js'
+import useAuth from 'app/hooks/useAuth'
+import { saveAs } from 'file-saver'
+import SaveIcon from '@mui/icons-material/Save'
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -38,12 +45,123 @@ const SimpleMuiTable = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
     const [data, setData] = useState([])
     const [deliveryCount, setDeliveryCount] = useState([])
+    const [dataForDownload, setDataForDownload] = useState([])
+    const [downloadText, setDownlaodText] = useState('Export to Excel')
     const navigate = useNavigate()
+    const { user } = useAuth()
     const [search, setSearch] = useState({
         type: '',
         searchData: '',
         location: '',
     })
+
+    const download = () => {
+        setDownlaodText('Downloading...')
+        let arr = []
+        for (let x of dataForDownload) {
+            let obj = {
+                'Delivery Status': x?.delivery_status,
+                'Order ID': x?.order_id,
+                'Order Date': new Date(x?.order_date).toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                }),
+                'Order TimeStamp': new Date(x?.order_timestamp).toLocaleString(
+                    'en-GB',
+                    {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    }
+                ),
+                'Order Status': x?.order_status,
+                'Partner ID': x?.partner_id,
+                'Item ID': x?.item_id,
+                'Old Item Details': x?.old_item_details,
+                IMEI: x?.imei,
+                'Base Disscount': x?.base_discount,
+                Diganostic: x?.diagnostic,
+                'Partner Purchase Price': x?.partner_purchase_price,
+                'Tracking ID': x?.tracking_id,
+                'Delivery Date': new Date(x?.delivery_date).toLocaleString(
+                    'en-GB',
+                    {
+                        hour12: true,
+                    }
+                ),
+                'Order ID Replaced': x?.order_id_replaced,
+                'Deliverd With OTP': x?.deliverd_with_otp,
+                'Deliverd With Bag Exception': x?.deliverd_with_bag_exception,
+                'GC Amount Redeemed': x?.gc_amount_redeemed,
+                'GC Amount Refund': x?.gc_amount_refund,
+                'GC Redeem Time': new Date(x?.gc_redeem_time).toLocaleString(
+                    'en-GB',
+                    {
+                        hour12: true,
+                    }
+                ),
+                'GC Amount Refund Time': x?.gc_amount_refund_time,
+                'Diagonstic Status': x?.diagnstic_status,
+                'VC Eligible': x?.vc_eligible,
+                'Customer Declaration Physical Defect Present':
+                    x?.customer_declaration_physical_defect_present,
+                'Customer Declaration Physical Defect Type':
+                    x?.customer_declaration_physical_defect_type,
+                'Partner Price No Defect': x?.partner_price_no_defect,
+                'Revised Partner Price': x?.revised_partner_price,
+                'Delivery Fee': x?.delivery_fee,
+                'Exchange Facilitation Fee': x?.exchange_facilitation_fee,
+            }
+            if (obj['Order Date'] == 'Invalid Date') {
+                obj['Order Date'] = ''
+            }
+            if (obj['Order TimeStamp'] == 'Invalid Date') {
+                obj['Order TimeStamp'] = ''
+            }
+            if (
+                obj['Delivery Date'] == 'Invalid Date' ||
+                obj['Delivery Date'] == '01/01/1970, 5:30:00 am'
+            ) {
+                obj['Delivery Date'] = ''
+            }
+            if (
+                obj['GC Redeem Time'] == 'Invalid Date' ||
+                obj['GC Redeem Time'] == '01/01/1970, 5:30:00 am'
+            ) {
+                obj['GC Redeem Time'] = ''
+            }
+            arr.push(obj)
+        }
+        const fileExtension = '.xlsx'
+        const fileType =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+        const ws = XLSX.utils.json_to_sheet(arr)
+        ws['!cols'] = []
+        ws['!cols'][0] = { hidden: true }
+        const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const data = new Blob([excelBuffer], { type: fileType })
+
+        saveAs(data, `Not Delivered Orders ${fileExtension}`)
+        setDownlaodText('Export to Excel')
+    }
+
+    useEffect(() => {
+        const fetChData = async () => {
+            try {
+                const res = await axiosMisUser.post(
+                    '/notDeliveredOrdersForDownload/' + user.location
+                )
+                if (res.status == 200) {
+                    setDataForDownload(res.data.data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetChData()
+    }, [])
 
     useEffect(() => {
         try {
@@ -64,6 +182,7 @@ const SimpleMuiTable = () => {
                         if (res.status == 200) {
                             setItem(res.data.data)
                             setDeliveryCount(res.data.count)
+                            setDataForDownload(res.data.data)
                         } else {
                             setItem(res.data.data)
                             setDeliveryCount(res.data.count)
@@ -149,9 +268,11 @@ const SimpleMuiTable = () => {
                     if (res.status == 200) {
                         setItem(res.data.data)
                         setDeliveryCount(res.data.count)
+                        setDataForDownload(res.data.data)
                     } else {
                         setItem(res.data.data)
                         setDeliveryCount(res.data.count)
+                        setDataForDownload(res.data.data)
                     }
                 }
             }
@@ -170,58 +291,282 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Record.NO</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Delivery Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Order ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Order Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Order TimeStamp</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Order Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Partner ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Item ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Old Item Details</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Base Disscount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Diganostic</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Delivery Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Order ID Replaced</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'150px'}}>Deliverd With OTP</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'250px'}}>Deliverd With Bag Exception</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Amount Redeemed</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Amount Refund</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Redeem Time</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>GC Amount Refund Time</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diagonstic Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>VC Eligible</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'400px'}}>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Record.NO
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Delivery Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Order ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Order Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Order TimeStamp
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Order Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Partner ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Item ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Old Item Details
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            IMEI
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Base Disscount
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Diganostic
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Partner Purchase Price
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Tracking ID
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Delivery Date
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Order ID Replaced
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '150px',
+                            }}
+                        >
+                            Deliverd With OTP
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '250px',
+                            }}
+                        >
+                            Deliverd With Bag Exception
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            GC Amount Redeemed
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            GC Amount Refund
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            GC Redeem Time
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            GC Amount Refund Time
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Diagonstic Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            VC Eligible
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '400px',
+                            }}
+                        >
                             Customer Declaration Physical Defect Present
                         </TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'350px'}}>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '350px',
+                            }}
+                        >
                             Customer Declaration Physical Defect Type
                         </TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Price No Defect</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Revised Partner Price</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Delivery Fee</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Exchange Facilitation Fee</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Order ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Item ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Gep Order</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Shop</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Base Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Diganostic Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Storage Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Buyback Category</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Doorstep Diganostic</TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Partner Price No Defect
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Revised Partner Price
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Delivery Fee
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Exchange Facilitation Fee
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((data, index) => (
                         <TableRow tabIndex={-1}>
-                            <TableCell >{data.id}</TableCell>
+                            <TableCell>{data.id}</TableCell>
                             <TableCell
                                 style={
                                     data.delivery_status === 'Pending'
@@ -329,44 +674,6 @@ const SimpleMuiTable = () => {
                             <TableCell>
                                 {data.exchange_facilitation_fee?.toString()}
                             </TableCell>
-
-                            <TableCell>
-                                {data.delivery?.tracking_id?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.order_id?.toString()}
-                            </TableCell>
-
-                            <TableCell>
-                                {data.delivery?.item_id?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.gep_order?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.imei?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.partner_purchase_price?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.partner_shop?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.base_discount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.diagnostics_discount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.storage_disscount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.buyback_category?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.delivery?.doorsteps_diagnostics?.toString()}
-                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -415,6 +722,20 @@ const SimpleMuiTable = () => {
                         variant="outlined"
                         sx={{ ml: 2, mb: 1 }}
                     />
+                </Box>
+                <Box>
+                    <Button
+                        sx={{ mb: 2 }}
+                        variant="contained"
+                        color="secondary"
+                        disabled={downloadText == 'Downloading...'}
+                        onClick={(e) => {
+                            download(e)
+                        }}
+                        startIcon={<SaveIcon />}
+                    >
+                        {downloadText}
+                    </Button>
                 </Box>
             </Box>
 

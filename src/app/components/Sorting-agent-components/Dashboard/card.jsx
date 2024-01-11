@@ -83,14 +83,14 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.whtToRpTraySorting,
-            title: 'Wht to rp sorting',
+            title: 'WHT to RP Sorting',
             path: '/sorting/wht-to-rp/request',
             sales: false,
         },
         {
             icon: 'shopping_cart',
             amount: count.rpTrayCount,
-            title: 'Rp tray',
+            title: 'RP Tray',
             path: '/sorting/wht-to-rp/rp-tray',
             sales: false,
         },

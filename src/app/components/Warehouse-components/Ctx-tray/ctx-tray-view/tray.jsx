@@ -107,6 +107,15 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'tray_grade',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Tray Grade</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'rack_id',
             label: <Typography sx={{ fontWeight: 'bold' }}>Rack id</Typography>,
             options: {
@@ -152,10 +161,10 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, tableMeta) => {
                     return (
                         (value.length == 0
-                            ? tableMeta.rowData[4].length
+                            ? tableMeta.rowData[5].length
                             : value.length) +
                         '/' +
-                        tableMeta.rowData[5]
+                        tableMeta.rowData[6]
                     )
                 },
             },

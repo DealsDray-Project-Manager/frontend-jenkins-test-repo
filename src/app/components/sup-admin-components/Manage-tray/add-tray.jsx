@@ -592,6 +592,14 @@ const MemberEditorDialog = ({
                             >
                                 RPB
                             </MenuItem>
+                            <MenuItem
+                                value="CBT"
+                                onClick={(e) => {
+                                    fetchTypeWiseId(e, 'CBT', 'TOP')
+                                }}
+                            >
+                                CBT
+                            </MenuItem>
                         </TextFieldCustOm>
                         {getValues('type_taxanomy') == 'CT' ||
                         getValues('type_taxanomy') == 'ST' ? (
@@ -625,7 +633,8 @@ const MemberEditorDialog = ({
                         getValues('type_taxanomy') !== 'RPB' &&
                         getValues('type_taxanomy') !== 'PMT' &&
                         getValues('type_taxanomy') !== 'SPT' &&
-                        getValues('type_taxanomy') !== 'MMT' ? (
+                        getValues('type_taxanomy') !== 'MMT' &&
+                        getValues('type_taxanomy') !== 'CBT' ? (
                             <>
                                 <TextFieldCustOm
                                     label="Brand"

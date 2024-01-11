@@ -442,7 +442,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_two_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl-2 repair not done reason</>
+                    <>RDL-2 repair not done reason</>
                 </Typography>
             ),
             options: {
@@ -456,7 +456,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_two_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl-2 description</>
+                    <>RDL-2 description</>
                 </Typography>
             ),
             options: {

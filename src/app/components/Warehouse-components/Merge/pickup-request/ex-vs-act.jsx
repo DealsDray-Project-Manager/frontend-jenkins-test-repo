@@ -372,7 +372,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
             </Box>
@@ -398,7 +398,7 @@ export default function DialogBox() {
                             handelIssue(e, 'Assigned to sorting agent')
                         }}
                     >
-                        Issue To Agent
+                        Issue To User
                     </Button>
                 </Box>
             </div>

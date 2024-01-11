@@ -104,7 +104,7 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Agent Name</>
+                    <>User Name</>
                 </Typography>
             ),
             options: {

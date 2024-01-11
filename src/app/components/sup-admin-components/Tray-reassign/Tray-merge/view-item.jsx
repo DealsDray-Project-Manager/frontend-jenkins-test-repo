@@ -156,77 +156,12 @@ const columns = [
             filter: true,
         },
     },
-    {
-        name: 'item_recieved',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Item Received in Packet</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'model_brand',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Mismatched Model Brand Name</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerOne',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Other Info 1</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerTwo',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Other Info 2</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerThree',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Other Info 3</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
-    {
-        name: 'stickerFour',
-        label: (
-            <Typography variant="subtitle1" fontWeight="bold">
-                <>Other Info 4</>
-            </Typography>
-        ),
-        options: {
-            filter: true,
-        },
-    },
+
     {
         name: 'added_time',
         label: (
             <Typography variant="subtitle1" fontWeight="bold">
-                <>Added Date</>
+                <>Added in BOT Tray</>
             </Typography>
         ),
         options: {

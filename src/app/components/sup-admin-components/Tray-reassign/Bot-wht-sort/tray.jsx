@@ -202,7 +202,7 @@ const SimpleMuiTable = () => {
             name: '_id',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Sorting Agent
+                    Sorting User
                 </Typography>
             ),
             options: {

@@ -30,7 +30,7 @@ import PrevBqcReport from '../../Audit-components/Audit-request/Report/pre-bqc-r
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
 import RpbqcReport from './Rpbqc-agent-report'
-import RpBqcSummary from "./rp-bqc-summary"
+import RpBqcSummary from './rp-bqc-summary'
 import Swal from 'sweetalert2'
 import {
     axiosAuditAgent,
@@ -223,7 +223,7 @@ function StartRpAudit() {
                 navigate('/rp-audit/pending-items')
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
+                    title: 'Repair Audit Failed',
                     confirmButtonText: 'Ok',
                     text: res.data.message,
                 })
@@ -277,6 +277,12 @@ function StartRpAudit() {
                                 ?.rp_bqc_software_report?.final_grade
                         }
                         imei={resDataUic?.orderAndDelivery?.[0]?.imei}
+                        cimei_1={
+                            resDataUic?.orderAndDelivery?.[0]?.charging?.cimei_1
+                        }
+                        cimei_2={
+                            resDataUic?.orderAndDelivery?.[0]?.charging?.cimei_2
+                        }
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>

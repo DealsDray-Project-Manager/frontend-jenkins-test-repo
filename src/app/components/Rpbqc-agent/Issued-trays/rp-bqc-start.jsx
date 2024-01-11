@@ -27,6 +27,8 @@ import {
 import ChargingDetails from '../../Audit-components/Audit-request/Report/charging-user-report'
 import RdlOneReport from '../../Audit-components/Audit-request/Report/rdl-1-report'
 import RdlTwoReport from '../../Audit-components/Audit-request/Report/rdl-2-report'
+import RPBqcReport from '../../Rp-audit/Issued-trays/Rpbqc-agent-report'
+import RpAUditReport from './rp-aduit-report'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -134,6 +136,10 @@ export default function DialogBox() {
             )
             if (res.status === 200) {
                 setTray(res.data.data)
+                setPopData((popdata) => ({
+                    ...popdata,
+                    rpa_tray: res.data.data?.[0]?.code,
+                }))
             }
         } catch (error) {
             alert(error)
@@ -157,6 +163,9 @@ export default function DialogBox() {
                 rpa_tray: popdata.rpa_tray,
                 rp_audit_user: popdata.rp_audit_user,
             }
+            if (popdata.status == 'RP-BQC Failed') {
+                obj.rpa_tray = ''
+            }
             const res = await axiosRpBqcAgent.post('/add-rpbqc-data', obj)
             if (res.status == 200) {
                 Swal.fire({
@@ -171,7 +180,7 @@ export default function DialogBox() {
                 setDeviceButDis(false)
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
+                    title: 'Repair BQC Failed',
                     confirmButtonText: 'Ok',
                     text: res.data.message,
                 })
@@ -251,20 +260,19 @@ export default function DialogBox() {
                                 ))}
                             </TextField>
                             <TextField
-                                label="Select RPA Tray"
-                                variant="outlined"
+                                // label="Select RPA Tray"
+                                // variant="outlined"
                                 fullWidth
-                                select
+                                disabled
                                 name="rpa_tray"
-                                onChange={handleChangeThePopValue}
+                                // onChange={handleChangeThePopValue}
                                 sx={{ mt: 2 }}
-                            >
-                                {tray.map((data) => (
-                                    <MenuItem key={data.code} value={data.code}>
-                                        {data.code}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                                value={
+                                    tray?.[0]?.code != undefined
+                                        ? `Tray ID:- ${tray?.[0]?.code}`
+                                        : null
+                                }
+                            />
                         </>
                     ) : null}
 
@@ -306,12 +314,6 @@ export default function DialogBox() {
             <H3>UIC: {uic}</H3>
             <H3>Model: {resDataUic?.old_item_details?.toUpperCase()}</H3>
             <Grid container spacing={3}>
-                <Grid item lg={6} md={12} xs={12}>
-                    <ChargingDetails
-                        Charging={resDataUic?.charging}
-                        state="Bqc"
-                    />
-                </Grid>
                 <Grid item lg={6} md={6} xs={12}>
                     <RdlOneReport
                         RdlOneReport={resDataUic?.rdl_fls_one_report}
@@ -320,6 +322,16 @@ export default function DialogBox() {
                 <Grid item lg={6} md={6} xs={12}>
                     <RdlTwoReport RdlTwoReport={resDataUic?.rdl_two_report} />
                 </Grid>
+                {resDataUic?.rp_bqc_report != undefined ? (
+                    <Grid item lg={6} md={6} xs={12}>
+                        <RPBqcReport Rpbqc={resDataUic?.rp_bqc_report} />
+                    </Grid>
+                ) : null}
+                {resDataUic?.rp_audit_report != undefined ? (
+                    <Grid item lg={6} md={6} xs={12}>
+                        <RpAUditReport Rpbqc={resDataUic?.rp_audit_report} />
+                    </Grid>
+                ) : null}
             </Grid>
 
             <Box

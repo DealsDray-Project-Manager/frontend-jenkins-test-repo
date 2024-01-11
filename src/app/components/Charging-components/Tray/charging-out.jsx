@@ -39,7 +39,6 @@ import { axiosCharging, axiosWarehouseIn } from '../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
         padding: theme.spacing(2),
@@ -93,7 +92,7 @@ export default function DialogBox() {
         reset({})
         setOpen(false)
     }
-    
+
     /************************************************************************** */
     const schema = Yup.object().shape({
         battery_status: Yup.string().required('Required*').nullable(),
@@ -119,19 +118,18 @@ export default function DialogBox() {
                 }
             })
             .nullable(),
-        charging_jack_type: Yup.string().required('Required*').nullable(),
         cimei_1: Yup.string()
             .when(
-                ['battery_status', 'lock_status','display_condition'],
-                (battery_status, lock_status,display_condition, schema) => {
+                ['battery_status', 'lock_status', 'display_condition'],
+                (battery_status, lock_status, display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
                         battery_status !== 'No-battery' &&
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
-                        lock_status !== 'iCloud Locked'&&
-                        display_condition !== "Touch Not Working"
+                        lock_status !== 'iCloud Locked' &&
+                        display_condition !== 'Touch Not Working'
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -140,8 +138,8 @@ export default function DialogBox() {
             .nullable(),
         cimei_2: Yup.string()
             .when(
-                ['battery_status', 'lock_status','display_condition'],
-                (battery_status, lock_status,display_condition, schema) => {
+                ['battery_status', 'lock_status', 'display_condition'],
+                (battery_status, lock_status, display_condition, schema) => {
                     if (
                         battery_status !== 'Charge failed' &&
                         battery_status !== 'Battery Bulging' &&
@@ -149,7 +147,7 @@ export default function DialogBox() {
                         lock_status !== 'Pin/Pattern Lock' &&
                         lock_status !== 'Google Locked' &&
                         lock_status !== 'iCloud Locked' &&
-                        display_condition !== "Touch Not Working"
+                        display_condition !== 'Touch Not Working'
                     ) {
                         return schema.required('Required').min(15)
                     }
@@ -410,7 +408,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                                 {/* <TableCell>Tracking Number</TableCell> */}
                             </TableRow>
                         </TableHead>
@@ -510,7 +508,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -682,7 +680,6 @@ export default function DialogBox() {
                                 <MenuItem value="Body with major scratches">
                                     Body with major scratches
                                 </MenuItem>
-                               
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
@@ -763,31 +760,7 @@ export default function DialogBox() {
                             </FormControl>
                         ) : null}
 
-                        <FormControl fullWidth>
-                            <InputLabel
-                                sx={{ pt: 2 }}
-                                id="demo-simple-select-label"
-                            >
-                                Charging Jack type
-                            </InputLabel>
-                            <Select
-                                // disabled={
-                                //     trayData.sort_id == 'Recharging Station IN'
-                                // }
-                                labelId="demo-simple-select-label"
-                                fullWidth
-                                defaultValue={getValues('charging_jack_type')}
-                                label="Charging Jack type"
-                                {...register('charging_jack_type')}
-                                error={errors.charging_jack_type ? true : false}
-                                helperText={errors.charging_jack_type?.message}
-                                sx={{ mt: 2 }}
-                            >
-                                <MenuItem value="Micro USB">Micro USB</MenuItem>
-                                <MenuItem value="Type C">Type C</MenuItem>
-                                <MenuItem value="lightning">lightning</MenuItem>
-                            </Select>
-                        </FormControl>
+                       
                         <FormControl>
                             <FormLabel
                                 id="demo-radio-buttons-group-label"
@@ -904,14 +877,14 @@ export default function DialogBox() {
                             fullWidth
                             sx={{ mt: 2 }}
                         />
-                        <TextField
+                        {/* <TextField
                             label="Supervisor name"
                             variant="outlined"
                             type="text"
                             value={user_name1}
                             fullWidth
                             sx={{ mt: 2 }}
-                        />
+                        /> */}
                     </Box>
                 </DialogContent>
                 <DialogActions>
@@ -945,7 +918,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User Name - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box

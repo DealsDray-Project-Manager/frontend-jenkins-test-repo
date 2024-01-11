@@ -62,16 +62,12 @@ const MemberEditorDialog = ({
             .max(40)
             .required('Required*')
             .nullable(),
-        country: Yup.string()
-            .matches(/^.*((?=.*[aA-zZ\s]){1}).*$/, 'Please enter valid country')
-            .max(40)
-            .required('Required*')
-            .nullable(),
+
+        location_type: Yup.string().required('Required*').nullable(),
         pincode: Yup.string()
             .min(6, 'Please Enter valid Pincode')
             .required('Required*')
             .nullable(),
-        location_type: Yup.string().required('Required*').nullable(),
     })
 
     const {
@@ -191,6 +187,7 @@ const MemberEditorDialog = ({
                             select
                             name="location_type"
                             {...register('location_type')}
+                            disabled={Object.keys(editFetchData).length !== 0}
                             error={errors.location_type ? true : false}
                             helperText={errors.location_type?.message}
                             defaultValue={getValues('location_type')}
@@ -210,23 +207,6 @@ const MemberEditorDialog = ({
                                 errors.state ? errors.state?.message : ''
                             }
                         />
-
-                        <TextFieldCustOm
-                            label="Pincode"
-                            type="number"
-                            name="pincode"
-                            inputProps={{ maxLength: 6 }}
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault()
-                                }
-                            }}
-                            {...register('pincode')}
-                            error={errors.pincode ? true : false}
-                            helperText={
-                                errors.pincode ? errors.pincode?.message : ''
-                            }
-                        />
                     </Grid>
 
                     <Grid item sm={6} xs={12}>
@@ -239,16 +219,7 @@ const MemberEditorDialog = ({
                             error={errors.code ? true : false}
                             helperText={errors.code ? errors.code?.message : ''}
                         />
-                        <TextFieldCustOm
-                            label="Country"
-                            type="text"
-                            name="country"
-                            {...register('country')}
-                            error={errors.country ? true : false}
-                            helperText={
-                                errors.country ? errors.country?.message : ''
-                            }
-                        />
+
                         <TextFieldCustOm
                             label="City"
                             type="text"
@@ -256,6 +227,21 @@ const MemberEditorDialog = ({
                             {...register('city')}
                             error={errors.city ? true : false}
                             helperText={errors.city ? errors.city?.message : ''}
+                        />
+                        <TextFieldCustOm
+                            label="Pincode"
+                            name="pincode"
+                            inputProps={{ maxLength: 6 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            {...register('pincode')}
+                            error={errors.pincode ? true : false}
+                            helperText={
+                                errors.pincode ? errors.pincode?.message : ''
+                            }
                         />
                     </Grid>
                 </Grid>

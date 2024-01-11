@@ -143,7 +143,7 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Sorting Agent
+                    Sorting User
                 </Typography>
             ),
             options: {

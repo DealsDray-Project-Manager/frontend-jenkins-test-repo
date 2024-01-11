@@ -125,7 +125,7 @@ export default function StickyHeadTable({ props }) {
                             }
                         )}
                     </h4>
-                    <h4>Agent Name- {tray[0]?.issued_user_name}</h4>
+                    <h4>User Name- {tray[0]?.issued_user_name}</h4>
                 </Box>
                 <Box sx={{}}>
                     <Paper sx={{ width: '100%', overflow: 'auto' }}>
@@ -232,7 +232,7 @@ export default function StickyHeadTable({ props }) {
                                 handelIssue(e, 'Assigned to sorting agent')
                             }}
                         >
-                            Issue To Agent
+                            Issue To User
                         </Button>
                     </Box>
                 </div>

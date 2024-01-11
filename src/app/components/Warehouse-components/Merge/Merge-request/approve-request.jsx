@@ -206,7 +206,7 @@ export default function StickyHeadTable({ props }) {
                                     day: '2-digit',
                                 })}
                             </h4>
-                            <h4>Agent Name- {mmtTray[0]?.issued_user_name}</h4>
+                            <h4>User Name- {mmtTray[0]?.issued_user_name}</h4>
                         </Box>
                     </Box>
 
@@ -370,7 +370,7 @@ export default function StickyHeadTable({ props }) {
                                     handelIssue(e, 'Assigned to sorting agent')
                                 }}
                             >
-                                Issue To Agent
+                                Issue To User
                             </Button>
                         </Box>
                     </div>

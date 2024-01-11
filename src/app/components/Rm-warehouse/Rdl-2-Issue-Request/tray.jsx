@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography fontSize="16px" fontWeight="bold">
-                    RDL Agent
+                    RDL User
                 </Typography>
             ),
             options: {

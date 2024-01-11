@@ -88,17 +88,17 @@ const SimpleMuiTable = () => {
             },
         },
 
-        {
-            name: 'type_taxanomy',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Type</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+        // {
+        //     name: 'type_taxanomy',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Tray Type</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //     },
+        // },
 
         {
             name: 'brand',
@@ -154,7 +154,9 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
-                filter: true,
+                filter: false,
+                display: false,
+                sort: false,
             },
         },
 
@@ -168,21 +170,21 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) =>
-                    tableMeta.rowData[6].length == 0 &&
-                    tableMeta.rowData[7].length == 0
-                        ? value.length + '/' + tableMeta.rowData[5]
+                    tableMeta.rowData[5].length == 0 &&
+                    tableMeta.rowData[6].length == 0
+                        ? value.length + '/' + tableMeta.rowData[4]
                         : tableMeta.rowData[8] === 'BQC work inprogress'
-                        ? tableMeta.rowData[6].length +
-                          tableMeta.rowData[7].length +
-                          '/' +
-                          tableMeta.rowData[5]
-                        : tableMeta.rowData[6].length !== 0 ||
-                          tableMeta.rowData[7].length !== 0
-                        ? value.length +
-                          tableMeta.rowData[7].length +
+                        ? tableMeta.rowData[5].length +
                           tableMeta.rowData[6].length +
                           '/' +
-                          tableMeta.rowData[5]
+                          tableMeta.rowData[4]
+                        : tableMeta.rowData[5].length !== 0 ||
+                          tableMeta.rowData[6].length !== 0
+                        ? value.length +
+                          tableMeta.rowData[6].length +
+                          tableMeta.rowData[5].length +
+                          '/' +
+                          tableMeta.rowData[4]
                         : '',
             },
         },

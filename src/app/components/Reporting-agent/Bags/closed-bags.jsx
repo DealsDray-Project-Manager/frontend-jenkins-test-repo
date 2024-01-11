@@ -158,7 +158,7 @@ const SimpleMuiTable = () => {
             </div>
 
             <MUIDataTable
-                title={'Bot Bag'}
+                title={'BOT Bag'}
                 data={bagList}
                 columns={columns}
                 options={{

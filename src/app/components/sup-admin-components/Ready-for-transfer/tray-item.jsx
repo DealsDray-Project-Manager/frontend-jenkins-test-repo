@@ -108,14 +108,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'tray_id',
-            label: 'Bot Tray',
+            label: 'BOT Tray',
             options: {
                 filter: true,
             },
         },
         {
             name: 'bot_agent',
-            label: 'Bot Agent',
+            label: 'BOT Agent',
             options: {
                 filter: true,
                 display: false,

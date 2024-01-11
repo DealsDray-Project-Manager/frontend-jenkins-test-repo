@@ -27,7 +27,7 @@ const SimpleForm = () => {
 
     useEffect(() => {
         ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-            console.log(value)
+          
 
             if (value !== state.password) {
                 return false

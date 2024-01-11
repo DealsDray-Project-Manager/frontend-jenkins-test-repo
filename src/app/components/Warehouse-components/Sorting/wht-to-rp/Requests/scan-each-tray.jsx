@@ -389,7 +389,7 @@ const SimpleMuiTable = () => {
                             handleIssue(e)
                         }}
                     >
-                        Issue to Agent
+                        Issue to User
                     </Button>
                 </Box>
             </Card>

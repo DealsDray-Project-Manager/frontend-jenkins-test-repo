@@ -104,7 +104,7 @@ const SimpleMuiTable = () => {
             name: '_id',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Sorting Agent
+                    Sorting User
                 </Typography>
             ),
             options: {
@@ -178,7 +178,7 @@ const SimpleMuiTable = () => {
                             style={{ backgroundColor: 'green' }}
                             component="span"
                         >
-                            Handover to Agent
+                            Handover to User
                         </Button>
                     ) : (
                         <Button

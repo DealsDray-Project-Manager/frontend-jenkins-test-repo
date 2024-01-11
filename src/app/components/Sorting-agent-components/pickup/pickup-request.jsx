@@ -77,7 +77,7 @@ const SimpleMuiTable = () => {
             name: 'code',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray ID</>
+                    <>Source Tray ID</>
                 </Typography>
             ),
             options: {
@@ -95,17 +95,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        {
-            name: 'issued_user_name',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Agent Name</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'limit',
             label: 'Tray Id',
@@ -126,14 +116,14 @@ const SimpleMuiTable = () => {
                 filter: true,
 
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[4],
+                    value.length + '/' + tableMeta.rowData[3],
             },
         },
         {
             name: 'to_tray_for_pickup',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>To Tray</>
+                    <>Target Tray ID</>
                 </Typography>
             ),
             options: {

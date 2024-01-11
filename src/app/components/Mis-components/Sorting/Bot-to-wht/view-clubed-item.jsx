@@ -129,14 +129,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'user_name',
-            label: 'Bot Agent',
+            label: 'BOT User',
             options: {
                 filter: true,
             },
         },
         {
             name: 'tray_id',
-            label: 'Bot Tray',
+            label: 'BOT Tray',
             options: {
                 filter: true,
             },
@@ -160,13 +160,13 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Sorting', path: '/' },
-                        { name: 'Bot-to-wht' },
+                        { name: 'BOT-to-WHT' },
                     ]}
                 />
             </div>
 
             <MUIDataTable
-                title={'Wht Tray'}
+                title={'WHT Tray'}
                 data={item?.temp_array}
                 columns={columns}
                 options={{

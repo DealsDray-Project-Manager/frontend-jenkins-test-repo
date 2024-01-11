@@ -64,12 +64,12 @@ const Botdetails = ({
                             <Typography
                                 sx={{ fontSize: '16px', marginBottom: '15px' }}
                             >
-                                Bot Agent name: {BotTrayDetails?.agent_name}
+                              BOT Agent name: {BotTrayDetails?.agent_name}
                             </Typography>
                             <Typography
                                 sx={{ fontSize: '16px', marginBottom: '15px' }}
                             >
-                                Tray Closed Date Bot:{' '}
+                                Tray Closed Date BOT:{' '}
                                 {BotTrayDetails?.tray_closed_by_bot != undefined
                                     ? new Date(
                                           BotTrayDetails?.tray_closed_by_bot
@@ -81,7 +81,7 @@ const Botdetails = ({
                             <Typography
                                 sx={{ fontSize: '16px', marginBottom: '15px' }}
                             >
-                                Tray Received From Bot:{' '}
+                                Tray Received From BOT:{' '}
                                 {BotTrayDetails?.bot_done_received != undefined
                                     ? new Date(
                                           BotTrayDetails?.bot_done_received

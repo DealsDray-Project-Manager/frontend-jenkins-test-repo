@@ -19,7 +19,6 @@ import { axiosWarehouseIn } from '../../../../../axios'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {
@@ -42,7 +41,7 @@ export default function DialogBox() {
     const [uic, setUic] = useState('')
     const [refresh, setRefresh] = useState(false)
     const { user } = useAuth()
-    
+
     /*********************************************************** */
     useEffect(() => {
         const fetchData = async () => {
@@ -204,7 +203,7 @@ export default function DialogBox() {
                                 trayData?.prefix == 'tray-master' ? (
                                     <TableCell>Bag ID</TableCell>
                                 ) : (
-                                    <TableCell>BOT Tray</TableCell>
+                                    ''
                                 )}
                             </TableRow>
                         </TableHead>
@@ -227,7 +226,7 @@ export default function DialogBox() {
                                     trayData?.prefix == 'tray-master' ? (
                                         <TableCell>{data?.bag_id}</TableCell>
                                     ) : (
-                                        <TableCell>{data?.tray_id}</TableCell>
+                                        ''
                                     )}
                                 </TableRow>
                             ))}
@@ -317,7 +316,7 @@ export default function DialogBox() {
                                 trayData?.prefix == 'tray-master' ? (
                                     <TableCell>Bag ID</TableCell>
                                 ) : (
-                                    <TableCell>BOT Tray</TableCell>
+                                    ''
                                 )}
                             </TableRow>
                         </TableHead>
@@ -341,7 +340,7 @@ export default function DialogBox() {
                                     trayData?.prefix == 'tray-master' ? (
                                         <TableCell>{data?.bag_id}</TableCell>
                                     ) : (
-                                        <TableCell>{data?.tray_id}</TableCell>
+                                        ''
                                     )}
                                 </TableRow>
                             ))}
@@ -376,7 +375,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
             </Box>

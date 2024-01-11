@@ -201,21 +201,13 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Agent Name</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>User Name</Typography>
             ),
             options: {
                 filter: true,
             },
         },
-        {
-            name: 'warehouse',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>Warehouse</Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'brand',
             label: <Typography sx={{ fontWeight: 'bold' }}>Brand</Typography>,

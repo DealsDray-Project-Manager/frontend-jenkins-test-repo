@@ -59,10 +59,7 @@ const CustomerBillings = ({ Charging }) => {
                         <TableCell sx={{ pl: 2 }}>Lock Status :</TableCell>
                         <TableCell>{Charging?.report?.lock_status}</TableCell>
                     </TableRow>
-                    <TableRow key={Charging?.report?.charging_jack_type}>
-                        <TableCell sx={{ pl: 2 }}>Charging Jack Type :</TableCell>
-                        <TableCell>{Charging?.report?.charging_jack_type}</TableCell>
-                    </TableRow>
+                
                     <TableRow key={Charging?.report?.boady_part_missing}>
                         <TableCell sx={{ pl: 2 }}>
                             Any Body Part Missing :

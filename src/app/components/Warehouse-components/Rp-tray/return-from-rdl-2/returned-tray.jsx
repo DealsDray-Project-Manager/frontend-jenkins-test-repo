@@ -258,7 +258,7 @@ const SimpleMuiTable = () => {
             name: 'track_tray',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Rdl-2 Done Date
+                    RDL-2 Done Date
                 </Typography>
             ),
             options: {

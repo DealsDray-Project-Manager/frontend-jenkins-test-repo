@@ -170,7 +170,7 @@ const RequestApprove = () => {
                     })}
                 </Typography>
                 <Typography variant="subtitle1">
-                    Agent Name: {toolsAndConsumables?.issued_user_name}
+                    User Name: {toolsAndConsumables?.issued_user_name}
                 </Typography>
             </div>
             <Table className="custom-table">
@@ -248,7 +248,7 @@ const RequestApprove = () => {
                     }
                     style={{ backgroundColor: 'green' }}
                 >
-                    Issue To Agent
+                    Issue To User
                 </Button>
             </Box>
         </Container>

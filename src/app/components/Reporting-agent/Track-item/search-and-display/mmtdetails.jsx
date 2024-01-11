@@ -48,7 +48,7 @@ const MMTdetails = ({ MmtTrayDetails }) => {
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}
                         >
-                            Bot Agent name: {MmtTrayDetails?.agent_name}
+                            BOT Agent name: {MmtTrayDetails?.agent_name}
                         </Typography>
                         <Typography
                             sx={{ fontSize: '16px', marginBottom: '15px' }}

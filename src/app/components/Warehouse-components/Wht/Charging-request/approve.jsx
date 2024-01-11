@@ -221,9 +221,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -233,9 +230,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -244,6 +238,8 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
+    
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
@@ -319,9 +315,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -332,9 +325,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -368,7 +358,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -419,7 +409,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Issue To Agent
+                        Issue To User
                     </Button>
                 </Box>
             </div>

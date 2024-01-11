@@ -274,6 +274,7 @@ const SimpleMuiTable = () => {
                             sx={{
                                 m: 1,
                             }}
+                            disabled={tableMeta.rowData[9]?.length == 0}
                             variant="contained"
                             onClick={() => handelViewItem(value)}
                             style={{ backgroundColor: 'green' }}

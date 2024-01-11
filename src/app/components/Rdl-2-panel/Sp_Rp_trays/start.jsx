@@ -190,14 +190,26 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.description,
             },
         },
+        // {
+        //     name: 'rpbqc_info',
+        //     label: (
+        //         <Typography sx={{ fontWeight: 'bold' }}>RPB Tray</Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value, dataIndex) => value?.rbqc_tray,
+        //         display: trayData?.sp_tray == undefined ? false : true,
+        //     },
+        // },
         {
             name: 'rpbqc_info',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }}>RPB Tray</Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>RPB User ID</Typography>
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.rbqc_tray,
+                customBodyRender: (value, dataIndex) => value?.rpbqc_username,
+                display: trayData?.sp_tray == undefined ? false : true,
             },
         },
     ]
@@ -242,9 +254,11 @@ const SimpleMuiTable = () => {
                         <Typography sx={{}}>
                             RP Tray : {trayData?.code}
                         </Typography>
-                        <Typography sx={{ ml: 5 }}>
-                            SP Tray : {trayData?.sp_tray}
-                        </Typography>
+                        {trayData?.sp_tray != undefined ? (
+                            <Typography sx={{ ml: 5 }}>
+                                SP Tray : {trayData?.sp_tray}
+                            </Typography>
+                        ) : null}
                         <Typography sx={{ ml: 5 }}>
                             BRAND : {trayData?.brand}
                         </Typography>

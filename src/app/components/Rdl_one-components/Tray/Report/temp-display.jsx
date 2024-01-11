@@ -266,6 +266,8 @@ export default function DialogBox() {
                                 ?.final_grade
                         }
                         imei={reportData?.order?.imei}
+                        cimei_1={reportData?.delivery?.charging?.cimei_1}
+                        cimei_2={reportData?.delivery?.charging?.cimei_2}
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>

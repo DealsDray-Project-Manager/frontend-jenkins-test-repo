@@ -329,11 +329,12 @@ export default function DialogBox() {
                             awbn_number: awabnDetails?.[0]?.tracking_id,
                             order_id: awabnDetails?.[0]?.order_id,
                             order_date: awabnDetails?.[0]?.order_date,
+                            delivery_date: awabnDetails?.[0]?.delivery_date,
                             imei: awabnDetails?.[0]?.imei,
                             stickerOne: stickerOne,
                             stickerTwo: stickerTwo,
                             stickerThree: stickertThree,
-                            status: awabnDetails?.[0].status,
+                            // status: awabnDetails?.[0].status,
                             tray_id: tray[0].code,
                             bag_id: bagId,
                             user_name: user_name1,
@@ -410,6 +411,7 @@ export default function DialogBox() {
                             awbn_number: awabnDetails?.[0]?.tracking_id,
                             order_id: awabnDetails?.[0]?.order_id,
                             order_date: awabnDetails?.[0]?.order_date,
+                            delivery_date: awabnDetails?.[0]?.delivery_date,
                             imei: awabnDetails?.[0]?.imei,
                             stickerOne: stickerOne,
                             stickerTwo: stickerTwo,
@@ -557,9 +559,8 @@ export default function DialogBox() {
                                             <TableCell pl={{ pl: 2 }}>
                                                 S.NO
                                             </TableCell>
-                                            <TableCell>AWBN Number</TableCell>
-                                            <TableCell>Order ID</TableCell>
-                                            <TableCell>Order Date</TableCell>
+                                            <TableCell>UIC</TableCell>
+
                                             <TableCell>Status</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -574,26 +575,7 @@ export default function DialogBox() {
                                                     {index + 1}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {itemData.awbn_number}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {itemData.order_id}
-                                                </TableCell>
-
-                                                <TableCell>
-                                                    {' '}
-                                                    {itemData.order_date == null
-                                                        ? 'No Order Date'
-                                                        : new Date(
-                                                              itemData.order_date
-                                                          ).toLocaleString(
-                                                              'en-GB',
-                                                              {
-                                                                  year: 'numeric',
-                                                                  month: '2-digit',
-                                                                  day: '2-digit',
-                                                              }
-                                                          )}
+                                                    {itemData.uic}
                                                 </TableCell>
                                                 <TableCell
                                                     style={
@@ -756,13 +738,13 @@ export default function DialogBox() {
                             <Checkbox
                                 onClick={(e) => {
                                     stickerOne == ''
-                                        ? setStickerOne('UIC Pasted On Device')
+                                        ? setStickerOne('UIC Pasted')
                                         : setStickerOne('')
                                 }}
                                 {...label}
                                 sx={{ ml: 1 }}
                             />
-                            UIC Pasted On Device
+                            UIC Pasted
                         </label>
                         <label>
                             {' '}
@@ -854,7 +836,7 @@ export default function DialogBox() {
                             traySegrigation(e, 'BOT')
                         }}
                     >
-                        Add To Bot
+                        Add To BOT
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
@@ -895,13 +877,13 @@ export default function DialogBox() {
                             <Checkbox
                                 onClick={(e) => {
                                     stickerOne == ''
-                                        ? setStickerOne('UIC Pasted On Sleeve')
+                                        ? setStickerOne('UIC Pasted')
                                         : setStickerOne('')
                                 }}
                                 {...label}
                                 sx={{ ml: 1 }}
                             />
-                            UIC Pasted On Sleeve
+                            UIC Pasted
                         </label>
                         <TextField
                             label="Item received in packet"
@@ -997,13 +979,13 @@ export default function DialogBox() {
                                 onClick={(e) => {
                                     stickertThree == ''
                                         ? setStickerThree(
-                                              'Device Put On Sleeve'
+                                              'Device Put In Sleeve'
                                           )
                                         : setStickerThree('')
                                 }}
                                 {...label}
                             />
-                            Device Put On Sleeve
+                            Device Put In Sleeve
                         </label>
 
                         <FormControl sx={{ ml: 2 }}>

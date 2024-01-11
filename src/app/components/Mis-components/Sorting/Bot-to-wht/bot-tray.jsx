@@ -31,7 +31,6 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 const SimpleMuiTable = () => {
-    
     const [isAlive, setIsAlive] = useState(true)
     const [item, setItem] = useState([])
     const navigate = useNavigate()
@@ -277,17 +276,12 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Sorting', path: '/' },
-                        { name: 'Bot-to-wht' },
+                        { name: 'BOT-to-WHT' },
                     ]}
                 />
             </div>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Box>
+
+            {/* <Box>
                     <h3>
                         Date:-{' '}
                         {new Date(
@@ -300,15 +294,9 @@ const SimpleMuiTable = () => {
                             day: '2-digit',
                         })}
                     </h3>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'start',
-                        justifyContent: 'flex-end',
-                    }}
-                >
-                    <TextField
+                </Box> */}
+
+            {/* <TextField
                         id="filled-select-currency"
                         type="Date"
                         onChange={(e) => {
@@ -338,30 +326,11 @@ const SimpleMuiTable = () => {
                         }}
                     >
                         Sort
-                    </Button>
-                    <Box>
-                        <Button
-                            sx={{
-                                mt: 2,
-                                height: '48px',
-                                width: '200px',
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                            disabled={isCheck.length === 0}
-                            onClick={(e) => {
-                                handelAssignForSorting(e)
-                            }}
-                        >
-                            Assign For Sorting
-                        </Button>
-                    </Box>
-                </Box>
-            </Box>
+                    </Button> */}
+
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Wht Tray'}
+                    title={'Trays'}
                     data={item}
                     columns={columns}
                     options={{
@@ -405,6 +374,25 @@ const SimpleMuiTable = () => {
                     }}
                 />
             </Table>
+            <Box sx={{ float: 'right', mb: 1 }}>
+                <Button
+                    sx={{
+                        mt: 1,
+
+                        height: '40px',
+                        width: '200px',
+                    }}
+                    variant="contained"
+                    style={{ backgroundColor: 'green' }}
+                    component="span"
+                    disabled={isCheck.length === 0}
+                    onClick={(e) => {
+                        handelAssignForSorting(e)
+                    }}
+                >
+                    Assign For Sorting
+                </Button>
+            </Box>
         </Container>
     )
 }

@@ -357,7 +357,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -422,7 +422,7 @@ export default function DialogBox() {
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
                                 <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
 

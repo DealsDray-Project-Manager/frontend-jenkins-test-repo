@@ -94,7 +94,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'issued_user_name',
-            label: 'Agent Name',
+            label: 'User Name',
             options: {
                 filter: true,
             },

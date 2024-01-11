@@ -24,13 +24,11 @@ const StatCard3 = () => {
                         setCount(res.data.data)
                     }
                 } catch (error) {
-                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text:error,
+                        text: error,
                     })
-                    
                 }
             }
         }
@@ -47,7 +45,7 @@ const StatCard3 = () => {
         {
             icon: 'shopping_cart',
             amount: count.other_tray,
-            title: 'Other Tray',
+            title: "CTX Tray's",
             path: '/audit/assigned-tray',
         },
     ]
@@ -60,7 +58,7 @@ const StatCard3 = () => {
                 {statList.map((item, ind) => (
                     <Grid key={item.title} item md={3} sm={6} xs={12}>
                         <Card
-                            style={{cursor:"pointer"}}
+                            style={{ cursor: 'pointer' }}
                             onClick={(e) => {
                                 navigate(item.path)
                             }}

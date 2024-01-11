@@ -292,6 +292,10 @@ export default function DialogBox() {
         )
     }, [trayData?.items])
 
+    const ScanUic=useMemo(()=>{
+
+},[])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>

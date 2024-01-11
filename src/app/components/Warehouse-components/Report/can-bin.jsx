@@ -77,8 +77,8 @@ const SimpleMuiTable = () => {
                 UIC: x.uic_code.code,
                 'Brand and model': x?.old_item_details,
                 'RDL-2 status': x?.rdl_two_report?.status,
-                'Rdl-2 repair not done reason': x?.rdl_two_report?.reason,
-                'Rdl-2 description': x?.rdl_two_report?.description,
+                'RDL-2 repair not done reason': x?.rdl_two_report?.reason,
+                'RDL-2 description': x?.rdl_two_report?.description,
                 'Added Date': new Date(x?.add_to_can_bin_date).toLocaleString(
                     'en-GB',
                     {
@@ -87,6 +87,7 @@ const SimpleMuiTable = () => {
                 ),
                 'Added to Can Bin By': x?.add_to_can_bin_user,
                 'Warehouse User Description': x?.add_to_can_bin_description,
+                CBT: x?.can_bin_tray,
             }
             arr.push(obj)
         }
@@ -165,7 +166,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_two_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl-2 repair not done reason</>
+                    <>RDL-2 repair not done reason</>
                 </Typography>
             ),
             options: {
@@ -177,7 +178,7 @@ const SimpleMuiTable = () => {
             name: 'rdl_two_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rdl-2 description</>
+                    <>RDL-2 description</>
                 </Typography>
             ),
             options: {
@@ -223,6 +224,17 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
+        {
+            name: 'can_bin_tray',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>CBT</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
     ]
 
     return (
@@ -231,7 +243,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'Report', path: '/' },
-                        { name: 'Sales Bin' },
+                        { name: 'Can Bin' },
                     ]}
                 />
             </div>

@@ -130,7 +130,7 @@ const SimpleMuiTable = () => {
     const ProductTable = styled(Table)(() => ({
         minWidth: 800,
         width: '260%',
-        height:'100%',
+        height: '100%',
         whiteSpace: 'pre',
         '& thead': {
             '& th:first-of-type': {
@@ -193,24 +193,104 @@ const SimpleMuiTable = () => {
             <ProductTable>
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Delivery Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Delivery Imported Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Status</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>GEP Order</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px', width:'200px'}}>Partner Purchase Price</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diagnostics Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Disscount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorsteps Diagnostics</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivered Date</TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Record.NO
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Delivery Status
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Delivery Imported Date
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            UIC Status
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Tracking ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Order ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Order Date
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Item ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            GEP Order
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            IMEI
+                        </TableCell>
+                        <TableCell
+                            sx={{
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                width: '200px',
+                            }}
+                        >
+                            Partner Purchase Price
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Partner Shop
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Base Discount
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Diagnostics Discount
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Storage Disscount
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Buyback Category
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Doorsteps Diagnostics
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Actual Delivered Date
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -226,10 +306,10 @@ const SimpleMuiTable = () => {
                         </TableCell>
                     ) : null}
                     {data.map((data, index) => (
-                        <TableRow align='center' tabIndex={-1}>
-                            <TableCell >{data.id}</TableCell>
+                        <TableRow align="center" tabIndex={-1}>
+                            <TableCell>{data.id}</TableCell>
                             <TableCell
-                            // sx={{paddingLeft:'25px'}}
+                                // sx={{paddingLeft:'25px'}}
                                 style={
                                     data.result.length != 0
                                         ? { color: 'green' }
@@ -266,24 +346,27 @@ const SimpleMuiTable = () => {
                             <TableCell>
                                 {data?.order_date == null
                                     ? ''
-                                    : new Date(data?.order_date).toLocaleString(
-                                          'en-GB',
-                                          {
-                                              year: 'numeric',
-                                              month: '2-digit',
-                                              day: '2-digit',
+                                    : (() => {
+                                          const dateObject = new Date(
+                                              data?.order_date
+                                          )
+                                          if (isNaN(dateObject)) {
+                                              return data?.order_date.replace(
+                                                  /-/g,
+                                                  '/'
+                                              )
+                                          } else {
+                                              return dateObject
+                                                  .toLocaleString('en-GB', {
+                                                      year: 'numeric',
+                                                      month: '2-digit',
+                                                      day: '2-digit',
+                                                  })
+                                                  .replace(/-/g, '/')
                                           }
-                                      ) == 'Invalid Date'
-                                    ? data?.order_date
-                                    : new Date(data?.order_date).toLocaleString(
-                                          'en-GB',
-                                          {
-                                              year: 'numeric',
-                                              month: '2-digit',
-                                              day: '2-digit',
-                                          }
-                                      )}
+                                      })()}
                             </TableCell>
+
                             <TableCell>{data.item_id?.toString()}</TableCell>
                             <TableCell>{data.gep_order?.toString()}</TableCell>
                             <TableCell>{data.imei?.toString()}</TableCell>

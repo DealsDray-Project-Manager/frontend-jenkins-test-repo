@@ -50,11 +50,11 @@ const BqcUserReportPage = ({ BOt, botUsername, BotDoneDate }) => {
                         <TableCell>{BOt?.body_damage_des}</TableCell>
                     </TableRow>
                     <TableRow key={botUsername}>
-                        <TableCell sx={{ pl: 2 }}>Bot Username :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>BOT Username :</TableCell>
                         <TableCell>{botUsername}</TableCell>
                     </TableRow>
                     <TableRow key={BotDoneDate}>
-                        <TableCell sx={{ pl: 2 }}>Bot Done Date :</TableCell>
+                        <TableCell sx={{ pl: 2 }}>BOT Done Date :</TableCell>
                         <TableCell>
                             {new Date(BotDoneDate).toLocaleString('en-GB', {
                                 hour12: true,

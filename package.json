@@ -16,6 +16,7 @@
         "autosuggest-highlight": "^3.2.0",
         "axios": "^0.24.0",
         "babel-polyfill": "^6.26.0",
+        "blob-util": "^2.0.2",
         "clsx": "^1.1.1",
         "cross-fetch": "^3.1.4",
         "date-fns": "^2.30.0",

@@ -134,7 +134,10 @@ export default function DialogBox() {
                     actionUser: user.username,
                     currentSubMuicCount: currentSubmuicCount,
                 }
-                if (stageType == 'Device not to be checked for BQC') {
+                if (
+                    stageType == 'Device not to be checked for BQC' ||
+                    stageType == 'Device not to be processed for BQC'
+                ) {
                     obj.type = 'WHT'
                 } else {
                     if (
@@ -306,6 +309,8 @@ export default function DialogBox() {
                                 ?.final_grade
                         }
                         imei={reportData?.delivery?.imei}
+                        cimei_1={reportData?.delivery?.charging?.cimei_1}
+                        cimei_2={reportData?.delivery?.charging?.cimei_2}
                     />
                 </Grid>
                 <Grid item lg={4} md={6} xs={12}>
@@ -316,9 +321,13 @@ export default function DialogBox() {
                         BotDoneDate={reportData?.delivery?.tray_closed_by_bot}
                     />
                 </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <PrevChargingReport Charging={reportData?.preChargeData} />
-                </Grid>
+                {Object.keys(reportData?.preChargeData)?.length != 0 ? (
+                    <Grid item lg={4} md={6} xs={12}>
+                        <PrevChargingReport
+                            Charging={reportData?.preChargeData}
+                        />
+                    </Grid>
+                ) : null}
                 <Grid item lg={4} md={6} xs={12}>
                     <ChargingDetails
                         Charging={reportData?.delivery?.charging}
@@ -327,9 +336,11 @@ export default function DialogBox() {
                         }
                     />
                 </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <PrevBqcReport BqcUserReport={reportData?.preBqcData} />
-                </Grid>
+                {Object.keys(reportData?.preBqcData)?.length != 0 ? (
+                    <Grid item lg={4} md={6} xs={12}>
+                        <PrevBqcReport BqcUserReport={reportData?.preBqcData} />
+                    </Grid>
+                ) : null}
                 <Grid item lg={4} md={6} xs={12}>
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
@@ -337,16 +348,22 @@ export default function DialogBox() {
                         BqcDoneDate={reportData?.delivery?.bqc_out_date}
                     />
                 </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <RdlOneReport
-                        RdlOneReport={reportData?.delivery?.rdl_fls_one_report}
-                    />
-                </Grid>
-                <Grid item lg={4} md={6} xs={12}>
-                    <RdlTwoReport
-                        RdlTwoReport={reportData?.delivery?.rdl_two_report}
-                    />
-                </Grid>
+                {reportData?.delivery?.rdl_fls_one_report != undefined ? (
+                    <Grid item lg={4} md={6} xs={12}>
+                        <RdlOneReport
+                            RdlOneReport={
+                                reportData?.delivery?.rdl_fls_one_report
+                            }
+                        />
+                    </Grid>
+                ) : null}
+                {reportData?.delivery?.rdl_two_report != undefined ? (
+                    <Grid item lg={4} md={6} xs={12}>
+                        <RdlTwoReport
+                            RdlTwoReport={reportData?.delivery?.rdl_two_report}
+                        />
+                    </Grid>
+                ) : null}
                 <Grid item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
@@ -691,7 +708,7 @@ export default function DialogBox() {
                                 addButDis
                             }
                             onClick={(e) =>
-                                handelAdd(e, 'Device in progress for BQC')
+                                handelAdd(e, 'Device to be processed for BQC')
                             }
                             variant="contained"
                             color="primary"
@@ -723,7 +740,7 @@ export default function DialogBox() {
                                 }
                             </H3>
                         )}
-                        <H3 sx={{ mt: 2 }}>Tray Id : {whtTrayId}</H3>
+                        <H3 sx={{ mt: 2 }}>Tray ID : {whtTrayId}</H3>
                         <H3 sx={{ mt: 2 }}>UIC : {uic}</H3>
                     </Box>
                     <Box>
@@ -745,13 +762,21 @@ export default function DialogBox() {
                                 ?.match(/[0-9]/g)
                                 ?.join('') !==
                                 reportData?.delivery?.bqc_software_report
-                                    ?._ro_ril_miui_imei0) ? (
+                                    ?._ro_ril_miui_imei0 &&
+                            reportData?.delivery?.imei
+                                ?.match(/[0-9]/g)
+                                ?.join('') !==
+                                reportData?.delivery?.charging?.cimei_1 &&
+                                reportData?.delivery?.imei
+                                ?.match(/[0-9]/g)
+                                ?.join('') !==
+                                reportData?.delivery?.charging?.cimei_2) ? (
                             <Button
                                 sx={{ mr: 2 }}
                                 onClick={(e) =>
                                     handelAdd(
                                         e,
-                                        'Device not to be checked for BQC'
+                                        'Device not to be processed for BQC'
                                     )
                                 }
                                 disabled={butDis}

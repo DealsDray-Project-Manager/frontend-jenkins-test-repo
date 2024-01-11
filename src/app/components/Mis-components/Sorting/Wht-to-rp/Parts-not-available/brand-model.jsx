@@ -163,7 +163,7 @@ const SimpleMuiTable = () => {
                                 style={{ backgroundColor: 'green' }}
                                 component="span"
                             >
-                                View Sp
+                                View Spare Parts
                             </Button>
                         </Box>
                     )

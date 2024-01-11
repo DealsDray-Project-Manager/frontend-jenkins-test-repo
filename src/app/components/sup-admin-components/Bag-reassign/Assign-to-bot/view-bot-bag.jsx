@@ -273,7 +273,7 @@ const SimpleMuiTable = () => {
             </div>
             <Table className="custom-table">
                 <MUIDataTable
-                    title={'Bot Bag'}
+                    title={'BOT Bag'}
                     data={bagList}
                     columns={columns}
                     options={{

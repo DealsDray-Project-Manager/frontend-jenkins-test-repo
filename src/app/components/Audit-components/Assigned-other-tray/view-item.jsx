@@ -99,7 +99,7 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'bot_agent',
-            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT Agent</></Typography>,
+            label: <Typography variant="subtitle1" fontWeight='bold'><>BOT User</></Typography>,
             options: {
                 filter: true,
             },

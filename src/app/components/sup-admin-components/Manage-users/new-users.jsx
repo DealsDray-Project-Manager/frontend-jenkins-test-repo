@@ -61,6 +61,18 @@ const MemberEditorDialog = ({
                 ...profile,
                 preview: editFetchData.profile,
             })
+            setCpcType([
+                {
+                    location_type:editFetchData.cpc_type
+                }
+            ])
+            setWarehouse([
+                {
+                    code: editFetchData.warehouse
+                }
+            ])
+            setSelectedCpc(editFetchData.cpc_type)
+            setWarehouseType(editFetchData.warehouse)
             reset({ ...editFetchData })
             open()
         }
@@ -108,7 +120,13 @@ const MemberEditorDialog = ({
         cpassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .nullable(),
-        email: Yup.string().email().required('Required*').nullable(),
+        email: Yup.string()
+            .email('Invalid email format')
+            .transform((value, originalValue) =>
+                originalValue ? originalValue.toLowerCase() : ''
+            )
+            .required('Required*')
+            .nullable(),
     })
 
     const {
@@ -125,6 +143,7 @@ const MemberEditorDialog = ({
         try {
             let formdata = new FormData()
             formdata.append('profile', profile.store)
+            values.email = values.email?.toLowerCase()
             for (let [key, value] of Object.entries(values)) {
                 formdata.append(key, value)
             }
@@ -253,9 +272,9 @@ const MemberEditorDialog = ({
         <Dialog open={open}>
             <Box p={3}>
                 {Object.keys(editFetchData).length !== 0 ? (
-                    <H4 sx={{ mb: '20px' }}>Update Member</H4>
+                    <H4 sx={{ mb: '20px' }}>Update User</H4>
                 ) : (
-                    <H4 sx={{ mb: '20px' }}>ADD Member</H4>
+                    <H4 sx={{ mb: '20px' }}>ADD User</H4>
                 )}
                 <Avatar
                     src={profile?.preview}
@@ -417,7 +436,7 @@ const MemberEditorDialog = ({
                                 <MenuItem value="RP-Audit">RP-Audit</MenuItem>
                                 <MenuItem value="RP-BQC">RP-BQC</MenuItem>
                                 <MenuItem value="Sorting Agent">
-                                    Sorting Agent
+                                    Sorting User
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
@@ -436,14 +455,14 @@ const MemberEditorDialog = ({
                             >
                                 <MenuItem value="MIS">MIS</MenuItem>
                                 <MenuItem value="Pricing Agent">
-                                    Pricing Agent
+                                    Pricing User
                                 </MenuItem>
                                 <MenuItem value="Reporting">Reporting</MenuItem>
                                 <MenuItem value="Sales Agent">
-                                    Sales Agent
+                                    Sales User
                                 </MenuItem>
                                 <MenuItem value="Sorting Agent">
-                                    Sorting Agent
+                                    Sorting User
                                 </MenuItem>
                                 <MenuItem value="Warehouse">Warehouse</MenuItem>
                             </TextFieldCustOm>
@@ -496,8 +515,13 @@ const MemberEditorDialog = ({
                         <TextFieldCustOm
                             label="Mobile No"
                             name="contact"
-                            {...register('contact')}
                             inputProps={{ maxLength: 10 }}
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault()
+                                }
+                            }}
+                            {...register('contact')}
                             error={errors.contact ? true : false}
                             helperText={
                                 errors.contact ? errors.contact.message : ''
@@ -517,11 +541,12 @@ const MemberEditorDialog = ({
                             label="Device Id"
                             type="text"
                             name="device_id"
+                           
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('device_id')}
                             error={errors.device_id ? true : false}
                             helperText={errors.device_id?.message}
-                            inputProps={{ maxLength: 40 }}
+                            inputProps={{ maxLength: 40 , autoComplete: 'new-password'}}
                         />
                         {Object.keys(editFetchData).length !== 0 ? null : (
                             <>
@@ -529,12 +554,16 @@ const MemberEditorDialog = ({
                                     label="Password"
                                     type={passwordType}
                                     name="password"
+
                                     disabled={
                                         Object.keys(editFetchData).length !== 0
                                     }
                                     {...register('password')}
                                     error={errors.password ? true : false}
                                     helperText={errors.password?.message}
+                                    inputProps={{
+                                        autoComplete: 'new-password', // Add this line
+                                    }}
                                 />
                                 <TextFieldCustOm
                                     label="Confirm Password"

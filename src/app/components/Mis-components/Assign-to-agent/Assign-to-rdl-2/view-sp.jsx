@@ -125,9 +125,9 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Assign To Agent', path: '/' },
+                        { name: 'Assign To User', path: '/' },
                         { name: 'RDL-2', path: '/' },
-                        { name: 'View sp tray' },
+                        { name: 'View Spare Parts' },
                     ]}
                 />
             </div>

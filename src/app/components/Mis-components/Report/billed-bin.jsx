@@ -181,7 +181,7 @@ const SimpleMuiTable = () => {
             name: 'item_moved_to_billed_bin_done_username',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    Moved By Agent
+                    Moved By User
                 </Typography>
             ),
             options: {

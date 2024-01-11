@@ -51,34 +51,37 @@ const BqcUserReportPage = ({ BqcUserReport, BqcAgentName, BqcDoneDate }) => {
                             {BqcUserReport?.blancoo_qc_status}
                         </TableCell>
                     </TableRow>
-                    <TableRow key={BqcUserReport?.bqc_incomplete_reason}>
-                        <TableCell sx={{ pl: 2 }}>
-                            BQC Incomplete Reason :
-                        </TableCell>
-                        <TableCell>
-                            {BqcUserReport?.bqc_incomplete_reason}
-                        </TableCell>
-                    </TableRow>
-                    <TableRow key={BqcUserReport?.technical_issue}>
-                        <TableCell sx={{ pl: 2 }}>Technical Issue :</TableCell>
-                        <TableCell>{BqcUserReport?.technical_issue}</TableCell>
-                    </TableRow>
-                    <TableRow key={BqcUserReport?.other}>
-                        <TableCell sx={{ pl: 2 }}>BQC User Remark :</TableCell>
-                        <TableCell>{BqcUserReport?.other}</TableCell>
-                    </TableRow>
-                    <TableRow key={BqcUserReport?.factory_reset_status}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Factory reset status :
-                        </TableCell>
-                        <TableCell>
-                            {BqcUserReport?.factory_reset_status}
-                        </TableCell>
-                    </TableRow>
+                    {BqcUserReport?.bqc_incomplete_reason != undefined ? (
+                        <TableRow key={BqcUserReport?.bqc_incomplete_reason}>
+                            <TableCell sx={{ pl: 2 }}>
+                                BQC Incomplete Reason :
+                            </TableCell>
+                            <TableCell>
+                                {BqcUserReport?.bqc_incomplete_reason}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
+                    {BqcUserReport?.technical_issue != undefined ? (
+                        <TableRow key={BqcUserReport?.technical_issue}>
+                            <TableCell sx={{ pl: 2 }}>
+                                Technical Issue :
+                            </TableCell>
+                            <TableCell>
+                                {BqcUserReport?.technical_issue}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
+                    {BqcUserReport?.other != undefined ? (
+                        <TableRow key={BqcUserReport?.other}>
+                            <TableCell sx={{ pl: 2 }}>
+                                BQC User Remark :
+                            </TableCell>
+                            <TableCell>{BqcUserReport?.other}</TableCell>
+                        </TableRow>
+                    ) : null}
+
                     <TableRow key={BqcAgentName}>
-                        <TableCell sx={{ pl: 2 }}>
-                            BQC Operator Name :
-                        </TableCell>
+                        <TableCell sx={{ pl: 2 }}>BQC User Name :</TableCell>
                         <TableCell>{BqcAgentName}</TableCell>
                     </TableRow>
                     <TableRow key={BqcDoneDate}>

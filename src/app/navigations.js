@@ -344,7 +344,7 @@ export const navigations = [
     },
 
     {
-        name: 'Force full actions',
+        name: 'Forced Actions',
         icon: 'call_to_action',
         children: [
             {
@@ -407,7 +407,7 @@ export const navigations = [
         icon: 'remove_shopping_cart',
         children: [
             {
-                name: 'Sorting (bot to wht)',
+                name: 'Sorting (BOT To WHT)',
                 path: '/sup-admin/tray-reassign/sorting/bot-wht',
                 iconText: 'PL',
             },
@@ -564,6 +564,21 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: false,
     },
+
+    {
+        name: 'WHT Trays',
+        icon: 'class',
+        path: '/mis/manage-wht-trays',
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
+        name: 'STX Trays',
+        icon: 'class',
+        path: '/mis/manage-stx-trays',
+        auth: authRoles.Mis,
+        sales: true,
+    },
     {
         name: 'Recon Sheet',
         icon: 'filter_tilt_shift',
@@ -638,7 +653,7 @@ export const navigations = [
         icon: 'assignment',
         children: [
             {
-                name: 'Assign to Bot',
+                name: 'Assign to BOT',
                 path: '/mis/assign-to-agent/bot',
                 iconText: 'VP',
             },
@@ -676,7 +691,7 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'BOT to WHT',
+                name: 'BOT To WHT',
                 path: '/mis/sorting/bot-to-wht',
                 iconText: 'VP',
             },
@@ -689,7 +704,7 @@ export const navigations = [
         icon: 'sort',
         children: [
             {
-                name: 'Parts Available',
+                name: 'Total Repairable Units',
                 path: '/mis/sorting/wht-to-rp',
                 iconText: 'VP',
             },
@@ -699,8 +714,8 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Without Parts',
-                path: '/mis/sorting/wht-to-rp-without-sp',
+                name: 'MB/SFT Work Units',
+                path: '/mis/sorting/wht-to-rp-mb-sft-work',
                 iconText: 'VP',
             },
         ],
@@ -726,6 +741,13 @@ export const navigations = [
         sales: true,
     },
     {
+        name: 'Pickup',
+        path: '/mis/merge/pickup',
+        icon: 'pool',
+        auth: authRoles.Mis,
+        sales: false,
+    },
+    {
         name: 'Merge',
         icon: 'merge_type',
         children: [
@@ -742,11 +764,6 @@ export const navigations = [
             {
                 name: 'CTX',
                 path: '/mis/merge/ctx',
-                iconText: 'NP',
-            },
-            {
-                name: 'Pickup',
-                path: '/mis/merge/pickup',
                 iconText: 'NP',
             },
         ],
@@ -794,7 +811,11 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'RPA to STX Work In Progress Trays',
+                name: (
+                    <Typography sx={{ textAlign: 'left' }}>
+                        RPA to STX Work In Progress Trays
+                    </Typography>
+                ),
                 path: '/warehouse/rpa-to-stx-work-in-progess-trays-view',
                 iconText: 'VP',
             },
@@ -820,7 +841,6 @@ export const navigations = [
         auth: authRoles.Mis,
         sales: 'all',
     },
-
     {
         name: 'Track',
         icon: 'art_track',
@@ -832,7 +852,7 @@ export const navigations = [
             },
         ],
         auth: authRoles.Mis,
-        sales: 'all',
+        sales: false,
     },
     {
         name: 'Report',
@@ -875,12 +895,12 @@ export const navigations = [
         icon: 'move_to_inbox',
         children: [
             {
-                name: 'All Pmt',
+                name: 'All PMT',
                 path: '/warehouse/all-pmt-tray',
                 iconText: 'VP',
             },
             {
-                name: 'All Mmt',
+                name: 'All MMT',
                 path: '/warehouse/all-mmt-tray',
                 iconText: 'VP',
             },
@@ -1088,6 +1108,14 @@ export const navigations = [
                 path: '/wareshouse/merge/return-from-merge',
                 iconText: 'VP',
             },
+        ],
+        auth: authRoles.Warehouse,
+        sales: false,
+    },
+    {
+        name: 'Pickup',
+        icon: 'merge_type',
+        children: [
             {
                 name: 'Pickup Request',
                 path: '/wareshouse/wht/pickup/request',
@@ -1165,8 +1193,8 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Return From Agent',
-                path: '/warehouse/rpa-rpb-return-from-agent',
+                name: 'Tray Issue/return',
+                path: '/warehouse/rpa-rpb-tray-issue-or-return',
                 iconText: 'VP',
             },
         ],
@@ -1263,7 +1291,7 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Bot Tray',
+                name: 'BOT Tray',
                 path: '/warehouse/wht-utility/Bot-tray',
                 iconText: 'VP',
             },
@@ -1477,9 +1505,9 @@ export const navigations = [
         icon: 'repeat',
         children: [
             {
-                name: 'Delivered Packets',
+                name: 'Opened Packets',
 
-                path: '/reporting/delivered-orders',
+                path: '/reporting/opened-packets',
             },
             {
                 name: 'Total Packet Delivered',
@@ -1522,8 +1550,12 @@ export const navigations = [
         icon: 'class',
         children: [
             {
-                name: 'Closed Bag',
+                name: 'Bags Ready to BOT',
                 path: '/reporting/bags/closed',
+            },
+            {
+                name: 'Bags Issued to BOT',
+                path: '/reporting/bags/issued',
             },
         ],
         sales: false,
@@ -1531,19 +1563,23 @@ export const navigations = [
     },
 
     {
-        name: 'Bot-Tray',
+        name: 'BOT-Tray',
         icon: 'shopping_cart',
         children: [
             {
                 name: 'Sorting Pending',
                 path: '/reporting/bot-tray/sorting-pending',
             },
+            {
+                name: 'Sorting In-progress',
+                path: '/reporting/bot-tray/sorting-inprogress',
+            },
         ],
         sales: false,
         auth: authRoles.reporting,
     },
     {
-        name: 'Model Missmatch',
+        name: 'Model Mismatch',
         icon: 'shopping_cart',
         children: [
             {
@@ -1562,9 +1598,8 @@ export const navigations = [
         sales: false,
         auth: authRoles.reporting,
     },
-
     {
-        name: 'Product Missmatch Tray',
+        name: 'Product Mismatch Tray',
         icon: 'shopping_cart',
         path: '/reporting/pmt-tray',
         sales: false,
@@ -1647,7 +1682,11 @@ export const navigations = [
         auth: authRoles.reporting,
     },
     {
-        name: 'Month Wise Purchase',
+        name: (
+            <Typography sx={{ textAlign: 'left' }}>
+                Weekly/Month Wise Purchase Report
+            </Typography>
+        ),
         icon: 'report',
         path: '/reporting/month-wise-purchase-details',
         sales: false,
@@ -1810,11 +1849,11 @@ export const navigations = [
                 path: '/sp-user/sp-tray',
             },
             {
-                name: 'Issue to Rdl-2',
+                name: 'Issue to RDL-2',
                 path: '/sp-user/ready-to-rdl-2',
             },
             {
-                name: 'Return from Rdl-2',
+                name: 'Return from RDL--2',
                 path: '/sp-user/return-from-rdl-2',
             },
         ],

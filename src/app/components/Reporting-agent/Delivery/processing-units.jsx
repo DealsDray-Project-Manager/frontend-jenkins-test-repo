@@ -18,6 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import jwt_decode from 'jwt-decode'
+import '../../../../app.css'
 import { axiosMisUser, axiosReportingAgent } from '../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -42,7 +43,7 @@ const SimpleMuiTable = () => {
     const [item, setItem] = useState([])
     const [displayText, setDisplayText] = useState('')
     const [search, setSearch] = useState({
-        type: '',
+        type: 'UIC',
         searchData: '',
         location: '',
     })
@@ -159,7 +160,7 @@ const SimpleMuiTable = () => {
                     setDisplayText('Searching')
                     let obj = {
                         location: location,
-                        type: search.type,
+                        type: "UIC",
                         searchData: e.target.value,
                         page: page,
                         rowsPerPage: rowsPerPage,
@@ -193,23 +194,84 @@ const SimpleMuiTable = () => {
 
     const tableData = useMemo(
         () => (
-            <ProductTable>
+            <ProductTable className="custom-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Record.NO</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>UIC Code</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Actual Delivery Date</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Order ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Tracking ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Item ID</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>IMEI</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Purchase Price</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Partner Shop</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Base Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Diganostic Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Storage Discount</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Buyback Category</TableCell>
-                        <TableCell sx={{fontWeight:'bold', fontSize:'16px'}}>Doorstep Diganostic</TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Record.NO
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            UIC
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            MUIC
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            SUB-MUIC
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Color
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            RAM
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Storage
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Brand
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Model
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Current Tray ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Current Tray Status
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Rack ID
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Rack Display
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Last Modified Date
+                        </TableCell>
+                        <TableCell
+                            sx={{ fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            UIC Tracking Last Status
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -231,42 +293,50 @@ const SimpleMuiTable = () => {
                             <TableCell>{data?.uic_code?.code}</TableCell>
 
                             <TableCell>
-                                {new Date(data?.delivery_date).toLocaleString(
-                                    'en-GB',
-                                    {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                    }
-                                )}
+                                {data?.products?.[0]?.muic?.toString()}
                             </TableCell>
-                            <TableCell>{data.order_id?.toString()}</TableCell>
                             <TableCell>
-                                {data?.tracking_id?.toString()}
+                                {data?.audit_report?.sub_muic?.toString()}
                             </TableCell>
-                            <TableCell>{data?.item_id?.toString()}</TableCell>
+                            <TableCell>
+                                {data?.audit_report?.color?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data?.audit_report?.ram_verification?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data?.audit_report?.storage_verification?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.brand_name?.toString()}
+                            </TableCell>
+                            <TableCell>
+                                {data?.products?.[0]?.model_name?.toString()}
+                            </TableCell>
 
-                            <TableCell>{data.imei?.toString()}</TableCell>
                             <TableCell>
-                                {data.partner_purchase_price?.toString()}
+                                {data?.current_tray?.toString()}
+                            </TableCell>
+
+                            <TableCell>
+                                {data.current_tray_status?.toString()}
+                            </TableCell>
+                            <TableCell>{data.rack_id?.toString()}</TableCell>
+                            <TableCell>
+                                {data.rack_display?.toString()}
                             </TableCell>
                             <TableCell>
-                                {data.partner_shop?.toString()}
+                                {data?.updated_at != undefined
+                                    ? new Date(data?.updated_at).toLocaleString(
+                                          'en-GB',
+                                          {
+                                              hour12: true,
+                                          }
+                                      )
+                                    : null}
                             </TableCell>
                             <TableCell>
-                                {data.base_discount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.diagnostics_discount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.storage_disscount?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.buyback_category?.toString()}
-                            </TableCell>
-                            <TableCell>
-                                {data.doorsteps_diagnostics?.toString()}
+                                {data.uic_tracking_last_status?.toString()}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -287,7 +357,7 @@ const SimpleMuiTable = () => {
                 />
             </div>
             <Box sx={{ mb: 1 }}>
-                <TextField
+                {/* <TextField
                     select
                     label="Select"
                     variant="outlined"
@@ -301,12 +371,11 @@ const SimpleMuiTable = () => {
                     <MenuItem value="imei">IMEI</MenuItem>
                     <MenuItem value="tracking_id">Tracking ID</MenuItem>
                     <MenuItem value="item_id">Item ID</MenuItem>
-                </TextField>
+                </TextField> */}
                 <TextField
                     onChange={(e) => {
                         searchDelivery(e)
                     }}
-                    disabled={search.type === '' ? true : false}
                     label="Search"
                     variant="outlined"
                     sx={{ ml: 2 }}

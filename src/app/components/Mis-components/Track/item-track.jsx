@@ -205,7 +205,7 @@ const SimpleMuiTable = () => {
                 'SKU Id': x?.delivery?.item_id,
                 'Tracking Id': x?.delivery?.tracking_id,
                 IMEI: x?.delivery?.imei,
-                'Bot Remarks': x?.delivery?.bot_report?.body_damage_des,
+                'BOT Remarks': x?.delivery?.bot_report?.body_damage_des,
                 'Tray Id': x?.delivery?.tray_id,
                 UIC: x?.delivery?.uic_code?.code,
                 'Purchase Price': x?.delivery?.partner_purchase_price,
@@ -353,7 +353,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            BOT Agent Name
+                            BOT User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -362,7 +362,7 @@ const SimpleMuiTable = () => {
                                 width: '250px',
                             }}
                         >
-                            Assigned to BOT Agent Date
+                            Assigned to BOT User Date
                         </TableCell>
                         <TableCell
                             sx={{
@@ -434,7 +434,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -542,7 +542,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            BQC Agent Name
+                            BQC User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -596,7 +596,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Audit Agnet Name
+                            Audit User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -641,7 +641,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-1 Agent name
+                            RDL-1 User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -732,7 +732,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -741,7 +741,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Agent Name
+                            Sorting User Name
                         </TableCell>
                         <TableCell
                             sx={{
@@ -759,7 +759,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            Sorting Done Closed by Agent
+                            Sorting Done Closed by User
                         </TableCell>
                         <TableCell
                             sx={{
@@ -804,7 +804,7 @@ const SimpleMuiTable = () => {
                                 width: '200px',
                             }}
                         >
-                            RDL-2 Done Closed By Agent
+                            RDL-2 Done Closed By User
                         </TableCell>
                         <TableCell
                             sx={{

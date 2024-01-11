@@ -1,6 +1,6 @@
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { styled } from '@mui/system'
 import { useNavigate, useParams } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -96,6 +96,9 @@ const SimpleMuiTable = () => {
     const [rackId, setRackId] = useState('')
     const [description, setDescription] = useState('')
     const [closeButtonDisable, setCloseButtonDisable] = useState(false)
+    const [textBoxDis, setTextBoxDis] = useState(false)
+    const [uic, setUic] = useState('')
+    const [modelData, setModelData] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -147,29 +150,36 @@ const SimpleMuiTable = () => {
         setOpen(false)
     }
 
-    const handleOpen = async (uic, brand, model) => {
+    const handleOpen = async (e) => {
         try {
-            setSelectedStx({
-                uic: uic,
-                stx: '',
-            })
-            let obj = {
-                uic: uic,
-                brand: brand,
-                model: model,
-                location: user.location,
-            }
-            let res = await axiosWarehouseIn.post('/getStxTrayForRpaToStx', obj)
-            if (res.status == 200) {
-                setStxTray(res.data.data)
-                setOpen(true)
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    confirmButtonText: 'Ok',
-                    text: res.data.message,
+            if (e.target.value.length === 11) {
+                setSelectedStx({
+                    uic: e.target.value,
+                    stx: '',
                 })
+                let obj = {
+                    uic: e.target.value,
+                    // brand: brand,
+                    // model: model,
+                    location: user.location,
+                }
+                let res = await axiosWarehouseIn.post(
+                    '/getStxTrayForRpaToStx',
+                    obj
+                )
+                if (res.status == 200) {
+                    setStxTray(res.data.data)
+                    setModelData(res.data.modelData)
+                    setOpen(true)
+                } else {
+                    setUic('')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        confirmButtonText: 'Ok',
+                        text: res.data.message,
+                    })
+                }
             }
         } catch (error) {
             alert(error)
@@ -311,39 +321,76 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value, dataIndex) => value?.grade || '',
             },
         },
-        {
-            name: 'uic',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Action</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value, tableMeta) => {
-                    return (
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            variant="contained"
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                            onClick={(e) => {
-                                handleOpen(
-                                    tableMeta.rowData[1],
-                                    tableMeta.rowData[2],
-                                    tableMeta.rowData[3]
-                                )
-                            }}
-                        >
-                            STX Tray
-                        </Button>
-                    )
-                },
-            },
-        },
+        // {
+        //     name: 'uic',
+        //     label: (
+        //         <Typography variant="subtitle1" fontWeight="bold">
+        //             <>Action</>
+        //         </Typography>
+        //     ),
+        //     options: {
+        //         filter: true,
+        //         customBodyRender: (value, tableMeta) => {
+        //             return (
+        //                 <Button
+        //                     sx={{
+        //                         m: 1,
+        //                     }}
+        //                     variant="contained"
+        //                     style={{ backgroundColor: 'green' }}
+        //                     component="span"
+        //                     onClick={(e) => {
+        //                         handleOpen(
+        //                             tableMeta.rowData[1],
+        //                             tableMeta.rowData[2],
+        //                             tableMeta.rowData[3]
+        //                         )
+        //                     }}
+        //                 >
+        //                     STX Tray
+        //                 </Button>
+        //             )
+        //         },
+        //     },
+        // },
     ]
+
+    const ScanUic = useMemo(() => {
+        return (
+            <TextField
+                sx={{ mt: 1 }}
+                id="outlined-password-input"
+                type="text"
+                disabled={textBoxDis}
+                name="doorsteps_diagnostics"
+                label="SCAN UIC"
+                inputRef={(input) => input && input.focus()}
+                value={uic}
+                onKeyPress={(e) => {
+                    if (user.serverType == 'Live') {
+                        // Prevent manual typing by intercepting key presses
+                        e.preventDefault()
+                    }
+                }}
+                onPaste={(e) => {
+                    if (user.serverType == 'Live') {
+                        // Prevent manual typing by intercepting key presses
+                        e.preventDefault()
+                    }
+                }}
+                // onChange={(e) => setAwbn(e.target.value)}
+                onChange={(e) => {
+                    setUic(e.target.value)
+                    handleOpen(e)
+                }}
+                inputProps={{
+                    style: {
+                        width: 'auto',
+                    },
+                }}
+            />
+        )
+    }, [textBoxDis, uic])
 
     return (
         <Container>
@@ -360,6 +407,28 @@ const SimpleMuiTable = () => {
                     Add to Stx
                 </BootstrapDialogTitle>
                 <DialogContent dividers>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography>SUB-MUIC:-{modelData?.subMuic}</Typography>
+                        <Typography>Color:-{modelData?.color}</Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography>
+                            RAM:-{modelData?.ram_verification}
+                        </Typography>
+                        <Typography>
+                            Storage:-{modelData?.storage_verification}
+                        </Typography>
+                    </Box>
                     <TextField
                         label="Select Stx Id"
                         variant="outlined"
@@ -402,10 +471,11 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'RPA to STX', path: '/' },
-                        { name: 'Assigned Trays Units' },
+                        { name: 'Assigned Tray Units' },
                     ]}
                 />
             </div>
+            {ScanUic}
             <Table className="custom-table">
                 <MUIDataTable
                     title={'Units'}

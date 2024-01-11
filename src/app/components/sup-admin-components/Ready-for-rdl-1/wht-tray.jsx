@@ -198,6 +198,41 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Display Name</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rack_id', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'rackData', // field name in the row object
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
+                </Typography>
+            ), // column title that will be shown in table
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.[0]?.display,
+            },
+        },
+        {
             name: 'warehouse',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
@@ -257,20 +292,10 @@ const SimpleMuiTable = () => {
                 filter: true,
                 sort: true,
                 customBodyRender: (value, tableMeta) =>
-                    value.length + '/' + tableMeta.rowData[6],
+                    value.length + '/' + tableMeta.rowData[9],
             },
         },
-        {
-            name: 'display',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Tray Display Name</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-            },
-        },
+
         {
             name: 'sort_id',
             label: (

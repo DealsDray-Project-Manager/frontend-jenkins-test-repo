@@ -23,7 +23,7 @@ const Container = styled('div')(({ theme }) => ({
 const ProductTable = styled(Table)(() => ({
     minWidth: 750,
     width: '250%',
-    height:'100%',
+    height: '100%',
     whiteSpace: 'pre',
     '& thead': {
         '& th:first-of-type': {
@@ -38,8 +38,9 @@ const ProductTable = styled(Table)(() => ({
     },
 }))
 
-const ScrollableTableContainer = styled(TableContainer)
-`overflow-x: auto`;
+const ScrollableTableContainer = styled(TableContainer)`
+    overflow-x: auto;
+`
 
 const SimpleMuiTable = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -73,99 +74,73 @@ const SimpleMuiTable = () => {
         }
     }, [isAlive])
 
-
     const columns = [
         {
             name: 'index',
-            label: <Typography sx={{fontWeight:'bold', ml:2}}>Record No</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
+                    Record No
+                </Typography>
+            ),
             options: {
                 filter: false,
                 sort: false,
                 // setCellProps: () => ({ align: 'center' }),
-                customBodyRender: (rowIndex, dataIndex) => 
-                <Typography sx={{pl:4}}>{dataIndex.rowIndex + 1}</Typography>
+                customBodyRender: (rowIndex, dataIndex) => (
+                    <Typography sx={{ pl: 4 }}>
+                        {dataIndex.rowIndex + 1}
+                    </Typography>
+                ),
             },
         },
         {
             name: 'uic',
-            label: <Typography sx={{fontWeight:'bold'}}>UIC</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>UIC</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'imei',
-            label: <Typography sx={{fontWeight:'bold'}}>IMEI</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>IMEI</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'bag_id',
-            label: <Typography sx={{fontWeight:'bold'}}>Bag ID</Typography>,
+            label: <Typography sx={{ fontWeight: 'bold' }}>Bag ID</Typography>,
             options: {
                 filter: true,
             },
         },
         {
             name: 'body_damage',
-            label: <Typography sx={{fontWeight:'bold'}}>Body Damage</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>Body Damage</Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'body_damage_des',
-            label: <Typography sx={{fontWeight:'bold'}}>Body Damage Description</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'item_recieved',
-            label: <Typography sx={{fontWeight:'bold'}}>Item Recieved in Packet</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'model_brand',
-            label: <Typography sx={{fontWeight:'bold'}}>Mismatched Model Brand Name</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerOne',
-            label: <Typography sx={{fontWeight:'bold'}}>Other Info 1</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerTwo',
-            label: <Typography sx={{fontWeight:'bold'}}>Other Info 2</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerThree',
-            label: <Typography sx={{fontWeight:'bold'}}>Other Info 3</Typography>,
-            options: {
-                filter: true,
-            },
-        },
-        {
-            name: 'stickerFour',
-            label: <Typography sx={{fontWeight:'bold'}}>Other Info 4</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Body Damage Description
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
         },
         {
             name: 'added_time',
-            label: <Typography sx={{fontWeight:'bold'}}>Added date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Added in BOT Tray
+                </Typography>
+            ),
             options: {
                 filter: true,
                 customBodyRender: (value) =>
@@ -189,40 +164,37 @@ const SimpleMuiTable = () => {
 
             <ScrollableTableContainer>
                 <ProductTable>
-                <MUIDataTable
-                title={'Tray'}
-                data={trayData}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download:false,
-                    print:false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
-                        },
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+                    <MUIDataTable
+                        title={'Tray'}
+                        data={trayData}
+                        columns={columns}
+                        options={{
+                            filterType: 'textField',
+                            responsive: 'simple',
+                            download: false,
+                            print: false,
+                            textLabels: {
+                                body: {
+                                    noMatch: isLoading
+                                        ? 'Loading...'
+                                        : 'Sorry, there is no matching data to display',
+                                },
+                            },
+                            selectableRows: 'none', // set checkbox for each row
+                            // search: false, // set search option
+                            // filter: false, // set data filter option
+                            // download: false, // set download option
+                            // print: false, // set print option
+                            // pagination: true, //set pagination option
+                            // viewColumns: false, // set column option
+                            elevation: 0,
+                            rowsPerPageOptions: [10, 20, 40, 80, 100],
+                        }}
+                    />
                 </ProductTable>
             </ScrollableTableContainer>
-            
         </Container>
     )
 }
-
-
 
 export default SimpleMuiTable

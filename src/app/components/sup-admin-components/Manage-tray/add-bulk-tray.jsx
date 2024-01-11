@@ -146,6 +146,7 @@ const PaginationTable = () => {
         let count6 = 0
         let count7 = 0
         let count8 = 0
+        let count9 = 0
         let obj = {
             ...countOfTray,
         }
@@ -176,6 +177,9 @@ const PaginationTable = () => {
                 } else if (x.tray_category == 'RPA') {
                     x.tray_id = 'RPA' + (countOfTray.RPA + count8)
                     count8++
+                } else if (x.tray_category == 'CBT') {
+                    x.tray_id = 'CBT' + (countOfTray.CBT + count9)
+                    count9++
                 } else {
                     x.tray_id =
                         x.tray_category +

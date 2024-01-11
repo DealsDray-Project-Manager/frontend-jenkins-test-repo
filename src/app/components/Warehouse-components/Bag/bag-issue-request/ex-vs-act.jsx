@@ -258,7 +258,7 @@ const SimpleMuiTable = () => {
                     bag_id: bagId,
                     awbn_number: awbn.tracking_id,
                     order_id: awbn.order_id,
-                    order_date: awbn.order_date,
+                    delivery_date: awbn.delivery_date,
                     stock_in: new Date(),
                     status: data[0].status,
                 }
@@ -294,7 +294,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: 'Please Confirm UIC',
+                    title: 'Please Confirm UIC put in bag',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -302,7 +302,7 @@ const SimpleMuiTable = () => {
                 Swal.fire({
                     position: 'top-center',
                     icon: 'warning',
-                    title: 'Please Confirm Sleeves',
+                    title: 'Please Confirm Sleeves put in bag',
                     confirmButtonText: 'Ok',
                 })
                 setLoading(false)
@@ -566,7 +566,7 @@ const SimpleMuiTable = () => {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
-                                <TableCell>Order Date</TableCell>
+                                <TableCell>Delivery Date</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -584,7 +584,7 @@ const SimpleMuiTable = () => {
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
                                         {new Date(
-                                            data?.order_date
+                                            data?.delivery_date
                                         ).toLocaleString('en-GB', {
                                             year: 'numeric',
                                             month: '2-digit',
@@ -668,7 +668,7 @@ const SimpleMuiTable = () => {
                                 <TableCell sx={{ pl: 3 }}>S.NO</TableCell>
                                 <TableCell>AWBN Number</TableCell>
                                 <TableCell>Order ID</TableCell>
-                                <TableCell>Order Date</TableCell>
+                                <TableCell>Delivery Date</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -686,7 +686,7 @@ const SimpleMuiTable = () => {
                                     <TableCell>{data?.order_id}</TableCell>
                                     <TableCell>
                                         {new Date(
-                                            data?.order_date
+                                            data?.delivery_date
                                         ).toLocaleString('en-GB', {
                                             year: 'numeric',
                                             month: '2-digit',
@@ -727,7 +727,7 @@ const SimpleMuiTable = () => {
                     >
                         <h4 style={{ marginLeft: '13px' }}>BAG ID - {bagId}</h4>
                         <H5 style={{ marginLeft: '13px' }}>
-                            AGENT NAME - {bagData[0]?.issued_user_name}
+                            User Name - {bagData[0]?.issued_user_name}
                         </H5>
                     </Box>
                     <Box
@@ -924,7 +924,7 @@ const SimpleMuiTable = () => {
                                     }
                                 }}
                             >
-                                Handover to Agent
+                                Handover to User
                             </Button>
                         </Box>
                     ) : (

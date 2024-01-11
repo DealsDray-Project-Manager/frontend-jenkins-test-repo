@@ -114,7 +114,7 @@ const SimpleMuiTable = () => {
 
     const handelViewDetailTray = (e, id) => {
         e.preventDefault()
-        navigate('/warehouse/rpa-rpb-return-from-agent/close/' + id)
+        navigate('/warehouse/rpa-rpb-tray-issue-or-return/close/' + id)
     }
 
     const handelTrayReceived = async () => {
@@ -258,7 +258,7 @@ const SimpleMuiTable = () => {
             name: 'closed_date_agent',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    Agent Closed Date
+                    User Closed Date
                 </Typography>
             ),
             options: {
@@ -383,7 +383,7 @@ const SimpleMuiTable = () => {
                 <Breadcrumb
                     routeSegments={[
                         { name: 'RPA / RPB', path: '/' },
-                        { name: 'Return-from-agent' },
+                        { name: 'Tray Issue/Return' },
                     ]}
                 />
             </div>

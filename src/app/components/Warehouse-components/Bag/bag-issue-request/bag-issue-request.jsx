@@ -97,7 +97,7 @@ const SimpleMuiTable = () => {
             name: 'issued_user_name',
             label: (
                 <Typography sx={{ fontWeight: 'bold' }} >
-                   BOT Agent Name
+                   BOT User Name
                 </Typography>
             ),
             options: {

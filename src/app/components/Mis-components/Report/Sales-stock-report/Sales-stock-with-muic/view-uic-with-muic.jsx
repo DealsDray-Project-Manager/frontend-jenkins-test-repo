@@ -85,6 +85,29 @@ const SimpleMuiTable = () => {
                 customBodyRender: (value) => value?.code,
             },
         },
+        {
+            name: 'muic',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>MUIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'audit_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>SUB-MUIC</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                customBodyRender: (value) => value?.sub_muic,
+            },
+        },
 
         {
             name: 'old_item_details',
@@ -116,94 +139,88 @@ const SimpleMuiTable = () => {
             name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Original Grade</>
+                    <>RAM</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) => value?.orgGrade || '',
+                customBodyRender: (value) => value?.ram_verification,
             },
         },
         {
             name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Auditor Recommend Grade</>
+                    <>Storage</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) => value?.grade || '',
+                customBodyRender: (value) => value?.storage_verification,
             },
         },
         {
             name: 'audit_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Auditor Selected Stage</>
+                    <>Color</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) => value?.stage || '',
+                customBodyRender: (value) => value?.color,
             },
         },
         {
-            name: 'audit_report',
+            name: 'final_grade',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Auditor Reason</>
+                    <>Final Grade</>
                 </Typography>
             ),
             options: {
                 filter: true,
-                sort: true, // enable sorting for Brand column
+            },
+        },
 
-                customBodyRender: (value, dataIndex) => value?.reason || '',
-            },
-        },
-        {
-            name: 'audit_report',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Auditor Remark</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-
-                customBodyRender: (value, dataIndex) =>
-                    value?.description || '',
-            },
-        },
-        {
-            name: 'audit_done_date',
-            label: (
-                <Typography variant="subtitle1" fontWeight="bold">
-                    <>Audit Done Date</>
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true, // enable sorting for Brand column
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
         {
             name: 'current_tray_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
                     <>Tray Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'current_tray_name',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Tray Name</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'current_tray_rack_id',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Id</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'current_tray_rack_display',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>Rack Display</>
                 </Typography>
             ),
             options: {
@@ -250,14 +267,10 @@ const SimpleMuiTable = () => {
                         customSort: (data, colIndex, order) => {
                             const columnProperties = {
                                 1: 'code',
-                                4: 'orgGrade',
-                                5: 'grade',
-                                6: 'stage',
-                                7: 'reason',
-                                8: 'description',
-                                11: 'selected_status',
-                                12: 'description',
-                                13: 'partRequired',
+                                3: 'sub_muic',
+                                6: 'ram_verification',
+                                7: 'storage_verification',
+                                8: 'color',
 
                                 // add more columns and properties here
                             }

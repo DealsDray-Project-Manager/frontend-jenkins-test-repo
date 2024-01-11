@@ -159,7 +159,7 @@ const RequestApprove = () => {
                     })}
                 </Typography>
                 <Typography variant="subtitle1">
-                    Agent Name: {toolsAndConsumables?.issued_user_name}
+                    User Name: {toolsAndConsumables?.issued_user_name}
                 </Typography>
                 <Typography variant="subtitle1">
                     MIS Description: {toolsAndConsumables?.mis_description}

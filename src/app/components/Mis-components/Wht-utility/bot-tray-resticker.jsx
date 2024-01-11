@@ -406,12 +406,12 @@ export default function DialogBox() {
                                         onClick={(e) => {
                                             stickerOne == ''
                                                 ? setStickerOne(
-                                                      'UIC Pasted On Device'
+                                                      'UIC Pasted'
                                                   )
                                                 : setStickerOne('')
                                         }}
                                     />
-                                    UIC Pasted On Device
+                                    UIC Pasted
                                 </h3>
                             </Grid>
                             <Grid item xs={6}>

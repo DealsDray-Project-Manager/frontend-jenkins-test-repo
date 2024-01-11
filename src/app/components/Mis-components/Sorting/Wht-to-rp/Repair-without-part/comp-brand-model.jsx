@@ -30,7 +30,7 @@ const SimpleMuiTable = () => {
 
     const handelViewItem = (brand, model) => {
         navigate(
-            '/mis/sorting/wht-to-rp-without-sp/process/' + brand + '/' + model
+            '/mis/sorting/wht-to-rp-mb-sft-work/process/' + brand + '/' + model
         )
     }
 
@@ -202,8 +202,8 @@ const SimpleMuiTable = () => {
             <div className="breadcrumb">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Sorting', path: '/' },
-                        { name: 'Wht-to-Rp' },
+                        { name: 'WHT to RP', path: '/' },
+                        { name: 'MB/SFT Work Units' },
                     ]}
                 />
             </div>

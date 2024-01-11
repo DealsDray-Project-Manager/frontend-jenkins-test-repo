@@ -472,7 +472,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>Tray ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User Name - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box

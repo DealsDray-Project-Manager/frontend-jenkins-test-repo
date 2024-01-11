@@ -89,7 +89,7 @@ const SimpleMuiTable = () => {
                     setIsLoading(true)
                     let { location } = jwt_decode(admin)
                     let res = await axiosWarehouseIn.post(
-                        '/ctxTray/' + 'Accepted From Processing/' + location
+                        '/ctxTray/' + 'Accepted from Processing WH/' + location
                     )
                     if (res.status == 200) {
                         setIsLoading(false)
@@ -225,8 +225,8 @@ const SimpleMuiTable = () => {
                     return (
                         <>
                             {tableMeta.rowData[2] ==
-                                'Accepted From Processing' ||
-                            tableMeta.rowData[2] == 'Accepted From Sales' ? (
+                                'Accepted from Processing WH' ||
+                            tableMeta.rowData[2] == 'Accepted From Sales WH' ? (
                                 <Button
                                     sx={{
                                         m: 1,

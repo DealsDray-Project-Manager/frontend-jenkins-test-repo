@@ -268,14 +268,16 @@ export default function DialogBox() {
                                 ?.final_grade
                         }
                         imei={reportData?.delivery?.imei}
+                        cimei_1={reportData?.delivery?.charging?.cimei_1}
+                        cimei_2={reportData?.delivery?.charging?.cimei_2}
                     />
                 </Grid>
-                <Grid item lg={4} md={6} xs={12}>
+                {/* <Grid item lg={4} md={6} xs={12}>
                     <AmazonDetails Order={reportData?.order} />
                     <Botuser BOt={reportData?.delivery?.bot_report} />
-                </Grid>
+                </Grid> */}
 
-                <Grid item lg={4} md={6} xs={12}>
+                {/* <Grid item lg={4} md={6} xs={12}>
                     <ChargingDetails
                         Charging={reportData?.delivery?.charging}
                         ChargeDoneDate={
@@ -287,14 +289,14 @@ export default function DialogBox() {
                     <BqcUserReport
                         BqcUserReport={reportData?.delivery?.bqc_report}
                     />
-                </Grid>
-                {/* <Grid item lg={12} md={12} xs={12}>
+                </Grid> */}
+                <Grid item lg={12} md={12} xs={12}>
                     <BqcApiAllReport
                         BqcSowftwareReport={
                             reportData?.delivery?.bqc_software_report
                         }
                     />
-                </Grid> */}
+                </Grid>
             </Grid>
         )
     }, [reportData])
@@ -303,370 +305,30 @@ export default function DialogBox() {
 
     const handelNavigate = (e) => {
         e.preventDefault()
-        navigate(
-            '/rdL-1/rdl-1-request/approve/information-display/action',
-            {
-                state: {
-                    muic: state.reportData.muic,
-                    allData: state,
-                    whtTrayId: trayId,
-                },
-            }
-        )
+        navigate('/rdL-1/rdl-1-request/approve/information-display/action', {
+            state: {
+                muic: state.reportData.muic,
+                allData: state,
+                whtTrayId: trayId,
+            },
+        })
     }
 
     return (
         <>
-         <div className="breadcrumb" style={{marginTop:'20px', marginLeft:'15px'}}>
-                <Breadcrumb 
+            <div
+                className="breadcrumb"
+                style={{ marginTop: '20px', marginLeft: '15px' }}
+            >
+                <Breadcrumb
                     routeSegments={[
                         { name: 'RDL-1-Requests', path: '/' },
-                        { name: 'Verification', path: '/'},
-                        { name: 'Report'}
+                        { name: 'Verification', path: '/' },
+                        { name: 'Report' },
                     ]}
                 />
             </div>
             <Box>
-                <BootstrapDialog
-                    aria-labelledby="customized-dialog-title"
-                    open={open}
-                    fullWidth
-                    maxWidth="xs"
-                >
-                    <BootstrapDialogTitle
-                        id="customized-dialog-title"
-                        onClose={handleClose}
-                    >
-                        Add Report
-                    </BootstrapDialogTitle>
-                    <DialogContent dividers>
-                        <TextField
-                            select
-                            fullWidth
-                            label="Select an Option"
-                            {...register('selected_status')}
-                            error={errors.selected_status ? true : false}
-                            helperText={errors.selected_status?.message}
-                        >
-                            <MenuItem
-                                value="Battery Boosted"
-                                onClick={() =>
-                                    setSelectedStatus('Battery Boosted')
-                                }
-                            >
-                                Battery Boosted
-                            </MenuItem>
-                            <MenuItem
-                                value="Charge jack Replaced & Boosted"
-                                onClick={() =>
-                                    setSelectedStatus(
-                                        'Charge jack Replaced & Boosted'
-                                    )
-                                }
-                            >
-                                Charge jack Replaced & Boosted
-                            </MenuItem>
-                            <MenuItem
-                                value="Battery Damage"
-                                onClick={() =>
-                                    setSelectedStatus('Battery Damage')
-                                }
-                            >
-                                Battery Damage
-                            </MenuItem>
-                            <MenuItem
-                                value="Repair Required"
-                                onClick={() =>
-                                    setSelectedStatus('Repair Required')
-                                }
-                            >
-                                Repair Required
-                            </MenuItem>
-                            <MenuItem
-                                value="Accept Auditor Feedback"
-                                onClick={() =>
-                                    setSelectedStatus('Accept Auditor Feedback')
-                                }
-                            >
-                                Accept Auditor Feedback
-                            </MenuItem>
-                            <MenuItem
-                                value="Unlocked"
-                                onClick={() => setSelectedStatus('Unlocked')}
-                            >
-                                Unlocked
-                            </MenuItem>
-                            <MenuItem
-                                value="Issue Resolved Through Software"
-                                onClick={() =>
-                                    setSelectedStatus(
-                                        'Issue Resolved Through Software'
-                                    )
-                                }
-                            >
-                                Issue Resolved Through Software
-                            </MenuItem>
-                            <MenuItem
-                                value="Dead"
-                                onClick={() => setSelectedStatus('Dead')}
-                            >
-                                Dead
-                            </MenuItem>
-                        </TextField>
-                        {selectedStatus == 'Battery Damage' ? (
-                            <>
-                                <TextField
-                                    defaultValue={getValues('model_reg')}
-                                    label="Model"
-                                    variant="outlined"
-                                    type="text"
-                                    {...register('model_reg')}
-                                    error={errors.model_reg ? true : false}
-                                    helperText={errors.model_reg?.message}
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                />
-                                <TextField
-                                    defaultValue={getValues('color')}
-                                    label="Color"
-                                    variant="outlined"
-                                    select
-                                    type="text"
-                                    {...register('color')}
-                                    error={errors?.color ? true : false}
-                                    helperText={errors?.color?.message}
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                >
-                                    {colorList.map((data) => (
-                                        <MenuItem value={data.name}>
-                                            {data.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </>
-                        ) : (
-                            ''
-                        )}
-                        {selectedStatus == 'Repair Required' ? (
-                            <>
-                                <TextField
-                                    defaultValue={getValues('part_list_count')}
-                                    label=" Part List Count"
-                                    variant="outlined"
-                                    type="text"
-                                    select
-                                    {...register('part_list_count')}
-                                    error={
-                                        errors?.part_list_count ? true : false
-                                    }
-                                    helperText={
-                                        errors?.part_list_count?.message
-                                    }
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                >
-                                    <MenuItem
-                                        value="1"
-                                        onClick={() => setPartListCount('1')}
-                                    >
-                                        1
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="2"
-                                        onClick={() => setPartListCount('2')}
-                                    >
-                                        2
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="3"
-                                        onClick={() => setPartListCount('3')}
-                                    >
-                                        3
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="4"
-                                        onClick={() => setPartListCount('4')}
-                                    >
-                                        4
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="5"
-                                        onClick={() => setPartListCount('5')}
-                                    >
-                                        5
-                                    </MenuItem>
-                                </TextField>
-                                {partListCount > 0 ? (
-                                    <TextField
-                                        defaultValue={getValues('part_list_1')}
-                                        label=" Part List 1"
-                                        variant="outlined"
-                                        type="text"
-                                        select
-                                        {...register('part_list_1')}
-                                        error={
-                                            errors?.part_list_1 ? true : false
-                                        }
-                                        helperText={
-                                            errors?.part_list_1?.message
-                                        }
-                                        fullWidth
-                                        sx={{ mt: 2 }}
-                                    >
-                                        {partList.map((data) => (
-                                            <MenuItem value={data.name}>
-                                                {data.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                ) : null}
-                                {partListCount > '1' ? (
-                                    <TextField
-                                        defaultValue={getValues('part_list_2')}
-                                        label=" Part List 2"
-                                        variant="outlined"
-                                        type="text"
-                                        select
-                                        {...register('part_list_2')}
-                                        error={
-                                            errors?.part_list_2 ? true : false
-                                        }
-                                        helperText={
-                                            errors?.part_list_2?.message
-                                        }
-                                        fullWidth
-                                        sx={{ mt: 2 }}
-                                    >
-                                        {partList.map((data) => (
-                                            <MenuItem value={data.name}>
-                                                {data.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                ) : null}
-                                {partListCount > '2' ? (
-                                    <TextField
-                                        defaultValue={getValues('part_list_3')}
-                                        label=" Part List 3"
-                                        variant="outlined"
-                                        type="text"
-                                        select
-                                        {...register('part_list_3')}
-                                        error={
-                                            errors?.part_list_3 ? true : false
-                                        }
-                                        helperText={
-                                            errors?.part_list_3?.message
-                                        }
-                                        fullWidth
-                                        sx={{ mt: 2 }}
-                                    >
-                                        {partList.map((data) => (
-                                            <MenuItem value={data.name}>
-                                                {data.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                ) : null}
-                                {partListCount > '3' ? (
-                                    <TextField
-                                        defaultValue={getValues('part_list_4')}
-                                        label=" Part List 4"
-                                        variant="outlined"
-                                        type="text"
-                                        select
-                                        {...register('part_list_4')}
-                                        error={
-                                            errors?.part_list_4 ? true : false
-                                        }
-                                        helperText={
-                                            errors?.part_list_4?.message
-                                        }
-                                        fullWidth
-                                        sx={{ mt: 2 }}
-                                    >
-                                        {partList.map((data) => (
-                                            <MenuItem value={data.name}>
-                                                {data.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                ) : null}
-                                {partListCount > '4' ? (
-                                    <TextField
-                                        defaultValue={getValues('part_list_5')}
-                                        label=" Part List 5"
-                                        variant="outlined"
-                                        type="text"
-                                        select
-                                        {...register('part_list_5')}
-                                        error={
-                                            errors?.part_list_5 ? true : false
-                                        }
-                                        helperText={
-                                            errors?.part_list_5?.message
-                                        }
-                                        fullWidth
-                                        sx={{ mt: 2 }}
-                                    >
-                                        {partList.map((data) => (
-                                            <MenuItem value={data.name}>
-                                                {data.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                ) : null}
-                                <TextField
-                                    defaultValue={getValues('color')}
-                                    label="Color"
-                                    variant="outlined"
-                                    select
-                                    type="text"
-                                    {...register('color')}
-                                    error={errors?.color ? true : false}
-                                    helperText={errors?.color?.message}
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                >
-                                    {colorList.map((data) => (
-                                        <MenuItem value={data.name}>
-                                            {data.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </>
-                        ) : (
-                            ''
-                        )}
-                        <TextField
-                            defaultValue={getValues('description')}
-                            label="Description"
-                            variant="outlined"
-                            type="text"
-                            {...register('description')}
-                            error={errors.description ? true : false}
-                            helperText={errors.description?.message}
-                            fullWidth
-                            sx={{ mt: 2 }}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            sx={{
-                                m: 1,
-                            }}
-                            type="submit"
-                            variant="contained"
-                            disabled={addButDis}
-                            onClick={handleSubmit(onSubmit)}
-                            style={{ backgroundColor: 'green' }}
-                            component="span"
-                        >
-                            Submit
-                        </Button>
-                    </DialogActions>
-                </BootstrapDialog>
                 <Box
                     sx={{
                         mt: 2,

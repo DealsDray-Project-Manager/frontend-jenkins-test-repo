@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 import jwt_decode from 'jwt-decode'
-
 import { axiosWarehouseIn } from '../../../../../axios'
 
 const Container = styled('div')(({ theme }) => ({
@@ -36,6 +35,7 @@ const Container = styled('div')(({ theme }) => ({
 }))
 
 export default function DialogBox() {
+
     const navigate = useNavigate()
     const [trayData, setTrayData] = useState([])
     const { trayId } = useParams()
@@ -222,8 +222,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -234,8 +234,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -244,6 +244,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.items])
+
     const tableActual = useMemo(() => {
         return (
             <Paper sx={{ width: '98%', overflow: 'hidden', m: 1 }}>
@@ -320,8 +321,8 @@ export default function DialogBox() {
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
                                 <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT Agent</TableCell>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>Model</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -333,8 +334,8 @@ export default function DialogBox() {
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
+                                    <TableCell>{data?.brand_name}</TableCell>
+                                    <TableCell>{data?.model_name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -343,6 +344,7 @@ export default function DialogBox() {
             </Paper>
         )
     }, [trayData?.actual_items, textDisable, uic])
+
     return (
         <Container>
             <div className="breadcrumb">
@@ -368,7 +370,7 @@ export default function DialogBox() {
                 >
                     <h4 style={{ marginLeft: '13px' }}>TRAY ID - {trayId}</h4>
                     <h4 style={{ marginLeft: '13px' }}>
-                        AGENT NAME - {trayData?.issued_user_name}
+                        User NAME - {trayData?.issued_user_name}
                     </h4>
                 </Box>
                 <Box
@@ -419,7 +421,7 @@ export default function DialogBox() {
                             }
                         }}
                     >
-                        Issue To Agent
+                        Issue To User
                     </Button>
                 </Box>
             </div>

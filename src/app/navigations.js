@@ -1026,7 +1026,7 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Can Bin',
+                name: 'Can Bin Pending Units',
                 path: '/warehouse/can-bin',
                 iconText: 'VP',
             },
@@ -1273,7 +1273,7 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Can Bin',
+                name: 'Units In Can Bin',
                 path: '/warehouse/rpt/report/can-bin',
                 iconText: 'VP',
             },

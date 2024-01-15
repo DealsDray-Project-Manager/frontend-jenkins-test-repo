@@ -233,6 +233,9 @@ const PaginationTable = () => {
                         WHT: p.WHT + count4,
                         SPT: p.SPT + count5,
                         RPT: p.RPT + count6,
+                        RPB: p.RPB + count7,
+                        RPA: p.RPA + count8,
+                        CBT: p.CBT + count9,
                     }))
                     Swal.fire({
                         icon: 'success',

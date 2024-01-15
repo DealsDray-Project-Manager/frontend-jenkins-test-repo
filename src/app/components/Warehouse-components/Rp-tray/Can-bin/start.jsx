@@ -30,6 +30,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
+import SelectCanBin from './select-can-bin'
 
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
@@ -98,6 +99,7 @@ export default function DialogBox() {
     const [open, setOpen] = React.useState(false)
     const [description, setDescription] = useState([])
     const [canBinTray, setCanBinTray] = useState([])
+    const [dialogOne, setDialogOne] = useState(false)
 
     /*********************************************************** */
 
@@ -108,7 +110,14 @@ export default function DialogBox() {
                     `/oneTrayViewForCanBin/${trayId}/${user.location}`
                 )
                 if (response.status === 200) {
-                    setTrayData(response.data.data)
+                    if (
+                        response?.data?.data?.[0]?.can_bin_tray == null ||
+                        response?.data?.data?.[0]?.can_bin_tray === undefined ||
+                        response?.data?.data?.[1]?.code == 'Closed'
+                    ) {
+                        setDialogOne(true)
+                    }
+                    setTrayData(response?.data?.data)
                 } else {
                     Swal.fire({
                         position: 'top-center',
@@ -144,7 +153,6 @@ export default function DialogBox() {
 
     const schema = Yup.object().shape({
         description: Yup.string().required('Required*').nullable(),
-        cbt: Yup.string().required('Required*').nullable(),
     })
     const {
         register,
@@ -216,7 +224,7 @@ export default function DialogBox() {
                     item: itemDataVer,
                     username: user_name,
                     description: value.description,
-                    cbt: value.cbt,
+                    cbt: trayData?.[1]?.code,
                 }
                 let res = await axiosWarehouseIn.post('/addToCanBin', obj)
                 if (res.status == 200) {
@@ -280,7 +288,7 @@ export default function DialogBox() {
             setLoading(true)
             let obj = {
                 trayId: trayId,
-                sortId: trayData?.sort_id,
+                sortId: trayData?.[0]?.sort_id,
                 actionUser: user.username,
                 description: description,
             }
@@ -321,7 +329,7 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>CAN BIN</h5>
+                        <h5>CAN BIN :-{trayData?.[1]?.code}</h5>
                     </Box>
                     <Box
                         sx={{
@@ -332,7 +340,8 @@ export default function DialogBox() {
                         <Box sx={{}}>
                             <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {trayData?.temp_array?.length}/{trayData?.limit}
+                                {trayData?.[0]?.temp_array?.length}/
+                                {trayData?.[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -352,7 +361,7 @@ export default function DialogBox() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {trayData?.temp_array?.map((data, index) => (
+                            {trayData?.[0]?.temp_array?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
@@ -366,7 +375,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [trayData?.temp_array])
+    }, [trayData?.[0]?.temp_array])
 
     const tableActual = useMemo(() => {
         return (
@@ -378,7 +387,9 @@ export default function DialogBox() {
                             ml: 2,
                         }}
                     >
-                        <h5>LEAVE THE ITEM IN THE TRAY</h5>
+                        <h5>
+                            LEAVE THE ITEM IN THE TRAY :-{trayData?.[0]?.code}
+                        </h5>
                     </Box>
                     <Box
                         sx={{
@@ -390,13 +401,13 @@ export default function DialogBox() {
                             <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
                                 {
-                                    trayData.actual_items?.filter(function (
-                                        item
-                                    ) {
-                                        return item.status != 'Duplicate'
-                                    }).length
+                                    trayData?.[0]?.actual_items?.filter(
+                                        function (item) {
+                                            return item.status != 'Duplicate'
+                                        }
+                                    ).length
                                 }
-                                /{trayData?.limit}
+                                /{trayData?.[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -417,7 +428,7 @@ export default function DialogBox() {
                         </TableHead>
 
                         <TableBody>
-                            {trayData?.actual_items?.map((data, index) => (
+                            {trayData?.[0]?.actual_items?.map((data, index) => (
                                 <TableRow hover role="checkbox" tabIndex={-1}>
                                     <TableCell sx={{ pl: 3 }}>
                                         {index + 1}
@@ -431,7 +442,7 @@ export default function DialogBox() {
                 </TableContainer>
             </Paper>
         )
-    }, [trayData?.actual_items, textDisable, uic])
+    }, [trayData?.[0]?.actual_items, textDisable, uic])
 
     const ScanUic = useMemo(() => {
         return (
@@ -503,9 +514,9 @@ export default function DialogBox() {
                             }}
                             select
                             {...register('cbt')}
-                            error={errors.description ? true : false}
-                            helperText={errors.description?.message}
                             type="text"
+                            disabled
+                            value={trayData?.[1]?.code}
                             variant="outlined"
                         >
                             {canBinTray?.map((data) => (
@@ -540,6 +551,14 @@ export default function DialogBox() {
                         </Button>
                     </DialogActions>
                 </BootstrapDialog>
+                {dialogOne ? (
+                    <SelectCanBin
+                        dialogOne={dialogOne}
+                        setDialogOne={setDialogOne}
+                        trayId={trayId}
+                        canBinTray={canBinTray}
+                    />
+                ) : null}
 
                 <Box>
                     <Box
@@ -559,10 +578,10 @@ export default function DialogBox() {
                         }}
                     >
                         <h4 style={{ marginRight: '13px' }}>
-                            Brand -- {trayData?.brand}
+                            Brand -- {trayData?.[0]?.brand}
                         </h4>
                         <h4 style={{ marginRight: '13px' }}>
-                            Model -- {trayData?.model}
+                            Model -- {trayData?.[0]?.model}
                         </h4>
                     </Box>
                 </Box>
@@ -587,7 +606,7 @@ export default function DialogBox() {
                             sx={{ m: 3, mb: 9 }}
                             variant="contained"
                             disabled={
-                                trayData?.items?.length != 0 ||
+                                trayData?.[0]?.items?.length != 0 ||
                                 loading == true ||
                                 description == ''
                             }

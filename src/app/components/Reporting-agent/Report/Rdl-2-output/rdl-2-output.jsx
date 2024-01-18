@@ -128,9 +128,8 @@ const PartTable = () => {
     const download = async (e, request_id) => {
         let arr = []
         let res = await axiosReportingAgent.post(
-            `/get-data-for-rdl-2-downalod/${request_id}`
+            `/get-data-for-rdl-2-download/${request_id}`
         )
-
         if (res.status === 200) {
             for (let x of res.data.data) {
                 let obj = {

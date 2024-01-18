@@ -60,7 +60,7 @@ const SimpleMuiTable = () => {
 
     const handelDetailPage = (e, trayId) => {
         e.preventDefault()
-        navigate('/warehouse/can-bin/start/' + trayId)
+        navigate('/warehouse/can-bin-pending-units/start/' + trayId)
     }
 
     const columns = [
@@ -144,6 +144,13 @@ const SimpleMuiTable = () => {
             },
         },
         {
+            name: 'nr',
+            label: <Typography sx={{ fontWeight: 'bold' }}>NR Units</Typography>,
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'code',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
@@ -170,7 +177,7 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Can Bin', path: '/' }]} />
+                <Breadcrumb routeSegments={[{ name: 'Can Bin Pending Units', path: '/' }]} />
             </div>
             <Table className="custom-table">
                 <MUIDataTable

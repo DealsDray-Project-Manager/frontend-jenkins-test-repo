@@ -62,11 +62,12 @@ export default function DialogBox({
     setDialogOne,
     trayId,
     canBinTray,
+    setRefresh,
 }) {
     const { user } = useAuth()
     const [addButDis, setAddButDis] = useState(false)
 
-    /*********************************************************** */
+    /************************************************************/
 
     const schema = Yup.object().shape({
         cbt: Yup.string().required('Required*').nullable(),
@@ -92,6 +93,8 @@ export default function DialogBox({
             }
             let res = await axiosWarehouseIn.post('/saveCanBinTray', obj)
             if (res.status == 200) {
+                handleClose()
+                setRefresh((refresh) => !refresh)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -99,6 +102,8 @@ export default function DialogBox({
                     confirmButtonText: 'Ok',
                 })
             } else {
+                handleClose()
+                setRefresh((refresh) => !refresh)
                 Swal.fire({
                     position: 'top-center',
                     icon: 'error',
@@ -107,6 +112,7 @@ export default function DialogBox({
                 })
             }
         } catch (error) {
+            handleClose()
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -137,7 +143,7 @@ export default function DialogBox({
             </BootstrapDialogTitle>
             <DialogContent dividers>
                 <TextField
-                    label="Select CBT"
+                    label="Select CBT Tray ID"
                     fullWidth
                     name="cbt"
                     sx={{

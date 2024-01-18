@@ -278,15 +278,15 @@ const WarehoueRouter = [
         element: <RpaToStxInprogressTrayClose />,
     },
     {
-        path: '/warehouse/rpt/report/can-bin',
+        path: '/warehouse/rpt/report/units-in-can-bin',
         element: <CanBinReport />,
     },
     {
-        path: '/warehouse/can-bin/start/:trayId',
+        path: '/warehouse/can-bin-pending-units/start/:trayId',
         element: <CanBinStartPage />,
     },
     {
-        path: '/warehouse/can-bin',
+        path: '/warehouse/can-bin-pending-units',
         element: <CanBinTray />,
     },
     {

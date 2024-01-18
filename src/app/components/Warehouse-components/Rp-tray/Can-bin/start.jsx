@@ -11,7 +11,6 @@ import {
     TableHead,
     TableRow,
     Grid,
-    MenuItem,
     DialogContent,
     DialogActions,
     Dialog,
@@ -31,7 +30,6 @@ import { useForm } from 'react-hook-form'
 import Swal from 'sweetalert2'
 import useAuth from 'app/hooks/useAuth'
 import SelectCanBin from './select-can-bin'
-
 // import jwt from "jsonwebtoken"
 import { axiosWarehouseIn } from '../../../../../axios'
 
@@ -112,9 +110,10 @@ export default function DialogBox() {
                 if (response.status === 200) {
                     if (
                         response?.data?.data?.[0]?.can_bin_tray == null ||
-                        response?.data?.data?.[0]?.can_bin_tray === undefined ||
-                        response?.data?.data?.[1]?.code == 'Closed'
+                        response?.data?.data?.[0]?.can_bin_tray === undefined
                     ) {
+                        setDialogOne(true)
+                    } else if (response?.data?.data?.[1]?.sort_id == 'Closed') {
                         setDialogOne(true)
                     }
                     setTrayData(response?.data?.data)
@@ -181,12 +180,12 @@ export default function DialogBox() {
                         handleOpen()
                     } else {
                         setUic('')
-                        Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: res?.data?.message,
-                            confirmButtonText: 'Ok',
-                        })
+                        // Swal.fire({
+                        //     position: 'top-center',
+                        //     icon: 'success',
+                        //     title: res?.data?.message,
+                        //     confirmButtonText: 'Ok',
+                        // })
                         setRefresh((refresh) => !refresh)
                     }
                 } else {
@@ -231,12 +230,12 @@ export default function DialogBox() {
                     handleClose()
                     setAddButDis(false)
                     setUic('')
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: res?.data?.message,
-                        confirmButtonText: 'Ok',
-                    })
+                    // Swal.fire({
+                    //     position: 'top-center',
+                    //     icon: 'success',
+                    //     title: res?.data?.message,
+                    //     confirmButtonText: 'Ok',
+                    // })
                     setRefresh((refresh) => !refresh)
                 } else {
                     handleClose()
@@ -300,7 +299,7 @@ export default function DialogBox() {
                     title: res?.data?.message,
                     confirmButtonText: 'Ok',
                 })
-                navigate('/wareshouse/wht/ready-for-audit')
+                navigate('/warehouse/can-bin-pending-units')
             } else {
                 Swal.fire({
                     position: 'top-center',
@@ -506,25 +505,18 @@ export default function DialogBox() {
                     </BootstrapDialogTitle>
                     <DialogContent dividers>
                         <TextField
-                            label="Select CBT"
+                            label="CBT Tray ID"
                             fullWidth
                             name="cbt"
                             sx={{
                                 mb: 2,
                             }}
-                            select
-                            {...register('cbt')}
                             type="text"
                             disabled
                             value={trayData?.[1]?.code}
                             variant="outlined"
-                        >
-                            {canBinTray?.map((data) => (
-                                <MenuItem key={data?.code} value={data?.code}>
-                                    {data?.code}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        />
+
                         <TextField
                             label="Description"
                             fullWidth
@@ -557,6 +549,7 @@ export default function DialogBox() {
                         setDialogOne={setDialogOne}
                         trayId={trayId}
                         canBinTray={canBinTray}
+                        setRefresh={setRefresh}
                     />
                 ) : null}
 

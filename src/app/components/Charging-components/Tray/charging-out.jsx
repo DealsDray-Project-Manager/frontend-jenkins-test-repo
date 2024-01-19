@@ -406,10 +406,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT User</TableCell>
-                                {/* <TableCell>Tracking Number</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -419,9 +415,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -506,9 +499,6 @@ export default function DialogBox() {
                             <TableRow>
                                 <TableCell sx={{ pl: 2 }}>S.NO</TableCell>
                                 <TableCell>UIC</TableCell>
-                                <TableCell>MUIC</TableCell>
-                                <TableCell>BOT Tray</TableCell>
-                                <TableCell>BOT User</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -519,9 +509,6 @@ export default function DialogBox() {
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{data?.uic}</TableCell>
-                                    <TableCell>{data?.muic}</TableCell>
-                                    <TableCell>{data?.tray_id}</TableCell>
-                                    <TableCell>{data?.bot_agent}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -760,7 +747,6 @@ export default function DialogBox() {
                             </FormControl>
                         ) : null}
 
-                       
                         <FormControl>
                             <FormLabel
                                 id="demo-radio-buttons-group-label"

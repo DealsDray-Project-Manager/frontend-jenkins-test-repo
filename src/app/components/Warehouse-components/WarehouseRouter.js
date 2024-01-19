@@ -267,8 +267,19 @@ const CanBinStartPage=Loadable(lazy(() => import('./Rp-tray/Can-bin/start')))
 const CanBinReport =Loadable(lazy(() => import('./Report/can-bin')))
 const RpaToStxInprogressTrayClose=Loadable(lazy(() => import('./Sorting/Rpa-to-stx/close')))
 const StxTrayViewUnits=Loadable(lazy(() => import('./Stx-tray/Stx/view-units')))
-
+// PMT TRAY CLOSE FOR FUTURE USE
+const PmtTrayItemShiftAndTrayRelase =Loadable(lazy(() => import('./Pmt-mmt/All-pmt/close-pmt-tray')))
+// PMT BIN REPORT 
+const PmtBinReport =Loadable(lazy(() => import('./Report/pmt-bin-report/pmt-bin-report')))
 const WarehoueRouter = [
+    {
+        path: '/warehouse/rpt/report/units-in-pmt-bin',
+        element: <PmtBinReport />,
+    },
+    {
+        path: '/warehouse/all-pmt-tray/pmt-tray-close/:trayId',
+        element: <PmtTrayItemShiftAndTrayRelase />,
+    },
     {
         path: '/warehouse/stx/view-units/:trayId',
         element: <StxTrayViewUnits />,

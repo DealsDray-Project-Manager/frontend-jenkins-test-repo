@@ -59,8 +59,8 @@ const SimpleMuiTable = () => {
         navigate('/wareshouse/wht/tray/item/' + id)
     }
     // CHANGE RACK
-    const handelChangeRack = async (id) => {
-        navigate('/warehouse/tray/rack-change/' + id)
+    const handelCloseTheTray = async (id) => {
+        navigate('/warehouse/all-pmt-tray/pmt-tray-close/' + id)
     }
 
     const columns = [
@@ -135,11 +135,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
-                    return (
-                        (value == 0 ? tableMeta.rowData[4] : value) +
-                        '/' +
-                        tableMeta.rowData[5]
-                    )
+                    return value + '/' + tableMeta.rowData[5]
                 },
             },
         },
@@ -167,21 +163,6 @@ const SimpleMuiTable = () => {
             },
         },
         {
-            name: 'created_at',
-            label: (
-                <Typography sx={{ fontWeight: 'bold' }}>
-                    Creation Date
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                customBodyRender: (value) =>
-                    new Date(value).toLocaleString('en-GB', {
-                        hour12: true,
-                    }),
-            },
-        },
-        {
             name: 'code',
             label: <Typography sx={{ fontWeight: 'bold' }}>Action</Typography>,
             options: {
@@ -201,16 +182,18 @@ const SimpleMuiTable = () => {
                             >
                                 View
                             </Button>
-                            {/* <Button
+                            <Button
                                 sx={{
                                     m: 1,
+                                    backgroundColor: 'red', // Custom color
                                 }}
+                                disabled={tableMeta?.rowData[9] !== "Closed By Warehouse"}
                                 variant="contained"
-                                onClick={() => handelChangeRack(value)}
+                                onClick={() => handelCloseTheTray(value)}
                                 component="span"
                             >
-                                Rack Change
-                            </Button> */}
+                                Release
+                            </Button>
                         </>
                     )
                 },

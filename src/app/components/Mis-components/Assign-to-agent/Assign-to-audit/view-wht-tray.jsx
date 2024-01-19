@@ -203,7 +203,7 @@ const SimpleMuiTable = () => {
             name: 'rack_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
-                    <>Rack Id</>
+                    <>Rack ID</>
                 </Typography>
             ),
             options: {

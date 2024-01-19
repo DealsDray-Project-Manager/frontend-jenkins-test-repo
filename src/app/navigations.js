@@ -1277,6 +1277,11 @@ export const navigations = [
                 path: '/warehouse/rpt/report/units-in-can-bin',
                 iconText: 'VP',
             },
+            {
+                name: 'Units In PMT Bin',
+                path: '/warehouse/rpt/report/units-in-pmt-bin',
+                iconText: 'VP',
+            },
         ],
         auth: authRoles.Warehouse,
         sales: false,

@@ -252,6 +252,8 @@ const SimpleMuiTable = () => {
                     rbqc_tray: popdata.rbqc_tray,
                     trayId: whtTrayId,
                     spTray: spTray,
+                    rdl_fls_one_report:
+                        reportData?.delivery?.rdl_fls_one_report,
                     rdl_repair_report: {
                         status: selectedValue,
                         reason: selectReason,
@@ -620,22 +622,22 @@ const SimpleMuiTable = () => {
     const uicDetails = useMemo(() => {
         return (
             <Card sx={{ width: '100%', height: '50%' }}>
-                <Box sx={{ display: 'flex', mb: 2 }}>
-                    <Box sx={{ ml: 2 }}>
+                <Grid item container spacing={2} sx={{ mb: 3 }}>
+                    <Grid sx={{ ml: 1 }} item lg={2} md={2} xs={2} xl={2}>
                         <Typography sx={{ mt: 2 }}>UIC : {uic}</Typography>
                         <Typography sx={{ mt: 2 }}>
                             MUIC : {reportData?.muic?.muic}
                         </Typography>
-                    </Box>
-                    <Box sx={{ ml: 5 }}>
+                    </Grid>
+                    <Grid item lg={2} md={2} xs={2} xl={2}>
                         <Typography sx={{ mt: 2 }}>
                             BRAND : {reportData?.muic?.brand_name}
                         </Typography>
                         <Typography sx={{ mt: 2 }}>
                             MODEL : {reportData?.muic?.model_name}
                         </Typography>
-                    </Box>
-                    <Box sx={{ ml: 5 }}>
+                    </Grid>
+                    <Grid item lg={4} md={4} xs={2} xl={4}>
                         <Typography sx={{ mt: 2 }}>
                             Auditor Description:{' '}
                             {reportData?.delivery?.audit_report?.description}
@@ -647,8 +649,6 @@ const SimpleMuiTable = () => {
                                     ?.selected_status
                             }
                         </Typography>
-                    </Box>
-                    <Box sx={{ ml: 5 }}>
                         <Typography sx={{ mt: 2 }}>
                             RDL-1 Description:{' '}
                             {
@@ -656,8 +656,30 @@ const SimpleMuiTable = () => {
                                     ?.description
                             }
                         </Typography>
-                    </Box>
-                </Box>
+                    </Grid>
+                    <Grid item lg={4} md={4} xs={2} xl={4}>
+                        {reportData?.delivery?.rp_bqc_report?.description !==
+                        undefined ? (
+                            <Typography sx={{ mt: 2 }}>
+                                RP-BQC Description:{' '}
+                                {
+                                    reportData?.delivery?.rp_bqc_report
+                                        ?.description
+                                }
+                            </Typography>
+                        ) : null}
+                        {reportData?.delivery?.rp_audit_report?.description !==
+                        undefined ? (
+                            <Typography sx={{ mt: 2 }}>
+                                RP-AUDIT Description:{' '}
+                                {
+                                    reportData?.delivery?.rp_audit_report
+                                        ?.description
+                                }
+                            </Typography>
+                        ) : null}
+                    </Grid>
+                </Grid>
             </Card>
         )
     }, [reportData])
@@ -747,7 +769,7 @@ const SimpleMuiTable = () => {
                             }
                             imei={reportData?.delivery?.imei}
                             cimei_1={reportData?.delivery?.charging?.cimei_1}
-                        cimei_2={reportData?.delivery?.charging?.cimei_2}
+                            cimei_2={reportData?.delivery?.charging?.cimei_2}
                         />
                     </Grid>
                 </Grid>

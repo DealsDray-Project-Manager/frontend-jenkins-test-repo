@@ -5,7 +5,7 @@ import { styled } from '@mui/system'
 import { useNavigate } from 'react-router-dom'
 import { axiosWarehouseIn } from '../../../../../axios'
 import jwt_decode from 'jwt-decode'
-import { Button, Typography,Table } from '@mui/material'
+import { Button, Typography, Table } from '@mui/material'
 import Swal from 'sweetalert2'
 import '../../../../../app.css'
 
@@ -84,7 +84,6 @@ const SimpleMuiTable = () => {
                 ),
             },
         },
-       
 
         {
             name: 'code',
@@ -96,8 +95,8 @@ const SimpleMuiTable = () => {
         {
             name: 'issued_user_name',
             label: (
-                <Typography sx={{ fontWeight: 'bold' }} >
-                   BOT User Name
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    BOT User Name
                 </Typography>
             ),
             options: {
@@ -111,7 +110,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+
         {
             name: 'limit',
             label: <Typography sx={{ fontWeight: 'bold' }}>Max</Typography>,
@@ -124,7 +123,7 @@ const SimpleMuiTable = () => {
             label: <Typography sx={{ fontWeight: 'bold' }}>Valid</Typography>,
             options: {
                 filter: true,
-
+                dataKey: 'valid', // Unique key for this column
                 customBodyRender: (value, dataIndex) =>
                     value.filter(function (item) {
                         return item.status == 'Valid'
@@ -141,9 +140,14 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'track_tray',
-            label: <Typography sx={{fontWeight:'bold'}}>Assigned Date</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    Assigned Date
+                </Typography>
+            ),
             options: {
                 filter: true,
+                sort: true,
                 customBodyRender: (value) =>
                     new Date(value?.bag_assign_to_bot).toLocaleString('en-GB', {
                         hour12: true,
@@ -185,53 +189,119 @@ const SimpleMuiTable = () => {
                     ]}
                 />
             </div>
-            <Table className="custom-table" >
-
-            <MUIDataTable
-                title={'Requests'}
-                data={userList}
-                columns={columns}
-                options={{
-                    filterType: 'textField',
-                    responsive: 'simple',
-                    download: false,
-                    print: false,
-                    textLabels: {
-                        body: {
-                            noMatch: isLoading
-                                ? 'Loading...'
-                                : 'Sorry, there is no matching data to display',
+            <Table className="custom-table">
+                <MUIDataTable
+                    title={'Requests'}
+                    data={userList}
+                    columns={columns}
+                    options={{
+                        filterType: 'textField',
+                        responsive: 'simple',
+                        download: false,
+                        print: false,
+                        textLabels: {
+                            body: {
+                                noMatch: isLoading
+                                    ? 'Loading...'
+                                    : 'Sorry, there is no matching data to display',
+                            },
                         },
-                    },
-                    customSort: (data, colIndex, order) => {
-                        return data.sort((a, b) => {
-                            if (colIndex === 1) {
-                                return (
-                                    (a.data[colIndex].price <
-                                    b.data[colIndex].price
-                                        ? -1
-                                        : 1) * (order === 'desc' ? 1 : -1)
-                                )
+                        customSort: (data, colIndex, order) => {
+                            const columnProperties = {
+                                5:"length",
+                                6:"length",
+                                7: 'bag_assign_to_bot',
                             }
-                            return (
-                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
-                                (order === 'desc' ? 1 : -1)
-                            )
-                        })
-                    },
-                    selectableRows: 'none', // set checkbox for each row
-                    // search: false, // set search option
-                    // filter: false, // set data filter option
-                    // download: false, // set download option
-                    // print: false, // set print option
-                    // pagination: true, //set pagination option
-                    // viewColumns: false, // set column option
-                    elevation: 0,
-                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                }}
-            />
+
+                            const property = columnProperties[colIndex]
+
+                            if (property) {
+                                return data.sort((a, b) => {
+                                    const aPropertyValue = getValueByProperty(
+                                        a.data[colIndex],
+                                        property
+                                    )
+                                    const bPropertyValue = getValueByProperty(
+                                        b.data[colIndex],
+                                        property
+                                    )
+
+                                    if (
+                                        typeof aPropertyValue === 'string' &&
+                                        typeof bPropertyValue === 'string'
+                                    ) {
+                                        return (
+                                            (order === 'asc' ? 1 : -1) *
+                                            aPropertyValue.localeCompare(
+                                                bPropertyValue
+                                            )
+                                        )
+                                    }
+
+                                    return (
+                                        (parseFloat(aPropertyValue) -
+                                            parseFloat(bPropertyValue)) *
+                                        (order === 'desc' ? -1 : 1)
+                                    )
+                                })
+                            }
+
+                            return data.sort((a, b) => {
+                                const aValue = a.data[colIndex]
+                                const bValue = b.data[colIndex]
+
+                                if (aValue === bValue) {
+                                    return 0
+                                }
+
+                                if (aValue === null || aValue === undefined) {
+                                    return 1
+                                }
+
+                                if (bValue === null || bValue === undefined) {
+                                    return -1
+                                }
+
+                                if (
+                                    typeof aValue === 'string' &&
+                                    typeof bValue === 'string'
+                                ) {
+                                    return (
+                                        (order === 'asc' ? 1 : -1) *
+                                        aValue.localeCompare(bValue)
+                                    )
+                                }
+
+                                return (
+                                    (parseFloat(aValue) - parseFloat(bValue)) *
+                                    (order === 'desc' ? -1 : 1)
+                                )
+                            })
+
+                            function getValueByProperty(data, property) {
+                                const properties = property.split('.')
+                                let value = properties.reduce(
+                                    (obj, key) => obj?.[key],
+                                    data
+                                )
+
+                                return value !== undefined ? value : ''
+                            }
+                        },
+                        selectableRows: 'none', // set checkbox for each row
+                        // search: false, // set search option
+                        // filter: false, // set data filter option
+                        // download: false, // set download option
+                        // print: false, // set print option
+                        // pagination: true, //set pagination option
+                        // viewColumns: false, // set column option
+                        elevation: 0,
+                        rowsPerPageOptions: [10, 20, 40, 80, 100],
+                    }}
+                />
             </Table>
         </Container>
+
     )
 }
 

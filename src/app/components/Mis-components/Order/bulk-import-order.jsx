@@ -202,9 +202,10 @@ const PaginationTable = () => {
                     accumulator?.order_timestamp
                 )
             }
-            if (key === 'Gc Redeem Time') {
+            if (key === 'GC Redeem Time') {
                 accumulator.gc_redeem_time = forDateFormat(
-                    accumulator?.gc_redeem_time
+                    accumulator?.gc_redeem_time,
+                    key
                 )
             }
             if (
@@ -217,14 +218,14 @@ const PaginationTable = () => {
             }
             if (key === 'GC Refund Time') {
                 accumulator.gc_refund_time = forDateFormat(
-                    accumulator?.gc_refund_time
+                    accumulator?.gc_refund_time,
+                    key
                 )
             }
-
             return accumulator
         }, {})
     }
-    const forDateFormat = (field) => {
+    const forDateFormat = (field, key) => {
         if (field?.includes('-')) {
             // Timestamp is in "DD-MM-YYYY HH:mm:ss" format
             const [datePart, timePart] = field?.split(' ')
@@ -242,9 +243,12 @@ const PaginationTable = () => {
             }
             return new Date(formattedTimestampStr)
         } else {
-            const parsedDate = parse(field, 'MM/dd/yyyy', new Date())
-            if (isValid(parsedDate)) {
-                return format(parsedDate, 'dd/MM/yyyy')
+            const parts = field.split('/')
+
+            if (parts.length === 3) {
+                const [month, day, year] = parts
+                const formattedDate = `${day}/${month}/${year}`
+                return formattedDate
             } else {
                 console.error('Invalid date:', field)
                 // Handle the invalid date case here
@@ -503,11 +507,20 @@ const PaginationTable = () => {
         }))
     }
     const addFileData = (fileData) => {
-        setExfile(fileData)
-        const fileName = fileData.name
-        const fileExtension = fileName.split('.').pop() // Get the last part as the extension
+        if (fileData?.type === 'text/csv' || fileData?.type === "application/vnd.ms-excel") {
+            setExfile(fileData)
+            const fileName = fileData.name
+            const fileExtension = fileName.split('.').pop() // Get the last part as the extension
 
-        setFileExt(fileExtension)
+            setFileExt(fileExtension)
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                confirmButtonText: 'Ok',
+                text: 'Please select a CSV file',
+            })
+        }
     }
 
     return (
@@ -533,7 +546,7 @@ const PaginationTable = () => {
                         <Button
                             sx={{ mb: 2 }}
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             onClick={() => navigate('/mis/orders')}
                         >
                             Back to list
@@ -768,16 +781,28 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         name="order_date"
-                                                        value={new Date(
-                                                            data?.order_date
-                                                        ).toLocaleString(
-                                                            'en-GB',
-                                                            {
-                                                                year: 'numeric',
-                                                                month: '2-digit',
-                                                                day: '2-digit',
-                                                            }
-                                                        )}
+                                                        value={
+                                                            data?.order_date !==
+                                                                undefined &&
+                                                            data?.order_date !==
+                                                                '' &&
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data?.order_date
+                                                                )
+                                                            )
+                                                                ? new Date(
+                                                                      data?.order_date
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          year: 'numeric',
+                                                                          month: '2-digit',
+                                                                          day: '2-digit',
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                     />
                                                     {err?.order_date?.includes(
                                                         data['order_date']
@@ -815,14 +840,26 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         name="order_timestamp"
-                                                        value={new Date(
-                                                            data.order_timestamp
-                                                        ).toLocaleString(
-                                                            'en-GB',
-                                                            {
-                                                                hour12: true,
-                                                            }
-                                                        )}
+                                                        value={
+                                                            data?.order_timestamp !==
+                                                                undefined &&
+                                                            data?.order_timestamp !==
+                                                                null &&
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data?.order_timestamp
+                                                                )
+                                                            )
+                                                                ? new Date(
+                                                                      data?.order_timestamp
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          hour12: true,
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',
@@ -864,11 +901,11 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="order_status"
                                                         value={
-                                                            data.order_status
+                                                            data?.order_status
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -878,7 +915,7 @@ const PaginationTable = () => {
                                                     />
                                                     {Object.keys(err).length !=
                                                         0 &&
-                                                    data.order_status !==
+                                                    data?.order_status !==
                                                         'NEW' ? (
                                                         <ClearIcon
                                                             style={{
@@ -897,7 +934,7 @@ const PaginationTable = () => {
                                                     )}
                                                     {Object.keys(err).length !=
                                                         0 &&
-                                                    data.order_status !==
+                                                    data?.order_status !==
                                                         'NEW' ? (
                                                         <p
                                                             style={{
@@ -913,11 +950,11 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="buyback_category"
                                                         value={
-                                                            data.buyback_category
+                                                            data?.buyback_category
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -930,10 +967,10 @@ const PaginationTable = () => {
                                                     {' '}
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="partner_id"
-                                                        value={data.partner_id}
+                                                        value={data?.partner_id}
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',
@@ -1000,11 +1037,11 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="partner_email"
                                                         value={
-                                                            data.partner_email
+                                                            data?.partner_email
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -1016,11 +1053,11 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="partner_shop"
                                                         value={
-                                                            data.partner_shop
+                                                            data?.partner_shop
                                                         }
                                                         inputProps={{
                                                             style: {
@@ -1085,7 +1122,7 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="item_id"
                                                         value={data.item_id}
@@ -1155,7 +1192,7 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         onChange={updateFieldChanged(
-                                                            data.delet_id
+                                                            data?.delet_id
                                                         )}
                                                         name="old_item_details"
                                                         value={
@@ -1512,20 +1549,33 @@ const PaginationTable = () => {
                                                     <TextField
                                                         id="outlined-password-input"
                                                         name="delivery_date"
-                                                        value={new Date(
-                                                            data.delivery_date
-                                                        ).toLocaleString(
-                                                            'en-GB',
-                                                            {
-                                                                hour12: true,
-                                                            }
-                                                        )}
+                                                        value={
+                                                            data.delivery_date !==
+                                                                undefined &&
+                                                            data.delivery_date !==
+                                                                '' &&
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data.delivery_date
+                                                                )
+                                                            )
+                                                                ? new Date(
+                                                                      data.delivery_date
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          hour12: true,
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',
                                                             },
                                                         }}
                                                     />
+
                                                     {err?.delivery_date?.includes(
                                                         data['delivery_date']
                                                     ) ? (
@@ -1641,14 +1691,26 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         name="gc_redeem_time"
-                                                        value={new Date(
-                                                            data.gc_redeem_time
-                                                        ).toLocaleString(
-                                                            'en-GB',
-                                                            {
-                                                                hour12: true,
-                                                            }
-                                                        )}
+                                                        value={
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data.gc_redeem_time
+                                                                )
+                                                            ) &&
+                                                            data.gc_redeem_time !==
+                                                                undefined &&
+                                                            data.gc_redeem_time !==
+                                                                ''
+                                                                ? new Date(
+                                                                      data.gc_redeem_time
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          hour12: true,
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',
@@ -1690,14 +1752,26 @@ const PaginationTable = () => {
                                                 <TableCell>
                                                     <TextField
                                                         name="gc_refund_time"
-                                                        value={new Date(
-                                                            data.gc_refund_time
-                                                        ).toLocaleString(
-                                                            'en-GB',
-                                                            {
-                                                                hour12: true,
-                                                            }
-                                                        )}
+                                                        value={
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data.gc_refund_time
+                                                                )
+                                                            ) &&
+                                                            data.gc_refund_time !==
+                                                                undefined &&
+                                                            data.gc_refund_time !==
+                                                                ''
+                                                                ? new Date(
+                                                                      data.gc_refund_time
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          hour12: true,
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',

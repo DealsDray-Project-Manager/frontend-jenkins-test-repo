@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Button,
     TextField,
@@ -61,11 +61,24 @@ export default function DialogBox({
     dialogOne,
     setDialogOne,
     trayId,
-    canBinTray,
     setRefresh,
+    countOfNr,
 }) {
     const { user } = useAuth()
     const [addButDis, setAddButDis] = useState(false)
+    const [canBinTray, setCanBinTray] = useState([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await axiosWarehouseIn.post(
+                `/canBinGetCbtTray/${user.location}/${countOfNr}`
+            )
+            if (res.status == 200) {
+                setCanBinTray(res.data.data)
+            }
+        }
+        fetchData()
+    }, [])
 
     /************************************************************/
 

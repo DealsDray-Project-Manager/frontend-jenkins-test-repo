@@ -585,7 +585,7 @@ const PaginationTable = () => {
                                 <TableCell>{data?.order_id}</TableCell>
                                 <TableCell>
                                     {data?.delivery_date == null
-                                        ? 'No Order Date'
+                                        ? 'No Delivery Date'
                                         : new Date(
                                               data?.delivery_date
                                           ).toLocaleString('en-GB', {

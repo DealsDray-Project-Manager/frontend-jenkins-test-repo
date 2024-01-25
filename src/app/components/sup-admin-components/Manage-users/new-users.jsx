@@ -63,13 +63,13 @@ const MemberEditorDialog = ({
             })
             setCpcType([
                 {
-                    location_type:editFetchData.cpc_type
-                }
+                    location_type: editFetchData.cpc_type,
+                },
             ])
             setWarehouse([
                 {
-                    code: editFetchData.warehouse
-                }
+                    code: editFetchData.warehouse,
+                },
             ])
             setSelectedCpc(editFetchData.cpc_type)
             setWarehouseType(editFetchData.warehouse)
@@ -521,12 +521,22 @@ const MemberEditorDialog = ({
                                     event.preventDefault()
                                 }
                             }}
+                            onPaste={(event) => {
+                                const clipboardData =
+                                    event.clipboardData || window.clipboardData
+                                const pastedData = clipboardData.getData('text')
+
+                                if (!/^[0-9]+$/.test(pastedData)) {
+                                    event.preventDefault()
+                                }
+                            }}
                             {...register('contact')}
                             error={errors.contact ? true : false}
                             helperText={
                                 errors.contact ? errors.contact.message : ''
                             }
                         />
+
                         <TextFieldCustOm
                             label="Device Name"
                             type="text"
@@ -541,12 +551,14 @@ const MemberEditorDialog = ({
                             label="Device Id"
                             type="text"
                             name="device_id"
-                           
                             disabled={Object.keys(editFetchData).length !== 0}
                             {...register('device_id')}
                             error={errors.device_id ? true : false}
                             helperText={errors.device_id?.message}
-                            inputProps={{ maxLength: 40 , autoComplete: 'new-password'}}
+                            inputProps={{
+                                maxLength: 40,
+                                autoComplete: 'new-password',
+                            }}
                         />
                         {Object.keys(editFetchData).length !== 0 ? null : (
                             <>
@@ -554,7 +566,6 @@ const MemberEditorDialog = ({
                                     label="Password"
                                     type={passwordType}
                                     name="password"
-
                                     disabled={
                                         Object.keys(editFetchData).length !== 0
                                     }

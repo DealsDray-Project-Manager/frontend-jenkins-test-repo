@@ -148,6 +148,7 @@ const SimpleMuiTable = () => {
 
     const handleClose = () => {
         setOpen(false)
+        setUic('')
     }
 
     const handleOpen = async (e) => {
@@ -199,6 +200,7 @@ const SimpleMuiTable = () => {
             }
             const res = await axiosWarehouseIn.post('/addItemToStxFromRpa', obj)
             if (res.status == 200) {
+                setUic('')
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -207,6 +209,7 @@ const SimpleMuiTable = () => {
                 setRefresh((refresh) => !refresh)
                 setButDiss(false)
             } else {
+                setUic('')
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -217,6 +220,7 @@ const SimpleMuiTable = () => {
             }
             setButDiss(false)
         } catch (error) {
+            setUic('')
             setButDiss(false)
             Swal.fire({
                 icon: 'error',

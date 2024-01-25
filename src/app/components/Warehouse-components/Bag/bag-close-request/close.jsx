@@ -435,13 +435,15 @@ export default function DialogBox() {
                                     <TableCell>{data?.uic}</TableCell>
                                     <TableCell>{data?.bag_id}</TableCell>
                                     <TableCell>
-                                        {new Date(
-                                            data?.delivery_date
-                                        ).toLocaleString('en-GB', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                        })}
+                                        {data?.delivery_date !== undefined
+                                            ? new Date(
+                                                  data?.delivery_date
+                                              ).toLocaleString('en-GB', {
+                                                  year: 'numeric',
+                                                  month: '2-digit',
+                                                  day: '2-digit',
+                                              })
+                                            : null}
                                     </TableCell>
                                     <TableCell
                                         style={
@@ -595,13 +597,15 @@ export default function DialogBox() {
                                         <TableCell>{data?.uic}</TableCell>
                                         <TableCell>{data?.bag_id}</TableCell>
                                         <TableCell>
-                                            {new Date(
-                                                data?.delivery_date
-                                            ).toLocaleString('en-GB', {
-                                                year: 'numeric',
-                                                month: '2-digit',
-                                                day: '2-digit',
-                                            })}
+                                            {data?.delivery_date !== undefined
+                                                ? new Date(
+                                                      data?.delivery_date
+                                                  ).toLocaleString('en-GB', {
+                                                      year: 'numeric',
+                                                      month: '2-digit',
+                                                      day: '2-digit',
+                                                  })
+                                                : null}
                                         </TableCell>
                                         <TableCell
                                             style={
@@ -612,7 +616,7 @@ export default function DialogBox() {
                                         >
                                             {data.status}
                                         </TableCell>
-                                        {data.status !== 'Valid' ? (
+                                        {/* {data.status !== 'Valid' ? (
                                             <TableCell>
                                                 <Button
                                                     sx={{
@@ -638,7 +642,7 @@ export default function DialogBox() {
                                                     Remove
                                                 </Button>
                                             </TableCell>
-                                        ) : null}
+                                        ) : null} */}
                                     </TableRow>
                                 )
                             )}

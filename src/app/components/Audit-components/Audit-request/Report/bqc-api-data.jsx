@@ -24,6 +24,7 @@ const BqcSowftwareReportPage = ({
     cimei_1,
     cimei_2,
 }) => {
+    console.log(imei,BqcSowftwareReport?.mobile_imei)
     return (
         <Card>
             <H4 sx={{ p: 2 }}>BQC Summary</H4>

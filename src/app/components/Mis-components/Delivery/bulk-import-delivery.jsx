@@ -90,7 +90,7 @@ const PaginationTable = () => {
             Swal.fire({
                 position: 'top-center',
                 icon: 'warning',
-                title: 'Please Select File',
+                title: 'Please Select a File',
                 confirmButtonText: 'Ok',
             })
         } else {
@@ -459,11 +459,20 @@ const PaginationTable = () => {
     }
 
     const addFileData = (fileData) => {
-        setExfile(fileData)
-        const fileName = fileData.name
-        const fileExtension = fileName.split('.').pop() // Get the last part as the extension
+        if (fileData?.type === 'text/csv' || fileData?.type === "application/vnd.ms-excel" ) {
+            setExfile(fileData)
+            const fileName = fileData.name
+            const fileExtension = fileName.split('.').pop() // Get the last part as the extension
 
-        setFileExt(fileExtension)
+            setFileExt(fileExtension)
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                confirmButtonText: 'Ok',
+                text: 'Please select a CSV file',
+            })
+        }
     }
 
     return (
@@ -488,7 +497,7 @@ const PaginationTable = () => {
                         <Button
                             sx={{ mb: 2 }}
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             onClick={() => navigate('/mis/delivery')}
                         >
                             Back to list
@@ -789,7 +798,28 @@ const PaginationTable = () => {
                                                         id="outlined-password-input"
                                                         type="text"
                                                         name="order_date"
-                                                        value={data.order_date?.toString()}
+                                                        value={
+                                                            data?.order_date !==
+                                                                undefined &&
+                                                            data?.order_date !==
+                                                                '' &&
+                                                            !isNaN(
+                                                                new Date(
+                                                                    data?.order_date
+                                                                )
+                                                            )
+                                                                ? new Date(
+                                                                      data?.order_date
+                                                                  ).toLocaleString(
+                                                                      'en-GB',
+                                                                      {
+                                                                          year: 'numeric',
+                                                                          month: '2-digit',
+                                                                          day: '2-digit',
+                                                                      }
+                                                                  )
+                                                                : ''
+                                                        }
                                                         inputProps={{
                                                             style: {
                                                                 width: 'auto',

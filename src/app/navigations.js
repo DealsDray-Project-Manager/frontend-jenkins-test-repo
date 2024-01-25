@@ -910,7 +910,7 @@ export const navigations = [
                 iconText: 'VP',
             },
             {
-                name: 'Issued PMT and MMt',
+                name: 'Issued PMT and MMT',
                 path: '/wareshouse/pmt-mmt/issued',
                 iconText: 'NP',
             },

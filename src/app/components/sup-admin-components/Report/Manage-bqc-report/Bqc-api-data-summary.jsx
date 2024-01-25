@@ -41,7 +41,6 @@ const BqcSowftwareReportPage = ({ BqcSowftwareReport, grade, imei }) => {
                             </TableCell>
                         )}
                     </TableRow>
-
                     <TableRow key={BqcSowftwareReport?.mandatory_test}>
                         <TableCell sx={{ pl: 2 }}>Mandatory Test</TableCell>
                         <TableCell>

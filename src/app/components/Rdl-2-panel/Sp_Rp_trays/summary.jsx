@@ -146,6 +146,12 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                display:
+                    trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== ''
+                        ? true
+                        : false,
                 customBodyRender: (value, dataIndex) => value?.status,
             },
         },
@@ -158,6 +164,12 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
+                display:
+                    trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== ''
+                        ? true
+                        : false,
                 customBodyRender: (value, dataIndex) => value?.description,
             },
         },
@@ -347,6 +359,7 @@ const SimpleMuiTable = () => {
                 sort: true,
             },
         },
+
         {
             name: 'rp_audit_status',
             label: (
@@ -357,20 +370,12 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, dataIndex) =>
-                    value?.username_of_rpaudit,
-            },
-        },
-        {
-            name: 'rp_audit_status',
-            label: (
-                <Typography sx={{ fontWeight: 'bold', ml: 2 }}>
-                    Repair Auditor User
-                </Typography>
-            ),
-            options: {
-                filter: true,
-                sort: true,
+                display:
+                    trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== ''
+                        ? true
+                        : false,
                 customBodyRender: (value, dataIndex) =>
                     value?.username_of_rpaudit,
             },
@@ -385,6 +390,12 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 sort: true,
+                display:
+                    trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== ''
+                        ? true
+                        : false,
                 customBodyRender: (value, dataIndex) => value?.grade,
             },
         },
@@ -396,6 +407,12 @@ const SimpleMuiTable = () => {
                 </Typography>
             ),
             options: {
+                display:
+                    trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== ''
+                        ? true
+                        : false,
                 filter: true,
                 sort: true, // enable sorting for Brand colum
                 customBodyRender: (value, tableMeta) => {
@@ -459,7 +476,7 @@ const SimpleMuiTable = () => {
                     <Breadcrumb
                         routeSegments={[
                             { name: 'Action', path: '/' },
-                            { name: 'Tray summary' },
+                            { name: 'Tray Summary' },
                         ]}
                     />
                 </div>
@@ -533,24 +550,104 @@ const SimpleMuiTable = () => {
                                     // pagination: true, //set pagination option
                                     // viewColumns: false, // set column option
                                     customSort: (data, colIndex, order) => {
-                                        return data.sort((a, b) => {
-                                            if (colIndex === 1) {
+                                        const columnProperties = {
+                                            5: 'status',
+                                            6: 'reason',
+                                            7: 'description',
+                                            8: 'status',
+                                            9: 'description',
+
+                                            // add more columns and properties here
+                                        }
+                                        const property =
+                                            columnProperties[colIndex]
+
+                                        if (property) {
+                                            return data.sort((a, b) => {
+                                                const aPropertyValue =
+                                                    getValueByProperty(
+                                                        a.data[colIndex],
+                                                        property
+                                                    )
+                                                const bPropertyValue =
+                                                    getValueByProperty(
+                                                        b.data[colIndex],
+                                                        property
+                                                    )
+                                                if (
+                                                    typeof aPropertyValue ===
+                                                        'string' &&
+                                                    typeof bPropertyValue ===
+                                                        'string'
+                                                ) {
+                                                    return (
+                                                        (order === 'asc'
+                                                            ? 1
+                                                            : -1) *
+                                                        aPropertyValue.localeCompare(
+                                                            bPropertyValue
+                                                        )
+                                                    )
+                                                }
                                                 return (
-                                                    (a.data[colIndex].price <
-                                                    b.data[colIndex].price
-                                                        ? -1
-                                                        : 1) *
-                                                    (order === 'desc' ? 1 : -1)
+                                                    (parseFloat(
+                                                        aPropertyValue
+                                                    ) -
+                                                        parseFloat(
+                                                            bPropertyValue
+                                                        )) *
+                                                    (order === 'desc' ? -1 : 1)
+                                                )
+                                            })
+                                        }
+
+                                        return data.sort((a, b) => {
+                                            const aValue = a.data[colIndex]
+                                            const bValue = b.data[colIndex]
+                                            if (aValue === bValue) {
+                                                return 0
+                                            }
+                                            if (
+                                                aValue === null ||
+                                                aValue === undefined
+                                            ) {
+                                                return 1
+                                            }
+                                            if (
+                                                bValue === null ||
+                                                bValue === undefined
+                                            ) {
+                                                return -1
+                                            }
+                                            if (
+                                                typeof aValue === 'string' &&
+                                                typeof bValue === 'string'
+                                            ) {
+                                                return (
+                                                    (order === 'asc' ? 1 : -1) *
+                                                    aValue.localeCompare(bValue)
                                                 )
                                             }
                                             return (
-                                                (a.data[colIndex] <
-                                                b.data[colIndex]
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
+                                                (parseFloat(aValue) -
+                                                    parseFloat(bValue)) *
+                                                (order === 'desc' ? -1 : 1)
                                             )
                                         })
+
+                                        function getValueByProperty(
+                                            data,
+                                            property
+                                        ) {
+                                            const properties =
+                                                property.split('.')
+                                            return (
+                                                properties.reduce(
+                                                    (obj, key) => obj[key],
+                                                    data
+                                                ) || ''
+                                            )
+                                        }
                                     },
                                     elevation: 0,
                                     rowsPerPageOptions: [10, 20, 40, 80, 100],
@@ -560,133 +657,158 @@ const SimpleMuiTable = () => {
                     </Card>
                     <br />
                     <br />
-                    <Card className="custom-table">
-                        <MUIDataTable
-                            title={`Sp tray:- ${trayData?.sp_tray}`}
-                            data={summary?.spTray?.actual_items}
-                            columns={spTrayItems}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
-                                            return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </Card>
+                    {trayData?.sp_tray !== null &&
+                    trayData?.sp_tray !== undefined &&
+                    trayData?.sp_tray !== '' ? (
+                        <>
+                            <Card className="custom-table">
+                                <MUIDataTable
+                                    title={`Sp tray:- ${trayData?.sp_tray}`}
+                                    data={summary?.spTray?.actual_items}
+                                    columns={spTrayItems}
+                                    options={{
+                                        filterType: 'textField',
+                                        responsive: 'simple',
+                                        download: false,
+                                        print: false,
+                                        selectableRows: 'none', // set checkbox for each row
+                                        // search: false, // set search option
+                                        // filter: false, // set data filter option
+                                        // download: false, // set download option
+                                        // print: false, // set print option
+                                        // pagination: true, //set pagination option
+                                        // viewColumns: false, // set column option
+                                        customSort: (data, colIndex, order) => {
+                                            return data.sort((a, b) => {
+                                                if (colIndex === 1) {
+                                                    return (
+                                                        (a.data[colIndex]
+                                                            .price <
+                                                        b.data[colIndex].price
+                                                            ? -1
+                                                            : 1) *
+                                                        (order === 'desc'
+                                                            ? 1
+                                                            : -1)
+                                                    )
+                                                }
+                                                return (
+                                                    (a.data[colIndex] <
+                                                    b.data[colIndex]
+                                                        ? -1
+                                                        : 1) *
+                                                    (order === 'desc' ? 1 : -1)
+                                                )
+                                            })
+                                        },
+                                        elevation: 0,
+                                        rowsPerPageOptions: [
+                                            10, 20, 40, 80, 100,
+                                        ],
+                                    }}
+                                />
+                            </Card>
 
-                    <br />
-                    <br />
-                    <Card className="custom-table">
-                        <MUIDataTable
-                            title={'More Spare Parts Required List'}
-                            data={summary?.morePartRequred}
-                            columns={more_part_required}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
-                                            return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </Card>
-
-                    <Card className="custom-table">
-                        <MUIDataTable
-                            title={'Repair Done Report'}
-                            data={trayData?.wht_tray}
-                            columns={repair_done_report}
-                            options={{
-                                filterType: 'textField',
-                                responsive: 'simple',
-                                download: false,
-                                print: false,
-                                selectableRows: 'none', // set checkbox for each row
-                                // search: false, // set search option
-                                // filter: false, // set data filter option
-                                // download: false, // set download option
-                                // print: false, // set print option
-                                // pagination: true, //set pagination option
-                                // viewColumns: false, // set column option
-                                customSort: (data, colIndex, order) => {
-                                    return data.sort((a, b) => {
-                                        if (colIndex === 1) {
-                                            return (
-                                                (a.data[colIndex].price <
-                                                b.data[colIndex].price
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        }
-                                        return (
-                                            (a.data[colIndex] < b.data[colIndex]
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    })
-                                },
-                                elevation: 0,
-                                rowsPerPageOptions: [10, 20, 40, 80, 100],
-                            }}
-                        />
-                    </Card>
+                            <br />
+                            <br />
+                            <Card className="custom-table">
+                                <MUIDataTable
+                                    title={'More Spare Parts Required List'}
+                                    data={summary?.morePartRequred}
+                                    columns={more_part_required}
+                                    options={{
+                                        filterType: 'textField',
+                                        responsive: 'simple',
+                                        download: false,
+                                        print: false,
+                                        selectableRows: 'none', // set checkbox for each row
+                                        // search: false, // set search option
+                                        // filter: false, // set data filter option
+                                        // download: false, // set download option
+                                        // print: false, // set print option
+                                        // pagination: true, //set pagination option
+                                        // viewColumns: false, // set column option
+                                        customSort: (data, colIndex, order) => {
+                                            return data.sort((a, b) => {
+                                                if (colIndex === 1) {
+                                                    return (
+                                                        (a.data[colIndex]
+                                                            .price <
+                                                        b.data[colIndex].price
+                                                            ? -1
+                                                            : 1) *
+                                                        (order === 'desc'
+                                                            ? 1
+                                                            : -1)
+                                                    )
+                                                }
+                                                return (
+                                                    (a.data[colIndex] <
+                                                    b.data[colIndex]
+                                                        ? -1
+                                                        : 1) *
+                                                    (order === 'desc' ? 1 : -1)
+                                                )
+                                            })
+                                        },
+                                        elevation: 0,
+                                        rowsPerPageOptions: [
+                                            10, 20, 40, 80, 100,
+                                        ],
+                                    }}
+                                />
+                            </Card>
+                            <Card className="custom-table">
+                                <MUIDataTable
+                                    title={'Repair Done Report'}
+                                    data={trayData?.wht_tray}
+                                    columns={repair_done_report}
+                                    options={{
+                                        filterType: 'textField',
+                                        responsive: 'simple',
+                                        download: false,
+                                        print: false,
+                                        selectableRows: 'none', // set checkbox for each row
+                                        // search: false, // set search option
+                                        // filter: false, // set data filter option
+                                        // download: false, // set download option
+                                        // print: false, // set print option
+                                        // pagination: true, //set pagination option
+                                        // viewColumns: false, // set column option
+                                        customSort: (data, colIndex, order) => {
+                                            return data.sort((a, b) => {
+                                                if (colIndex === 1) {
+                                                    return (
+                                                        (a.data[colIndex]
+                                                            .price <
+                                                        b.data[colIndex].price
+                                                            ? -1
+                                                            : 1) *
+                                                        (order === 'desc'
+                                                            ? 1
+                                                            : -1)
+                                                    )
+                                                }
+                                                return (
+                                                    (a.data[colIndex] <
+                                                    b.data[colIndex]
+                                                        ? -1
+                                                        : 1) *
+                                                    (order === 'desc' ? 1 : -1)
+                                                )
+                                            })
+                                        },
+                                        elevation: 0,
+                                        rowsPerPageOptions: [
+                                            10, 20, 40, 80, 100,
+                                        ],
+                                    }}
+                                />
+                            </Card>
+                        </>
+                    ) : (
+                        ''
+                    )}
 
                     <Box sx={{ textAlign: 'right', p: 2 }}>
                         <Button

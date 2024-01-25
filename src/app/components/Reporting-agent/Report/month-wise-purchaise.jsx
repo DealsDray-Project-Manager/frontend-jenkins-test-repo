@@ -610,7 +610,13 @@ const SimpleMuiTable = () => {
                                 <TableCell>Model MisMatch MMT</TableCell>
                             ) : data.tray_type == 'PMT' ? (
                                 <TableCell>Product MisMatch PMT</TableCell>
-                            ) : data.tray_type == 'BOT' ? (
+                            ) : data.tray_type == 'BOT' ||
+                              data.tray_type == 'WHT' ||
+                              data.tray_type == 'CT' ||
+                              data.tray_type == 'ST' ||
+                              data.tray_type == 'RPT' ||
+                              data.tray_type == 'RPA' ||
+                              data.tray_type == 'RPB' ? (
                                 <TableCell>Model Verified BOT</TableCell>
                             ) : (
                                 <TableCell>-</TableCell>

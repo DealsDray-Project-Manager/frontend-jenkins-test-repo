@@ -334,7 +334,7 @@ export default function DialogBox() {
                             stickerOne: stickerOne,
                             stickerTwo: stickerTwo,
                             stickerThree: stickertThree,
-                            // status: awabnDetails?.[0].status,
+                            status: awabnDetails?.[0].status,
                             tray_id: tray[0].code,
                             bag_id: bagId,
                             user_name: user_name1,
@@ -358,6 +358,7 @@ export default function DialogBox() {
                             setBodyDamage('NO')
                             setModelMisMatch(false)
                         } else if (res.status == 202) {
+                            setModelMisMatch(false)
                             setLoading(false)
                             Swal.fire({
                                 icon: 'error',
@@ -441,6 +442,7 @@ export default function DialogBox() {
                             setBodyDamage('NO')
                             setOpneProductMisMatch(false)
                         } else if (res.status == 202) {
+                            setOpneProductMisMatch(false)
                             setLoading(false)
                             Swal.fire({
                                 icon: 'error',

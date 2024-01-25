@@ -7,7 +7,7 @@ import {
     Grid,
     Typography,
     MenuItem,
-    Table
+    Table,
 } from '@mui/material'
 import MUIDataTable from 'mui-datatables'
 import { Breadcrumb } from 'app/components'
@@ -18,7 +18,6 @@ import BqcApiReport from '../../Audit-components/Audit-request/Report/bqc-api-da
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import '../../../../app.css'
-
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -32,7 +31,6 @@ const Container = styled('div')(({ theme }) => ({
         },
     },
 }))
-
 const SimpleMuiTable = () => {
     const navigate = useNavigate()
     const { state } = useLocation()
@@ -123,24 +121,24 @@ const SimpleMuiTable = () => {
                 <br />
                 <>
                     <Card sx={{ width: '100%', height: '50%' }}>
-                        <Box sx={{ display: 'flex', mb: 2 }}>
-                            <Box sx={{ ml: 2 }}>
+                        <Grid item container spacing={2} sx={{ mb: 3 }}>
+                            <Grid item lg={2} md={2} xs={2} xl={2}>
                                 <Typography sx={{ mt: 2 }}>
                                     UIC : {uic}
                                 </Typography>
                                 <Typography sx={{ mt: 2 }}>
                                     MUIC : {reportData?.muic?.muic}
                                 </Typography>
-                            </Box>
-                            <Box sx={{ ml: 5 }}>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2} xl={2}>
                                 <Typography sx={{ mt: 2 }}>
                                     BRAND : {reportData?.muic?.brand_name}
                                 </Typography>
                                 <Typography sx={{ mt: 2 }}>
                                     MODEL : {reportData?.muic?.model_name}
                                 </Typography>
-                            </Box>
-                            <Box sx={{ ml: 5 }}>
+                            </Grid>
+                            <Grid item lg={4} md={2} xs={2} xl={4}>
                                 <Typography sx={{ mt: 2 }}>
                                     Auditor Description:{' '}
                                     {
@@ -155,8 +153,6 @@ const SimpleMuiTable = () => {
                                             ?.selected_status
                                     }
                                 </Typography>
-                            </Box>
-                            <Box sx={{ ml: 5 }}>
                                 <Typography sx={{ mt: 2 }}>
                                     RDL-1 Description:{' '}
                                     {
@@ -164,56 +160,82 @@ const SimpleMuiTable = () => {
                                             ?.description
                                     }
                                 </Typography>
-                            </Box>
-                        </Box>
+                            </Grid>
+                            <Grid item lg={2} md={2} xs={2} xl={2}>
+                                {reportData?.delivery?.rp_bqc_report
+                                    ?.description !== undefined ? (
+                                    <Typography sx={{ mt: 2 }}>
+                                        RP-BQC Description:{' '}
+                                        {
+                                            reportData?.delivery?.rp_bqc_report
+                                                ?.description
+                                        }
+                                    </Typography>
+                                ) : null}
+                                {reportData?.delivery?.rp_audit_report
+                                    ?.description !== undefined ? (
+                                    <Typography sx={{ mt: 2 }}>
+                                        RP-AUDIT Description:{' '}
+                                        {
+                                            reportData?.delivery
+                                                ?.rp_audit_report?.description
+                                        }
+                                    </Typography>
+                                ) : null}
+                            </Grid>
+                        </Grid>
                     </Card>
                     {reportData?.checkIntray?.sp_tray != null ? (
                         <Card sx={{ mt: 2, width: '100%' }}>
                             <Table className="custom-table">
-                                
-                            <MUIDataTable
-                                title={'Assigned Spare Partsd'}
-                                data={
-                                    reportData?.delivery?.rdl_fls_one_report
-                                        ?.partRequired
-                                }
-                                columns={columns}
-                                options={{
-                                    filterType: 'textField',
-                                    responsive: 'simple',
-                                    download: false,
-                                    print: false,
-                                    selectableRows: 'none', // set checkbox for each row
-                                    // search: false, // set search option
-                                    // filter: false, // set data filter option
-                                    // download: false, // set download option
-                                    // print: false, // set print option
-                                    // pagination: true, //set pagination option
-                                    // viewColumns: false, // set column option
-                                    customSort: (data, colIndex, order) => {
-                                        return data.sort((a, b) => {
-                                            if (colIndex === 1) {
+                                <MUIDataTable
+                                    title={'Assigned Spare Parts'}
+                                    data={
+                                        reportData?.delivery?.rdl_fls_one_report
+                                            ?.partRequired
+                                    }
+                                    columns={columns}
+                                    options={{
+                                        filterType: 'textField',
+                                        responsive: 'simple',
+                                        download: false,
+                                        print: false,
+                                        selectableRows: 'none', // set checkbox for each row
+                                        // search: false, // set search option
+                                        // filter: false, // set data filter option
+                                        // download: false, // set download option
+                                        // print: false, // set print option
+                                        // pagination: true, //set pagination option
+                                        // viewColumns: false, // set column option
+                                        customSort: (data, colIndex, order) => {
+                                            return data.sort((a, b) => {
+                                                if (colIndex === 1) {
+                                                    return (
+                                                        (a.data[colIndex]
+                                                            .price <
+                                                        b.data[colIndex].price
+                                                            ? -1
+                                                            : 1) *
+                                                        (order === 'desc'
+                                                            ? 1
+                                                            : -1)
+                                                    )
+                                                }
                                                 return (
-                                                    (a.data[colIndex].price <
-                                                    b.data[colIndex].price
+                                                    (a.data[colIndex] <
+                                                    b.data[colIndex]
                                                         ? -1
                                                         : 1) *
                                                     (order === 'desc' ? 1 : -1)
                                                 )
-                                            }
-                                            return (
-                                                (a.data[colIndex] <
-                                                b.data[colIndex]
-                                                    ? -1
-                                                    : 1) *
-                                                (order === 'desc' ? 1 : -1)
-                                            )
-                                        })
-                                    },
-                                    elevation: 0,
-                                    rowsPerPageOptions: [10, 20, 40, 80, 100],
-                                }}
-                            />
+                                            })
+                                        },
+                                        elevation: 0,
+                                        rowsPerPageOptions: [
+                                            10, 20, 40, 80, 100,
+                                        ],
+                                    }}
+                                />
                             </Table>
                         </Card>
                     ) : null}
@@ -250,7 +272,13 @@ const SimpleMuiTable = () => {
                                     reportData?.delivery?.bqc_software_report
                                         ?.final_grade
                                 }
-                                imei={reportData?.order?.imei}
+                                imei={reportData?.delivery?.imei}
+                                cimei_1={
+                                    reportData?.delivery?.charging?.cimei_1
+                                }
+                                cimei_2={
+                                    reportData?.delivery?.charging?.cimei_2
+                                }
                             />
                         </Grid>
                     </Grid>

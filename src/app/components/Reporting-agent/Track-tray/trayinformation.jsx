@@ -65,7 +65,7 @@ const Trayinformation = () => {
             alert(error)
         }
     }
- 
+
     return (
         <Container>
             <h3>Tray Details</h3>
@@ -146,7 +146,7 @@ const Trayinformation = () => {
                                     <b>{result?.items?.length}</b>{' '}
                                 </p>
 
-                                {Object.keys(otherDetails).length !== 0 ? (
+                                {/* {Object.keys(otherDetails).length !== 0 ? (
                                     <>
                                         {Object.entries(otherDetails).map(
                                             ([key, value]) => (
@@ -158,7 +158,7 @@ const Trayinformation = () => {
                                     </>
                                 ) : (
                                     ''
-                                )}
+                                )} */}
                             </div>
                         </Box>
                     </Stack>

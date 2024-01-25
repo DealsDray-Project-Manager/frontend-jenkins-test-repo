@@ -208,8 +208,8 @@ const SimpleMuiTable = () => {
             ),
             options: {
                 filter: true,
-                customBodyRender: (value, dataIndex) => value?.rpbqc_username,
-                display: trayData?.sp_tray == undefined ? false : true,
+                customBodyRender: (value, tableMeta) => value?.rpbqc_username,
+                display: trayData?.sp_tray === undefined || trayData?.actual_items.some(row => row[5]?.status !== "Repair Done") ? false : true,
             },
         },
     ]

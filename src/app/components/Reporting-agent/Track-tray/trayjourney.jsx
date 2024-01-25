@@ -86,6 +86,28 @@ const WHTdetails = ({ TrayMovement }) => {
             },
         },
         {
+            name: 'tray_unit_in_count',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>IN</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'tray_unit_out_count',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
+                    <>OUT</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
             name: 'rack_id',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">

@@ -145,7 +145,20 @@ const SimpleMuiTable = () => {
         },
         {
             name: 'nr',
-            label: <Typography sx={{ fontWeight: 'bold' }}>NR Units</Typography>,
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>NR Units</Typography>
+            ),
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: 'can_bin_tray',
+            label: (
+                <Typography sx={{ fontWeight: 'bold' }}>
+                    CAN-BIN Tray
+                </Typography>
+            ),
             options: {
                 filter: true,
             },
@@ -177,7 +190,11 @@ const SimpleMuiTable = () => {
     return (
         <Container>
             <div className="breadcrumb">
-                <Breadcrumb routeSegments={[{ name: 'Can Bin Pending Units', path: '/' }]} />
+                <Breadcrumb
+                    routeSegments={[
+                        { name: 'Can Bin Pending Units', path: '/' },
+                    ]}
+                />
             </div>
             <Table className="custom-table">
                 <MUIDataTable

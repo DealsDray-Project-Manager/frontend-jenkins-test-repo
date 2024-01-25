@@ -344,7 +344,7 @@ const SimpleMuiTable = () => {
                         helperText={errors.pmt_bin_status?.message}
                     >
                         <MenuItem value="Reusable">Reusable</MenuItem>
-                        <MenuItem value="Reusable">Not Reusable</MenuItem>
+                        <MenuItem value="Not Reusable">Not Reusable</MenuItem>
                     </TextField>
 
                     <TextField

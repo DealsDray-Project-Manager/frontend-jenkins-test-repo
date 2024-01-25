@@ -27,7 +27,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import PropTypes from 'prop-types'
 import useAuth from 'app/hooks/useAuth'
 
-
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: {

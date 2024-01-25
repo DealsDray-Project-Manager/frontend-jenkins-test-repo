@@ -500,7 +500,9 @@ function StartRpAudit() {
                         variant="outlined"
                         fullWidth
                         name="description"
+                        multiline
                         onChange={handleChangeThePopValue}
+                        rows={3}
                         sx={{
                             mb: 2,
                         }}

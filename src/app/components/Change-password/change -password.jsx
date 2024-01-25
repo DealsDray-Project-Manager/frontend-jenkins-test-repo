@@ -155,6 +155,11 @@ const Login = () => {
                     } else if (user_type == 'Bagging') {
                         navigate('/bagging/dashboard')
                     }
+                    else if (user_type == 'RP-BQC') {
+                        navigate('/rp-bqc/dashboard')
+                    } else if (user_type == 'RP-Audit') {
+                        navigate('/rp-audit/dashboard')
+                    }
                 } else if (response.status == 202) {
                     Swal.fire({
                         icon: 'error',

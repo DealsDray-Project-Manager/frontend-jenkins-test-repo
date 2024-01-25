@@ -187,7 +187,6 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
 
         {
             name: 'brand',
@@ -223,7 +222,7 @@ const SimpleMuiTable = () => {
                 filter: true,
             },
         },
-        
+
         {
             name: 'code',
             label: (

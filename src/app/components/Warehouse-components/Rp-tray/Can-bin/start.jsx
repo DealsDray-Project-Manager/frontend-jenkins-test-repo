@@ -96,8 +96,8 @@ export default function DialogBox() {
     const [itemDataVer, setItemDataVer] = useState({})
     const [open, setOpen] = React.useState(false)
     const [description, setDescription] = useState([])
-    const [canBinTray, setCanBinTray] = useState([])
     const [dialogOne, setDialogOne] = useState(false)
+    const [countOfNr, setCountOfNr] = useState(0)
 
     /*********************************************************** */
 
@@ -112,10 +112,13 @@ export default function DialogBox() {
                         response?.data?.data?.[0]?.can_bin_tray == null ||
                         response?.data?.data?.[0]?.can_bin_tray === undefined
                     ) {
-                        setDialogOne(true)
-                    } else if (response?.data?.data?.[1]?.sort_id == 'Closed') {
+                        setCountOfNr(response?.data?.countOfNr)
                         setDialogOne(true)
                     }
+                    //  else if (response?.data?.data?.[1]?.sort_id == 'Closed') {
+                    //     setCountOfNr(response?.data?.countOfNr)
+                    //     setDialogOne(true)
+                    // }
                     setTrayData(response?.data?.data)
                 } else {
                     Swal.fire({
@@ -137,18 +140,6 @@ export default function DialogBox() {
         }
         fetchData()
     }, [refresh])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await axiosWarehouseIn.post(
-                '/canBinGetCbtTray/' + user.location
-            )
-            if (res.status == 200) {
-                setCanBinTray(res.data.data)
-            }
-        }
-        fetchData()
-    }, [])
 
     const schema = Yup.object().shape({
         description: Yup.string().required('Required*').nullable(),
@@ -339,8 +330,8 @@ export default function DialogBox() {
                         <Box sx={{}}>
                             <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ paddingLeft: '5px', fontSize: '22px' }}>
-                                {trayData?.[0]?.temp_array?.length}/
-                                {trayData?.[0]?.limit}
+                                {trayData?.[1]?.items?.length}/
+                                {trayData?.[1]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -399,14 +390,8 @@ export default function DialogBox() {
                         <Box sx={{}}>
                             <h5 style={{ marginLeft: '12px' }}>Total</h5>
                             <p style={{ marginLeft: '5px', fontSize: '24px' }}>
-                                {
-                                    trayData?.[0]?.actual_items?.filter(
-                                        function (item) {
-                                            return item.status != 'Duplicate'
-                                        }
-                                    ).length
-                                }
-                                /{trayData?.[0]?.limit}
+                                {trayData?.[0]?.actual_items?.length}/
+                                {trayData?.[0]?.limit}
                             </p>
                         </Box>
                     </Box>
@@ -548,8 +533,8 @@ export default function DialogBox() {
                         dialogOne={dialogOne}
                         setDialogOne={setDialogOne}
                         trayId={trayId}
-                        canBinTray={canBinTray}
                         setRefresh={setRefresh}
+                        countOfNr={countOfNr}
                     />
                 ) : null}
 

@@ -128,6 +128,7 @@ const PaginationTable = () => {
         }))
         setLoading(false)
     }
+    console.log(countOfTray);
     function toLowerKeys(obj, id) {
         return Object.keys(obj).reduce((accumulator, key) => {
             accumulator.created_at = Date.now()
@@ -172,11 +173,19 @@ const PaginationTable = () => {
                     x.tray_id = 'RPT' + (countOfTray.RPT + count6)
                     count6++
                 } else if (x.tray_category == 'RPB') {
-                    x.tray_id = 'RPB' + (countOfTray.RPB + count7)
-                    count7++
+                    x.tray_id = `RPB${String(
+                        parseInt(countOfTray.RPB, 10) + count7++
+                    ).padStart(countOfTray.RPB.length, '0')}`
+
+                    // x.tray_id = 'RPB' + (countOfTray.RPB + count7)
+                    // count7++
                 } else if (x.tray_category == 'RPA') {
-                    x.tray_id = 'RPA' + (countOfTray.RPA + count8)
-                    count8++
+                    x.tray_id = `RPA${String(
+                        parseInt(countOfTray.RPA, 10) + count8++
+                    ).padStart(countOfTray.RPA.length, '0')}`
+
+                    // x.tray_id = 'RPA' + (countOfTray.RPA + count8)
+                    // count8++
                 } else if (x.tray_category == 'CBT') {
                     x.tray_id = 'CBT' + (countOfTray.CBT + count9)
                     count9++
@@ -233,8 +242,14 @@ const PaginationTable = () => {
                         WHT: p.WHT + count4,
                         SPT: p.SPT + count5,
                         RPT: p.RPT + count6,
-                        RPB: p.RPB + count7,
-                        RPA: p.RPA + count8,
+                        RPB: String(parseInt(p.RPB, 10) + count7).padStart(
+                            p.RPB.length,
+                            '0'
+                        ),
+                        RPA: String(parseInt(p.RPA, 10) + count8).padStart(
+                            p.RPA.length,
+                            '0'
+                        ),
                         CBT: p.CBT + count9,
                     }))
                     Swal.fire({

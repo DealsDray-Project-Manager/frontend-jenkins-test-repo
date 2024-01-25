@@ -39,30 +39,44 @@ const CustomerBillings = ({ RdlOneReport }) => {
             <Divider />
             <Table sx={{ mb: 2 }}>
                 <TableBody>
-                    <TableRow key={RdlOneReport?.selected_status}>
-                        <TableCell sx={{ pl: 2 }}>Rdl-1 status :</TableCell>
-                        <TableCell>{RdlOneReport?.selected_status}</TableCell>
-                    </TableRow>
-                    <TableRow key={RdlOneReport?.color}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Rdl-1 selected color :
-                        </TableCell>
-                        <TableCell>{RdlOneReport?.color}</TableCell>
-                    </TableRow>
-                    <TableRow key={RdlOneReport?.model_reg}>
-                        <TableCell sx={{ pl: 2 }}>
-                            Rdl-1 added model:
-                        </TableCell>
-                        <TableCell>{RdlOneReport?.model_reg}</TableCell>
-                    </TableRow>
-                    <TableRow key={RdlOneReport?.description}>
-                        <TableCell sx={{ pl: 2 }}>Rdl-1 remark:</TableCell>
-                        <TableCell>{RdlOneReport?.description}</TableCell>
-                    </TableRow>
-                    <TableRow key={RdlOneReport?.username}>
-                        <TableCell sx={{ pl: 2 }}>Rdl-1 username :</TableCell>
-                        <TableCell>{RdlOneReport?.username}</TableCell>
-                    </TableRow>
+                    {RdlOneReport?.selected_status !== undefined && RdlOneReport?.selected_status !== "" && RdlOneReport?.selected_status !== null ? (
+                        <TableRow key={RdlOneReport?.selected_status}>
+                            <TableCell sx={{ pl: 2 }}>Rdl-1 status :</TableCell>
+                            <TableCell>
+                                {RdlOneReport?.selected_status}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
+                    {RdlOneReport?.color !== undefined && RdlOneReport?.color !== "" && RdlOneReport?.color !== null ? (
+                        <TableRow key={RdlOneReport?.color}>
+                            <TableCell sx={{ pl: 2 }}>
+                                Rdl-1 selected color :
+                            </TableCell>
+                            <TableCell>{RdlOneReport?.color}</TableCell>
+                        </TableRow>
+                    ) : null}
+                    {RdlOneReport?.model_reg !== undefined && RdlOneReport?.model_reg !== "" && RdlOneReport?.model_reg !== null ? (
+                        <TableRow key={RdlOneReport?.model_reg}>
+                            <TableCell sx={{ pl: 2 }}>
+                                Rdl-1 added model:
+                            </TableCell>
+                            <TableCell>{RdlOneReport?.model_reg}</TableCell>
+                        </TableRow>
+                    ) : null}
+                    {RdlOneReport?.description !== undefined && RdlOneReport?.description !== "" && RdlOneReport?.description !== null ? (
+                        <TableRow key={RdlOneReport?.description}>
+                            <TableCell sx={{ pl: 2 }}>Rdl-1 remark:</TableCell>
+                            <TableCell>{RdlOneReport?.description}</TableCell>
+                        </TableRow>
+                    ) : null}
+                    {RdlOneReport?.username !== undefined  && RdlOneReport?.username !== "" && RdlOneReport?.username !== null ? (
+                        <TableRow key={RdlOneReport?.username}>
+                            <TableCell sx={{ pl: 2 }}>
+                                Rdl-1 username :
+                            </TableCell>
+                            <TableCell>{RdlOneReport?.username}</TableCell>
+                        </TableRow>
+                    ) : null}
                 </TableBody>
             </Table>
         </Card>

@@ -142,8 +142,9 @@ const SimpleMuiTable = () => {
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
         const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const data = new Blob([excelBuffer], { type: fileType })
-
-        saveAs(data, `Not Delivered Orders ${fileExtension}`)
+        if(arr.length !== 0){
+            saveAs(data, `Not Delivered Orders ${fileExtension}`)
+        }
         setDownlaodText('Export to Excel')
     }
 
@@ -728,7 +729,10 @@ const SimpleMuiTable = () => {
                         sx={{ mb: 2 }}
                         variant="contained"
                         color="secondary"
-                        disabled={downloadText == 'Downloading...'}
+                        disabled={
+                            downloadText == 'Downloading...' ||
+                            dataForDownload?.length == 0
+                        }
                         onClick={(e) => {
                             download(e)
                         }}

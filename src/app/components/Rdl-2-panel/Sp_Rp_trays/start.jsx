@@ -42,12 +42,8 @@ const SimpleMuiTable = () => {
                 if (admin) {
                     let { location, user_name } = jwt_decode(admin)
                     setUsername(user_name)
-                    let response = await axiosWarehouseIn.post(
-                        '/getWhtTrayItem/' +
-                            trayId +
-                            '/' +
-                            'Rdl-2 in-progress/' +
-                            location
+                    let response = await axiosRdlTwoAgent.post(
+                        `/getOneTrayForProcess/${trayId}/${location}/${user?.username}`
                     )
                     if (response.status === 200) {
                         setTrayData(response.data.data)
@@ -209,10 +205,51 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => value?.rpbqc_username,
-                display: trayData?.sp_tray === undefined || trayData?.actual_items.some(row => row[5]?.status !== "Repair Done") ? false : true,
+                display: trayData?.display,
             },
         },
     ]
+
+    const TableData = useMemo(() => {
+        return (
+            <MUIDataTable
+                title={'Units'}
+                data={trayData?.actual_items}
+                columns={columns}
+                options={{
+                    filterType: 'textField',
+                    responsive: 'simple',
+                    download: false,
+                    print: false,
+                    selectableRows: 'none', // set checkbox for each row
+                    // search: false, // set search option
+                    // filter: false, // set data filter option
+                    // download: false, // set download option
+                    // print: false, // set print option
+                    // pagination: true, //set pagination option
+                    // viewColumns: false, // set column option
+                    customSort: (data, colIndex, order) => {
+                        return data.sort((a, b) => {
+                            if (colIndex === 1) {
+                                return (
+                                    (a.data[colIndex].price <
+                                    b.data[colIndex].price
+                                        ? -1
+                                        : 1) * (order === 'desc' ? 1 : -1)
+                                )
+                            }
+                            return (
+                                (a.data[colIndex] < b.data[colIndex] ? -1 : 1) *
+                                (order === 'desc' ? 1 : -1)
+                            )
+                        })
+                    },
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
+        )
+    }, [trayData, trayData?.sp_tray])
 
     /************************************************************************** */
     // const tableExpected = useMemo(() => {
@@ -291,44 +328,8 @@ const SimpleMuiTable = () => {
                             inputRef={(input) => input && input.focus()}
                         />
                     </Box>
-                    <MUIDataTable
-                        title={'Units'}
-                        data={trayData?.actual_items}
-                        columns={columns}
-                        options={{
-                            filterType: 'textField',
-                            responsive: 'simple',
-                            download: false,
-                            print: false,
-                            selectableRows: 'none', // set checkbox for each row
-                            // search: false, // set search option
-                            // filter: false, // set data filter option
-                            // download: false, // set download option
-                            // print: false, // set print option
-                            // pagination: true, //set pagination option
-                            // viewColumns: false, // set column option
-                            customSort: (data, colIndex, order) => {
-                                return data.sort((a, b) => {
-                                    if (colIndex === 1) {
-                                        return (
-                                            (a.data[colIndex].price <
-                                            b.data[colIndex].price
-                                                ? -1
-                                                : 1) *
-                                            (order === 'desc' ? 1 : -1)
-                                        )
-                                    }
-                                    return (
-                                        (a.data[colIndex] < b.data[colIndex]
-                                            ? -1
-                                            : 1) * (order === 'desc' ? 1 : -1)
-                                    )
-                                })
-                            },
-                            elevation: 0,
-                            rowsPerPageOptions: [10, 20, 40, 80, 100],
-                        }}
-                    />
+
+                    {TableData}
                     <Box sx={{ textAlign: 'right' }}>
                         <Button
                             sx={{

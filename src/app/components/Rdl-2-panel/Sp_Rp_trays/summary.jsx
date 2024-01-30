@@ -218,6 +218,33 @@ const SimpleMuiTable = () => {
             name: 'rdl_repair_report',
             label: (
                 <Typography variant="subtitle1" fontWeight="bold">
+                    <>Part Allocated SPN</>
+                </Typography>
+            ),
+            options: {
+                filter: true,
+                sort: true, // enable sorting for Brand colum
+                customBodyRender: (value, tableMeta) => {
+                    const dataIndex = tableMeta.rowIndex
+                    const partRequired = value?.rdl_two_part_status
+                    if (partRequired && partRequired.length > 0) {
+                        const partsList = partRequired.map((data, index) => {
+                            return `${index + 1}.${data?.part_name} - ${
+                                data?.part_id
+                            } Status-${data?.rdl_two_status}`
+                        })
+
+                        return partsList.join(', ')
+                    }
+
+                    return ''
+                },
+            },
+        },
+        {
+            name: 'rdl_repair_report',
+            label: (
+                <Typography variant="subtitle1" fontWeight="bold">
                     <>More Part Required Details</>
                 </Typography>
             ),

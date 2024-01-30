@@ -261,11 +261,11 @@ const SimpleMuiTable = () => {
                 Location: x?.partner_shop,
             }
             if (x.tray_type == 'MMT') {
-                obj['Type'] = 'Model MisMatch MMT'
+                obj['Type'] = 'Model MisMatch'
             } else if (x.tray_type == 'PMT') {
-                obj['Type'] = 'Product MisMatch PMT'
+                obj['Type'] = 'Product MisMatch'
             } else {
-                obj['Type'] = 'Model Verified BOT'
+                obj['Type'] = 'Model Verified'
             }
             if (x?.order_date !== undefined && x?.order_date !== null) {
                 obj['Order Date'] = new Date(x?.order_date).toLocaleString(
@@ -607,9 +607,9 @@ const SimpleMuiTable = () => {
                                 {data?.bot_report?.body_damage_des}
                             </TableCell>
                             {data.tray_type == 'MMT' ? (
-                                <TableCell>Model MisMatch MMT</TableCell>
+                                <TableCell>Model MisMatch</TableCell>
                             ) : data.tray_type == 'PMT' ? (
-                                <TableCell>Product MisMatch PMT</TableCell>
+                                <TableCell>Product MisMatch</TableCell>
                             ) : data.tray_type == 'BOT' ||
                               data.tray_type == 'WHT' ||
                               data.tray_type == 'CT' ||
@@ -617,7 +617,7 @@ const SimpleMuiTable = () => {
                               data.tray_type == 'RPT' ||
                               data.tray_type == 'RPA' ||
                               data.tray_type == 'RPB' ? (
-                                <TableCell>Model Verified BOT</TableCell>
+                                <TableCell>Model Verified</TableCell>
                             ) : (
                                 <TableCell>-</TableCell>
                             )}

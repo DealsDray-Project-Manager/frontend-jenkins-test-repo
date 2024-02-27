@@ -251,7 +251,7 @@ const SimpleMuiTable = () => {
             let obj = {
                 'Order Id': x?.order_id,
                 'Tracking Id': x?.tracking_id,
-                'Model Name': x?.products?.[0]?.model_name,
+                'Model Name': `${x?.products?.[0]?.brand_name?.toUpperCase()}:${x?.products?.[0]?.model_name?.toUpperCase()}`,
                 'Purchase IMEI': x?.imei,
                 'Item ID': x?.item_id,
                 'Received Units Remarks (BOT)': x?.bot_report?.body_damage_des,
@@ -599,7 +599,7 @@ const SimpleMuiTable = () => {
                             <TableCell>{data?.order_id}</TableCell>
                             <TableCell>{data?.tracking_id}</TableCell>
                             <TableCell>
-                                {data?.products?.[0]?.model_name}
+                                {`${data?.products?.[0]?.brand_name?.toUpperCase()}:${data?.products?.[0]?.model_name?.toUpperCase()}`}
                             </TableCell>
                             <TableCell>{data?.imei}</TableCell>
                             <TableCell>{data?.item_id}</TableCell>

@@ -250,7 +250,6 @@ const MemberEditorDialog = ({
                             }
                             disabled
                         />
-
                         <TextFieldCustOm
                             label="Bag Display Name"
                             type="text"

@@ -205,7 +205,7 @@ const SimpleMuiTable = () => {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => value?.rpbqc_username,
-                display: trayData?.display,
+                display: trayData?.display_condition,
             },
         },
     ]

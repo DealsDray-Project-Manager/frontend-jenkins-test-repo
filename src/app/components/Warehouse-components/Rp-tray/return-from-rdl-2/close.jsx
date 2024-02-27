@@ -479,7 +479,12 @@ export default function DialogBox() {
                         sx={{ m: 3, mb: 9 }}
                         variant="contained"
                         disabled={
-                            loading == true || description == '' || rackId == ''
+                            loading == true ||
+                            trayData?.length == 0 ||
+                            description == '' ||
+                            rackId == '' ||
+                            trayData?.actual_items?.length ==
+                                trayData?.items?.length
                                 ? true
                                 : false
                         }
